@@ -47,4 +47,3 @@ Here they are:
 - [spellright](https://marketplace.visualstudio.com/items?itemName=ban.spellright)
 
 A special mention goes to [Markdown Links](https://marketplace.visualstudio.com/items?itemName=tchayen.markdown-links), which has now been replaced by our graph but was foundational to Foam's beginnings.
-
