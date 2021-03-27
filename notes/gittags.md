@@ -119,3 +119,5 @@ To /git@github.com:schacon/simplegit.git
 ```Git
 $git push origin --delete <tagname>
 ```
+
+Больше документации на [[git]]

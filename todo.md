@@ -1,4 +1,7 @@
 # Todo
 
-- [x] You can mark it completed by pressing `Option`+`C` (or `Alt`+`C`) when your cursor is on this line
-  - [x] You can also select multiple lines and mark them all at once!
+- [ ] Изучить #openapi документацию
+  - [ ] Пройти [[openapi-specification]]
+- [ ] Изучить приемы работы с #foam
+  - [ ] Пройти [[как-работать-с-foam]]
+  - [ ] Изучить документацию в docs
