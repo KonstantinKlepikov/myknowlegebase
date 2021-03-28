@@ -41,3 +41,5 @@ This works best if you can see the result in the preview panel, run the `Markdow
   2. move your cursor to the next line, then press `cmd+alt+v` and confirm the name of the file
   3. .
   4. the image file has been created in `/attachments` and a reference to it has been added here
+
+[[как-работать-с-foam]]

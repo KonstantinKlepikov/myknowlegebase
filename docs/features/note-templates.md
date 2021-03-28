@@ -6,3 +6,4 @@ To create a template, just add regular `.md` files in `.foam/templates` (create 
 
 Templates can use all the variables available in [VsCode Snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variables).
 
+[[как-работать-с-foam]]

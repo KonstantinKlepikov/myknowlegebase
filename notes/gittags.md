@@ -120,4 +120,4 @@ To /git@github.com:schacon/simplegit.git
 $git push origin --delete <tagname>
 ```
 
-Больше документации на [[git]]
+Больше документации в списке [[git]]

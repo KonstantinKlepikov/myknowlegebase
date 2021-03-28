@@ -6,6 +6,7 @@ To see the graph execute the `Foam: Show Graph` command.
 ## Graph Navigation
 
 With the graph you can:
+
 - highlight a node by hovering on it, to quickly see how it's connected to the rest of your notes
 - select one or more (by keeping `shift` pressed while selecting) nodes by clicking on them, to better understand the structure of your notes
 - navigate to a note by clicking on it while pressing `ctrl` or `cmd`
@@ -36,3 +37,4 @@ A sample configuration object is provided below, you can provide as many or as l
   - see [[note-properties]] for details
   - you can have as many types as you want
 
+[[как-работать-с-foam]]
