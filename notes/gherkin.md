@@ -1,5 +1,5 @@
 ---
-keywords: BDD
+keywords: BDD, ruby
 ---
 # gherkin
 

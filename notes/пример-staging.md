@@ -1,0 +1,98 @@
+# пример промежуточного сервера
+
+Войти по shh (пример для [[digital-ocean]]): `ssh elspeth@@superlists-staging.ottg.eu`
+
+```shell
+sudo apt-het install nginx
+sudo systemctl start nginx
+sudo add-apt-repository pps:fkrull/deadsnakes
+sudo apt-get update
+sudo apt install python3 python3-venv
+sudo apt install git
+```
+
+## [[nginx]]
+
+Минимальная конфигурация `/etc/nginx/sites-available/superlists-staging.ottg.eu`. В данном случае прописаны пути для статических файлов [[gunicorn]]. Кроме того реализован [[сокеты-unix]]
+
+```shell
+server {
+    listen 80;
+    server_name superlists-staging.ottg.eu;
+
+    location /static {
+        alias /home/elspeth/sites/superlists-staging.ottg.eu/static;
+    }
+
+    location / {
+        proxy_pass http://unix:/tmp/superlists-staging.ottg.eu.socket;
+        proxy_set_header Host $host;
+    }
+}
+```
+
+Линковка сервера
+
+```shell
+# reset our env var (if necessary)
+elspeth@server:$ export SITENAME=superlists-staging.ottg.eu
+
+elspeth@server:$ cd /etc/nginx/sites-enabled/
+elspeth@server:$ sudo ln -s /etc/nginx/sites-available/$SITENAME $SITENAME
+
+# check our symlink has worked:
+elspeth@server:$ readlink -f $SITENAME
+/etc/nginx/sites-available/superlists-staging.ottg.eu
+
+# remove defoult link
+elspeth@server:$ sudo rm /etc/nginx/sites-enabled/default
+```
+
+## [[gunicorn]]
+
+```shell
+ elspeth@server:$ ./virtualenv/bin/pip install gunicorn
+
+ elspeth@server:$ ./virtualenv/bin/gunicorn superlists.wsgi:application
+2013-05-27 16:22:01 [10592] [INFO] Starting gunicorn 0.19.7.1
+2013-05-27 16:22:01 [10592] [INFO] Listening at: http://127.0.0.1:8000 (10592)
+[...]
+  ```
+
+Сервер можно запускать автоматически на начальной загрузке и перезагружать, если он не работает. В ubuntu это делается с помощью systemd в `/etc/systemd/system/gunicorn-superlists-staging.ottg.eu.service`
+
+```service
+[Unit]
+Description=Gunicorn server for superlists-staging.ottg.eu
+
+[Service]
+Restart=on-failure  
+User=elspeth  
+WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu  
+EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env  
+
+ExecStart=/home/elspeth/sites/superlists-staging.ottg.eu/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/superlists-staging.ottg.eu.socket \
+    superlists.wsgi:application  
+
+[Install]
+WantedBy=multi-user.target 
+```
+
+Здесь мы рестартим, если сервер прадает. Задаем юзера, от которого выполняется процесс. Задаем текущий рабочий каталог и файл переменных окружения (это можно делать и по другому). 
+ExecStart - это рабочий процесс. В конце прописано, что служба запускается на начальной загрузке.
+
+[Как сделать .enc читай тут](https://www.obeythetestinggoat.com/book/chapter_making_deployment_production_ready.html) в разделе "Using a .env File to Store Our Environment Variables". .env не нужен на локальной машине, только на сервере.
+
+После всего этого надо загрузить новый файл конфигурации и запустить сервак
+
+```shell
+# load new config file
+elspeth@server:$ sudo systemctl daemon-reload
+# always load service on boot
+elspeth@server:$ sudo systemctl enable gunicorn-superlists-staging.ottg.eu
+# tarts service
+elspeth@server:$ sudo systemctl start gunicorn-superlists-staging.ottg.eu
+```
+
+[[staging-промежуточная-среда]]
