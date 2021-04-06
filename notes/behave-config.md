@@ -1,0 +1,22 @@
+# Конфиги для [[behave]]
+
+[Основная статья](https://behave.readthedocs.io/en/stable/behave.html)
+
+Конфиг можно создать с любым из этих названий: “.behaverc”, “behave.ini”, “setup.cfg” or “tox.ini”
+
+Размещение
+
+- текущая рабочая папка (лучше всего подходит для pet-project)
+- домашняя папка ($HOME)
+- в windows в %APPDATA% папке
+
+Конфиг должен стартовать с \[beghave] и быть в INI систему
+
+```ini
+[behave]
+format=plain
+logging_clear_handlers=yes
+logging_filter=-suds
+```
+
+Все параметры конфига смотри в статье (выше)
