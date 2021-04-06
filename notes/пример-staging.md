@@ -79,7 +79,8 @@ ExecStart=/home/elspeth/sites/superlists-staging.ottg.eu/virtualenv/bin/gunicorn
 WantedBy=multi-user.target 
 ```
 
-Здесь мы рестартим, если сервер прадает. Задаем юзера, от которого выполняется процесс. Задаем текущий рабочий каталог и файл переменных окружения (это можно делать и по другому). 
+Здесь мы рестартим, если сервер прадает. Задаем юзера, от которого выполняется процесс. Задаем текущий рабочий каталог и файл переменных окружения (это можно делать и по другому)
+
 ExecStart - это рабочий процесс. В конце прописано, что служба запускается на начальной загрузке.
 
 [Как сделать .enc читай тут](https://www.obeythetestinggoat.com/book/chapter_making_deployment_production_ready.html) в разделе "Using a .env File to Store Our Environment Variables". .env не нужен на локальной машине, только на сервере.
