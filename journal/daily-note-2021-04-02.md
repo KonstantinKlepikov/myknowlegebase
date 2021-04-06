@@ -83,7 +83,7 @@ Then the expected fields should contain expected content
 - a method you can reuse in other scenarios where a user is not found
 - much lower cost of change if for example you want to ad another field to the response.
 
-## [[datatime]] без микросекунд
+## [[datetime]] без микросекунд
 
 [ссылка](https://stackoverflow.com/questions/7999935/python-datetime-to-string-without-microsecond-component)
 
@@ -92,7 +92,7 @@ Then the expected fields should contain expected content
 '2011-11-03 18:21:26'
 ```
 
-## сдежу.щий понедельник в [[datatime]] 
+## сдедующий понедельник в [[datetime]] 
 
 [ссылка](https://overcoder.net/q/17889/%D0%BD%D0%B0%D0%B9%D1%82%D0%B8-%D0%B4%D0%B0%D1%82%D1%83-%D0%BF%D0%BE%D0%BD%D0%B5%D0%B4%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0-%D1%81-python)
 
@@ -102,3 +102,5 @@ Then the expected fields should contain expected content
 >>> today + datetime.timedelta(days=-today.weekday(), weeks=1)
 datetime.date(2009, 10, 26)
 ```
+
+А еще [[декоратор-wait-для-behave]]
