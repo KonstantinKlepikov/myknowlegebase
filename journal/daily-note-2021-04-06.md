@@ -2,7 +2,7 @@
 
 [[github-action]] экшены #git #github-action
 
-[Repository attributes](https://github.com/marketplace/actions/repository-attributes) - собирает атрибуты от предыдущего релиза до текущего. 
+[Repository attributes](https://github.com/marketplace/actions/repository-attributes) - собирает атрибуты от предыдущего релиза до текущего
 
 [Action in release](https://github.com/softprops/action-gh-release) создание релиза в экшене. [Тоже самое](https://github.com/actions/create-release), только архивное (уже не поддерживается.)
 

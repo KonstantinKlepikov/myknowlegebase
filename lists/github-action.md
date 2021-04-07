@@ -5,3 +5,4 @@ keywords: git githunb-action
 ---
 
 [[daily-note-2021-04-06]]
+[[github-action-триггеры-и-переменные]]
