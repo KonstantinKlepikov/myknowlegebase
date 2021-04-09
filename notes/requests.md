@@ -3,6 +3,7 @@
 http-библиотечка на #python для запросов/ответов.
 
 Пример
+
 ```python
 >>> r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
 >>> r.status_code
@@ -16,3 +17,5 @@ http-библиотечка на #python для запросов/ответов.
 >>> r.json()
 {'private_gists': 419, 'total_private_repos': 77, ...}
 ```
+
+[[http-requests-errors]]
