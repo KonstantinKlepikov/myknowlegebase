@@ -10,3 +10,5 @@ keywords: fastapi, python
 [[fastapi-requests-errors]]
 [[fastapi-metadata-and-docs-urls]]
 [[fatsapi-sql-orm-example]]
+[[fastapi-тестирование-базы-данных]]
+[[fastapi-зависимости-с-yield]]

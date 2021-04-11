@@ -1,13 +1,77 @@
 # fatsapi-sql-orm-example
 
-[SQL (Relational) Databases](https://fastapi.tiangolo.com/tutorial/sql-databases/)
+## Пример построения приложения
 
-Тулзы:
+.
+└── sql_app
+    ├── \__init__.py
+    ├── crud.py
+    ├── database.py
+    ├── main.py
+    ├── models.py
+    └── schemas.py
+
+[SQL (Relational) Databases](https://fastapi.tiangolo.com/tutorial/sql-databases/) - собственно сам пример
+
+## Проблема: как создавать БД (если нет популяции)?
+
+[Пример создания бд из модели](https://stackoverflow.com/a/16285333) c помощью create_all:
+
+```python
+Yes,sqlalchemy does create a database for you.I confirmed it on windows using this code
+
+from sqlalchemy import create_engine, ForeignKey
+from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+engine = create_engine('sqlite:///C:\\sqlitedbs\\school.db', echo=True)
+Base = declarative_base()
+
+
+class School(Base):
+
+    __tablename__ = "woot"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)  
+
+
+    def __init__(self, name):
+
+        self.name = name    
+
+
+Base.metadata.create_all(engine)
+```
+
+[Другой вариант - через sqlalchemy_utils](https://stackoverflow.com/a/30971098)
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
+
+engine = create_engine("postgres://localhost/mydb")
+if not database_exists(engine.url):
+    create_database(engine.url)
+
+print(database_exists(engine.url))
+```
+
+## Работа с бд ассинхронно
+
+[Статья](https://fastapi.tiangolo.com/advanced/async-sql-databases/) для [[fastapi]]
+
+## Тулзы
 
 [fastapi-sqla](https://pypi.org/project/fastapi-sqla/) - A highly opinionated SQLAlchemy extension for FastAPI
 [fastapi-utils](https://github.com/dmontagu/fastapi-utils/)
 [FastAPI-SQLAlchemy](https://github.com/mfreeborn/fastapi-sqlalchemy) - FastAPI-SQLAlchemy provides a simple integration between FastAPI and SQLAlchemy in your application. It gives access to useful helpers to facilitate the completion of common tasks.
 [FastAPI-SQLAlchemy](https://github.com/zuarbase/fastapi-sqlalchemy) - Full-stack, asynchronous Python3 framework.
 
-[[fastapi]]
+[[fastapi-тестирование-базы-данных]]
+[[fastapi-зависимости-с-yield]]
 [[sqlalchemy]]
+[[alembic]]
+[[sqlite]]
+[[fastapi]]
+[[starlette]]
