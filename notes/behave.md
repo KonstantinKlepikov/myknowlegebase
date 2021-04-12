@@ -14,3 +14,5 @@ keywords: BDD
 - [[behave-структура]]
 - [[daily-note-2021-04-02]] маленькая заметка работать с таблицами
 - [[behave-config]]
+
+property-based testing - [hypotetis](https://hypothesis.readthedocs.io/en/latest/). Работает с [[pydantic]]

@@ -245,12 +245,334 @@ class Model(BaseModel):
 
 ### [Поля с динамическим required значением](https://pydantic-docs.helpmanual.io/usage/models/#field-with-dynamic-default-value)
 
+С помощью `default_factory`
+
 ```python
 from datetime import datetime
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field
 
+
 class Model(BaseModel):
     uid: UUID = Field(default_factory=uuid4)
     updated: datetime = Field(default_factory=datetime.utcnow)
 ```
+
+### Автоматическая конфертация
+
+Пайдантик автоматически конвертирует некотоыре типы данных, что может привести к потере информации
+
+```python
+from pydantic import BaseModel
+
+
+class Model(BaseModel):
+    a: int
+    b: float
+    c: str
+
+print(Model(a=3.1415, b=' 2.72 ', c=123).dict())
+#> {'a': 3, 'b': 2.72, 'c': '123'}
+```
+
+## [Типы полей](https://pydantic-docs.helpmanual.io/usage/types/)
+
+Поддерживает все стандартные типы #python
+
+- [strict types](https://pydantic-docs.helpmanual.io/usage/types/#strict-types)
+- [constrained types](https://pydantic-docs.helpmanual.io/usage/types/#constrained-types)
+
+Типы:
+
+- `None` or `type(None)` or `Literal[None]`
+- `bool`
+- `int`
+- `float`
+- `str`
+- `bytes`
+- `list` (принимает list, tuple, set, frozenset, deque и генераторы)
+- `tuple` (принимает list, tuple, set, frozenset, deque и генераторы)
+- `dict`
+- `set` (принимает list, tuple, set, frozenset, deque и генераторы)
+- `frozenset` (принимает list, tuple, set, frozenset, deque и генераторы)
+- `deque` (принимает list, tuple, set, frozenset, deque и генераторы)
+- `datetime.date`
+- `datetime.time`
+- `datetime.datetime`
+- `datetime.timedelta`
+- `typing.Any` любое значение
+- `typing.Annotated` анотированное значение
+- `typing.TypeVar` константа, базирующаяся на [этом](https://pydantic-docs.helpmanual.io/usage/types/#typevar)
+- `typing.Union` [несколько разных типов](https://pydantic-docs.helpmanual.io/usage/types/)
+- `typing.Optional` обертка над `Union[x, None]`
+- `typing.List`
+- `typing.Tuple`
+- subclass of `typing.NamedTuple`
+- subclass of `collections.namedtuple`
+- `typing.Dict` и subclass
+- `typing.Set`
+- `typing.FrozenSet`
+- `typing.Deque`
+- `typing.Sequence`
+- `typing.Iterable` зарезевировано под другие итераторы
+- `typing.Type`
+- `typing.Callable`
+- `typing.Pattern` для regex
+- `ipaddress.IPv4Address` и другие ip...
+- `enum.Enum` и subclass of `enum.Enum`
+- `enum.IntEnum` и subclass
+- `decimal.Decimal` конвертит в строку, затем в decimal
+- `pathlib.Path`
+- `uuid.UUID`
+- `ByteSize`
+
+Пример с итераторами
+
+```python
+from typing import (
+    Deque, Dict, FrozenSet, List, Optional, Sequence, Set, Tuple, Union
+)
+
+from pydantic import BaseModel
+
+
+class Model(BaseModel):
+    simple_list: list = None
+    list_of_ints: List[int] = None
+
+    simple_tuple: tuple = None
+    tuple_of_different_types: Tuple[int, float, str, bool] = None
+
+    simple_dict: dict = None
+    dict_str_float: Dict[str, float] = None
+
+    simple_set: set = None
+    set_bytes: Set[bytes] = None
+    frozen_set: FrozenSet[int] = None
+
+    str_or_bytes: Union[str, bytes] = None
+    none_or_str: Optional[str] = None
+
+    sequence_of_ints: Sequence[int] = None
+
+    compound: Dict[Union[str, bytes], List[Set[int]]] = None
+
+    deque: Deque[int] = None
+```
+
+### DateTime типы
+
+- datetime fields can be:
+  - datetime, existing datetime object
+  - int or float, assumed as Unix time, i.e. seconds (if >= -2e10 or <= 2e10) or milliseconds (if < -2e10or > 2e10) since 1 January 1970
+  - str, following formats work:
+    - YYYY-MM-DD[T]HH:MM[:SS[.ffffff]][Z or [±]HH[:]MM]]]
+    - int or float as a string (assumed as Unix time)
+- date fields can be:
+  - date, existing date object
+  - int or float, see datetime
+  - str, following formats work:
+    - YYYY-MM-DD
+    - int or float, see datetime
+- time fields can be:
+  - time, existing time object
+  - str, following formats work:
+    - HH:MM[:SS[.ffffff]][Z or [±]HH[:]MM]]]
+- timedelta fields can be:
+  - timedelta, existing timedelta object
+  - int or float, assumed as seconds
+  - str, following formats work:
+    - [-][DD ][HH:MM]SS[.ffffff]
+    - [±]P[DD]DT[HH]H[MM]M[SS]S (ISO 8601 format for timedelta)
+
+### Boolean
+
+Будет ошибка валидации, если значение не одно из;
+
+- True or False
+- 0 or 1
+- a str which when converted to lower case is one of '0', 'off', 'f', 'false', 'n', 'no', '1', 'on', 't', 'true', 'y', 'yes'
+- a bytes which is valid (per the previous rule) when decoded to str
+
+### [Calable](https://pydantic-docs.helpmanual.io/usage/types/#callable)
+
+Позволяет передавать функцию и указывать, какой выход в ней ожидается. Валидация не проверяте типы аргументов функции, только то, что этот объект вызываемый.
+
+### [Type](https://pydantic-docs.helpmanual.io/usage/types/#type)
+
+Когда мы должны проверить, что объект является производным от  `tyoe`, т.е. классом, не инстансом.
+
+### [Literal Type](https://pydantic-docs.helpmanual.io/usage/types/#literal-type)
+
+Появился в #python 3.8 `typing.Literal` (или `typing_extensions.Literal` для 3.8). позволяет определить только специфичные значения литералов. Позволяет проверять одно или больше специфичных значений без использования валидаторов.
+
+```python
+from typing import Literal
+
+from pydantic import BaseModel, ValidationError
+
+
+class Pie(BaseModel):
+    flavor: Literal['apple', 'pumpkin']
+
+
+Pie(flavor='apple')
+Pie(flavor='pumpkin')
+try:
+    Pie(flavor='cherry')
+except ValidationError as e:
+    print(str(e))
+```
+
+Пример с Union
+
+```python
+from typing import Optional, Union
+
+from typing import Literal
+
+from pydantic import BaseModel
+
+
+class Dessert(BaseModel):
+    kind: str
+
+
+class Pie(Dessert):
+    kind: Literal['pie']
+    flavor: Optional[str]
+
+
+class ApplePie(Pie):
+    flavor: Literal['apple']
+
+
+class PumpkinPie(Pie):
+    flavor: Literal['pumpkin']
+
+
+class Meal(BaseModel):
+    dessert: Union[ApplePie, PumpkinPie, Pie, Dessert]
+
+print(type(Meal(dessert={'kind': 'pie', 'flavor': 'apple'}).dessert).__name__)
+#> ApplePie
+print(type(Meal(dessert={'kind': 'pie', 'flavor': 'pumpkin'}).dessert).__name__)
+#> PumpkinPie
+print(type(Meal(dessert={'kind': 'pie'}).dessert).__name__)
+#> Pie
+print(type(Meal(dessert={'kind': 'cake'}).dessert).__name__)
+#> Dessert
+```
+
+### [Анотированные типы](https://pydantic-docs.helpmanual.io/usage/types/#annotated-types)
+
+Пример с NamedTuple
+
+```python
+from typing import NamedTuple
+
+from pydantic import BaseModel, ValidationError
+
+
+class Point(NamedTuple):
+    x: int
+    y: int
+
+
+class Model(BaseModel):
+    p: Point
+
+
+print(Model(p=('1', '2')))
+#> p=Point(x=1, y=2)
+```
+
+### [pydantic types](https://pydantic-docs.helpmanual.io/usage/types/#pydantic-types)
+
+- `FilePath`
+- `DirectoryPath`
+- `EmailStr`
+- `NameEmail`
+- `PyObject`
+- `Color` html/css цвет вот [в таком формате](https://pydantic-docs.helpmanual.io/usage/types/#color-type). Поддерживается несколько методов конвертации.
+- `Json` [Пример](https://pydantic-docs.helpmanual.io/usage/types/#json-type)
+- `PaymentCardNumber` [Пример](https://pydantic-docs.helpmanual.io/usage/types/#payment-card-numbers)
+- `AnyUrl` [описание про урлы](https://pydantic-docs.helpmanual.io/usage/types/#urls)
+- `AnyHttpUrl`
+- `HttpUrl`
+- `PostgresDsn`
+- `RedisDsn`
+- `stricturl`
+- `UUID1` и 2, 3, 4, 5
+- `SecretBytes` и т.д. [если нужно скрыт часть инфы из логирования](https://pydantic-docs.helpmanual.io/usage/types/#secret-types)
+- `IPvAnyAddress` и т.д.
+- `NegativeFloat` и т.д.
+- несколько методов, которые принимают методы, содержащие другие типы
+
+### [Constrained types](https://pydantic-docs.helpmanual.io/usage/types/#constrained-types)
+
+Ограничение типов по форматам, диапазонам и т.д. через приставку con*
+
+```python
+from decimal import Decimal
+
+from pydantic import (
+    BaseModel,
+    NegativeFloat,
+    NegativeInt,
+    PositiveFloat,
+    PositiveInt,
+    NonNegativeFloat,
+    NonNegativeInt,
+    NonPositiveFloat,
+    NonPositiveInt,
+    conbytes,
+    condecimal,
+    confloat,
+    conint,
+    conlist,
+    conset,
+    constr,
+    Field,
+)
+
+
+class Model(BaseModel):
+    lower_bytes: conbytes(to_lower=True)
+    short_bytes: conbytes(min_length=2, max_length=10)
+    strip_bytes: conbytes(strip_whitespace=True)
+
+    lower_str: constr(to_lower=True)
+    short_str: constr(min_length=2, max_length=10)
+    regex_str: constr(regex=r'^apple (pie|tart|sandwich)$')
+    strip_str: constr(strip_whitespace=True)
+
+    big_int: conint(gt=1000, lt=1024)
+    mod_int: conint(multiple_of=5)
+    pos_int: PositiveInt
+    neg_int: NegativeInt
+    non_neg_int: NonNegativeInt
+    non_pos_int: NonPositiveInt
+
+    big_float: confloat(gt=1000, lt=1024)
+    unit_interval: confloat(ge=0, le=1)
+    mod_float: confloat(multiple_of=0.5)
+    pos_float: PositiveFloat
+    neg_float: NegativeFloat
+    non_neg_float: NonNegativeFloat
+    non_pos_float: NonPositiveFloat
+
+    short_list: conlist(int, min_items=1, max_items=4)
+    short_set: conset(int, min_items=1, max_items=4)
+
+    decimal_positive: condecimal(gt=0)
+    decimal_negative: condecimal(lt=0)
+    decimal_max_digits_and_places: condecimal(max_digits=2, decimal_places=2)
+    mod_decimal: condecimal(multiple_of=Decimal('0.25'))
+
+    bigger_int: int = Field(..., gt=10000)
+```
+
+Описание всех аргументов (методов) [смотри там же](https://pydantic-docs.helpmanual.io/usage/types/#constrained-types)
+
+Есть еще несколько специфичных случаев и можно задавать свои типы.
