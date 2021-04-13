@@ -1,6 +1,6 @@
 # pydantic
 
-Типизация для #python [Документация](https://pydantic-docs.helpmanual.io/)
+Типизация для #python [Документация](https://pydantic-docs.helpmanual.io/). Использует [[type-annotation]]
 
 ```python
 from datetime import datetime
