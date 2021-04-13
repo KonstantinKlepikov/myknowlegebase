@@ -576,3 +576,99 @@ class Model(BaseModel):
 Описание всех аргументов (методов) [смотри там же](https://pydantic-docs.helpmanual.io/usage/types/#constrained-types)
 
 Есть еще несколько специфичных случаев и можно задавать свои типы.
+
+## Validators
+
+[Использование классметода для валидации данных в модели](https://pydantic-docs.helpmanual.io/usage/validators/)
+
+Это позволяет возвращать определенные данные, после валидации
+
+```python
+from pydantic import BaseModel, ValidationError, validator
+
+
+class UserModel(BaseModel):
+    name: str
+    username: str
+    password1: str
+    password2: str
+
+    @validator('name')
+    def name_must_contain_space(cls, v):
+        if ' ' not in v:
+            raise ValueError('must contain a space')
+        return v.title()
+
+    @validator('password2')
+    def passwords_match(cls, v, values, **kwargs):
+        if 'password1' in values and v != values['password1']:
+            raise ValueError('passwords do not match')
+        return v
+
+    @validator('username')
+    def username_alphanumeric(cls, v):
+        assert v.isalnum(), 'must be alphanumeric'
+        return v
+
+
+user = UserModel(
+    name='samuel colvin',
+    username='scolvin',
+    password1='zxcvbn',
+    password2='zxcvbn',
+)
+print(user)
+#> name='Samuel Colvin' username='scolvin' password1='zxcvbn' password2='zxcvbn'
+
+try:
+    UserModel(
+        name='samuel',
+        username='scolvin',
+        password1='zxcvbn',
+        password2='zxcvbn2',
+    )
+except ValidationError as e:
+    print(e)
+    """
+    2 validation errors for UserModel
+    name
+      must contain a space (type=value_error)
+    password2
+      passwords do not match (type=value_error)
+    """
+```
+
+В разделе примеры как использовать кастом валидацию.
+
+## [Config](https://pydantic-docs.helpmanual.io/usage/model_config/)
+
+```python
+class Sprints(BaseModel):
+    user: User
+    sprints: List[Sprint]
+    
+    class Config:
+        orm_mode = True
+```
+
+- `title` заголовко json схемы
+- `anystr_strip_whitespace` и т.д.
+- `validate_all`
+- `extra` забыть, применить или игнорировать экстра атрибуты при инциализации
+- `allow_mutation` для неизменяемых типов
+- `frozen` открывает дорогу к хешированию инстансов модели
+- ...
+- `orm_mode` использовать как модель для ORM
+- `alias_generator`
+- `schema_extra`
+- `json_loads` кастомные ф-ии для json
+- `json_dumps`
+- `json_encoders`
+
+Сконфигурировать можно глобально, вот так:
+
+```python
+class BaseModel(PydanticBaseModel):
+    class Config:
+        arbitrary_types_allowed = True
+```
