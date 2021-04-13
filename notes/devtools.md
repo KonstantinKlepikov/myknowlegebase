@@ -1,0 +1,33 @@
+# python-devtools
+
+Предаставляет тулзы для понятного вывода в #python для дебага и разработки.
+
+[ссылка на доку](https://python-devtools.helpmanual.io/)
+
+Пример
+
+```shell
+docs/examples/devtools_main.py:31 <module>
+    user: User(
+        id=123,
+        name='John Doe',
+        signup_ts=datetime.datetime(2019, 6, 1, 12, 22),
+        friends=[
+            1234,
+            4567,
+            7890,
+        ],
+        address=Address(
+            street='Testing',
+            country='uk',
+            lat=51.5,
+            lng=0.0,
+        ),
+    ) (User)
+
+should be much easier read than:
+
+user: id=123 name='John Doe' signup_ts=datetime.datetime(2019, 6, 1, 12, 22) friends=[1234, 4567, 7890] address=Address(street='Testing', country='uk', lat=51.5, lng=0.0)
+```
+
+Используется в [[pydantic]]

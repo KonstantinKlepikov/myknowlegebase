@@ -672,3 +672,183 @@ class BaseModel(PydanticBaseModel):
     class Config:
         arbitrary_types_allowed = True
 ```
+
+## [Alias](https://pydantic-docs.helpmanual.io/usage/model_config/#alias-precedence)
+
+Пример алиас-генератора, чтобы перегнать все змеиные имена в верблюжьи
+
+```python
+from pydantic import BaseModel
+
+
+def to_camel(string: str) -> str:
+    return ''.join(word.capitalize() for word in string.split('_'))
+
+
+class Voice(BaseModel):
+    name: str
+    language_code: str
+
+    class Config:
+        alias_generator = to_camel
+
+
+voice = Voice(Name='Filiz', LanguageCode='tr-TR')
+print(voice.language_code)
+#> tr-TR
+print(voice.dict(by_alias=True))
+#> {'Name': 'Filiz', 'LanguageCode': 'tr-TR'}
+```
+
+## [SCHEMA](https://pydantic-docs.helpmanual.io/usage/schema/)
+
+Возвращается json-схема, в т.ч. можно в [[openapi-specification]]
+
+[Смотри статью](https://pydantic-docs.helpmanual.io/usage/schema/) про данные, которые попадают в схему, анотированные типы в схеме, валидацию схемы и кастомизацию:
+
+## [Экспорт моделей](https://pydantic-docs.helpmanual.io/usage/exporting_models/) в другие форматы данных]
+
+## [Dataclasses](https://pydantic-docs.helpmanual.io/usage/dataclasses/)
+
+## Использование [validate_arguments](https://pydantic-docs.helpmanual.io/usage/validation_decorator/)
+
+Находится в бете с версии 1.5. Пример использования:
+
+```python
+from pydantic import validate_arguments, ValidationError
+
+
+@validate_arguments
+def repeat(s: str, count: int, *, separator: bytes = b'') -> bytes:
+    b = s.encode()
+    return separator.join(b for _ in range(count))
+
+
+a = repeat('hello', 3)
+print(a)
+#> b'hellohellohello'
+
+b = repeat('x', '4', separator=' ')
+print(b)
+#> b'x x x x'
+
+try:
+    c = repeat('hello', 'wrong')
+except ValidationError as exc:
+    print(exc)
+    """
+    1 validation error for Repeat
+    count
+      value is not a valid integer (type=type_error.integer)
+    """
+```
+
+Аргументы для валидации инфирятся из аннотации типов функции. Если тип не анотирован, он инферится как `any`
+
+## [Settings managements](https://pydantic-docs.helpmanual.io/usage/settings/)
+
+Если создать модель и унаследовать ее от `BaseSettings`, эта модель позволит определить значения любых полей, которые не определены ключевым аргументом, из переменных окружения. Это позволяет сделать следующее:
+
+- сделать понятный класс конфигураций для приложения
+- автоматически чиать конфигурации из переменных окружения
+- в ручную переписывать специфические настройки, к примеру для тестов
+
+```python
+from typing import Set
+
+from pydantic import (
+    BaseModel,
+    BaseSettings,
+    PyObject,
+    RedisDsn,
+    PostgresDsn,
+    Field,
+)
+
+
+class SubModel(BaseModel):
+    foo = 'bar'
+    apple = 1
+
+
+class Settings(BaseSettings):
+    auth_key: str
+    api_key: str = Field(..., env='my_api_key')
+
+    redis_dsn: RedisDsn = 'redis://user:pass@localhost:6379/1'
+    pg_dsn: PostgresDsn = 'postgres://user:pass@localhost:5432/foobar'
+
+    special_function: PyObject = 'math.cos'
+
+    # to override domains:
+    # export my_prefix_domains='["foo.com", "bar.com"]'
+    domains: Set[str] = set()
+
+    # to override more_settings:
+    # export my_prefix_more_settings='{"foo": "x", "apple": 1}'
+    more_settings: SubModel = SubModel()
+
+    class Config:
+        env_prefix = 'my_prefix_'  # defaults to no prefix, i.e. ""
+        fields = {
+            'auth_key': {
+                'env': 'my_auth_key',
+            },
+            'redis_dsn': {
+                'env': ['service_redis_dsn', 'redis_url']
+            }
+        }
+
+
+print(Settings().dict())
+"""
+{
+    'auth_key': 'xxx',
+    'api_key': 'xxx',
+    'redis_dsn': RedisDsn('redis://user:pass@localhost:6379/1',
+scheme='redis', user='user', password='pass', host='localhost',
+host_type='int_domain', port='6379', path='/1'),
+    'pg_dsn': PostgresDsn('postgres://user:pass@localhost:5432/foobar',
+scheme='postgres', user='user', password='pass', host='localhost',
+host_type='int_domain', port='5432', path='/foobar'),
+    'special_function': <built-in function cos>,
+    'domains': set(),
+    'more_settings': {'foo': 'bar', 'apple': 1},
+}
+"""
+```
+
+Есть [.env поддержка](https://pydantic-docs.helpmanual.io/usage/settings/#dotenv-env-support)
+
+.env файл
+
+```.env
+# ignore comment
+ENVIRONMENT="production"
+REDIS_ADDRESS=localhost:6379
+MEANING_OF_LIFE=42
+MY_VAR='Hello world'
+```
+
+создание модели настроек
+
+```python
+class Settings(BaseSettings):
+    ...
+
+    class Config:
+        env_file = '.env'
+        env_file_encoding = 'utf-8'
+```
+
+Создание инстанса настроек
+
+```python
+settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
+```
+
+## [Postponed annotations](https://pydantic-docs.helpmanual.io/usage/postponed_annotations/)
+
+## [Использование devtools](https://pydantic-docs.helpmanual.io/usage/devtools/)
+
+[[devtools]]
