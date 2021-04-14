@@ -536,8 +536,244 @@ config.set_main_option('sqlalchemy.url', str(app.DATABASE_URL))
 target_metadata = app.metadata
 ```
 
-теперь можно юзать это: 
+теперь можно создавать ревизию
 
 `alembic revision -m "Create notes table"`
+
+и наконец популяцию в `migrations/versions`
+
+```python
+def upgrade():
+    op.create_table(
+      'notes',
+      sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+      sqlalchemy.Column("text", sqlalchemy.String),
+      sqlalchemy.Column("completed", sqlalchemy.Boolean),
+    )
+
+def downgrade():
+    op.drop_table('notes')
+```
+
+и миграциб
+
+`alembic upgrade head`
+
+Вариант с тестированием и базой данныъ (создаем миграцию каждый запуск теста вместе с созданием БД)
+
+```python
+from alembic import command
+from alembic.config import Config
+import app
+
+...
+
+@pytest.fixture(scope="session", autouse=True)
+def create_test_database():
+    url = str(app.DATABASE_URL)
+    engine = create_engine(url)
+    assert not database_exists(url), 'Test database already exists. Aborting tests.'
+    create_database(url)             # Create the test database.
+    config = Config("alembic.ini")   # Run the migrations.
+    command.upgrade(config, "head")
+    yield                            # Run the tests.
+    drop_database(url)               # Drop the test database.
+```
+
+## [[graphQL]] [ссылка на статью](https://www.starlette.io/graphql/)
+
+## [authentication](https://www.starlette.io/authentication/)
+
+## [API schemas](https://www.starlette.io/schemas/)'
+
+## [Events](https://www.starlette.io/events/)
+
+Могут быть ассинхронные корутины или обычные функции.
+
+```python
+from starlette.applications import Starlette
+
+
+async def some_startup_task():
+    pass
+
+async def some_shutdown_task():
+    pass
+
+routes = [
+    ...
+]
+
+app = Starlette(
+    routes=routes,
+    on_startup=[some_startup_task],
+    on_shutdown=[some_shutdown_task]
+```
+
+Вариант запуска тестового клиента вручную, без сетапов или тирдаун кода
+
+```python
+from example import app
+from starlette.testclient import TestClient
+
+
+def test_homepage():
+    with TestClient(app) as client:
+        # Application 'on_startup' handlers are called on entering the block.
+        response = client.get("/")
+        assert response.status_code == 200
+
+    # Application 'on_shutdown' handlers are called on exiting the block.
+```
+
+## [Background tasks](https://www.starlette.io/background/)
+
+Бекграунд таски прикреплены к запросам и запускаются, только, если запрос отправлен. В старлетт два класса - для единственного таска и для множества `BackgroundTask` и `BackgroundTasks`. Все это нужно, чтобы отправить что-то не сильно актуальное (например имейлы или внести какие-то второстепенные данные в какую-то БД), что не требует остановки процесса.
+
+```python
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+from starlette.background import BackgroundTask
+
+
+...
+
+async def signup(request):
+    data = await request.json()
+    username = data['username']
+    email = data['email']
+    task = BackgroundTask(send_welcome_email, to_address=email)
+    message = {'status': 'Signup successful'}
+    return JSONResponse(message, background=task)
+
+async def send_welcome_email(to_address):
+
+routes = [
+    ...
+    Route('/user/signup', endpoint=signup, methods=['POST'])
+]
+
+app = Starlette(routes=routes)
+```
+
+несколько
+
+```python
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.background import BackgroundTasks
+
+async def signup(request):
+    data = await request.json()
+    username = data['username']
+    email = data['email']
+    tasks = BackgroundTasks()
+    tasks.add_task(send_welcome_email, to_address=email)
+    tasks.add_task(send_admin_notification, username=username)
+    message = {'status': 'Signup successful'}
+    return JSONResponse(message, background=tasks)
+
+async def send_welcome_email(to_address):
+    ...
+
+async def send_admin_notification(username):
+    ...
+
+routes = [
+    Route('/user/signup', endpoint=signup, methods=['POST'])
+]
+
+app = Starlette(routes=routes)
+```
+
+## [Серверные пуши](https://www.starlette.io/server-push/)
+
+## [Эксепшены и http-ошибки](https://www.starlette.io/exceptions/)
+
+## [Конфигурирование](https://www.starlette.io/config/)
+
+пример конфигурации
+
+```python
+import databases
+
+from starlette.applications import Starlette
+from starlette.config import Config
+from starlette.datastructures import CommaSeparatedStrings, Secret
+
+# Config will be read from environment variables and/or ".env" files.
+config = Config(".env")
+
+DEBUG = config('DEBUG', cast=bool, default=False)
+DATABASE_URL = config('DATABASE_URL', cast=databases.DatabaseURL)
+SECRET_KEY = config('SECRET_KEY', cast=Secret)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=CommaSeparatedStrings)
+
+app = Starlette(debug=DEBUG)
+```
+
+```,env
+# Don't commit this to source control.
+# Eg. Include ".env" in your `.gitignore` file.
+DEBUG=True
+DATABASE_URL=postgresql://localhost/myproject
+SECRET_KEY=43n080musdfjt54t-09sdgr
+ALLOWED_HOSTS=127.0.0.1, localhost
+```
+
+Варианты конфигурирования:
+
+- из переменных окружения
+- из `.env`
+- из дефолтных значений, предоставленных в конфиге
+
+Класс `secret` используется для сокрытия информации из логов. Мы задаем только число значений и словарь
+
+```python
+>>> from myproject import settings
+>>> settings.SECRET_KEY
+Secret('**********')
+>>> str(settings.SECRET_KEY)
+'98n349$%8b8-7yjn0n8y93T$23r'
+```
+
+```python
+>>> from myproject import settings
+>>> settings.DATABASE_URL
+DatabaseURL('postgresql://admin:**********@192.168.0.8/my-application')
+>>> str(settings.DATABASE_URL)
+'postgresql://admin:Fkjh348htGee4t3@192.168.0.8/my-application'
+```
+
+```python
+>>> from myproject import settings
+>>> print(settings.ALLOWED_HOSTS)
+CommaSeparatedStrings(['127.0.0.1', 'localhost'])
+>>> print(list(settings.ALLOWED_HOSTS))
+['127.0.0.1', 'localhost']
+>>> print(len(settings.ALLOWED_HOSTS))
+2
+>>> print(settings.ALLOWED_HOSTS[0])
+'127.0.0.1'
+```
+
+Для тестирвоания можно переписать переменные окружения через специальный инстанс старлета
+
+```python
+from starlette.config import environ
+
+environ['TESTING'] = 'TRUE'
+```
+
+[Полный пример тут](https://www.starlette.io/config/)
+
+## [Тестовый клиент](https://www.starlette.io/testclient/)
+
+Можно тестировать как ассинхронные функции так и вебсокеты. Можно использовать стандартное API запроса. Клиент подымает [[http-requests-errors]], но это можно отключить `client = TestClient(app, raise_server_exceptions=False)`
+
+Пример для вебсокетов смотри по ссылке. Важно: с вебсокетом работать через `width`
+
+## [Third Party Packages](https://www.starlette.io/third-party-packages/)
 
 [[starlette-testclient]]
