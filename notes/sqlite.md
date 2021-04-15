@@ -84,7 +84,7 @@ print(cur.fetchall())
 con.close()
 ```
 
-## [Функции и константы](https://docs.python.org/3/library/sqlite3.html#module-functions-and-constants). Разберу только основные.
+## [Функции и константы](https://docs.python.org/3/library/sqlite3.html#module-functions-and-constants). Разберу только основные
 
 ### Connect
 
