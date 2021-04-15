@@ -770,10 +770,10 @@ environ['TESTING'] = 'TRUE'
 
 ## [Тестовый клиент](https://www.starlette.io/testclient/)
 
+[[starlette-testclient]]
+
 Можно тестировать как ассинхронные функции так и вебсокеты. Можно использовать стандартное API запроса. Клиент подымает [[http-requests-errors]], но это можно отключить `client = TestClient(app, raise_server_exceptions=False)`
 
 Пример для вебсокетов смотри по ссылке. Важно: с вебсокетом работать через `width`
 
 ## [Third Party Packages](https://www.starlette.io/third-party-packages/)
-
-[[starlette-testclient]]
