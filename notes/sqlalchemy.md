@@ -847,6 +847,7 @@ FROM address
 WHERE :param_1 = address.user_id
 ```
 
+[100500 дополнительных материалов по ОРМ](https://docs.sqlalchemy.org/en/14/tutorial/further_reading.html)
 [колонки и типы данных](https://docs.sqlalchemy.org/en/14/core/types.html)
 [коннекшен и работа с in-memory](https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#connect-strings)
 
