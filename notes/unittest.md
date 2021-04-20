@@ -1,6 +1,108 @@
 # unittest
 
-## Тестирование неудачных случаев
+Поддерживает все концепции тестирующего программного комплекса, описанного в [[тестирование]]
+
+[Опции командной строки](https://docs.python.org/3/library/unittest.html#command-line-options)
+
+`python -m unittest -v test_module` с детализацией в отчете
+
+`--locals` показать локальные переменные в выводе теста
+
+[Test discovery](https://docs.python.org/3/library/unittest.html#test-discovery) позволяет задать путь, с которого начинается поиск тестов. Кроме того, можно установить паттерн наименований тестов.
+
+## Структура кода
+
+```python
+import unittest
+
+class DefaultWidgetSizeTestCase(unittest.TestCase):
+    def test_default_widget_size(self):
+        widget = Widget('The widget')
+        self.assertEqual(widget.size(), (50, 50))
+```
+
+Используется `TestCase` или `FunctionTestCase` (для легаси). Unittest распознает как фейлы только собственные ассерты, предоставленные классом `TestCase`. Все остальное идентифицируется как ошибки.
+
+Для каждого теста мы можем задать как собственные сетапы/тирдауны так и для всех тестов сразу. Порядок запуска тестов определяется сортировкой по имени. Тирдаун и тирап запускаются вне зависимости от результатов теста.
+
+```python
+import unittest
+
+class WidgetTestCase(unittest.TestCase):
+    def setUp(self):
+        self.widget = Widget('The widget')
+
+    def tearDown(self):
+        self.widget.dispose()
+```
+
+С помощью `TestSuite` класса можно [группировать тесты](https://docs.python.org/3/library/unittest.html#unittest.TestSuite) для запуска (unittest делает это и самостоятельно, обнаруживая тесты по именам)
+
+```python
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(WidgetTestCase('test_default_widget_size'))
+    suite.addTest(WidgetTestCase('test_widget_resize'))
+    return suite
+
+if __name__ == '__main__':
+    runner = unittest.TextTestRunner()
+    runner.run(suite())
+```
+
+## [Re-using old test code](https://docs.python.org/3/library/unittest.html#re-using-old-test-code)
+
+## [Skipping tests and expected failures](https://docs.python.org/3/library/unittest.html#skipping-tests-and-expected-failures)
+
+Можно скипать тесты как безусловно так и при условии. Классы тоже могут быть заскипаны.
+
+```python
+class MyTestCase(unittest.TestCase):
+
+    @unittest.skip("demonstrating skipping")
+    def test_nothing(self):
+        self.fail("shouldn't happen")
+
+    @unittest.skipIf(mylib.__version__ < (1, 3),
+                     "not supported in this library version")
+    def test_format(self):
+        # Tests that work for only a certain version of the library.
+        pass
+
+    @unittest.skipUnless(sys.platform.startswith("win"), "requires Windows")
+    def test_windows_support(self):
+        # windows specific testing code
+        pass
+
+    def test_maybe_skipped(self):
+        if not external_resource_available():
+            self.skipTest("external resource not available")
+        # test code that depends on the external resource
+        pass
+```
+
+## [Сабтесты](https://docs.python.org/3/library/unittest.html#distinguishing-test-iterations-using-subtests)
+
+Используется, когда разница между тестами небольшая. Например когда тестируется определенный ренж значений для объекта тестирования. Это позволяет увидеть все фейлы (иначе тест фейлится на первом кейсе.
+
+## API unittest
+
+### [Test cases](https://docs.python.org/3/library/unittest.html#test-cases)
+
+Методы в `TestCase`
+
+- `setUp()`
+- `tearDown()`
+- `setUpClass()`
+- `tearDownClass()`
+- `run(result=None)`
+- `skipTest(reason)`
+- `subTest(msg=None, **params)`
+- `debug()` тест запускается без агрегации результата
+
+[Список всех ассертов](https://docs.python.org/3/library/unittest.html#unittest.TestCase.debug)
+
+### Тестирование неудачных случаев
 
 ```python
 with self.assertRaises(SomeException):
@@ -15,9 +117,30 @@ self.assertEqual(the_exception.error_code, 3)
 
 [Документация из юниттеста по райзес](https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertRaises)
 
-Аналог в [[pytest]]
+### [Тестирование асинхронного кода](https://docs.python.org/3/library/unittest.html#unittest.IsolatedAsyncioTestCase)
 
-[Список всех ассертов](https://docs.python.org/3/library/unittest.html#unittest.TestCase.debug)
+### [Группировка тестов](https://docs.python.org/3/library/unittest.html#grouping-tests)
 
+- `addTest(test)`
+- `addTests(test)`
+- `run(result)`
+- `run()`
+- `debug()`
+- `__iter__()`
+
+используется для загрузки тестов из пакетов и модулей.
+
+### [Тестлоадеры и запуск тестов](https://docs.python.org/3/library/unittest.html#loading-and-running-tests)
+
+### [load test protocol](https://docs.python.org/3/library/unittest.html#load-tests-protocol)
+
+## [Class and module fixtures](https://docs.python.org/3/library/unittest.html#class-and-module-fixtures)
+
+## [Signal Handling](https://docs.python.org/3/library/unittest.html#signal-handling)
+
+-----
+
+[[pytest]]
+[[doctest]]
 [[тестирование]]
 [[daily-note-2021-04-02]]

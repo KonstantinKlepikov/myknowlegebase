@@ -1,6 +1,8 @@
 # пример промежуточного сервера
 
-Войти по shh (пример для [[digital-ocean]]): `ssh elspeth@@superlists-staging.ottg.eu`
+Пример для [[digital-ocean]]. Запустить дроплет с чистой убунтой.
+
+Войти по shh: `ssh elspeth@@superlists-staging.ottg.eu`
 
 ```shell
 sudo apt-het install nginx
@@ -95,5 +97,7 @@ elspeth@server:$ sudo systemctl enable gunicorn-superlists-staging.ottg.eu
 # tarts service
 elspeth@server:$ sudo systemctl start gunicorn-superlists-staging.ottg.eu
 ```
+
+-----
 
 [[staging-промежуточная-среда]]
