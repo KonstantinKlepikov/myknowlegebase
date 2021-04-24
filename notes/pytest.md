@@ -4,7 +4,7 @@ keywords: pytest, python
 ---
 # pytest
 
-Библиотечка для [[модульные-тесты]]. 
+Библиотечка для [[модульные-тесты]]
 
 [Документация](https://docs.pytest.org/en/stable/contents.html#toc)
 
@@ -983,7 +983,15 @@ pip uninstall pytest-NAME
 
 ## [Пример хорошей интеграции в проект](https://docs.pytest.org/en/6.2.x/goodpractices.html)
 
-## Flaky-tests
+## [[Flaky-tests]] [статья](https://docs.pytest.org/en/6.2.x/flaky.html)
+
+## [pytest import mechanisms and sys.path/PYTHONPATH](https://docs.pytest.org/en/6.2.x/pythonpath.html)
+
+## [Конфигурирование](https://docs.pytest.org/en/6.2.x/customize.html)
+
+## [Примеры](https://docs.pytest.org/en/6.2.x/example/index.html)
+
+Остальные главы посвящены разработке пайтеста, лицйензированию, депрекетам и другим вопросам развития проекта.
 
 [[unittest]] - аналог
 [[doctest]]
