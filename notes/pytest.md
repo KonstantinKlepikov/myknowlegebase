@@ -4,7 +4,11 @@ keywords: pytest, python
 ---
 # pytest
 
-Библиотечка для [[модульные-тесты]]. [Документация](https://docs.pytest.org/en/stable/contents.html#toc)
+Библиотечка для [[модульные-тесты]]. 
+
+[Документация](https://docs.pytest.org/en/stable/contents.html#toc)
+
+[API - все методы пайтеста](https://docs.pytest.org/en/6.2.x/reference.html)
 
 ## [Usage](https://docs.pytest.org/en/6.2.x/usage.html)
 
@@ -693,7 +697,293 @@ def test_func2():
 
 ### [Accessing captured output from a test function](https://docs.pytest.org/en/6.2.x/capture.html#accessing-captured-output-from-a-test-function)
 
-[Документация raises](https://docs.pytest.org/en/stable/reference.html#pytest.raises)
-[[unittest]] - аналог
+## [Warnings Capture](https://docs.pytest.org/en/6.2.x/warnings.html)
 
-[Документация пайтеста](https://docs.pytest.org/en/stable/contents.html#toc)
+## [Doctest integration for modules and test files](https://docs.pytest.org/en/6.2.x/doctest.html)
+
+[[doctest]]
+
+## [Skip and xfail: dealing with tests that cannot succeed](https://docs.pytest.org/en/6.2.x/skipping.html)
+
+- `skip` тест будет проскипан за исключением ряда условий
+- `xfail` тест будет провлен за исключением ряда условий
+
+```python
+@pytest.mark.skip(reason="no way of currently testing this")
+def test_the_unknown():
+    ...
+
+# альтернатива
+def test_function():
+    if not valid_config():
+        pytest.skip("unsupported configuration")
+```
+
+Скипать можно и на уровне модуля
+
+```python
+import sys
+import pytest
+
+if not sys.platform.startswith("win"):
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+```
+
+### skipif
+
+```python
+import sys
+
+
+@pytest.mark.skipif(sys.version_info < (3, 7), reason="requires python3.7 or higher")
+def test_function():
+    ...
+```
+
+Можно шарить скипы между разными модулями.
+
+Крмое того, можно проискпать все тесты модуля или класса в модуле:
+
+```python
+@pytest.mark.skipif(sys.platform == "win32", reason="does not run on windows")
+class TestPosixCalls:
+    def test_function(self):
+        "will not be setup or run under 'win32' platform"
+```
+
+Кроме того, можно скипать тесты, [если невозможно заимпортить зависимости](https://docs.pytest.org/en/6.2.x/skipping.html#skipping-on-a-missing-import-dependency).
+
+### [XFail: mark test functions as expected to fail](https://docs.pytest.org/en/6.2.x/skipping.html#xfail-mark-test-functions-as-expected-to-fail)
+
+```python
+@pytest.mark.xfail
+def test_function():
+    ...
+
+# альтернатива
+def test_function():
+    if not valid_config():
+        pytest.xfail("failing configuration (but should work)")
+
+# или
+def test_function2():
+    import slow_module
+
+    if slow_module.slow_function():
+        pytest.xfail("slow_module taking too long")
+```
+
+Мы так-же можем задать несколько параметров
+
+```python
+@pytest.mark.xfail(sys.platform == "win32", reason="bug in a 3rd party library")
+def test_function():
+
+@pytest.mark.xfail(reason="known parser issue")
+def test_function():
+    ...
+
+# можно задать ошибку, которая будет поднята
+@pytest.mark.xfail(raises=RuntimeError)
+def test_function():
+    ...
+
+@pytest.mark.xfail(run=False)
+def test_function():
+    ...
+
+@pytest.mark.xfail(strict=True)
+def test_function():
+    ...
+```
+
+Проигнорить `xfail` можно так `pytest --runxfail`
+
+Аналогом является `zpass`
+
+[Скип, фейл и пас могут быть параметризованы](https://docs.pytest.org/en/6.2.x/skipping.html#skip-xfail-with-parametrize) для запуска в серии тестов
+
+## [Parametrizing fixtures and test functions](https://docs.pytest.org/en/6.2.x/parametrize.html)
+
+Используется для запуска серии тестов
+
+```python
+# content of test_expectation.py
+import pytest
+
+
+@pytest.mark.parametrize("test_input,expected", [("3+5", 8), ("2+4", 6), ("6*9", 42)])
+def test_eval(test_input, expected):
+    assert eval(test_input) == expected
+```
+
+## [Cache: working with cross-testrun state](https://docs.pytest.org/en/6.2.x/cache.html)
+
+Позволяет кешировать и выводить только определеныне тесты
+
+- --lf, --last-failed - to only re-run the failures.
+- --ff, --failed-first - to run the failures first and then the rest of the tests.
+
+Мы можем сконфигурирровать следующий запуск тестов
+
+```shell
+pytest --last-failed --last-failed-no-failures all    # run all tests (default behavior)
+pytest --last-failed --last-failed-no-failures none   # run no tests and exit
+```
+
+Очистить кеш `pytest --cache-clear`
+
+## [unittest.TestCase Support](https://docs.pytest.org/en/6.2.x/unittest.html)
+
+pytest саппортит запуск [[unittest]]. Из коробки это можно сделать так: `pytest tests`
+
+Крмое того, пайтест автоматически коллектит `unittest.TestCase` сабклассы и их методы в  `test_*.py` или `*_test.py`. Кроме того, саппортятся:
+
+- `@unittest.skip` style decorators;
+- `setUp/tearDown`;
+- `setUpClass/tearDownClass`;
+- `setUpModule/tearDownModule`;
+
+не саппортится load test протокол и сабтесты
+
+В юниттестовых сабклассах саппортятся:
+
+- Marks: skip, skipif, xfail;
+- Auto-use fixtures;
+
+Не работаюти (и никогда не будут):
+
+- Fixtures (except for autouse fixtures);
+- Parametrization;
+- Custom hooks;
+
+pytest fixtures [можно миксить](https://docs.pytest.org/en/6.2.x/unittest.html#mixing-pytest-fixtures-into-unittest-testcase-subclasses-using-marks) в `unittest.TestCase` сабклассы
+
+```python
+# we define a fixture function below and it will be "used" by
+# referencing its name from tests
+
+import pytest
+
+
+@pytest.fixture(scope="class")
+def db_class(request):
+    class DummyDB:
+        pass
+
+    # set a class attribute on the invoking test context
+    request.cls.db = DummyDB()
+```
+
+Теперь, если мы используем db_class, он будет вызван однажды для каждого теста и установит на уровне атрибута класса инстанс сласса DummyDB(). Он станет доступен в тесте юниттеста благодаря `cls`
+
+```python
+import unittest
+import pytest
+
+
+@pytest.mark.usefixtures("db_class")
+class MyTest(unittest.TestCase):
+    def test_method1(self):
+        assert hasattr(self, "db")
+        assert 0, self.db  # fail for demo purposes
+
+    def test_method2(self):
+        assert 0, self.db  # fail for demo purposes
+```
+
+`@pytest.mark.usefixtures("db_class")` проверяет, что db_class вызван только один раз для теста.
+
+```shell
+$ pytest test_unittest_db.py
+=========================== test session starts ============================
+platform linux -- Python 3.x.y, pytest-6.x.y, py-1.x.y, pluggy-0.x.y
+cachedir: $PYTHON_PREFIX/.pytest_cache
+rootdir: $REGENDOC_TMPDIR
+collected 2 items
+
+test_unittest_db.py FF                                               [100%]
+
+================================= FAILURES =================================
+___________________________ MyTest.test_method1 ____________________________
+
+self = <test_unittest_db.MyTest testMethod=test_method1>
+
+    def test_method1(self):
+        assert hasattr(self, "db")
+>       assert 0, self.db  # fail for demo purposes
+E       AssertionError: <conftest.db_class.<locals>.DummyDB object at 0xdeadbeef>
+E       assert 0
+
+test_unittest_db.py:10: AssertionError
+___________________________ MyTest.test_method2 ____________________________
+
+self = <test_unittest_db.MyTest testMethod=test_method2>
+
+    def test_method2(self):
+>       assert 0, self.db  # fail for demo purposes
+E       AssertionError: <conftest.db_class.<locals>.DummyDB object at 0xdeadbeef>
+E       assert 0
+
+test_unittest_db.py:13: AssertionError
+========================= short test summary info ==========================
+FAILED test_unittest_db.py::MyTest::test_method1 - AssertionError: <conft...
+FAILED test_unittest_db.py::MyTest::test_method2 - AssertionError: <conft...
+============================ 2 failed in 0.12s =============================
+```
+
+### [Using autouse fixtures and accessing other fixtures](https://docs.pytest.org/en/6.2.x/unittest.html#using-autouse-fixtures-and-accessing-other-fixtures)
+
+Иногда это полезно, когда мы хотим использовать фикстуру автоматически в данном контексте. Например мы можем так получить доступ к фикстурам временного пути и временных директорий
+
+```python
+import pytest
+import unittest
+
+
+class MyTest(unittest.TestCase):
+    @pytest.fixture(autouse=True)
+    def initdir(self, tmpdir):
+        tmpdir.chdir()  # change to pytest-provided temporary directory
+        tmpdir.join("samplefile.ini").write("# testdata")
+
+    def test_method(self):
+        with open("samplefile.ini") as f:
+            s = f.read()
+        assert "testdata" in s
+```
+
+## [Running tests written for nose](https://docs.pytest.org/en/6.2.x/nose.html)
+
+## [classic xunit-style setup](https://docs.pytest.org/en/6.2.x/xunit_setup.html)
+
+## [Installing and Using plugins](https://docs.pytest.org/en/6.2.x/plugins.html)
+
+```shell
+pip install pytest-NAME
+pip uninstall pytest-NAME
+```
+
+- `pytest-django`: write tests for django apps, using pytest integration.
+- `pytest-twisted`: write tests for twisted apps, starting a reactor and processing deferreds from test functions.
+- `pytest-cov`: coverage reporting, compatible with distributed testing
+- `pytest-xdist`: to distribute tests to CPUs and remote hosts, to run in boxed mode which allows to survive segmentation faults, to run in looponfailing mode, automatically re-running failing tests on file changes.
+- `pytest-instafail`: to report failures while the test run is happening.
+- `pytest-bdd`: to write tests using behaviour-driven testing.
+- `pytest-timeout`: to timeout tests based on function marks or global definitions.
+- `pytest-pep8`: a --pep8 option to enable PEP8 compliance checking.
+- `pytest-flakes`: check source code with pyflakes.
+- `oejskit`: a plugin to run javascript unittests in live browsers.
+
+## [Writing plugins](https://docs.pytest.org/en/6.2.x/writing_plugins.html)
+
+## [Writing hook functions](https://docs.pytest.org/en/6.2.x/writing_plugins.html#writing-hook-functions)
+
+## [Logging¶](https://docs.pytest.org/en/6.2.x/logging.html)
+
+## [Пример хорошей интеграции в проект](https://docs.pytest.org/en/6.2.x/goodpractices.html)
+
+## Flaky-tests
+
+[[unittest]] - аналог
+[[doctest]]
