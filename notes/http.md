@@ -113,6 +113,6 @@ Content-Type: text/html
 - HTTP заголовки, подобно заголовкам в запросах.
 - Опционально: тело, содержащее пересылаемый ресурс.
 
-[http-заголовки](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
+[[http-заголовки]]
 [[http-methods]]
 [[http-requests-errors]]
