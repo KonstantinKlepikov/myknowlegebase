@@ -6,5 +6,6 @@
 
 ![img](../attachments/2021-04-09-15-14-48.png)
 
+[[http]]
 [[requests]] библиотека #python
 [[fastapi-requests-errors]]
