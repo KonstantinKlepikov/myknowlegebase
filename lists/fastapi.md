@@ -12,3 +12,4 @@ keywords: fastapi, python
 [[fatsapi-sql-orm-example]]
 [[fastapi-тестирование-базы-данных]]
 [[fastapi-зависимости-с-yield]]
+[[get-not_support_body]]
