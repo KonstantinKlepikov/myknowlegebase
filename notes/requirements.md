@@ -50,3 +50,5 @@ prod_req==1.0
 # Mirrors prod
 -r requirements/prod.txt
 ```
+
+Более крупный аналог - [[poetry]]
