@@ -852,3 +852,4 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 ## [Использование devtools](https://pydantic-docs.helpmanual.io/usage/devtools/)
 
 [[devtools]]
+[[pydantic-validation-custom]]

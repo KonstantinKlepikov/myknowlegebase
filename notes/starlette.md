@@ -777,3 +777,5 @@ environ['TESTING'] = 'TRUE'
 Пример для вебсокетов смотри по ссылке. Важно: с вебсокетом работать через `width`
 
 ## [Third Party Packages](https://www.starlette.io/third-party-packages/)
+
+[[starlete-список-кодов]]

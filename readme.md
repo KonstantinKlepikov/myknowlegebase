@@ -27,5 +27,4 @@ Foam: Create New Note from Template
 ![img](attachments/2021-03-28-15-13-43.png)
 
 [[как-работать-с-foam]]
-
 [[get-started-with-vscode]]

@@ -1,8 +1,6 @@
----
-type: feature
-keywords: fastapi, python
----
-# fastaoi
+# fastapi
+
+[Fastapi-login](https://fastapi-login.readthedocs.io/) - fastapi-login provides a convenient, simple to use user authentication for FastAPI
 
 [[запуск-uvicorn-на-тесте]]
 [[fastapi-mail]]
@@ -13,3 +11,4 @@ keywords: fastapi, python
 [[fastapi-тестирование-базы-данных]]
 [[fastapi-зависимости-с-yield]]
 [[get-not_support_body]]
+[[fastapi-change-error-meaasage]]

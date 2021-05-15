@@ -9,3 +9,5 @@
 [[http]]
 [[requests]] библиотека #python
 [[fastapi-requests-errors]]
+[[fastapi-change-error-meaasage]]
+[[starlete-список-кодов]]
