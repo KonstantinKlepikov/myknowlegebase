@@ -55,6 +55,12 @@ Date:   Mon Mar 17 21:52:11 2008 -0700
     Change version number
 ```
 
+Посмотреть все метки и все аннотации
+
+```Git
+git tag -n
+```
+
 Легковесные метки
 
 ```Git
@@ -118,6 +124,33 @@ To /git@github.com:schacon/simplegit.git
 
 ```Git
 $git push origin --delete <tagname>
+```
+
+Метки для конкретного коммита
+
+```Git
+git tag <tag_name> <commit_sha>
+git tag -a <tag_name> <commit_sha> -m "message"
+```
+
+Просмотр всех коммитов с метками
+
+```Git
+git log --oneline
+
+9127753 (HEAD -> master) Commit 3
+f2fcb99 (feature) Commit 2
+cab6e1b (origin/master) master : initial commit
+```
+
+Создание тегов для текущего или предыдущих коммитов
+
+```Git
+git tag <tag_name> HEAD   # for the last commit
+git tag -a <tag_name> HEAD -m "message"
+
+git tag <tag_name> HEAD~1  # for the commit before HEAD
+git tag <tag_name> HEAD~2  # for two commits before HEAD
 ```
 
 Больше документации в списке [[git]]
