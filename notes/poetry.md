@@ -12,7 +12,7 @@
 
 [[команды-ubuntu]]
 
-## [Basic usage](https://python-poetry.org/docs/basic-usage/#basic-usage)\
+## [Basic usage](https://python-poetry.org/docs/basic-usage/#basic-usage)
 
 ### Project setup
 
@@ -160,4 +160,4 @@ Poetry работает всегда изолированно от глобал�
 `urls`
 
 [Пример реализации проекта на poetry](https://browniebroke.com/blog/migrating-project-to-poetry/)
-[Как использовать poetry](https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack) на [[[heroku]]
+[Как использовать poetry](https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack) на [[[heroku]], [[heroku-cli]]

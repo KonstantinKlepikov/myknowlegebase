@@ -1,0 +1,65 @@
+# env variables for tests
+
+Пример реализации
+
+```python
+# utilities.py
+import os
+
+
+def get_secret():
+    """Simple retrieval function.
+    Returns SECRET or raises OSError.
+    """
+    secret = os.getenv('SECRET', default=None)
+
+    if secret is None:
+        raise OSError("SECRET environment is not set.")
+
+    return secret
+```
+
+Варианты установки переменной
+
+## tox.ini
+
+```ini
+[testenv]
+setenv = SECRET=top_secret
+```
+
+## pytest.ini
+
+```ini
+[pytest]
+env =
+    HOME=~/tmp
+    SECRET=top_secret
+```
+
+Рекомендуемый способ установки переменных - monkeypatch для [[pytest]]
+
+```python
+# test_utilities.py
+import pytest
+
+from utilities import get_user
+
+
+def test_get_user(monkeypatch):
+    """Set the SECRET env var to assert the behavior."""
+    monkeypatch.setenv("SECRET", "top_secret")
+
+    assert get_user() == "top_secret"
+
+
+def test_get_user_exception(monkeypatch):
+    """Remove the SECRET env var and assert OSError is raised."""
+    monkeypatch.delenv("SECRET", raising=False)
+
+    with pytest.raises(OSError):
+        _ = get_user()
+```
+
+[[dot-env]]
+[[pytest]]

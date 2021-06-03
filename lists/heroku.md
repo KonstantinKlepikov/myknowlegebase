@@ -5,3 +5,4 @@
 [[heroku-variables-config]]
 [heroku-postgres](https://devcenter.heroku.com/articles/heroku-postgresql)
 [[requirements]]
+[[heroku-cli]]

@@ -15,3 +15,4 @@ config = {
 
 [[honcho]]
 [[heroku-variables-config]]
+[[env-for-test]]
