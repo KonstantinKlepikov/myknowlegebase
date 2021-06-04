@@ -151,3 +151,4 @@ Content-Length: 1984
 
 [[http]]
 [[http-methods]]
+[[http-cors]]

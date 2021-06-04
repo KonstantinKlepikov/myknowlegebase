@@ -292,3 +292,4 @@ HTTP прокси дают возможность для атаки на сер�
 [[http-methods]]
 [[http-requests-errors]]
 [[get-not_support_body]]
+[[http-cors]]
