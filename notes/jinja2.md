@@ -78,7 +78,7 @@ Jinja не требует специальных форматов для шаб�
 
 ### Фильтры
 
-Переменные могут быть изменеены фильтрами. Например это `{{ listx|join(', ') }} ` эквивалентно этому `(str.join(', ', listx))`
+Переменные могут быть изменеены фильтрами. Например это `{{ listx|join(', ') }}` эквивалентно этому `(str.join(', ', listx))`
 
 ### Тесты
 
@@ -468,3 +468,208 @@ bug_report.txt
 ```
 
 ## Выражения
+
+### Литералы
+
+"Hello World"
+
+42 / 123_456
+
+*The ‘_’ character can be used to separate groups for legibility.
+
+42.23 / 42.1e2 / 123_456.789
+
+['list', 'of', 'objects']
+
+```HTML
+<ul>
+{% for href, caption in [('index.html', 'Index'), ('about.html', 'About'),
+                         ('downloads.html', 'Downloads')] %}
+    <li><a href="{{ href }}">{{ caption }}</a></li>
+{% endfor %}
+</ul>
+```
+
+('tuple', 'of', 'values')
+
+{'dict': 'of', 'key': 'and', 'value': 'pairs'}
+
+true / false / none *different with #python - lower letters 
+
+### Математика
+
+```html
++ - / // % * **
+```
+
+{{ 11 % 7 }}
+
+### Сравнения
+
+`==` `!=` `>` `>=` `<=` `<`
+
+### Логика
+
+and or nit (expr) *группа параметров выражения
+
+Можно использовать для for, if
+
+The `is` and `in` operators support negation using an infix notation, too: foo is not bar and foo not in bar instead of not foo is bar and not foo in bar. All other expressions require a prefix notation: not (foo and bar)
+
+Другие опреаторы
+
+`in` Perform a sequence / mapping containment test. Returns true if the left operand is contained in the right. {{ 1 in [1, 2, 3] }} would, for example, return true.
+
+`is` Performs a test.
+
+`|` (pipe, vertical bar) Applies a filter.
+
+`~` (tilde)
+Converts all operands into strings and concatenates them.
+
+`{{ "Hello " ~ name ~ "!" }}` would return (assuming name is set to 'John') Hello John!.
+
+`()` Call a callable: {{ post.render() }}. Inside of the parentheses you can use positional arguments and keyword arguments like in Python:
+
+{{ post.render(user, full=true) }}.
+
+`. / []` Get an attribute of an object.
+
+### If
+
+Можно так
+
+`{% extends layout_template if layout_template is defined else 'default.html' %}`
+
+\<do something> if \<something is true> else \<do something else>
+
+### Методы python
+
+```html
+{{ page.title.capitalize() }}
+{{ f.bar(value) }}
+{{ "Hello, %s!" % name }}
+{{ "Hello, {}!".format(name) }}
+```
+
+Доступно
+
+- abs()
+- float()
+- lower()
+- round()
+- tojson()
+- attr()
+- forceescape()
+- map()
+- safe()
+- trim()
+- batch()
+- format()
+- max()
+- select()
+- truncate()
+- capitalize()
+- groupby()
+- min()\
+- selectattr()
+- unique()
+- center()
+- indent()
+- pprint()
+- slice()
+- upper()
+- default()
+- int()
+- random()
+- sort()
+- urlencode()
+- dictsort()
+- join()
+- reject()
+- string()
+- urlize()
+- escape()
+- last()
+- rejectattr()
+- striptags()
+- wordcount()
+- filesizeformat()
+- length()
+- replace()
+- sum()
+- wordwrap()
+- first()
+- list()
+- reverse()
+- title()
+- xmlattr()
+
+[Подробнее](https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-builtin-filters)
+
+### Буилд-ин тестирующие ф-и
+
+- boolean()
+- even()
+- in()
+- mapping()
+- sequence()
+- callable()
+- false()
+- integer()
+- ne()
+- string()
+- defined()
+- filter()
+- iterable()
+- none()
+- test()
+- divisibleby()
+- float()
+- le()
+- number()
+- true()
+- eq()
+- ge()
+- lower()
+- odd()
+- undefined()
+- escaped()
+- gt()
+- lt()
+- sameas()
+- upper()
+
+[Подробнее](https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-builtin-tests)
+
+### [Глобальные функции](https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-global-functions)
+
+Доступны в глобальном контексте, не только в циклах.
+
+## Дополнения
+
+- [разметка переводимого текста](https://jinja.palletsprojects.com/en/3.0.x/extensions/#i18n-extension)
+- [loop control](https://jinja.palletsprojects.com/en/3.0.x/extensions/#loopcontrols-extension) - брейки и континью в циклах
+
+```HTML
+{% for user in users %}
+    {%- if loop.index is even %}{% continue %}{% endif %}
+    ...
+{% endfor %}
+
+{% for user in users %}
+    {%- if loop.index >= 10 %}{% break %}{% endif %}
+{%- endfor %}
+```
+
+- [Debug Extension](https://jinja.palletsprojects.com/en/3.0.x/templates/#debug-statement)
+- [With Statement](https://jinja.palletsprojects.com/en/3.0.x/templates/#with-statement)
+- [Autoescape Overrides](https://jinja.palletsprojects.com/en/3.0.x/templates/#autoescape-overrides)
+
+Дополнения можно написать самостоятельно. [Пример](https://jinja.palletsprojects.com/en/3.0.x/extensions/#module-jinja2.ext)
+
+## [Немного трюков jinja](https://jinja.palletsprojects.com/en/3.0.x/tricks/#null-default-fallback)
+
+## [faq](https://jinja.palletsprojects.com/en/3.0.x/tricks/#null-default-fallback)
+
+[[шаблонизаторы]]
