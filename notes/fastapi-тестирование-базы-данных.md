@@ -50,6 +50,9 @@ def test_create_user():
     assert data["id"] == user_id
 ```
 
+Метод описан подробнее в [[fastapi-testing-dependencies-with-override]]
+
 [Ссылка на этот пример с подробностями](https://fastapi.tiangolo.com/advanced/testing-database/)
 [[fatsapi-sql-orm-example]]
 [[fastapi]]
+[[тестирование]]

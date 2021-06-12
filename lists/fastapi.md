@@ -12,3 +12,6 @@
 [[fastapi-зависимости-с-yield]]
 [[get-not_support_body]]
 [[fastapi-change-error-meaasage]]
+[[fastapi-setup-teardown]]
+[[fastapi-testing-dependencies-with-override]]
+[[fastapi-setting-environment-variables]]

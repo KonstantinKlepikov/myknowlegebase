@@ -853,3 +853,4 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 
 [[devtools]]
 [[pydantic-validation-custom]]
+[[fastapi-setting-environment-variables]] про поддержку .env
