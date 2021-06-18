@@ -144,3 +144,4 @@ self.assertEqual(the_exception.error_code, 3)
 [[doctest]]
 [[тестирование]]
 [[daily-note-2021-04-02]]
+[[mock]]
