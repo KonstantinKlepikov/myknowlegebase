@@ -413,3 +413,188 @@ class MyTest(unittest.TestCase):
 Еще доступно вот это: `patch.stopall()`
 
 ### [Test prefix](https://docs.python.org/3/library/unittest.mock.html#test-prefix)
+
+Это позволяет передать через декоратор что-то только специфическим методам класса, если декорируется класс. Аналог [unittest.TestLoader](https://docs.python.org/3/library/unittest.html#unittest.TestLoader)
+
+```python
+>>> patch.TEST_PREFIX = 'foo'
+>>> value = 3
+>>>
+>>> @patch('__main__.value', 'not three')
+... class Thing:
+...     def foo_one(self):
+...         print(value)
+...     def foo_two(self):
+...         print(value)
+...
+>>>
+>>> Thing().foo_one()
+not three
+>>> Thing().foo_two()
+not three
+>>> value
+3
+```
+
+### [Декораторы patch можно стакать](https://docs.python.org/3/library/unittest.mock.html#nesting-patch-decorators)
+
+```python
+@patch.object(SomeClass, 'class_method')
+@patch.object(SomeClass, 'static_method')
+def test(mock1, mock2):
+    assert SomeClass.static_method is mock1
+    assert SomeClass.class_method is mock2
+    SomeClass.static_method('foo')
+    SomeClass.class_method('bar')
+    return mock1, mock2
+
+mock1, mock2 = test()
+mock1.assert_called_once_with('foo')
+mock2.assert_called_once_with('bar')
+```
+
+Остальное смотир в доке
+
+## [MagicMock](https://docs.python.org/3/library/unittest.mock.html#magicmock-and-magic-method-support)
+
+Позволяет мокироват ьмагические методы #python. Если для мока используется функция, ей обязательно необходимо передать self
+
+```python
+def __str__(self):
+    return 'fooble'
+mock = Mock()
+mock.__str__ = __str__
+str(mock)
+
+
+mock = Mock()
+mock.__str__ = Mock()
+mock.__str__.return_value = 'fooble'
+str(mock)
+'fooble'
+
+
+mock = Mock()
+mock.__iter__ = Mock(return_value=iter([]))
+list(mock)
+[]
+```
+
+Вот так можно замокать контекст-менеджер:
+
+```python
+mock = Mock()
+mock.__enter__ = Mock(return_value='foo')
+mock.__exit__ = Mock(return_value=False)
+with mock as m:
+    assert m == 'foo'
+
+mock.__enter__.assert_called_with()
+mock.__exit__.assert_called_with(None, None, None)
+```
+
+Полный список того, что можно замокать:
+
+- \__hash__, \__sizeof__, \__repr__ and \__str__
+- \__dir__, \__format__ and \__subclasses__
+- \__round__, \__floor__, \__trunc__ and \__ceil__
+- Comparisons: \__lt__, \__gt__, \__le__, \__ge__, \__eq__ and \__ne__
+- Container methods: \__getitem__, \__setitem__, \__delitem__, \__contains__, \__len__, \__iter__, \__reversed__ and \__missing__
+- Context manager: \__enter__, \__exit__, \__aenter__ and \__aexit__
+- Unary numeric methods: \__neg__, \__pos__ and \__invert__
+- The numeric methods (including right hand and in-place variants): \__add__, \__sub__, \__mul__, \__matmul__, \__div__, \__truediv__, \__floordiv__, \__mod__, \__divmod__, \__lshift__, \__rshift__, \__and__, \__xor__, \__or__, and \__pow__
+- Numeric conversion methods: \__complex__, \__int__, \__float__ and \__index__
+- Descriptor methods: \__get__, \__set__ and \__delete__
+- Pickling: \__reduce__, \__reduce_ex__, \__getinitargs__, \__getnewargs__, \__getstate__ and \__setstate__
+- File system path representation: \__fspath__
+- Asynchronous iteration methods: \__aiter__ and \__anext__
+
+Данные методы не поддерживаются либо могут вызывать проблемы:
+
+- \__getattr__, \__setattr__, \__init__ and \__new__
+- \__prepare__, \__instancecheck__, \__subclasscheck__, \__del__
+
+### [MagicMock](https://docs.python.org/3/library/unittest.mock.html#magic-mock)
+
+Два варианта `MagicMock` and `NonCallableMagicMock`. Первый - это сабкласс от `Mock`, реализующий большинство меджик методов. Второй - его невызываемый собрат. Его конструктор аналогичен первому за исключением того, что return_value и side_effect не имеют значения.
+
+```python
+mock = MagicMock()
+mock[3] = 'fish'
+mock.__setitem__.assert_called_with(3, 'fish')
+mock.__getitem__.return_value = 'result'
+mock[2]
+'result'
+```
+
+Доступные методы и их дефолтные значения
+
+- \__lt__: NotImplemented
+- \__gt__: NotImplemented
+- \__le__: NotImplemented
+- \__ge__: NotImplemented
+- \__int__: 1
+- \__contains__: False
+- \__len__: 0
+- \__iter__: iter([])
+- \__exit__: False
+- \__aexit__: False
+- \__complex__: 1j
+- \__float__: 1.0
+- \__bool__: True
+- \__index__: 1
+- \__hash__: default hash for the mock
+- \__str__: default str for the mock
+- \__sizeof__: default sizeof for the mock
+
+```python
+mock = MagicMock()
+int(mock)
+1
+len(mock)
+0
+list(mock)
+[]
+object() in mock
+False
+```
+
+Подробнее читай доку - есть нюансы. Так-же ест ьметоды, котоыре поддерживаются, но не определены дефолтные значения.
+
+## [Helpers](https://docs.python.org/3/library/unittest.mock.html#helpers)
+
+`unittest.mock.sentinel` простйо способ создавать уникальные объекты для тестов
+`unittest.mock.DEFAULT` заранее созданный сентинел. Как используется - смотри выше, там где обсуждался вывод дефолтного значения в side_effect
+`unittest.mock.call(*args, **kwargs)` хелпер для упрощения ассершена
+
+```python
+m = MagicMock(return_value=None)
+m(1, 2, a='foo', b='bar')
+m()
+m.call_args_list == [call(1, 2, a='foo', b='bar'), call()]
+True
+```
+
+Реализованы методы call_args, call_args_list, mock_calls и method_calls. [Подробнее](https://docs.python.org/3/library/unittest.mock.html#call)
+
+- `unittest.mock.create_autospec(spec, spec_set=False, instance=False, **kwargs)` позволяет создать мок, используя другой объект в качестве спецификации. [Подробный пример тут](https://docs.python.org/3/library/unittest.mock.html#auto-speccing)
+- `unittest.mock.ANY` позволяет создать аргумент с "абсолютно любым значением"
+
+```python
+mock = Mock(return_value=None)
+mock('foo', bar=object())
+mock.assert_called_once_with('foo', bar=ANY)
+```
+
+```python
+m = MagicMock(return_value=None)
+m(1)
+m(1, 2)
+m(object())
+m.mock_calls == [call(1), call(1, 2), ANY]
+True
+```
+
+- `unittest.mock.FILTER_DIR`
+- `unittest.mock.mock_open(mock=None, read_data=None)`
+- `unittest.mock.seal(mock)`
