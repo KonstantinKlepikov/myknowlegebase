@@ -996,3 +996,4 @@ pip uninstall pytest-NAME
 [[unittest]] - аналог
 [[doctest]]
 [[env-for-test]]
+[[mock]]

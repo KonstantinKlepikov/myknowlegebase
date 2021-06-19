@@ -4,7 +4,7 @@
 
 [[unittest]] mock предоставляет базовый `Mock` class. После создания объекта, можно ассертить методы и аттрибуты класса, а так-же возвращать значения и устанавливать атрибуты, если это нужно.
 
-Дополнительно предоставляется `patch()` декоратор который обрабатывает тестируемые модули и атрибуты уровня класса. `MagicMock` - сабкласс `Mock`, который предоставляет множество магических методов.
+Дополнительно предоставляется `patch()` декоратор который позволяет мокать тестируемые модули и атрибуты уровня класса. `MagicMock` - сабкласс `Mock`, который предоставляет множество магических методов.
 
 ```python
 from unittest.mock import MagicMock
@@ -598,3 +598,122 @@ True
 - `unittest.mock.FILTER_DIR`
 - `unittest.mock.mock_open(mock=None, read_data=None)`
 - `unittest.mock.seal(mock)`
+
+## [Monkeypatching/mocking modules and environments](https://docs.pytest.org/en/6.2.x/monkeypatch.html)
+
+Моки модулей и окружений можно делать в [[pytest]]. The `monkeypatch` fixture helps you to safely set/delete an attribute, dictionary item or environment variable, or to modify sys.path for importing
+
+```python
+monkeypatch.setattr(obj, name, value, raising=True)
+monkeypatch.delattr(obj, name, raising=True)
+monkeypatch.setitem(mapping, name, value)
+monkeypatch.delitem(obj, name, raising=True)
+monkeypatch.setenv(name, value, prepend=False)
+monkeypatch.delenv(name, raising=True)
+monkeypatch.syspath_prepend(path)
+monkeypatch.chdir(path)
+```
+
+Все модификации удаляются после того, как запрашиваемая функция в фикстуре выполняется. raising параметр определяет, что происходит при KeyError или AttributeError
+
+Когда надо использовать?
+
+- модифицировать методы API
+- заменить значения словарей
+- заменить переменные окружения
+- заменить контекст, например текущие рабочие директории
+- подменить `sys.path`
+
+Простой пример
+
+```python
+# contents of test_module.py with source code and the test
+from pathlib import Path
+
+
+def getssh():
+    """Simple function to return expanded homedir ssh path."""
+    return Path.home() / ".ssh"
+
+
+def test_getssh(monkeypatch):
+    # mocked return function to replace Path.home
+    # always return '/abc'
+    def mockreturn():
+        return Path("/abc")
+
+    # Application of the monkeypatch to replace Path.home
+    # with the behavior of mockreturn defined above.
+    monkeypatch.setattr(Path, "home", mockreturn)
+
+    # Calling getssh() will use mockreturn in place of Path.home
+    # for this test with the monkeypatch.
+    x = getssh()
+    assert x == Path("/abc/.ssh")
+```
+
+Можно мокать возвращаемый объект, для этого надо [создать мок-класс](https://docs.pytest.org/en/6.2.x/monkeypatch.html#monkeypatching-returned-objects-building-mock-classes)
+
+```python
+# contents of app.py, a simple API retrieval example
+import requests
+
+
+def get_json(url):
+    """Takes a URL, and returns the JSON."""
+    r = requests.get(url)
+    return r.json()
+```
+
+```python
+# contents of test_app.py, a simple test for our API retrieval
+# import requests for the purposes of monkeypatching
+import requests
+
+# our app.py that includes the get_json() function
+# this is the previous code block example
+import app
+
+# custom class to be the mock return value
+# will override the requests.Response returned from requests.get
+class MockResponse:
+
+    # mock json() method always returns a specific testing dictionary
+    @staticmethod
+    def json():
+        return {"mock_key": "mock_response"}
+
+
+def test_get_json(monkeypatch):
+
+    # Any arguments may be passed and mock_get() will always return our
+    # mocked object, which only has the .json() method.
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    # apply the monkeypatch for requests.get to mock_get
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    # app.get_json, which contains requests.get, uses the monkeypatch
+    result = app.get_json("https://fakeurl")
+    assert result["mock_key"] == "mock_response"
+```
+
+Как мокать другие объекты - читай в документации
+
+Либа [pytest-mock](https://github.com/pytest-dev/pytest-mock/) предоставляет доп.апи для моков в pytest, напирмер позволяет работать с файловой системой
+
+```python
+import os
+
+class UnixFS:
+
+    @staticmethod
+    def rm(filename):
+        os.remove(filename)
+
+def test_unix_fs(mocker):
+    mocker.patch('os.remove')
+    UnixFS.rm('file')
+    os.remove.assert_called_once_with('file')
+```
