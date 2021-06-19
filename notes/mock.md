@@ -113,3 +113,303 @@ TypeError: <lambda>() takes exactly 3 arguments (1 given)"""
 ```
 
 ## [MocK class](https://docs.python.org/3/library/unittest.mock.html#the-mock-class)
+
+Mock создает вызываемый объект, который создает новые моки атрибутов, когда мы получаем к ним доступ. Атрибуты всегда возвращают одно и тоже значение моков.
+
+```python
+class unittest.mock.Mock(spec=None, side_effect=None, return_value=DEFAULT, wraps=None, name=None, spec_set=None, unsafe=False, **kwargs)
+```
+
+- specx - список строк или другой объект (например класс или инстанс) - это спецификация мока
+- spec_set - список вариантов мока
+- side_effect - функция, которая будет вызывана, когда вызван мок
+- return_value - значение, которое вернет мок
+- см.остальное в доке
+
+Доступны такие ассерты:
+
+- `assert_called()` проверка того, что мок был вызван хотябы однажды
+- `assert_called_once()` вызван строго дин раз
+- `assert_called_with(*args, **kwargs)` вызван с аргументами
+
+```python
+mock = Mock()
+mock.method(1, 2, 3, test='wow')
+<Mock name='mock.method()' id='...'>
+mock.method.assert_called_with(1, 2, 3, test='wow')
+```
+
+- `assert_called_once_with(*args, **kwargs)`
+- `assert_any_call(*args, **kwargs)` был вызов с любым из аргументов
+- `assert_has_calls(calls, any_order=False)` были вызовы в определенном порядке
+
+```python
+mock = Mock(return_value=None)
+mock(1)
+mock(2)
+mock(3)
+mock(4)
+calls = [call(2), call(3)]
+mock.assert_has_calls(calls)
+calls = [call(4), call(2), call(3)]
+mock.assert_has_calls(calls, any_order=True)
+```
+
+- `assert_not_called()`
+
+Остальные методы, начиная с [reset_mock()](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.reset_mock) - различные методы, конфигурирующие моки.
+
+Доступны [асинхронные моки](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.AsyncMock). [[asyncio]]
+
+### [Вызов мока](https://docs.python.org/3/library/unittest.mock.html#calling)
+
+Объект мока вызываемы и возвращает значение, указанное в return_value. Дефолтно мок возвращает новый мок-объект. Возвращаемый объект создается первый раз при первом ассерте, дальше возвращается все время одно и тоже.
+
+Вызовы пишутся в атрибуты call_args and call_args_list. Если задан side_effect, он запускается после создание объекта мока, так что вызов все равно будет записан в атрибут.
+
+```python
+m = MagicMock(side_effect=IndexError)
+m(1, 2, 3)
+Traceback (most recent call last):
+  ...
+IndexError
+m.mock_calls
+[call(1, 2, 3)]
+m.side_effect = KeyError('Bang!')
+m('two', 'three', 'four')
+Traceback (most recent call last):
+  ...
+KeyError: 'Bang!'
+m.mock_calls
+[call(1, 2, 3), call('two', 'three', 'four')]
+```
+
+Если использовать функцию в качестве объекта side_effect, то она принимает аргументы вызова - это позволяет поднимать ошибку или возвращать значения в зависимости от атрибутов мока
+
+```python
+def side_effect(value):
+    return value + 1
+
+m = MagicMock(side_effect=side_effect)
+m(1)
+2
+m(2)
+3
+m.mock_calls
+[call(1), call(2)]
+```
+
+Мы так-же в любой момент можем переопределить сайд эффект и возвращать дефолтно. Два способа как это сделать:
+
+```python
+m = MagicMock()
+def side_effect(*args, **kwargs):
+    return m.return_value
+
+m.side_effect = side_effect
+m.return_value = 3
+m()
+3
+def side_effect(*args, **kwargs):
+    return DEFAULT
+
+m.side_effect = side_effect
+m()
+3
+```
+
+Чтобы возвращать дефолтное состояние, нужно установить side_effect в `None`
+
+```python
+m = MagicMock(return_value=6)
+def side_effect(*args, **kwargs):
+    return 3
+
+m.side_effect = side_effect
+m()
+3
+m.side_effect = None
+m()
+6
+```
+
+Крмое того, side_effect можно итерирровать
+
+```python
+m = MagicMock(side_effect=[1, 2, 3])
+m()
+1
+m()
+2
+m()
+3
+m()
+Traceback (most recent call last):
+  ...
+StopIteration
+```
+
+И поднимать эксепшены в процессе итерации
+
+```python
+iterable = (33, ValueError, 66)
+m = MagicMock(side_effect=iterable)
+m()
+33
+m()
+Traceback (most recent call last):
+ ...
+ValueError
+m()
+66
+```
+
+### [Удаление атрибутов](https://docs.python.org/3/library/unittest.mock.html#deleting-attributes)
+
+```python
+mock = MagicMock()
+hasattr(mock, 'm')
+True
+del mock.m
+hasattr(mock, 'm')
+False
+del mock.f
+mock.f
+Traceback (most recent call last):
+    ...
+AttributeError: f
+```
+
+### [Название mocka (атрибут name)](https://docs.python.org/3/library/unittest.mock.html#mock-names-and-the-name-attribute)
+
+### [Использование мока, как атрибута](https://docs.python.org/3/library/unittest.mock.html#attaching-mocks-as-attributes)
+
+При присоединении мока, как атрибута к другому моку, он становится дочерним моком.
+
+```python
+parent = MagicMock()
+child1 = MagicMock(return_value=None)
+child2 = MagicMock(return_value=None)
+parent.child1 = child1
+parent.child2 = child2
+child1(1)
+child2(2)
+parent.mock_calls
+[call.child1(1), call.child2(2)]
+```
+
+Другие подробности в статье
+
+## [The patchers](https://docs.python.org/3/library/unittest.mock.html#the-patchers)
+
+Декораторы patch используются для исправления объектов только в рамках функции, которую они декорируют. Они автоматически обрабатывают распаковку, даже если возникают исключения. Все эти функции также могут использоваться в операторах with или в качестве декораторов классов.
+
+```python
+unittest.mock.patch(target, new=DEFAULT, spec=None, create=False, spec_set=None, autospec=None, new_callable=None, **kwargs)
+```
+
+Может использоваться как декоратор функции, класса или контекст-менеджер.
+
+- target должен быть в формате `'package.module.ClassName'`, Target испортируется и специфицированный объект заменяется на новый
+- spec и spec_set пеередается в MagicMock
+- new_callable определяет какие новые объекты буду вызваны при создании нового объекта
+
+Подробнее об остальном в статье
+
+```python
+>>> @patch('__main__.SomeClass')
+... def function(normal_argument, mock_class):
+...     print(mock_class is SomeClass)
+...
+>>> function(None)
+True
+```
+
+```python
+>>> class Class:
+...     def method(self):
+...         pass
+...
+>>> with patch('__main__.Class') as MockClass:
+...     instance = MockClass.return_value
+...     instance.method.return_value = 'foo'
+...     assert Class() is instance
+...     assert Class().method() == 'foo'
+```
+
+Пачт [может получать различные объекты](https://docs.python.org/3/library/unittest.mock.html#patch-object)
+
+```python
+@patch.object(SomeClass, 'class_method')
+def test(mock_method):
+    SomeClass.class_method(3)
+    mock_method.assert_called_with(3)
+
+test()
+```
+
+```python
+foo = {}
+@patch.dict(foo, {'newkey': 'newvalue'})
+def test():
+    assert foo == {'newkey': 'newvalue'}
+test()
+assert foo == {}
+```
+
+```python
+with patch.multiple(settings, FIRST_PATCH='one', SECOND_PATCH='two'):
+    ...
+```
+
+У патчей есть start() и stop() методы. Это упрощает setUp для теста
+
+```python
+patcher = patch('package.module.ClassName')
+from package import module
+original = module.ClassName
+new_mock = patcher.start()
+assert module.ClassName is not original
+assert module.ClassName is new_mock
+patcher.stop()
+assert module.ClassName is original
+assert module.ClassName is not new_mock
+```
+
+Пример с сетап-тирдаун
+
+```python
+class MyTest(unittest.TestCase):
+    def setUp(self):
+        self.patcher1 = patch('package.module.Class1')
+        self.patcher2 = patch('package.module.Class2')
+        self.MockClass1 = self.patcher1.start()
+        self.MockClass2 = self.patcher2.start()
+
+    def tearDown(self):
+        self.patcher1.stop()
+        self.patcher2.stop()
+
+    def test_something(self):
+        assert package.module.Class1 is self.MockClass1
+        assert package.module.Class2 is self.MockClass2
+
+MyTest('test_something').run()
+```
+
+Важно! Если setup вызовет ошибку - tearDown'а уже не будет. Проблему помогает решить [unittest.TestCase.addCleanup()](https://docs.python.org/3/library/unittest.html#unittest.TestCase.addCleanup)
+
+```python
+class MyTest(unittest.TestCase):
+    def setUp(self):
+        patcher = patch('package.module.Class')
+        self.MockClass = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_something(self):
+        assert package.module.Class is self.MockClass
+```
+
+Еще доступно вот это: `patch.stopall()`
+
+### [Test prefix](https://docs.python.org/3/library/unittest.mock.html#test-prefix)
