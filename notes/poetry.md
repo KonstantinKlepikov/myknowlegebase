@@ -127,7 +127,9 @@ pendulum = "^1.4"
 
 ## [Managing environments](https://python-poetry.org/docs/managing-environments/)
 
-Poetry работает всегда изолированно от глобального питона. При создании окружения poetry использует текущую активимрованную версию #python. Есть возможность переключаться между различными версиями python - [подробнее](https://python-poetry.org/docs/managing-environments/#switching-between-environments)
+Poetry работает всегда изолированно от глобального питона. При создании окружения poetry использует текущую активированную версию #python. Есть возможность переключаться между различными версиями python - [подробнее](https://python-poetry.org/docs/managing-environments/#switching-between-environments)
+
+[Решение проблемы с путями к питону в vs-code](https://github.com/microsoft/vscode-python/issues/8372)
 
 `poetry env info` инфа об окружении
 `poetry env list` листинг окружений, ассоциированных с проектом
