@@ -812,6 +812,8 @@ WHERE ? = address.user_id
 
 ## [Использование связанных данных в queries](https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#using-relationships-in-queries)
 
+[[sqlalchemy-querying]]
+
 - `Select.join()`
 - `aliased()`
 - `where()`
@@ -855,6 +857,7 @@ WHERE :param_1 = address.user_id
 
 > You have installed SQLAlchemy 1.4.0. SQLAlchemy-utils is currently not compatible with SQLAlchemy > 1.4.0. The solution is to downgrade SQLAlchemy to 1.3.23.
 
+[[sqlalchemy-querying]]
 [[fatsapi-sql-orm-example]]
 [[sqlite]]
 [[alembic]] - тулза для миграций для sqlalchemy

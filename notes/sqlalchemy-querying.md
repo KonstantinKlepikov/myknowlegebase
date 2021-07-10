@@ -108,3 +108,209 @@ ed
 ## Querying guide
 
 [основная статья тут](https://docs.sqlalchemy.org/en/14/orm/queryguide.html)
+
+## SELECT statements
+
+Задаем `select()` объект, отправляем его в сессию и получаем результат
+
+```python
+>>> from sqlalchemy import select
+>>> stmt = select(User).where(User.name == 'spongebob')
+
+>>> result = session.execute(stmt)
+>>> for user_obj in result.scalars():
+...     print(f"{user_obj.name} {user_obj.fullname}")
+spongebob Spongebob Squarepants
+```
+
+`select()` поддерживает ОРМ  модели, включая маппированные классы, такие как атрибуты уровня класса, реализующие колонки таблицы. Работа с такой аннотацией так-же осуществляется в сесссии.
+
+```python
+>>> result = session.execute(select(User).order_by(User.id))
+```
+
+При оспользовании ОРМ-мода, названия сущностей базируются на поименовании классов
+
+```python
+>>> stmt = select(User, Address).join(User.addresses).order_by(User.id, Address.id)
+
+SQL>>> for row in session.execute(stmt):
+...    print(f"{row.User.name} {row.Address.email_address}")
+spongebob spongebob@sqlalchemy.org
+sandy sandy@sqlalchemy.org
+sandy squirrel@squirrelpower.org
+patrick pat999@aol.com
+squidward stentcl@sqlalchemy.org
+```
+
+Атрибуты классов можно использовать и так:
+
+```python
+>>> result = session.execute(
+...     select(User.name, Address.email_address).
+...     join(User.addresses).
+...     order_by(User.id, Address.id)
+... )
+
+>>> for row in result:
+...     print(f"{row.name}  {row.email_address}")
+spongebob  spongebob@sqlalchemy.org
+sandy  sandy@sqlalchemy.org
+sandy  squirrel@squirrelpower.org
+patrick  pat999@aol.com
+squidward  stentcl@sqlalchemy.org
+```
+
+В данном случае под капотом другая реализация, итог тот же. [Подробнее](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#selecting-orm-entities-and-attributes)
+
+Тоже самое можно собрать через банедлы, но есть потенциальный риск наткнуться на тяжелый запрос. Доп.инфа по [column bundles](https://docs.sqlalchemy.org/en/14/orm/loading_columns.html#bundles)
+
+```python
+>>> from sqlalchemy.orm import Bundle
+>>> stmt = select(
+...     Bundle("user", User.name, User.fullname),
+...     Bundle("email", Address.email_address)
+... ).join_from(User, Address)
+SQL>>> for row in session.execute(stmt):
+...     print(f"{row.user.name} {row.email.email_address}")
+spongebob spongebob@sqlalchemy.org
+sandy sandy@sqlalchemy.org
+sandy squirrel@squirrelpower.org
+patrick pat999@aol.com
+squidward stentcl@sqlalchemy.org
+```
+
+Можно использовать [алиасы](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#selecting-orm-aliases)
+
+```python
+>>> from sqlalchemy.orm import aliased
+>>> u1 = aliased(User, name="u1")
+>>> stmt = select(u1).order_by(u1.id)
+SQL>>> row = session.execute(stmt).first()
+>>> print(f"{row.u1.name}")
+spongebob
+```
+
+Кроме того, как и везде в [[sqlalchemy]] поддерживаются нативные запросы (текст или базовые стейтементы). [Смотреть тут](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#getting-orm-results-from-textual-and-core-statements)
+
+## [Joins](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#joins)
+
+`Select.join()` и `Select.join_from()` предпочтительнее в ОРМ 2.0, чем `Query.join()`, который является легаси. Далее простой пример джойна. В данном случае реализована связь между двумя классами User и Adress, ult User.adresses представляет коллекцию адресов, ассоциированных с юзером.
+
+```python
+>>> stmt = select(User).join(User.addresses)
+>>> print(stmt)
+```
+
+```sql
+SELECT user_account.id, user_account.name, user_account.fullname
+FROM user_account JOIN address ON user_account.id = address.user_id
+```
+
+Множественные джойны можно выстракивать в цепь
+
+```python
+>>> stmt = (
+...     select(User).
+...     join(User.orders).
+...     join(Order.items)
+... )
+>>> print(stmt)
+```
+
+```sql
+SELECT user_account.id, user_account.name, user_account.fullname
+FROM user_account
+JOIN user_order ON user_account.id = user_order.user_id
+JOIN order_items AS order_items_1 ON user_order.id = order_items_1.order_id
+JOIN item ON item.id = order_items_1.item_id
+```
+
+Второй вариант - джойны на основе самого класса. Такой подход потенциально опасен ошибками, которые будут подниматься, если не установлен ForeignKeyConstraint или их несколько. [Подробнее](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#joins-to-a-target-entity-or-selectable)
+
+```python
+>>> stmt = select(User).join(Address)
+>>> print(stmt)
+```
+
+```sql
+SELECT user_account.id, user_account.name, user_account.fullname
+FROM user_account JOIN address ON user_account.id = address.user_id
+```
+
+Третий вариант - [реализовать](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#joins-to-a-target-with-an-on-clause) фразу `ON`
+
+```python
+>>> stmt = select(User).join(Address, User.id==Address.user_id)
+>>> print(stmt)
+```
+
+```sql
+SELECT user_account.id, user_account.name, user_account.fullname
+FROM user_account JOIN address ON user_account.id = address.user_id
+```
+
+Можно так:
+
+```python
+>>> stmt = select(User).join(Address, User.addresses)
+>>> print(stmt)
+```
+
+Такой синтаксис становится более полезным с алиасами
+
+```python
+>>> a1 = aliased(Address)
+>>> a2 = aliased(Address)
+>>> stmt = (
+...     select(User).
+...     join(a1, User.addresses).
+...     join(a2, User.addresses).
+...     where(a1.email_address == 'ed@foo.com').
+...     where(a2.email_address == 'ed@bar.com')
+... )
+>>> print(stmt)
+```
+
+```sql
+SELECT user_account.id, user_account.name, user_account.fullname
+FROM user_account
+JOIN address AS address_1 ON user_account.id = address_1.user_id
+JOIN address AS address_2 ON user_account.id = address_2.user_id
+WHERE address_1.email_address = :email_address_1
+AND address_2.email_address = :email_address_2
+```
+
+Можно тоже самое через `of_type()` метод
+
+```python
+>>> stmt = (
+...     select(User).
+...     join(User.addresses.of_type(a1)).
+...     join(User.addresses.of_type(a2)).
+...     where(a1.email_address == 'ed@foo.com').
+...     where(a2.email_address == 'ed@bar.com')
+... )
+>>> print(stmt)
+```
+
+Цепи можно [реализовать на лету](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#augmenting-built-in-on-clauses) через метод `and_()`
+
+```python
+>>> stmt = (
+...     select(User).
+...     join(User.addresses.and_(Address.email_address != 'foo@bar.com'))
+... )
+>>> print(stmt)
+```
+
+```sql
+SELECT user_account.id, user_account.name, user_account.fullname
+FROM user_account
+JOIN address ON user_account.id = address.user_id
+AND address.email_address != :email_address_1
+```
+
+Можно джониться к сабзапросам. [Подробнее тут](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#joining-to-subqueries)
+
+Смотри также [ORM execution options](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#orm-execution-options)
