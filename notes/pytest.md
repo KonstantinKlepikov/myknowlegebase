@@ -993,6 +993,8 @@ pip uninstall pytest-NAME
 
 Остальные главы посвящены разработке пайтеста, лицйензированию, депрекетам и другим вопросам развития проекта.
 
+Смотри [[pytest-parametrizing]]
+
 [[unittest]] - аналог
 [[doctest]]
 [[env-for-test]]

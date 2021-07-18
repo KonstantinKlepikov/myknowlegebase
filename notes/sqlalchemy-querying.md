@@ -314,3 +314,6 @@ AND address.email_address != :email_address_1
 Можно джониться к сабзапросам. [Подробнее тут](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#joining-to-subqueries)
 
 Смотри также [ORM execution options](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#orm-execution-options)
+
+[[sqlalchemy]]
+[[sqlalchemy-deleting]]
