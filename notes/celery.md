@@ -158,3 +158,52 @@ class MyTask(celery.Task):
 def add(x, y):
     raise KeyError()
 ```
+
+У каждого таска должно быть уникальное имя. Если имя не задано - оно будет сгенерировано из имени модуля и имени функции
+
+```python
+>>> @app.task(name='sum-of-two-numbers')
+>>> def add(x, y):
+...     return x + y
+
+>>> add.name
+'sum-of-two-numbers'
+```
+
+Лучшая практика - использовать имя модуля как неймспейс для имени таска. В данном случае задано такое же имя, какое могло бы быть сгенерировано автоматически для таска, заданного в модуле tasks.py
+
+```python
+>>> @app.task(name='tasks.add')
+>>> def add(x, y):
+...     return x + y
+
+>>> add.name
+'tasks.add'
+```
+
+Вопрос автонейминга и релятивного импорта описан [тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#automatic-naming-and-relative-imports). Как менять схему автонейминга описано [тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#changing-the-automatic-naming-behavior).
+
+Task Request содержит [информацию](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request) и состояние текущего таска. Подробнее о полях смотри в доке.
+
+```python
+@app.task(bind=True)
+def dump_context(self, x, y):
+    print(
+        'Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(self.request)
+        )
+```
+
+Воркер может автоматически логировать данные. Это можно настроить вручную. [Подробнее](https://docs.celeryproject.org/en/stable/userguide/tasks.html#logging). Лучшая практика - создать простой логгер для всех тасков в модуле:
+
+```python
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
+
+@app.task
+def add(x, y):
+    logger.info('Adding {0} + {1}'.format(x, y))
+    return x + y
+```
+
+Селери использует стандартную питоню библиотеку для логирования. [[python-logging]]
