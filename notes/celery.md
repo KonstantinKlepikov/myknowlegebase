@@ -207,3 +207,55 @@ def add(x, y):
 ```
 
 Селери использует стандартную питоню библиотеку для логирования. [[python-logging]]
+
+`app.Task.retry()` используется для извлечения таска, например для того, чтобы [поднять ошибку](https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying)
+
+```python
+@app.task(bind=True)
+def send_twitter_status(self, oauth, tweet):
+    try:
+        twitter = Twitter(oauth)
+        twitter.update_status(tweet)
+    except (Twitter.FailWhaleError, Twitter.LoginError) as exc:
+        raise self.retry(exc=exc)
+```
+
+Подробнее читай [в доке](https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying).
+
+Celery может [хранить состояние текущего таска](https://docs.celeryproject.org/en/stable/userguide/tasks.html#states) - это результат задачи или поднятая ошибка. Реализовано несколько бекендов для резалтов, [смотри чем они отличаются тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends).
+
+Можно поднять несколько экцепшенов, которые [обеспечат определенное поведение воркера](https://docs.celeryproject.org/en/stable/userguide/tasks.html#semipredicates) для записи финального состояния. Это позволяет игнорить или отклонять таски.
+
+```python
+from celery.exceptions import Ignore
+
+@app.task(bind=True)
+def some_task(self):
+    if redis.ismember('tasks.revoked', self.request.id):
+        raise Ignore()
+```
+
+Кроме того, можно задавать [кастомные классы](https://docs.celeryproject.org/en/stable/userguide/tasks.html#custom-task-classes) для тасков, отнаследовавшись от базового `Task`
+
+Можно [игнорить резалт таска](https://docs.celeryproject.org/en/stable/userguide/tasks.html#ignore-results-you-don-t-want), если он неважен. Есть и другие способы [оптимизировать производительность](https://docs.celeryproject.org/en/stable/userguide/optimizing.html#guide-optimizing).
+
+Если нужно организовать таски последовательно, это может привести к непредвиденным задержкам в выполнении цепочки. Лучше организовать цепочку [асинхронно](https://docs.celeryproject.org/en/stable/userguide/tasks.html#avoid-launching-synchronous-subtasks).
+
+```python
+def update_page_info(url):
+    # fetch_page -> parse_page -> store_page
+    chain = fetch_page.s(url) | parse_page.s() | store_page_info.s(url)
+    chain()
+
+@app.task()
+def fetch_page(url):
+    return myhttplib.get(url)
+
+@app.task()
+def parse_page(page):
+    return myparser.parse_document(page)
+
+@app.task(ignore_result=True)
+def store_page_info(info, url):
+    PageInfo.objects.create(url=url, info=info)
+```
