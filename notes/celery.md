@@ -259,3 +259,66 @@ def parse_page(page):
 def store_page_info(info, url):
     PageInfo.objects.create(url=url, info=info)
 ```
+
+[Пример использования тасков для фильтрации спама на джанго тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-example)
+
+### [Calling tasks](https://docs.celeryproject.org/en/stable/userguide/calling.html)
+
+`T.delay(arg, kwarg=value)`
+Star arguments shortcut to .apply_async. (.delay(*args, **kwargs) calls .apply_async(args, kwargs)).
+
+`T.apply_async((arg,), {'kwarg': value})`
+
+`T.apply_async(countdown=10)`
+executes in 10 seconds from now.
+
+`T.apply_async(eta=now + timedelta(seconds=10))`
+executes in 10 seconds from now, specified using eta
+
+`T.apply_async(countdown=60, expires=120)`
+executes in one minute from now, but expires after 2 minutes.
+
+`T.apply_async(expires=now + timedelta(days=2))`
+expires in 2 days, set using datetime.
+
+Поддерживаются [слинкованные таски](https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks), [сборщик состояний](https://docs.celeryproject.org/en/stable/userguide/calling.html#on-message) таска, [утсановка](https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown) времени срабатывания и экспирейшен, а так-же жругие опции, включая сборщики ошибок, сжатие и т.д.
+
+Другой способ выполнения тасков - [построение воркфлоу через signature](https://docs.celeryproject.org/en/stable/userguide/canvas.html)
+
+### [Workers](https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide)
+
+Самый простой способ запустить воркера - `celery -A proj worker -l INFO`
+
+Можно запускать множество воркеров
+
+```shell
+celery -A proj worker --loglevel=INFO --concurrency=10 -n worker1@%h
+$ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker2@%h
+$ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
+```
+
+Воркера можно [завершить](https://docs.celeryproject.org/en/stable/userguide/workers.html#stopping-the-worker) или [рестартнуть](https://docs.celeryproject.org/en/stable/userguide/workers.html#restarting-the-worker). Все остальное смотри в [документации](https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide)
+
+### [Запуск демонов](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html)
+
+### [Периодически запускаемые таски](https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html)
+
+### [Routing Tasks](https://docs.celeryproject.org/en/stable/userguide/routing.html)
+
+### [Monitoring and Management Guide](https://docs.celeryproject.org/en/stable/userguide/monitoring.html)
+
+### [Security](https://docs.celeryproject.org/en/stable/userguide/security.html)
+
+### [Optimizing](https://docs.celeryproject.org/en/stable/userguide/optimizing.html)
+
+### [Debugging](https://docs.celeryproject.org/en/stable/userguide/debugging.html)
+
+### [Concurrency](https://docs.celeryproject.org/en/stable/userguide/concurrency/index.html)
+
+### [Signals](https://docs.celeryproject.org/en/stable/userguide/signals.html)
+
+### [Testing with Celery](https://docs.celeryproject.org/en/stable/userguide/testing.html)
+
+### [Extensions and Bootsteps](https://docs.celeryproject.org/en/stable/userguide/extending.html)
+
+### [Configuration and defaults](https://docs.celeryproject.org/en/stable/userguide/configuration.html)
