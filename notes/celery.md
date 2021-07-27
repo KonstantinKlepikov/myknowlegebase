@@ -322,3 +322,5 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 ### [Extensions and Bootsteps](https://docs.celeryproject.org/en/stable/userguide/extending.html)
 
 ### [Configuration and defaults](https://docs.celeryproject.org/en/stable/userguide/configuration.html)
+
+Мониторить celery можно через [[flower]]

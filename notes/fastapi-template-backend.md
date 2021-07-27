@@ -11,7 +11,7 @@ Frontend Requirements: [[Node.js]] (with [[npm]]).
 **Backend local development**
 Start the stack with Docker Compose:
 
-`docker-compose up -d`
+`docker-compose up -d` - это запускается из корня проекта (в backend и глубже ходить не надо)
 
 Frontend, built with Docker, with routes handled based on the path: http://localhost
 
@@ -25,7 +25,7 @@ PGAdmin, PostgreSQL web administration: http://localhost:5050
 
 Flower, administration of Celery tasks: http://localhost:5555
 
-Traefik UI, to see how the routes are being handled by the proxy: http://localhost:8090
+[[traefik]] UI, to see how the routes are being handled by the proxy: http://localhost:8080
 
 To check the logs, run:
 
@@ -69,7 +69,7 @@ To get inside the container with a bash session you can start the stack with:
 `$ docker-compose up -d`
 and then exec inside the running container:
 
-`$ docker-compose exec backend bash`
+`$ docker-compose exec backend bash` запускается так-же из корня
 You should see an output like:
 
 `root@7f2607af31c3:/app#`
@@ -228,7 +228,9 @@ After changing the two lines, you can re-start your stack with:
 and check all the corresponding available URLs in the section at the end.
 
 Состав бекенда темплейта [[fastapi]]
+[[fastapi-template-vue-frontend]]
 
+```bash
 📦backend
  ┣ 📂app
  ┃ ┣ 📂alembic
@@ -334,3 +336,4 @@ and check all the corresponding available URLs in the section at the end.
  ┣ 📜.gitignore
  ┣ 📜backend.dockerfile
  ┗ 📜celeryworker.dockerfile
+ ```
