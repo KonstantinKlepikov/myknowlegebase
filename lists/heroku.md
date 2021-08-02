@@ -108,9 +108,109 @@ Your application will be built, and Heroku will use the run command provided in 
 
 ## [Local Development with Docker Compose](https://devcenter.heroku.com/articles/local-development-with-docker-compose)
 
-[[docker-compose]] is a tool for defining and running a multi-container Docker application. In this article you’ll learn why Docker Compose is great for local development, how you can push your Docker images to Heroku for deployment, and Compose tips and tricks.
+Example [[docker-compose]]. That python application depends on [[postgress]] and [[redis]], which you do not push to Heroku. Instead, use Heroku add-ons in production.
 
-[[heroku-piplines]]
+**Use Heroku add-ons in production:**
+
+- For local development: use official Docker images, such as Postgres and Redis.
+- For staging and production: use Heroku add-ons, such as [heroku-postgres](https://devcenter.heroku.com/articles/heroku-postgresql) and Heroku Redis.
+  
+Using official Docker images locally and Heroku add-ons in production provides you with the best of both worlds:
+
+- Parity: You get parity by using the same services on your local machine as you do in production
+- Reduced ops burden: By using add-ons, Heroku – or the add-on provider – takes the ops burden of replication, availability, and backup.
+
+When using Docker Compose for local development, there are a few tips and tricks we think can help make you more successful.
+
+**Create an .env file to avoid checking credentials into source code control**
+By using Docker and Docker Compose, you can check your local development environment setup into source code control. To handle sensitive credentials, create a `.env` environment file with your credentials and reference it within your Compose YAML. Your .env should be added to your `.gitignore` and `.dockerignore` files so it is not checked into source code control or included in your [[docker]] image, respectively.
+
+```yml
+services:
+  web:
+    env_file: .env
+```
+
+**Mount your code as a volume to avoid image rebuilds**
+Any time you make a change to your code, you need to rebuild your Docker image (which is a manual step and can be time consuming). To solve this issue, **mount your code as a volume**. Now rebuilds are no longer necessary when code is changed.
+
+```yml
+services:
+  web:
+    volumes:
+      - ./webapp:/opt/webapp
+```
+
+**Use hostnames to connect to containers**
+By default Compose sets up a single network for your app. When you name a service in your Compose YAML, it creates a hostname that you can then use to connect to the service.
+
+Our services in Compose YAML:
+
+```yml
+services:
+  web:
+  redis:
+  db:
+```
+
+Our connection strings:
+
+```yml
+postgres://db:5432
+redis://redis:6379
+```
+
+**Running Compose in background mode**
+When you execute docker-compose up your project is running in the foreground, displaying the output of your services. You can shut down the services gracefully using `ctrl+c`.
+
+One lesser known option is to use `docker-compose up -d` to start your containers in the background (i.e., detached mode); you can tear down the Compose setup using `docker-compose down`. You check the logs of services running in background mode using `docker-compose logs`.
+
+**Multi-dockerfile project structure**
+When you have multiple services, we suggest creating a subdirectory for each Docker image in your project, with the `Dockerfile` stored in each respective directory:
+
+```console
+/web/Dockerfile
+/redis/Dockerfile
+/db/Dockerfile
+/worker/Dockerfile
+```
+
+We don’t recommend storing all `Dockerfiles` in the project home directory, since it makes distinguishing between services harder.
+
+**Run your containers as a non-root user**
+It’s a good security practice to run your containers as a non-root user; but more importantly, containers you push to Heroku will run without root access. By testing your containers locally as a non-root user, you can ensure they will work in your Heroku production environment. Learn more in the container registry documentation.
+
+## [Deployment Integrations](https://devcenter.heroku.com/categories/deployment-integrations)
+
+[Деплой через гитхаб](https://devcenter.heroku.com/articles/github-integration)
+Другие интеграции смотри по ссылке
+
+## [Continuous Delivery](https://devcenter.heroku.com/categories/continuous-delivery)
+
+- [[heroku-piplines]] make it easy to maintain separate staging and production environments for your app.
+- [[heroku-review]] apps let you try out a GitHub pull request’s changes in an isolated and disposable environment.
+- [[Heroku-CI]] automatically runs your app’s test suite on new GitHub pull requests, or when code is merged into your repo’s master branch.
+- [[heroku-release-phase]] phase lets you run tasks (such as database migrations) before a new release is deployed.
+
+[Создание пайплайнов](https://devcenter.heroku.com/articles/pipelines)
+[review app](https://devcenter.heroku.com/articles/github-integration-review-apps)
+[heroku-cl](https://devcenter.heroku.com/articles/heroku-ci)
+
+Heroku CI automatically runs your app’s test suite with every push to your app’s GitHub repository, enabling you to easily review test results before merging or deploying changes to your codebase. Tests execute in a disposable environment that closely resembles your staging and production environments, which helps to ensure that results are accurate and obtained safely.
+
+[Release Phase](https://devcenter.heroku.com/articles/release-phase)
+
+Больше опций и вопросов интеграции в статье [Continuous Delivery](https://devcenter.heroku.com/categories/continuous-delivery)
+
+## [Language Support](https://devcenter.heroku.com/categories/language-support)
+
+## [Databases & Data Management](https://devcenter.heroku.com/categories/data-management)
+
+## [Monitoring & Metrics](https://devcenter.heroku.com/articles/metrics)
+
+## [App Performance](https://devcenter.heroku.com/categories/app-performance)
+
+Аддоны, бестпрактикс, секюритити и прочее смотри в  оглавлении документации
+
 [[heroku-variables-config]]
-[heroku-postgres](https://devcenter.heroku.com/articles/heroku-postgresql)
 [[requirements]]
