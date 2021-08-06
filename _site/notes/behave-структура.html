@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>[[behave]] структура | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="[[behave]] структура" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/behave-%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0.html" />
+<meta property="og:url" content="http://localhost:4000/notes/behave-%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"[[behave]] структура","url":"http://localhost:4000/notes/behave-%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="behave-структура">[<a href="behave" title="behave">behave</a>] структура</h1>
+
+<p><a href="https://behave.readthedocs.io/en/stable/tutorial.html">Основыная статья в документации</a></p>
+
+<p>Структура проекта</p>
+
+<ul>
+  <li>app
+    <ul>
+      <li>features
+        <ul>
+          <li>steps
+            <ul>
+              <li>step.py</li>
+            </ul>
+          </li>
+          <li>environment.py</li>
+          <li>step.feature</li>
+        </ul>
+      </li>
+      <li>[…]</li>
+    </ul>
+  </li>
+</ul>
+
+<p>В <code class="language-plaintext highlighter-rouge">environment.py</code> мы утанавливаем страт/остановку сервера и другие регулярные штуки для каждого теста. в <code class="language-plaintext highlighter-rouge">.feature</code> файлах пишем тест на [<a href="gherkin" title="gherkin">gherkin</a>]</p>
+
+<h2 id="features">Features</h2>
+
+<ol>
+  <li>Реализует бизнес-логику</li>
+  <li>Шаги соответствуют #python функциям, тестирующим сценарий</li>
+</ol>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">Feature</span><span class="p">:</span> showing off behave
+
+  <span class="kn">Scenario</span><span class="p">:</span> run a simple test
+     <span class="nf">Given </span>we have behave installed
+      <span class="nf">When </span>we implement a test
+      <span class="nf">Then </span>behave will test it for us!
+</code></pre></div></div>
+
+<p>Пример организации</p>
+
+<blockquote>
+  <p>features/
+features/signup.feature
+features/login.feature
+features/account_details.feature
+features/environment.py
+features/steps/
+features/steps/website.py
+features/steps/utils.py</p>
+</blockquote>
+
+<h2 id="scenarios">Scenarios</h2>
+
+<p><a href="https://behave.readthedocs.io/en/stable/gherkin.html">Основная страница</a></p>
+
+<h3 id="background-steps">Background steps</h3>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">@tags</span> <span class="nt">@tag</span>
+<span class="kd">Feature</span><span class="p">:</span> feature name
+  description
+  further description
+
+  <span class="kn">Background</span><span class="p">:</span> some requirement of this test
+    <span class="nf">Given </span>some setup condition
+      <span class="nf">And </span>some other setup action
+
+  <span class="kn">Scenario</span><span class="p">:</span> some scenario
+      <span class="nf">Given </span>some condition
+       <span class="nf">When </span>some action is taken
+       <span class="nf">Then </span>some result is expected.
+
+  <span class="kn">Scenario</span><span class="p">:</span> some other scenario
+      <span class="nf">Given </span>some other condition
+       <span class="nf">When </span>some action is taken
+       <span class="nf">Then </span>some other result is expected.
+</code></pre></div></div>
+
+<p>В бекграунд обычно помещается что-то, что необходимо зааффектить перед стартом основных шагов сценария. Например логирование или развертку базы данных.</p>
+
+<ul>
+  <li>не спользовать <strong>background</strong> для натсройки сложных стейтментов</li>
+  <li>сделть этот раздел максимально коротким</li>
+  <li>использовать яркие имена и близкие к юзеру термины, а не символические привязки типа user 1</li>
+</ul>
+
+<h3 id="scenario">Scenario</h3>
+
+<p>Включает в себя несколько шагов</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">Scenario</span><span class="p">:</span> we have some stock when we open the store
+  <span class="nf">Given </span>that the store has just opened
+   <span class="err">then</span> <span class="err">we</span> <span class="err">should</span> <span class="err">have</span> <span class="err">items</span> <span class="err">for</span> <span class="err">sale.</span>
+</code></pre></div></div>
+
+<h3 id="scenario-outlines">Scenario Outlines</h3>
+
+<p>Используется для запуска нескольких тестирующих примеров. Тест будет запущен отдельно для каждой строки</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">Scenario Outline</span><span class="p">:</span> Blenders
+   <span class="nf">Given </span>I put <span class="nv">&lt;thing&gt;</span> in a blender,
+    <span class="err">when</span> <span class="nf">I </span>switch the blender on
+    <span class="err">then</span> <span class="err">it</span> <span class="err">should</span> <span class="err">transform</span> <span class="err">into</span> <span class="err">&lt;other</span> <span class="err">thing&gt;</span>
+
+ <span class="nn">Examples</span><span class="p">:</span> Amphibians
+   <span class="p">|</span> <span class="nv">thing</span>         <span class="p">|</span> <span class="nv">other</span> <span class="nv">thing</span> <span class="p">|</span>
+   <span class="p">|</span> <span class="n">Red</span> <span class="n">Tree</span> <span class="n">Frog</span> <span class="p">|</span> <span class="n">mush</span>        <span class="p">|</span>
+
+ <span class="nn">Examples</span><span class="p">:</span> Consumer Electronics
+   <span class="p">|</span> <span class="nv">thing</span>         <span class="p">|</span> <span class="nv">other</span> <span class="nv">thing</span> <span class="p">|</span>
+   <span class="p">|</span> <span class="n">iPhone</span>        <span class="p">|</span> <span class="n">toxic</span> <span class="n">waste</span> <span class="p">|</span>
+   <span class="p">|</span> <span class="n">Galaxy</span> <span class="n">Nexus</span>  <span class="p">|</span> <span class="n">toxic</span> <span class="n">waste</span> <span class="p">|</span>
+</code></pre></div></div>
+
+<p>[<a href="../journal/daily-note-2021-04-02" title="Daily note,  2021-04-02, Friday">daily-note-2021-04-02</a>] пример работы с таблицами</p>
+
+<p><a href="https://behave.readthedocs.io/en/stable/api.html#behave.model.Table">Дока по таблицам</a></p>
+
+<h3 id="other-steps">Other steps</h3>
+
+<p><strong>Given</strong> помещаем систему в заранее заданное состояние прежде чем пользователь начнет что-то делать самостоятельно</p>
+
+<p><strong>When</strong> пользователь что-то делает - это приводит к определенным изменениям</p>
+
+<p><strong>Then</strong> что-то происходит после измененеий, что можем увидеть мы, пользователь или другие пользователи в каких-то местах, напирмер в вимде сообщеинй или отображений на экране</p>
+
+<p><strong>And</strong> и <strong>But</strong> подразумевают теже шаги, под которыми использованы эти термины.</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">Feature</span><span class="p">:</span> Fight or flight
+  In order to increase the ninja survival rate,
+  As a ninja commander
+  I want my ninjas to decide whether to take on an
+  opponent based on their skill levels
+
+  <span class="kn">Scenario</span><span class="p">:</span> Weaker opponent
+    <span class="nf">Given </span>the ninja has a third level black-belt
+     <span class="nf">When </span>attacked by a samurai
+     <span class="nf">Then </span>the ninja should engage the opponent
+
+  <span class="kn">Scenario</span><span class="p">:</span> Stronger opponent
+    <span class="nf">Given </span>the ninja has a third level black-belt
+     <span class="nf">When </span>attacked by Chuck Norris
+     <span class="nf">Then </span>the ninja should run for his life
+</code></pre></div></div>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">Scenario</span><span class="p">:</span> Stronger opponent
+  <span class="nf">Given </span>the ninja has a third level black-belt
+   <span class="nf">When </span>attacked by Chuck Norris
+   <span class="nf">Then </span>the ninja should run for his life
+    <span class="nf">And </span>fall off a cliff
+</code></pre></div></div>
+
+<h2 id="step-data">Step data</h2>
+
+<p>Следующие строки будут доступны в имплементации через <code class="language-plaintext highlighter-rouge">context.text</code></p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">Scenario</span><span class="p">:</span> some scenario
+  <span class="nf">Given </span>a sample text loaded into the frobulator
+     <span class="s">"""
+     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+     eiusmod tempor incididunt ut labore et dolore magna aliqua.
+     """</span>
+ <span class="nf">When </span>we activate the frobulator
+ <span class="nf">Then </span>we will find it similar to English
+</code></pre></div></div>
+
+<p>Другой вариант - использовать таблицу внутри шага, если нужно протестировать несколько состояний. Таблица будет доступна в виде списка словарей через атрибут <code class="language-plaintext highlighter-rouge">context.table</code></p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">Scenario</span><span class="p">:</span> some scenario
+  <span class="nf">Given </span>a set of specific users
+     <span class="p">|</span> <span class="nv">name</span>      <span class="p">|</span> <span class="nv">department</span>  <span class="p">|</span>
+     <span class="p">|</span> <span class="n">Barry</span>     <span class="p">|</span> <span class="n">Beer</span> <span class="n">Cans</span>   <span class="p">|</span>
+     <span class="p">|</span> <span class="n">Pudey</span>     <span class="p">|</span> <span class="n">Silly</span> <span class="n">Walks</span> <span class="p">|</span>
+     <span class="p">|</span> <span class="n">Two-Lumps</span> <span class="p">|</span> <span class="n">Silly</span> <span class="n">Walks</span> <span class="p">|</span>
+
+ <span class="nf">When </span>we count the number of people in each department
+ <span class="nf">Then </span>we will find two people in <span class="s">"Silly Walks"</span>
+  <span class="nf">But </span>we will find one person in <span class="s">"Beer Cans"</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">'a set of specific users'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">context</span><span class="p">.</span><span class="n">table</span><span class="p">:</span>
+        <span class="n">model</span><span class="p">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s">'name'</span><span class="p">],</span> <span class="n">department</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s">'department'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="python-step-implementations">Python Step Implementations</h2>
+
+<p>Шаги идентифицируются по декоратору <strong>given</strong>, <strong>when</strong>, <strong>then</strong> и <strong>step</strong>. Декоратор должен содержать строку шага. Название функции может не буть уникальным, т.к. функция регистрируется и матчится перед ее вызовом.</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">Scenario</span><span class="p">:</span> Search for an account
+   <span class="nf">Given </span>I search for a valid account
+    <span class="nf">Then </span>I will see the account details
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">'I search for a valid account'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://localhost:8000/index'</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">get_element</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">browser</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">'form'</span><span class="p">)</span>
+    <span class="n">get_element</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"msisdn"</span><span class="p">).</span><span class="n">send_keys</span><span class="p">(</span><span class="s">'61415551234'</span><span class="p">)</span>
+    <span class="n">form</span><span class="p">.</span><span class="n">submit</span><span class="p">()</span>
+
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="s">'I will see the account details'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">find_elements</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">browser</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">'no-account'</span><span class="p">)</span>
+    <span class="n">eq_</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="p">[],</span> <span class="s">'account not found'</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">get_element</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">browser</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s">'account-head'</span><span class="p">)</span>
+    <span class="n">ok_</span><span class="p">(</span><span class="n">h</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"Account 61415551234"</span><span class="p">),</span>
+        <span class="s">'Heading %r has wrong text'</span> <span class="o">%</span> <span class="n">h</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Внутри имплементации шага можно вызвать другие шаги за счет метода <code class="language-plaintext highlighter-rouge">execute_steps()</code></p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">@when('I</span> <span class="err">do</span> <span class="err">the</span> <span class="err">same</span> <span class="err">thing</span> <span class="err">as</span> <span class="err">before')</span>
+<span class="err">def step_impl(context)</span><span class="p">:</span>
+    <span class="err">context.execute_steps('''</span>
+        <span class="err">when</span> <span class="nf">I </span>press the big red button
+         <span class="err">and</span> <span class="nf">I </span>duck
+    <span class="err">''')</span>
+</code></pre></div></div>
+
+<h2 id="step-parameters">Step Parameters</h2>
+
+<p>В описании</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">Scenario</span><span class="p">:</span> look up a book
+  <span class="nf">Given </span>I search for a valid book
+   <span class="nf">Then </span>the result page will include <span class="s">"success"</span>
+
+<span class="kn">Scenario</span><span class="p">:</span> look up an invalid book
+  <span class="nf">Given </span>I search for a invalid book
+   <span class="nf">Then </span>the result page will include <span class="s">"failure"</span>
+</code></pre></div></div>
+
+<p>в имплементации (при условии, что в <strong>Given</strong> мы определили <code class="language-plaintext highlighter-rouge">context.response</code>)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="s">'the result page will include "{text}"'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">context</span><span class="p">.</span><span class="n">response</span><span class="p">:</span>
+        <span class="n">fail</span><span class="p">(</span><span class="s">'%r not in %r'</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">context</span><span class="p">.</span><span class="n">response</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Варианты имплеменаций</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">parse (the default, based on: parse)</code> - синтаксис <code class="language-plaintext highlighter-rouge">{param:Type}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cfparse (extends: parse, requires: parse_type)</code> - extended parser with “Cardinality Field” (CF) support</li>
+</ul>
+
+<blockquote>
+  <p>{values:Type+} (cardinality=1..N, many)
+{values:Type*} (cardinality=0..N, many0)
+{value:Type?} (cardinality=0..1, optional)</p>
+</blockquote>
+
+<p>= <code class="language-plaintext highlighter-rouge">re</code> - регулярки типа <code class="language-plaintext highlighter-rouge">“(?P&lt;name&gt;…)”</code>, чтобы выбрать определенные данные из текста, которые мы дали на этапе задания шагов. Типы не поддерживает</p>
+
+<p><a href="https://behave.readthedocs.io/en/stable/api.html#behave.use_step_matcher">use_step_matcher()</a> задает тип парсера (там же смотри про типы данных)</p>
+
+<h2 id="context">Context</h2>
+
+<p>Собирает информацию от старта до окончания теста. Можно использовать как дефолтные атрибуты, так и собственные.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">'I request a new widget for an account via SOAP'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s">"http://127.0.0.1:8000/soap/"</span><span class="p">)</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Allocate</span><span class="p">(</span><span class="n">customer_first</span><span class="o">=</span><span class="s">'Firstname'</span><span class="p">,</span>
+        <span class="n">customer_last</span><span class="o">=</span><span class="s">'Lastname'</span><span class="p">,</span> <span class="n">colour</span><span class="o">=</span><span class="s">'red'</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="s">'I should receive an OK SOAP response'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">eq_</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">response</span><span class="p">[</span><span class="s">'ok'</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Дефолтные</p>
+
+<ul>
+  <li>table</li>
+  <li>text</li>
+  <li>failed</li>
+</ul>
+
+<h2 id="environmental-controls">Environmental Controls</h2>
+
+<p>Поозволяет задать настройки до запуска и после теста.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">before_step(context, step), after_step(context, step)</code> для каждого шага</li>
+  <li><code class="language-plaintext highlighter-rouge">before_scenario(context, scenario), after_scenario(context, scenario)</code> для каждого сценария</li>
+  <li><code class="language-plaintext highlighter-rouge">before_feature(context, feature), after_feature(context, feature)</code> для каждого feature файла</li>
+  <li><code class="language-plaintext highlighter-rouge">before_tag(context, tag), after_tag(context, tag)</code> для тегов</li>
+  <li><code class="language-plaintext highlighter-rouge">before_all(context), after_all(context)</code> для любых объектов</li>
+</ul>
+
+<p>.feature сценарий и step объект имеют аттрибуты:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">keyword</code> - “Feature”, “Scenario”, “Given”, etc.</li>
+  <li><code class="language-plaintext highlighter-rouge">name</code> - имя шага (текст после ключевого слова)</li>
+  <li><code class="language-plaintext highlighter-rouge">tags</code> - теги</li>
+  <li><code class="language-plaintext highlighter-rouge">filename</code> and <code class="language-plaintext highlighter-rouge">line</code> - имя файла теста и номер состояния</li>
+</ul>
+
+<p>Пример использования:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># -- FILE: features/environment.py
+</span><span class="kn">from</span> <span class="nn">behave</span> <span class="kn">import</span> <span class="n">fixture</span><span class="p">,</span> <span class="n">use_fixture</span>
+<span class="kn">from</span> <span class="nn">behave4my_project.fixtures</span> <span class="kn">import</span> <span class="n">wsgi_server</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+
+<span class="o">@</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">selenium_browser_chrome</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="c1"># -- HINT: @behave.fixture is similar to @contextlib.contextmanager
+</span>    <span class="n">context</span><span class="p">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Chrome</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">context</span><span class="p">.</span><span class="n">browser</span>
+    <span class="c1"># -- CLEANUP-FIXTURE PART:
+</span>    <span class="n">context</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">before_all</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">use_fixture</span><span class="p">(</span><span class="n">wsgi_server</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
+    <span class="n">use_fixture</span><span class="p">(</span><span class="n">selenium_browser_chrome</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="c1"># -- HINT: CLEANUP-FIXTURE is performed after after_all() hook is called.
+</span>
+<span class="k">def</span> <span class="nf">before_feature</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">environment</span><span class="o">=</span><span class="s">'test'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># -- FILE: behave4my_project/fixtures.py
+# ALTERNATIVE: Place fixture in "features/environment.py" (but reuse is harder)
+</span><span class="kn">from</span> <span class="nn">behave</span> <span class="kn">import</span> <span class="n">fixture</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">wsgiref</span> <span class="kn">import</span> <span class="n">simple_server</span>
+<span class="kn">from</span> <span class="nn">my_application</span> <span class="kn">import</span> <span class="n">model</span>
+<span class="kn">from</span> <span class="nn">my_application</span> <span class="kn">import</span> <span class="n">web_app</span>
+
+<span class="o">@</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">wsgi_server</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">):</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">simple_server</span><span class="p">.</span><span class="n">WSGIServer</span><span class="p">((</span><span class="s">''</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">server</span><span class="p">.</span><span class="n">set_app</span><span class="p">(</span><span class="n">web_app</span><span class="p">.</span><span class="n">main</span><span class="p">(</span><span class="n">environment</span><span class="o">=</span><span class="s">'test'</span><span class="p">))</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">context</span><span class="p">.</span><span class="n">server</span><span class="p">.</span><span class="n">serve_forever</span><span class="p">)</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">thread</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">context</span><span class="p">.</span><span class="n">server</span>
+    <span class="c1"># -- CLEANUP-FIXTURE PART:
+</span>    <span class="n">context</span><span class="p">.</span><span class="n">server</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+    <span class="n">context</span><span class="p">.</span><span class="n">thread</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="tags">tags</h2>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">Feature</span><span class="p">:</span> Fight or flight
+  In order to increase the ninja survival rate,
+  As a ninja commander
+  I want my ninjas to decide whether to take on an
+  opponent based on their skill levels
+
+  @slow
+  <span class="kn">Scenario</span><span class="p">:</span> Weaker opponent
+    <span class="nf">Given </span>the ninja has a third level black-belt
+    <span class="nf">When </span>attacked by a samurai
+    <span class="nf">Then </span>the ninja should engage the opponent
+
+  <span class="nt">@whip</span>
+  <span class="kn">Scenario</span><span class="p">:</span> Stronger opponent
+    <span class="nf">Given </span>the ninja has a third level black-belt
+    <span class="nf">When </span>attacked by Chuck Norris
+    <span class="nf">Then </span>the ninja should run for his life
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">behave --tags=slow1</code> запустит только сценарий с тегом <code class="language-plaintext highlighter-rouge">@slow</code></p>
+
+<p>Еще варианты:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">--tags=wip,slow</code> оба тега</li>
+  <li><code class="language-plaintext highlighter-rouge">--tags=wip --tags=slow</code> при условии, что шаг тегирован обоими тегами</li>
+</ul>
+
+<p>Теги доступны в качестве аттрибутов в окружении, что позволяет задавать запуск специфических скриптов для специфических случаев по тегу</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># -- FILE: features/environment.py
+# HINT: Reusing some code parts from above.
+</span><span class="p">...</span>
+
+<span class="k">def</span> <span class="nf">before_feature</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">environment</span><span class="o">=</span><span class="s">'test'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s">'browser'</span> <span class="ow">in</span> <span class="n">feature</span><span class="p">.</span><span class="n">tags</span><span class="p">:</span>
+        <span class="n">use_fixture</span><span class="p">(</span><span class="n">wsgi_server</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">use_fixture</span><span class="p">(</span><span class="n">selenium_browser_chrome</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="work-in-progress">work in progress</h2>
+
+<p>Флаг -w отключает логирование и вывод теста в консоль. Запускаются только сценарии с тегом <code class="language-plaintext highlighter-rouge">@wip</code>. Тест останавливается на первой ошибке. Раболтают самописныек логи типа</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="ow">not</span> <span class="n">context</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">log_capture</span><span class="p">:</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="fixtures">Fixtures</h2>
+
+<p><a href="https://behave.readthedocs.io/en/stable/fixtures.html">Подробная статья</a></p>
+
+<p>Фикстуры содержат yield-состояния, которые очищаются, когда удаляется <code class="language-plaintext highlighter-rouge">context</code> (после сценария, запуска фичи и т.д., в зависимости от того, когда фикстуры применяются)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># -- FILE: behave4my_project/fixtures.py (or: features/environment.py)
+</span><span class="kn">from</span> <span class="nn">behave</span> <span class="kn">import</span> <span class="n">fixture</span>
+<span class="kn">from</span> <span class="nn">somewhere.browser</span> <span class="kn">import</span> <span class="n">FirefoxBrowser</span>
+
+<span class="o">@</span><span class="n">fixture</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"fixture.browser.firefox"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">browser_firefox</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># -- SETUP-FIXTURE PART:
+</span>    <span class="n">context</span><span class="p">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">FirefoxBrowser</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">context</span><span class="p">.</span><span class="n">browser</span>
+    <span class="c1"># -- CLEANUP-FIXTURE PART:
+</span>    <span class="n">context</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+<span class="c1"># -- FILE: features/environment.py
+</span><span class="kn">from</span> <span class="nn">behave</span> <span class="kn">import</span> <span class="n">use_fixture</span>
+<span class="kn">from</span> <span class="nn">behave4my_project.fixtures</span> <span class="kn">import</span> <span class="n">browser_firefox</span>
+
+<span class="k">def</span> <span class="nf">before_tag</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s">"fixture.browser.firefox"</span><span class="p">:</span>
+        <span class="n">use_fixture</span><span class="p">(</span><span class="n">browser_firefox</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Параметры фикстур:</p>
+
+<ul>
+  <li>fixture_func</li>
+  <li>context</li>
+  <li>fixture_kwargs</li>
+  <li>fxture_kwargs</li>
+</ul>
+
+<h2 id="debug-on-error-in-case-of-step-failures">Debug-on-Error (in Case of Step Failures)</h2>
+
+<p>Чтобы не захламлять вывод в консоль мусором ошибок, можно логировать, проще всего через <code class="language-plaintext highlighter-rouge">after_step()</code></p>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># -- FILE: features/environment.py
+# USE: behave -D BEHAVE_DEBUG_ON_ERROR         (to enable  debug-on-error)
+# USE: behave -D BEHAVE_DEBUG_ON_ERROR=yes     (to enable  debug-on-error)
+# USE: behave -D BEHAVE_DEBUG_ON_ERROR=no      (to disable debug-on-error)
+</span>
+<span class="n">BEHAVE_DEBUG_ON_ERROR</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="k">def</span> <span class="nf">setup_debug_on_error</span><span class="p">(</span><span class="n">userdata</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">BEHAVE_DEBUG_ON_ERROR</span>
+    <span class="n">BEHAVE_DEBUG_ON_ERROR</span> <span class="o">=</span> <span class="n">userdata</span><span class="p">.</span><span class="n">getbool</span><span class="p">(</span><span class="s">"BEHAVE_DEBUG_ON_ERROR"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">before_all</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">setup_debug_on_error</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">userdata</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">after_step</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">BEHAVE_DEBUG_ON_ERROR</span> <span class="ow">and</span> <span class="n">step</span><span class="p">.</span><span class="n">status</span> <span class="o">==</span> <span class="s">"failed"</span><span class="p">:</span>
+        <span class="c1"># -- ENTER DEBUGGER: Zoom in on failure location.
+</span>        <span class="c1"># NOTE: Use IPython debugger, same for pdb (basic python debugger).
+</span>        <span class="kn">import</span> <span class="nn">ipdb</span>
+        <span class="n">ipdb</span><span class="p">.</span><span class="n">post_mortem</span><span class="p">(</span><span class="n">step</span><span class="p">.</span><span class="n">exc_traceback</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

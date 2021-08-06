@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>traefik | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="traefik" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/traefik.html" />
+<meta property="og:url" content="http://localhost:4000/notes/traefik.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"traefik","url":"http://localhost:4000/notes/traefik.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="traefik">traefik</h1>
+
+<p><a href="https://habr.com/ru/post/508636/">Статья на хабре</a></p>
+
+<p>Traefik — это обратный прокси-сервер с открытым исходным кодом, обеспечивающий простую работу с микросервисами и/или просто контейнерами с вашими приложениями.</p>
+
+<p>Обратный прокси-сервер (reverse proxy, реверс-прокси) служит для ретрансляции запросов из внешней сети к каким-либо серверам/сервисам внутренней сети (например веб-сервера, БД или файловые хранилища) и позволяет:</p>
+
+<ul>
+  <li>обеспечить сокрытие структуры внутренней сети и подробностей о находящейся в ней сервисах;</li>
+  <li>осуществлять балансировку нагрузки (load balancing) между экземплярами одного и того же сервиса или серверами с одинаковыми задачами;</li>
+  <li>обеспечить зашифрованное (HTTPS) соединение между клиентом и любым сервисом, в таком случае SSL сессия создается между клиентом и прокси, а между прокси и сервисом во внутренней сети устанавливается незашифрованное HTTP соединение, если сервис поддерживает HTTPS то можно организовать зашифрованное соединение и во внутренней сети;</li>
+  <li>организовать контроль доступа к сервисам (аутентификацию клиента), а также установить файрвол (брандмауэр).</li>
+</ul>
+
+<p>Traefik позиционируется разработчиками как “Edge Router”, то есть можно направить его непосредственно в глобальную сеть одной стороной и во внутреннюю другой. Одним из основных достоинств Traefik является возможность изменения его конфигурации без приостановки работы (“на лету”) при применении любого из поддерживаемых бэкэндов, называемых провайдерами.</p>
+
+<p>Список основных провайдеров:</p>
+
+<ul>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="kubernetes" title="kubernetes">kubernetes</a>]</li>
+  <li>Consul Catalog</li>
+  <li>Marathon</li>
+  <li>Rancher</li>
+  <li>File</li>
+</ul>
+
+<p>“File”, это некоторый файл (или папка с файлами), в котором описана конфигурация какого-либо сервиса, не связанного с другими провайдерами, но который должен быть скрыт за реверс-прокси. Остальные же провайдеры являются различными системами оркестрации контейнеров.</p>
+
+<p>Файл конфигурации Traefik, а также файлы для провайдера “File” могут быть написаны на <code class="language-plaintext highlighter-rouge">TOML</code> либо <code class="language-plaintext highlighter-rouge">YAML</code>.</p>
+
+<p>Для развертывания (деплоя) Traefik создадим файл docker-compose.yml и отредактируем его в любом удобном вам редакторе. Для начала этот файл будет иметь следующий вид:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">traefik</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">traefik:v2.2</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">traefik</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">security_opt</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">no-new-privileges:true</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="pi">-</span> <span class="s">443:443</span> 
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+      <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+      <span class="pi">-</span> <span class="s">./data/traefik.yml:/traefik.yml:ro</span>
+</code></pre></div></div>
+
+<p>Во внешний мир будут смотреть порты 80 и 443 для HTTP и HTTPS соответственно. Также пробросим в контейнер сокет демона Docker для работы механизма автоматической конфигурации. Конфигурацию Traefik будем описывать в файле traefik.yml находящемся в папке data в текущей директории.</p>
+
+<p>Если для разделения внешней и внутренней сетей используются networks Docker-а, то Traefik должен иметь доступ к внешней сети и ко всем внутренним в которых находятся целевые сервисы.</p>
+
+<p>Создадим и будем постепенно наполнять этот файл. Для начала опишем точки входа в наш прокси (те самые порты, которые смотрят во внешний мир):</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">entryPoints</span><span class="pi">:</span>
+  <span class="na">http</span><span class="pi">:</span>
+    <span class="na">address</span><span class="pi">:</span> <span class="s2">"</span><span class="s">:80"</span>
+  <span class="na">https</span><span class="pi">:</span>
+    <span class="na">address</span><span class="pi">:</span> <span class="s2">"</span><span class="s">:443"</span>
+</code></pre></div></div>
+
+<p>Здесь http и https это просто названия (могут быть любыми, хоть a и b) и были выбраны так для удобства.</p>
+
+<p>Теперь добавим первого провайдера — Docker, это делается следующим образом:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">providers</span><span class="pi">:</span>
+  <span class="na">docker</span><span class="pi">:</span>
+    <span class="na">endpoint</span><span class="pi">:</span> <span class="s2">"</span><span class="s">unix:///var/run/docker.sock"</span>
+    <span class="na">exposedByDefault</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div></div>
+
+<p>Параметром указываем что Traefik не должен брать все контейнеры подряд, далее будет объяснено каким образом мы будем сообщать какие контейнеры нас интересуют. Также здесь видно зачем мы пробрасывали сокет в контейнер — именно через него Traefik будет получать сведения о запускаемых контейнерах на этом хосте (можно подключиться и к демону на другом хосте).</p>
+
+<p>Следующим шагом развернем весь HTTP трафик в HTTPS (почему это было сделано именно таким образом будет описано дальше):</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">http</span><span class="pi">:</span>
+  <span class="na">routers</span><span class="pi">:</span>
+    <span class="na">http-catchall</span><span class="pi">:</span>
+      <span class="na">rule</span><span class="pi">:</span> <span class="s">HostRegexp(`{host:.+}`)</span>
+      <span class="na">entrypoints</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">http</span>
+      <span class="na">middlewares</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redirect-to-https</span>
+  <span class="na">middlewares</span><span class="pi">:</span>
+    <span class="na">redirect-to-https</span><span class="pi">:</span>
+      <span class="na">redirectScheme</span><span class="pi">:</span>
+        <span class="na">scheme</span><span class="pi">:</span> <span class="s">https</span>
+        <span class="na">permanent</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div></div>
+
+<p>Traefik может проксировать не только HTTP трафик, но и просто TCP и UDP, поэтому указываем что этот блок конфигурации относится к http.</p>
+
+<p>Здесь мы встречаем два из трех основных элементов роутинга в Traefik 2 routers (роутеры) и middlewares(промежуточные обработчики), рассмотрим их подробнее.</p>
+
+<h2 id="роутеры">Роутеры</h2>
+
+<ul>
+  <li>http-catchall — имя роутера, может быть любым, но обязано быть уникальным в рамках блока http всей конфигурации Traefik;</li>
+  <li>rule: — правило, описывает какой трафик попадает в этот роутер, в данном случае описывается HostRegexp, то есть поле Host запроса должно попадать под регулярное выражение .+ (то есть любое), здесь мы видим специфику регулярных выражений в Traefik — оно должно быть заключено в фигурные скобки и иметь наименование (host в данном случае), то есть синтаксис имеем вид {name:reg_exp};</li>
+  <li>entrypoints — массив описанных ранее точек входа, которые будут использоваться этим роутером, в нашем случае используем только http;</li>
+  <li>middlewares — массив промежуточных обработчиков, куда попадает трафик перед передачей к сервису (сервисы будут рассмотрены позднее).</li>
+</ul>
+
+<h2 id="промежуточные-обработчики">Промежуточные Обработчики</h2>
+
+<ul>
+  <li>redirect-to-https — имя обработчика, может быть любым, но обязано быть уникальным в рамках блока http всей конфигурации Traefik;</li>
+  <li>redirectScheme — тип обработчика, в данном случае изменение схемы запроса;</li>
+  <li>scheme: https — вынуждает клиента использовать схему HTTPS при запросе к прокси;</li>
+  <li>permanent: false — говорит клиенту что это не навсегда и может измениться в будущем.</li>
+</ul>
+
+<p>Полностью:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">entryPoints</span><span class="pi">:</span>
+  <span class="na">http</span><span class="pi">:</span>
+    <span class="na">address</span><span class="pi">:</span> <span class="s2">"</span><span class="s">:80"</span>
+  <span class="na">https</span><span class="pi">:</span>
+    <span class="na">address</span><span class="pi">:</span> <span class="s2">"</span><span class="s">:443"</span>
+
+<span class="na">http</span><span class="pi">:</span>
+  <span class="na">routers</span><span class="pi">:</span>
+    <span class="na">http-catchall</span><span class="pi">:</span>
+      <span class="na">rule</span><span class="pi">:</span> <span class="s">hostregexp(`{host:.+}`)</span>
+      <span class="na">entrypoints</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">http</span>
+      <span class="na">middlewares</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redirect-to-https</span>
+  <span class="na">middlewares</span><span class="pi">:</span>
+    <span class="na">redirect-to-https</span><span class="pi">:</span>
+      <span class="na">redirectScheme</span><span class="pi">:</span>
+        <span class="na">scheme</span><span class="pi">:</span> <span class="s">https</span>
+        <span class="na">permanent</span><span class="pi">:</span> <span class="no">false</span>
+
+<span class="na">providers</span><span class="pi">:</span>
+  <span class="na">docker</span><span class="pi">:</span>
+    <span class="na">endpoint</span><span class="pi">:</span> <span class="s2">"</span><span class="s">unix:///var/run/docker.sock"</span>
+    <span class="na">exposedByDefault</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">sudo docker-compose up -d</code> И прокси должен подняться, можно почитать логи (<code class="language-plaintext highlighter-rouge">sudo docker-compose logs -f</code>) и убедиться, что всё работает.</p>
+
+<p>Далее добавим Let’s Encrypt. Поскольку мы хотим использовать HTTPS нам нужно где-то взять SSL сертификаты для сервисов, есть возможность использовать свои сертификаты, но мы настроем автоматическое получение бесплатных сертификатов от Let’s Encrypt.</p>
+
+<p>Добавим в конфигурацию (traefik.yml) новый блок:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">certificatesResolvers</span><span class="pi">:</span>
+  <span class="na">letsEncrypt</span><span class="pi">:</span>
+    <span class="na">acme</span><span class="pi">:</span>
+      <span class="na">email</span><span class="pi">:</span> <span class="s">postmaster@example.com</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">acme.json</span>
+      <span class="na">caServer</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://acme-staging-v02.api.letsencrypt.org/directory"</span>
+      <span class="na">httpChallenge</span><span class="pi">:</span>
+        <span class="na">entryPoint</span><span class="pi">:</span> <span class="s">http</span>
+</code></pre></div></div>
+
+<ul>
+  <li>letsEncrypt — это просто имя резолвера;</li>
+  <li>acme — тип резолвера (других типов в общем-то и нет);</li>
+  <li>storage — файл, в котором хранятся сведения о полученных сертификатах;</li>
+  <li>httpChallenge — тип acme-челенжа, дополнительно указываем параметр — точку входа;</li>
+  <li>caServer: “https://acme-staging-v02.api.letsencrypt.org/directory” — позволяет использовать не основной сервер Let’s Encrypt в тестовых целях, так как основной имеет строгие лимиты API (можно закомментировать, когда наладите получение сертификатов).</li>
+</ul>
+
+<p>Также дополним пункт volumes в файле <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>, чтобы сохранять сертификаты при перезапуске контейнера (предварительно создав файл data/acme.json):</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+    <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+    <span class="pi">-</span> <span class="s">./data/traefik.yml:/traefik.yml:ro</span>
+    <span class="pi">-</span> <span class="s">./data/acme.json:/acme.json</span>
+</code></pre></div></div>
+
+<h2 id="docker-провайдер">Docker провайдер</h2>
+
+<p>HTTPS настроен, пришло время поднять первый сервис, пусть это будет дашборд самого Traefik, так как Traefik у нас в Docker, воспользуемся этим провайдером.</p>
+
+<p>Для описания конфигурации в Docker Traefik использует метки (labels) контейнеров. Допишем в наш файл docker-compose.yml:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">labels</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.enable=true"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.entrypoints=https"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.rule=Host(`traefik.example.com`)"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.tls=true"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.tls.certresolver=letsEncrypt"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.service=api@internal"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.services.traefik-traefik.loadbalancer.server.port=888"</span>
+</code></pre></div></div>
+
+<ul>
+  <li>traefik.enable=true — указываем что Traefik должен обеспечить доступ к этому контейнеру, необходимо для всего остального;</li>
+  <li>traefik.http.routers.traefik.entrypoints=https — создаем новый роутер с точной входа https;</li>
+  <li>traefik.http.routers.traefik.rule=Host(traefik.example.com) — роутер будет жить по адресу traefik.example.com;</li>
+  <li>traefik.http.routers.traefik.tls=true — указываем что используется TLS;</li>
+  <li>traefik.http.routers.traefik.tls.certresolver=letsEncrypt — указываем через какой резолвер получать сертификат;</li>
+  <li>traefik.http.routers.traefik.service=api@internal — указываем, что сервер за этим роутером — api@internal, это специальный сервис, созданный по умолчанию, это как раз и есть дашбоард который мы хотели увидеть;</li>
+  <li>traefik.http.services.traefik-traefik.loadbalancer.server.port=888 — издержки интерфейса, без этого не заработает, но можно написать абсолютно любую цифру.</li>
+</ul>
+
+<p>Дашбоард надо включить, для этого добавим в файл traefik.yml:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">api</span><span class="pi">:</span>
+  <span class="na">dashboard</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>На данном этапе можно пересоздать контейнер (нужно так как мы меняли docker-compose.yml): <code class="language-plaintext highlighter-rouge">sudo docker-compose down &amp;&amp; sudo docker-compose up -d</code></p>
+
+<p>Когда всё поднимется можно перейти на traefik.example.com (тут на самом деле должен быть ваш домен, который направлен на хост с Traefik) и увидеть дашборд.</p>
+
+<p>Дашбоард это хорошо, но мы не хотим, чтобы все пользователи интернета имели к нему доступ, закроем его от внешнего мира с помощью BasicAuth, для это в Traefik есть специальный middleware.</p>
+
+<p>Для начала сгенерируем для нас строку с логином и паролем (admin/password)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>htpasswd <span class="nt">-nb</span> admin password
+admin:<span class="nv">$apr1$vDSqkf</span>.v<span class="nv">$GTJOtsd9CBiAFFnHTI2Ds1</span>
+</code></pre></div></div>
+
+<p>Теперь добавим в наш docker-compose.yml новые строчки:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$vDSqkf.v$$GTJOtsd9CBiAFFnHTI2Ds1"</span>
+<span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.middlewares=traefik-auth"</span>
+</code></pre></div></div>
+
+<p>Заметим, что символы $ из полученной строки мы должны заменить на $$.</p>
+
+<ul>
+  <li>traefik.http.middlewares.traefik-auth.basicauth.users=… — создаем middleware типа basicauth с параметром users;</li>
+  <li>traefik.http.routers.traefik.middlewares=traefik-auth — указываем что роутер traefik использует только что-то созданный middleware.</li>
+</ul>
+
+<p>Целиком</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">traefik</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">traefik:v2.2</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">traefik</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">security_opt</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">no-new-privileges:true</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="pi">-</span> <span class="s">443:443</span> 
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+      <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+      <span class="pi">-</span> <span class="s">./data/traefik.yml:/traefik.yml:ro</span>
+      <span class="pi">-</span> <span class="s">./data/acme.json:/acme.json</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.enable=true"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.entrypoints=https"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.rule=Host(`traefik.example.com`)"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.tls=true"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.tls.certresolver=letsEncrypt"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.service=api@internal"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.services.traefik-traefik.loadbalancer.server.port=888"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$vDSqkf.v$$GTJOtsd9CBiAFFnHTI2Ds1"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">traefik.http.routers.traefik.middlewares=traefik-auth"</span>
+</code></pre></div></div>
+
+<p>Теперь при попытке доступа к админке запрашивается логин/пароль</p>
+
+<h2 id="file-провайдер">File провайдер</h2>
+
+<p>С контейнерами работает, а как быть если есть какой-то сервис работающий на выделенном хосте (пускай IP 192.168.1.222 и порт 8080) и мы его хотим пропустить через этот же прокси, заодно закрыв его с помощью HTTPS. Для этого есть решение.</p>
+
+<p>Добавим в docker-compose.yml ещё один volume:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">volumes</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+<span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+<span class="pi">-</span> <span class="s">./data/traefik.yml:/traefik.yml:ro</span>
+<span class="pi">-</span> <span class="s">./data/custom/:/custom/:ro</span>
+<span class="pi">-</span> <span class="s">./data/acme.json:/acme.json</span>
+</code></pre></div></div>
+
+<p>Пускай описания таких хостов у нас будут лежать в data/custom/ (а что, вдруг ещё появятся).</p>
+
+<p>Добавим в traefik.yml конфигурацию file провайдера для этих файлов:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">providers</span><span class="pi">:</span>
+<span class="nn">...</span>
+  <span class="na">file</span><span class="pi">:</span>
+    <span class="na">directory</span><span class="pi">:</span> <span class="s">/custom</span>
+    <span class="na">watch</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>Директория следует из нашего docker-compose.yml, а watch: true значит что Traefik будет автоматически обновлять конфигурацию при обнаружении изменений в этих файлах (помните про обновление конфигурации “на лету”, вот работает даже для файлов, а не только для оркестраторов).</p>
+
+<p>Перезапускаем Traefik и теперь можно создать файл с описанием нашего отдельного хоста (data/custom/host.yml):</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">http</span><span class="pi">:</span>
+  <span class="na">routers</span><span class="pi">:</span>
+    <span class="na">host</span><span class="pi">:</span>
+      <span class="na">entryPoints</span><span class="pi">:</span> 
+      <span class="pi">-</span> <span class="s">https</span>
+      <span class="na">service</span><span class="pi">:</span> <span class="s">service-host</span>
+      <span class="na">rule</span><span class="pi">:</span> <span class="s">Host(`host.example.com`)</span> 
+      <span class="na">tls</span><span class="pi">:</span>
+        <span class="na">certResolver</span><span class="pi">:</span> <span class="s">letsEncrypt</span>
+  <span class="na">services</span><span class="pi">:</span>
+    <span class="na">service-host</span><span class="pi">:</span>  
+      <span class="na">loadBalancer</span><span class="pi">:</span>
+        <span class="na">servers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s">http://192.168.1.222:8080/</span>
+        <span class="na">passHostHeader</span><span class="pi">:</span> <span class="no">true</span> 
+</code></pre></div></div>
+
+<p>Роутер описывался раньше, тут добавилось только service: service-host — связь с нашим сервисом, и конфигурация для TLS.</p>
+
+<p>Описание для сервиса имеет вид:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">имя_сервиса</span><span class="pi">:</span>
+  <span class="na">loadBalancer</span><span class="pi">:</span>
+    <span class="na">servers</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">хосты для балансировки нагрузки</span>
+    <span class="pi">-</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<p>Дополнительно мы указываем параметр passHostHeader: true чтобы тот хост думал, что он на самом деле смотрит в сеть и прокси нет.</p>
+
+<h2 id="мониторинг">Мониторинг</h2>
+
+<p>Traefik позволяет собирать сведения о своей работе в различных форматах, рассмотрим, как это делается при использовании Prometheus.</p>
+
+<p>Добавим новую точку входа:
+data/traefik.yml:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">entryPoints</span><span class="pi">:</span>
+<span class="nn">...</span>
+  <span class="na">metrics</span><span class="pi">:</span>
+    <span class="na">address</span><span class="pi">:</span> <span class="s2">"</span><span class="s">:8082"</span>
+</code></pre></div></div>
+
+<p>docker-compose.yml:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">80:80</span>
+    <span class="pi">-</span> <span class="s">443:443</span> 
+    <span class="pi">-</span> <span class="s">8082:8082</span>
+</code></pre></div></div>
+
+<p>И добавим возможность собирать с этого порта метрики для Prometheus, data/traefik.yml:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">metrics</span><span class="pi">:</span>
+  <span class="na">prometheus</span><span class="pi">:</span>
+    <span class="na">entryPoint</span><span class="pi">:</span> <span class="s">metrics</span>
+</code></pre></div></div>
+
+<p>Осталось только настроить Prometheus на сбор метрик с traefik_ip:8082.</p>
+
+<p><a href="https://doc.traefik.io/traefik/">Документация traefik</a></p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Daily note, 2021-05-15, Saturday | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Daily note, 2021-05-15, Saturday" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/journal/daily-note-2021-05-15.html" />
+<meta property="og:url" content="http://localhost:4000/journal/daily-note-2021-05-15.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"Daily note, 2021-05-15, Saturday","url":"http://localhost:4000/journal/daily-note-2021-05-15.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="daily-note--2021-05-15-saturday">Daily note,  2021-05-15, Saturday</h1>
+
+<h2 id="convert-a-string-to-variable-name-in-python">Convert a String to Variable Name in Python</h2>
+
+<p><a href="https://www.delftstack.com/howto/python/python-string-to-variable-name/">Статья</a></p>
+
+<h3 id="вариант-1---globals">Вариант №1 - globals()</h3>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">globals()</code> в #python возвращает словарь текущей глобальной таблицы символов. В глобальной таблице символов хранится вся информация, относящаяся к глобальной области видимости программы, доступ к которой можно получить с помощью функции <code class="language-plaintext highlighter-rouge">globals()</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user_input</span> <span class="o">=</span> <span class="s">"apple"</span>
+<span class="nb">globals</span><span class="p">()[</span><span class="n">user_input</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="k">print</span><span class="p">(</span><span class="n">apple</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">apple</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">50</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">int</span><span class="s">'&gt;
+</span></code></pre></div></div>
+
+<h3 id="вариант-2-locals-аналогично">Вариант №2 locals() аналогично</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user_input</span> <span class="o">=</span> <span class="s">"apple"</span>
+<span class="nb">locals</span><span class="p">()[</span><span class="n">user_input</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="k">print</span><span class="p">(</span><span class="n">apple</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">apple</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="3-exec">№3 exec()</h3>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">exec()</code> используется для динамического выполнения программы #python. Способ не является безопасным.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">name</span> <span class="o">=</span> <span class="s">'Elon'</span>
+<span class="k">exec</span><span class="p">(</span><span class="s">"%s = %d"</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Elon</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1000</span>
+</code></pre></div></div>
+
+<p>Внутри функции <code class="language-plaintext highlighter-rouge">exec()</code> у нас есть %s и %d, используемые в качестве заполнителя для метки и значения переменной соответственно. Это означает, что мы присваиваем строке целочисленное значение с помощью оператора присваивания =, %s, и %d заключены в кавычки “”.</p>
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

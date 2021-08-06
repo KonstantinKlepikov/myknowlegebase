@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>mock-тесты | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="mock-тесты" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/mock.html" />
+<meta property="og:url" content="http://localhost:4000/notes/mock.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"mock-тесты","url":"http://localhost:4000/notes/mock.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="mock-тесты">mock-тесты</h1>
+
+<p><a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.MagicMock">unittest.mock</a></p>
+
+<p>[<a href="unittest" title="unittest">unittest</a>] mock предоставляет базовый <code class="language-plaintext highlighter-rouge">Mock</code> class. После создания объекта, можно ассертить методы и аттрибуты класса, а так-же возвращать значения и устанавливать атрибуты, если это нужно.</p>
+
+<p>Дополнительно предоставляется <code class="language-plaintext highlighter-rouge">patch()</code> декоратор который позволяет мокать тестируемые модули и атрибуты уровня класса. <code class="language-plaintext highlighter-rouge">MagicMock</code> - сабкласс <code class="language-plaintext highlighter-rouge">Mock</code>, который предоставляет множество магических методов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">MagicMock</span>
+<span class="n">thing</span> <span class="o">=</span> <span class="n">ProductionClass</span><span class="p">()</span>
+<span class="n">thing</span><span class="p">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">thing</span><span class="p">.</span><span class="n">method</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">'value'</span><span class="p">)</span>
+
+<span class="n">thing</span><span class="p">.</span><span class="n">method</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">'value'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<pre><code class="language-pyjon">mock = Mock(side_effect=KeyError('foo'))
+mock()
+
+&gt;&gt;&gt; Traceback (most recent call last):
+ ...
+KeyError: 'foo'
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">values</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="k">def</span> <span class="nf">side_effect</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+
+<span class="n">mock</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">side_effect</span>
+<span class="n">mock</span><span class="p">(</span><span class="s">'a'</span><span class="p">),</span> <span class="n">mock</span><span class="p">(</span><span class="s">'b'</span><span class="p">),</span> <span class="n">mock</span><span class="p">(</span><span class="s">'c'</span><span class="p">)</span>
+
+<span class="n">mock</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">mock</span><span class="p">(),</span> <span class="n">mock</span><span class="p">(),</span> <span class="n">mock</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="s">'module.ClassName2'</span><span class="p">)</span>
+<span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="s">'module.ClassName1'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">MockClass1</span><span class="p">,</span> <span class="n">MockClass2</span><span class="p">):</span>
+    <span class="n">module</span><span class="p">.</span><span class="n">ClassName1</span><span class="p">()</span>
+    <span class="n">module</span><span class="p">.</span><span class="n">ClassName2</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">MockClass1</span> <span class="ow">is</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName1</span>
+    <span class="k">assert</span> <span class="n">MockClass2</span> <span class="ow">is</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName2</span>
+    <span class="k">assert</span> <span class="n">MockClass1</span><span class="p">.</span><span class="n">called</span>
+    <span class="k">assert</span> <span class="n">MockClass2</span><span class="p">.</span><span class="n">called</span>
+
+<span class="n">test</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">patch</span><span class="p">.</span><span class="nb">object</span><span class="p">(</span><span class="n">ProductionClass</span><span class="p">,</span> <span class="s">'method'</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_method</span><span class="p">:</span>
+    <span class="n">thing</span> <span class="o">=</span> <span class="n">ProductionClass</span><span class="p">()</span>
+    <span class="n">thing</span><span class="p">.</span><span class="n">method</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">mock_method</span><span class="p">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Оригинальное состояние мокируемого объекта будет возвращено, когда тест завершается</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">foo</span> <span class="o">=</span> <span class="p">{</span><span class="s">'key'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">}</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">foo</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">patch</span><span class="p">.</span><span class="nb">dict</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="p">{</span><span class="s">'newkey'</span><span class="p">:</span> <span class="s">'newvalue'</span><span class="p">},</span> <span class="n">clear</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">foo</span> <span class="o">==</span> <span class="p">{</span><span class="s">'newkey'</span><span class="p">:</span> <span class="s">'newvalue'</span><span class="p">}</span>
+
+<span class="k">assert</span> <span class="n">foo</span> <span class="o">==</span> <span class="n">original</span>
+</code></pre></div></div>
+
+<p>MagicMock мокирует все маг.методы #python</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__str__</span><span class="p">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">'foobarbaz'</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'foobarbaz'</span>
+
+<span class="n">mock</span><span class="p">.</span><span class="n">__str__</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Маг.методам можно присваивать функции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__str__</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">'wheeeeee'</span><span class="p">)</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'wheeeeee'</span>
+</code></pre></div></div>
+
+<p>Autospeck позволяет автоматически создавать моки всех атрибутов и методов функции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">create_autospec</span>
+<span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">mock_function</span> <span class="o">=</span> <span class="n">create_autospec</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="s">'fishy'</span><span class="p">)</span>
+<span class="n">mock_function</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="s">'fishy'</span>
+
+<span class="n">mock_function</span><span class="p">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">mock_function</span><span class="p">(</span><span class="s">'wrong arguments'</span><span class="p">)</span>
+
+<span class="s">"""Traceback (most recent call last):
+ ...
+TypeError: &lt;lambda&gt;() takes exactly 3 arguments (1 given)"""</span>
+</code></pre></div></div>
+
+<h2 id="mock-class"><a href="https://docs.python.org/3/library/unittest.mock.html#the-mock-class">MocK class</a></h2>
+
+<p>Mock создает вызываемый объект, который создает новые моки атрибутов, когда мы получаем к ним доступ. Атрибуты всегда возвращают одно и тоже значение моков.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">unittest</span><span class="p">.</span><span class="n">mock</span><span class="p">.</span><span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">,</span> <span class="n">wraps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">spec_set</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">unsafe</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>specx - список строк или другой объект (например класс или инстанс) - это спецификация мока</li>
+  <li>spec_set - список вариантов мока</li>
+  <li>side_effect - функция, которая будет вызывана, когда вызван мок</li>
+  <li>return_value - значение, которое вернет мок</li>
+  <li>см.остальное в доке</li>
+</ul>
+
+<p>Доступны такие ассерты:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">assert_called()</code> проверка того, что мок был вызван хотябы однажды</li>
+  <li><code class="language-plaintext highlighter-rouge">assert_called_once()</code> вызван строго дин раз</li>
+  <li><code class="language-plaintext highlighter-rouge">assert_called_with(*args, **kwargs)</code> вызван с аргументами</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">method</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'wow'</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">Mock</span> <span class="n">name</span><span class="o">=</span><span class="s">'mock.method()'</span> <span class="nb">id</span><span class="o">=</span><span class="s">'...'</span><span class="o">&gt;</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">method</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'wow'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">assert_called_once_with(*args, **kwargs)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">assert_any_call(*args, **kwargs)</code> был вызов с любым из аргументов</li>
+  <li><code class="language-plaintext highlighter-rouge">assert_has_calls(calls, any_order=False)</code> были вызовы в определенном порядке</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">calls</span> <span class="o">=</span> <span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">call</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">assert_has_calls</span><span class="p">(</span><span class="n">calls</span><span class="p">)</span>
+<span class="n">calls</span> <span class="o">=</span> <span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">call</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">assert_has_calls</span><span class="p">(</span><span class="n">calls</span><span class="p">,</span> <span class="n">any_order</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">assert_not_called()</code></li>
+</ul>
+
+<p>Остальные методы, начиная с <a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.reset_mock">reset_mock()</a> - различные методы, конфигурирующие моки.</p>
+
+<p>Доступны <a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.AsyncMock">асинхронные моки</a>. [<a href="asyncio" title="asinco">asyncio</a>]</p>
+
+<h3 id="вызов-мока"><a href="https://docs.python.org/3/library/unittest.mock.html#calling">Вызов мока</a></h3>
+
+<p>Объект мока вызываемы и возвращает значение, указанное в return_value. Дефолтно мок возвращает новый мок-объект. Возвращаемый объект создается первый раз при первом ассерте, дальше возвращается все время одно и тоже.</p>
+
+<p>Вызовы пишутся в атрибуты call_args and call_args_list. Если задан side_effect, он запускается после создание объекта мока, так что вызов все равно будет записан в атрибут.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="nb">IndexError</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="p">...</span>
+<span class="nb">IndexError</span>
+<span class="n">m</span><span class="p">.</span><span class="n">mock_calls</span>
+<span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="n">m</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="nb">KeyError</span><span class="p">(</span><span class="s">'Bang!'</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">,</span> <span class="s">'four'</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="p">...</span>
+<span class="nb">KeyError</span><span class="p">:</span> <span class="s">'Bang!'</span>
+<span class="n">m</span><span class="p">.</span><span class="n">mock_calls</span>
+<span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">call</span><span class="p">(</span><span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">,</span> <span class="s">'four'</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>Если использовать функцию в качестве объекта side_effect, то она принимает аргументы вызова - это позволяет поднимать ошибку или возвращать значения в зависимости от атрибутов мока</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">side_effect</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="n">side_effect</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="n">m</span><span class="p">.</span><span class="n">mock_calls</span>
+<span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>Мы так-же в любой момент можем переопределить сайд эффект и возвращать дефолтно. Два способа как это сделать:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">side_effect</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">m</span><span class="p">.</span><span class="n">return_value</span>
+
+<span class="n">m</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">side_effect</span>
+<span class="n">m</span><span class="p">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="k">def</span> <span class="nf">side_effect</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DEFAULT</span>
+
+<span class="n">m</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">side_effect</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">3</span>
+</code></pre></div></div>
+
+<p>Чтобы возвращать дефолтное состояние, нужно установить side_effect в <code class="language-plaintext highlighter-rouge">None</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">side_effect</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">3</span>
+
+<span class="n">m</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">side_effect</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="n">m</span><span class="p">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">6</span>
+</code></pre></div></div>
+
+<p>Крмое того, side_effect можно итерирровать</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">1</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">2</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="p">...</span>
+<span class="nb">StopIteration</span>
+</code></pre></div></div>
+
+<p>И поднимать эксепшены в процессе итерации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">iterable</span> <span class="o">=</span> <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="nb">ValueError</span><span class="p">,</span> <span class="mi">66</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">side_effect</span><span class="o">=</span><span class="n">iterable</span><span class="p">)</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">33</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+ <span class="p">...</span>
+<span class="nb">ValueError</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="mi">66</span>
+</code></pre></div></div>
+
+<h3 id="удаление-атрибутов"><a href="https://docs.python.org/3/library/unittest.mock.html#deleting-attributes">Удаление атрибутов</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="nb">hasattr</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="s">'m'</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="k">del</span> <span class="n">mock</span><span class="p">.</span><span class="n">m</span>
+<span class="nb">hasattr</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="s">'m'</span><span class="p">)</span>
+<span class="bp">False</span>
+<span class="k">del</span> <span class="n">mock</span><span class="p">.</span><span class="n">f</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">f</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+    <span class="p">...</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="n">f</span>
+</code></pre></div></div>
+
+<h3 id="название-mocka-атрибут-name"><a href="https://docs.python.org/3/library/unittest.mock.html#mock-names-and-the-name-attribute">Название mocka (атрибут name)</a></h3>
+
+<h3 id="использование-мока-как-атрибута"><a href="https://docs.python.org/3/library/unittest.mock.html#attaching-mocks-as-attributes">Использование мока, как атрибута</a></h3>
+
+<p>При присоединении мока, как атрибута к другому моку, он становится дочерним моком.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">parent</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="n">child1</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">child2</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">parent</span><span class="p">.</span><span class="n">child1</span> <span class="o">=</span> <span class="n">child1</span>
+<span class="n">parent</span><span class="p">.</span><span class="n">child2</span> <span class="o">=</span> <span class="n">child2</span>
+<span class="n">child1</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">child2</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">parent</span><span class="p">.</span><span class="n">mock_calls</span>
+<span class="p">[</span><span class="n">call</span><span class="p">.</span><span class="n">child1</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">call</span><span class="p">.</span><span class="n">child2</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>Другие подробности в статье</p>
+
+<h2 id="the-patchers"><a href="https://docs.python.org/3/library/unittest.mock.html#the-patchers">The patchers</a></h2>
+
+<p>Декораторы patch используются для исправления объектов только в рамках функции, которую они декорируют. Они автоматически обрабатывают распаковку, даже если возникают исключения. Все эти функции также могут использоваться в операторах with или в качестве декораторов классов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">unittest</span><span class="p">.</span><span class="n">mock</span><span class="p">.</span><span class="n">patch</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">spec_set</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">autospec</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">new_callable</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Может использоваться как декоратор функции, класса или контекст-менеджер.</p>
+
+<ul>
+  <li>target должен быть в формате <code class="language-plaintext highlighter-rouge">'package.module.ClassName'</code>, Target испортируется и специфицированный объект заменяется на новый</li>
+  <li>spec и spec_set пеередается в MagicMock</li>
+  <li>new_callable определяет какие новые объекты буду вызваны при создании нового объекта</li>
+</ul>
+
+<p>Подробнее об остальном в статье</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="s">'__main__.SomeClass'</span><span class="p">)</span>
+<span class="p">...</span> <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">normal_argument</span><span class="p">,</span> <span class="n">mock_class</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">mock_class</span> <span class="ow">is</span> <span class="n">SomeClass</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">function</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Class</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">pass</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s">'__main__.Class'</span><span class="p">)</span> <span class="k">as</span> <span class="n">MockClass</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">instance</span> <span class="o">=</span> <span class="n">MockClass</span><span class="p">.</span><span class="n">return_value</span>
+<span class="p">...</span>     <span class="n">instance</span><span class="p">.</span><span class="n">method</span><span class="p">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">'foo'</span>
+<span class="p">...</span>     <span class="k">assert</span> <span class="n">Class</span><span class="p">()</span> <span class="ow">is</span> <span class="n">instance</span>
+<span class="p">...</span>     <span class="k">assert</span> <span class="n">Class</span><span class="p">().</span><span class="n">method</span><span class="p">()</span> <span class="o">==</span> <span class="s">'foo'</span>
+</code></pre></div></div>
+
+<p>Пачт <a href="https://docs.python.org/3/library/unittest.mock.html#patch-object">может получать различные объекты</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">patch</span><span class="p">.</span><span class="nb">object</span><span class="p">(</span><span class="n">SomeClass</span><span class="p">,</span> <span class="s">'class_method'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">mock_method</span><span class="p">):</span>
+    <span class="n">SomeClass</span><span class="p">.</span><span class="n">class_method</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">mock_method</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">test</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">foo</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">@</span><span class="n">patch</span><span class="p">.</span><span class="nb">dict</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="p">{</span><span class="s">'newkey'</span><span class="p">:</span> <span class="s">'newvalue'</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">foo</span> <span class="o">==</span> <span class="p">{</span><span class="s">'newkey'</span><span class="p">:</span> <span class="s">'newvalue'</span><span class="p">}</span>
+<span class="n">test</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">foo</span> <span class="o">==</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">patch</span><span class="p">.</span><span class="n">multiple</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">FIRST_PATCH</span><span class="o">=</span><span class="s">'one'</span><span class="p">,</span> <span class="n">SECOND_PATCH</span><span class="o">=</span><span class="s">'two'</span><span class="p">):</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>У патчей есть start() и stop() методы. Это упрощает setUp для теста</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">patcher</span> <span class="o">=</span> <span class="n">patch</span><span class="p">(</span><span class="s">'package.module.ClassName'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">package</span> <span class="kn">import</span> <span class="n">module</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName</span>
+<span class="n">new_mock</span> <span class="o">=</span> <span class="n">patcher</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">original</span>
+<span class="k">assert</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName</span> <span class="ow">is</span> <span class="n">new_mock</span>
+<span class="n">patcher</span><span class="p">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName</span> <span class="ow">is</span> <span class="n">original</span>
+<span class="k">assert</span> <span class="n">module</span><span class="p">.</span><span class="n">ClassName</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">new_mock</span>
+</code></pre></div></div>
+
+<p>Пример с сетап-тирдаун</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyTest</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">patcher1</span> <span class="o">=</span> <span class="n">patch</span><span class="p">(</span><span class="s">'package.module.Class1'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">patcher2</span> <span class="o">=</span> <span class="n">patch</span><span class="p">(</span><span class="s">'package.module.Class2'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">MockClass1</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">patcher1</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">MockClass2</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">patcher2</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">patcher1</span><span class="p">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">patcher2</span><span class="p">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">package</span><span class="p">.</span><span class="n">module</span><span class="p">.</span><span class="n">Class1</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">.</span><span class="n">MockClass1</span>
+        <span class="k">assert</span> <span class="n">package</span><span class="p">.</span><span class="n">module</span><span class="p">.</span><span class="n">Class2</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">.</span><span class="n">MockClass2</span>
+
+<span class="n">MyTest</span><span class="p">(</span><span class="s">'test_something'</span><span class="p">).</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Важно! Если setup вызовет ошибку - tearDown’а уже не будет. Проблему помогает решить <a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.addCleanup">unittest.TestCase.addCleanup()</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyTest</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">patcher</span> <span class="o">=</span> <span class="n">patch</span><span class="p">(</span><span class="s">'package.module.Class'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">MockClass</span> <span class="o">=</span> <span class="n">patcher</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">addCleanup</span><span class="p">(</span><span class="n">patcher</span><span class="p">.</span><span class="n">stop</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_something</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">package</span><span class="p">.</span><span class="n">module</span><span class="p">.</span><span class="n">Class</span> <span class="ow">is</span> <span class="bp">self</span><span class="p">.</span><span class="n">MockClass</span>
+</code></pre></div></div>
+
+<p>Еще доступно вот это: <code class="language-plaintext highlighter-rouge">patch.stopall()</code></p>
+
+<h3 id="test-prefix"><a href="https://docs.python.org/3/library/unittest.mock.html#test-prefix">Test prefix</a></h3>
+
+<p>Это позволяет передать через декоратор что-то только специфическим методам класса, если декорируется класс. Аналог <a href="https://docs.python.org/3/library/unittest.html#unittest.TestLoader">unittest.TestLoader</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">patch</span><span class="p">.</span><span class="n">TEST_PREFIX</span> <span class="o">=</span> <span class="s">'foo'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="s">'__main__.value'</span><span class="p">,</span> <span class="s">'not three'</span><span class="p">)</span>
+<span class="p">...</span> <span class="k">class</span> <span class="nc">Thing</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">foo_one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">foo_two</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Thing</span><span class="p">().</span><span class="n">foo_one</span><span class="p">()</span>
+<span class="ow">not</span> <span class="n">three</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Thing</span><span class="p">().</span><span class="n">foo_two</span><span class="p">()</span>
+<span class="ow">not</span> <span class="n">three</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">value</span>
+<span class="mi">3</span>
+</code></pre></div></div>
+
+<h3 id="декораторы-patch-можно-стакать"><a href="https://docs.python.org/3/library/unittest.mock.html#nesting-patch-decorators">Декораторы patch можно стакать</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">patch</span><span class="p">.</span><span class="nb">object</span><span class="p">(</span><span class="n">SomeClass</span><span class="p">,</span> <span class="s">'class_method'</span><span class="p">)</span>
+<span class="o">@</span><span class="n">patch</span><span class="p">.</span><span class="nb">object</span><span class="p">(</span><span class="n">SomeClass</span><span class="p">,</span> <span class="s">'static_method'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">mock1</span><span class="p">,</span> <span class="n">mock2</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">SomeClass</span><span class="p">.</span><span class="n">static_method</span> <span class="ow">is</span> <span class="n">mock1</span>
+    <span class="k">assert</span> <span class="n">SomeClass</span><span class="p">.</span><span class="n">class_method</span> <span class="ow">is</span> <span class="n">mock2</span>
+    <span class="n">SomeClass</span><span class="p">.</span><span class="n">static_method</span><span class="p">(</span><span class="s">'foo'</span><span class="p">)</span>
+    <span class="n">SomeClass</span><span class="p">.</span><span class="n">class_method</span><span class="p">(</span><span class="s">'bar'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mock1</span><span class="p">,</span> <span class="n">mock2</span>
+
+<span class="n">mock1</span><span class="p">,</span> <span class="n">mock2</span> <span class="o">=</span> <span class="n">test</span><span class="p">()</span>
+<span class="n">mock1</span><span class="p">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="s">'foo'</span><span class="p">)</span>
+<span class="n">mock2</span><span class="p">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="s">'bar'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Остальное смотир в доке</p>
+
+<h2 id="magicmock"><a href="https://docs.python.org/3/library/unittest.mock.html#magicmock-and-magic-method-support">MagicMock</a></h2>
+
+<p>Позволяет мокироват ьмагические методы #python. Если для мока используется функция, ей обязательно необходимо передать self</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">'fooble'</span>
+<span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__str__</span> <span class="o">=</span> <span class="n">__str__</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+
+
+<span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__str__</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__str__</span><span class="p">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">'fooble'</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+<span class="s">'fooble'</span>
+
+
+<span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__iter__</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="nb">iter</span><span class="p">([]))</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+<span class="p">[]</span>
+</code></pre></div></div>
+
+<p>Вот так можно замокать контекст-менеджер:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__enter__</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="s">'foo'</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__exit__</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">mock</span> <span class="k">as</span> <span class="n">m</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">m</span> <span class="o">==</span> <span class="s">'foo'</span>
+
+<span class="n">mock</span><span class="p">.</span><span class="n">__enter__</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__exit__</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Полный список того, что можно замокать:</p>
+
+<ul>
+  <li>__hash__, __sizeof__, __repr__ and __str__</li>
+  <li>__dir__, __format__ and __subclasses__</li>
+  <li>__round__, __floor__, __trunc__ and __ceil__</li>
+  <li>Comparisons: __lt__, __gt__, __le__, __ge__, __eq__ and __ne__</li>
+  <li>Container methods: __getitem__, __setitem__, __delitem__, __contains__, __len__, __iter__, __reversed__ and __missing__</li>
+  <li>Context manager: __enter__, __exit__, __aenter__ and __aexit__</li>
+  <li>Unary numeric methods: __neg__, __pos__ and __invert__</li>
+  <li>The numeric methods (including right hand and in-place variants): __add__, __sub__, __mul__, __matmul__, __div__, __truediv__, __floordiv__, __mod__, __divmod__, __lshift__, __rshift__, __and__, __xor__, __or__, and __pow__</li>
+  <li>Numeric conversion methods: __complex__, __int__, __float__ and __index__</li>
+  <li>Descriptor methods: __get__, __set__ and __delete__</li>
+  <li>Pickling: __reduce__, __reduce_ex__, __getinitargs__, __getnewargs__, __getstate__ and __setstate__</li>
+  <li>File system path representation: __fspath__</li>
+  <li>Asynchronous iteration methods: __aiter__ and __anext__</li>
+</ul>
+
+<p>Данные методы не поддерживаются либо могут вызывать проблемы:</p>
+
+<ul>
+  <li>__getattr__, __setattr__, __init__ and __new__</li>
+  <li>__prepare__, __instancecheck__, __subclasscheck__, __del__</li>
+</ul>
+
+<h3 id="magicmock-1"><a href="https://docs.python.org/3/library/unittest.mock.html#magic-mock">MagicMock</a></h3>
+
+<p>Два варианта <code class="language-plaintext highlighter-rouge">MagicMock</code> and <code class="language-plaintext highlighter-rouge">NonCallableMagicMock</code>. Первый - это сабкласс от <code class="language-plaintext highlighter-rouge">Mock</code>, реализующий большинство меджик методов. Второй - его невызываемый собрат. Его конструктор аналогичен первому за исключением того, что return_value и side_effect не имеют значения.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="n">mock</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="s">'fish'</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__setitem__</span><span class="p">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'fish'</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">__getitem__</span><span class="p">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">'result'</span>
+<span class="n">mock</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'result'</span>
+</code></pre></div></div>
+
+<p>Доступные методы и их дефолтные значения</p>
+
+<ul>
+  <li>__lt__: NotImplemented</li>
+  <li>__gt__: NotImplemented</li>
+  <li>__le__: NotImplemented</li>
+  <li>__ge__: NotImplemented</li>
+  <li>__int__: 1</li>
+  <li>__contains__: False</li>
+  <li>__len__: 0</li>
+  <li>__iter__: iter([])</li>
+  <li>__exit__: False</li>
+  <li>__aexit__: False</li>
+  <li>__complex__: 1j</li>
+  <li>__float__: 1.0</li>
+  <li>__bool__: True</li>
+  <li>__index__: 1</li>
+  <li>__hash__: default hash for the mock</li>
+  <li>__str__: default str for the mock</li>
+  <li>__sizeof__: default sizeof for the mock</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+<span class="nb">int</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">mock</span><span class="p">)</span>
+<span class="p">[]</span>
+<span class="nb">object</span><span class="p">()</span> <span class="ow">in</span> <span class="n">mock</span>
+<span class="bp">False</span>
+</code></pre></div></div>
+
+<p>Подробнее читай доку - есть нюансы. Так-же ест ьметоды, котоыре поддерживаются, но не определены дефолтные значения.</p>
+
+<h2 id="helpers"><a href="https://docs.python.org/3/library/unittest.mock.html#helpers">Helpers</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">unittest.mock.sentinel</code> простйо способ создавать уникальные объекты для тестов
+<code class="language-plaintext highlighter-rouge">unittest.mock.DEFAULT</code> заранее созданный сентинел. Как используется - смотри выше, там где обсуждался вывод дефолтного значения в side_effect
+<code class="language-plaintext highlighter-rouge">unittest.mock.call(*args, **kwargs)</code> хелпер для упрощения ассершена</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="s">'foo'</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="s">'bar'</span><span class="p">)</span>
+<span class="n">m</span><span class="p">()</span>
+<span class="n">m</span><span class="p">.</span><span class="n">call_args_list</span> <span class="o">==</span> <span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="s">'foo'</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="s">'bar'</span><span class="p">),</span> <span class="n">call</span><span class="p">()]</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Реализованы методы call_args, call_args_list, mock_calls и method_calls. <a href="https://docs.python.org/3/library/unittest.mock.html#call">Подробнее</a></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">unittest.mock.create_autospec(spec, spec_set=False, instance=False, **kwargs)</code> позволяет создать мок, используя другой объект в качестве спецификации. <a href="https://docs.python.org/3/library/unittest.mock.html#auto-speccing">Подробный пример тут</a></li>
+  <li><code class="language-plaintext highlighter-rouge">unittest.mock.ANY</code> позволяет создать аргумент с “абсолютно любым значением”</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">mock</span><span class="p">(</span><span class="s">'foo'</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="nb">object</span><span class="p">())</span>
+<span class="n">mock</span><span class="p">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="s">'foo'</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="n">ANY</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span><span class="n">return_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="nb">object</span><span class="p">())</span>
+<span class="n">m</span><span class="p">.</span><span class="n">mock_calls</span> <span class="o">==</span> <span class="p">[</span><span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">call</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">ANY</span><span class="p">]</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">unittest.mock.FILTER_DIR</code></li>
+  <li><code class="language-plaintext highlighter-rouge">unittest.mock.mock_open(mock=None, read_data=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">unittest.mock.seal(mock)</code></li>
+</ul>
+
+<h2 id="monkeypatchingmocking-modules-and-environments"><a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html">Monkeypatching/mocking modules and environments</a></h2>
+
+<p>Моки модулей и окружений можно делать в [<a href="pytest" title="pytest">pytest</a>]. The <code class="language-plaintext highlighter-rouge">monkeypatch</code> fixture helps you to safely set/delete an attribute, dictionary item or environment variable, or to modify sys.path for importing</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">monkeypatch</span><span class="p">.</span><span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="nb">delattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">delitem</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">setenv</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">delenv</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">syspath_prepend</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Все модификации удаляются после того, как запрашиваемая функция в фикстуре выполняется. raising параметр определяет, что происходит при KeyError или AttributeError</p>
+
+<p>Когда надо использовать?</p>
+
+<ul>
+  <li>модифицировать методы API</li>
+  <li>заменить значения словарей</li>
+  <li>заменить переменные окружения</li>
+  <li>заменить контекст, например текущие рабочие директории</li>
+  <li>подменить <code class="language-plaintext highlighter-rouge">sys.path</code></li>
+</ul>
+
+<p>Простой пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># contents of test_module.py with source code and the test
+</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span> <span class="nf">getssh</span><span class="p">():</span>
+    <span class="s">"""Simple function to return expanded homedir ssh path."""</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s">".ssh"</span>
+
+
+<span class="k">def</span> <span class="nf">test_getssh</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="c1"># mocked return function to replace Path.home
+</span>    <span class="c1"># always return '/abc'
+</span>    <span class="k">def</span> <span class="nf">mockreturn</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="s">"/abc"</span><span class="p">)</span>
+
+    <span class="c1"># Application of the monkeypatch to replace Path.home
+</span>    <span class="c1"># with the behavior of mockreturn defined above.
+</span>    <span class="n">monkeypatch</span><span class="p">.</span><span class="nb">setattr</span><span class="p">(</span><span class="n">Path</span><span class="p">,</span> <span class="s">"home"</span><span class="p">,</span> <span class="n">mockreturn</span><span class="p">)</span>
+
+    <span class="c1"># Calling getssh() will use mockreturn in place of Path.home
+</span>    <span class="c1"># for this test with the monkeypatch.
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">getssh</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">x</span> <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s">"/abc/.ssh"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Можно мокать возвращаемый объект, для этого надо <a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html#monkeypatching-returned-objects-building-mock-classes">создать мок-класс</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># contents of app.py, a simple API retrieval example
+</span><span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="s">"""Takes a URL, and returns the JSON."""</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># contents of test_app.py, a simple test for our API retrieval
+# import requests for the purposes of monkeypatching
+</span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># our app.py that includes the get_json() function
+# this is the previous code block example
+</span><span class="kn">import</span> <span class="nn">app</span>
+
+<span class="c1"># custom class to be the mock return value
+# will override the requests.Response returned from requests.get
+</span><span class="k">class</span> <span class="nc">MockResponse</span><span class="p">:</span>
+
+    <span class="c1"># mock json() method always returns a specific testing dictionary
+</span>    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">json</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"mock_key"</span><span class="p">:</span> <span class="s">"mock_response"</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">test_get_json</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+
+    <span class="c1"># Any arguments may be passed and mock_get() will always return our
+</span>    <span class="c1"># mocked object, which only has the .json() method.
+</span>    <span class="k">def</span> <span class="nf">mock_get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MockResponse</span><span class="p">()</span>
+
+    <span class="c1"># apply the monkeypatch for requests.get to mock_get
+</span>    <span class="n">monkeypatch</span><span class="p">.</span><span class="nb">setattr</span><span class="p">(</span><span class="n">requests</span><span class="p">,</span> <span class="s">"get"</span><span class="p">,</span> <span class="n">mock_get</span><span class="p">)</span>
+
+    <span class="c1"># app.get_json, which contains requests.get, uses the monkeypatch
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">get_json</span><span class="p">(</span><span class="s">"https://fakeurl"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s">"mock_key"</span><span class="p">]</span> <span class="o">==</span> <span class="s">"mock_response"</span>
+</code></pre></div></div>
+
+<p>Как мокать другие объекты - читай в документации</p>
+
+<p>Либа <a href="https://github.com/pytest-dev/pytest-mock/">pytest-mock</a> предоставляет доп.апи для моков в pytest, напирмер позволяет работать с файловой системой</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">class</span> <span class="nc">UnixFS</span><span class="p">:</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">rm</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">os</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_unix_fs</span><span class="p">(</span><span class="n">mocker</span><span class="p">):</span>
+    <span class="n">mocker</span><span class="p">.</span><span class="n">patch</span><span class="p">(</span><span class="s">'os.remove'</span><span class="p">)</span>
+    <span class="n">UnixFS</span><span class="p">.</span><span class="n">rm</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+    <span class="n">os</span><span class="p">.</span><span class="n">remove</span><span class="p">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>starlette | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="starlette" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/starlette.html" />
+<meta property="og:url" content="http://localhost:4000/notes/starlette.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"starlette","url":"http://localhost:4000/notes/starlette.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="starlette">starlette</h1>
+
+<p>ASGI асинхронный фреймворк на #python. Используется в [<a href="../lists/fastapi" title="fastapi">fastapi</a>]</p>
+
+<p><a href="https://www.starlette.io/">Документация</a></p>
+
+<p>Его преимущества:</p>
+
+<ul>
+  <li>Seriously impressive performance.</li>
+  <li>WebSocket support.</li>
+  <li>GraphQL support.</li>
+  <li>In-process background tasks.</li>
+  <li>Startup and shutdown events.</li>
+  <li>Test client built on requests.</li>
+  <li>CORS, GZip, Static Files, Streaming responses.</li>
+  <li>Session and Cookie support.</li>
+  <li>100% test coverage.</li>
+  <li>100% type annotated codebase.</li>
+  <li>Zero hard dependencies.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">pip3 install starlette</code></p>
+
+<p>Кроме того, нужен сервер, к примеру [<a href="uvicorn" title="uvicorn">uvicorn</a>]</p>
+
+<p>Пример реализации:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.routing</span> <span class="kn">import</span> <span class="n">Route</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">homepage</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">})</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">routes</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">homepage</span><span class="p">),</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<p>Это можно запустить через <code class="language-plaintext highlighter-rouge">uvicorn example:app</code>. <a href="https://github.com/encode/starlette-example">Более полный пример</a></p>
+
+<h2 id="зависимости-опциональные">Зависимости (опциональные)</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">requests</code> - Required if you want to use the TestClient.</li>
+  <li><code class="language-plaintext highlighter-rouge">aiofiles</code> - Required if you want to use FileResponse or StaticFiles.</li>
+  <li><code class="language-plaintext highlighter-rouge">jinja2</code> - Required if you want to use Jinja2Templates.</li>
+  <li><code class="language-plaintext highlighter-rouge">python-multipart</code> - Required if you want to support form parsing, with request.form().</li>
+  <li><code class="language-plaintext highlighter-rouge">itsdangerous</code> - Required for SessionMiddleware support.</li>
+  <li><code class="language-plaintext highlighter-rouge">pyyaml</code> - Required for SchemaGenerator support.</li>
+  <li><code class="language-plaintext highlighter-rouge">graphene</code> - Required for GraphQLApp support.</li>
+</ul>
+
+<p><a href="https://www.starlette.io/database/">Работа с бд</a></p>
+
+<h2 id="создание-приложения">Создание приложения</h2>
+
+<p>Специальный класс <code class="language-plaintext highlighter-rouge">Starlette</code>. Описание и пример <a href="https://www.starlette.io/applications/">тут</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[...]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">,</span> <span class="n">on_startup</span><span class="o">=</span><span class="p">[</span><span class="n">startup</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Параметры:</p>
+
+<ul>
+  <li>debug - Boolean, индицирует следует ли возвращать трасер при ошибках</li>
+  <li>routes - список путей для http и websocket
+middleware - список middleware, запускается на каждом запросе. Старлетт всегда автоматически включает два мидлевейра - ServerErrorMiddleware и ExceptionMiddleware</li>
+  <li>exception_handlers - словарь http-кодов и ошибок</li>
+  <li>on_startup - список того, что запускается на старте приложения</li>
+  <li>on_shutdown - на закрытии</li>
+</ul>
+
+<p>Можно задавать дополнительные стейтменты, используя <code class="language-plaintext highlighter-rouge">state</code> атрибутам</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="n">ADMIN_EMAIL</span> <span class="o">=</span> <span class="s">'admin@example.org'</span>
+</code></pre></div></div>
+
+<h2 id="requests"><a href="https://www.starlette.io/requests/">Requests</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">Request</code> class</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.requests</span> <span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">Response</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">scope</span><span class="p">[</span><span class="s">'type'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'http'</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="s">'%s %s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">method</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">url</span><span class="p">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">media_type</span><span class="o">=</span><span class="s">'text/plain'</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">response</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>описание аттрибутов <a href="https://www.starlette.io/requests/">в статье</a></p>
+
+<h2 id="responses"><a href="https://www.starlette.io/responses/">Responses</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">Response(content, status_code=200, headers=None, media_type=None)</code></p>
+
+<ul>
+  <li>content - A string or bytestring.</li>
+  <li>status_code - An integer HTTP status code.</li>
+  <li>headers - A dictionary of strings.</li>
+  <li>media_type - A string giving the media type. eg. “text/html”</li>
+</ul>
+
+<p>Доступен метод <code class="language-plaintext highlighter-rouge">Response.set_cookie(key, value, max_age=None, expires=None, path="/", domain=None, secure=False, httponly=False, samesite="lax")</code>. Описание аттрибутов <a href="https://www.starlette.io/responses/">в статье.</a></p>
+
+<p>Еще методы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Response.delete_cookie(key, path='/', domain=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">HTMLResponse('&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, world!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;')</code></li>
+  <li><code class="language-plaintext highlighter-rouge">PlainTextResponse('Hello, world!')</code></li>
+  <li><code class="language-plaintext highlighter-rouge">JSONResponse({'hello': 'world'})</code></li>
+  <li><code class="language-plaintext highlighter-rouge">RedirectResponse(url='/')</code></li>
+  <li><code class="language-plaintext highlighter-rouge">StreamingResponse(generator, media_type='text/html')</code></li>
+  <li><code class="language-plaintext highlighter-rouge">FileResponse('statics/favicon.ico')</code></li>
+</ul>
+
+<h2 id="websockets"><a href="https://www.starlette.io/websockets/">Websockets</a></h2>
+
+<p>Механизм такой-же, как и для http-запроса</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.websockets</span> <span class="kn">import</span> <span class="n">WebSocket</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">):</span>
+    <span class="n">websocket</span> <span class="o">=</span> <span class="n">WebSocket</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="o">=</span><span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="o">=</span><span class="n">send</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">websocket</span><span class="p">.</span><span class="n">accept</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">websocket</span><span class="p">.</span><span class="n">send_text</span><span class="p">(</span><span class="s">'Hello, world!'</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">websocket</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="routing"><a href="https://www.starlette.io/routing/">Routing</a></h2>
+
+<p>Пути прописываются в виде списка.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.routing</span> <span class="kn">import</span> <span class="n">Route</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">homepage</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s">"Homepage"</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s">"About"</span><span class="p">)</span>
+
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">homepage</span><span class="p">),</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/about"</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">about</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В качестве эндпоинта принимается обычная или асинхронная функция с единственным креквестом или класс, реализующий #ASGI интерфейс.</p>
+
+<p>Про переменные пути <a href="https://www.starlette.io/routing/">читай статью</a>. Допустима [<a href="type-annotation" title="Анотация типов в #python">type-annotation</a>]</p>
+
+<p>Допускаются следующие данные переменных:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">str</code> returns a string, and is the default.</li>
+  <li><code class="language-plaintext highlighter-rouge">int</code> returns a Python integer.</li>
+  <li><code class="language-plaintext highlighter-rouge">float</code> returns a Python float.</li>
+  <li><code class="language-plaintext highlighter-rouge">uuid</code> return a Python uuid.UUID instance.</li>
+  <li><code class="language-plaintext highlighter-rouge">path</code> returns the rest of the path, including any additional / characters.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Route</span><span class="p">(</span><span class="s">'/users/{user_id:int}'</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+<span class="n">Route</span><span class="p">(</span><span class="s">'/floating-point/{number:float}'</span><span class="p">,</span> <span class="n">floating_point</span><span class="p">)</span>
+<span class="n">Route</span><span class="p">(</span><span class="s">'/uploaded/{rest_of_path:path}'</span><span class="p">,</span> <span class="n">uploaded</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Можно задавать тип #http запроса</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Route</span><span class="p">(</span><span class="s">'/users/{user_id:int}'</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">"GET"</span><span class="p">,</span> <span class="s">"POST"</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Можно монтировать сабпути для больших проектов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">homepage</span><span class="p">),</span>
+    <span class="n">Mount</span><span class="p">(</span><span class="s">'/users'</span><span class="p">,</span> <span class="n">routes</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">Route</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'GET'</span><span class="p">,</span> <span class="s">'POST'</span><span class="p">]),</span>
+        <span class="n">Route</span><span class="p">(</span><span class="s">'/{username}'</span><span class="p">,</span> <span class="n">user</span><span class="p">),</span>
+    <span class="p">])</span>
+<span class="p">]</span>
+
+<span class="c1"># или так
+</span><span class="kn">from</span> <span class="nn">myproject</span> <span class="kn">import</span> <span class="n">users</span><span class="p">,</span> <span class="n">auth</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">homepage</span><span class="p">),</span>
+    <span class="n">Mount</span><span class="p">(</span><span class="s">'/users'</span><span class="p">,</span> <span class="n">routes</span><span class="o">=</span><span class="n">users</span><span class="p">.</span><span class="n">routes</span><span class="p">),</span>
+    <span class="n">Mount</span><span class="p">(</span><span class="s">'/auth'</span><span class="p">,</span> <span class="n">routes</span><span class="o">=</span><span class="n">auth</span><span class="p">.</span><span class="n">routes</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># или испльзуя сабприложения
+</span><span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">...</span>
+    <span class="n">Mount</span><span class="p">(</span><span class="s">"/static"</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="n">StaticFiles</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s">"static"</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"static"</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Иак можно вернуть url из пути</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">homepage</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"homepage"</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># We can use the following to return a URL...
+</span><span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">url_for</span><span class="p">(</span><span class="s">"homepage"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="endpoints"><a href="https://www.starlette.io/endpoints/">Endpoints</a></h2>
+
+<p>Два класса - <code class="language-plaintext highlighter-rouge">HTTPEndpoint</code> and <code class="language-plaintext highlighter-rouge">WebSocketEndpoint</code></p>
+
+<p>HTTPEndpoint</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">PlainTextResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.endpoints</span> <span class="kn">import</span> <span class="n">HTTPEndpoint</span>
+<span class="kn">from</span> <span class="nn">starlette.routing</span> <span class="kn">import</span> <span class="n">Route</span>
+
+
+<span class="k">class</span> <span class="nc">Homepage</span><span class="p">(</span><span class="n">HTTPEndpoint</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s">f"Hello, world!"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">HTTPEndpoint</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">path_params</span><span class="p">[</span><span class="s">'username'</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">PlainTextResponse</span><span class="p">(</span><span class="s">f"Hello, </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">Homepage</span><span class="p">),</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/{username}"</span><span class="p">,</span> <span class="n">User</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>WebSocketEndpoint</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.endpoints</span> <span class="kn">import</span> <span class="n">WebSocketEndpoint</span>
+
+
+<span class="k">class</span> <span class="nc">App</span><span class="p">(</span><span class="n">WebSocketEndpoint</span><span class="p">):</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="s">'bytes'</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">websocket</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">websocket</span><span class="p">.</span><span class="n">accept</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">websocket</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">websocket</span><span class="p">.</span><span class="n">send_bytes</span><span class="p">(</span><span class="s">b"Message: "</span> <span class="o">+</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">websocket</span><span class="p">,</span> <span class="n">close_code</span><span class="p">):</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<p><a href="https://www.starlette.io/endpoints/">Подробнее</a></p>
+
+<h2 id="middleware"><a href="https://www.starlette.io/middleware/">Middleware</a></h2>
+
+<p>В старлетте несколько миддлвейров, все они реализованы как #ASGI классы</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.middleware</span> <span class="kn">import</span> <span class="n">Middleware</span>
+<span class="kn">from</span> <span class="nn">starlette.middleware.httpsredirect</span> <span class="kn">import</span> <span class="n">HTTPSRedirectMiddleware</span>
+<span class="kn">from</span> <span class="nn">starlette.middleware.trustedhost</span> <span class="kn">import</span> <span class="n">TrustedHostMiddleware</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">...</span>
+
+<span class="c1"># Ensure that all requests include an 'example.com' or '*.example.com' host header,
+# and strictly enforce https-only access.
+</span><span class="n">middleware</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="n">Middleware</span><span class="p">(</span><span class="n">TrustedHostMiddleware</span><span class="p">,</span> <span class="n">allowed_hosts</span><span class="o">=</span><span class="p">[</span><span class="s">'example.com'</span><span class="p">,</span> <span class="s">'*.example.com'</span><span class="p">]),</span>
+  <span class="n">Middleware</span><span class="p">(</span><span class="n">HTTPSRedirectMiddleware</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">,</span> <span class="n">middleware</span><span class="o">=</span><span class="n">middleware</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Исполняются сверху вниз, поэтому приложение должно выглядеть так:</p>
+
+<ul>
+  <li>Middleware
+    <ul>
+      <li>ServerErrorMiddleware</li>
+      <li>TrustedHostMiddleware</li>
+      <li>HTTPSRedirectMiddleware</li>
+      <li>ExceptionMiddleware</li>
+    </ul>
+  </li>
+  <li>Routing</li>
+  <li>Endpoint</li>
+</ul>
+
+<p>Доступно:</p>
+
+<ul>
+  <li>CORSMiddleware - добавляет <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS заголовки</a></li>
+  <li>SessionMiddleware - куки-бейсед http сессия</li>
+  <li>HTTPSRedirectMiddleware - http или wss</li>
+  <li>TrustedHostMiddleware</li>
+  <li>GZipMiddleware</li>
+  <li>BaseHTTPMiddleware</li>
+</ul>
+
+<p>Доступна куча Third party middleware. <a href="https://www.starlette.io/middleware/">Подробнее</a></p>
+
+<h2 id="static-files"><a href="https://www.starlette.io/staticfiles/">Static Files</a></h2>
+
+<h2 id="templates"><a href="https://www.starlette.io/templates/">Templates</a></h2>
+
+<h2 id="database"><a href="https://www.starlette.io/database/">Database</a></h2>
+
+<p>Можно использовать как обычные ОРМ, типа [<a href="../lists/sqlalchemy" title="sqlalchemy">sqlalchemy</a>]. Можно ассинхронные, типа [<a href="gino" title="gino">gino</a>]</p>
+
+<p>Используется пакет [<a href="databases" title="databases">databases</a>]</p>
+
+<p>Пример</p>
+
+<pre><code class="language-.env">DATABASE_URL=sqlite:///test.db
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">databases</span>
+<span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.routing</span> <span class="kn">import</span> <span class="n">Route</span>
+
+
+<span class="c1"># Configuration from environment variables or '.env' file.
+</span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s">'.env'</span><span class="p">)</span>
+<span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'DATABASE_URL'</span><span class="p">)</span>
+
+
+<span class="c1"># Database table definitions.
+</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">MetaData</span><span class="p">()</span>
+
+<span class="n">notes</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Table</span><span class="p">(</span>
+    <span class="s">"notes"</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="p">,</span>
+    <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">"text"</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">String</span><span class="p">),</span>
+    <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">"completed"</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Boolean</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">database</span> <span class="o">=</span> <span class="n">databases</span><span class="p">.</span><span class="n">Database</span><span class="p">(</span><span class="n">DATABASE_URL</span><span class="p">)</span>
+
+
+<span class="c1"># Main application code.
+</span><span class="k">async</span> <span class="k">def</span> <span class="nf">list_notes</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">notes</span><span class="p">.</span><span class="n">select</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">database</span><span class="p">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"text"</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s">"text"</span><span class="p">],</span>
+            <span class="s">"completed"</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s">"completed"</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">add_note</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">notes</span><span class="p">.</span><span class="n">insert</span><span class="p">().</span><span class="n">values</span><span class="p">(</span>
+       <span class="n">text</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s">"text"</span><span class="p">],</span>
+       <span class="n">completed</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s">"completed"</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">database</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">({</span>
+        <span class="s">"text"</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s">"text"</span><span class="p">],</span>
+        <span class="s">"completed"</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s">"completed"</span><span class="p">]</span>
+    <span class="p">})</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/notes"</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">list_notes</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">"GET"</span><span class="p">]),</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">"/notes"</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">add_note</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">"POST"</span><span class="p">]),</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span>
+    <span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">,</span>
+    <span class="n">on_startup</span><span class="o">=</span><span class="p">[</span><span class="n">database</span><span class="p">.</span><span class="n">connect</span><span class="p">],</span>
+    <span class="n">on_shutdown</span><span class="o">=</span><span class="p">[</span><span class="n">database</span><span class="p">.</span><span class="n">disconnect</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Параметры запросов задаются с помощью [<a href="../lists/sqlalchemy" title="sqlalchemy">sqlalchemy</a>] <a href="https://docs.sqlalchemy.org/en/14/core/">стандартных методов запроса</a></p>
+
+<ul>
+  <li>rows = await database.fetch_all(query)</li>
+  <li>row = await database.fetch_one(query)</li>
+  <li>async for row in database.iterate(query)</li>
+  <li>await database.execute(query)</li>
+  <li>await database.execute_many(query)</li>
+</ul>
+
+<p>Транзакции доступны через декоратор, контекстный менеджер или низкоуровневый апи апи</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># decorator
+</span><span class="o">@</span><span class="n">database</span><span class="p">.</span><span class="n">transaction</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">populate_note</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># This database insert occurs within a transaction.
+</span>    <span class="c1"># It will be rolled back by the `RuntimeError`.
+</span>    <span class="n">query</span> <span class="o">=</span> <span class="n">notes</span><span class="p">.</span><span class="n">insert</span><span class="p">().</span><span class="n">values</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"you won't see me"</span><span class="p">,</span> <span class="n">completed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">database</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">()</span>
+
+<span class="c1"># manager
+</span><span class="k">async</span> <span class="k">def</span> <span class="nf">populate_note</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">database</span><span class="p">.</span><span class="n">transaction</span><span class="p">():</span>
+        <span class="c1"># This database insert occurs within a transaction.
+</span>        <span class="c1"># It will be rolled back by the `RuntimeError`.
+</span>        <span class="n">query</span> <span class="o">=</span> <span class="n">notes</span><span class="p">.</span><span class="n">insert</span><span class="p">().</span><span class="n">values</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"you won't see me"</span><span class="p">,</span> <span class="n">completed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">request</span><span class="p">.</span><span class="n">database</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">()</span>
+
+<span class="c1"># applicationasync def populate_note(request):
+</span><span class="n">transaction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">database</span><span class="p">.</span><span class="n">transaction</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># This database insert occurs within a transaction.
+</span>    <span class="c1"># It will be rolled back by the `RuntimeError`.
+</span>    <span class="n">query</span> <span class="o">=</span> <span class="n">notes</span><span class="p">.</span><span class="n">insert</span><span class="p">().</span><span class="n">values</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"you won't see me"</span><span class="p">,</span> <span class="n">completed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">database</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">()</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">transaction</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+    <span class="k">raise</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">transaction</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="изоляция-для-тестов">Изоляция для тестов</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">import</span> <span class="nn">databases</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s">".env"</span><span class="p">)</span>
+
+<span class="n">TESTING</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'TESTING'</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'DATABASE_URL'</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="n">databases</span><span class="p">.</span><span class="n">DatabaseURL</span><span class="p">)</span>
+<span class="n">TEST_DATABASE_URL</span> <span class="o">=</span> <span class="n">DATABASE_URL</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s">'test_'</span> <span class="o">+</span> <span class="n">DATABASE_URL</span><span class="p">.</span><span class="n">database</span><span class="p">)</span>
+
+<span class="c1"># Use 'force_rollback' during testing, to ensure we do not persist database changes
+# between each test case.
+</span><span class="k">if</span> <span class="n">TESTING</span><span class="p">:</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databases</span><span class="p">.</span><span class="n">Database</span><span class="p">(</span><span class="n">TEST_DATABASE_URL</span><span class="p">,</span> <span class="n">force_rollback</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databases</span><span class="p">.</span><span class="n">Database</span><span class="p">(</span><span class="n">DATABASE_URL</span><span class="p">)</span>
+
+<span class="p">[...]</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">environ</span>
+<span class="kn">from</span> <span class="nn">starlette.testclient</span> <span class="kn">import</span> <span class="n">TestClient</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy_utils</span> <span class="kn">import</span> <span class="n">database_exists</span><span class="p">,</span> <span class="n">create_database</span><span class="p">,</span> <span class="n">drop_database</span>
+
+<span class="c1"># This sets `os.environ`, but provides some additional protection.
+# If we placed it below the application import, it would raise an error
+# informing us that 'TESTING' had already been read from the environment.
+</span><span class="n">environ</span><span class="p">[</span><span class="s">'TESTING'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'True'</span>
+
+<span class="kn">import</span> <span class="nn">app</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"session"</span><span class="p">,</span> <span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_test_database</span><span class="p">():</span>
+  <span class="s">"""
+  Create a clean database on every test case.
+  For safety, we should abort if a database already exists.
+
+  We use the `sqlalchemy_utils` package here for a few helpers in consistently
+  creating and dropping the database.
+  """</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">app</span><span class="p">.</span><span class="n">TEST_DATABASE_URL</span><span class="p">)</span>
+  <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="ow">not</span> <span class="n">database_exists</span><span class="p">(</span><span class="n">url</span><span class="p">),</span> <span class="s">'Test database already exists. Aborting tests.'</span>
+  <span class="n">create_database</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>             <span class="c1"># Create the test database.
+</span>  <span class="n">metadata</span><span class="p">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>      <span class="c1"># Create the tables.
+</span>  <span class="k">yield</span>                            <span class="c1"># Run the tests.
+</span>  <span class="n">drop_database</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>               <span class="c1"># Drop the test database.
+</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">client</span><span class="p">():</span>
+    <span class="s">"""
+    When using the 'client' fixture in test cases, we'll get full database
+    rollbacks between test cases:
+
+    def test_homepage(client):
+        url = app.url_path_for('homepage')
+        response = client.get(url)
+        assert response.status_code == 200
+    """</span>
+    <span class="k">with</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">client</span>
+</code></pre></div></div>
+
+<h3 id="миграции">миграции</h3>
+
+<p>Для миграций используется [<a href="alembic" title="alembic">alembic</a>]</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ pip install alembic</code>
+<code class="language-plaintext highlighter-rouge">$ alembic init migrations</code></p>
+
+<p>в <code class="language-plaintext highlighter-rouge">alembic.ini</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">driver</span><span class="p">:</span><span class="o">//</span><span class="n">user</span><span class="p">:</span><span class="k">pass</span><span class="o">@</span><span class="n">localhost</span><span class="o">/</span><span class="n">dbname</span>
+</code></pre></div></div>
+
+<p>в <code class="language-plaintext highlighter-rouge">migrations/env.py</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The Alembic Config object.
+</span><span class="n">config</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">config</span>
+
+<span class="c1"># Configure Alembic to use our DATABASE_URL and our table definitions...
+</span><span class="kn">import</span> <span class="nn">app</span>
+<span class="n">config</span><span class="p">.</span><span class="n">set_main_option</span><span class="p">(</span><span class="s">'sqlalchemy.url'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">app</span><span class="p">.</span><span class="n">DATABASE_URL</span><span class="p">))</span>
+<span class="n">target_metadata</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">metadata</span>
+</code></pre></div></div>
+
+<p>теперь можно создавать ревизию</p>
+
+<p><code class="language-plaintext highlighter-rouge">alembic revision -m "Create notes table"</code></p>
+
+<p>и наконец популяцию в <code class="language-plaintext highlighter-rouge">migrations/versions</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">upgrade</span><span class="p">():</span>
+    <span class="n">op</span><span class="p">.</span><span class="n">create_table</span><span class="p">(</span>
+      <span class="s">'notes'</span><span class="p">,</span>
+      <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+      <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">"text"</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">String</span><span class="p">),</span>
+      <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">"completed"</span><span class="p">,</span> <span class="n">sqlalchemy</span><span class="p">.</span><span class="n">Boolean</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">downgrade</span><span class="p">():</span>
+    <span class="n">op</span><span class="p">.</span><span class="n">drop_table</span><span class="p">(</span><span class="s">'notes'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>и миграциб</p>
+
+<p><code class="language-plaintext highlighter-rouge">alembic upgrade head</code></p>
+
+<p>Вариант с тестированием и базой данныъ (создаем миграцию каждый запуск теста вместе с созданием БД)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">alembic</span> <span class="kn">import</span> <span class="n">command</span>
+<span class="kn">from</span> <span class="nn">alembic.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">import</span> <span class="nn">app</span>
+
+<span class="p">...</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"session"</span><span class="p">,</span> <span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_test_database</span><span class="p">():</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">app</span><span class="p">.</span><span class="n">DATABASE_URL</span><span class="p">)</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">database_exists</span><span class="p">(</span><span class="n">url</span><span class="p">),</span> <span class="s">'Test database already exists. Aborting tests.'</span>
+    <span class="n">create_database</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>             <span class="c1"># Create the test database.
+</span>    <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s">"alembic.ini"</span><span class="p">)</span>   <span class="c1"># Run the migrations.
+</span>    <span class="n">command</span><span class="p">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">"head"</span><span class="p">)</span>
+    <span class="k">yield</span>                            <span class="c1"># Run the tests.
+</span>    <span class="n">drop_database</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>               <span class="c1"># Drop the test database.
+</span></code></pre></div></div>
+
+<h2 id="graphql-ссылка-на-статью">[[graphQL]] <a href="https://www.starlette.io/graphql/">ссылка на статью</a></h2>
+
+<h2 id="authentication"><a href="https://www.starlette.io/authentication/">authentication</a></h2>
+
+<h2 id="api-schemas"><a href="https://www.starlette.io/schemas/">API schemas</a>’</h2>
+
+<h2 id="events"><a href="https://www.starlette.io/events/">Events</a></h2>
+
+<p>Могут быть ассинхронные корутины или обычные функции.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">some_startup_task</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">some_shutdown_task</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">...</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span>
+    <span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">,</span>
+    <span class="n">on_startup</span><span class="o">=</span><span class="p">[</span><span class="n">some_startup_task</span><span class="p">],</span>
+    <span class="n">on_shutdown</span><span class="o">=</span><span class="p">[</span><span class="n">some_shutdown_task</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Вариант запуска тестового клиента вручную, без сетапов или тирдаун кода</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">example</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">starlette.testclient</span> <span class="kn">import</span> <span class="n">TestClient</span>
+
+
+<span class="k">def</span> <span class="nf">test_homepage</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="c1"># Application 'on_startup' handlers are called on entering the block.
+</span>        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+
+    <span class="c1"># Application 'on_shutdown' handlers are called on exiting the block.
+</span></code></pre></div></div>
+
+<h2 id="background-tasks"><a href="https://www.starlette.io/background/">Background tasks</a></h2>
+
+<p>Бекграунд таски прикреплены к запросам и запускаются, только, если запрос отправлен. В старлетт два класса - для единственного таска и для множества <code class="language-plaintext highlighter-rouge">BackgroundTask</code> и <code class="language-plaintext highlighter-rouge">BackgroundTasks</code>. Все это нужно, чтобы отправить что-то не сильно актуальное (например имейлы или внести какие-то второстепенные данные в какую-то БД), что не требует остановки процесса.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.routing</span> <span class="kn">import</span> <span class="n">Route</span>
+<span class="kn">from</span> <span class="nn">starlette.background</span> <span class="kn">import</span> <span class="n">BackgroundTask</span>
+
+
+<span class="p">...</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">signup</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'username'</span><span class="p">]</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'email'</span><span class="p">]</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">BackgroundTask</span><span class="p">(</span><span class="n">send_welcome_email</span><span class="p">,</span> <span class="n">to_address</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="s">'Signup successful'</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">task</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send_welcome_email</span><span class="p">(</span><span class="n">to_address</span><span class="p">):</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">...</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">'/user/signup'</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">signup</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'POST'</span><span class="p">])</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>несколько</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.background</span> <span class="kn">import</span> <span class="n">BackgroundTasks</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">signup</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'username'</span><span class="p">]</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'email'</span><span class="p">]</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="n">BackgroundTasks</span><span class="p">()</span>
+    <span class="n">tasks</span><span class="p">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">send_welcome_email</span><span class="p">,</span> <span class="n">to_address</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
+    <span class="n">tasks</span><span class="p">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">send_admin_notification</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="p">{</span><span class="s">'status'</span><span class="p">:</span> <span class="s">'Signup successful'</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">tasks</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send_welcome_email</span><span class="p">(</span><span class="n">to_address</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send_admin_notification</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="n">routes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Route</span><span class="p">(</span><span class="s">'/user/signup'</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="n">signup</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'POST'</span><span class="p">])</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="серверные-пуши"><a href="https://www.starlette.io/server-push/">Серверные пуши</a></h2>
+
+<h2 id="эксепшены-и-http-ошибки"><a href="https://www.starlette.io/exceptions/">Эксепшены и http-ошибки</a></h2>
+
+<h2 id="конфигурирование"><a href="https://www.starlette.io/config/">Конфигурирование</a></h2>
+
+<p>пример конфигурации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">databases</span>
+
+<span class="kn">from</span> <span class="nn">starlette.applications</span> <span class="kn">import</span> <span class="n">Starlette</span>
+<span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">starlette.datastructures</span> <span class="kn">import</span> <span class="n">CommaSeparatedStrings</span><span class="p">,</span> <span class="n">Secret</span>
+
+<span class="c1"># Config will be read from environment variables and/or ".env" files.
+</span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s">".env"</span><span class="p">)</span>
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'DEBUG'</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'DATABASE_URL'</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="n">databases</span><span class="p">.</span><span class="n">DatabaseURL</span><span class="p">)</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'SECRET_KEY'</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="n">Secret</span><span class="p">)</span>
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="s">'ALLOWED_HOSTS'</span><span class="p">,</span> <span class="n">cast</span><span class="o">=</span><span class="n">CommaSeparatedStrings</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlette</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">DEBUG</span><span class="p">)</span>
+</code></pre></div></div>
+
+<pre><code class="language-,env"># Don't commit this to source control.
+# Eg. Include ".env" in your `.gitignore` file.
+DEBUG=True
+DATABASE_URL=postgresql://localhost/myproject
+SECRET_KEY=43n080musdfjt54t-09sdgr
+ALLOWED_HOSTS=127.0.0.1, localhost
+</code></pre>
+
+<p>Варианты конфигурирования:</p>
+
+<ul>
+  <li>из переменных окружения</li>
+  <li>из <code class="language-plaintext highlighter-rouge">.env</code></li>
+  <li>из дефолтных значений, предоставленных в конфиге</li>
+</ul>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">secret</code> используется для сокрытия информации из логов. Мы задаем только число значений и словарь</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">myproject</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">settings</span><span class="p">.</span><span class="n">SECRET_KEY</span>
+<span class="n">Secret</span><span class="p">(</span><span class="s">'**********'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">SECRET_KEY</span><span class="p">)</span>
+<span class="s">'98n349$%8b8-7yjn0n8y93T$23r'</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">myproject</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">settings</span><span class="p">.</span><span class="n">DATABASE_URL</span>
+<span class="n">DatabaseURL</span><span class="p">(</span><span class="s">'postgresql://admin:**********@192.168.0.8/my-application'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">str</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">DATABASE_URL</span><span class="p">)</span>
+<span class="s">'postgresql://admin:Fkjh348htGee4t3@192.168.0.8/my-application'</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">myproject</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">ALLOWED_HOSTS</span><span class="p">)</span>
+<span class="n">CommaSeparatedStrings</span><span class="p">([</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="s">'localhost'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">ALLOWED_HOSTS</span><span class="p">))</span>
+<span class="p">[</span><span class="s">'127.0.0.1'</span><span class="p">,</span> <span class="s">'localhost'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">ALLOWED_HOSTS</span><span class="p">))</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">settings</span><span class="p">.</span><span class="n">ALLOWED_HOSTS</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="s">'127.0.0.1'</span>
+</code></pre></div></div>
+
+<p>Для тестирвоания можно переписать переменные окружения через специальный инстанс старлета</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlette.config</span> <span class="kn">import</span> <span class="n">environ</span>
+
+<span class="n">environ</span><span class="p">[</span><span class="s">'TESTING'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'TRUE'</span>
+</code></pre></div></div>
+
+<p><a href="https://www.starlette.io/config/">Полный пример тут</a></p>
+
+<h2 id="тестовый-клиент"><a href="https://www.starlette.io/testclient/">Тестовый клиент</a></h2>
+
+<p>[<a href="starlette-testclient" title="starlette">starlette-testclient</a>]</p>
+
+<p>Можно тестировать как ассинхронные функции так и вебсокеты. Можно использовать стандартное API запроса. Клиент подымает [<a href="http-requests-errors" title="http-requests">http-requests-errors</a>], но это можно отключить <code class="language-plaintext highlighter-rouge">client = TestClient(app, raise_server_exceptions=False)</code></p>
+
+<p>Пример для вебсокетов смотри по ссылке. Важно: с вебсокетом работать через <code class="language-plaintext highlighter-rouge">width</code></p>
+
+<h2 id="third-party-packages"><a href="https://www.starlette.io/third-party-packages/">Third Party Packages</a></h2>
+
+<p>[<a href="starlete-список-кодов" title="starlete-список-кодов">starlete-список-кодов</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

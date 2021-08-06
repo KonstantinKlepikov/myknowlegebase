@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Daily note, 2021-04-02, Friday | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Daily note, 2021-04-02, Friday" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/journal/daily-note-2021-04-02.html" />
+<meta property="og:url" content="http://localhost:4000/journal/daily-note-2021-04-02.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"Daily note, 2021-04-02, Friday","url":"http://localhost:4000/journal/daily-note-2021-04-02.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="daily-note--2021-04-02-friday">Daily note,  2021-04-02, Friday</h1>
+
+<h2 id="интеграция-behave-и-unittest">Интеграция [<a href="../notes/behave" title="behave">behave</a>] и [<a href="../notes/unittest" title="unittest">unittest</a>]</h2>
+
+<p><a href="https://stackoverflow.com/questions/35286430/integrating-behave-or-lettuce-with-python-unittest">Статья</a></p>
+
+<blockquote>
+  <p>[<a href="../notes/nose" title="nose">nose</a>] includes a package that takes all the class-based asserts that unittest provides and turns them into plain functions, the module’s documentation states:
+The nose.tools module provides […] all of the same assertX methods found in unittest.TestCase (only spelled in PEP 8#function-names fashion, so assert_equal rather than assertEqual).
+For instance:</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">nose.tools</span> <span class="kn">import</span> <span class="n">assert_equal</span>
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"foo is 'blah'"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">step_impl</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="n">assert_equal</span><span class="p">(</span><span class="n">context</span><span class="p">.</span><span class="n">foo</span><span class="p">,</span> <span class="s">"blah"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="пример-работы-с-таблицами-в-behave">Пример работы с таблицами в [<a href="../notes/behave" title="behave">behave</a>]</h2>
+
+<p><a href="https://jenisys.github.io/behave.example/tutorials/tutorial10.html">ссылка</a></p>
+
+<pre><code class="language-behave">  Scenario Outline: Calculator
+    Given I have a calculator
+    When I add "&lt;x&gt;" and "&lt;y&gt;"
+    Then the calculator returns "&lt;sum&gt;"
+
+    Examples:
+        |  x  |  y | sum |
+        |  1  |  1 |  2  |
+        |  1  |  2 |  3  |
+        |  2  |  1 |  3  |
+        |  2  |  7 |  9  |
+...
+
+  Scenario Outline: Calculator -- @1.1  
+    Given I have a calculator            
+    When I add "1" and "1"               
+    Then the calculator returns "2"     
+
+  Scenario Outline: Calculator -- @1.2   
+    Given I have a calculator            
+    When I add "1" and "2"               
+    Then the calculator returns "3"      
+
+  Scenario Outline: Calculator -- @1.3   
+    Given I have a calculator           
+    When I add "2" and "1"               
+    Then the calculator returns "3" 
+
+  Scenario Outline: Calculator -- @1.4
+    Given I have a calculator        
+    When I add "2" and "7"              
+    Then the calculator returns "9"  
+</code></pre>
+
+<p>Еще: как лучше организовать тестирование респонза с [<a href="../notes/behave" title="behave">behave</a>]</p>
+
+<p><a href="https://stackoverflow.com/questions/50627578/specify-behave-table-row-data-type">ссылка</a></p>
+
+<pre><code class="language-behave">Given I have a valid client auth token
+And I request a user with an unknown "valid" uuid
+Then I should get user not found response
+</code></pre>
+
+<p>вместо</p>
+
+<pre><code class="language-behave">Given I have a valid client auth token
+And I request a user with an unknown "valid" uuid
+And I get the response json
+Then the expected fields should contain expected content
+| field      | content               |
+| statusCode | 404                   |
+| error      | Not Found             |
+| message    | User record not found |
+</code></pre>
+
+<ul>
+  <li>a simple scenario</li>
+  <li>no table processing for your scenario</li>
+  <li>a method you can reuse in other scenarios where a user is not found</li>
+  <li>much lower cost of change if for example you want to ad another field to the response.</li>
+</ul>
+
+<h2 id="datetime-без-микросекунд">[<a href="../notes/datetime" title="datatime">datetime</a>] без микросекунд</h2>
+
+<p><a href="https://stackoverflow.com/questions/7999935/python-datetime-to-string-without-microsecond-component">ссылка</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">().</span><span class="n">strftime</span><span class="p">(</span><span class="s">"%Y-%m-%d %H:%M:%S"</span><span class="p">)</span>
+<span class="s">'2011-11-03 18:21:26'</span>
+</code></pre></div></div>
+
+<h2 id="сдедующий-понедельник-в-datetime">сдедующий понедельник в [<a href="../notes/datetime" title="datatime">datetime</a>]</h2>
+
+<p><a href="https://overcoder.net/q/17889/%D0%BD%D0%B0%D0%B9%D1%82%D0%B8-%D0%B4%D0%B0%D1%82%D1%83-%D0%BF%D0%BE%D0%BD%D0%B5%D0%B4%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0-%D1%81-python">ссылка</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">м</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">today</span> <span class="o">+</span> <span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="n">today</span><span class="p">.</span><span class="n">weekday</span><span class="p">(),</span> <span class="n">weeks</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>А еще [<a href="../notes/декоратор-wait-для-behave" title="декоратор wait для ">декоратор-wait-для-behave</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

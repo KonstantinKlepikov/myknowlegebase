@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>unittest | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="unittest" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/unittest.html" />
+<meta property="og:url" content="http://localhost:4000/notes/unittest.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"unittest","url":"http://localhost:4000/notes/unittest.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="unittest">unittest</h1>
+
+<p>Поддерживает все концепции тестирующего программного комплекса, описанного в [<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</p>
+
+<p><a href="https://docs.python.org/3/library/unittest.html#command-line-options">Опции командной строки</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">python -m unittest -v test_module</code> с детализацией в отчете</p>
+
+<p><code class="language-plaintext highlighter-rouge">--locals</code> показать локальные переменные в выводе теста</p>
+
+<p><a href="https://docs.python.org/3/library/unittest.html#test-discovery">Test discovery</a> позволяет задать путь, с которого начинается поиск тестов. Кроме того, можно установить паттерн наименований тестов.</p>
+
+<h2 id="структура-кода">Структура кода</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">DefaultWidgetSizeTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_default_widget_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">(</span><span class="s">'The widget'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">widget</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Используется <code class="language-plaintext highlighter-rouge">TestCase</code> или <code class="language-plaintext highlighter-rouge">FunctionTestCase</code> (для легаси). Unittest распознает как фейлы только собственные ассерты, предоставленные классом <code class="language-plaintext highlighter-rouge">TestCase</code>. Все остальное идентифицируется как ошибки.</p>
+
+<p>Для каждого теста мы можем задать как собственные сетапы/тирдауны так и для всех тестов сразу. Порядок запуска тестов определяется сортировкой по имени. Тирдаун и тирап запускаются вне зависимости от результатов теста.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="k">class</span> <span class="nc">WidgetTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">(</span><span class="s">'The widget'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">widget</span><span class="p">.</span><span class="n">dispose</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>С помощью <code class="language-plaintext highlighter-rouge">TestSuite</code> класса можно <a href="https://docs.python.org/3/library/unittest.html#unittest.TestSuite">группировать тесты</a> для запуска (unittest делает это и самостоятельно, обнаруживая тесты по именам)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">suite</span><span class="p">():</span>
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="p">.</span><span class="n">TestSuite</span><span class="p">()</span>
+    <span class="n">suite</span><span class="p">.</span><span class="n">addTest</span><span class="p">(</span><span class="n">WidgetTestCase</span><span class="p">(</span><span class="s">'test_default_widget_size'</span><span class="p">))</span>
+    <span class="n">suite</span><span class="p">.</span><span class="n">addTest</span><span class="p">(</span><span class="n">WidgetTestCase</span><span class="p">(</span><span class="s">'test_widget_resize'</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">suite</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="p">.</span><span class="n">TextTestRunner</span><span class="p">()</span>
+    <span class="n">runner</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h2 id="re-using-old-test-code"><a href="https://docs.python.org/3/library/unittest.html#re-using-old-test-code">Re-using old test code</a></h2>
+
+<h2 id="skipping-tests-and-expected-failures"><a href="https://docs.python.org/3/library/unittest.html#skipping-tests-and-expected-failures">Skipping tests and expected failures</a></h2>
+
+<p>Можно скипать тесты как безусловно так и при условии. Классы тоже могут быть заскипаны.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="o">@</span><span class="n">unittest</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="s">"demonstrating skipping"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">fail</span><span class="p">(</span><span class="s">"shouldn't happen"</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="n">unittest</span><span class="p">.</span><span class="n">skipIf</span><span class="p">(</span><span class="n">mylib</span><span class="p">.</span><span class="n">__version__</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                     <span class="s">"not supported in this library version"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Tests that work for only a certain version of the library.
+</span>        <span class="k">pass</span>
+
+    <span class="o">@</span><span class="n">unittest</span><span class="p">.</span><span class="n">skipUnless</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">platform</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"win"</span><span class="p">),</span> <span class="s">"requires Windows"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_windows_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># windows specific testing code
+</span>        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">test_maybe_skipped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">external_resource_available</span><span class="p">():</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">skipTest</span><span class="p">(</span><span class="s">"external resource not available"</span><span class="p">)</span>
+        <span class="c1"># test code that depends on the external resource
+</span>        <span class="k">pass</span>
+</code></pre></div></div>
+
+<h2 id="сабтесты"><a href="https://docs.python.org/3/library/unittest.html#distinguishing-test-iterations-using-subtests">Сабтесты</a></h2>
+
+<p>Используется, когда разница между тестами небольшая. Например когда тестируется определенный ренж значений для объекта тестирования. Это позволяет увидеть все фейлы (иначе тест фейлится на первом кейсе.</p>
+
+<h2 id="api-unittest">API unittest</h2>
+
+<h3 id="test-cases"><a href="https://docs.python.org/3/library/unittest.html#test-cases">Test cases</a></h3>
+
+<p>Методы в <code class="language-plaintext highlighter-rouge">TestCase</code></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">setUp()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tearDown()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setUpClass()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tearDownClass()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">run(result=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">skipTest(reason)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">subTest(msg=None, **params)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">debug()</code> тест запускается без агрегации результата</li>
+</ul>
+
+<p><a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.debug">Список всех ассертов</a></p>
+
+<h3 id="тестирование-неудачных-случаев">Тестирование неудачных случаев</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">SomeException</span><span class="p">):</span>
+    <span class="n">do_something</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">SomeException</span><span class="p">)</span> <span class="k">as</span> <span class="n">cm</span><span class="p">:</span>
+    <span class="n">do_something</span><span class="p">()</span>
+
+<span class="n">the_exception</span> <span class="o">=</span> <span class="n">cm</span><span class="p">.</span><span class="n">exception</span>
+<span class="bp">self</span><span class="p">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">the_exception</span><span class="p">.</span><span class="n">error_code</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertRaises">Документация из юниттеста по райзес</a></p>
+
+<h3 id="тестирование-асинхронного-кода"><a href="https://docs.python.org/3/library/unittest.html#unittest.IsolatedAsyncioTestCase">Тестирование асинхронного кода</a></h3>
+
+<h3 id="группировка-тестов"><a href="https://docs.python.org/3/library/unittest.html#grouping-tests">Группировка тестов</a></h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">addTest(test)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">addTests(test)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">run(result)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">run()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">debug()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">__iter__()</code></li>
+</ul>
+
+<p>используется для загрузки тестов из пакетов и модулей.</p>
+
+<h3 id="тестлоадеры-и-запуск-тестов"><a href="https://docs.python.org/3/library/unittest.html#loading-and-running-tests">Тестлоадеры и запуск тестов</a></h3>
+
+<h3 id="load-test-protocol"><a href="https://docs.python.org/3/library/unittest.html#load-tests-protocol">load test protocol</a></h3>
+
+<h2 id="class-and-module-fixtures"><a href="https://docs.python.org/3/library/unittest.html#class-and-module-fixtures">Class and module fixtures</a></h2>
+
+<h2 id="signal-handling"><a href="https://docs.python.org/3/library/unittest.html#signal-handling">Signal Handling</a></h2>
+
+<hr />
+
+<p>[<a href="pytest" title="pytest">pytest</a>]
+[<a href="doctest" title="doctest">doctest</a>]
+[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]
+[<a href="../journal/daily-note-2021-04-02" title="Daily note,  2021-04-02, Friday">daily-note-2021-04-02</a>]
+[<a href="mock" title="mock-тесты">mock</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

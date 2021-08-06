@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Анотация типов в #python | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Анотация типов в #python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/type-annotation.html" />
+<meta property="og:url" content="http://localhost:4000/notes/type-annotation.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"Анотация типов в #python","url":"http://localhost:4000/notes/type-annotation.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="анотация-типов-в-python">Анотация типов в #python</h1>
+
+<p>Зачем надо?</p>
+
+<ul>
+  <li>проверка типов</li>
+  <li>расширение функционала IDE в части предоставления информации об ожидаемых типах аргументов и типе возвращаемого значения у функций;</li>
+  <li>перегрузка функций и работа с дженериками;</li>
+  <li>взаимодействие с другими языками;</li>
+  <li>использование в предикатных логических функциях;</li>
+  <li>маппинг запросов в базах данных;</li>
+  <li>маршалинг параметров в RPC (удаленный вызов процедур)</li>
+</ul>
+
+<h2 id="контроль-типов">Контроль типов</h2>
+
+<p>[[mypy]]
+[<a href="pydantic" title="pydantic">pydantic</a>]</p>
+
+<h2 id="pep">PEP</h2>
+
+<ul>
+  <li>PEP 3107 — Function Annotations</li>
+  <li>PEP 484 — Type Hints</li>
+  <li>PEP 526 — Syntax for Variable Annotations</li>
+  <li>PEP 563 — Postponed Evaluation of Annotations</li>
+</ul>
+
+<p>Аннотации не имеют никакого семантического значения для интерпретатора Python и предназначены только для анализа сторонними приложениями.</p>
+
+<p>У подхода работы с аннотация до этого PEP’а был ряд проблем связанных с тем, что определение типов переменных (в функциях, классах и т.п.) происходит во время импорта модуля, и может сложится такая ситуация, что тип переменной объявлен, но информации об этом типе ещё нет, в таком случае тип указывают в виде строки – в кавычках. В PEP 563 предлагается использовать отложенную обработку аннотаций, это позволяет определять переменные до получения информации об их типах и ускоряет выполнение программы, т.к. при загрузке модулей не будет тратится время на проверку типов – это будет сделано перед работой с переменными.</p>
+
+<h2 id="аннотации-в-функциях">Аннотации в функциях</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">repeater</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+   <span class="k">return</span> <span class="n">s</span> <span class="o">*</span> <span class="n">n</span>
+</code></pre></div></div>
+
+<p>Тут <code class="language-plaintext highlighter-rouge">имя_аргумента: аннотация</code> аннотация аргумента. Аннотация возвращаемого функцией значения <code class="language-plaintext highlighter-rouge">def имя_функции() -&gt; тип</code>. Доступ к аннотации осуществляется через <code class="language-plaintext highlighter-rouge">repeater.__annotations__</code>. Мы получим это;</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s">'n'</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s">'return'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s">'s'</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="аннотация-переменных">Аннотация переменных</h2>
+
+<p>Есть три варианта</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var</span> <span class="o">=</span> <span class="n">value</span> <span class="c1"># type: annotation
+</span><span class="n">var</span><span class="p">:</span> <span class="n">annotation</span><span class="p">;</span> <span class="n">var</span> <span class="o">=</span> <span class="n">value</span>
+<span class="n">var</span><span class="p">:</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="c1"># example
+</span><span class="n">name</span> <span class="o">=</span> <span class="err">“</span><span class="n">John</span><span class="err">”</span> <span class="c1"># type: str
+</span><span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">;</span> <span class="n">name</span> <span class="o">=</span> <span class="err">“</span><span class="n">John</span><span class="err">”</span>
+<span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="err">“</span><span class="n">John</span><span class="err">”</span>
+
+<span class="c1"># список
+</span><span class="n">scores</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">scores</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># кортеж
+</span><span class="n">pack</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="err">…</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1"># логическая переменная
+</span><span class="n">flag</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="c1"># класс
+</span><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+         <span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+         <span class="bp">self</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="n">a</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">b</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="k">def</span> <span class="nf">sq_sum</span><span class="p">(</span><span class="n">v1</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">v1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">v2</span><span class="o">**</span><span class="mi">2</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sq_sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><a href="https://devpractice.ru/python-lesson-18-annotations/">Статья</a></p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

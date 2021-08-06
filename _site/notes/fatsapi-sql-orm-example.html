@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>fatsapi-sql-orm-example | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="fatsapi-sql-orm-example" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="http://localhost:4000/notes/fatsapi-sql-orm-example.html" />
+<meta property="og:url" content="http://localhost:4000/notes/fatsapi-sql-orm-example.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"headline":"fatsapi-sql-orm-example","url":"http://localhost:4000/notes/fatsapi-sql-orm-example.html","@type":"WebPage","description":"Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=cb03db6c7cd23d0e81fdca3c778cca6f1c27205a">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Моя заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="fatsapi-sql-orm-example">fatsapi-sql-orm-example</h1>
+
+<h2 id="пример-построения-приложения">Пример построения приложения</h2>
+
+<p>.
+└── sql_app
+    ├── __init__.py
+    ├── crud.py
+    ├── database.py
+    ├── main.py
+    ├── models.py
+    └── schemas.py</p>
+
+<p><a href="https://fastapi.tiangolo.com/tutorial/sql-databases/">SQL (Relational) Databases</a> - собственно сам пример</p>
+
+<h2 id="проблема-как-создавать-бд-если-нет-популяции">Проблема: как создавать БД (если нет популяции)?</h2>
+
+<p><a href="https://stackoverflow.com/a/16285333">Пример создания бд из модели</a> c помощью create_all:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Yes</span><span class="p">,</span><span class="n">sqlalchemy</span> <span class="n">does</span> <span class="n">create</span> <span class="n">a</span> <span class="n">database</span> <span class="k">for</span> <span class="n">you</span><span class="p">.</span><span class="n">I</span> <span class="n">confirmed</span> <span class="n">it</span> <span class="n">on</span> <span class="n">windows</span> <span class="n">using</span> <span class="n">this</span> <span class="n">code</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">ForeignKey</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Date</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">'sqlite:///C:</span><span class="se">\\</span><span class="s">sqlitedbs</span><span class="se">\\</span><span class="s">school.db'</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">School</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">"woot"</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>  
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>    
+
+
+<span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/30971098">Другой вариант - через sqlalchemy_utils</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy_utils</span> <span class="kn">import</span> <span class="n">database_exists</span><span class="p">,</span> <span class="n">create_database</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">"postgres://localhost/mydb"</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">database_exists</span><span class="p">(</span><span class="n">engine</span><span class="p">.</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">create_database</span><span class="p">(</span><span class="n">engine</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">database_exists</span><span class="p">(</span><span class="n">engine</span><span class="p">.</span><span class="n">url</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="работа-с-бд-ассинхронно">Работа с бд ассинхронно</h2>
+
+<p><a href="https://fastapi.tiangolo.com/advanced/async-sql-databases/">Статья</a> для [<a href="../lists/fastapi" title="fastapi">fastapi</a>]</p>
+
+<h2 id="тулзы">Тулзы</h2>
+
+<p><a href="https://pypi.org/project/fastapi-sqla/">fastapi-sqla</a> - A highly opinionated SQLAlchemy extension for FastAPI
+<a href="https://github.com/dmontagu/fastapi-utils/">fastapi-utils</a>
+<a href="https://github.com/mfreeborn/fastapi-sqlalchemy">FastAPI-SQLAlchemy</a> - FastAPI-SQLAlchemy provides a simple integration between FastAPI and SQLAlchemy in your application. It gives access to useful helpers to facilitate the completion of common tasks.
+<a href="https://github.com/zuarbase/fastapi-sqlalchemy">FastAPI-SQLAlchemy</a> - Full-stack, asynchronous Python3 framework.</p>
+
+<p>[<a href="fastapi-тестирование-базы-данных" title="fastapi-тестирование-базы-данных">fastapi-тестирование-базы-данных</a>]
+[<a href="fastapi-зависимости-с-yield" title="fastapi-зависимости-с-yield">fastapi-зависимости-с-yield</a>]
+[<a href="../lists/sqlalchemy" title="sqlalchemy">sqlalchemy</a>]
+[<a href="alembic" title="alembic">alembic</a>]
+[<a href="sqlite" title="sqlite">sqlite</a>]
+[<a href="../lists/fastapi" title="fastapi">fastapi</a>]
+[<a href="starlette" title="starlette">starlette</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блога автора:<a href="https://konstantinklepikov.github.io/">My deep learning</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
