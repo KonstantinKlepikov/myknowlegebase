@@ -1,6 +1,11 @@
+---
+type: feature
+keywords: python
+---
+
 # pydantic
 
-Типизация для #python [Документация](https://pydantic-docs.helpmanual.io/). Использует [[type-annotation]]
+Типизация для python [Документация](https://pydantic-docs.helpmanual.io/). Использует [[type-annotation]] на базе [[mypy]]
 
 ```python
 from datetime import datetime
