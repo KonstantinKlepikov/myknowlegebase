@@ -12,6 +12,7 @@
 
 Создается вот такая структура:
 
+```bash
 - yourproject/
   - alembic/
     - env.py
@@ -21,6 +22,7 @@
       - 3512b954651e_add_account.py
       - 2b1ae634e5cd_add_order_id.py
       - 3adcc9a56557_rename_username_field.py
+```
 
 Здесь `env.py` определяет инструкции для миграций. `script.py.mako` генерирует новые скрипты миграции, а в `versions/` хранятся все версии миграций.
 
