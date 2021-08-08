@@ -9,7 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+
+    {% assign user_url = site.url | append: site.baseurl %}
+    {% assign full_base_url = user_url | default: site.github.url %}
+    <link rel="stylesheet" href="{{ "/assets/css/style.css" | prepend: full_base_url }}">
     {% include head-custom.html %}
   </head>
   <body>
