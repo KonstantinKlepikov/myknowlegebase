@@ -1,4 +1,4 @@
-# fabric
+# Fabric
 
 [Документация](https://www.fabfile.org/installing.html)
 

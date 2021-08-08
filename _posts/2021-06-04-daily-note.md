@@ -1,4 +1,6 @@
-# Daily note,  2021-06-04, Friday
+---
+title: Как получить текст ошибки в python и немного про pylence в vscode
+---
 
 ## Как получить текст ошибкки в python
 

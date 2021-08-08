@@ -1,4 +1,6 @@
-# Daily note,  2021-05-15, Saturday
+---
+title: Как преобразовать строки в переменные в python
+---
 
 ## Convert a String to Variable Name in Python
 

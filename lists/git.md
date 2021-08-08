@@ -2,7 +2,7 @@
 type: feature
 keywords: git
 ---
-# git
+# Git
 
 ## git mv
 

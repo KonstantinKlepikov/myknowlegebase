@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="ru-RU">
   <head>
     <meta charset="UTF-8">
 
@@ -10,11 +10,9 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
 <meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<link rel="canonical" href="http://localhost:4000/lists/docker.html" />
-<meta property="og:url" content="http://localhost:4000/lists/docker.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","url":"http://localhost:4000/lists/docker.html","headline":"Docker","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"/lists/docker.html","headline":"Docker","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -22,7 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=699c929ccc119cd8004048a5c93ccb3a87ad1a2b">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 <!-- Setup Google Analytics -->
@@ -31,10 +29,17 @@
 <!-- You can set your favicon here -->
 <!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
 
+<!-- Canonical and feed -->
+<link rel="canonical" href="/lists/docker.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
 <!-- end custom head snippets -->
   </head>
   <body>
-    <a id="skip-to-content" href="#content">Skip to the content.</a>
 
     <header class="page-header" role="banner">
       <h1 class="project-name">My knowlege base</h1>
@@ -44,12 +49,14 @@
 
     <main id="content" class="main-content" role="main">
       <p><a href="/">На главную</a></p>
+    
       <h1 id="docker">Docker</h1>
 
 <h2 id="начало-работы">Начало работы</h2>
 
-<p><code class="language-plaintext highlighter-rouge">docker version</code>
-<code class="language-plaintext highlighter-rouge">docker run debian echo 'hello world'</code></p>
+<p><code class="language-plaintext highlighter-rouge">docker version</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run debian echo 'hello world'</code></p>
 
 <p>В данном случае запускается образ debian (если его нет, он будет загружен с докерхаба) - упрощенный дестрибутив линукс. После загрузки и проверки образа он помещается в контейнер. Затем выполняется echo.</p>
 
@@ -269,58 +276,56 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 <h2 id="часто-используемые-команды-docker">Часто используемые команды Docker</h2>
 
-<p><code class="language-plaintext highlighter-rouge">docker run</code> запуск контейнера
-<code class="language-plaintext highlighter-rouge">docker create</code> создание контейнера из образа без запуска
-<code class="language-plaintext highlighter-rouge">docker kill</code> немедленное завершение работы контейнера
-<code class="language-plaintext highlighter-rouge">docker pause</code> приостановка процессов контейнера. Процессы не получают никаких сигналов, поэтому не могут быть удалены, приостановлены или возобновлены
-<code class="language-plaintext highlighter-rouge">docker pause</code> перезапуска запаузеного контейнера
-<code class="language-plaintext highlighter-rouge">docker reatart</code> перезапускает один или несколько контейнеров
-<code class="language-plaintext highlighter-rouge">docker rm</code> удаляет один или несколько контейнеров
-<code class="language-plaintext highlighter-rouge">docker start</code> запускает застопленные контейнеры
-<code class="language-plaintext highlighter-rouge">docker stop</code> останавливает, но не удаляет контейнеры</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">docker run</code> запуск контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker create</code> создание контейнера из образа без запуска</li>
+  <li><code class="language-plaintext highlighter-rouge">docker kill</code> немедленное завершение работы контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker pause</code> приостановка процессов контейнера. Процессы не получают никаких сигналов, поэтому не могут быть удалены, приостановлены или возобновлены</li>
+  <li><code class="language-plaintext highlighter-rouge">docker pause</code> перезапуска запаузеного контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker reatart</code> перезапускает один или несколько контейнеров</li>
+  <li><code class="language-plaintext highlighter-rouge">docker rm</code> удаляет один или несколько контейнеров</li>
+  <li><code class="language-plaintext highlighter-rouge">docker start</code> запускает застопленные контейнеры</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker stop</code> останавливает, но не удаляет контейнеры</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker info</code> Инфа о системе и хосте</li>
+  <li><code class="language-plaintext highlighter-rouge">docker help</code> выводлит справку</li>
+  <li><code class="language-plaintext highlighter-rouge">docker version</code></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker logs --help</code> выводит значение флагов по умолчанию для команды</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker diff</code> - измененеия в файловой системе контейнера по сравнению с образом</li>
+  <li><code class="language-plaintext highlighter-rouge">docker events</code> события в реальном времени от демона к демону</li>
+  <li><code class="language-plaintext highlighter-rouge">docker inspect</code> подробная инфа о контейнерах или образах</li>
+  <li><code class="language-plaintext highlighter-rouge">docker logs</code> журнал для контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker port</code> список отображений открытых портов для контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker ps</code> общая инфа о работающих контейнерах</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker top</code> инфа о процессах внутри контейнера</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker build</code> создать образ из Dockerfile</li>
+  <li><code class="language-plaintext highlighter-rouge">docker commit</code> создает образ из заданного контейнера. Контейнеры приостанавливаются перед созданием образа (по умолчанию)</li>
+  <li><code class="language-plaintext highlighter-rouge">docker export</code> экспортирует содержимое файловой системы контейнера в виде tar-архива. Метаданные не экспортируются</li>
+  <li><code class="language-plaintext highlighter-rouge">docker history</code> инфа о каждом уровне в образе.</li>
+  <li><code class="language-plaintext highlighter-rouge">docker images</code> список локальных образов</li>
+  <li><code class="language-plaintext highlighter-rouge">docker rmi $(docker images -q -f dangling=true)</code> удалит все “висячие образы”</li>
+  <li><code class="language-plaintext highlighter-rouge">docker import</code> создание образа из архивного файла без метаданных</li>
+  <li><code class="language-plaintext highlighter-rouge">docker load</code> создание из архива с метаданными</li>
+  <li><code class="language-plaintext highlighter-rouge">docker rmi</code> Удаление</li>
+  <li><code class="language-plaintext highlighter-rouge">docker save</code> сохранение образа в архив с метаданными</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker tag</code> связывает имя репозитория и образа с выбранным тегом</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker login</code> регистрация и вход на заданный сервер реестра</li>
+  <li><code class="language-plaintext highlighter-rouge">docker logout</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docker pull</code> загрузка образа из реестра</li>
+  <li><code class="language-plaintext highlighter-rouge">docker push</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docker search</code></li>
+</ul>
 
-<p><code class="language-plaintext highlighter-rouge">docker info</code> Инфа о системе и хосте
-<code class="language-plaintext highlighter-rouge">docker help</code> выводлит справку
-<code class="language-plaintext highlighter-rouge">docker version</code>
-<code class="language-plaintext highlighter-rouge">docker logs --help</code> выводит значение флагов по умолчанию для команды</p>
-
-<p><code class="language-plaintext highlighter-rouge">docker diff</code> - измененеия в файловой системе контейнера по сравнению с образом
-<code class="language-plaintext highlighter-rouge">docker events</code> события в реальном времени от демона к демону
-<code class="language-plaintext highlighter-rouge">docker inspect</code> подробная инфа о контейнерах или образах
-<code class="language-plaintext highlighter-rouge">docker logs</code> журнал для контейнера
-<code class="language-plaintext highlighter-rouge">docker port</code> список отображений открытых портов для контейнера
-<code class="language-plaintext highlighter-rouge">docker ps</code> общая инфа о работающих контейнерах
-<code class="language-plaintext highlighter-rouge">docker top</code> инфа о процессах внутри контейнера</p>
-
-<p><code class="language-plaintext highlighter-rouge">docker build</code> создать образ из Dockerfile
-<code class="language-plaintext highlighter-rouge">docker commit</code> создает образ из заданного контейнера. Контейнеры приостанавливаются перед созданием образа (по умолчанию)
-<code class="language-plaintext highlighter-rouge">docker export</code> экспортирует содержимое файловой системы контейнера в виде tar-архива. Метаданные не экспортируются
-<code class="language-plaintext highlighter-rouge">docker history</code> инфа о каждом уровне в образе.
-<code class="language-plaintext highlighter-rouge">docker images</code> список локальных образов
-<code class="language-plaintext highlighter-rouge">docker rmi $(docker images -q -f dangling=true)</code> удалит все “висячие образы”
-<code class="language-plaintext highlighter-rouge">docker import</code> создание образа из архивного файла без метаданных
-<code class="language-plaintext highlighter-rouge">docker load</code> создание из архива с метаданными
-<code class="language-plaintext highlighter-rouge">docker rmi</code> Удаление
-<code class="language-plaintext highlighter-rouge">docker save</code> сохранение образа в архив с метаданными
-<code class="language-plaintext highlighter-rouge">docker tag</code> связывает имя репозитория и образа с выбранным тегом</p>
-
-<p><code class="language-plaintext highlighter-rouge">docker login</code> регистрация и вход на заданный сервер реестра
-<code class="language-plaintext highlighter-rouge">docker logout</code>
-<code class="language-plaintext highlighter-rouge">docker pull</code> загрузка образа из реестра
-<code class="language-plaintext highlighter-rouge">docker push</code>
-<code class="language-plaintext highlighter-rouge">docker search</code></p>
-
-<p>[<a href="../notes/traefik" title="traefik">traefik</a>]</p>
+<p>[<a href="../notes/traefik" title="Traefik">traefik</a>]</p>
 
 
-
-<div>
-  
-
-
-  
-
-</div>
 
 <script type="text/javascript">
   // Hack: Replace page-link with "Page Title"
@@ -334,6 +339,7 @@ ENTRYPOINT ["/entrypoint.sh"]
     }
   })
 </script>
+      
       <p><a href="/">На главную</a></p>
 
       <footer class="site-footer">

@@ -1,3 +1,3 @@
-# команды-ubuntu
+# Команды-ubuntu
 
 `echo $PATH` - вывести переменную PATH

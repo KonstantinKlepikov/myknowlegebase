@@ -1,6 +1,6 @@
-# poetry
+# Poetry
 
-**Poetry is a tool for dependency management and packaging in #python**. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Замена [[requirements]]
+**Poetry is a tool for dependency management and packaging in python**. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Замена [[requirements]]
 
 Выставляется изолированно от остальной системы для осуществления версионирования зависимостей. В линуксе:
 
@@ -98,12 +98,12 @@ pendulum = "^1.4"
 
 Основное - это [install](https://python-poetry.org/docs/cli/#install). Инсталит из `.toml` с учетом `.lock`
 
-`poetry install`
-`poetry install --no-dev` без дева
-`poetry install --remove-untracked` - не ставить то, что не трекается в lock
-`poetry install --extras "mysql pgsql"` включить экстра зависимости
-`poetry install -E mysql -E pgsql`
-`poetry install --no-root` не инсталится рут-пкет (мой проект)
+- `poetry install`
+- `poetry install --no-dev` без дева
+- `poetry install --remove-untracked` - не ставить то, что не трекается в lock
+- `poetry install --extras "mysql pgsql"` включить экстра зависимости
+- `poetry install -E mysql -E pgsql`
+- `poetry install --no-root` не инсталится рут-пкет (мой проект)
 
 Апдейт зависимостей в `.lock` через `poetry update`. Можно заапдейтить только часть `poetry update requests toml`
 
@@ -111,11 +111,11 @@ pendulum = "^1.4"
 
 Опции
 
-`--dev (-D)`: Add package as development dependency.
-`--path`: The path to a dependency.
-`--optional` : Add as an optional dependency.
-`--dry-run` : Outputs the operations but will not execute anything (implicitly enables --verbose).
-`--lock` : Do not perform install (only update the lockfile).
+- `--dev (-D)`: Add package as development dependency
+- `--path`: The path to a dependency
+- `--optional` : Add as an optional dependency
+- `--dry-run` : Outputs the operations but will not execute anything (implicitly enables --verbose)
+- `--lock` : Do not perform install (only update the lockfile)
 
 Удалчерез `poetry remove pendulum`. Посмотреть зависимости `poetry show`
 
@@ -131,9 +131,9 @@ Poetry работает всегда изолированно от глобал�
 
 [Решение проблемы с путями к питону в vs-code](https://github.com/microsoft/vscode-python/issues/8372)
 
-`poetry env info` инфа об окружении
-`poetry env list` листинг окружений, ассоциированных с проектом
-`poetry env use python 3.8` использовать определенный питон
+- `poetry env info` инфа об окружении
+- `poetry env list` листинг окружений, ассоциированных с проектом
+- `poetry env use python 3.8` использовать определенный питон
 
 Окружения можно снести через `delete`
 
@@ -141,33 +141,33 @@ Poetry работает всегда изолированно от глобал�
 
 ## [Состав .toml](https://python-poetry.org/docs/pyproject/)
 
-`name` имя пакета (проекта) required
-`version` версия required
-`description` required
-`license`
-`authors` required
-`maintainers`
-`readme`
-`homepage`
-`repository`
-`documentation`
-`keywords`
-`classifiers`
-`packages` - список пакетов и модулей, включаемых в финальную версию
-`include` and `exclude` - список паттернов, которые необходимо включить в финальный проект
-`dependencies` and `dev-dependencies`
-`scripts` скрипты, которые необходимо выполнить при инсталяции
-`extras` опциональные зависимости
-`plugins`
-`urls`
+- `name` имя пакета (проекта) required
+- `version` версия required
+- `description` required
+- `license`
+- `authors` required
+- `maintainers`
+- `readme`
+- `homepage`
+- `repository`
+- `documentation`
+- `keywords`
+- `classifiers`
+- `packages` - список пакетов и модулей, включаемых в финальную версию
+- `include` and `exclude` - список паттернов, которые необходимо включить в финальный проект
+- `dependencies` and `dev-dependencies`
+- `scripts` скрипты, которые необходимо выполнить при инсталяции
+- `extras` опциональные зависимости
+- `plugins`
+- `urls`
 
 [Пример реализации проекта на poetry](https://browniebroke.com/blog/migrating-project-to-poetry/)
 [Как использовать poetry](https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack) на [[[heroku]], [[heroku-cli]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
-[requirements]: requirements "requirements.txt"
-[команды-ubuntu]: команды-ubuntu "команды-ubuntu"
-[команды-ubuntu]: команды-ubuntu "команды-ubuntu"
-[pypy]: pypy "pypy"
+[requirements]: requirements "Requirements.txt"
+[команды-ubuntu]: команды-ubuntu "Команды-ubuntu"
+[команды-ubuntu]: команды-ubuntu "Команды-ubuntu"
+[pypy]: pypy "Pypy"
 [heroku-cli]: heroku-cli "heroku-cli"
 [//end]: # "Autogenerated link references"
