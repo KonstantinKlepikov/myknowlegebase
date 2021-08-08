@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Http-cors | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Http-cors" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/http-cors.html","headline":"Http-cors","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/http-cors.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="http-cors">Http-cors</h1>
+
+<p>Cross-Origin Resource Sharing (CORS) — механизм, использующий дополнительные HTTP-заголовки, чтобы дать возможность агенту пользователя получать разрешения на доступ к выбранным ресурсам с сервера на источнике (домене), отличном от того, что сайт использует в данный момент. Говорят, что агент пользователя делает запрос с другого источника (cross-origin HTTP request), если источник текущего документа отличается от запрашиваемого ресурса доменом, протоколом или портом.</p>
+
+<p>Пример cross-origin запроса: HTML страница, обслуживаемая сервером с http://domain-a.com, запрашивает img src по адресу http://domain-b.com/image.jpg. Сегодня многие страницы загружают ресурсы вроде CSS-стилей, изображений и скриптов с разных доменов, соответствующих разным сетям доставки контента (Content delivery networks, CDNs).</p>
+
+<p>В целях безопасности браузеры ограничивают cross-origin запросы, инициируемые скриптами. Например, XMLHttpRequest и Fetch API следуют политике одного источника (same-origin policy). Это значит, что web-приложения, использующие такие API, могут запрашивать HTTP-ресурсы только с того домена, с которого были загружены, пока не будут использованы CORS-заголовки.</p>
+
+<p><img src="/attachments/2021-06-04-23-00-29.png" alt="cors" /></p>
+
+<p>Механизм CORS поддерживает кросс-доменные запросы и передачу данных между браузером и web-серверами по защищённому соединению. Современные браузеры используют CORS в API-контейнерах, таких как XMLHttpRequest или Fetch, чтобы снизить риски, присущие запросам с других источников.</p>
+
+<p>CORS используется дляЖ</p>
+
+<ul>
+  <li>Вызова <a href="https://developer.mozilla.org/ru/docs/Web/API/XMLHttpRequest">XMLHttpRequest</a> или <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch</a> APIs в кросс-сайт манере, как описано выше.</li>
+  <li><a href="https://www.w3.org/TR/css-fonts-3/#font-fetching-requirements">Web Fonts</a> (для кросс-доменного использования шрифтов в @font-face в рамках CSS), чтобы серверы могли разворачивать TrueType шрифты, которые могут быть загружены только кросс-сайт и использованы web-сайтами, которым это разрешено.</li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL">WebGL текстуры</a>.</li>
+  <li>Фреймы с изображениями/видео, добавленными в канвас с помощью <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage">drawImage</a>.</li>
+  <li>Стили (для <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSSOM_View">CSSOM</a> доступа).</li>
+  <li>Скрипты (для  отключённых исключений).</li>
+</ul>
+
+<p>Стандарт Cross-Origin Resource Sharing работает с помощью добавления новых HTTP-заголовков, которые позволяют серверам описывать набор источников, которым разрешено читать информацию, запрашиваемую web-браузером. В частности, для методов HTTP-запросов, которые могут привести к побочным эффектам над данными сервера (в частности, для HTTP методов, отличных от GET или для POST запросов, использующих определённые MIME-типы), спецификация требует, чтобы браузеры “предпроверяли” запрос, запрашивая поддерживающие методы с сервера с помощью метода HTTP-запроса OPTIONS и затем, поверх “подтверждения” с сервера, отсылали фактический запрос с фактическим методом HTTP-запроса. Сервера также могут оповещать клиентов должны ли “полномочия” (включая Cookies и HTTP Authentication данные) быть отправлены с запросом.</p>
+
+<h2 id="примеры-сценариев">Примеры сценариев</h2>
+
+<h3 id="простые-запросы"><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/CORS#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%8B%D0%B5_%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D1%8B">Простые запросы</a></h3>
+
+<p>Запрос, для которого не срабатывает CORS preflight— так называемый “простой запросы”—это запрос, удовлетворяющий следующим условиям:</p>
+
+<ul>
+  <li>Допустимые [<a href="http-methods" title="Http-methods">http-methods</a>] для запроса: GET, HEAD, POST</li>
+  <li>Кроме [<a href="http-заголовки" title="Http-заголовки">http-заголовки</a>], которые автоматические проставляются user-agent’ом (например, Connection, User-Agent (en-US), или любой другой заголовок с именем, определённым в спецификации метода Fetch в секции “Запрещённые имена заголовков (которые нельзя изменить программно)”), допустимыми заголовками, которые могут быть проставлены вручную, являются те заголовки, которые определены спецификацией метода Fetch как “CORS-безопасные заголовки запроса”, такие как:</li>
+</ul>
+
+<p>Accept
+Accept-Language
+Content-Language
+Content-Type (но учитывайте примечание ниже)
+Last-Event-ID
+DPR
+Save-Data
+Viewport-Width
+Width
+Допустимыми значениями заголовка Content-Type являются:
+application/x-www-form-urlencoded
+multipart/form-data
+text/plain</p>
+
+<ul>
+  <li>Не должны быть зарегистрированы обработчики событий на любой объект XMLHttpRequestUpload используемый в запросе; это достигается использованием свойства XMLHttpRequest.upload.</li>
+  <li>В запросе не должен использоваться объект типа ReadableStream (en-US).</li>
+</ul>
+
+<h3 id="предварительные-запросы"><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/CORS#%D0%BF%D1%80%D0%B5%D0%B4%D0%B2%D0%B0%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5_%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D1%8B">Предварительные запросы</a></h3>
+
+<p>“Предварительные” запросы сначала отправляют HTTP-запрос методом OPTIONS к ресурсу на другом домене, чтобы определить, является ли фактический запрос безопасным для отправки. Кросс-сайтовые запросы предварительно просматриваются таким образом, так как они могут быть причастны к пользовательским данным.</p>
+
+<p>В частности, запрос предварительно просматривается, если выполняется <strong>любое из следующих условий</strong>:</p>
+
+<ul>
+  <li>Если в запросе используется любой из следующих [<a href="http-methods" title="Http-methods">http-methods</a>]:</li>
+</ul>
+
+<p>PUT
+DELETE
+CONNECT
+OPTIONS
+TRACE
+PATCH</p>
+
+<ul>
+  <li>Или если, кроме заголовков, автоматически устанавливаемых пользовательским агентом (например, Connection, User-Agent (en-US), или любым другим заголовком с именем, определённым в спецификации Fetch как “имя запрещённого заголовка”), запрос включает любые заголовки, отличные от тех, которые спецификация Fetch определяет как “заголовок запроса CORS-безопасный заголовок запроса”, а именно:</li>
+</ul>
+
+<p>Accept
+Accept-Language
+Content-Language
+Content-Type (но учтите дополнительные требования ниже)
+Last-Event-ID
+DPR
+Save-Data
+Viewport-Width
+Width
+Или если заголовок Content-Type содержит значение, отличное от следующих:
+application/x-www-form-urlencoded
+multipart/form-data
+text/plain</p>
+
+<ul>
+  <li>Или если один или больше обработчиков событий зарегистрированы на объекте XMLHttpRequestUpload, который используется в запросе.</li>
+  <li>Или если объект ReadableStream (en-US) используется в запросе.</li>
+</ul>
+
+<h4 id="предварительные-запросы-и--переадресации">Предварительные запросы и  переадресации</h4>
+
+<p>Большинство браузеров в настоящее время не поддерживают следующие переадресации для предварительных запросов. Если переадресация происходит для предварительного запроса, большинство современных браузеров сообщат об ошибке, такой как следующее.</p>
+
+<blockquote>
+  <p>Запрос был перенаправлен на ‘https://example.com/foo’, который запрещён для запросов из разных источников, требующих предварительной проверки</p>
+</blockquote>
+
+<blockquote>
+  <p>Запрос требует предварительной проверки, которая запрещена для перенаправления между источниками</p>
+</blockquote>
+
+<p>Протокол CORS изначально требовал такого поведения, но впоследствии был изменён, чтобы больше не требовать его. Однако большинство браузеров ещё не реализовали это изменение и все ещё демонстрируют поведение, которое требовалось изначально.</p>
+
+<p>Поэтому, пока браузеры не догонят спецификацию, вы можете обойти это ограничение, выполнив одно или оба из следующих действий:</p>
+
+<ul>
+  <li>изменить поведение на стороне сервера, чтобы избежать предварительной проверки и/или избежать переадресации — если у вас есть контроль над сервером, к которому делается запрос</li>
+  <li>изменить запрос так, чтобы это был простой запрос, который не вызывает предварительную проверку</li>
+</ul>
+
+<p>Но если невозможно внести эти изменения, то возможен другой способ:</p>
+
+<ul>
+  <li>Сделайте простой запрос для определения (используя Response.url для Fetch API, или XHR.responseURL, чтобы определить, на каком URL завершится настоящий предварительный запрос).</li>
+  <li>Сделайте другой запрос (“настоящий” запрос), используя URL адрес, полученный вами из Response.url или XMLHttpRequest.responseURL на первом этапе.</li>
+</ul>
+
+<p>Однако, если запрос инициирует предварительную проверку из-за наличия в запросе заголовка <code class="language-plaintext highlighter-rouge">Authorization</code>, вы не сможете обойти ограничение, используя описанные выше шаги. И вы вообще не сможете обойти это, если у вас нет контроля над сервером, на который делается запрос.</p>
+
+<h3 id="запросы-с-учётными-данными"><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/CORS#%D0%B7%D0%B0%D0%BF%D1%80%D0%BE%D1%81%D1%8B_%D1%81_%D1%83%D1%87%D1%91%D1%82%D0%BD%D1%8B%D0%BC%D0%B8_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8">Запросы с учётными данными</a></h3>
+
+<p>Наиболее интересная возможность, предоставляемая как XMLHttpRequest, так и Fetch и CORS - это возможность делать “проверенные” запросы, которые осведомлены о файлах HTTP cookie и информации HTTP аутентификации. По умолчанию, в кросс-сайтовых XMLHttpRequest или Fetch вызовах, браузеры не отправляют учётные данные. Конкретный флаг должен быть установлен для объекта XMLHttpRequest или конструктора Request при его вызове.</p>
+
+<h2 id="заголовки-http-ответов"><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/CORS#%D0%B7%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%B8_http_%D0%BE%D1%82%D0%B2%D0%B5%D1%82%D0%BE%D0%B2">Заголовки HTTP ответов</a></h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Allow-Origin</code> определяет либо один источник, что указывает браузеру разрешить этому источнику доступ к ресурсу; либо — для запросов без учётных данных — значение “*”, которое говорит браузеру разрешить запросы из любых источников.</li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Expose-Headers</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Max-Age</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Allow-Credentials</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Allow-Methods</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Allow-Headers</code></li>
+</ul>
+
+<h2 id="the-http-request-headers"><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/CORS#the_http_request_headers">The HTTP request headers</a></h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Origin</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Request-Method</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Access-Control-Request-Headers</code></li>
+</ul>
+
+<p><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/CORS">Ссылка на статью</a></p>
+
+<p>[<a href="../lists/http" title="Http">http</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

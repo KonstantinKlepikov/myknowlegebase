@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Env variables for tests | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Env variables for tests" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/env-for-test.html","headline":"Env variables for tests","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/env-for-test.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="env-variables-for-tests">Env variables for tests</h1>
+
+<p>Пример реализации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># utilities.py
+</span><span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">def</span> <span class="nf">get_secret</span><span class="p">():</span>
+    <span class="s">"""Simple retrieval function.
+    Returns SECRET or raises OSError.
+    """</span>
+    <span class="n">secret</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">'SECRET'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">secret</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">OSError</span><span class="p">(</span><span class="s">"SECRET environment is not set."</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">secret</span>
+</code></pre></div></div>
+
+<p>Варианты установки переменной</p>
+
+<h2 id="toxini">tox.ini</h2>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[testenv]</span>
+<span class="py">setenv</span> <span class="p">=</span> <span class="s">SECRET=top_secret</span>
+</code></pre></div></div>
+
+<h2 id="pytestini">pytest.ini</h2>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[pytest]</span>
+<span class="py">env</span> <span class="p">=</span>
+    <span class="py">HOME</span><span class="p">=</span><span class="s">~/tmp</span>
+    <span class="py">SECRET</span><span class="p">=</span><span class="s">top_secret</span>
+</code></pre></div></div>
+
+<p>Рекомендуемый способ установки переменных - monkeypatch для [<a href="pytest" title="Pytest">pytest</a>]</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># test_utilities.py
+</span><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">utilities</span> <span class="kn">import</span> <span class="n">get_user</span>
+
+
+<span class="k">def</span> <span class="nf">test_get_user</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="s">"""Set the SECRET env var to assert the behavior."""</span>
+    <span class="n">monkeypatch</span><span class="p">.</span><span class="n">setenv</span><span class="p">(</span><span class="s">"SECRET"</span><span class="p">,</span> <span class="s">"top_secret"</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">get_user</span><span class="p">()</span> <span class="o">==</span> <span class="s">"top_secret"</span>
+
+
+<span class="k">def</span> <span class="nf">test_get_user_exception</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="s">"""Remove the SECRET env var and assert OSError is raised."""</span>
+    <span class="n">monkeypatch</span><span class="p">.</span><span class="n">delenv</span><span class="p">(</span><span class="s">"SECRET"</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="nb">OSError</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">get_user</span><span class="p">()</span>
+</code></pre></div></div>
+
+<ul>
+  <li>[<a href="dot-env" title="Dot-env">dot-env</a>]</li>
+  <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
+</ul>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

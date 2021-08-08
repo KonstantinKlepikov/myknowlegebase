@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Fastapi frontend development | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Fastapi frontend development" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/fastapi-template-vue-frontend.html","headline":"Fastapi frontend development","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/fastapi-template-vue-frontend.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="fastapi-frontend-development">Fastapi frontend development</h1>
+
+<ul>
+  <li>Enter the <code class="language-plaintext highlighter-rouge">frontend</code> directory, install the [<a href="npm" title="Npm">npm</a>] packages and start the live server using the <code class="language-plaintext highlighter-rouge">npm</code> scripts:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>frontend
+npm <span class="nb">install
+</span>npm run serve
+</code></pre></div></div>
+
+<p>Then open your browser at http://localhost:8080</p>
+
+<p>Notice that this live server is not running inside Docker, it is for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But compiling the image at every change will not be as productive as running the local development server with live reload.</p>
+
+<p>Check the file <code class="language-plaintext highlighter-rouge">package.json</code> to see other available options.</p>
+
+<p>If you have Vue CLI installed, you can also run <code class="language-plaintext highlighter-rouge">vue ui</code> to control, configure, serve, and analyze your application using a nice local web user interface.</p>
+
+<p>If you are only developing the frontend (e.g. other team members are developing the backend) and there is a staging environment already deployed, you can make your local development code use that staging API instead of a full local Docker Compose stack.</p>
+
+<p>To do that, modify the file <code class="language-plaintext highlighter-rouge">./frontend/.env</code>, there’s a section with:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">VUE_APP_ENV=development
+</span><span class="gp">#</span><span class="w"> </span><span class="nv">VUE_APP_ENV</span><span class="o">=</span>staging
+</code></pre></div></div>
+
+<ul>
+  <li>Switch the comment, to:</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">#</span><span class="w"> </span><span class="nv">VUE_APP_ENV</span><span class="o">=</span>development
+<span class="go">VUE_APP_ENV=staging
+</span></code></pre></div></div>
+
+<h2 id="removing-the-frontend">Removing the frontend</h2>
+
+<p>If you are developing an API-only app and want to remove the frontend, you can do it easily:</p>
+
+<ul>
+  <li>Remove the <code class="language-plaintext highlighter-rouge">./frontend</code> directory.</li>
+  <li>In the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file, remove the whole service / section <code class="language-plaintext highlighter-rouge">frontend</code>.</li>
+  <li>In the <code class="language-plaintext highlighter-rouge">docker-compose.override.yml</code> file, remove the whole service / section <code class="language-plaintext highlighter-rouge">frontend</code>.</li>
+</ul>
+
+<p>Done, you have a frontend-less (api-only) app. 🔥 🚀</p>
+
+<hr />
+
+<p>If you want, you can also remove the <code class="language-plaintext highlighter-rouge">FRONTEND</code> environment variables from:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">.env</code></li>
+  <li><code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code></li>
+  <li><code class="language-plaintext highlighter-rouge">./scripts/*.sh</code></li>
+</ul>
+
+<p>But it would be only to clean them up, leaving them won’t really have any effect either way.</p>
+
+<ul>
+  <li>[<a href="../lists/fastapi" title="Аastapi">fastapi</a>]</li>
+  <li>[<a href="fastapi-template-backend" title="Fastapi-template-backend">fastapi-template-backend</a>]</li>
+</ul>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

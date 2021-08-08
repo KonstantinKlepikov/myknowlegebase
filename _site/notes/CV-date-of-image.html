@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Данные изображения | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Данные изображения" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/CV-date-of-image.html","headline":"Данные изображения","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/CV-date-of-image.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="данные-изображения">Данные изображения</h1>
+
+<p>Любое зображение можно определить в пространственной или частотной области.</p>
+
+<h2 id="изображение-в-пространственной-области">Изображение в пространственной области</h2>
+
+<p>Цифровое изображение определяется через дискретизацию непрерывных аналоговых данных в пространственной области. Такая область состоит из прямоугольного массива пикселей $(x, y, u)$, каждый из которых является комбинацией местоположения $(x, y) \in \mathbb{Z}^2$ (здесь $\mathbb{Z}$ - множество целых чисел, а точки образуют регулярную сетку) и значения $u$, представляющего отсчетв в точке $(x, y)$. Формальное определние изображения $I$ на прямоугольном множествуе $\Omega$ (носитель или carrier $I$):</p>
+
+<script type="math/tex; mode=display">\Omega = \{(x, y) : \leq x \leq N_{cols} \wedge 1 \leq y \leq N_{rows}\} \subset \mathbb{Z}^2</script>
+
+<p>при условии, что $N_{cols} \geq 1, N_{rows} \geq 1$, а система координат левосторонняя.</p>
+
+<h3 id="пиксели">Пиксели</h3>
+
+<p>Два способа геометрической интерпретации пикселя - в виде ячейки сетки или в виде меток в узлах сеток, являющихся центрами ячеек сетки.</p>
+
+<p>Модель ячейки сетки предполагает, что пиксель - это закрашенный одним цветом квадрат. Модель узла сетки предполагает, что пиксель - узел сетки, помеченный значением изображения.</p>
+
+<p>Пиксели сами по себе не определяют никаких отношений смежности. В модели ячеек сетки пиксели смежны тогда и только тогда, когда соответствую щие им квадраты имеют смежную сторону. Другой вариант определения смежности - считать смежными различные квадраты, имеющие хотя бы одну общую сторону или вершину.</p>
+
+<h3 id="окна">Окна</h3>
+
+<p>Окном изображения $W_p^{m, n}(I)$ называется часть изображения $m \times n$, спозиционированная относительно начального пикселя $p$. По уиолячанию считается, что $m, n$ нечетные, а $p$ центр окна.</p>
+
+<h3 id="основные-статистики-изображения">Основные статистики изображения</h3>
+
+<p>В компьютерном зрении в качестве области скалярного изображения часто рассматривают отрезок вещественных чисел $[0, 1] \in \mathbb{R}$.</p>
+
+<p>Для <strong>скалярных изображений</strong> выбираются целые числа $u \in {0, 1, …, 2^{\alpha} - 1}$. Такие значения интерпретируются как уровни яркости, 0 соответствует черному, а $2^{\alpha} - 1$ белому, остальные уровни линейно интерпоируются между белым и черным. Стандартом $\alpha$ может быть 8, 16 и т.д., в текущий момент 16.</p>
+
+<p>В <strong>бинарном изображении</strong> пиксели приобретают только два значения - белый и черный.</p>
+
+<p>В <strong>векторных изображениях</strong> число каналов больше одного, значениями изображений являются векторы $(u_1, u_2, …, u_{N})$. К примеру, в RGB три канала - красный, зеленый и синий, каждый канал при этом представляет из себя просто скалярное изображзение.</p>
+
+<p><strong>Среднее</strong> или средний уровень яркости.</p>
+
+<script type="math/tex; mode=display">\mu_I = \frac{1}{N_{cols} \times N_{rows}} \sum_{x=1}^{N_{cols}} \sum_{y=1}^{N_{rows}} I(x, y)</script>
+
+<table>
+  <tbody>
+    <tr>
+      <td>здесь $</td>
+      <td>\Omega</td>
+      <td>= N_{cols}, \times N_{rows}$ - мощность носителя $\Omega$, содержащего все пиксели.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Дисперсия</strong> и <strong>стандартное отклонение</strong></p>
+
+<script type="math/tex; mode=display">\sigma^2_I = [\frac{1}{| \Omega |} \sum_{(x, y) \in \Omega} I(x, y)^2] - \mu^2_I</script>
+
+<p>Квадратный корень из дисперсии - это стандартное отклонение. Такое представление дисперсии позволяет считать среднее и дисперсию одновременно при первом проходе через изображение.</p>
+
+<p><strong>Гистограмма</strong> - это таблица частот. Гистограмма реализует представление скалярного изображения или одного из каналов векторного изображения.</p>
+
+<p>Абсолютные частоты (сколько раз значение $u$ встречается в $\Omega$)</p>
+
+<script type="math/tex; mode=display">H_i(u) = |{(x, y) \in \Omega : I(x, y) = u}|</script>
+
+<p>Относительные частоты - значения, распределенные между 0 и 1:</p>
+
+<script type="math/tex; mode=display">h_I(u) = \frac{H_I(u)}{| \Omega |}</script>
+
+<p>Абсолютная гистограмма представляется значениями $H_I(0), H_I(1), …, H_I(G_{max})$</p>
+
+<p>Для кумулятивных гистограм вычисляются абсолютная и относительная кумулятивные частоты:</p>
+
+<script type="math/tex; mode=display">C_I(u) = \sum_{v=0}^u H_I(v)</script>
+
+<script type="math/tex; mode=display">c_I(u) = \sum_{v=0}^u h_I(v)</script>
+
+<p>Дисперсия, мат.ожидание и другие статистики вычисляются так-же для окон. В процессе анализа можно классифицировать окна по категориям, к примеру как содержащие однородные области, с низкой или высокой контранстностью, содержащие границу областей и т.д.</p>
+
+<p><strong>Контрастность</strong> определяется как средняя абсолютная величина разности между значением пикселя и средним значением соседних пикселейЖ</p>
+
+<script type="math/tex; mode=display">C(I) = \frac{1}{| \Omega |} \sum_{(x, y) \in \Omega} | I(x, y) - \mu_{A(x, y)} |</script>
+
+<h3 id="пространственные-и-временные-меры">Пространственные и временные меры</h3>
+
+<p>Для получения полезной информации, визуализируются профили яркости, определяемые одномерными сечениями скалярных массивов данных. По сути это окно, одна из сторон которого имеет значени 1. Для профилей яркости можно считат ьвсе вышеуказанные статистики.</p>
+
+<p>Гистограммы и профили яркости - это пространственные статистики значений. Чтобы получить временные статистики, рассматривается последовтельность изображений, полученных на одном и том же носителе $\Omega$. Для лучшего понимания распределения значений пространственных метрик вводятся скалярные меры данных, которые сопоставляют одному кадру $I$ одно число. Сравниваются различные меры данных для заданного дискретного временного интервала, в результате чего получаются временные статистики.</p>
+
+<p>Временные статистики определяют функции, которые, при нормировке, позволяют оценить <strong>расстояние</strong>, в частности $L_1$ и $L_2$ нормы. Кроме того, оценивается структурное подобие мер данных - функци иструктурна подобны, когда расстояние между ними близко к нулю, а локальные максимумы и минимумы функций находятся приблизительно в одних и тех же точках.</p>
+
+<h3 id="ступенчато-градиентная-модель-step-edge-model">Ступенчато-градиентная Модель (step-edge model)</h3>
+
+<p>Границы на изображениях предоставляют важные данные о содержании изобрадения. Границы определяются изменеением локальных производных. Такие границы могут представлять из себя как идеальные “ступеньки”, так и зашусмленные или линейные переходы, резкие или плавные изломы.</p>
+
+<p><img src="/attachments/2021-05-17-01-04-42.png" alt="step-edge model" /></p>
+
+<p>Для оценки локальных производных значение изображения интерпретируют как аппликатуру некторой поверхности в точке расположения пикселя. При такой интерпретации изображение определяет долины, плато, плавные или крутые склоны, т.е. имеет рельеф. Значения частных производных по $x$ и ро $y$ позволяют вычислить градиент высоты аппликатуры. Границы находятся в точках, где модуль градиента достигает локального максимума:</p>
+
+<script type="math/tex; mode=display">||\mathbf{grad} I ||_2 = \sqrt{(\frac{dI}{dx})^2 + (\frac{dI}{dy})^2}</script>
+
+<p>Кроме того, вторые производные определяются в лаплассиан $I$, который является скаляром. Границы находятся там, где лаплассиан переходит через 0.</p>
+
+<p>[<a href="../lists/computer-visions" title="Computer visions">computer-visions</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

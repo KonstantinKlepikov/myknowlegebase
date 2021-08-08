@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sqlalchemy-loader-strategy | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Sqlalchemy-loader-strategy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/sqlalchemy-loader-strategy.html","headline":"Sqlalchemy-loader-strategy","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/sqlalchemy-loader-strategy.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="sqlalchemy-loader-strategy">Sqlalchemy-loader-strategy</h1>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies">Ссылка на статью</a></p>
+
+<p>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>] ОРИ загружает объекты лениво (laizy load), по мере их востребованности. Этот шаблон проектирования довольно противоречив - когда в памяти несколько десятков объектов, которые ссылаются на несколько других объектов, ленивая загрузка может привести к избыточным запросам к БД. Такие запросы выполняются неявно, могут провоцировать ошибки и, что важно, не работают с [<a href="asyncio" title="Asyncio">asyncio</a>]. При этом ленивая (отложенная) загрузка имеет много преиуществ, если совместима с параллельной обработкой.</p>
+
+<p>Задача применении ОРМ сводится к запуску <code class="language-plaintext highlighter-rouge">SQL echoing</code> с целью проверки избыточности одних и тех-же селектов и дальнешем применении различных стратегий загрузки.</p>
+
+<p>Стратегия загрузки может быть представлена в виде объекта, ассоциированного с методом <code class="language-plaintext highlighter-rouge">Select.options()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">user_obj</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">options</span><span class="p">(</span><span class="n">selectinload</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">addresses</span><span class="p">))</span>
+<span class="p">).</span><span class="n">scalars</span><span class="p">():</span>
+    <span class="n">user_obj</span><span class="p">.</span><span class="n">addresses</span>  <span class="c1"># access addresses collection already loaded
+</span></code></pre></div></div>
+
+<p>Кроме того, стратегия может быть реализована в <code class="language-plaintext highlighter-rouge">relationship()</code> через опцию <code class="language-plaintext highlighter-rouge">relationship.lazy</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'user_account'</span>
+
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"Address"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"user"</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s">"selectin"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="selectin-load"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#selectin-load">Selectin load</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">selectinload()</code> наиболее используемая опция лоадера в [<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]. Опция гарантирует, что конкретная коллекция для полной серии объектов загружается заранее с помощью одного запроса. Он делает это с помощью SELECT, который в большинстве случаев может быть отправлен только для связанной таблицы, без введения JOIN или подзапросов, и только для тех родительских объектов, для которых коллекция еще не загружена. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">selectinload</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+<span class="p">...</span>   <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">options</span><span class="p">(</span><span class="n">selectinload</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">addresses</span><span class="p">)).</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="nb">id</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f"</span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">  (</span><span class="si">{</span><span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">email_address</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">row</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">addresses</span><span class="p">)</span><span class="si">}</span><span class="s">)"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span>
+<span class="p">[...]</span> <span class="p">()</span>
+<span class="k">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span> <span class="k">AS</span> <span class="n">address_user_id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">address_id</span><span class="p">,</span>
+<span class="n">address</span><span class="p">.</span><span class="n">email_address</span> <span class="k">AS</span> <span class="n">address_email_address</span>
+<span class="k">FROM</span> <span class="n">address</span>
+<span class="k">WHERE</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span> <span class="k">IN</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">spongebob</span>  <span class="p">(</span><span class="n">spongebob</span><span class="o">@</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">org</span><span class="p">)</span>
+<span class="n">sandy</span>  <span class="p">(</span><span class="n">sandy</span><span class="o">@</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">org</span><span class="p">,</span> <span class="n">sandy</span><span class="o">@</span><span class="n">squirrelpower</span><span class="p">.</span><span class="n">org</span><span class="p">)</span>
+<span class="n">patrick</span>  <span class="p">()</span>
+<span class="n">squidward</span>  <span class="p">()</span>
+<span class="n">ehkrabs</span>  <span class="p">()</span>
+<span class="n">pkrabs</span>  <span class="p">(</span><span class="n">pearl</span><span class="p">.</span><span class="n">krabs</span><span class="o">@</span><span class="n">gmail</span><span class="p">.</span><span class="n">com</span><span class="p">,</span> <span class="n">pearl</span><span class="o">@</span><span class="n">aol</span><span class="p">.</span><span class="n">com</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="joined-load"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#joined-load">Joined load</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">joinload()</code> дополняет инструкцию SELECT, передаваемую в базу данных, с помощью JOIN (который может быть внешним или внутренним соединением в зависимости от параметров), которае затем может загружаться в связанные объекты. лучше всего подходит для загрузки связанных объектов типа “многие к одному”, поскольку для этого требуется только добавить дополнительные столбцы в строку первичной сущности, которая будет извлечена в любом случае. Для большей эффективности может принимать еще и <code class="language-plaintext highlighter-rouge">joinedload.innerjoin</code>. Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">joinedload</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
+<span class="p">...</span>   <span class="n">select</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="n">options</span><span class="p">(</span><span class="n">joinedload</span><span class="p">(</span><span class="n">Address</span><span class="p">.</span><span class="n">user</span><span class="p">,</span> <span class="n">innerjoin</span><span class="o">=</span><span class="bp">True</span><span class="p">)).</span><span class="n">order_by</span><span class="p">(</span><span class="n">Address</span><span class="p">.</span><span class="nb">id</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f"</span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">Address</span><span class="p">.</span><span class="n">email_address</span><span class="si">}</span><span class="s"> </span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">Address</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span><span class="p">,</span> <span class="n">user_account_1</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">id_1</span><span class="p">,</span>
+<span class="n">user_account_1</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account_1</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">address</span>
+<span class="k">JOIN</span> <span class="n">user_account</span> <span class="k">AS</span> <span class="n">user_account_1</span> <span class="k">ON</span> <span class="n">user_account_1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">address</span><span class="p">.</span><span class="n">id</span>
+<span class="p">[...]</span> <span class="p">()</span>
+<span class="n">spongebob</span><span class="o">@</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">org</span> <span class="n">spongebob</span>
+<span class="n">sandy</span><span class="o">@</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">org</span> <span class="n">sandy</span>
+<span class="n">sandy</span><span class="o">@</span><span class="n">squirrelpower</span><span class="p">.</span><span class="n">org</span> <span class="n">sandy</span>
+<span class="n">pearl</span><span class="p">.</span><span class="n">krabs</span><span class="o">@</span><span class="n">gmail</span><span class="p">.</span><span class="n">com</span> <span class="n">pkrabs</span>
+<span class="n">pearl</span><span class="o">@</span><span class="n">aol</span><span class="p">.</span><span class="n">com</span> <span class="n">pkrabs</span>
+</code></pre></div></div>
+
+<p>Может так-же использоваться для коллекций один ко многим, но имеет эффект рекурсивного умножения первичных строк на связный элемент, что может быть затратно.</p>
+
+<h2 id="explicit-join--eager-load"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#explicit-join-eager-load">Explicit Join + Eager load</a></h2>
+
+<h2 id="augmenting-loader-strategy-paths"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#augmenting-loader-strategy-paths">Augmenting Loader Strategy Paths</a></h2>
+
+<h2 id="raiseload"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#raiseload">Raiseload</a></h2>
+
+<p>Позволяет в приципе блокировать “отложенную загрузку”. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'user_account'</span>
+
+    <span class="c1"># ... Column mappings
+</span>
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"Address"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"user"</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s">"raise_on_sql"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'address'</span>
+
+    <span class="c1"># ... Column mappings
+</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"User"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"addresses"</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s">"raise_on_sql"</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

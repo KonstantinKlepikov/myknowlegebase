@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Requirements.txt | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Requirements.txt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/requirements.html","headline":"Requirements.txt","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/requirements.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="requirementstxt">Requirements.txt</h1>
+
+<p>Управлят ьнесколькими рекуйрментами можно <a href="https://stackoverflow.com/questions/17803829/how-to-customize-a-requirements-txt-for-multiple-environments/20720019#20720019">так</a>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`</span><span class="nt">--</span> django_project_root
+|-- requirements
+|   |-- common.txt
+|   |-- dev.txt
+|   <span class="sb">`</span><span class="nt">--</span> prod.txt
+<span class="sb">`</span><span class="nt">--</span> requirements.txt
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">common.txt</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Contains requirements common to all environments</span>
+<span class="nv">req1</span><span class="o">==</span>1.0
+<span class="nv">req2</span><span class="o">==</span>1.0
+<span class="nv">req3</span><span class="o">==</span>1.0
+...
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">dev.txt</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Specifies only dev-specific requirements</span>
+<span class="c"># But imports the common ones too</span>
+<span class="nt">-r</span> common.txt
+<span class="nv">dev_req</span><span class="o">==</span>1.0
+...
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">prod.txt</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Same for prod...</span>
+<span class="nt">-r</span> common.txt
+<span class="nv">prod_req</span><span class="o">==</span>1.0
+...
+</code></pre></div></div>
+
+<p>За пределами [[[heroku]]] или другного деплоя</p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install -r requirements/dev.txt</code> или <code class="language-plaintext highlighter-rouge">pip install -r requirements/prod.txt</code></p>
+
+<p>При деплое мы будем видеть только <code class="language-plaintext highlighter-rouge">requirements.txt</code>, а в нем:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Mirrors prod</span>
+<span class="nt">-r</span> requirements/prod.txt
+</code></pre></div></div>
+
+<p>Более крупный аналог - [<a href="poetry" title="Poetry">poetry</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

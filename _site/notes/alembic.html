@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Alembic | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Alembic" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/alembic.html","headline":"Alembic","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/alembic.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="alembic">Alembic</h1>
+
+<p>Тулза для миграции ДБ в [<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>] на #python</p>
+
+<p><a href="https://alembic.sqlalchemy.org/en/latest/">документация</a></p>
+
+<h2 id="базовые-принципы">Базовые принципы</h2>
+
+<h3 id="создание-окружения-для-миграции"><a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#the-migration-environment">Создание окружения для миграции</a></h3>
+
+<p>Через <code class="language-plaintext highlighter-rouge">alembic init folder</code></p>
+
+<p>Создается вот такая структура:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- yourproject/
+  - alembic/
+    - env.py
+    - README
+    - script.py.mako
+    - versions/
+      - 3512b954651e_add_account.py
+      - 2b1ae634e5cd_add_order_id.py
+      - 3adcc9a56557_rename_username_field.py
+</code></pre></div></div>
+
+<p>Здесь <code class="language-plaintext highlighter-rouge">env.py</code> определяет инструкции для миграций. <code class="language-plaintext highlighter-rouge">script.py.mako</code> генерирует новые скрипты миграции, а в <code class="language-plaintext highlighter-rouge">versions/</code> хранятся все версии миграций.</p>
+
+<p><code class="language-plaintext highlighter-rouge">alembic list_templates</code> выведет все шаблоны миграций</p>
+
+<p>Теперь можно <a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#editing-the-ini-file">сконфигурировать</a> файл <code class="language-plaintext highlighter-rouge">alembic.ini</code></p>
+
+<p>Для началанам будет достаточно указать расположение БД, например так:</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">sqlalchemy.url</span> <span class="p">=</span> <span class="s">sqlite:///./test.db</span>
+</code></pre></div></div>
+
+<h3 id="создание-миграции"><a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#create-a-migration-script">Создание миграции</a></h3>
+
+<p>Мы можем создать новую версию миграционного скрипта так: <code class="language-plaintext highlighter-rouge">alembic revision -m "create account table"</code></p>
+
+<h2 id="запуск-миграций"><a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#running-our-first-migration">Запуск миграций</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">alembic upgrade head</code></p>
+
+<h3 id="еще-команды">Еще команды</h3>
+
+<p>Кроме того, в скрипте миграции содержится информация об ID миграции</p>
+
+<p><code class="language-plaintext highlighter-rouge">revision = 'ae1027a6acf'</code></p>
+
+<p>Можно использовать команды типа <code class="language-plaintext highlighter-rouge">alembic upgrade ae1</code>  чтобы запускаться относительно специфического скрипта. Если несколько скриптов удовлетворяют идентификатору, действия будут остановлены и будет выдано сообщение.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">alembic upgrade +2</code> две версии включая текущую для апгрейда</li>
+  <li><code class="language-plaintext highlighter-rouge">alembic downgrade -1</code> на предыдущую для даунгрейда</li>
+  <li><code class="language-plaintext highlighter-rouge">alembic upgrade ae10+2</code> на версию ae10 + две за ней</li>
+  <li><code class="language-plaintext highlighter-rouge">alembic current</code> получить инфу о текущей версии</li>
+  <li><code class="language-plaintext highlighter-rouge">alembic history --verbose</code> история, <a href="https://alembic.sqlalchemy.org/en/latest/tutorial.html#viewing-history-ranges">более подробно</a></li>
+  <li><code class="language-plaintext highlighter-rouge">alembic downgrade base</code> даунгрейд в самое начало</li>
+  <li><code class="language-plaintext highlighter-rouge">alembic upgrade head</code> апгрейд до самого конца</li>
+</ul>
+
+<h2 id="автогенерация-миграций"><a href="https://alembic.sqlalchemy.org/en/latest/autogenerate.html">Автогенерация миграций</a></h2>
+
+<p>Алембик может смотрет ь в статус ДБ и генерировать миграции автоматически. Это делается с помщью <code class="language-plaintext highlighter-rouge">alembic revision --autogenerate</code>. Чтобы использовать автогенерацию, необходимо модифицировать <code class="language-plaintext highlighter-rouge">env.py</code>, что-бы предоставить доступ к контенту таблиц. Вместо:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">target_metadata</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>использовать</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">myapp.mymodel</span> <span class="kn">import</span> <span class="n">Base</span>
+<span class="n">target_metadata</span> <span class="o">=</span> <span class="n">Base</span><span class="p">.</span><span class="n">metadata</span>
+</code></pre></div></div>
+
+<p>Далее выполняем <code class="language-plaintext highlighter-rouge">alembic revision --autogenerate -m "migration name"</code></p>
+
+<p><a href="https://alembic.sqlalchemy.org/en/latest/autogenerate.html#what-does-autogenerate-detect-and-what-does-it-not-detect">Что может, а что не может автомиграция?</a></p>
+
+<p>Может задетектить:</p>
+
+<ul>
+  <li>Table additions, removals</li>
+  <li>Column additions, removals</li>
+  <li>Change of nullable status on columns</li>
+  <li>Basic changes in indexes and explicitly-named unique constraints</li>
+  <li>Basic changes in foreign key constraints</li>
+</ul>
+
+<p>Опционально может задетектить:</p>
+
+<ul>
+  <li>Change of column type</li>
+  <li>Change of server default</li>
+</ul>
+
+<p>Не может задетектить:</p>
+
+<ul>
+  <li>Changes of table name</li>
+  <li>Changes of column name</li>
+  <li>Anonymously named constraints</li>
+  <li>Special SQLAlchemy types such as Enum when generated on a backend which doesn’t support ENUM directly</li>
+</ul>
+
+<p>Пока нельзя, но в будущем станет возможно:</p>
+
+<ul>
+  <li>Some free-standing constraint additions and removals may not be supported, including PRIMARY KEY, EXCLUDE, CHECK</li>
+  <li>Sequence additions, removals</li>
+</ul>
+
+<p>Всегда нужно контроллировать что именно сгенерировал алембик.</p>
+
+<h3 id="autogenerating-multiple-metadata-collections"><a href="https://alembic.sqlalchemy.org/en/latest/autogenerate.html#autogenerating-multiple-metadata-collections">Autogenerating Multiple MetaData collections</a></h3>
+
+<h3 id="controlling-what-to-be-autogenerated---параметры-автогенерации"><a href="https://alembic.sqlalchemy.org/en/latest/autogenerate.html#controlling-what-to-be-autogenerated">Controlling What to be Autogenerated</a> - параметры автогенерации</h3>
+
+<ul>
+  <li>фильтрация ненужных Схем</li>
+  <li>фильтрация таблиц</li>
+  <li>фильтрация объектов (напирме по колонкам)</li>
+</ul>
+
+<h3 id="comparing-and-rendering-types-проверка-типов"><a href="https://alembic.sqlalchemy.org/en/latest/autogenerate.html#comparing-and-rendering-types">Comparing and Rendering Types</a> проверка типов</h3>
+
+<h3 id="applying-post-processing-and-python-code-formatters-to-generated-revisions"><a href="https://alembic.sqlalchemy.org/en/latest/autogenerate.html#applying-post-processing-and-python-code-formatters-to-generated-revisions">Applying Post Processing and Python Code Formatters to Generated Revisions</a></h3>
+
+<p>Добавление функций, выполняемых после создания миграции алембиком.</p>
+
+<p>Остальная часть книги посвязена работе в больших проектах и деталям:</p>
+
+<ul>
+  <li>генерация sql-скриптов (для больших проектов)</li>
+  <li>наименования и их значимость</li>
+  <li>batch миграции</li>
+  <li>работа с ветками</li>
+  <li>cookbook</li>
+  <li>api</li>
+</ul>
+
+<p>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

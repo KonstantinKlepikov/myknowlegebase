@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sqlalchemy документация | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Sqlalchemy документация" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/sqlalchemy-docs.html","headline":"Sqlalchemy документация","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/sqlalchemy-docs.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="sqlalchemy-документация">Sqlalchemy документация</h1>
+
+<p>Схема работы</p>
+
+<p><img src="/attachments/2021-04-15-23-51-38.png" alt="sqlalchemy" /></p>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/">туторилалы</a></p>
+
+<h2 id="запуск-приложения"><a href="https://docs.sqlalchemy.org/en/14/tutorial/engine.html">Запуск приложения</a></h2>
+
+<p>Используется объект <a href="https://docs.sqlalchemy.org/en/14/core/future.html#sqlalchemy.future.Engine">engine</a>. Engine реализует <a href="https://docs.sqlalchemy.org/en/14/core/pooling.html">connection pool</a>. Engine - это глобальный объект, который формируется и конфигурируется только один раз для части сервера, общающегося с ДБ.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s">"sqlite+pysqlite:///:memory:"</span><span class="p">,</span> <span class="n">echo</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/core/engines.html#database-urls">ДБ url</a> задает три вещи: диалект, параметры доступа и имя конкретной БД</p>
+
+<p><code class="language-plaintext highlighter-rouge">dialect+driver://username:password@host:port/database</code></p>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/core/engines.html#sqlite">Пример для</a> [<a href="sqlite" title="Sqlite">sqlite</a>]</p>
+
+<h2 id="работа-с-транзакциями-и-бд"><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html">Работа с транзакциями и БД</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">connect()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">text</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="s">"select 'hello world'"</span><span class="p">))</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nb">all</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">select</span> <span class="s1">'hello world'</span>
+<span class="p">[...]</span> <span class="p">()</span>
+<span class="p">[(</span><span class="s1">'hello world'</span><span class="p">,)]</span>
+<span class="k">ROLLBACK</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">commit()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># "commit as you go"
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="s">"CREATE TABLE some_table (x int, y int)"</span><span class="p">))</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">text</span><span class="p">(</span><span class="s">"INSERT INTO some_table (x, y) VALUES (:x, :y)"</span><span class="p">),</span>
+<span class="p">...</span>         <span class="p">[{</span><span class="s">"x"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"y"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s">"x"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"y"</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="p">...</span>     <span class="p">)</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">some_table</span> <span class="p">(</span><span class="n">x</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span> <span class="nb">int</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">()</span>
+<span class="o">&lt;</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">engine</span><span class="p">.</span><span class="k">cursor</span><span class="p">.</span><span class="n">CursorResult</span> <span class="k">object</span> <span class="k">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">some_table</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="o">&lt;</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">engine</span><span class="p">.</span><span class="k">cursor</span><span class="p">.</span><span class="n">CursorResult</span> <span class="k">object</span> <span class="k">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="k">COMMIT</span>
+</code></pre></div></div>
+
+<p>Другой метод <code class="language-plaintext highlighter-rouge">begin()</code> возвращает коннект <a href="https://docs.sqlalchemy.org/en/14/core/future.html#sqlalchemy.future.Engine.begin">с уже открытым комитом</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># "begin once"
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">text</span><span class="p">(</span><span class="s">"INSERT INTO some_table (x, y) VALUES (:x, :y)"</span><span class="p">),</span>
+<span class="p">...</span>         <span class="p">[{</span><span class="s">"x"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">"y"</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span> <span class="p">{</span><span class="s">"x"</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s">"y"</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+<span class="p">...</span>     <span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">some_table</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="o">&lt;</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">engine</span><span class="p">.</span><span class="k">cursor</span><span class="p">.</span><span class="n">CursorResult</span> <span class="k">object</span> <span class="k">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span>
+<span class="k">COMMIT</span>
+</code></pre></div></div>
+
+<h2 id="извлечение-состояний-бд-напрямую"><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html#basics-of-statement-execution">Извлечение состояний БД напрямую</a></h2>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/core/future.html#sqlalchemy.future.Connection.execute">Основной метод</a> <code class="language-plaintext highlighter-rouge">execute()</code> В коньюнкции с <a href="https://docs.sqlalchemy.org/en/14/core/sqlelement.html#sqlalchemy.sql.expression.text">методом</a> <code class="language-plaintext highlighter-rouge">text()</code> он возвращает <a href="https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.Result">объект</a> <code class="language-plaintext highlighter-rouge">result</code></p>
+
+<h3 id="объединение-строк"><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html#fetching-rows">Объединение строк</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="s">"SELECT x, y FROM some_table"</span><span class="p">))</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">f"x: </span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">x</span><span class="si">}</span><span class="s">  y: </span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">y</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="k">FROM</span> <span class="n">some_table</span>
+<span class="p">[...]</span> <span class="p">()</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">1</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">4</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">6</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">8</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">9</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">10</span>
+<span class="k">ROLLBACK</span>
+</code></pre></div></div>
+
+<h3 id="отправка-параметров"><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html#sending-parameters">Отправка параметров</a></h3>
+
+<h3 id="построение-параметров-из-полученного-ранее-представления-бд"><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html#bundling-parameters-with-a-statement">Построение параметров из полученного ранее представления бд</a></h3>
+
+<h2 id="извлечение-представления-при-помощи-орм-сессии"><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html#executing-with-an-orm-session">Извлечение представления при помощи ОРМ-сессии</a></h2>
+
+<p>Используется <a href="https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session">объект</a> <code class="language-plaintext highlighter-rouge">Session</code>. Сессию есть смысл использовать только с ОРМ, т.к. в других случаях она не дает особых преимуществ.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s">"SELECT x, y FROM some_table WHERE y &gt; :y ORDER BY x, y"</span><span class="p">).</span><span class="n">bindparams</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="p">...</span>        <span class="k">print</span><span class="p">(</span><span class="s">f"x: </span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">x</span><span class="si">}</span><span class="s">  y: </span><span class="si">{</span><span class="n">row</span><span class="p">.</span><span class="n">y</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="k">FROM</span> <span class="n">some_table</span> <span class="k">WHERE</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="o">?</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">6</span><span class="p">,)</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">6</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">8</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">9</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">10</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">11</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">12</span>
+<span class="n">x</span><span class="p">:</span> <span class="mi">13</span>  <span class="n">y</span><span class="p">:</span> <span class="mi">14</span>
+<span class="k">ROLLBACK</span>
+</code></pre></div></div>
+
+<h2 id="работа-с-метаданными-бд"><a href="https://docs.sqlalchemy.org/en/14/tutorial/metadata.html">Работа с метаданными БД</a></h2>
+
+<p>Используется <a href="https://docs.sqlalchemy.org/en/14/glossary.html#term-database-metadata">объект</a> <code class="language-plaintext highlighter-rouge">database metadata</code>, который в пиотоне реализует представление БД строки-колонки. Базовым элементом метаданных БД является <code class="language-plaintext highlighter-rouge">table</code>. Метвдвнные можно инициализировать так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Типичное решение для большинства приложений - один инстантс метаданных. SGLAlchemy позволяет комбинировать множетво для одного приложения. Следующий шан - создание таблиц:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">user_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+<span class="p">...</span>     <span class="s">"user_account"</span><span class="p">,</span>
+<span class="p">...</span>     <span class="n">metadata</span><span class="p">,</span>
+<span class="p">...</span>     <span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+<span class="p">...</span>     <span class="n">Column</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">30</span><span class="p">)),</span>
+<span class="p">...</span>     <span class="n">Column</span><span class="p">(</span><span class="s">'fullname'</span><span class="p">,</span> <span class="n">String</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Здесь инстанс <code class="language-plaintext highlighter-rouge">table</code> представляет отдельную таблицу в БД. Колонка представлена инстансом <code class="language-plaintext highlighter-rouge">column</code>. Типы данных, такие как <code class="language-plaintext highlighter-rouge">Integer</code> могут добавляться в колонку как с помощью, так и без помощи инствнсов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">name</span>
+<span class="n">Column</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">table</span><span class="o">=&lt;</span><span class="n">user_account</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="p">[</span><span class="s">'id'</span><span class="p">,</span> <span class="s">'name'</span><span class="p">,</span> <span class="s">'fullname'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Тут-же задаются ограничение, к примеру <code class="language-plaintext highlighter-rouge">primary key</code> или <a href="https://docs.sqlalchemy.org/en/14/glossary.html#term-foreign-key-constraint">foregn key</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">ForeignKey</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">address_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+<span class="p">...</span>     <span class="s">"address"</span><span class="p">,</span>
+<span class="p">...</span>     <span class="n">metadata</span><span class="p">,</span>
+<span class="p">...</span>     <span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+<span class="p">...</span>     <span class="n">Column</span><span class="p">(</span><span class="s">'user_id'</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">'user_account.id'</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+<span class="p">...</span>     <span class="n">Column</span><span class="p">(</span><span class="s">'email_address'</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="определение-метаданных-с-помощью-орм"><a href="https://docs.sqlalchemy.org/en/14/tutorial/metadata.html#defining-table-metadata-with-the-orm">Определение метаданных с помощью ОРМ</a></h2>
+
+<p>Когда мыф используем ОРМ, процесс декларирования метаданных совмещен с процессом декларирования <a href="https://docs.sqlalchemy.org/en/14/glossary.html#term-mapped">маппированных классов</a>. Маппированный класс - это любой #python класс, который имеет аттрибуты слинкованные с колонками БД. Это делается с помощью <a href="https://docs.sqlalchemy.org/en/14/orm/mapping_api.html#sqlalchemy.orm.registry">объекта</a> <code class="language-plaintext highlighter-rouge">registry</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">registry</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mapper_registry</span> <span class="o">=</span> <span class="n">registry</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mapper_registry</span><span class="p">.</span><span class="n">metadata</span>
+<span class="n">MetaData</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Теперь, вместо декларпирования таблиц и колонок напрямую, мы можем это сделать в маппируемом классе.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">Base</span> <span class="o">=</span> <span class="n">mapper_registry</span><span class="p">.</span><span class="n">generate_base</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Есть и комбинированный метод, объединяющий <code class="language-plaintext highlighter-rouge">registry</code> и декларацию БД</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Теперь осталось задекларировать маппированный классы.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'user_account'</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="p">...</span>     <span class="n">fullname</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"Address"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"user"</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>        <span class="k">return</span> <span class="s">f"User(id=</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="nb">id</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">, name=</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">, fullname=</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">fullname</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">)"</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'address'</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">email_address</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">user_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">'user_account.id'</span><span class="p">))</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="n">user</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"User"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"addresses"</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="s">f"Address(id=</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="nb">id</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">, email_address=</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">email_address</span><span class="err">!</span><span class="n">r</span><span class="si">}</span><span class="s">)"</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">User</span><span class="p">.</span><span class="n">__table__</span>
+<span class="n">Table</span><span class="p">(</span><span class="s">'user_account'</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">(),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">Integer</span><span class="p">(),</span> <span class="n">table</span><span class="o">=&lt;</span><span class="n">user_account</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">table</span><span class="o">=&lt;</span><span class="n">user_account</span><span class="o">&gt;</span><span class="p">),</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s">'fullname'</span><span class="p">,</span> <span class="n">String</span><span class="p">(),</span> <span class="n">table</span><span class="o">=&lt;</span><span class="n">user_account</span><span class="o">&gt;</span><span class="p">),</span> <span class="n">schema</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Несколько нюансов:</p>
+
+<ul>
+  <li>класс автоматически генерирует __init__()</li>
+  <li>в данном случае реализован __repr__(). но это не обязательно</li>
+  <li>связи между таблицами <a href="https://docs.sqlalchemy.org/en/14/orm/relationship_api.html#sqlalchemy.orm.relationship">реализованы двусторонее</a> через <code class="language-plaintext highlighter-rouge">relationship()</code></li>
+</ul>
+
+<p>Такой метод создания метаданных <a href="https://docs.sqlalchemy.org/en/14/tutorial/metadata.html#id1">сочетаем и с прямым</a> (без ОРм)</p>
+
+<h2 id="работа-с-данными-в-core-режиме"><a href="https://docs.sqlalchemy.org/en/14/tutorial/data.html">Работа с данными в core режиме</a></h2>
+
+<p>Core режим сфокусирован на извлечении и отправке данных при помощи #sql эзыка</p>
+
+<h3 id="core-insert"><a href="https://docs.sqlalchemy.org/en/14/tutorial/data.html#core-insert">Core insert</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">insert()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">insert</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">user_table</span><span class="p">).</span><span class="n">values</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'spongebob'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">"Spongebob Squarepants"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+<span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">user_account</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span> <span class="n">VALUES</span> <span class="p">(:</span><span class="n">name</span><span class="p">,</span> <span class="p">:</span><span class="n">fullname</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Можно <a href="https://docs.sqlalchemy.org/en/14/core/internals.html#sqlalchemy.engine.Compiled">скомпилировать</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">compiled</span> <span class="o">=</span> <span class="n">stmt</span><span class="p">.</span><span class="nb">compile</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">compiled</span><span class="p">.</span><span class="n">params</span>
+<span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'spongebob'</span><span class="p">,</span> <span class="s">'fullname'</span><span class="p">:</span> <span class="s">'Spongebob Squarepants'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">execute()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">user_account</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'spongebob'</span><span class="p">,</span> <span class="s1">'Spongebob Squarepants'</span><span class="p">)</span>
+<span class="k">COMMIT</span>
+</code></pre></div></div>
+
+<p>Инсерт генерирует значения автоматически из параметров, переданных в <code class="language-plaintext highlighter-rouge">execute()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">insert</span><span class="p">(</span><span class="n">user_table</span><span class="p">),</span>
+<span class="p">...</span>         <span class="p">[</span>
+<span class="p">...</span>             <span class="p">{</span><span class="s">"name"</span><span class="p">:</span> <span class="s">"sandy"</span><span class="p">,</span> <span class="s">"fullname"</span><span class="p">:</span> <span class="s">"Sandy Cheeks"</span><span class="p">},</span>
+<span class="p">...</span>             <span class="p">{</span><span class="s">"name"</span><span class="p">:</span> <span class="s">"patrick"</span><span class="p">,</span> <span class="s">"fullname"</span><span class="p">:</span> <span class="s">"Patrick Star"</span><span class="p">}</span>
+<span class="p">...</span>         <span class="p">]</span>
+<span class="p">...</span>     <span class="p">)</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">user_account</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">((</span><span class="s1">'sandy'</span><span class="p">,</span> <span class="s1">'Sandy Cheeks'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'patrick'</span><span class="p">,</span> <span class="s1">'Patrick Star'</span><span class="p">))</span>
+<span class="k">COMMIT</span>
+</code></pre></div></div>
+
+<p>Более реалистичный Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">select</span><span class="p">,</span> <span class="n">bindparam</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">scalar_subquery</span> <span class="o">=</span> <span class="p">(</span>
+<span class="p">...</span>     <span class="n">select</span><span class="p">(</span><span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">).</span>
+<span class="p">...</span>     <span class="n">where</span><span class="p">(</span><span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">name</span><span class="o">==</span><span class="n">bindparam</span><span class="p">(</span><span class="s">'username'</span><span class="p">)).</span>
+<span class="p">...</span>     <span class="n">scalar_subquery</span><span class="p">()</span>
+<span class="p">...</span> <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">insert</span><span class="p">(</span><span class="n">address_table</span><span class="p">).</span><span class="n">values</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">scalar_subquery</span><span class="p">),</span>
+<span class="p">...</span>         <span class="p">[</span>
+<span class="p">...</span>             <span class="p">{</span><span class="s">"username"</span><span class="p">:</span> <span class="s">'spongebob'</span><span class="p">,</span> <span class="s">"email_address"</span><span class="p">:</span> <span class="s">"spongebob@sqlalchemy.org"</span><span class="p">},</span>
+<span class="p">...</span>             <span class="p">{</span><span class="s">"username"</span><span class="p">:</span> <span class="s">'sandy'</span><span class="p">,</span> <span class="s">"email_address"</span><span class="p">:</span> <span class="s">"sandy@sqlalchemy.org"</span><span class="p">},</span>
+<span class="p">...</span>             <span class="p">{</span><span class="s">"username"</span><span class="p">:</span> <span class="s">'sandy'</span><span class="p">,</span> <span class="s">"email_address"</span><span class="p">:</span> <span class="s">"sandy@squirrelpower.org"</span><span class="p">},</span>
+<span class="p">...</span>         <span class="p">]</span>
+<span class="p">...</span>     <span class="p">)</span>
+<span class="p">...</span>     <span class="n">conn</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">address</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">email_address</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">((</span><span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span><span class="p">),</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">((</span><span class="s1">'spongebob'</span><span class="p">,</span> <span class="s1">'spongebob@sqlalchemy.org'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'sandy'</span><span class="p">,</span> <span class="s1">'sandy@sqlalchemy.org'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'sandy'</span><span class="p">,</span> <span class="s1">'sandy@squirrelpower.org'</span><span class="p">))</span>
+<span class="k">COMMIT</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Insert.from_select()</code> <a href="https://docs.sqlalchemy.org/en/14/core/dml.html#sqlalchemy.sql.expression.Insert.from_select">описание метода</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">select_stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">"@aol.com"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">insert_stmt</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">address_table</span><span class="p">).</span><span class="n">from_select</span><span class="p">(</span>
+<span class="p">...</span>     <span class="p">[</span><span class="s">"user_id"</span><span class="p">,</span> <span class="s">"email_address"</span><span class="p">],</span> <span class="n">select_stmt</span>
+<span class="p">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">insert_stmt</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">address</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">email_address</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">||</span> <span class="p">:</span><span class="n">name_1</span> <span class="k">AS</span> <span class="n">anon_1</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Insert.returning()</code> <a href="https://docs.sqlalchemy.org/en/14/core/dml.html#sqlalchemy.sql.expression.Insert.returning">Описание метода</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">insert_stmt</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">address_table</span><span class="p">).</span><span class="n">returning</span><span class="p">(</span><span class="n">address_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">address_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">email_address</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">insert_stmt</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">address</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">email_address</span><span class="p">)</span>
+<span class="k">VALUES</span> <span class="p">(:</span><span class="n">id</span><span class="p">,</span> <span class="p">:</span><span class="n">user_id</span><span class="p">,</span> <span class="p">:</span><span class="n">email_address</span><span class="p">)</span>
+<span class="n">RETURNING</span> <span class="n">address</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span>
+</code></pre></div></div>
+
+<h3 id="selecting-data"><a href="https://docs.sqlalchemy.org/en/14/tutorial/data.html#selecting-data">Selecting Data</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">select()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">user_table</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">'spongebob'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">stmt</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">:</span><span class="n">name_1</span>
+</code></pre></div></div>
+
+<p>Тоже самое через <code class="language-plaintext highlighter-rouge">row</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">engine</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">conn</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'spongebob'</span><span class="p">,)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'spongebob'</span><span class="p">,</span> <span class="s1">'Spongebob Squarepants'</span><span class="p">)</span>
+<span class="k">ROLLBACK</span>
+</code></pre></div></div>
+
+<p>Или через ОРМ</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">'spongebob'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">stmt</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'spongebob'</span><span class="p">,)</span>
+<span class="p">(</span><span class="k">User</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'spongebob'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s1">'Spongebob Squarepants'</span><span class="p">),)</span>
+<span class="k">ROLLBACK</span>
+</code></pre></div></div>
+
+<p>Примеры работы с колонками</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">user_table</span><span class="p">))</span>
+<span class="n">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="n">FROM</span> <span class="n">user_account</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">fullname</span><span class="p">))</span>
+<span class="n">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="n">FROM</span> <span class="n">user_account</span>
+</code></pre></div></div>
+
+<p>Ну и так далее - всевозможные типы запросов, делиты и т.д.: <a href="https://docs.sqlalchemy.org/en/14/tutorial/data.html#selecting-data">core вариант работы с данными</a></p>
+
+<h2 id="работа-с-данными-в-орм"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html">Работа с данными в ОРМ</a></h2>
+
+<p>ОРМ режим сфокусирован на ОРМ модели и оперирует объектом <code class="language-plaintext highlighter-rouge">Session()</code>. Чтобы работать в ОРМ режиме предварительно нужно знать:</p>
+
+<ul>
+  <li><a href="https://docs.sqlalchemy.org/en/14/tutorial/dbapi_transactions.html#tutorial-executing-orm-session">Executing with an ORM Session</a> (см. пример выше)</li>
+  <li><a href="https://docs.sqlalchemy.org/en/14/tutorial/metadata.html#tutorial-orm-table-metadata">Defining Table Metadata with the ORM</a> (см.пример выше)</li>
+  <li><a href="https://docs.sqlalchemy.org/en/14/tutorial/data.html#tutorial-selecting-orm-entities">Selecting ORM Entities and Columns</a> (см. пример выше)</li>
+</ul>
+
+<h3 id="inserting-rows-with-the-orm"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#inserting-rows-with-the-orm">Inserting Rows with the ORM</a></h3>
+
+<p>Вначале мы добавляем данные к инстансу объекта <code class="language-plaintext highlighter-rouge">Session</code>, затем используя <code class="language-plaintext highlighter-rouge">flush()</code> мы отправляем весь пул в БД.</p>
+
+<p>Инстанс класса представляет строки в БД.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">squidward</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"squidward"</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">"Squidward Tentacles"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">krabs</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"ehkrabs"</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">"Eugene H. Krabs"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">squidward</span>
+<span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'squidward'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Squidward Tentacles'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Значение <code class="language-plaintext highlighter-rouge">None</code> означает, что атрибут не был определен к текущему моменту. Маппер sqlalchemy не поднимает ошибку при неверном определении атрибута или неопределении - вместо этого он всегда подставляет представленное значение, либо <code class="language-plaintext highlighter-rouge">None</code>, либо пропускает несуществующий аттрибут.</p>
+
+<p>В настоящий момент в моедли данные замаплены согласно модели <code class="language-plaintext highlighter-rouge">User</code>, но еще не ассоциированиы ни с какой базой данных. Их необходимо добавить к сессии.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">squidward</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">krabs</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">new</span>
+<span class="n">IdentitySet</span><span class="p">([</span><span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'squidward'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Squidward Tentacles'</span><span class="p">),</span> <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'ehkrabs'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Eugene H. Krabs'</span><span class="p">)])</span>
+</code></pre></div></div>
+
+<p>Объект <code class="language-plaintext highlighter-rouge">Session</code> аккумулирует изменеения во времени до тех пор, пока не будет <a href="https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session.flush">вызван</a> <code class="language-plaintext highlighter-rouge">Session.flush</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">flush</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">user_account</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'squidward'</span><span class="p">,</span> <span class="s1">'Squidward Tentacles'</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">user_account</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'ehkrabs'</span><span class="p">,</span> <span class="s1">'Eugene H. Krabs'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Пока <code class="language-plaintext highlighter-rouge">Session.flush</code> мы можем выполнить <code class="language-plaintext highlighter-rouge">Session.commit()</code>, <code class="language-plaintext highlighter-rouge">Session.rollback()</code>, или <code class="language-plaintext highlighter-rouge">Session.close()</code></p>
+
+<p>ОРМ создаст автоматически <code class="language-plaintext highlighter-rouge">primary key</code>для строк, добавленных во <code class="language-plaintext highlighter-rouge">flush</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">squidward</span><span class="p">.</span><span class="nb">id</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">krabs</span><span class="p">.</span><span class="nb">id</span>
+<span class="mi">5</span>
+</code></pre></div></div>
+
+<p>Все объекты, добавленные в память, мапятся по <code class="language-plaintext highlighter-rouge">identity map</code> и доступны через метод <code class="language-plaintext highlighter-rouge">get()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">some_squidward</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">some_squidward</span>
+<span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'squidward'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Squidward Tentacles'</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">some_squidward</span> <span class="ow">is</span> <span class="n">squidward</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>В завершении изменеения необходимо закомиитить, например так</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">COMMIT</span>
+</code></pre></div></div>
+
+<h3 id="updating-orm-objects"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#updating-orm-objects">Updating ORM Objects</a></h3>
+
+<p>В core реализации используется UPDATE/DELETE #sql представления. При использовании ОРМ есть два пути реализовать UPDATE:</p>
+
+<ul>
+  <li>праймари - апдейт делается автоматически в процессе <code class="language-plaintext highlighter-rouge">Session</code></li>
+  <li>второй вариант - использование <code class="language-plaintext highlighter-rouge">Update</code> оператора с поддержкой ОРМ</li>
+</ul>
+
+<h4 id="primary">Primary</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"sandy"</span><span class="p">)).</span><span class="n">scalar_one</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'sandy'</span><span class="p">,)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span>
+<span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'sandy'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Sandy Cheeks'</span><span class="p">)</span>
+
+<span class="c1"># Вносим изменеения
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">fullname</span> <span class="o">=</span> <span class="s">"Sandy Squirrel"</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">dirty</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">session.dirty</code> - <a href="https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session.dirty">сет всех</a> “грязных” объектов, готовых к отправке изменеений.</p>
+
+<p>Перед каждым следующим селектом происходит <code class="language-plaintext highlighter-rouge">autoflush</code> и изменеения отправляются в БД</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sandy_fullname</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="p">...</span>     <span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">fullname</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="nb">id</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">).</span><span class="n">scalar_one</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="n">user_account</span> <span class="k">SET</span> <span class="n">fullname</span><span class="o">=?</span> <span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'Sandy Squirrel'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">2</span><span class="p">,)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">sandy_fullname</span><span class="p">)</span>
+<span class="n">Sandy</span> <span class="n">Squirrel</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">dirty</span>
+<span class="bp">False</span>
+</code></pre></div></div>
+
+<h4 id="orm-enabled-update-statements"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#updating-orm-objects">ORM-enabled UPDATE statements</a></h4>
+
+<p>Второй вариант - это вызвать вручную update в ОРМ модели</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="p">...</span>     <span class="n">update</span><span class="p">(</span><span class="n">User</span><span class="p">).</span>
+<span class="p">...</span>     <span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"sandy"</span><span class="p">).</span>
+<span class="p">...</span>     <span class="n">values</span><span class="p">(</span><span class="n">fullname</span><span class="o">=</span><span class="s">"Sandy Squirrel Extraodinaire"</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="n">user_account</span> <span class="k">SET</span> <span class="n">fullname</span><span class="o">=?</span> <span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'Sandy Squirrel Extraodinaire'</span><span class="p">,</span> <span class="s1">'sandy'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В этом случае используется специальная логика для добавления объекта в сессию.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">fullname</span>
+<span class="s">'Sandy Squirrel Extraodinaire'</span>
+</code></pre></div></div>
+
+<h3 id="deleting-orm-objects"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#deleting-orm-objects">Deleting ORM Objects</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">patrick</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">patrick</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>До следующего селекта объект будет доступен в сессии. При селекте будет выполнен автофлаш и объект удалится</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"patrick"</span><span class="p">)).</span><span class="n">first</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">address_id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span> <span class="k">AS</span> <span class="n">address_email_address</span><span class="p">,</span>
+<span class="n">address</span><span class="p">.</span><span class="n">user_id</span> <span class="k">AS</span> <span class="n">address_user_id</span>
+<span class="k">FROM</span> <span class="n">address</span>
+<span class="k">WHERE</span> <span class="o">?</span> <span class="o">=</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+<span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">user_account</span> <span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'patrick'</span><span class="p">,)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">patrick</span> <span class="ow">in</span> <span class="n">session</span>
+<span class="bp">False</span>
+</code></pre></div></div>
+
+<p>Так-же как и с UPDATE мы можем это сделать вручную</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># refresh the target object for demonstration purposes
+</span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># only, not needed for the DELETE
+</span><span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">squidward</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">delete</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"squidward"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">user_account</span> <span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'squidward'</span><span class="p">,)</span>
+</code></pre></div></div>
+
+<h3 id="rolling-back"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#rolling-back">Rolling Back</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+<span class="n">ROLLBACK</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">fullname</span>
+<span class="s">'Sandy Cheeks'</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">__dict__</span>  
+<span class="p">{</span><span class="s">'_sa_instance_state'</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">orm</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="n">InstanceState</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="s">'id'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'name'</span><span class="p">:</span> <span class="s">'sandy'</span><span class="p">,</span> <span class="s">'fullname'</span><span class="p">:</span> <span class="s">'Sandy Cheeks'</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">patrick</span> <span class="ow">in</span> <span class="n">session</span>
+<span class="bp">True</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">'patrick'</span><span class="p">)).</span><span class="n">scalar_one</span><span class="p">()</span> <span class="ow">is</span> <span class="n">patrick</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Роллбек отмотал все изменения в сессии, в т.ч. и в терминах БД.</p>
+
+<h3 id="closing-session"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_data_manipulation.html#closing-a-session">Closing session</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">ROLLBACK</span>
+</code></pre></div></div>
+
+<p>Происходит закрытие всех коннекшенов и транзакций. Это означает, что если делалось только извлечение данных, совсем не обязательно вызывать <code class="language-plaintext highlighter-rouge">rollback()</code> - роллбек будет вызван автоматически. Все объекты извлекаются из сессии - это означает, что у них нет функционального состояния, связанного с БД, их, к примеру, нельзя закомитить или получить какие-то даныне из БД</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">squidward</span><span class="p">.</span><span class="n">name</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="p">...</span>
+<span class="n">sqlalchemy</span><span class="p">.</span><span class="n">orm</span><span class="p">.</span><span class="n">exc</span><span class="p">.</span><span class="n">DetachedInstanceError</span><span class="p">:</span> <span class="n">Instance</span> <span class="o">&lt;</span><span class="n">User</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">bound</span> <span class="n">to</span> <span class="n">a</span> <span class="n">Session</span><span class="p">;</span> <span class="n">attribute</span> <span class="n">refresh</span> <span class="n">operation</span> <span class="n">cannot</span> <span class="n">proceed</span>
+</code></pre></div></div>
+
+<p>Чтобы прикрепить объекты к сессии снова, необходимо снова заюзать <code class="language-plaintext highlighter-rouge">add()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">squidward</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">squidward</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">user_account_id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="k">AS</span> <span class="n">user_account_name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span> <span class="k">AS</span> <span class="n">user_account_fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)</span>
+<span class="s1">'squidward'</span>
+</code></pre></div></div>
+
+<h2 id="working-with-related-objects"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html">Working with Related Objects</a></h2>
+
+<p>Для установки связей между объектами <a href="https://docs.sqlalchemy.org/en/14/orm/relationship_api.html#sqlalchemy.orm.relationship">используется</a> <code class="language-plaintext highlighter-rouge">relationship()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'user_account'</span>
+
+    <span class="c1"># ... Column mappings
+</span>
+    <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"Address"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"user"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'address'</span>
+
+    <span class="c1"># ... Column mappings
+</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"User"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"addresses"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="парсинг-и-загрузка-связей">Парсинг и загрузка связей</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'pkrabs'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Pearl Krabs'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">.</span><span class="n">addresses</span>
+<span class="p">[]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">Address</span><span class="p">(</span><span class="n">email_address</span><span class="o">=</span><span class="s">"pearl.krabs@gmail.com"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">.</span><span class="n">addresses</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>
+
+<span class="c1"># Появились связанные данные
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">.</span><span class="n">addresses</span>
+<span class="p">[</span><span class="n">Address</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s">'pearl.krabs@gmail.com'</span><span class="p">)]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a1</span><span class="p">.</span><span class="n">user</span>
+<span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'pkrabs'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Pearl Krabs'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Синхронизацию данных обеспечивает <code class="language-plaintext highlighter-rouge">relationship.back_populates</code> параметр. Мы можем связать в отношении один ко многим и многие к одному.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">Address</span><span class="p">(</span><span class="n">email_address</span><span class="o">=</span><span class="s">"pearl@aol.com"</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">u1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">.</span><span class="n">addresses</span>
+<span class="p">[</span><span class="n">Address</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s">'pearl.krabs@gmail.com'</span><span class="p">),</span> <span class="n">Address</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s">'pearl@aol.com'</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h3 id="добавление-в-сессию">Добавление в сессию</h3>
+
+<p>Каскадно добавляются все связанные объекты.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">u1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span> <span class="ow">in</span> <span class="n">session</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a1</span> <span class="ow">in</span> <span class="n">session</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a2</span> <span class="ow">in</span> <span class="n">session</span>
+<span class="bp">True</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">u1</span><span class="p">.</span><span class="nb">id</span><span class="p">)</span>
+<span class="bp">None</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">a1</span><span class="p">.</span><span class="n">user_id</span><span class="p">)</span>
+<span class="bp">None</span>
+</code></pre></div></div>
+
+<p>Так как мы не делали коммит, у нас все еще не присвоены айдишники.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">user_account</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'pkrabs'</span><span class="p">,</span> <span class="s1">'Pearl Krabs'</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">address</span> <span class="p">(</span><span class="n">email_address</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'pearl.krabs@gmail.com'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">address</span> <span class="p">(</span><span class="n">email_address</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="s1">'pearl@aol.com'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="k">COMMIT</span>
+</code></pre></div></div>
+
+<h3 id="загрузка-связей">Загрузка связей</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">.</span><span class="n">id</span>
+
+<span class="k">BEGIN</span> <span class="p">(</span><span class="k">implicit</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">user_account_id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span> <span class="k">AS</span> <span class="n">user_account_name</span><span class="p">,</span>
+<span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span> <span class="k">AS</span> <span class="n">user_account_fullname</span>
+<span class="k">FROM</span> <span class="n">user_account</span>
+<span class="k">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">6</span><span class="p">,)</span>
+<span class="mi">6</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">u1</span><span class="p">.</span><span class="n">addresses</span>
+<span class="k">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="n">id</span> <span class="k">AS</span> <span class="n">address_id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span> <span class="k">AS</span> <span class="n">address_email_address</span><span class="p">,</span>
+<span class="n">address</span><span class="p">.</span><span class="n">user_id</span> <span class="k">AS</span> <span class="n">address_user_id</span>
+<span class="k">FROM</span> <span class="n">address</span>
+<span class="k">WHERE</span> <span class="o">?</span> <span class="o">=</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+<span class="p">[...]</span> <span class="p">(</span><span class="mi">6</span><span class="p">,)</span>
+<span class="p">[</span><span class="n">Address</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s1">'pearl.krabs@gmail.com'</span><span class="p">),</span> <span class="n">Address</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s1">'pearl@aol.com'</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>Запросы со связями к БД в ОРМ высокоптимизированы, чтобы не быть затратными. Больше о стратегиях загрузки связанных данных можно <a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies">узнать тут</a>. [<a href="sqlalchemy-loader-strategy" title="Sqlalchemy-loader-strategy">sqlalchemy-loader-strategy</a>]</p>
+
+<h2 id="использование-связанных-данных-в-queries"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#using-relationships-in-queries">Использование связанных данных в queries</a></h2>
+
+<p>[<a href="sqlalchemy-querying" title="Sqlalchgemy querying">sqlalchemy-querying</a>]</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Select.join()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">aliased()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">where()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">all()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">any()</code></li>
+</ul>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#common-relationship-operators">Простейшие лоады</a> со связанными данными:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># many to one equals comparison
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">Address</span><span class="p">.</span><span class="n">user</span> <span class="o">==</span> <span class="n">u1</span><span class="p">))</span>
+<span class="n">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+<span class="n">FROM</span> <span class="n">address</span>
+<span class="n">WHERE</span> <span class="p">:</span><span class="n">param_1</span> <span class="o">=</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+
+<span class="c1"># many to one not equals comparison
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">Address</span><span class="p">.</span><span class="n">user</span> <span class="o">!=</span> <span class="n">u1</span><span class="p">))</span>
+<span class="n">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+<span class="n">FROM</span> <span class="n">address</span>
+<span class="n">WHERE</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span> <span class="o">!=</span> <span class="p">:</span><span class="n">user_id_1</span> <span class="n">OR</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span> <span class="n">IS</span> <span class="n">NULL</span>
+
+<span class="c1"># object is contained in a one-to-many collection
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">addresses</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">a1</span><span class="p">)))</span>
+<span class="n">SELECT</span> <span class="n">user_account</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_account</span><span class="p">.</span><span class="n">fullname</span>
+<span class="n">FROM</span> <span class="n">user_account</span>
+<span class="n">WHERE</span> <span class="n">user_account</span><span class="p">.</span><span class="nb">id</span> <span class="o">=</span> <span class="p">:</span><span class="n">param_1</span>
+
+<span class="c1"># An object has a particular parent from a one-to-many perspective
+</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">with_parent</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">with_parent</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">User</span><span class="p">.</span><span class="n">addresses</span><span class="p">)))</span>
+<span class="n">SELECT</span> <span class="n">address</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">email_address</span><span class="p">,</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+<span class="n">FROM</span> <span class="n">address</span>
+<span class="n">WHERE</span> <span class="p">:</span><span class="n">param_1</span> <span class="o">=</span> <span class="n">address</span><span class="p">.</span><span class="n">user_id</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/tutorial/further_reading.html">100500 дополнительных материалов по ОРМ</a>
+<a href="https://docs.sqlalchemy.org/en/14/core/types.html">колонки и типы данных</a>
+<a href="https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#connect-strings">коннекшен и работа с in-memory</a></p>
+
+<p>Утилиты для sqlalchemy: <a href="https://sqlalchemy-utils.readthedocs.io/en/latest/index.html">sqlalchemy_utils</a>. Не пашет с sqlalchemy-1.4. <a href="https://stackoverflow.com/a/66651808">Сурс</a></p>
+
+<blockquote>
+  <p>You have installed SQLAlchemy 1.4.0. SQLAlchemy-utils is currently not compatible with SQLAlchemy &gt; 1.4.0. The solution is to downgrade SQLAlchemy to 1.3.23.</p>
+</blockquote>
+
+<ul>
+  <li>[<a href="sqlalchemy-querying" title="Sqlalchgemy querying">sqlalchemy-querying</a>]</li>
+  <li>[<a href="fatsapi-sql-orm-example" title="Fatsapi-sql-orm-example">fatsapi-sql-orm-example</a>]</li>
+  <li>[<a href="sqlite" title="Sqlite">sqlite</a>]</li>
+  <li>[<a href="alembic" title="Alembic">alembic</a>] - тулза для миграций для sqlalchemy</li>
+  <li>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]</li>
+</ul>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

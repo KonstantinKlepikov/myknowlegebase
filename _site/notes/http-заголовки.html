@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Http-заголовки | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Http-заголовки" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/http-%D0%B7%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%B8.html","headline":"Http-заголовки","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/http-%D0%B7%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%B8.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="http-заголовки">Http-заголовки</h1>
+
+<p><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/Headers">http-заголовки</a></p>
+
+<p>Заголовки HTTP позволяют клиенту и серверу отправлять дополнительную информацию с HTTP запросом или ответом. В HTTP-заголовке содержится не чувствительное к регистру название, а затем после (:) непосредственно значение. Пробелы перед значением игнорируются.</p>
+
+<p>Пользовательские собственные заголовки исторически использовались с префиксом X, но это соглашение было объявлено устаревшим в июне 2012 года из-за неудобств, вызванных тем, что нестандартные поля стали стандартом в RFC-6648; другие перечислены в реестре IANA, исходное содержимое которого было определено в RFC 4229. IANA также поддерживает реестр предлагаемых новых заголовков HTTP.</p>
+
+<p>HTTP-заголовки сопровождают обмен данными по протоколу HTTP. Они могут содержать описание данных и информацию, необходимую для взаимодействия между клиентом и сервером. Заголовки и их статусы перечислены в реестре IANA, который постоянно обновляется.</p>
+
+<p>Заголовки могут быть сгруппированы по следующим контекстам:</p>
+
+<ul>
+  <li><strong>General Headers</strong> (Основные заголовки) применяется как к запросам, так и к ответам, но не имеет отношения к данным, передаваемым в теле. Должны включаться в любое сообщение клиента и сервера.</li>
+  <li><strong>Request Headers</strong> (Заголовки запроса) содержит больше информации о ресурсе, который нужно получить, или о клиенте, запрашивающем ресурс. Используются только в запросах клиента</li>
+  <li><strong>Response Headers</strong> (Заголовки ответа) содержат дополнительную информацию об ответе, например его местонахождение, или о сервере, предоставившем его. Только для ответов от сервера</li>
+  <li><strong>Entity Headers</strong> (Заголовки сущности) содержат информацию о теле ресурса, например его длину содержимого или тип MIME.</li>
+</ul>
+
+<p><a href="https://proselyte.net/tutorials/http-tutorial/header-fields/">Подробнее о заголовках</a></p>
+
+<p>Заголовки также могут быть сгруппированы согласно тому, как прокси (proxies) обрабатывают их:</p>
+
+<ul>
+  <li>Connection</li>
+  <li>Keep-Alive</li>
+  <li>Proxy-Authenticate</li>
+  <li>Proxy-Authorization</li>
+  <li>TE</li>
+  <li>Trailer</li>
+  <li>Transfer-Encoding</li>
+  <li>Upgrade</li>
+</ul>
+
+<h2 id="общие-заголовки">Общие заголовки</h2>
+
+<ul>
+  <li>Название параметра должно состоять минимум из одного печатного символа (ASCII-коды от 33 до 126). Регистр символов в названиях не имеет значения. Заголовки с неизвестными именами должны игнорироваться. После названия сразу должен следовать символ двоеточия.</li>
+  <li>Значение может содержать любые символы ASCII кроме перевода строки (код 10) и возврата каретки (код 13). Пробельные символы в начале и конце значения обрезаются. Последовательность нескольких пробельных символов внутри значения может восприниматься как один пробел. Регистр символов также не имеет значения (если иное не предусмотрено форматом поля).</li>
+  <li>Предусматривается размещение значения на нескольких строках (перенос строки). Для указания переноса в начале следующей строки должен находиться хотя бы один пробельный символ.</li>
+</ul>
+
+<p>Заголовки с одинаковыми названиями параметров, но разными значениями могут объединяться в один, только если значение поля представляет из себя разделённый запятыми список. Во всех остальных случаях значения более дальних заголовков должны перекрывать предыдущие. Поэтому прокси-сервера не должны менять порядок следования заголовков в сообщении. При этом порядок элементов списка обычно значения не имеет.</p>
+
+<p>Пример многострочных заголовков</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">content-type: text/html;
+              charset=windows-1251
+Allow: GET, HEAD
+Content-Length: 356
+ALLOW: GET, OPTIONS
+Content-Length:   1984
+</span></code></pre></div></div>
+
+<p>Пример компакетных заголовков</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">Content-Type: text/html;charset=windows-1251
+Allow: GET,HEAD,OPTIONS
+Content-Length: 1984
+</span></code></pre></div></div>
+
+<p>Язык разметки HTML позволяет задавать необходимые значения заголовков HTTP внутри &lt;HEAD&gt; с помощью тега &lt;META&gt;. При этом название заголовка указывается в атрибуте http-equiv, а значение — в content. Почти всегда выставляется значение заголовка Content-Type с указанием кодировки, чтобы избежать проблем с отображением текста браузером. Также не лишним является указание значения заголовка Content-Language</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=windows-1251"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Language"</span> <span class="na">content=</span><span class="s">"ru"</span><span class="nt">&gt;</span>
+...
+</code></pre></div></div>
+
+<p>Общие заголовки</p>
+
+<ul>
+  <li><strong>Cache-Control</strong>. Данное поле заголовка определяет директивы, которые должны быть выполнены системой кэширования</li>
+  <li><strong>Connection</strong> Данное поле заголовка позволяет отправителю определить желаемые свойства для данного конкретного соединения и не должно связываться с прокси через текущее соединение.</li>
+  <li><strong>Дата</strong> При работе с HTTP, время и дата должны быть представлены во времени по Гринвичу (Greenwich Mean Time – GMT) во всех случаях без исключений.</li>
+  <li><strong>Pragma</strong>. Данное поле используется для внедрения имплементации специальных директив, которые могут быть приняты любым реципиентом в цепочке запрос/ответ.</li>
+  <li><strong>Trailer</strong>. Это поле указывает, что данный набор заголовков представлен в виде последовательности сообщений, которые закодированы с помощью фрагментации кодировки передачи.</li>
+  <li><strong>Transfer-Encoding</strong>. Данное поле указывает, какой тип преобразования был применён к телу сообщения. Используется для безопасного обмена данными между клиентом и сервером.</li>
+  <li><strong>Upgrade</strong>. Данное поле позволяет клиенту определять дополнительные протоколы обмена данными, которые он поддерживает и хотел бы использовать в случае, если он поддерживается сервером.</li>
+  <li><strong>Via</strong>. Это поле используется соединениями и прокси для указывания промежуточных протоколов и адресатов. Если данные идут не напрямую, а через прокси.</li>
+  <li><strong>Warning</strong>. Данное поле используется для хранения дополнительной информации о статусе или преобразовании данных, которые могут не отображаться в самом сообщении.</li>
+</ul>
+
+<h2 id="заголовки-запроса">Заголовки запроса</h2>
+
+<ul>
+  <li><strong>Accept</strong>. Ипользуется для определения определённых типов медиа файлов, которые применимы для ответа.</li>
+  <li><strong>Accept-Charset</strong> Указывает, какой набор символов приемлем для ответа.</li>
+  <li><strong>Accept-Encoding</strong> Указывает приемлемую для ответа кодировку контента</li>
+  <li><strong>Accept-Language</strong> Указывает набор приемлемых языков для ответа.</li>
+  <li><strong>Authorization</strong> Содержит данные аутентификации пользователя для запрашиваемого ресурса. Содержит имя_пользователя:пароль, закодированные базовой 64-битной кодировкой</li>
+  <li><strong>Cookie</strong> Содержит пару “имя-значение” информации, хранящейся по данной URL.</li>
+  <li><strong>Expect</strong> Указывает, что данный набор поведений сервера требуется клиентом.</li>
+  <li><strong>From</strong> Данное поле содержит email пользователя, который контролирует запросы пользователя</li>
+  <li><strong>Host</strong> Определяет хост и порт запрашиваемого ресурса.</li>
+  <li><strong>If-Match</strong> Данное поле используется для того, чтобы сделать метод условным. Если мы хотим, чтобы метод выполнялся, только при соблюдении определённого условия.</li>
+  <li><strong>If-Modified-Since</strong> Используется для создания условий. Если запрашиваемая URL не была изменена с указанного времени, сущность будет возвращена сервером вместо ответа 304 (Not modified) без сообщения в теле.</li>
+  <li><strong>If-None_Match</strong> Используется для того, чтобы сделать метод условным. Выполняется только в том случае, если одно из переданных значений совпадает с тэгом, представленным ETag.</li>
+  <li><strong>If-Range</strong> Данное поле может быть использовано с условным GET для запроса определённой части данных.</li>
+  <li><strong>Max-Forwards</strong> Этот заголовок обеспечивает механизм с методами TRACE и OPTIONS для ограничения количества прокси или соединений, которые могут передавать запрос следующему серверу.</li>
+  <li><strong>Proxy-Authorization</strong> Данный заголовок позволяет клиенту определять себя (или своего пользователя) для прокси, который требует аутентификации.</li>
+  <li><strong>Range</strong> Поле заголовка Range определяет диапазон запрашиваемого из документа контента в байтах.</li>
+  <li><strong>Referer</strong> Данное поле заголовка позволяет клиенту определять URI ресурса с которого пришёл запрос на URL.</li>
+  <li><strong>TE</strong> Поле заголовка TE указывает расширение кодировка передачи, которая должна быть принята запросом или не должна.</li>
+  <li><strong>User-Agent</strong> Данное поле заголовка содержит информацию об агенте пользователя, посылающего запрос.</li>
+</ul>
+
+<h2 id="заголовки-ответа">Заголовки ответа</h2>
+
+<ul>
+  <li><strong>Accept-Ranges</strong> Позволяет серверу указывать принятие им диапазона запросов.</li>
+  <li><strong>Age</strong> Передаёт ожидания относительно времени (в секундах), прошедшего с момента ответа, который был сгенерирован сервером.</li>
+  <li><strong>ETag</strong> Поле заголовка ETag обеспечивает текущее значение тэга сущности для варианта, на который был сделан запрос.</li>
+  <li><strong>Location</strong> Используется для перенаправления реципиента на URL, отличную от запрашиваемой.</li>
+  <li><strong>Proxy-Authenticate</strong> Данное поле заголовка должно быть включено как часть ответа 407 (Proxy Authentification Required).</li>
+  <li><strong>Retry-After</strong> Может быть использовано вместе с ответом 503 (Service Unavailable), чтобы указать, как долго сервис будет недоступен для запросов.</li>
+  <li><strong>Server</strong> Содержит информацию о ПО, которое используется сервером, обрабатывающем запрос.</li>
+  <li><strong>Set-Cookie</strong> Содержит пары значений “имя/значение”, информации по этой URL. Вот возможные значения, которые мы можем настроить:
+    <ul>
+      <li><strong>Comment=comment</strong> Для определения любого комментария, связанного с cookie.</li>
+      <li><strong>Domain=domain</strong> Определяет домен, для которого cookie валидны.</li>
+      <li><strong>Expires=Date-time</strong> Дата, после которого cookie не действительны. Если пусто, то истекают сразу после закрытия браузера клиентом</li>
+      <li><strong>Path=path</strong> Определяет подмножество URL, к которым применимы cookie.</li>
+      <li><strong>Secure</strong> Даёт указанию агенту пользователя возвращать cookie только под защищённым соединением</li>
+    </ul>
+  </li>
+  <li><strong>Vary</strong> Определяет, что сущность имеет несколько ресурсов, которые могут варьироваться в зависимости от определённого списка заголовков запроса.</li>
+  <li><strong>WWW-Authenticate</strong> Должен быть включён в ответ 401 (Unauthorized).</li>
+</ul>
+
+<h2 id="заголовки-сущности">Заголовки сущности</h2>
+
+<ul>
+  <li><strong>Allow</strong> Содержит список методов, которые поддерживаются ресурсом, определяемом URL.</li>
+  <li><strong>Content-Encoding</strong> Используется как модификатор для типа медиа файлов. Если кодировка контента, запрашиваемая клиентом не поддерживается сервером, то будет получен ответ 415 (Unsupported Media Type).</li>
+  <li><strong>Content-Language</strong> Определяет языки для определённой сущности. Если мы хотим использовать несколько языков, то мы должны указать их символы через запятую.</li>
+  <li><strong>Content-Length</strong> Данное поле заголовка указывает размер тела сущности десятичным числом (символы).</li>
+  <li><strong>Content-Location</strong> Используется для поддержки локации ресурса для сущности, помещённой в сообщение, когда сущность запрашивается из локации, отличной от URI запрашиваемого ресурса.</li>
+  <li><strong>Content-MD5</strong> Данный заголовок используется для поддержки MD5 для сущности.</li>
+  <li><strong>Content-Range</strong> Данное поле заголовка отсылается с частью сущности для того, чтобы указать, где именно в целой сущности должна размещаться часть. Когда HTTP сообщение содержит контент с одним диапазоном, то оно передаётся с заголовками Content-Range и Content-Length, для того, чтобы показать количество уже переданных байтов.</li>
+  <li><strong>Content-Type</strong> Данное поле заголовка указывает тип медиа файла тело сообщения, переданного реципиенту.</li>
+  <li><strong>Expires</strong> Указывает дату и время, после которого ответ считается устаревшим.</li>
+  <li><strong>Last-Modified</strong> Данное поле заголовка указывает дату и время, когда (по мнению сервера) был крайний раз изменён файл.</li>
+</ul>
+
+<h3 id="сквозные-заголовки">Сквозные заголовки</h3>
+
+<p>Эти заголовки должны быть переданы конечному получателю сообщения: серверу для запроса или клиенту для ответа. Промежуточные прокси-серверы должны повторно передавать эти заголовки без изменений, а кеши должны их хранить.</p>
+
+<h3 id="хоп-хоп-заголовки">Хоп-хоп заголовки</h3>
+
+<p>Эти заголовки имеют смысл только для одного соединения транспортного уровня и не должны повторно передаваться прокси или кешироваться. Обратите внимание, что с помощью общего заголовка Connection могут быть установлены только заголовки переходов.</p>
+
+<h2 id="аутентификация">Аутентификация</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">WWW-Authenticate</code> Определяет метод аутентификации, который должен использоваться для доступа к ресурсу.</li>
+  <li><code class="language-plaintext highlighter-rouge">Authorization</code> Содержит учётные данные для аутентификации агента пользователя на сервере.</li>
+  <li><code class="language-plaintext highlighter-rouge">Proxy-Authenticate</code> Определяет метод аутентификации, который должен использоваться для доступа к ресурсам на прокси-сервере.</li>
+  <li><code class="language-plaintext highlighter-rouge">Proxy-Authorization</code> Содержит учётные данные для аутентификации агента пользователя с прокси-сервером.</li>
+</ul>
+
+<p><a href="https://developer.mozilla.org/ru/docs/Web/HTTP/Headers#%D0%B0%D1%83%D1%82%D0%B5%D0%BD%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F">Список заголовков с описанием для мозилы</a>
+<a href="https://ru.wikipedia.org/wiki/%D0%97%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%B8_HTTP">статья на вики</a>
+<a href="https://ru.wikipedia.org/wiki/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_%D0%B7%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%BE%D0%B2_HTTP"><strong>!!! список заголовков на вики !!!</strong></a></p>
+
+<ul>
+  <li>[<a href="../lists/http" title="Http">http</a>]</li>
+  <li>[<a href="http-methods" title="Http-methods">http-methods</a>]</li>
+  <li>[<a href="http-cors" title="Http-cors">http-cors</a>]</li>
+</ul>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

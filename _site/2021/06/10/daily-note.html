@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Немного трюков python - испорты, фокусы со словарями | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Немного трюков python - испорты, фокусы со словарями" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Иногда, особенно при прототипировании лли сборке каких-то неформализованных шаблонов, могут возникнуть нестандартные задачи, такие как конвертирование строк в имена переменных, конвертирование переменных в значения ключей и т.д. В этой статье я разберу эти задачи и их решения." />
+<meta property="og:description" content="Иногда, особенно при прототипировании лли сборке каких-то неформализованных шаблонов, могут возникнуть нестандартные задачи, такие как конвертирование строк в имена переменных, конвертирование переменных в значения ключей и т.д. В этой статье я разберу эти задачи и их решения." />
+<meta property="og:site_name" content="My knowlege base" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-06-10T00:00:00+02:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"/2021/06/10/daily-note.html","headline":"Немного трюков python - испорты, фокусы со словарями","dateModified":"2021-06-10T00:00:00+02:00","datePublished":"2021-06-10T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/2021/06/10/daily-note.html"},"description":"Иногда, особенно при прототипировании лли сборке каких-то неформализованных шаблонов, могут возникнуть нестандартные задачи, такие как конвертирование строк в имена переменных, конвертирование переменных в значения ключей и т.д. В этой статье я разберу эти задачи и их решения.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/2021/06/10/daily-note.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <p>Иногда, особенно при прототипировании лли сборке каких-то неформализованных шаблонов, могут возникнуть нестандартные задачи, такие как конвертирование строк в имена переменных, конвертирование переменных в значения ключей и т.д. В этой статье я разберу эти задачи и их решения.</p>
+
+<h2 id="как-конвертировать-переменные-python-в-ключи-словаря">Как конвертировать переменные python в ключи словаря</h2>
+
+<p>Задача выглядит так: значения ключей словаря из названий переменных, а значения - из их объектов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bird</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">fish</span> <span class="o">=</span> <span class="s">'f'</span>
+<span class="n">rock</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">dict_of_animals</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># some code
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dict_of_animals</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="p">{</span><span class="s">'bird'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'fish'</span><span class="p">:</span> <span class="s">'f'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Проблема эта была поднята на <a href="https://stackoverflow.com/questions/3972872/python-variables-as-keys-to-dict">stack overflow</a>. Мне понравилось такое решение:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fruitdict</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span> <span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">().</span><span class="n">copy</span><span class="p">().</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'__'</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">!=</span> <span class="s">'dict_of_animals'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Дело в том, что далеко не всегда у вас есть список переменных или желание его составлять, а в данном контексте мы просто смотрим в <code class="language-plaintext highlighter-rouge">locals()</code> и забираем все, что нам нужно.</p>
+
+<p>Как конвертить строки в названия переменных [[daily-note-2021-05-15]]</p>
+
+<h2 id="как-конвертировать-ключи-словаря-в-переменные-python">Как конвертировать ключи словаря в переменные python</h2>
+
+<p>Скорее всего вам придется решить и обратную задачу - импортировать словарь в другое пространство имен и перегнать ключи словаря в названия переменных, а значения - в объекты, на которые ссылаются переменные. Проблема разбрирается <a href="https://stackoverflow.com/questions/18090672/convert-dictionary-entries-into-variables-python">здесь</a>. Решение просто как веник:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dict_of_animals</span> <span class="o">=</span> <span class="p">{</span><span class="s">'bird'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'fish'</span><span class="p">:</span> <span class="s">'f'</span><span class="p">}</span>
+<span class="nb">locals</span><span class="p">().</span><span class="n">update</span><span class="p">(</span><span class="n">dict_of_animals</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">bird</span><span class="p">)</span>
+<span class="mi">1</span>
+</code></pre></div></div>
+
+<p>Прелесть в том, что вы можете испортировать сразу несколько разных словарей содержащих одинаковые ключи и не заботиться особо о поименовании переменных - значение будет иметь только порядок апдейта.</p>
+
+<h2 id="как-импортировать-модуль-название-которого-определяется-при-импорте">Как импортировать модуль, название которого определяется при импорте</h2>
+
+<p>Нетривиальная задача, которая может быть решена по разному. Мы воспользуемся готовым решением - <a href="https://docs.python.org/3/library/importlib.html">importlib</a>. Сильно синтетический пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">importlib</span>
+
+<span class="c1"># some code
+</span>
+<span class="k">if</span> <span class="n">this</span><span class="p">:</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="p">.</span><span class="n">import_module</span><span class="p">(</span><span class="s">'module.'</span> <span class="o">+</span> <span class="n">this</span> <span class="o">+</span> <span class="s">'.that'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">module.default</span> <span class="k">as</span> <span class="n">module</span>
+</code></pre></div></div>
+
+<p>Кстати, если Вас интересует скорость конкатенации строк и вообще какие бывают способы, то вот тут можно <a href="https://stackoverflow.com/a/38362140/15966204">прочитать об этом</a>.</p>
+
+<h2 id="как-определить-тип-os-в-python">Как определить тип os в python</h2>
+
+<p>И напоследок, если вы гоняете все это между машинами с разнымси осями или используете зависимые от операционной системы сборки, то все очень просто, к примеру вот так можно запускать <code class="language-plaintext highlighter-rouge">selenium</code> под windows не прописывая пути к гекодрайверу, а кину его в удобную нам папку.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">'nt'</span><span class="p">:</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="s">r'C:\nowhere\gekodriver\geckodriver.exe'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Собственно, that all folks! :)</p>
+
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

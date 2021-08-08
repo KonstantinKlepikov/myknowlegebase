@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Jinja2 | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Jinja2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/jinja2.html","headline":"Jinja2","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/jinja2.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="jinja2">Jinja2</h1>
+
+<p><a href="https://jinja.palletsprojects.com/en/3.0.x/intro/#installation">Документация</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">$ pip install Jinja2</code></p>
+
+<p>Dependencies</p>
+
+<p><code class="language-plaintext highlighter-rouge">MarkupSafe</code> escapes untrusted input when rendering templates to avoid injection attacks.</p>
+
+<p>Jinja uses a central object called the template <code class="language-plaintext highlighter-rouge">Environment.</code> Instances of this class are used to store the configuration and global objects, and are used to load templates from the file system or other locations. Even if you are creating templates from strings by using the constructor of Template class, an environment is created automatically for you, albeit a shared one.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span><span class="p">,</span> <span class="n">select_autoescape</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
+    <span class="n">loader</span><span class="o">=</span><span class="n">PackageLoader</span><span class="p">(</span><span class="s">"yourapp"</span><span class="p">),</span>
+    <span class="n">autoescape</span><span class="o">=</span><span class="n">select_autoescape</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Это создает окружение шаблона с лоадером, который ищет шаблоны внутри вашего пакета #python. <a href="https://jinja.palletsprojects.com/en/3.0.x/api/#loaders">Другие лоадеры тоже доступны</a>.</p>
+
+<p>Чтобы загрузить шаблон из окружения, можно сделать так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="n">get_template</span><span class="p">(</span><span class="s">"mytemplate.html"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Для отрисовки с переменными используется метод render()</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">template</span><span class="p">.</span><span class="n">render</span><span class="p">(</span><span class="n">the</span><span class="o">=</span><span class="s">"variables"</span><span class="p">,</span> <span class="n">go</span><span class="o">=</span><span class="s">"here"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Все <a href="https://jinja.palletsprojects.com/en/3.0.x/api/#basics">подробности об АПИ читать тут</a></p>
+
+<p><a href="https://jinja.palletsprojects.com/en/3.0.x/sandbox/">Песочница</a> позволяет работать с небезопасными данными</p>
+
+<p><a href="https://jinja.palletsprojects.com/en/3.0.x/nativetypes/">Native Python Types</a> позволяет работать с нативным питоньим кодом в шаблонах. Бывает полезно при создании текстовых файлов.</p>
+
+<h2 id="template-designer-documentation"><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/">Template Designer Documentation</a></h2>
+
+<p>Jinja не требует специальных форматов для шаблона (это может быть простой текстовый файл) и может генерировать любые текст-бейсед форматы - HTML, XML, CSV, LaTeX, etc. Шаблон содержит переменные и выражения, которые подменяются, когда шаблон рендерится. Кроме того, шаблон может содержать теги для контроля логики шаблона.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>My Webpage<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"navigation"</span><span class="nt">&gt;</span>
+    {% for item in navigation %}
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"{{ item.href }}"</span><span class="nt">&gt;</span>{{ item.caption }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    {% endfor %}
+    <span class="nt">&lt;/ul&gt;</span>
+
+    <span class="nt">&lt;h1&gt;</span>My Webpage<span class="nt">&lt;/h1&gt;</span>
+    {{ a_variable }}
+
+    {# a comment #}
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Разработчик может использовать любой удобный ему синтаксис: <code class="language-plaintext highlighter-rouge">{</code>% foo %<code class="language-plaintext highlighter-rouge">}</code>,  <code class="language-plaintext highlighter-rouge">&lt;% foo %&gt;</code> и что-то похожее. Дефолтные разделители сконфигурированы так:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">{</code>% … %<code class="language-plaintext highlighter-rouge">}</code> for Statements</li>
+  <li><code class="language-plaintext highlighter-rouge">{{</code> … <code class="language-plaintext highlighter-rouge">}}</code> for Expressions to print to the template output</li>
+  <li><code class="language-plaintext highlighter-rouge">{</code># … #<code class="language-plaintext highlighter-rouge">}</code> for Comments not included in the template output</li>
+</ul>
+
+<h3 id="переменные">Переменные</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{{ foo.bar }}
+{{ foo['bar'] }}
+</code></pre></div></div>
+
+<h3 id="фильтры">Фильтры</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Переменные могут быть изменеены фильтрами. Например это <code class="language-plaintext highlighter-rouge">{{</code> listx</td>
+      <td>join(‘, ‘) <code class="language-plaintext highlighter-rouge">}}</code> эквивалентно этому <code class="language-plaintext highlighter-rouge">(str.join(', ', listx))</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="тесты">Тесты</h3>
+
+<p>Используется для проверки переменных с помощью простых выражений</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% if loop.index is divisibleby 3 %}
+{% if loop.index is divisibleby(3) %}
+</code></pre></div></div>
+
+<p><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#builtin-tests">Список буилт-ин тестов</a></p>
+
+<h2 id="коментарии">Коментарии</h2>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{# note: commented-out template because we no longer use this
+    {% for user in users %}
+        ...
+    {% endfor %}
+#}
+</code></pre></div></div>
+
+<h2 id="контроль-пробелов">Контроль пробелов</h2>
+
+<p>При рендеринге выражения jinja заменяются на переносы строки. Также может быть сконфигурировано вырезать полностью код шаблона. Этим можно управлять вручную в коде шаблона с помощью знаков + и -</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+        {%+ if something %}yay{% endif %}
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div&gt;</span>
+    {% if something +%}
+        yay
+    {% endif %}
+<span class="nt">&lt;/div&gt;</span>
+
+{% for item in seq -%}
+    {{ item }}
+{%- endfor %}
+</code></pre></div></div>
+
+<p>В первом случае в ручную добавляем, во втором вырезаем.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;valid:
+{%- if foo -%}...{% endif %}
+invalid:
+{% - if foo - %}...{% endif %}
+</code></pre></div></div>
+
+<h2 id="пропуск-символов-внутри-кода-шаблона">Пропуск символов внутри кода шаблона</h2>
+
+<p><code class="language-plaintext highlighter-rouge">{{ '{{' }}</code> - одинарные ковычки. Для больших секций тег raw</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'{'% raw %'}'
+    <span class="nt">&lt;ul&gt;</span>
+    {% for item in seq %}
+        <span class="nt">&lt;li&gt;</span>{{ item }}<span class="nt">&lt;/li&gt;</span>
+    {% endfor %}
+    <span class="nt">&lt;/ul&gt;</span>
+'{'% endraw %'}'
+</code></pre></div></div>
+
+<h2 id="line-statements"><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#line-statements">Line Statements</a></h2>
+
+<p>Еще один вариант синтаксиса</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ul&gt;</span>
+# for item in seq
+    <span class="nt">&lt;li&gt;</span>{{ item }}<span class="nt">&lt;/li&gt;</span>
+# endfor
+<span class="nt">&lt;/ul&gt;</span>
+
+<span class="nt">&lt;ul&gt;</span>
+{% for item in seq %}
+    <span class="nt">&lt;li&gt;</span>{{ item }}<span class="nt">&lt;/li&gt;</span>
+{% endfor %}
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+<h2 id="наследование-шаблонов">Наследование шаблонов</h2>
+
+<p>base.html</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    {% block head %}
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>{% block title %}{% endblock %} - My Webpage<span class="nt">&lt;/title&gt;</span>
+    {% endblock %}
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span><span class="nt">&gt;</span>{% block content %}{% endblock %}<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"footer"</span><span class="nt">&gt;</span>
+        {% block footer %}
+        <span class="ni">&amp;copy;</span> Copyright 2008 by <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://domain.invalid/"</span><span class="nt">&gt;</span>you<span class="nt">&lt;/a&gt;</span>.
+        {% endblock %}
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Блок <code class="language-plaintext highlighter-rouge">{</code>% block %<code class="language-plaintext highlighter-rouge">}</code> определяет филлер, который будет использоваться в унаследовавших шаблонах. Пример наследника:</p>
+
+<pre><code class="language-HTML">{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+    &lt;style type="text/css"&gt;
+        .important { color: #336699; }
+    &lt;/style&gt;
+{% endblock %}
+{% block content %}
+    &lt;h1&gt;Index&lt;/h1&gt;
+    &lt;p class="important"&gt;
+      Welcome to my awesome homepage.
+    &lt;/p&gt;
+{% endblock %}
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">{</code>% extends “layout/default.html” %<code class="language-plaintext highlighter-rouge">}</code> определяет от кого наследуемся и его местоположение, например в данном случае из сабдиректории.</p>
+
+<p><code class="language-plaintext highlighter-rouge">{</code>% extends layout_template %<code class="language-plaintext highlighter-rouge">}</code> так тоже можно, если шаблон добавлен в окружение.</p>
+
+<p>Тег <code class="language-plaintext highlighter-rouge">{</code>% block %<code class="language-plaintext highlighter-rouge">}</code> можно использовать множество раз с одинаковым именем в одном шаблоне. Если нужно использовать блок много раз, то можно вызвать его через self</p>
+
+<pre><code class="language-HTML">&lt;title&gt;{% block title %}{% endblock %}&lt;/title&gt;
+&lt;h1&gt;{{ self.title() }}&lt;/h1&gt;
+{% block body %}{% endblock %}
+</code></pre>
+
+<p>Чтобы отрендерить контент филлера из блока родителя, используйте super()</p>
+
+<pre><code class="language-HTML">{% block sidebar %}
+    &lt;h3&gt;Table Of Contents&lt;/h3&gt;
+    ...
+    {{ super() }}
+{% endblock %}
+</code></pre>
+
+<p>При этом можно двигаться по дереву наследования, если у шаблонов есть сабродители.</p>
+
+<pre><code class="language-tmpl"># parent.tmpl
+body: {% block body %}Hi from parent.{% endblock %}
+
+# child.tmpl
+{% extends "parent.tmpl" %}
+{% block body %}Hi from child. {{ super() }}{% endblock %}
+
+# grandchild1.tmpl
+{% extends "child.tmpl" %}
+{% block body %}Hi from grandchild1.{% endblock %}
+
+# grandchild2.tmpl
+{% extends "child.tmpl" %}
+{% block body %}Hi from grandchild2. {{ super.super() }} {% endblock %}
+</code></pre>
+
+<p>Для удобства чтения шаблонов, jinja позволяет добавлять название тега в закрывающую часть</p>
+
+<pre><code class="language-HTML">{% block sidebar %}
+    {% block inner_sidebar %}
+        ...
+    {% endblock inner_sidebar %}
+{% endblock sidebar %}
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">scoped</code> позволяет унаследовать переменные из сабблока</p>
+
+<pre><code class="language-HTML">{% for item in seq %}
+    &lt;li&gt;{% block loop_item scoped %}{{ item }}{% endblock %}&lt;/li&gt;
+{% endfor %}
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">required</code> блоки играют роль абстрактных классов. Они могут содержать только пробелы и коментарии, должны быть реализованы во всех дочерних шаблонах и могут быть переопределены. Он не будет рендерен напрямую - попытка отрендерить шаблон, содержащий required поднимет ошибку… отрендерится только дочерний</p>
+
+<p>page.txt</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% block body required %}{% endblock %}
+</code></pre></div></div>
+
+<p>issue.txt</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% extends "page.txt" %}
+</code></pre></div></div>
+
+<p>bug_report.txt</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% extends "issue.txt" %}
+{% block body %}Provide steps to demonstrate the bug.{% endblock %}
+</code></pre></div></div>
+
+<h2 id="пропуск-html">Пропуск HTML</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Вручную <code class="language-plaintext highlighter-rouge">{{</code> user.username</td>
+      <td>e <code class="language-plaintext highlighter-rouge">}}</code> будут пропущены все переменные, содержащие &gt;, &lt;, &amp;, or “. Автоматически <a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#working-with-automatic-escaping">описано тут</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="циклы"><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-control-structures">Циклы</a></h2>
+
+<h3 id="for">FOR</h3>
+
+<p>По списку</p>
+
+<pre><code class="language-HTML">&lt;h1&gt;Members&lt;/h1&gt;
+&lt;ul&gt;
+{% for user in users %}
+  &lt;li&gt;{{ user.username|e }}&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+</code></pre>
+
+<p>По словарю</p>
+
+<pre><code class="language-HTML">&lt;dl&gt;
+{% for key, value in my_dict.items() %}
+    &lt;dt&gt;{{ key|e }}&lt;/dt&gt;
+    &lt;dd&gt;{{ value|e }}&lt;/dd&gt;
+{% endfor %}
+&lt;/dl&gt;
+</code></pre>
+
+<p>По отсортированному словарю</p>
+
+<pre><code class="language-HTML">&lt;dl&gt;
+{% for key, value in my_dict | dictsort %}
+    &lt;dt&gt;{{ key|e }}&lt;/dt&gt;
+    &lt;dd&gt;{{ value|e }}&lt;/dd&gt;
+{% endfor %}
+&lt;/dl&gt;
+</code></pre>
+
+<p>Внутри цикла можно использовать специальные бултин-функции</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">loop.index</code> The current iteration of the loop. (1 indexed)</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.index0</code> The current iteration of the loop. (0 indexed)</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.revindex</code> The number of iterations from the end of the loop (1 indexed)</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.revindex0</code> The number of iterations from the end of the loop (0 indexed)</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.first</code> True if first iteration.</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.last</code> True if last iteration.</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.length</code> The number of items in the sequence.</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.cycle</code> A helper function to cycle between a list of sequences. See the explanation below.</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.depth</code> Indicates how deep in a recursive loop the rendering currently is. Starts at level 1</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.depth0</code> Indicates how deep in a recursive loop the rendering currently is. Starts at level 0</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.previtem</code> The item from the previous iteration of the loop. Undefined during the first iteration.</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.nextitem</code> The item from the following iteration of the loop. Undefined during the last iteration.</li>
+  <li><code class="language-plaintext highlighter-rouge">loop.changed(*val)</code> True if previously called with a different value (or not called at all).</li>
+</ul>
+
+<p>Вот так:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% for row in rows %}
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"{{ loop.cycle('odd', 'even') }}"</span><span class="nt">&gt;</span>{{ row }}<span class="nt">&lt;/li&gt;</span>
+{% endfor %}
+</code></pre></div></div>
+
+<p>Выйти из цикла (в отличае от python, где есть break) нельзя! Можно только фильтровать по переменным цикла</p>
+
+<pre><code class="language-HTML">{% for user in users if not user.hidden %}
+    &lt;li&gt;{{ user.username|e }}&lt;/li&gt;
+{% endfor %}
+</code></pre>
+
+<p>Можно использовать дефолтный блок, если “пусто”</p>
+
+<pre><code class="language-HTML">&lt;ul&gt;
+{% for user in users %}
+    &lt;li&gt;{{ user.username|e }}&lt;/li&gt;
+{% else %}
+    &lt;li&gt;&lt;em&gt;no users found&lt;/em&gt;&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+</code></pre>
+
+<p>Доступны рекурсии</p>
+
+<pre><code class="language-HTML">&lt;ul class="sitemap"&gt;
+{%- for item in sitemap recursive %}
+    &lt;li&gt;&lt;a href="{{ item.href|e }}"&gt;{{ item.title }}&lt;/a&gt;
+    {%- if item.children -%}
+        &lt;ul class="submenu"&gt;{{ loop(item.children) }}&lt;/ul&gt;
+    {%- endif %}&lt;/li&gt;
+{%- endfor %}
+&lt;/ul&gt;
+</code></pre>
+
+<h3 id="if">IF</h3>
+
+<pre><code class="language-HTML">{% if kenny.sick %}
+    Kenny is sick.
+{% elif kenny.dead %}
+    You killed Kenny!  You bastard!!!
+{% else %}
+    Kenny looks okay --- so far
+{% endif %}
+</code></pre>
+
+<h3 id="macros"><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#macros">Macros</a></h3>
+
+<pre><code class="language-HTML">{% macro input(name, value='', type='text', size=20) -%}
+    &lt;input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}"&gt;
+{%- endmacro %}
+</code></pre>
+
+<p>затем это может быть вызвано в шаблоне.</p>
+
+<pre><code class="language-HTML">&lt;p&gt;{{ input('username') }}&lt;/p&gt;
+&lt;p&gt;{{ input('password', type='password') }}&lt;/p&gt;
+</code></pre>
+
+<h3 id="filters">Filters</h3>
+
+<pre><code class="language-HTML">{% filter upper %}
+    This text becomes uppercase
+{% endfilter %}
+</code></pre>
+
+<h3 id="assignments">Assignments</h3>
+
+<p>Внутри кода шаблона можно назначать значения переменным</p>
+
+<pre><code class="language-HTML">{% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
+{% set key, value = call_something() %}
+</code></pre>
+
+<p>При этом назначенные переменные не будут видны за пределами циклов if и for!!!</p>
+
+<p>Допустимо присваивать блоки (так-же поддерживаются и фильтры)</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% set navigation %}
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"/"</span><span class="nt">&gt;</span>Index<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"/downloads"</span><span class="nt">&gt;</span>Downloads<span class="nt">&lt;/a&gt;</span>
+{% endset %}
+</code></pre></div></div>
+
+<h3 id="included">included</h3>
+
+<p>Ипользуется для включения шаблолна со всеми переменными. Можно игнорировать пропуски, чтобы не райзить ошибки.</p>
+
+<pre><code class="language-HTML">{% include 'header.html' %}
+    Body
+{% include 'footer.html' %}
+</code></pre>
+
+<pre><code class="language-HTML">{% include "sidebar.html" ignore missing %}
+{% include "sidebar.html" ignore missing with context %}
+{% include "sidebar.html" ignore missing without context %}
+</code></pre>
+
+<pre><code class="language-HTML">{% include ['page_detailed.html', 'page.html'] %}
+{% include ['special_sidebar.html', 'sidebar.html'] ignore missing %}
+</code></pre>
+
+<h3 id="import"><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#import">Import</a></h3>
+
+<p>Поддерживаются импорты внутри макросов и импорты from … import … as …</p>
+
+<pre><code class="language-HTML">{% from 'forms.html' import input with context %}
+{% include 'header.html' without context %}
+</code></pre>
+
+<h2 id="выражения">Выражения</h2>
+
+<h3 id="литералы">Литералы</h3>
+
+<p>“Hello World”</p>
+
+<p>42 / 123_456</p>
+
+<p>*The ‘_’ character can be used to separate groups for legibility.</p>
+
+<p>42.23 / 42.1e2 / 123_456.789</p>
+
+<p>[‘list’, ‘of’, ‘objects’]</p>
+
+<pre><code class="language-HTML">&lt;ul&gt;
+{% for href, caption in [('index.html', 'Index'), ('about.html', 'About'),
+                         ('downloads.html', 'Downloads')] %}
+    &lt;li&gt;&lt;a href="{{ href }}"&gt;{{ caption }}&lt;/a&gt;&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+</code></pre>
+
+<p>(‘tuple’, ‘of’, ‘values’)</p>
+
+<p>{‘dict’: ‘of’, ‘key’: ‘and’, ‘value’: ‘pairs’}</p>
+
+<p>true / false / none *different with #python - lower letters</p>
+
+<h3 id="математика">Математика</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ - / // % * **
+</code></pre></div></div>
+
+<p>{{ 11 % 7 }}</p>
+
+<h3 id="сравнения">Сравнения</h3>
+
+<p><code class="language-plaintext highlighter-rouge">==</code> <code class="language-plaintext highlighter-rouge">!=</code> <code class="language-plaintext highlighter-rouge">&gt;</code> <code class="language-plaintext highlighter-rouge">&gt;=</code> <code class="language-plaintext highlighter-rouge">&lt;=</code> <code class="language-plaintext highlighter-rouge">&lt;</code></p>
+
+<h3 id="логика">Логика</h3>
+
+<p>and or nit (expr) *группа параметров выражения</p>
+
+<p>Можно использовать для for, if</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">is</code> and <code class="language-plaintext highlighter-rouge">in</code> operators support negation using an infix notation, too: foo is not bar and foo not in bar instead of not foo is bar and not foo in bar. All other expressions require a prefix notation: not (foo and bar)</p>
+
+<p>Другие опреаторы</p>
+
+<p><code class="language-plaintext highlighter-rouge">in</code> Perform a sequence / mapping containment test. Returns true if the left operand is contained in the right. {{ 1 in [1, 2, 3] }} would, for example, return true.</p>
+
+<p><code class="language-plaintext highlighter-rouge">is</code> Performs a test.</p>
+
+<p><code class="language-plaintext highlighter-rouge">|</code> (pipe, vertical bar) Applies a filter.</p>
+
+<p><code class="language-plaintext highlighter-rouge">~</code> (tilde)
+Converts all operands into strings and concatenates them.</p>
+
+<p><code class="language-plaintext highlighter-rouge">{{ "Hello " ~ name ~ "!" }}</code> would return (assuming name is set to ‘John’) Hello John!.</p>
+
+<p><code class="language-plaintext highlighter-rouge">()</code> Call a callable: {{ post.render() }}. Inside of the parentheses you can use positional arguments and keyword arguments like in Python:</p>
+
+<p>{{ post.render(user, full=true) }}.</p>
+
+<p><code class="language-plaintext highlighter-rouge">. / []</code> Get an attribute of an object.</p>
+
+<h3 id="if-1">If</h3>
+
+<p>Можно так</p>
+
+<p><code class="language-plaintext highlighter-rouge">{</code>% extends layout_template if layout_template is defined else ‘default.html’ %<code class="language-plaintext highlighter-rouge">}</code></p>
+
+<p>&lt;do something&gt; if &lt;something is true&gt; else &lt;do something else&gt;</p>
+
+<h3 id="методы-python">Методы python</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{{ page.title.capitalize() }}
+{{ f.bar(value) }}
+{{ "Hello, %s!" % name }}
+{{ "Hello, {}!".format(name) }}
+</code></pre></div></div>
+
+<p>Доступно</p>
+
+<ul>
+  <li>abs()</li>
+  <li>float()</li>
+  <li>lower()</li>
+  <li>round()</li>
+  <li>tojson()</li>
+  <li>attr()</li>
+  <li>forceescape()</li>
+  <li>map()</li>
+  <li>safe()</li>
+  <li>trim()</li>
+  <li>batch()</li>
+  <li>format()</li>
+  <li>max()</li>
+  <li>select()</li>
+  <li>truncate()</li>
+  <li>capitalize()</li>
+  <li>groupby()</li>
+  <li>min()\</li>
+  <li>selectattr()</li>
+  <li>unique()</li>
+  <li>center()</li>
+  <li>indent()</li>
+  <li>pprint()</li>
+  <li>slice()</li>
+  <li>upper()</li>
+  <li>default()</li>
+  <li>int()</li>
+  <li>random()</li>
+  <li>sort()</li>
+  <li>urlencode()</li>
+  <li>dictsort()</li>
+  <li>join()</li>
+  <li>reject()</li>
+  <li>string()</li>
+  <li>urlize()</li>
+  <li>escape()</li>
+  <li>last()</li>
+  <li>rejectattr()</li>
+  <li>striptags()</li>
+  <li>wordcount()</li>
+  <li>filesizeformat()</li>
+  <li>length()</li>
+  <li>replace()</li>
+  <li>sum()</li>
+  <li>wordwrap()</li>
+  <li>first()</li>
+  <li>list()</li>
+  <li>reverse()</li>
+  <li>title()</li>
+  <li>xmlattr()</li>
+</ul>
+
+<p><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-builtin-filters">Подробнее</a></p>
+
+<h3 id="буилд-ин-тестирующие-ф-и">Буилд-ин тестирующие ф-и</h3>
+
+<ul>
+  <li>boolean()</li>
+  <li>even()</li>
+  <li>in()</li>
+  <li>mapping()</li>
+  <li>sequence()</li>
+  <li>callable()</li>
+  <li>false()</li>
+  <li>integer()</li>
+  <li>ne()</li>
+  <li>string()</li>
+  <li>defined()</li>
+  <li>filter()</li>
+  <li>iterable()</li>
+  <li>none()</li>
+  <li>test()</li>
+  <li>divisibleby()</li>
+  <li>float()</li>
+  <li>le()</li>
+  <li>number()</li>
+  <li>true()</li>
+  <li>eq()</li>
+  <li>ge()</li>
+  <li>lower()</li>
+  <li>odd()</li>
+  <li>undefined()</li>
+  <li>escaped()</li>
+  <li>gt()</li>
+  <li>lt()</li>
+  <li>sameas()</li>
+  <li>upper()</li>
+</ul>
+
+<p><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-builtin-tests">Подробнее</a></p>
+
+<h3 id="глобальные-функции"><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-global-functions">Глобальные функции</a></h3>
+
+<p>Доступны в глобальном контексте, не только в циклах.</p>
+
+<h2 id="дополнения">Дополнения</h2>
+
+<ul>
+  <li><a href="https://jinja.palletsprojects.com/en/3.0.x/extensions/#i18n-extension">разметка переводимого текста</a></li>
+  <li><a href="https://jinja.palletsprojects.com/en/3.0.x/extensions/#loopcontrols-extension">loop control</a> - брейки и континью в циклах</li>
+</ul>
+
+<pre><code class="language-HTML">{% for user in users %}
+    {%- if loop.index is even %}{% continue %}{% endif %}
+    ...
+{% endfor %}
+
+{% for user in users %}
+    {%- if loop.index &gt;= 10 %}{% break %}{% endif %}
+{%- endfor %}
+</code></pre>
+
+<ul>
+  <li><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#debug-statement">Debug Extension</a></li>
+  <li><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#with-statement">With Statement</a></li>
+  <li><a href="https://jinja.palletsprojects.com/en/3.0.x/templates/#autoescape-overrides">Autoescape Overrides</a></li>
+</ul>
+
+<p>Дополнения можно написать самостоятельно. <a href="https://jinja.palletsprojects.com/en/3.0.x/extensions/#module-jinja2.ext">Пример</a></p>
+
+<h2 id="немного-трюков-jinja"><a href="https://jinja.palletsprojects.com/en/3.0.x/tricks/#null-default-fallback">Немного трюков jinja</a></h2>
+
+<h2 id="faq"><a href="https://jinja.palletsprojects.com/en/3.0.x/tricks/#null-default-fallback">faq</a></h2>
+
+<p>[<a href="../lists/шаблонизаторы" title="Шаблонизаторы">шаблонизаторы</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

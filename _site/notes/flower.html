@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Flower | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Flower" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/flower.html","headline":"Flower","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/flower.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="flower">Flower</h1>
+
+<p>[<a href="celery" title="Celery">celery</a>] monitoring tool. <a href="https://flower.readthedocs.io/en/latest/">Ссылка на документацию</a></p>
+
+<p>Real-time monitoring using Celery Events</p>
+
+<ul>
+  <li>Task progress and history</li>
+  <li>Ability to show task details (arguments, start time, runtime, and more)</li>
+  <li>Graphs and statistics</li>
+</ul>
+
+<p>Remote Control</p>
+
+<ul>
+  <li>View worker status and statistics</li>
+  <li>Shutdown and restart worker instances</li>
+  <li>Control worker pool size and autoscale settings</li>
+  <li>View and modify the queues a worker instance consumes from</li>
+  <li>View currently running tasks</li>
+  <li>View scheduled tasks (ETA/countdown)</li>
+  <li>View reserved and revoked tasks</li>
+  <li>Apply time and rate limits</li>
+  <li>Configuration viewer</li>
+  <li>Revoke or terminate tasks</li>
+</ul>
+
+<p>Broker monitoring</p>
+
+<ul>
+  <li>View statistics for all Celery queues</li>
+  <li>Queue length graphs</li>
+</ul>
+
+<p>HTTP API</p>
+
+<p>Basic Auth, GitHub OAuth2 and Google OpenID authentication</p>
+
+<p>Prometheus integration</p>
+
+<h2 id="screenshots">screenshots</h2>
+
+<p>workers dashboard
+<img src="/attachments/2021-07-30-23-11-36.png" alt="flower workers dashboard" /></p>
+
+<p><a href="https://flower.readthedocs.io/en/latest/screenshots.html">More screenshots</a></p>
+
+<h2 id="instalation">instalation</h2>
+
+<p><code class="language-plaintext highlighter-rouge">pip install flower</code></p>
+
+<p><a href="https://flower.readthedocs.io/en/latest/install.html#usage">usage example</a></p>
+
+<h2 id="configuration"><a href="https://flower.readthedocs.io/en/latest/config.html">configuration</a></h2>
+
+<p>Variants of setting confs</p>
+
+<p>From the command line:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>celery flower <span class="nt">--auto_refresh</span><span class="o">=</span>False
+</code></pre></div></div>
+
+<p>Using <code class="language-plaintext highlighter-rouge">flowerconfig.py</code> configuration file:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># RabbitMQ management api
+</span><span class="n">broker_api</span> <span class="o">=</span> <span class="s">'http://guest:guest@localhost:15672/api/'</span>
+
+<span class="c1"># Enable debug logging
+</span><span class="n">logging</span> <span class="o">=</span> <span class="s">'DEBUG'</span>
+</code></pre></div></div>
+
+<p>Or, using the environment variables. All flower options should be prefixed with FLOWER_:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">FLOWER_BASIC_AUTH</span><span class="o">=</span>foo:bar
+</code></pre></div></div>
+
+<p>Options passed through the command line have precedence over the options defined in the configuration file. The configuration file name and path can be changed with conf option.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>celery flower <span class="nt">--conf</span><span class="o">=</span>celeryconfig.py
+</code></pre></div></div>
+
+<p><a href="https://flower.readthedocs.io/en/latest/config.html#options">all options</a></p>
+
+<p>В основной доке смотри API, интеграцию с [<a href="prometeus" title="Prometeus">prometeus</a>], работу с реверс-прокси и прочее.</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

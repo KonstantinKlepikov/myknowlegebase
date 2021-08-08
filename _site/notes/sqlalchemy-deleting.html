@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sqlalchemy deleting | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Sqlalchemy deleting" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/sqlalchemy-deleting.html","headline":"Sqlalchemy deleting","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/sqlalchemy-deleting.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="sqlalchemy-deleting">Sqlalchemy deleting</h1>
+
+<p><a href="https://docs.sqlalchemy.org/en/14/orm/tutorial.html#deleting">Основная статья</a></p>
+
+<p>Существует нюанс, связанный с удалением данных.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">joinedload</span>
+
+<span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">).</span>\
+<span class="p">...</span>                        <span class="n">options</span><span class="p">(</span><span class="n">joinedload</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">addresses</span><span class="p">)).</span>\
+<span class="p">...</span>                        <span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'jack'</span><span class="p">).</span><span class="n">one</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">jack</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'jack'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Jack Bean'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'gjffdd'</span><span class="p">)</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">jack</span><span class="p">.</span><span class="n">addresses</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Address</span><span class="p">(</span><span class="n">email_address</span><span class="o">=</span><span class="s">'jack@google.com'</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Address</span><span class="p">(</span><span class="n">email_address</span><span class="o">=</span><span class="s">'j25@yahoo.com'</span><span class="p">)</span><span class="o">&gt;</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">jack</span><span class="p">)</span>
+<span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'jack'</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="nb">filter</span><span class="p">(</span>
+<span class="p">...</span>     <span class="n">Address</span><span class="p">.</span><span class="n">email_address</span><span class="p">.</span><span class="n">in_</span><span class="p">([</span><span class="s">'jack@google.com'</span><span class="p">,</span> <span class="s">'j25@yahoo.com'</span><span class="p">])</span>
+<span class="p">...</span>  <span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<p>В данном случае, хотя мы удалили пользователя, связанные с ним адреса остались. Чтобы удалять связанные объекты в других таблицах, необходимо прописать каскад в модели</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'users'</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">fullname</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">nickname</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="n">addresses</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"Address"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">'user'</span><span class="p">,</span>
+<span class="p">...</span>                     <span class="n">cascade</span><span class="o">=</span><span class="s">"all, delete, delete-orphan"</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>        <span class="k">return</span> <span class="s">"&lt;User(name='%s', fullname='%s', nickname='%s')&gt;"</span> <span class="o">%</span> <span class="p">(</span>
+<span class="p">...</span>                                <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">fullname</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">nickname</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s">'addresses'</span>
+<span class="p">...</span>     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">email_address</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">user_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">'users.id'</span><span class="p">))</span>
+<span class="p">...</span>     <span class="n">user</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s">"User"</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s">"addresses"</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="s">"&lt;Address(email_address='%s')&gt;"</span> <span class="o">%</span> <span class="bp">self</span><span class="p">.</span><span class="n">email_address</span>
+</code></pre></div></div>
+
+<p>Теперь все прошло как надо (в примере вначале снесли один из адресов).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># load Jack by primary key
+</span><span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">get</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># remove one Address (lazy load fires off)
+</span><span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="k">del</span> <span class="n">jack</span><span class="p">.</span><span class="n">addresses</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># only one address remains
+</span><span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="nb">filter</span><span class="p">(</span>
+<span class="p">...</span>     <span class="n">Address</span><span class="p">.</span><span class="n">email_address</span><span class="p">.</span><span class="n">in_</span><span class="p">([</span><span class="s">'jack@google.com'</span><span class="p">,</span> <span class="s">'j25@yahoo.com'</span><span class="p">])</span>
+<span class="p">...</span> <span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">jack</span><span class="p">)</span>
+
+<span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'jack'</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">0</span>
+
+<span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">Address</span><span class="p">).</span><span class="nb">filter</span><span class="p">(</span>
+<span class="p">...</span>    <span class="n">Address</span><span class="p">.</span><span class="n">email_address</span><span class="p">.</span><span class="n">in_</span><span class="p">([</span><span class="s">'jack@google.com'</span><span class="p">,</span> <span class="s">'j25@yahoo.com'</span><span class="p">])</span>
+<span class="p">...</span> <span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">0</span>
+</code></pre></div></div>
+
+<ul>
+  <li>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]</li>
+  <li>[<a href="sqlalchemy-querying" title="Sqlalchgemy querying">sqlalchemy-querying</a>]</li>
+</ul>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

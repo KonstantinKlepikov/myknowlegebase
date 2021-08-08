@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Docker | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Docker" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/lists/docker.html","headline":"Docker","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/lists/docker.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="docker">Docker</h1>
+
+<h2 id="начало-работы">Начало работы</h2>
+
+<p><code class="language-plaintext highlighter-rouge">docker version</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run debian echo 'hello world'</code></p>
+
+<p>В данном случае запускается образ debian (если его нет, он будет загружен с докерхаба) - упрощенный дестрибутив линукс. После загрузки и проверки образа он помещается в контейнер. Затем выполняется echo.</p>
+
+<p>Запуск баша внутри контейнера: <code class="language-plaintext highlighter-rouge">docker run -i -t debian /bin/bash</code> (не заработал ui в vscode - видимо надо погуглить баг)</p>
+
+<p>Зададим имя хоста: <code class="language-plaintext highlighter-rouge">docker run -h CONTAINER -i -t debian /bin/bash</code> а вот так заработал</p>
+
+<p>Инфа по конкретному контейнеру: <code class="language-plaintext highlighter-rouge">docker inspect short_pseudonime</code></p>
+
+<p>Более короткий вывод через grep, например ip: <code class="language-plaintext highlighter-rouge">docker inspect short_pseudonime | grep IPAddress</code></p>
+
+<p>Или через <code class="language-plaintext highlighter-rouge">--format</code>: docker inspect –format <code class="language-plaintext highlighter-rouge">{</code><code class="language-plaintext highlighter-rouge">{</code>.NetworkSettings.IPAddress<code class="language-plaintext highlighter-rouge">}</code><code class="language-plaintext highlighter-rouge">}</code> short_pseudonime</p>
+
+<p>Список файлов, которые были измсененеы в работающем контейнере: <code class="language-plaintext highlighter-rouge">docker diff short_pseudonime</code></p>
+
+<p>Список всех событий, произошедших внутри контейнера: <code class="language-plaintext highlighter-rouge">docker logs short_pseudonime</code></p>
+
+<p>Остановить контейнера: <code class="language-plaintext highlighter-rouge">exit</code></p>
+
+<p>Удаление всех остановленных контейнеров: <code class="language-plaintext highlighter-rouge">docker rm -v $(docker ps -aq -f status=exited)</code></p>
+
+<p>Удалить отдельный контейнер очень просто <code class="language-plaintext highlighter-rouge">docker rm short_pseudonime</code></p>
+
+<p>Проще всего вести раборту с докером через Dockerfile - это простой текстовый файл, в котором прописан скрипт, который будет выполнен при создании нового образа. Т.е. вначале мы создаем контейнер, а затем из него новый образ. Например такой докерфайл:</p>
+
+<pre><code class="language-Dockerfile">FROM debian
+RUN apt-get update &amp;&amp; apt-get install -y cowsay fortune
+</code></pre>
+
+<p>Инструкция FROM определяет базовый образ ОС - эта инструкция строго обязательна. RUN определяет команды, выполняемые в оболочке.</p>
+
+<p>Теперь можно создавать образ с помощью <code class="language-plaintext highlighter-rouge">docker build</code> с помощью Dockerfile: <code class="language-plaintext highlighter-rouge">docker build -t test/cowsay-dockerfile</code>. Аналогично эту процедуру можно реализовать через run, команды в шеле внутри контейнера и docker commit.</p>
+
+<p>Теперь можно запускать образ так-же, как и любой другой образ.</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run test/cowsay-dockerfile /usr/games/cowsay "Moo"</code></p>
+
+<p><img src="/attachments/2021-06-07-23-15-44.png" alt="moo" /></p>
+
+<p>Все доп.команды, которые мы используем для запуска контейнера можно добавить в докерфайл - тогда они станут исполняться при запуске контейнера. При изменеении докерфайла требуется пересоздание образа.</p>
+
+<pre><code class="language-Dockerfile">FROM debian
+RUN apt-get update &amp;&amp; apt-get install -y cowsay fortune
+
+ENTRYPOINT ["/usr/games/cowsay"]
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">docker build -t test/cowsay-dockerfile</code></p>
+
+<p>Теперь входим так:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run test/cowsay-dockerfile "Moo"</code></p>
+
+<p>Если создать рядом с докерфайлом entrypoint.sh, то можно получить некие исполняемые скрипты, в данном случае - доступ к потоку ввода/вывода. Теперь мы можем заменить и ентрипоинт (не забудь выдать права файлу entrypoint.sh. как исполняемому)</p>
+
+<pre><code class="language-Dockerfile">FROM debian
+RUN apt-get update &amp;&amp; apt-get install -y cowsay fortune
+COPY entrypoint.sh /
+
+ENTRYPOINT ["/entrypoint.sh"]
+</code></pre>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span><span class="nt">-eq</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        /usr/games/fortune | /usr/games/cowsay
+    <span class="k">else</span>
+        /usr/games/cowsay <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<p>Инструкция COPY прост окопирует файл из файловой системы хоста в файловую систему образа. Первый аргумент - файл хоста, второй - путь в образе.</p>
+
+<p><img src="/attachments/2021-06-07-23-33-09.png" alt="moo" /></p>
+
+<p>Работа с репозиториями образов ведется с помощью build, pull, push</p>
+
+<h2 id="архитектура-docker">Архитектура docker</h2>
+
+<ul>
+  <li>Docker daemon - создание, запуск и контроль контейнеров, создание и хранение образов
+клиет docker используется для диалога с демоном по протоколу http. По умолчанию соединение устанавливается через сокет домена unix, но овзможны и другие. С демоном можно взаимодействовать напрямую, без использования клиента docker</li>
+  <li>реестры docker используются для хранения и распространения образов</li>
+</ul>
+
+<p>Сопровождающие технологии:</p>
+
+<ul>
+  <li>docker swarm - решение задачи кластеризации, позволяет сгруппировать несколько docker-хостов</li>
+  <li>docker compose - создание и выполнение приложений, скомпонованных из нескольких контейнеров. В основном нужно для теста и разработки, реже на проде.</li>
+  <li>docker machine - устанавливает и конфигурирует хосты на локальных и удаленных машинах</li>
+  <li>kinematic - гиу ждя маков и win</li>
+  <li>docker trusted registry - локальное хранилище образов (локальный docker hub)</li>
+</ul>
+
+<h2 id="создание-образов">Создание образов</h2>
+
+<p>Для создания образа требуется Dockerfile и контекст создания образа (build context). Контекст - это набор локальных папок и файлов, к которым можно обращаться из инструкции ADD и COPY Dockerfile и который обвчно определяется как путь к нужному каталогу. К примеру <code class="language-plaintext highlighter-rouge">docker bild -t test/cowsay=dockerfile .</code> определят контекст как <code class="language-plaintext highlighter-rouge">.</code>, т.е. текущий рабочий каталог. Все файлы и каталоги в этом пути формируют контекст создания образа и передаются в демон Docker как часть процесса создания. В случаях, когда контекст не определен, он считается пустым.</p>
+
+<p><code class="language-plaintext highlighter-rouge">/</code> не следует использовать в качестве контекста, т.к. все будет включено в образ :)</p>
+
+<p>В качестве контекста допускается использовать git-репозиторий. В этом случае делается клон репоизитория и всех подчиненных репозиториев во временный каталог, который затем передается в демон как контекст.</p>
+
+<p>Кроме того, контекст можно получить из стандартного потока ввода STDN</p>
+
+<p>Для удаления ненужных файлов используется <code class="language-plaintext highlighter-rouge">.dockerignore</code></p>
+
+<p>При создании образа используются уровни - каждая инструкция в Dockerfile приводит к появлению такого уровня, который так же может участвовать в запуске контейнера. Новый уровень создается по время запуска контейнера с использованием образа предыдущего уровня, с сохранением нового образа. После успешного выполнения инструкции Dockerfile, вспомогательный контейнер удаляется, все активные процессы завершаются. Если необходим сервис или процесс, который юудет жить дольше, его необходимо инициализировать с помощью ENTRYPOINT или CMD. Весь набор уровней можно увидеть через <code class="language-plaintext highlighter-rouge">docker history</code>. При неудачном создании образа полезно запустить уровень, предыдущий ошибке.</p>
+
+<p>Кроме того, используется кэширование для оптимизации производительности. Кэширование можно запрещать, так как не гарантируется получение одинакового результата для ряда команд.</p>
+
+<p>При создании собственного образа необходимо использовать один из базовых образов.</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker build</code> собирает образ, вызывая базовый сначала локально. Если его нет - удаленно. Это означает, что самая новая версия не гарантируется - необходимо явно выполнить <code class="language-plaintext highlighter-rouge">docker pull</code> для родительских образов или удалить их.</p>
+
+<h2 id="инструкции-dockerfile">Инструкции Dockerfile</h2>
+
+<p>Допускается использование формата командной оболочики или exec в инструкциях RUN, CMD, ENTRYPOINT</p>
+
+<ul>
+  <li>ADD - копирует файлы из контекста или по удаленным урлам в образ. Если архивный файл добавляется из локального пути, то он распаковывается.</li>
+  <li>CMD - запускает заданную инструкцию во время инициализации контейнера. Если определен ENTRYPOINT, то инструкция будет интерпретирована как аргумент для entrypoint. Инструкция заменяется тем, что введено в командной строке… если указано несколько инструкций, будет выполнена только самая последняя.</li>
+  <li>COPY - копирует файлы из контекста в образ</li>
+  <li>ENTRYPOINT - определяет выполняемый файл. запускаемый при инициализации контейнера</li>
+  <li>ENV - определяет переменныесреды внутри образа. На них можно ссылаться в инструкциях</li>
+  <li>EXPOSE - задает прослшивание портов в контейнере - это нужно для установления соединения между контейнерами</li>
+  <li>FROM - определяет основной(базовый) образ. Все последующие инструцкции выполняются поверх. Задается в формате IMAGE:TAG, если нет тега, ставится latest. <strong>Рекомендуется явно указывать тег</strong>.</li>
+  <li>ONBUILD - определяет инструкцию, которая будет выполняться, если этот образ будет использоваться как основной уровень для другого образа</li>
+  <li>RUN - запускает инструкцию внутри контейнера и сохраняет результата</li>
+  <li>USER - юзер</li>
+  <li>VOLUME - объявляет файл или какталог как том</li>
+  <li>WORKDIR  - рабочий каталог для всех последующих инструкций Dockerfile</li>
+</ul>
+
+<h2 id="открытие-портов-контейнера">Открытие портов контейнера</h2>
+
+<p>Чтобы докер-контейнер мог связаться с внешним миром, надо открыть нужные порты с помощью аргументов <code class="language-plaintext highlighter-rouge">-p</code> или <code class="language-plaintext highlighter-rouge">-P</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run -d -p 8000:80 nginx</code></p>
+
+<p>В данном случае, мы сообщили демону, что нужно перенаправить порт 8000 хоста на порт 80 в контейнере. Когда используется <code class="language-plaintext highlighter-rouge">-P</code> порт будет выбран автоматически для перенаправления с хостав контейнер</p>
+
+<p><code class="language-plaintext highlighter-rouge">ID=$(docker run -d -P nginx)</code>
+<code class="language-plaintext highlighter-rouge">docker port $ID 80</code></p>
+
+<p>Полученный порт будет выглядеть к примеру так: <code class="language-plaintext highlighter-rouge">0.0.0.0.32771</code>.</p>
+
+<p>Вариант <code class="language-plaintext highlighter-rouge">-P</code> предпочтителен, т.к. таким образом устанавливается дополнительный уровень ответственности за корректное назначение портов.</p>
+
+<h2 id="соединение-между-контейнерами">Соединение между контейнерами</h2>
+
+<p>Для связи между контейнерами можно использовать:</p>
+
+<ul>
+  <li>внутреннюю сеть docker-а</li>
+  <li>«связи» (links) между контейнерами</li>
+  <li>начиная с версии 1.9 — docker networks</li>
+</ul>
+
+<h3 id="внутренняя-сеть">внутренняя сеть</h3>
+
+<p>Наименее гибкое решение. При каждом перезапуске/пересоздании контейнер может получить другой внутренний адрес, соответственно, каждый раз может требоваться ручная корректировка связи имён и ip-адресов.</p>
+
+<h3 id="docker-links">docker links</h3>
+
+<p>При создании (create) или запуске (run) контейнера можно указывать имя другого контейнера и имя, под которым тот будет доступен в новом контейнере:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run --link другой_контейнер:имя ...</code></p>
+
+<p>благодаря этому в /etc/hosts создаваемого контейнера будет добавлена строчка примерно такого содержания:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ip-адрес-другого-контейнера имя</code> что позволит по данному имени обращаться к слинкованному контейнеру.</p>
+
+<h3 id="docker-networks">docker networks</h3>
+
+<p>Наиболее гибкое решение, но доступно только начианая с версии 1.9.</p>
+
+<p>Сначала с помощью команды <code class="language-plaintext highlighter-rouge">network create</code> надо описать сеть:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker network create имя-сети</code> а затем при создании/запуске контейнеров указывать, что они должны быть «подключены» к этой сети под указанным именем. пример:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run --net=имя-сети --name=имя-контейнера ...</code> все контейнеры, подключенные к одной сети, будут «видеть» друг друга по присвоенным им именам.</p>
+
+<h3 id="dns">dns</h3>
+
+<p>ip-адреса nameserver-ов можно устанавливать для контейнера при его создании/запуске с помощью опции –dns:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker run --dns ip-адрес ...</code></p>
+
+<h2 id="тома-и-контейненры-данных">Тома и контейненры данных</h2>
+
+<p>Тома (volumes) - это каталоги и файцлы, которые не являются части файловой системы UnionFS конкретного контейнера, а представляют собой обычные каталоги в файловой системе хоста, но могут быть смонтированы как отдкльные файловые системы (bind mounting) внутри контейнера.</p>
+
+<p>Тома можно:</p>
+
+<ul>
+  <li>объявить флагом <code class="language-plaintext highlighter-rouge">-v</code> при запуске контейнера</li>
+  <li>объявить том инструкцией VOLUME (результат аналогичен предыдущему)</li>
+  <li>расширить аргумент <code class="language-plaintext highlighter-rouge">-v</code> явным указанием связываемого каталога хоста в формате <code class="language-plaintext highlighter-rouge">-v HOST_DIR:CONTAINER_DIR</code>. Этот способ нельзя заюзать в Dockerfile т.к. это нарушает принцип переносимости и создает угрозу безопасности
+Контейнер данных - это контейнер, единственная цель которого заключается в совместном использовании данных другими контейнерами. Обычно для контейнера данных нет необходимости в использовании минималистичных образов - просто используйте тот же образ, что и для контейнеров, работающих с данными.</li>
+</ul>
+
+<p>Удаление томов происходит только если:</p>
+
+<ul>
+  <li>контейнер удален командой <code class="language-plaintext highlighter-rouge">docker rm -v</code></li>
+  <li>в команду <code class="language-plaintext highlighter-rouge">docker rm</code> вклчюен флаг <code class="language-plaintext highlighter-rouge">--rm</code></li>
+</ul>
+
+<p>А так-же если соблюдены условия:</p>
+
+<ul>
+  <li>отсутствуют контейнеры, установившие связь с удаляемым томом</li>
+  <li>удаляемому тому не соответствует какой-либо каталог файловой системы хоста</li>
+</ul>
+
+<p>Это значит, что особенно внимательно надо создавать контейнеры со связанными томами, т.к. с большой вероятностью рабочий каталог Docker будет содержать потерянные файлы и каталоги (сироты) и что именно они из себя представляют - определить сложно.</p>
+
+<h2 id="часто-используемые-команды-docker">Часто используемые команды Docker</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">docker run</code> запуск контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker create</code> создание контейнера из образа без запуска</li>
+  <li><code class="language-plaintext highlighter-rouge">docker kill</code> немедленное завершение работы контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker pause</code> приостановка процессов контейнера. Процессы не получают никаких сигналов, поэтому не могут быть удалены, приостановлены или возобновлены</li>
+  <li><code class="language-plaintext highlighter-rouge">docker pause</code> перезапуска запаузеного контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker reatart</code> перезапускает один или несколько контейнеров</li>
+  <li><code class="language-plaintext highlighter-rouge">docker rm</code> удаляет один или несколько контейнеров</li>
+  <li><code class="language-plaintext highlighter-rouge">docker start</code> запускает застопленные контейнеры</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker stop</code> останавливает, но не удаляет контейнеры</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker info</code> Инфа о системе и хосте</li>
+  <li><code class="language-plaintext highlighter-rouge">docker help</code> выводлит справку</li>
+  <li><code class="language-plaintext highlighter-rouge">docker version</code></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker logs --help</code> выводит значение флагов по умолчанию для команды</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker diff</code> - измененеия в файловой системе контейнера по сравнению с образом</li>
+  <li><code class="language-plaintext highlighter-rouge">docker events</code> события в реальном времени от демона к демону</li>
+  <li><code class="language-plaintext highlighter-rouge">docker inspect</code> подробная инфа о контейнерах или образах</li>
+  <li><code class="language-plaintext highlighter-rouge">docker logs</code> журнал для контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker port</code> список отображений открытых портов для контейнера</li>
+  <li><code class="language-plaintext highlighter-rouge">docker ps</code> общая инфа о работающих контейнерах</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker top</code> инфа о процессах внутри контейнера</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker build</code> создать образ из Dockerfile</li>
+  <li><code class="language-plaintext highlighter-rouge">docker commit</code> создает образ из заданного контейнера. Контейнеры приостанавливаются перед созданием образа (по умолчанию)</li>
+  <li><code class="language-plaintext highlighter-rouge">docker export</code> экспортирует содержимое файловой системы контейнера в виде tar-архива. Метаданные не экспортируются</li>
+  <li><code class="language-plaintext highlighter-rouge">docker history</code> инфа о каждом уровне в образе.</li>
+  <li><code class="language-plaintext highlighter-rouge">docker images</code> список локальных образов</li>
+  <li><code class="language-plaintext highlighter-rouge">docker rmi $(docker images -q -f dangling=true)</code> удалит все “висячие образы”</li>
+  <li><code class="language-plaintext highlighter-rouge">docker import</code> создание образа из архивного файла без метаданных</li>
+  <li><code class="language-plaintext highlighter-rouge">docker load</code> создание из архива с метаданными</li>
+  <li><code class="language-plaintext highlighter-rouge">docker rmi</code> Удаление</li>
+  <li><code class="language-plaintext highlighter-rouge">docker save</code> сохранение образа в архив с метаданными</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">docker tag</code> связывает имя репозитория и образа с выбранным тегом</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">docker login</code> регистрация и вход на заданный сервер реестра</li>
+  <li><code class="language-plaintext highlighter-rouge">docker logout</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docker pull</code> загрузка образа из реестра</li>
+  <li><code class="language-plaintext highlighter-rouge">docker push</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docker search</code></li>
+</ul>
+
+<p>[<a href="../notes/traefik" title="Traefik">traefik</a>]</p>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>

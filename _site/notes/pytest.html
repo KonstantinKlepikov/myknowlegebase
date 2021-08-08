@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pytest | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pytest" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"/notes/pytest.html","headline":"Pytest","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9dfbfccfe9b4d6a5d40a395bcc1c9d05cdad1bb1">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- Canonical and feed -->
+<link rel="canonical" href="/notes/pytest.html">
+<link rel="alternate" type="application/rss+xml" title="My knowlege base" href="/feed.xml">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+  </head>
+  <body>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">My knowlege base</h1>
+      <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="/">На главную</a></p>
+    
+      <h1 id="pytest">Pytest</h1>
+
+<p>Библиотечка для [<a href="модульные-тесты" title="Модульные-тесты">модульные-тесты</a>]</p>
+
+<p><a href="https://docs.pytest.org/en/stable/contents.html#toc">Документация</a></p>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/reference.html">API - все методы пайтеста</a></p>
+
+<h2 id="usage"><a href="https://docs.pytest.org/en/6.2.x/usage.html">Usage</a></h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pytest <span class="nt">--version</span>   <span class="c"># shows where pytest was imported from</span>
+pytest <span class="nt">--fixtures</span>  <span class="c"># show available builtin function arguments</span>
+pytest <span class="nt">-h</span> | <span class="nt">--help</span> <span class="c"># show help on command line and config file options</span>
+
+pytest <span class="nt">-x</span>           <span class="c"># stop after first failure</span>
+pytest <span class="nt">--maxfail</span><span class="o">=</span>2  <span class="c"># stop after two failures</span>
+
+<span class="c"># run selecting tests</span>
+
+pytest test_mod.py
+pytest testing/ <span class="c"># all in one directory</span>
+pytest <span class="nt">-k</span> <span class="s2">"MyClass and not method"</span> <span class="c"># by keyword. The example above will run TestMyClass.test_something but not TestMyClass.test_method_simple</span>
+
+pytest test_mod.py::test_func <span class="c"># by functions name</span>
+pytest test_mod.py::TestClass::test_method <span class="c"># by method name</span>
+pytest <span class="nt">-m</span> slow <span class="c"># by mark, such a @pytest.mark.slow</span>
+pytest <span class="nt">--pyargs</span> pkg.testing <span class="c"># This will import pkg.testing and use its filesystem location to find and run tests from</span>
+
+<span class="c"># Modifying Python traceback printing</span>
+
+pytest <span class="nt">--showlocals</span> <span class="c"># show local variables in tracebacks</span>
+pytest <span class="nt">-l</span>           <span class="c"># show local variables (shortcut)</span>
+
+pytest <span class="nt">--tb</span><span class="o">=</span>auto    <span class="c"># (default) 'long' tracebacks for the first and last</span>
+                     <span class="c"># entry, but 'short' style for the other entries</span>
+pytest <span class="nt">--tb</span><span class="o">=</span>long    <span class="c"># exhaustive, informative traceback formatting</span>
+pytest <span class="nt">--tb</span><span class="o">=</span>short   <span class="c"># shorter traceback format</span>
+pytest <span class="nt">--tb</span><span class="o">=</span>line    <span class="c"># only one line per failure</span>
+pytest <span class="nt">--tb</span><span class="o">=</span>native  <span class="c"># Python standard library formatting</span>
+pytest <span class="nt">--tb</span><span class="o">=</span>no      <span class="c"># no traceback at all</span>
+</code></pre></div></div>
+
+<p>Вывод саммари с отметкой pass/fail/skip <code class="language-plaintext highlighter-rouge">pytest -v</code></p>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/usage.html#detailed-summary-report">Можно запускать через</a> <code class="language-plaintext highlighter-rouge">pytest -r</code></p>
+
+<p>Опции для запуска:</p>
+
+<ul>
+  <li>f - failed</li>
+  <li>E - error</li>
+  <li>s - skipped</li>
+  <li>x - xfailed</li>
+  <li>X - xpassed</li>
+  <li>p - passed</li>
+  <li>P - passed with output</li>
+</ul>
+
+<p>Выбор групп:</p>
+
+<ul>
+  <li>a - all except passes (pP)</li>
+  <li>A - all</li>
+  <li>N - none, this can be used to display nothing (since fE is the default)</li>
+</ul>
+
+<p>Пример <code class="language-plaintext highlighter-rouge">pytest -ra</code> или <code class="language-plaintext highlighter-rouge">[ytest -rfs</code>]</p>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/usage.html#dropping-to-pdb-python-debugger-on-failures">Запуск</a> с [<a href="pdb-python-debugger" title="Pdb-python-debugger">pdb-python-debugger</a>] <code class="language-plaintext highlighter-rouge">pytest --pdb</code> или <code class="language-plaintext highlighter-rouge">pytest --trace</code> (для запуска дебаггера в начале каждого теста).</p>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/usage.html#calling-pytest-from-python-code">Запуск из кода</a></p>
+
+<h2 id="написание-ассертов"><a href="https://docs.pytest.org/en/6.2.x/assert.html">Написание ассертов</a></h2>
+
+<h3 id="тестирование-неудачных-случаев">Тестирование неудачных случаев</h3>
+
+<p>Используется <code class="language-plaintext highlighter-rouge">pytest.raises()</code> с контекстным менеджером.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="nb">ZeroDivisionError</span><span class="p">):</span>
+    <span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Или анлогично встроенным функциям [<a href="unittest" title="Unittest">unittest</a>]</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">myfunc</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Exception 123 raised"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_match</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="nb">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s">r".* 123 .*"</span><span class="p">):</span>
+        <span class="n">myfunc</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="определение-собственных-описаний-для-проваленных-тестов"><a href="https://docs.pytest.org/en/6.2.x/assert.html#defining-your-own-explanation-for-failed-assertions">Определение собственных описаний для проваленных тестов</a></h3>
+
+<p>Используется хук <code class="language-plaintext highlighter-rouge">pytest_assertrepr_compare(config: Config, op: str, left: object, right: object) → Optional[List[str]]</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># content of conftest.py
+</span><span class="kn">from</span> <span class="nn">test_foocompare</span> <span class="kn">import</span> <span class="n">Foo</span>
+
+
+<span class="k">def</span> <span class="nf">pytest_assertrepr_compare</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Foo</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Foo</span><span class="p">)</span> <span class="ow">and</span> <span class="n">op</span> <span class="o">==</span> <span class="s">"=="</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="s">"Comparing Foo instances:"</span><span class="p">,</span>
+            <span class="s">"   vals: {} != {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="n">val</span><span class="p">,</span> <span class="n">right</span><span class="p">.</span><span class="n">val</span><span class="p">),</span>
+        <span class="p">]</span>
+
+<span class="c1"># content of test_foocompare.py
+</span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">val</span>
+
+
+<span class="k">def</span> <span class="nf">test_compare</span><span class="p">():</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
+</code></pre></div></div>
+
+<h2 id="фикстуры"><a href="https://docs.pytest.org/en/6.2.x/fixture.html">Фикстуры</a></h2>
+
+<p>Применяются с помощью декораторв <code class="language-plaintext highlighter-rouge">@pytest.fixture</code>. Доступно несколько дефолтных фикстур.</p>
+
+<p>Почитать что такое [<a href="фикстуры" title="Фикстуры">фикстуры</a>]</p>
+
+<p>В pytest «фикстуры» - это определяемые вами функции, которые служат цели задания условий теста. Они также могут предоставить шаг действия, и это может быть мощным методом для разработки более сложных тестов. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cubed</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">cube</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cubed</span> <span class="o">=</span> <span class="bp">True</span>
+
+
+<span class="k">class</span> <span class="nc">FruitSalad</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">fruit_bowl</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">fruit</span> <span class="o">=</span> <span class="n">fruit_bowl</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_cube_fruit</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_cube_fruit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fruit</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">fruit</span><span class="p">:</span>
+            <span class="n">fruit</span><span class="p">.</span><span class="n">cube</span><span class="p">()</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">fruit_bowl</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Fruit</span><span class="p">(</span><span class="s">"apple"</span><span class="p">),</span> <span class="n">Fruit</span><span class="p">(</span><span class="s">"banana"</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">test_fruit_salad</span><span class="p">(</span><span class="n">fruit_bowl</span><span class="p">):</span>
+    <span class="c1"># Act
+</span>    <span class="n">fruit_salad</span> <span class="o">=</span> <span class="n">FruitSalad</span><span class="p">(</span><span class="o">*</span><span class="n">fruit_bowl</span><span class="p">)</span>
+
+    <span class="c1"># Assert
+</span>    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">fruit</span><span class="p">.</span><span class="n">cubed</span> <span class="k">for</span> <span class="n">fruit</span> <span class="ow">in</span> <span class="n">fruit_salad</span><span class="p">.</span><span class="n">fruit</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Фикстуры можно выстраивать в зависимости</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">first_entry</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"a"</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="n">first_entry</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">first_entry</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">test_string</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+    <span class="c1"># Act
+</span>    <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span>
+
+    <span class="c1"># Assert
+</span>    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"b"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>С этим механизмом фикстуры легко становятся reusable</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">first_entry</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"a"</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="n">first_entry</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">first_entry</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">test_string</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+    <span class="c1"># Act
+</span>    <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"b"</span><span class="p">)</span>
+
+    <span class="c1"># Assert
+</span>    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"b"</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">test_int</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+    <span class="c1"># Act
+</span>    <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Assert
+</span>    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Можно так-же запрашивать более одной фикстуры за разделе</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">first_entry</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"a"</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">second_entry</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">2</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="n">first_entry</span><span class="p">,</span> <span class="n">second_entry</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">first_entry</span><span class="p">,</span> <span class="n">second_entry</span><span class="p">]</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">expected_list</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">test_string</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">expected_list</span><span class="p">):</span>
+    <span class="c1"># Act
+</span>    <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+
+    <span class="c1"># Assert
+</span>    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="n">expected_list</span>
+</code></pre></div></div>
+
+<p>Кроме того, фикстуры можно вызвать более одного раза за тест, значение кешируется.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">first_entry</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"a"</span>
+
+
+<span class="c1"># Arrange
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">order</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="c1"># Act
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">append_first</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">first_entry</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_entry</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_string_only</span><span class="p">(</span><span class="n">append_first</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">first_entry</span><span class="p">):</span>
+    <span class="c1"># Assert
+</span>    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="p">[</span><span class="n">first_entry</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Можно сделать автоюзабельные фикстуры (тогда они будут применяться для всех тестов)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">first_entry</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"a"</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="n">first_entry</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">append_first</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">first_entry</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_entry</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_string_only</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">first_entry</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="p">[</span><span class="n">first_entry</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">test_string_and_int</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">first_entry</span><span class="p">):</span>
+    <span class="n">order</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">order</span> <span class="o">==</span> <span class="p">[</span><span class="n">first_entry</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/fixture.html#scope-sharing-fixtures-across-classes-modules-packages-or-session">Мы можем пошарить фикстуры на классы, модули, пакеты и сессии</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"module"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">smtp_connection</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">smtplib</span><span class="p">.</span><span class="n">SMTP</span><span class="p">(</span><span class="s">"smtp.gmail.com"</span><span class="p">,</span> <span class="mi">587</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_ehlo</span><span class="p">(</span><span class="n">smtp_connection</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">smtp_connection</span><span class="p">.</span><span class="n">ehlo</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">response</span> <span class="o">==</span> <span class="mi">250</span>
+    <span class="k">assert</span> <span class="s">b"smtp.gmail.com"</span> <span class="ow">in</span> <span class="n">msg</span>
+    <span class="k">assert</span> <span class="mi">0</span>  <span class="c1"># for demo purposes
+</span>
+
+<span class="k">def</span> <span class="nf">test_noop</span><span class="p">(</span><span class="n">smtp_connection</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">smtp_connection</span><span class="p">.</span><span class="n">noop</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">response</span> <span class="o">==</span> <span class="mi">250</span>
+    <span class="k">assert</span> <span class="mi">0</span>  <span class="c1"># for demo purposes
+</span></code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pytest test_module.py
+<span class="o">===========================</span> <span class="nb">test </span>session starts <span class="o">============================</span>
+platform linux <span class="nt">--</span> Python 3.x.y, pytest-6.x.y, py-1.x.y, pluggy-0.x.y
+cachedir: <span class="nv">$PYTHON_PREFIX</span>/.pytest_cache
+rootdir: <span class="nv">$REGENDOC_TMPDIR</span>
+collected 2 items
+
+test_module.py FF                                                    <span class="o">[</span>100%]
+
+<span class="o">=================================</span> FAILURES <span class="o">=================================</span>
+________________________________ test_ehlo _________________________________
+
+smtp_connection <span class="o">=</span> &lt;smtplib.SMTP object at 0xdeadbeef&gt;
+
+    def test_ehlo<span class="o">(</span>smtp_connection<span class="o">)</span>:
+        response, msg <span class="o">=</span> smtp_connection.ehlo<span class="o">()</span>
+        assert response <span class="o">==</span> 250
+        assert b<span class="s2">"smtp.gmail.com"</span> <span class="k">in </span>msg
+<span class="o">&gt;</span>       assert 0  <span class="c"># for demo purposes</span>
+E       assert 0
+
+test_module.py:7: AssertionError
+________________________________ test_noop _________________________________
+
+smtp_connection <span class="o">=</span> &lt;smtplib.SMTP object at 0xdeadbeef&gt;
+
+    def test_noop<span class="o">(</span>smtp_connection<span class="o">)</span>:
+        response, msg <span class="o">=</span> smtp_connection.noop<span class="o">()</span>
+        assert response <span class="o">==</span> 250
+<span class="o">&gt;</span>       assert 0  <span class="c"># for demo purposes</span>
+E       assert 0
+
+test_module.py:13: AssertionError
+<span class="o">=========================</span> short <span class="nb">test </span>summary info <span class="o">==========================</span>
+FAILED test_module.py::test_ehlo - assert 0
+FAILED test_module.py::test_noop - assert 0
+<span class="o">============================</span> 2 failed <span class="k">in </span>0.12s <span class="o">=============================</span>
+</code></pre></div></div>
+
+<p>Для scopes оступно:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">function</code>: the default scope, the fixture is destroyed at the end of the test.</li>
+  <li><code class="language-plaintext highlighter-rouge">class</code>: the fixture is destroyed during teardown of the last test in the class.</li>
+  <li><code class="language-plaintext highlighter-rouge">module</code>: the fixture is destroyed during teardown of the last test in the module.</li>
+  <li><code class="language-plaintext highlighter-rouge">package</code>: the fixture is destroyed during teardown of the last test in the package.</li>
+  <li><code class="language-plaintext highlighter-rouge">session</code>: the fixture is destroyed at the end of the test session.</li>
+</ul>
+
+<p>Кроме того, можно динамически</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">determine_scope</span><span class="p">(</span><span class="n">fixture_name</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">config</span><span class="p">.</span><span class="n">getoption</span><span class="p">(</span><span class="s">"--keep-containers"</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">"session"</span>
+    <span class="k">return</span> <span class="s">"function"</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="n">determine_scope</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">docker_container</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="n">spawn_container</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/fixture.html#fixture-errors">Errors фикстур</a></p>
+
+<h3 id="teardowncleanup-aka-fixture-finalization"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#teardown-cleanup-aka-fixture-finalization">Teardown/Cleanup (AKA Fixture finalization)</a></h3>
+
+<h4 id="yield-fixtures-recommended">yield fixtures (recommended)</h4>
+
+<ol>
+  <li>return is swapped out for yield.</li>
+  <li>Any teardown code for that fixture is placed after the yield</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">emaillib</span> <span class="kn">import</span> <span class="n">Email</span><span class="p">,</span> <span class="n">MailAdminClient</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">mail_admin</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">MailAdminClient</span><span class="p">()</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">sending_user</span><span class="p">(</span><span class="n">mail_admin</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">mail_admin</span><span class="p">.</span><span class="n">create_user</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">user</span>
+    <span class="n">admin_client</span><span class="p">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">receiving_user</span><span class="p">(</span><span class="n">mail_admin</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">mail_admin</span><span class="p">.</span><span class="n">create_user</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">user</span>
+    <span class="n">admin_client</span><span class="p">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_email_received</span><span class="p">(</span><span class="n">receiving_user</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">Email</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s">"Hey!"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s">"How's it going?"</span><span class="p">)</span>
+    <span class="n">sending_user</span><span class="p">.</span><span class="n">send_email</span><span class="p">(</span><span class="n">_email</span><span class="p">,</span> <span class="n">receiving_user</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">receiving_user</span><span class="p">.</span><span class="n">inbox</span>
+</code></pre></div></div>
+
+<p>Все что записано после <code class="language-plaintext highlighter-rouge">yield</code> будет запускаться после выпаолнения теста, но в обратном порядке. Поскольку <code class="language-plaintext highlighter-rouge">receiving_user</code> последний, то сначала будет удален узер для него, затем для <code class="language-plaintext highlighter-rouge">sending_user</code></p>
+
+<h4 id="прямая-реализация-финализирующей-части"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#adding-finalizers-directly">Прямая реализация финализирующей части</a></h4>
+
+<h4 id="безопасный-тирдаун"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#safe-teardowns">Безопасный тирдаун</a></h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">emaillib</span> <span class="kn">import</span> <span class="n">Email</span><span class="p">,</span> <span class="n">MailAdminClient</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
+    <span class="n">mail_admin</span> <span class="o">=</span> <span class="n">MailAdminClient</span><span class="p">()</span>
+    <span class="n">sending_user</span> <span class="o">=</span> <span class="n">mail_admin</span><span class="p">.</span><span class="n">create_user</span><span class="p">()</span>
+    <span class="n">receiving_user</span> <span class="o">=</span> <span class="n">mail_admin</span><span class="p">.</span><span class="n">create_user</span><span class="p">()</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">Email</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s">"Hey!"</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s">"How's it going?"</span><span class="p">)</span>
+    <span class="n">sending_user</span><span class="p">.</span><span class="n">send_emai</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">receiving_user</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">receiving_user</span><span class="p">,</span> <span class="n">email</span>
+    <span class="n">receiving_user</span><span class="p">.</span><span class="n">delete_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+    <span class="n">admin_client</span><span class="p">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">sending_user</span><span class="p">)</span>
+    <span class="n">admin_client</span><span class="p">.</span><span class="n">delete_user</span><span class="p">(</span><span class="n">receiving_user</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_email_received</span><span class="p">(</span><span class="n">setup</span><span class="p">):</span>
+    <span class="n">receiving_user</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="n">setup</span>
+    <span class="k">assert</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">receiving_user</span><span class="p">.</span><span class="n">inbox</span>
+</code></pre></div></div>
+
+<h3 id="обеспечение-доступности-фикстур-на-разных-уровнях-видимости"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#fixture-availabiility">Обеспечение доступности фикстур на разных уровнях видимости</a></h3>
+
+<h3 id="fixture-instantiation-order"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#fixture-instantiation-order">Fixture instantiation order</a></h3>
+
+<h3 id="running-multiple-assert-statements-safely"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#running-multiple-assert-statements-safely">Running multiple assert statements safely</a></h3>
+
+<h3 id="using-markers-to-pass-data-to-fixtures"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#using-markers-to-pass-data-to-fixtures">Using markers to pass data to fixtures</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">fixt</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">marker</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">get_closest_marker</span><span class="p">(</span><span class="s">"fixt_data"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">marker</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c1"># Handle missing marker in some way...
+</span>        <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">marker</span><span class="p">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Do something with the data
+</span>    <span class="k">return</span> <span class="n">data</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">fixt_data</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_fixt</span><span class="p">(</span><span class="n">fixt</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">fixt</span> <span class="o">==</span> <span class="mi">42</span>
+</code></pre></div></div>
+
+<h3 id="factories-as-fixtures"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#factories-as-fixtures">Factories as fixtures</a></h3>
+
+<h3 id="parametrizing-fixtures"><a href="https://docs.pytest.org/en/6.2.x/fixture.html#parametrizing-fixtures">Parametrizing fixtures</a></h3>
+
+<p>Позволяет запустить серию тестов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"module"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="s">"smtp.gmail.com"</span><span class="p">,</span> <span class="s">"mail.python.org"</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">smtp_connection</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">smtp_connection</span> <span class="o">=</span> <span class="n">smtplib</span><span class="p">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">param</span><span class="p">,</span> <span class="mi">587</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">smtp_connection</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"finalizing {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">smtp_connection</span><span class="p">))</span>
+    <span class="n">smtp_connection</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="далее-еще-несколько-разделов-про-использование-меток-группировку-фикстур-и-автоматическое-выполнение">Далее еще несколько разделов про использование меток, группировку фикстур и автоматическое выполнение</h3>
+
+<h2 id="использование-меток-для-обозначения-режимов-запуска-тестов"><a href="https://docs.pytest.org/en/6.2.x/mark.html#marking-test-functions-with-attributes">Использование меток для обозначения режимов запуска тестов</a></h2>
+
+<p>Запускается через <code class="language-plaintext highlighter-rouge">pytest --markers</code>. По дефолту доступно:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">usefixtures</code> - use fixtures on a test function or class</li>
+  <li><code class="language-plaintext highlighter-rouge">filterwarnings</code> - filter certain warnings of a test function</li>
+  <li><code class="language-plaintext highlighter-rouge">skip</code> - always skip a test function</li>
+  <li><code class="language-plaintext highlighter-rouge">skipif</code> - skip a test function if a certain condition is met</li>
+  <li><code class="language-plaintext highlighter-rouge">xfail</code> - produce an “expected failure” outcome if a certain condition is met</li>
+  <li><code class="language-plaintext highlighter-rouge">parametrize</code> - perform multiple calls to the same test function.</li>
+</ul>
+
+<p>Метку можно зарегистрирповать в <code class="language-plaintext highlighter-rouge">pytest.ini</code></p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[pytest]</span>
+<span class="py">markers</span> <span class="p">=</span>
+    <span class="err">slow:</span> <span class="err">marks</span> <span class="err">tests</span> <span class="err">as</span> <span class="err">slow</span> <span class="err">(deselect</span> <span class="err">with</span> <span class="err">'-m</span> <span class="err">"not</span> <span class="err">slow"')</span>
+    <span class="err">serial</span>
+</code></pre></div></div>
+
+<p>или в <code class="language-plaintext highlighter-rouge">pyproject.toml</code></p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[tool.pytest.ini_options]</span>
+<span class="py">markers</span> <span class="p">=</span> <span class="p">[</span>
+    <span class="s">"slow: marks tests as slow (deselect with '-m </span><span class="se">\"</span><span class="s">not slow</span><span class="se">\"</span><span class="s">')"</span><span class="p">,</span>
+    <span class="s">"serial"</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>или через хук пайтеста</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pytest_configure</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">config</span><span class="p">.</span><span class="n">addinivalue_line</span><span class="p">(</span>
+        <span class="s">"markers"</span><span class="p">,</span> <span class="s">"env(name): mark test to run only on named environment"</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="monkeypatchingmocking-modules-and-environments"><a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html">Monkeypatching/mocking modules and environments</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">monkeypatch</code> фикстура позволяет безопасно добавлять/убирать атрибуты и объекты, а так-же менять <code class="language-plaintext highlighter-rouge">sys.path</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">monkeypatch</span><span class="p">.</span><span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="nb">delattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">setitem</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">delitem</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">setenv</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">delenv</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">raising</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">syspath_prepend</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">monkeypatch</span><span class="p">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Все очищается, как только запрашивающая тестирующая функция завершает свою работу. Простой пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># contents of test_module.py with source code and the test
+</span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span> <span class="nf">getssh</span><span class="p">():</span>
+    <span class="s">"""Simple function to return expanded homedir ssh path."""</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s">".ssh"</span>
+
+
+<span class="k">def</span> <span class="nf">test_getssh</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="c1"># mocked return function to replace Path.home
+</span>    <span class="c1"># always return '/abc'
+</span>    <span class="k">def</span> <span class="nf">mockreturn</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="s">"/abc"</span><span class="p">)</span>
+
+    <span class="c1"># Application of the monkeypatch to replace Path.home
+</span>    <span class="c1"># with the behavior of mockreturn defined above.
+</span>    <span class="n">monkeypatch</span><span class="p">.</span><span class="nb">setattr</span><span class="p">(</span><span class="n">Path</span><span class="p">,</span> <span class="s">"home"</span><span class="p">,</span> <span class="n">mockreturn</span><span class="p">)</span>
+
+    <span class="c1"># Calling getssh() will use mockreturn in place of Path.home
+</span>    <span class="c1"># for this test with the monkeypatch.
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">getssh</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">x</span> <span class="o">==</span> <span class="n">Path</span><span class="p">(</span><span class="s">"/abc/.ssh"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">monkeypatch.setattr</code> может использоваться для конструирования классов, которые возвращают объект вместо значений</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="s">"""Takes a URL, and returns the JSON."""</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># import requests for the purposes of monkeypatching
+</span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># our app.py that includes the get_json() function
+# this is the previous code block example
+</span><span class="kn">import</span> <span class="nn">app</span>
+
+<span class="c1"># custom class to be the mock return value
+# will override the requests.Response returned from requests.get
+</span><span class="k">class</span> <span class="nc">MockResponse</span><span class="p">:</span>
+
+    <span class="c1"># mock json() method always returns a specific testing dictionary
+</span>    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">json</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"mock_key"</span><span class="p">:</span> <span class="s">"mock_response"</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">test_get_json</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+
+    <span class="c1"># Any arguments may be passed and mock_get() will always return our
+</span>    <span class="c1"># mocked object, which only has the .json() method.
+</span>    <span class="k">def</span> <span class="nf">mock_get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MockResponse</span><span class="p">()</span>
+
+    <span class="c1"># apply the monkeypatch for requests.get to mock_get
+</span>    <span class="n">monkeypatch</span><span class="p">.</span><span class="nb">setattr</span><span class="p">(</span><span class="n">requests</span><span class="p">,</span> <span class="s">"get"</span><span class="p">,</span> <span class="n">mock_get</span><span class="p">)</span>
+
+    <span class="c1"># app.get_json, which contains requests.get, uses the monkeypatch
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">get_json</span><span class="p">(</span><span class="s">"https://fakeurl"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s">"mock_key"</span><span class="p">]</span> <span class="o">==</span> <span class="s">"mock_response"</span>
+</code></pre></div></div>
+
+<h3 id="global-patch-example-preventing-requests-from-remote-operations"><a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html#global-patch-example-preventing-requests-from-remote-operations">Global patch example: preventing “requests” from remote operations</a></h3>
+
+<h3 id="monkeypatching-environment-variables"><a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html#monkeypatching-environment-variables">Monkeypatching environment variables</a></h3>
+
+<h3 id="monkeypatching-dictionaries"><a href="https://docs.pytest.org/en/6.2.x/monkeypatch.html#monkeypatching-dictionaries">Monkeypatching dictionaries</a></h3>
+
+<h2 id="temporary-directories-and-files"><a href="https://docs.pytest.org/en/6.2.x/tmpdir.html">Temporary directories and files</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">tmp_path</code> позволяет создавать временные директории для теста</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CONTENT</span> <span class="o">=</span> <span class="s">"content"</span>
+
+
+<span class="k">def</span> <span class="nf">test_create_file</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="s">"sub"</span>
+    <span class="n">d</span><span class="p">.</span><span class="n">mkdir</span><span class="p">()</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">d</span> <span class="o">/</span> <span class="s">"hello.txt"</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">CONTENT</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">p</span><span class="p">.</span><span class="n">read_text</span><span class="p">()</span> <span class="o">==</span> <span class="n">CONTENT</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">.</span><span class="n">iterdir</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<h3 id="the-tmp_path_factory-fixture"><a href="https://docs.pytest.org/en/6.2.x/tmpdir.html#the-tmp-path-factory-fixture">The tmp_path_factory fixture</a></h3>
+
+<h2 id="capturing-of-the-stdoutstderr-output"><a href="https://docs.pytest.org/en/6.2.x/capture.html">Capturing of the stdout/stderr output</a></h2>
+
+<p>Можно задать методы получения стандартного вывода</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pytest <span class="nt">-s</span>                  <span class="c"># disable all capturing</span>
+pytest <span class="nt">--capture</span><span class="o">=</span>sys       <span class="c"># replace sys.stdout/stderr with in-mem files</span>
+pytest <span class="nt">--capture</span><span class="o">=</span>fd        <span class="c"># also point filedescriptors 1 and 2 to temp file</span>
+pytest <span class="nt">--capture</span><span class="o">=</span>tee-sys   <span class="c"># combines 'sys' and '-s', capturing sys.stdout/stderr</span>
+                           <span class="c"># and passing it along to the actual sys.stdout/stderr</span>
+</code></pre></div></div>
+
+<p>Можно использовать print() для дебаг</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">setup_function</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"setting up"</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_func1</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">test_func2</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<h3 id="accessing-captured-output-from-a-test-function"><a href="https://docs.pytest.org/en/6.2.x/capture.html#accessing-captured-output-from-a-test-function">Accessing captured output from a test function</a></h3>
+
+<h2 id="warnings-capture"><a href="https://docs.pytest.org/en/6.2.x/warnings.html">Warnings Capture</a></h2>
+
+<h2 id="doctest-integration-for-modules-and-test-files"><a href="https://docs.pytest.org/en/6.2.x/doctest.html">Doctest integration for modules and test files</a></h2>
+
+<p>[<a href="doctest" title="Doctest">doctest</a>]</p>
+
+<h2 id="skip-and-xfail-dealing-with-tests-that-cannot-succeed"><a href="https://docs.pytest.org/en/6.2.x/skipping.html">Skip and xfail: dealing with tests that cannot succeed</a></h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">skip</code> тест будет проскипан за исключением ряда условий</li>
+  <li><code class="language-plaintext highlighter-rouge">xfail</code> тест будет провлен за исключением ряда условий</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s">"no way of currently testing this"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_the_unknown</span><span class="p">():</span>
+    <span class="p">...</span>
+
+<span class="c1"># альтернатива
+</span><span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_config</span><span class="p">():</span>
+        <span class="n">pytest</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="s">"unsupported configuration"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Скипать можно и на уровне модуля</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="p">.</span><span class="n">platform</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"win"</span><span class="p">):</span>
+    <span class="n">pytest</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="s">"skipping windows-only tests"</span><span class="p">,</span> <span class="n">allow_module_level</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="skipif">skipif</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skipif</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">reason</span><span class="o">=</span><span class="s">"requires python3.7 or higher"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Можно шарить скипы между разными модулями.</p>
+
+<p>Крмое того, можно проискпать все тесты модуля или класса в модуле:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skipif</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">"win32"</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s">"does not run on windows"</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TestPosixCalls</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">test_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"will not be setup or run under 'win32' platform"</span>
+</code></pre></div></div>
+
+<p>Кроме того, можно скипать тесты, <a href="https://docs.pytest.org/en/6.2.x/skipping.html#skipping-on-a-missing-import-dependency">если невозможно заимпортить зависимости</a>.</p>
+
+<h3 id="xfail-mark-test-functions-as-expected-to-fail"><a href="https://docs.pytest.org/en/6.2.x/skipping.html#xfail-mark-test-functions-as-expected-to-fail">XFail: mark test functions as expected to fail</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="p">...</span>
+
+<span class="c1"># альтернатива
+</span><span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_config</span><span class="p">():</span>
+        <span class="n">pytest</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="s">"failing configuration (but should work)"</span><span class="p">)</span>
+
+<span class="c1"># или
+</span><span class="k">def</span> <span class="nf">test_function2</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">slow_module</span>
+
+    <span class="k">if</span> <span class="n">slow_module</span><span class="p">.</span><span class="n">slow_function</span><span class="p">():</span>
+        <span class="n">pytest</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="s">"slow_module taking too long"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Мы так-же можем задать несколько параметров</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">"win32"</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s">"bug in a 3rd party library"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s">"known parser issue"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="p">...</span>
+
+<span class="c1"># можно задать ошибку, которая будет поднята
+</span><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">raises</span><span class="o">=</span><span class="nb">RuntimeError</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">run</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">xfail</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_function</span><span class="p">():</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Проигнорить <code class="language-plaintext highlighter-rouge">xfail</code> можно так <code class="language-plaintext highlighter-rouge">pytest --runxfail</code></p>
+
+<p>Аналогом является <code class="language-plaintext highlighter-rouge">zpass</code></p>
+
+<p><a href="https://docs.pytest.org/en/6.2.x/skipping.html#skip-xfail-with-parametrize">Скип, фейл и пас могут быть параметризованы</a> для запуска в серии тестов</p>
+
+<h2 id="parametrizing-fixtures-and-test-functions"><a href="https://docs.pytest.org/en/6.2.x/parametrize.html">Parametrizing fixtures and test functions</a></h2>
+
+<p>Используется для запуска серии тестов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># content of test_expectation.py
+</span><span class="kn">import</span> <span class="nn">pytest</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"test_input,expected"</span><span class="p">,</span> <span class="p">[(</span><span class="s">"3+5"</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s">"2+4"</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s">"6*9"</span><span class="p">,</span> <span class="mi">42</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">test_eval</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">eval</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+</code></pre></div></div>
+
+<h2 id="cache-working-with-cross-testrun-state"><a href="https://docs.pytest.org/en/6.2.x/cache.html">Cache: working with cross-testrun state</a></h2>
+
+<p>Позволяет кешировать и выводить только определеныне тесты</p>
+
+<ul>
+  <li>–lf, –last-failed - to only re-run the failures.</li>
+  <li>–ff, –failed-first - to run the failures first and then the rest of the tests.</li>
+</ul>
+
+<p>Мы можем сконфигурирровать следующий запуск тестов</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pytest <span class="nt">--last-failed</span> <span class="nt">--last-failed-no-failures</span> all    <span class="c"># run all tests (default behavior)</span>
+pytest <span class="nt">--last-failed</span> <span class="nt">--last-failed-no-failures</span> none   <span class="c"># run no tests and exit</span>
+</code></pre></div></div>
+
+<p>Очистить кеш <code class="language-plaintext highlighter-rouge">pytest --cache-clear</code></p>
+
+<h2 id="unittesttestcase-support"><a href="https://docs.pytest.org/en/6.2.x/unittest.html">unittest.TestCase Support</a></h2>
+
+<p>pytest саппортит запуск [<a href="unittest" title="Unittest">unittest</a>]. Из коробки это можно сделать так: <code class="language-plaintext highlighter-rouge">pytest tests</code></p>
+
+<p>Крмое того, пайтест автоматически коллектит <code class="language-plaintext highlighter-rouge">unittest.TestCase</code> сабклассы и их методы в  <code class="language-plaintext highlighter-rouge">test_*.py</code> или <code class="language-plaintext highlighter-rouge">*_test.py</code>. Кроме того, саппортятся:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@unittest.skip</code> style decorators;</li>
+  <li><code class="language-plaintext highlighter-rouge">setUp/tearDown</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">setUpClass/tearDownClass</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">setUpModule/tearDownModule</code>;</li>
+</ul>
+
+<p>не саппортится load test протокол и сабтесты</p>
+
+<p>В юниттестовых сабклассах саппортятся:</p>
+
+<ul>
+  <li>Marks: skip, skipif, xfail;</li>
+  <li>Auto-use fixtures;</li>
+</ul>
+
+<p>Не работаюти (и никогда не будут):</p>
+
+<ul>
+  <li>Fixtures (except for autouse fixtures);</li>
+  <li>Parametrization;</li>
+  <li>Custom hooks;</li>
+</ul>
+
+<p>pytest fixtures <a href="https://docs.pytest.org/en/6.2.x/unittest.html#mixing-pytest-fixtures-into-unittest-testcase-subclasses-using-marks">можно миксить</a> в <code class="language-plaintext highlighter-rouge">unittest.TestCase</code> сабклассы</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># we define a fixture function below and it will be "used" by
+# referencing its name from tests
+</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"class"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">db_class</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">DummyDB</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># set a class attribute on the invoking test context
+</span>    <span class="n">request</span><span class="p">.</span><span class="n">cls</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">DummyDB</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Теперь, если мы используем db_class, он будет вызван однажды для каждого теста и установит на уровне атрибута класса инстанс сласса DummyDB(). Он станет доступен в тесте юниттеста благодаря <code class="language-plaintext highlighter-rouge">cls</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">usefixtures</span><span class="p">(</span><span class="s">"db_class"</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">MyTest</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_method1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">"db"</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">db</span>  <span class="c1"># fail for demo purposes
+</span>
+    <span class="k">def</span> <span class="nf">test_method2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">db</span>  <span class="c1"># fail for demo purposes
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">@pytest.mark.usefixtures("db_class")</code> проверяет, что db_class вызван только один раз для теста.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pytest test_unittest_db.py
+<span class="o">===========================</span> <span class="nb">test </span>session starts <span class="o">============================</span>
+platform linux <span class="nt">--</span> Python 3.x.y, pytest-6.x.y, py-1.x.y, pluggy-0.x.y
+cachedir: <span class="nv">$PYTHON_PREFIX</span>/.pytest_cache
+rootdir: <span class="nv">$REGENDOC_TMPDIR</span>
+collected 2 items
+
+test_unittest_db.py FF                                               <span class="o">[</span>100%]
+
+<span class="o">=================================</span> FAILURES <span class="o">=================================</span>
+___________________________ MyTest.test_method1 ____________________________
+
+self <span class="o">=</span> &lt;test_unittest_db.MyTest <span class="nv">testMethod</span><span class="o">=</span>test_method1&gt;
+
+    def test_method1<span class="o">(</span>self<span class="o">)</span>:
+        assert hasattr<span class="o">(</span>self, <span class="s2">"db"</span><span class="o">)</span>
+<span class="o">&gt;</span>       assert 0, self.db  <span class="c"># fail for demo purposes</span>
+E       AssertionError: &lt;conftest.db_class.&lt;locals&gt;.DummyDB object at 0xdeadbeef&gt;
+E       assert 0
+
+test_unittest_db.py:10: AssertionError
+___________________________ MyTest.test_method2 ____________________________
+
+self <span class="o">=</span> &lt;test_unittest_db.MyTest <span class="nv">testMethod</span><span class="o">=</span>test_method2&gt;
+
+    def test_method2<span class="o">(</span>self<span class="o">)</span>:
+<span class="o">&gt;</span>       assert 0, self.db  <span class="c"># fail for demo purposes</span>
+E       AssertionError: &lt;conftest.db_class.&lt;locals&gt;.DummyDB object at 0xdeadbeef&gt;
+E       assert 0
+
+test_unittest_db.py:13: AssertionError
+<span class="o">=========================</span> short <span class="nb">test </span>summary info <span class="o">==========================</span>
+FAILED test_unittest_db.py::MyTest::test_method1 - AssertionError: &lt;conft...
+FAILED test_unittest_db.py::MyTest::test_method2 - AssertionError: &lt;conft...
+<span class="o">============================</span> 2 failed <span class="k">in </span>0.12s <span class="o">=============================</span>
+</code></pre></div></div>
+
+<h3 id="using-autouse-fixtures-and-accessing-other-fixtures"><a href="https://docs.pytest.org/en/6.2.x/unittest.html#using-autouse-fixtures-and-accessing-other-fixtures">Using autouse fixtures and accessing other fixtures</a></h3>
+
+<p>Иногда это полезно, когда мы хотим использовать фикстуру автоматически в данном контексте. Например мы можем так получить доступ к фикстурам временного пути и временных директорий</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+
+<span class="k">class</span> <span class="nc">MyTest</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">autouse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">initdir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tmpdir</span><span class="p">):</span>
+        <span class="n">tmpdir</span><span class="p">.</span><span class="n">chdir</span><span class="p">()</span>  <span class="c1"># change to pytest-provided temporary directory
+</span>        <span class="n">tmpdir</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">"samplefile.ini"</span><span class="p">).</span><span class="n">write</span><span class="p">(</span><span class="s">"# testdata"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"samplefile.ini"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="s">"testdata"</span> <span class="ow">in</span> <span class="n">s</span>
+</code></pre></div></div>
+
+<h2 id="running-tests-written-for-nose"><a href="https://docs.pytest.org/en/6.2.x/nose.html">Running tests written for nose</a></h2>
+
+<h2 id="classic-xunit-style-setup"><a href="https://docs.pytest.org/en/6.2.x/xunit_setup.html">classic xunit-style setup</a></h2>
+
+<h2 id="installing-and-using-plugins"><a href="https://docs.pytest.org/en/6.2.x/plugins.html">Installing and Using plugins</a></h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>pytest-NAME
+pip uninstall pytest-NAME
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pytest-django</code>: write tests for django apps, using pytest integration.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-twisted</code>: write tests for twisted apps, starting a reactor and processing deferreds from test functions.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-cov</code>: coverage reporting, compatible with distributed testing</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-xdist</code>: to distribute tests to CPUs and remote hosts, to run in boxed mode which allows to survive segmentation faults, to run in looponfailing mode, automatically re-running failing tests on file changes.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-instafail</code>: to report failures while the test run is happening.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-bdd</code>: to write tests using behaviour-driven testing.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-timeout</code>: to timeout tests based on function marks or global definitions.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-pep8</code>: a –pep8 option to enable PEP8 compliance checking.</li>
+  <li><code class="language-plaintext highlighter-rouge">pytest-flakes</code>: check source code with pyflakes.</li>
+  <li><code class="language-plaintext highlighter-rouge">oejskit</code>: a plugin to run javascript unittests in live browsers.</li>
+</ul>
+
+<h2 id="writing-plugins"><a href="https://docs.pytest.org/en/6.2.x/writing_plugins.html">Writing plugins</a></h2>
+
+<h2 id="writing-hook-functions"><a href="https://docs.pytest.org/en/6.2.x/writing_plugins.html#writing-hook-functions">Writing hook functions</a></h2>
+
+<h2 id="logging"><a href="https://docs.pytest.org/en/6.2.x/logging.html">Logging¶</a></h2>
+
+<h2 id="пример-хорошей-интеграции-в-проект"><a href="https://docs.pytest.org/en/6.2.x/goodpractices.html">Пример хорошей интеграции в проект</a></h2>
+
+<h2 id="flaky-tests-статья">[[Flaky-tests]] <a href="https://docs.pytest.org/en/6.2.x/flaky.html">статья</a></h2>
+
+<h2 id="pytest-import-mechanisms-and-syspathpythonpath"><a href="https://docs.pytest.org/en/6.2.x/pythonpath.html">pytest import mechanisms and sys.path/PYTHONPATH</a></h2>
+
+<h2 id="конфигурирование"><a href="https://docs.pytest.org/en/6.2.x/customize.html">Конфигурирование</a></h2>
+
+<h2 id="примеры"><a href="https://docs.pytest.org/en/6.2.x/example/index.html">Примеры</a></h2>
+
+<p>Остальные главы посвящены разработке пайтеста, лицйензированию, депрекетам и другим вопросам развития проекта.</p>
+
+<p>Смотри [<a href="pytest-parametrizing" title="Pytest parametrizing tests">pytest-parametrizing</a>]</p>
+
+<ul>
+  <li>[<a href="unittest" title="Unittest">unittest</a>]</li>
+  <li>[<a href="doctest" title="Doctest">doctest</a>]</li>
+  <li>[<a href="env-for-test" title="Env variables for tests">env-for-test</a>]</li>
+  <li>[<a href="mock" title="Mock-тесты">mock</a>]</li>
+</ul>
+
+
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
+      
+      <p><a href="/">На главную</a></p>
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/KonstantinKlepikov/myknowlegebase">myknowlegebase</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+        
+        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+      </footer>
+    </main>
+  </body>
+</html>
