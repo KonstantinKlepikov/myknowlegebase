@@ -1,9 +1,10 @@
-# [[behave]] структура
+# behave структура
 
 [Основыная статья в документации](https://behave.readthedocs.io/en/stable/tutorial.html)
 
-Структура проекта
+Структура проекта [[behave]]
 
+```bash
 - app
   - features
     - steps
@@ -11,6 +12,7 @@
     - environment.py
     - step.feature
   - [...]
+```
 
 В `environment.py` мы утанавливаем страт/остановку сервера и другие регулярные штуки для каждого теста. в `.feature` файлах пишем тест на [[gherkin]]
 
