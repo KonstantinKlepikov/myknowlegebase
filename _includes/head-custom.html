@@ -1,10 +1,13 @@
 <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
-<!-- Setup Google Analytics -->
-{% include head-custom-google-analytics.html %}
+{% if jekyll.environment == 'production' %}
+{% include yandex.html %}
+{% include google.html %}
+{% endif %}
 
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}" -->
+<!-- Favicon -->
+<link rel="icon" href="{{site.baseurl}}{{page.suburl}}{% link assets/img/favicon.ico %}" type="image/x-icon">
+<link rel="shortcut icon" href="{{site.baseurl}}{{page.suburl}}{% link assets/img/favicon.ico %}" type="image/x-icon">
 
 <!-- Math support -->
 {% include mathjax.html %}
