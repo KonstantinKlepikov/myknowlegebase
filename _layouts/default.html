@@ -1,41 +1,35 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "ru-RU" }}">
-  <head>
-    <meta charset="UTF-8">
 
-{% seo %}
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#157878">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<html>
 
-    {% assign user_url = site.url | append: site.baseurl %}
-    {% assign full_base_url = user_url | default: site.github.url %}
-    <link rel="stylesheet" href="{{ "/assets/css/style.css" | prepend: full_base_url }}">
-    {% include head-custom.html %}
-  </head>
+  {% include head.html %}
+
   <body>
 
-    <header class="page-header" role="banner">
-      <h1 class="project-name">{{ site.title }}</h1>
-      <h2 class="project-tagline">{{ site.description }}</h2>
-      <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
-    </header>
+    {% include header.html %}
 
     <main id="content" class="main-content" role="main">
-      <p><a href="{{ site.baseurl }}/">На главную</a></p>
-    
-      {{ content }}
-      
-      <p><a href="{{ site.baseurl }}/">На главную</a></p>
 
-      <footer class="site-footer">
-        {% if site.github.is_project_page %}
-          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> поддерживается <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
-        {% endif %}
-        <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
-      </footer>
+      {{ content }}
+
+      {% include footer.html %}
+
     </main>
+
   </body>
+
 </html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

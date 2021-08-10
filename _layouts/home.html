@@ -2,17 +2,23 @@
 layout: default
 ---
 
-{{ content }}
+<p>На данном сайте собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+<div>
+    <h2>Articles</h2>
+    {% assign pages_list = site.pages | sort: 'title' %}
+    {% for page in pages_list %}
+        {% if page.title %}
+            {% include allpages_block.html %}
+        {% endif %}
+    {% endfor %}
+</div>
 
-<script type="text/javascript">
-  // Hack: Replace page-link with "Page Title"
-  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
-    a.innerText = a.title;
-  });
-  // Hack: Remove .md extension from wikilinks to get the html in jekyll
-  document.querySelectorAll("a").forEach(l => {
-    if (l.href.endsWith('.md')) {
-      l.href = l.href.substring(0, l.href.length-3)
-    }
-  })
-</script>
+<div>
+    <h2>Daily notes</h2>
+    {% for post in site.posts %}
+        {% if post.title %}
+            {% include allposts_block.html %}
+        {% endif %}
+    {% endfor %}
+</div>
+
