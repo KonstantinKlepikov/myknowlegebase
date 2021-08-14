@@ -27,4 +27,3 @@ keywords: hello world
 Добавлять картинки скринштом через `cmd+alt+v`. Будет размещено в /attachments
 
 ![img](../attachments/2021-03-28-15-13-43.png)
-

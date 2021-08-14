@@ -342,7 +342,6 @@ and check all the corresponding available URLs in the section at the end.
 [docker]: ../lists/docker "Docker"
 [docker-compose-with-gcloud-authentication]: docker-compose-with-gcloud-authentication "Docker-compose-with-gcloud-authentication"
 [poetry]: poetry "Poetry"
-[npm]: npm "Npm"
 [traefik]: traefik "Traefik"
 [fastapi]: ../lists/fastapi "Аastapi"
 [fastapi-template-vue-frontend]: fastapi-template-vue-frontend "Fastapi frontend development"

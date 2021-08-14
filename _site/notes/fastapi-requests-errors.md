@@ -49,7 +49,6 @@ async def read_item(item_id: str):
         return {"id": "foo", "value": "there goes my hero"}
     else:
         return JSONResponse(status_code=404, content={"message": "Item not found"})
-
 ```
 
 Респонс прописывается в [[swagger]], но есть проблема - если мы возвращаем респонс в от унаследованного ресурса, возвращается тело ошибки и его надо обрабатывать на уровне ниже. Ошибку эту так-же не будет видно в документации в наследующем ресурсе.
