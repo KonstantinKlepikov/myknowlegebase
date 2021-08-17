@@ -13,11 +13,11 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
 <meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-compose.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-compose.html" />
+<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/docker-compose.html" />
+<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/docker-compose.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/docker-compose.html","headline":"Docker-compose","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+{"headline":"Docker-compose","url":"http://localhost:4000/myknowlegebase/notes/docker-compose.html","@type":"WebPage","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -29,34 +29,10 @@
 
     
     
-    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/css/style.css">
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
-
-  <!-- Yandex.Metrika counter -->
-  <script type="text/javascript" >
-    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-    ym(53548570, "init", {
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true
-    });
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-139620627-1');
-  </script>
 
 
 <!-- Favicon -->
@@ -85,11 +61,210 @@
 
 <h1 id="docker-compose">Docker-compose</h1>
 
-<p>Is a tool for defining and running a multi-container Docker application. In this article you’ll learn why Docker Compose is great for local development, how you can push your Docker images to Heroku for deployment, and Compose tips and tricks.</p>
+<p><a href="https://docs.docker.com/compose/">Основаня статья</a></p>
 
-<p>Let’s start out with a simple python-based multi-container [<a href="../lists/docker" title="Docker">docker</a>] application. This example app is comprised of a web frontend, Redis for caching, and Postgres as our database. With Docker, the web frontend, Redis, and Postgres each run in a separate container.</p>
+<p>Compose - это инструмент для определения и запуска многоконтейнерных приложений Docker. В Compose вы используете файл YAML для настройки служб вашего приложения. Затем с помощью одной команды вы создаете и запускаете все службы из своей конфигурации. Чтобы узнать больше обо всех функциях Compose, см. <a href="https://docs.docker.com/compose/#features">Список функций</a>.</p>
 
-<p>You can use Docker Compose to define your local development environment, including environment variables, ports you need accessible, and volumes to mount. Everything is defined in <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>, which is used by the docker-compose CLI.</p>
+<p>Compose работает во всех средах: production, staging, development, testing а так-же CI workflows. Вы можете узнать больше о каждом случае в разделе <a href="https://docs.docker.com/compose/#common-use-cases">Common Use Cases</a>.</p>
+
+<p>Использование Compose - это, по сути, трехэтапный процесс:</p>
+
+<ol>
+  <li>определите среды вашего приложения с помощью <code class="language-plaintext highlighter-rouge">Dockerfile</code>, чтобы его можно было воспроизвести где угодно.</li>
+  <li>Определите службы, составляющие ваше приложение, в docker-compose.yml, чтобы их можно было запускать вместе в изолированной среде.</li>
+  <li>Запустите <code class="language-plaintext highlighter-rouge">docker compose up</code>, и <a href="https://docs.docker.com/compose/cli-command/">Docker compose comands</a> запустит все ваше приложение.</li>
+</ol>
+
+<p>Docker-compose.yml выглядит так:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>  <span class="c1"># optional since v1.27.0</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.:/code</span>
+      <span class="pi">-</span> <span class="s">logvolume01:/var/log</span>
+    <span class="na">links</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">logvolume01</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.docker.com/compose/#compose-documentation">Дока compose</a></p>
+
+<p><a href="https://docs.docker.com/compose/install/">инстал</a></p>
+
+<h2 id="пример-использования"><a href="https://docs.docker.com/compose/gettingstarted/">Пример использования</a></h2>
+
+<h3 id="step-1-setup">Step 1: setup</h3>
+
+<p>Создать папку проекта</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>composetest
+<span class="nb">cd </span>composetest
+</code></pre></div></div>
+
+<p>Создать файл приложения</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">redis</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'redis'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_hit_count</span><span class="p">():</span>
+    <span class="n">retries</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cache</span><span class="p">.</span><span class="n">incr</span><span class="p">(</span><span class="s">'hits'</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">redis</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">retries</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">exc</span>
+            <span class="n">retries</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">get_hit_count</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s">'Hello World! I have been seen {} times.</span><span class="se">\n</span><span class="s">'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Создать [<a href="requirements" title="Requirements.txt">requirements</a>].txt</p>
+
+<pre><code class="language-txt">flask
+redis
+</code></pre>
+
+<h3 id="step-2-create-a-dockerfile">Step 2: Create a Dockerfile</h3>
+
+<pre><code class="language-Dockerfile"># syntax=docker/dockerfile:1
+FROM python:3.7-alpine
+WORKDIR /code
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+EXPOSE 5000
+COPY . .
+CMD ["flask", "run"]
+</code></pre>
+
+<p>Это дает:</p>
+
+<ul>
+  <li>Build an image starting with the Python 3.7 image.</li>
+  <li>Set the working directory to /code.</li>
+  <li>Set environment variables used by the flask command.</li>
+  <li>Install gcc and other dependencies</li>
+  <li>Copy requirements.txt and install the Python dependencies.</li>
+  <li>Add metadata to the image to describe that the container is listening on port 5000</li>
+  <li>Copy the current directory . in the project to the workdir . in the image.</li>
+  <li>Set the default command for the container to flask run.</li>
+</ul>
+
+<p>Подробнее о [<a href="dockerfile-learn" title="Dockerfile">dockerfile-learn</a>]</p>
+
+<h3 id="step-3-define-services-in-a-compose-file">Step 3: Define services in a Compose file</h3>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose.yml</code></p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">redis:alpine"</span>
+</code></pre></div></div>
+
+<p>В данном случае определили два сервиса - web и [<a href="redis" title="Redis">redis</a>]</p>
+
+<p>Web-сервис использует image, созданный из Dockerfile в текущем каталоге. Затем он связывает контейнер и хост-машину через открытый порт 5000. В этом примере службы используется порт по умолчанию для веб-сервера Flask, 5000.</p>
+
+<p>Redis-сервис использует публичный [<a href="redis" title="Redis">redis</a>] image полученный из Docker Hub registry.</p>
+
+<h3 id="step-4-build-and-run-your-app-with-compose">Step 4: Build and run your app with Compose</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up
+</code></pre></div></div>
+
+<p>Compose развернет имеджи и стартанет сервисы. Теперь можно посмотреть открытый порт локально: http://localhost:5000/ или http://127.0.0.1:5000</p>
+
+<p>Можно посмотреть что запущено</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker image <span class="nb">ls</span>
+</code></pre></div></div>
+
+<p>И остановить приложение</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose down
+</code></pre></div></div>
+
+<h3 id="step-5-edit-the-compose-file-to-add-a-bind-mount">Step 5: Edit the Compose file to add a bind mount</h3>
+
+<p>Зададим привязку [<a href="docker-bind-mound" title="docker-bind-mound">docker-bind-mound</a>] для web-сервиса</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.:/code</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">FLASK_ENV</span><span class="pi">:</span> <span class="s">development</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">redis:alpine"</span>
+</code></pre></div></div>
+
+<p>Новый ключ томов монтирует каталог проекта (текущий каталог) на хосте в /code внутрm контейнера, что позволяет вам изменять код на лету, без необходимости перестраивать образ. Ключ среды устанавливает переменную среды FLASK_ENV, которая сообщает flask run о запуске в режиме разработки и перезагрузке кода при изменении. Этот режим следует использовать только в разработке.</p>
+
+<h3 id="step-6-re-build-and-run-the-app-with-compose">Step 6: Re-build and run the app with Compose</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up
+</code></pre></div></div>
+
+<h3 id="step-7-update-the-application">Step 7: Update the application</h3>
+
+<p>По той причине, что папка приложения смонтирована в контейнер, мы можем править ее содержимое и видеть изменеения мгновенно.</p>
+
+<h3 id="step-8-experiment-with-some-other-commands">Step 8: Experiment with some other commands</h3>
+
+<p>Detached mode - запуск сервисов в фоне</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<p>Просмотр того, что в текущий момент запущено</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose ps
+</code></pre></div></div>
+
+<p><a href="https://docs.docker.com/compose/reference/">Полный список команд</a></p>
+
+<p>Далее:</p>
+
+<ul>
+  <li><a href="https://docs.docker.com/compose/environment-variables/">Переменные в файлах compose</a></li>
+  <li><a href="https://docs.docker.com/compose/env-file/">environment файл</a></li>
+  <li><a href="https://docs.docker.com/compose/profiles/">использование профайлов для сервисов</a></li>
+  <li><a href="https://docs.docker.com/compose/gpu-support/">поддержка GPU</a></li>
+  <li><a href="https://docs.docker.com/compose/extends/">шаринг настроек между проектами и файлами</a></li>
+  <li><a href="https://docs.docker.com/compose/networking/">построение сетей в compose2</a></li>
+  <li><a href="https://docs.docker.com/compose/production/">как работать с compose на проде</a></li>
+  <li><a href="https://docs.docker.com/compose/startup-order/">контроль запуска и остановки для compose</a></li>
+</ul>
+
+<h2 id="еще-один-пример-для-compose---веб-сервис-и-база-данных">Еще один пример для compose - веб сервис и база данных</h2>
 
 <p>The following is the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> for the application:</p>
 
@@ -169,6 +344,8 @@ CONTAINER ID        IMAGE                COMMAND
 <p>Docker-compose поддерживается на [<a href="../lists/heroku" title="Heroku основная статья">heroku</a>]</p>
 
 <p><a href="https://docs.docker.com/compose/">официальная документация</a></p>
+
+<p>Читай еще про [[docker-swarm-rocks]]</p>
 
 
 
