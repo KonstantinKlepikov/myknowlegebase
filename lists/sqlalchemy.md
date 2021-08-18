@@ -1,3 +1,6 @@
+---
+description: Список заметок о SQLAlchemy
+---
 # Sqlalchemy
 
 ОРМ на python

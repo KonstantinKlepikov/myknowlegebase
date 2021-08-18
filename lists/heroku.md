@@ -1,3 +1,6 @@
+---
+description: Основаная статья и список заметок о хостинге heroku
+---
 # Heroku основная статья
 
 [Heroku dev center](https://devcenter.heroku.com/categories/heroku-architecture)

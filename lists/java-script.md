@@ -1,5 +1,5 @@
 ---
-keywords: java-script
+description: Список заметок о java script
 ---
 # Java-script
 

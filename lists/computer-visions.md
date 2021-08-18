@@ -1,3 +1,6 @@
+---
+description: Список заметок о компьютерном зрении
+---
 # Computer visions
 
 [[CV-date-of-image]]

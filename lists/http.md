@@ -1,3 +1,6 @@
+---
+description: Основаня статья и список заметок об http
+---
 # Http
 
 [Основной материал](https://developer.mozilla.org/ru/docs/Web/HTTP)

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>fastapi template deployment | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="fastapi template deployment" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-deployment.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-deployment.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-deployment.html","headline":"fastapi template deployment","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">На главную</a></p>
+
+<h1 id="fastapi-template-deployment">fastapi template deployment</h1>
+
+<h2 id="deployment">Deployment</h2>
+
+<p>You can deploy the stack to a Docker Swarm mode cluster with a main Traefik proxy, set up using the ideas from [<a href="docker-swarm-rocks" title="docker-swarm-rocks">docker-swarm-rocks</a>], to get automatic HTTPS certificates, etc.</p>
+
+<p>And you can use CI (continuous integration) systems to do it automatically.</p>
+
+<p>But you have to configure a couple things first.</p>
+
+<h3 id="traefik-network">Traefik network</h3>
+
+<p>This stack expects the public [<a href="traefik" title="Traefik">traefik</a>] network to be named <code class="language-plaintext highlighter-rouge">traefik-public</code>, just as in the tutorials in <a href="https://dockerswarm.rocks">DockerSwarm.rocks</a>.</p>
+
+<p>If you need to use a different Traefik public network name, update it in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> files, in the section:</p>
+
+<pre><code class="language-YAML">networks:
+  traefik-public:
+    external: true
+</code></pre>
+
+<p>Change <code class="language-plaintext highlighter-rouge">traefik-public</code> to the name of the used Traefik network. And then update it in the file <code class="language-plaintext highlighter-rouge">.env</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">TRAEFIK_PUBLIC_NETWORK</span><span class="o">=</span>traefik-public
+</code></pre></div></div>
+
+<h3 id="persisting-docker-named-volumes">Persisting Docker named volumes</h3>
+
+<p>You need to make sure that each service (Docker container) that uses a volume is always deployed to the same Docker “node” in the cluster, that way it will preserve the data. Otherwise, it could be deployed to a different node each time, and each time the volume would be created in that new node before starting the service. As a result, it would look like your service was starting from scratch every time, losing all the previous data.</p>
+
+<p>That’s specially important for a service running a database. But the same problem would apply if you were saving files in your main backend service (for example, if those files were uploaded by your users, or if they were created by your system).</p>
+
+<p>To solve that, you can put constraints in the services that use one or more data volumes (like databases) to make them be deployed to a Docker node with a specific label. And of course, you need to have that label assigned to one (only one) of your nodes.</p>
+
+<h4 id="adding-services-with-volumes">Adding services with volumes</h4>
+
+<p>For each service that uses a volume (databases, services with uploaded files, etc) you should have a label constraint in your <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file.</p>
+
+<p>To make sure that your labels are unique per volume per stack (for example, that they are not the same for <code class="language-plaintext highlighter-rouge">prod</code> and <code class="language-plaintext highlighter-rouge">stag</code>) you should prefix them with the name of your stack and then use the same name of the volume.</p>
+
+<p>Then you need to have those constraints in your <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file for the services that need to be fixed with each volume.</p>
+
+<p>To be able to use different environments, like <code class="language-plaintext highlighter-rouge">prod</code> and <code class="language-plaintext highlighter-rouge">stag</code>, you should pass the name of the stack as an environment variable. Like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">STACK_NAME</span><span class="o">=</span>stag-tinyrewards-herokuapp-com sh ./scripts/deploy.sh
+</code></pre></div></div>
+
+<p>To use and expand that environment variable inside the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> files you can add the constraints to the services like:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s1">'</span><span class="s">app-db-data:/var/lib/postgresql/data/pgdata'</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">placement</span><span class="pi">:</span>
+        <span class="na">constraints</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">node.labels.${STACK_NAME?Variable not set}.app-db-data == </span><span class="no">true</span>
+</code></pre></div></div>
+
+<p>note the <code class="language-plaintext highlighter-rouge">${STACK_NAME?Variable not set}</code>. In the script <code class="language-plaintext highlighter-rouge">./scripts/deploy.sh</code>, the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> would be converted, and saved to a file <code class="language-plaintext highlighter-rouge">docker-stack.yml</code> containing:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s1">'</span><span class="s">app-db-data:/var/lib/postgresql/data/pgdata'</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">placement</span><span class="pi">:</span>
+        <span class="na">constraints</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">node.labels.tinyrewards-herokuapp-com.app-db-data == </span><span class="no">true</span>
+</code></pre></div></div>
+
+<p><strong>Note</strong>: The <code class="language-plaintext highlighter-rouge">${STACK_NAME?Variable not set}</code> means “use the environment variable <code class="language-plaintext highlighter-rouge">STACK_NAME</code>, but if it is not set, show an error <code class="language-plaintext highlighter-rouge">Variable not set</code>”.</p>
+
+<p>If you add more volumes to your stack, you need to make sure you add the corresponding constraints to the services that use that named volume.</p>
+
+<p>Then you have to create those labels in some nodes in your Docker Swarm mode cluster. You can use <code class="language-plaintext highlighter-rouge">docker-auto-labels</code> to do it automatically.</p>
+
+<h4 id="docker-auto-labels"><code class="language-plaintext highlighter-rouge">docker-auto-labels</code></h4>
+
+<p>You can use <a href="https://github.com/tiangolo/docker-auto-labels"><code class="language-plaintext highlighter-rouge">docker-auto-labels</code></a> to automatically read the placement constraint labels in your Docker stack (Docker Compose file) and assign them to a random Docker node in your Swarm mode cluster if those labels don’t exist yet.</p>
+
+<p>To do that, you can install <code class="language-plaintext highlighter-rouge">docker-auto-labels</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>docker-auto-labels
+</code></pre></div></div>
+
+<p>And then run it passing your <code class="language-plaintext highlighter-rouge">docker-stack.yml</code> file as a parameter:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-auto-labels docker-stack.yml
+</code></pre></div></div>
+
+<p>You can run that command every time you deploy, right before deploying, as it doesn’t modify anything if the required labels already exist.</p>
+
+<h4 id="optionally-adding-labels-manually">(Optionally) adding labels manually</h4>
+
+<p>If you don’t want to use <code class="language-plaintext highlighter-rouge">docker-auto-labels</code> or for any reason you want to manually assign the constraint labels to specific nodes in your Docker Swarm mode cluster, you can do the following:</p>
+
+<ul>
+  <li>
+    <p>First, connect via SSH to your Docker Swarm mode cluster.</p>
+  </li>
+  <li>
+    <p>Then check the available nodes with:</p>
+  </li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span><span class="w"> </span>docker node <span class="nb">ls</span>
+<span class="go">
+
+// you would see an output like:
+
+ID                            HOSTNAME               STATUS              AVAILABILITY        MANAGER STATUS
+nfa3d4df2df34as2fd34230rm *   dog.example.com        Ready               Active              Reachable
+2c2sd2342asdfasd42342304e     cat.example.com        Ready               Active              Leader
+c4sdf2342asdfasd4234234ii     snake.example.com      Ready               Active              Reachable
+</span></code></pre></div></div>
+
+<p>then chose a node from the list. For example, <code class="language-plaintext highlighter-rouge">dog.example.com</code>.</p>
+
+<ul>
+  <li>Add the label to that node. Use as label the name of the stack you are deploying followed by a dot (<code class="language-plaintext highlighter-rouge">.</code>) followed by the named volume, and as value, just <code class="language-plaintext highlighter-rouge">true</code>, e.g.:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node update <span class="nt">--label-add</span> tinyrewards-herokuapp-com.app-db-data<span class="o">=</span><span class="nb">true </span>dog.example.com
+</code></pre></div></div>
+
+<ul>
+  <li>Then you need to do the same for each stack version you have. For example, for staging you could do:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node update <span class="nt">--label-add</span> stag-tinyrewards-herokuapp-com.app-db-data<span class="o">=</span><span class="nb">true </span>cat.example.com
+</code></pre></div></div>
+
+<h3 id="deploy-to-a-docker-swarm-mode-cluster-docker-swarm-rocks">Deploy to a Docker Swarm mode cluster ([<a href="docker-swarm-rocks" title="docker-swarm-rocks">docker-swarm-rocks</a>])</h3>
+
+<p>There are 3 steps:</p>
+
+<ol>
+  <li><strong>Build</strong> your app images</li>
+  <li>Optionally, <strong>push</strong> your custom images to a Docker Registry</li>
+  <li><strong>Deploy</strong> your stack</li>
+</ol>
+
+<hr />
+
+<p>Here are the steps in detail:</p>
+
+<ol>
+  <li><strong>Build your app images:</strong></li>
+</ol>
+
+<ul>
+  <li>Set these environment variables, right before the next command:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">TAG=prod</code></li>
+      <li><code class="language-plaintext highlighter-rouge">FRONTEND_ENV=production</code></li>
+    </ul>
+  </li>
+  <li>Use the provided <code class="language-plaintext highlighter-rouge">scripts/build.sh</code> file with those environment variables:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">TAG</span><span class="o">=</span>prod <span class="nv">FRONTEND_ENV</span><span class="o">=</span>production bash ./scripts/build.sh
+</code></pre></div></div>
+
+<ol>
+  <li><strong>Optionally, push your images to a Docker Registry</strong></li>
+</ol>
+
+<p><strong>Note</strong>: if the deployment Docker Swarm mode “cluster” has more than one server, you will have to push the images to a registry or build the images in each server, so that when each of the servers in your cluster tries to start the containers it can get the Docker images for them, pulling them from a Docker Registry or because it has them already built locally.</p>
+
+<p>If you are using a registry and pushing your images, you can omit running the previous script and instead using this one, in a single shot.</p>
+
+<ul>
+  <li>Set these environment variables:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">TAG=prod</code></li>
+      <li><code class="language-plaintext highlighter-rouge">FRONTEND_ENV=production</code></li>
+    </ul>
+  </li>
+  <li>Use the provided <code class="language-plaintext highlighter-rouge">scripts/build-push.sh</code> file with those environment variables:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">TAG</span><span class="o">=</span>prod <span class="nv">FRONTEND_ENV</span><span class="o">=</span>production bash ./scripts/build-push.sh
+</code></pre></div></div>
+
+<ol>
+  <li><strong>Deploy your stack</strong></li>
+</ol>
+
+<ul>
+  <li>Set these environment variables:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">DOMAIN=tinyrewards.herokuapp.com</code></li>
+      <li><code class="language-plaintext highlighter-rouge">TRAEFIK_TAG=tinyrewards.herokuapp.com</code></li>
+      <li><code class="language-plaintext highlighter-rouge">STACK_NAME=tinyrewards-herokuapp-com</code></li>
+      <li><code class="language-plaintext highlighter-rouge">TAG=prod</code></li>
+    </ul>
+  </li>
+  <li>Use the provided <code class="language-plaintext highlighter-rouge">scripts/deploy.sh</code> file with those environment variables:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">DOMAIN</span><span class="o">=</span>tinyrewards.herokuapp.com <span class="se">\</span>
+<span class="nv">TRAEFIK_TAG</span><span class="o">=</span>tinyrewards.herokuapp.com <span class="se">\</span>
+<span class="nv">STACK_NAME</span><span class="o">=</span>tinyrewards-herokuapp-com <span class="se">\</span>
+<span class="nv">TAG</span><span class="o">=</span>prod <span class="se">\</span>
+bash ./scripts/deploy.sh
+</code></pre></div></div>
+
+<hr />
+
+<p>If you change your mind and, for example, want to deploy everything to a different domain, you only have to change the <code class="language-plaintext highlighter-rouge">DOMAIN</code> environment variable in the previous commands. If you wanted to add a different version / environment of your stack, like “<code class="language-plaintext highlighter-rouge">preproduction</code>”, you would only have to set <code class="language-plaintext highlighter-rouge">TAG=preproduction</code> in your command and update these other environment variables accordingly. And it would all work, that way you could have different environments and deployments of the same app in the same cluster.</p>
+
+<h4 id="deployment-technical-details">Deployment Technical Details</h4>
+
+<p>Building and pushing is done with the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file, using the <code class="language-plaintext highlighter-rouge">docker-compose</code> command. The file <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> uses the file <code class="language-plaintext highlighter-rouge">.env</code> with default environment variables. And the scripts set some additional environment variables as well.</p>
+
+<p>The deployment requires using <code class="language-plaintext highlighter-rouge">docker stack</code> instead of <code class="language-plaintext highlighter-rouge">docker-swarm</code>, and it can’t read environment variables or <code class="language-plaintext highlighter-rouge">.env</code> files. Because of that, the <code class="language-plaintext highlighter-rouge">deploy.sh</code> script generates a file <code class="language-plaintext highlighter-rouge">docker-stack.yml</code> with the configurations from <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> and injecting the environment variables in it. And then uses it to deploy the stack.</p>
+
+<p>You can do the process by hand based on those same scripts if you wanted. The general structure is like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Use the environment variables passed to this script, as TAG and FRONTEND_ENV</span>
+<span class="c"># And re-create those variables as environment variables for the next command</span>
+<span class="nv">TAG</span><span class="o">=</span><span class="k">${</span><span class="nv">TAG</span><span class="p">?Variable not set</span><span class="k">}</span> <span class="se">\</span>
+<span class="c"># Set the environment variable FRONTEND_ENV to the same value passed to this script with</span>
+<span class="c"># a default value of "production" if nothing else was passed</span>
+<span class="nv">FRONTEND_ENV</span><span class="o">=</span><span class="k">${</span><span class="nv">FRONTEND_ENV</span><span class="p">-production?Variable not set</span><span class="k">}</span> <span class="se">\</span>
+<span class="c"># The actual comand that does the work: docker-compose</span>
+docker-compose <span class="se">\</span>
+<span class="c"># Pass the file that should be used, setting explicitly docker-compose.yml avoids the</span>
+<span class="c"># default of also using docker-compose.override.yml</span>
+<span class="nt">-f</span> docker-compose.yml <span class="se">\</span>
+<span class="c"># Use the docker-compose sub command named "config", it just uses the docker-compose.yml</span>
+<span class="c"># file passed to it and prints their combined contents</span>
+<span class="c"># Put those contents in a file "docker-stack.yml", with "&gt;"</span>
+config <span class="o">&gt;</span> docker-stack.yml
+
+<span class="c"># The previous only generated a docker-stack.yml file,</span>
+<span class="c"># but didn't do anything with it yet</span>
+
+<span class="c"># docker-auto-labels makes sure the labels used for constraints exist in the cluster</span>
+docker-auto-labels docker-stack.yml
+
+<span class="c"># Now this command uses that same file to deploy it</span>
+docker stack deploy <span class="nt">-c</span> docker-stack.yml <span class="nt">--with-registry-auth</span> <span class="s2">"</span><span class="k">${</span><span class="nv">STACK_NAME</span><span class="p">?Variable not set</span><span class="k">}</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<h3 id="continuous-integration--continuous-delivery-cl">Continuous Integration / Continuous Delivery ([<a href="../lists/cl" title="Непрервыная интеграция">cl</a>])</h3>
+
+<p>If you use GitLab CI, the included <code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code> can automatically deploy it. You may need to update it according to your GitLab configurations.</p>
+
+<p>If you use any other CI / CD provider, you can base your deployment from that <code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code> file, as all the actual script steps are performed in <code class="language-plaintext highlighter-rouge">bash</code> scripts that you can easily re-use.</p>
+
+<p>GitLab CI is configured assuming 2 environments following GitLab flow:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">prod</code> (production) from the <code class="language-plaintext highlighter-rouge">production</code> branch.</li>
+  <li><code class="language-plaintext highlighter-rouge">stag</code> (staging) from the <code class="language-plaintext highlighter-rouge">master</code> branch.</li>
+</ul>
+
+<p>If you need to add more environments, for example, you could imagine using a client-approved <code class="language-plaintext highlighter-rouge">preprod</code> branch, you can just copy the configurations in <code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code> for <code class="language-plaintext highlighter-rouge">stag</code> and rename the corresponding variables. The Docker Compose file and environment variables are configured to support as many environments as you need, so that you only need to modify <code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code> (or whichever CI system configuration you are using).</p>
+
+<h2 id="docker-compose-files-and-dot-env-vars">[<a href="docker-compose" title="Docker-compose">docker-compose</a>] files and [<a href="dot-env" title="Dot-env">dot-env</a>] vars</h2>
+
+<p>There is a main <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file with all the configurations that apply to the whole stack, it is used automatically by <code class="language-plaintext highlighter-rouge">docker-compose</code>.</p>
+
+<p>And there’s also a <code class="language-plaintext highlighter-rouge">docker-compose.override.yml</code> with overrides for development, for example to mount the source code as a volume. It is used automatically by <code class="language-plaintext highlighter-rouge">docker-compose</code> to apply overrides on top of <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>.</p>
+
+<p>These Docker Compose files use the <code class="language-plaintext highlighter-rouge">.env</code> file containing configurations to be injected as environment variables in the containers.</p>
+
+<p>They also use some additional configurations taken from environment variables set in the scripts before calling the <code class="language-plaintext highlighter-rouge">docker-compose</code> command.</p>
+
+<p>It is all designed to support several “stages”, like development, building, testing, and deployment. Also, allowing the deployment to different environments like staging and production (and you can add more environments very easily).</p>
+
+<p>They are designed to have the minimum repetition of code and configurations, so that if you need to change something, you have to change it in the minimum amount of places. That’s why files use environment variables that get auto-expanded. That way, if for example, you want to use a different domain, you can call the <code class="language-plaintext highlighter-rouge">docker-compose</code> command with a different <code class="language-plaintext highlighter-rouge">DOMAIN</code> environment variable instead of having to change the domain in several places inside the Docker Compose files.</p>
+
+<p>Also, if you want to have another deployment environment, say <code class="language-plaintext highlighter-rouge">preprod</code>, you just have to change environment variables, but you can keep using the same Docker Compose files.</p>
+
+<h3 id="the-env-file-dot-env">The .env file ([<a href="dot-env" title="Dot-env">dot-env</a>])</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">.env</code> file is the one that contains all your configurations, generated keys and passwords, etc.</p>
+
+<p>Depending on your workflow, you could want to exclude it from Git, for example if your project is public. In that case, you would have to make sure to set up a way for your CI tools to obtain it while building or deploying your project.</p>
+
+<p>One way to do it could be to add each environment variable to your CI/CD system, and updating the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file to read that specific env var instead of reading the <code class="language-plaintext highlighter-rouge">.env</code> file.</p>
+
+<p>[<a href="../lists/fastapi" title="Fastapi">fastapi</a>]
+[<a href="fastapi-template-backend" title="Fastapi-template-backend">fastapi-template-backend</a>]
+[<a href="fastapi-template-vue-frontend" title="Fastapi frontend development">fastapi-template-vue-frontend</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">На главную</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

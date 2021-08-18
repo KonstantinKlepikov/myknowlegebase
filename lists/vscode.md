@@ -1,3 +1,6 @@
+---
+description: Список заметок о vscode
+---
 # vscode
 
 - [[2021-06-04-daily-note]]

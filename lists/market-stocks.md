@@ -1,3 +1,7 @@
+---
+description: Список заметок о работе с биржевыми данными
+---
+
 # market-stocks
 
 [[stock-base-statistics]]
