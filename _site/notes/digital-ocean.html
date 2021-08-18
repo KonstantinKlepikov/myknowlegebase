@@ -89,6 +89,112 @@
 
 <p><a href="https://www.digitalocean.com/pricing">Прайсы</a></p>
 
+<h2 id="digital-ocean-container-registry">Digital-ocean container registry</h2>
+
+<p>Для регистра [<a href="../lists/docker" title="Docker">docker</a>] контейнеров. <a href="https://www.digitalocean.com/products/container-registry/">Страница на DG</a></p>
+
+<p><a href="https://docs.digitalocean.com/products/container-registry/#plans-and-pricing">Прайс</a></p>
+
+<p><img src="/myknowlegebase/attachments/2021-08-18-21-53-08.png" alt="Digital-ocean container registry" /></p>
+
+<p><strong>Лимиты:</strong></p>
+
+<ul>
+  <li>Each DigitalOcean account can only create one registry, although a registry may contain multiple repositories.</li>
+  <li>Registry names must be globally unique and not collide with the registry names of other users.</li>
+  <li>Untagged images are not displayed in the control panel. However, you can delete untagged manifests using doctl and free up space in your registry.</li>
+  <li>Manifest lists (for example, multi-arch images) are supported but may not display correctly in the control panel.</li>
+</ul>
+
+<p>The name of a registry must:</p>
+
+<ul>
+  <li>Be unique across all DigitalOcean container registries</li>
+  <li>Be no more than 63 characters in length</li>
+  <li>Contain only lowercase letters, numbers, and/or hyphens</li>
+  <li>Begin with a letter</li>
+  <li>End with a letter or number</li>
+</ul>
+
+<p>Чтобы работать с регистром, надо поставить [<a href="digital-ocean-docktl" title="digital-ocean-docktl">digital-ocean-docktl</a>]</p>
+
+<p><a href="https://docs.digitalocean.com/products/container-registry/quickstart/">DigitalOcean Container Registry Quickstart</a></p>
+
+<ol>
+  <li>Create a Registry</li>
+  <li>Push to Your Registry</li>
+</ol>
+
+<p><img src="/myknowlegebase/attachments/2021-08-18-22-00-11.png" alt="DigitalOcean Container Registry Quickstart" /></p>
+
+<ol>
+  <li><a href="https://docs.digitalocean.com/products/container-registry/how-to/use-registry-docker-kubernetes/">Use Images in Your Registry with Docker or Kubernetes</a></li>
+  <li>Use Images in Your Registry with <a href="https://cloud.digitalocean.com/apps">App Platform</a></li>
+  <li>Manage Images</li>
+  <li>Delete Your Registry</li>
+</ol>
+
+<p><a href="https://docs.digitalocean.com/products/container-registry/how-to/clean-up-container-registry/">How to Use Garbage Collection to Free Up Space in Your Container Registry</a></p>
+
+<p><a href="https://docs.digitalocean.com/products/container-registry/how-to/set-up-ci-cd/">How to Use CI/CD Systems with Your Container Registry</a></p>
+
+<p>Можно <a href="https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-registry/">деплоить из контейнера</a> с помощью UI AppPlatform.</p>
+
+<h2 id="как-пушить-контейнер-через-github-action-в-digital-ocean-containeer-registry">Как пушить контейнер через [<a href="github-action" title="Githunb-action">github-action</a>] в digital-ocean containeer registry</h2>
+
+<p><a href="https://wttech.blog/blog/2021/how-to-push-docker-image-to-digitalocean-container-registry-using-github-actions/">статья</a></p>
+
+<p>Вкратце:</p>
+
+<ul>
+  <li>собираем [<a href="../lists/docker" title="Docker">docker</a>] image</li>
+  <li>собираем Workflow в [<a href="github-action" title="Githunb-action">github-action</a>]</li>
+  <li>реализуем интеграцию github-DG</li>
+</ul>
+
+<p>Пример workflow</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Build and publish manually</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+    <span class="na">inputs</span><span class="pi">:</span>
+      <span class="na">version</span><span class="pi">:</span>
+        <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Image</span><span class="nv"> </span><span class="s">version'</span>
+        <span class="na">required</span><span class="pi">:</span> <span class="no">true</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build_and_push</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo</span> 
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build image</span> 
+        <span class="na">run</span><span class="pi">:</span> <span class="s">docker build -t sample/my-page .</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install doctl</span> 
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">digitalocean/action-doctl@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">token</span><span class="pi">:</span> <span class="s">$</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Log in to DO Container Registry</span> 
+        <span class="na">run</span><span class="pi">:</span> <span class="s">doctl registry login --expiry-seconds </span><span class="m">600</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Tag image</span> 
+        <span class="na">run</span><span class="pi">:</span>
+          <span class="s">docker tag sample/my-page \</span>
+          <span class="s">registry.digitalocean.com/my-sample-registry/my-sample-page:$</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Push image to DO Container Registry</span> 
+        <span class="na">run</span><span class="pi">:</span> <span class="s">docker push registry.digitalocean.com/my-sample-registry/my-sample-page:$</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Checkout the repo - nothing more nothing less than cloning repository to a worker that will execute the job.</li>
+  <li>Build image - you guessed again, just a simple docker build.</li>
+  <li>Install doctl - things are finally getting interesting. In order to push an image to the DigitalOcean registry, you will need a CLI for the DigitalOcean API - and there is one called doctl. The same is true for the workflow you are building here. Fortunately, we have a nice action for that - digitalocean/action-doctl@v2. Notice that the token used in this step comes from the GitHub Secrets (we will talk about it in a moment).</li>
+  <li>Now, our job needs to log in to the DigitalOcean container registry to be able to push the image in the following steps.</li>
+  <li>You need to tag the image with the proper registry, repository, and image name. In this example, we use the input parameter to tag a freshly built image with a version number (the command is split into 2 lines for better readability).</li>
+  <li>Finally, the image is pushed to the repository.</li>
+</ul>
+
+
 
 <div class="additional-pad">
   <p><a href="/myknowlegebase/">На главную</a></p>
