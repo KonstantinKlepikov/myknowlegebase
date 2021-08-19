@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>digital-ocean-doctl | My knowlege base</title>
+<title>digital-ocean-docker-install | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="digital-ocean-doctl" />
+<meta property="og:title" content="digital-ocean-docker-install" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
 <meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-doctl.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-doctl.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-docker-install.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-docker-install.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-doctl.html","headline":"digital-ocean-doctl","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-docker-install.html","headline":"digital-ocean-docker-install","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,53 +83,28 @@
 
       <p><a href="/myknowlegebase/">На главную</a></p>
 
-<h1 id="digital-ocean-doctl">digital-ocean-doctl</h1>
+<h1 id="digital-ocean-docker-install">digital-ocean-docker-install</h1>
 
-<p>doctl Command Line Interface [<a href="../lists/cl" title="Непрервыная интеграция">cl</a>]. Доступ через командную строку к сервисам [<a href="../lists/digital-ocean" title="Digital-ocean">digital-ocean</a>]</p>
+<p><a href="https://marketplace.digitalocean.com/apps/docker">One clock docker install</a></p>
 
-<p><a href="https://github.com/digitalocean/doctl">Ссылка на репозиторий</a></p>
+<p>Пакет включает [<a href="../lists/docker" title="Docker">docker</a>] и [<a href="docker-compose" title="Docker-compose">docker-compose</a>]. кроме установки, докер и докер-композ конфигрурируются в соответствии с официальными рекомендациями (смотри <a href="https://docs.docker.com/engine/install/ubuntu/">тут</a> и <a href="https://docs.docker.com/compose/install/#install-compose">тут</a>)</p>
 
-<h2 id="instalation">Instalation</h2>
+<p>В результате создается docker-дроплет. Сделать ээто можно и через [<a href="digital-ocean-doctl" title="digital-ocean-doctl">digital-ocean-doctl</a>], напрнимер создание GB Docker Droplet in the SFO2 region:</p>
 
-<p><a href="https://docs.digitalocean.com/reference/doctl/how-to/install/">Статья</a></p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> POST <span class="nt">-H</span> <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+     <span class="nt">-H</span> <span class="s1">'Authorization: Bearer '</span><span class="nv">$TOKEN</span><span class="s1">''</span> <span class="nt">-d</span> <span class="se">\</span>
+    <span class="s1">'{"name":"choose_a_name","region":"sfo2","size":"s-2vcpu-4gb","image":"docker-20-04"}'</span> <span class="se">\</span>
+    <span class="s2">"https://api.digitalocean.com/v2/droplets"</span>
+</code></pre></div></div>
 
-<ul>
-  <li>Step 1: Install doctl</li>
-  <li>Step 2: Create an API token</li>
-  <li>Step 3: Use the API token to grant account access to doctl</li>
-  <li>Step 4: Validate that doctl is working</li>
-</ul>
-
-<p>Для установки на ubuntu понадобится [<a href="linux-snap" title="linux-snap">linux-snap</a>]</p>
-
-<p>Как создавать <a href="https://docs.digitalocean.com/reference/api/create-personal-access-token/">API-token на digital ocean</a></p>
-
-<p>Затем нужно ваутентифицироваться, создав соответствующий контекст:</p>
-
-<p><code class="language-plaintext highlighter-rouge">doctl auth init --context &lt;NAME&gt;</code></p>
-
-<p>Контекст потребуется, если нужно менять аккаунты, к которым осуществляется доступ через doctl. Получить список контекстов и переключиться:</p>
+<p>Если ставить все руками:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">doctl auth list</code></li>
-  <li><code class="language-plaintext highlighter-rouge">doctl auth switch --context &lt;NAME&gt;</code></li>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>] вот так <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04">статья</a></li>
+  <li>[<a href="docker-compose" title="Docker-compose">docker-compose</a>] вот так <a href="https://www.digitalocean.com/community/tutorial_collections/how-to-install-docker-compose">статья</a></li>
 </ul>
 
-<p>После переключения на созданный контекст, проверить, чт овсе работает можно так: <code class="language-plaintext highlighter-rouge">doctl account get</code></p>
-
-<h2 id="список-доступных-команд">Список доступных команд</h2>
-
-<p><a href="https://docs.digitalocean.com/reference/doctl/reference/">Смотри тут</a></p>
-
-<h2 id="допресурсы">Доп.ресурсы</h2>
-
-<ul>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-work-with-digitalocean-load-balancers-using-doctl">How To Work with DigitalOcean Load Balancers Using Doctl</a></li>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-secure-web-server-infrastructure-with-digitalocean-cloud-firewalls-using-doctl">How To Secure Web Server Infrastructure With DigitalOcean Cloud Firewalls Using Doctl</a></li>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-work-with-digitalocean-block-storage-using-doctl">How To Work with DigitalOcean Block Storage Using Doctl</a></li>
-</ul>
-
-<p>Смотри так-же [<a href="digital-ocean-docker-install" title="digital-ocean-docker-install">digital-ocean-docker-install</a>]</p>
+<p>Если нужен [<a href="docker-swarm" title="docker-swarm">docker-swarm</a>], то вот статья: <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-cluster-of-docker-containers-with-docker-swarm-and-digitalocean-on-ubuntu-16-04">How to Create a Cluster of Docker Containers with Docker Swarm and DigitalOcean on Ubuntu 16.04</a></p>
 
 
 

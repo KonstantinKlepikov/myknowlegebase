@@ -111,7 +111,7 @@ Your application will be built, and Heroku will use the run command provided in 
 
 ## [Local Development with Docker Compose](https://devcenter.heroku.com/articles/local-development-with-docker-compose)
 
-Example [[docker-compose]]. That python application depends on [[postgress]] and [[redis]], which you do not push to Heroku. Instead, use Heroku add-ons in production.
+Example [[docker-compose]]. That python application depends on [[postgres]] and [[redis]], which you do not push to Heroku. Instead, use Heroku add-ons in production.
 
 **Use Heroku add-ons in production:**
 
@@ -223,7 +223,7 @@ Heroku CI automatically runs your app’s test suite with every push to your app
 [heroku-release-phase]: ../notes/heroku-release-phase "Heroku-release-phase"
 [docker]: docker "Docker"
 [docker-compose]: ../notes/docker-compose "Docker-compose"
-[postgress]: ../notes/postgress "Postgress"
+[postgres]: ../notes/postgres "postgres"
 [redis]: ../notes/redis "Redis"
 [docker]: docker "Docker"
 [heroku-piplines]: ../notes/heroku-piplines "Heroku-piplines"

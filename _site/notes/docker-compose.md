@@ -251,7 +251,7 @@ services:
       - ./webapp:/opt/webapp
 ```
 
-The next service is the [[postgress]] database, which opens port 5432 and uses the latest official Postgres image on Docker Hub.
+The next service is the [[postgres]] database, which opens port 5432 and uses the latest official Postgres image on Docker Hub.
 
 ```yml
 db:
@@ -303,7 +303,7 @@ Docker-compose поддерживается на [[heroku]]
 [redis]: redis "Redis"
 [redis]: redis "Redis"
 [docker-bind-mound]: docker-bind-mound "docker-bind-mound"
-[postgress]: postgress "Postgress"
+[postgres]: postgres "postgres"
 [redis]: redis "Redis"
 [heroku]: ../lists/heroku "Heroku основная статья"
 [docker-swarm-rocks]: docker-swarm-rocks "docker-swarm-rocks"
