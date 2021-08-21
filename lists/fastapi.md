@@ -1,5 +1,6 @@
 ---
 description: Список заметок об http-фреймворке fast-api
+category: list
 ---
 # Fastapi
 

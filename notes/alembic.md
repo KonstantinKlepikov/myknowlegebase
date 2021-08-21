@@ -1,3 +1,6 @@
+---
+description: Миграции баз данных с alembic на python
+---
 # Alembic
 
 Тулза для миграции ДБ в [[sqlalchemy]] на #python

@@ -1,4 +1,5 @@
 ---
+description: Пакет python для ассинхронной работы с базами данных database
 type: feature
 keywords: python
 ---

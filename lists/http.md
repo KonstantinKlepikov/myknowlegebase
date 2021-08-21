@@ -1,5 +1,6 @@
 ---
 description: Основаня статья и список заметок об http
+category: list
 ---
 # Http
 

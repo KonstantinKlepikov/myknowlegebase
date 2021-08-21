@@ -1,4 +1,5 @@
 ---
+description: Анотация типов в python
 type: feature
 keywords: python
 ---

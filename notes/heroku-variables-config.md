@@ -1,3 +1,6 @@
+---
+description: Конфигурирование переменных окружения на heroku
+---
 # Heroku-variables-config
 
 [Статья](https://devcenter.heroku.com/articles/config-vars)

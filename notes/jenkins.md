@@ -1,3 +1,6 @@
+---
+description: 
+---
 # Jenkins
 
 [Документация](https://pkg.jenkins.io/debian-stable/)

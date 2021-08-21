@@ -1,3 +1,6 @@
+---
+description: Шаблон приложения на fastapi. Deployment
+---
 # fastapi template deployment
 
 ## Deployment

@@ -1,3 +1,6 @@
+---
+description: Установка docker в digital ocean
+---
 # digital-ocean-docker-install
 
 [One clock docker install](https://marketplace.digitalocean.com/apps/docker)

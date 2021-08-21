@@ -1,3 +1,6 @@
+---
+description: Dockerfile - конфиг контейнера
+---
 # Dockerfile
 
 [ссылка на основную статью](https://docs.docker.com/engine/reference/builder/)

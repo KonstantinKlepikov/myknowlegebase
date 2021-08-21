@@ -1,4 +1,5 @@
 ---
+description: Pydantic - библиотека для валидации типов в python
 type: feature
 keywords: python
 ---

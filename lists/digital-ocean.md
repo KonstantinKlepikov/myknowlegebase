@@ -1,5 +1,6 @@
 ---
 description: Список заметок и основная статья о digital-ocean
+category: list
 ---
 # Digital-ocean
 

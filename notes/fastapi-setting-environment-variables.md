@@ -1,3 +1,6 @@
+---
+description: Переменные окружения в fastapi
+---
 # Fastapi environment variables
 
 [Основная статья](https://fastapi.tiangolo.com/pt/advanced/settings/)

@@ -1,3 +1,6 @@
+---
+description: Шаблон приложения на fastapi. Backend
+---
 # Fastapi-template-backend
 
 Backend Requirements

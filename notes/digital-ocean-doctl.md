@@ -1,3 +1,6 @@
+---
+description: Doctl интерфейс командной строк=и digital ocean
+---
 # digital-ocean-doctl
 
 doctl Command Line Interface [[cl]]. Доступ через командную строку к сервисам [[digital-ocean]]

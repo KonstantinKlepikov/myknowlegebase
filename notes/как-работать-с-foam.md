@@ -1,4 +1,5 @@
 ---
+description: Начало работы с foam в vscode
 type: feature
 keywords: foam
 ---

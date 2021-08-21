@@ -1,5 +1,6 @@
 ---
-title: Про работу behave и гunittest и немного про datetime
+title: Про работу behave и unittest и немного про datetime
+description: Про работу behave и unittest и немного про datetime
 ---
 
 ## Интеграция [[behave]] и [[unittest]]

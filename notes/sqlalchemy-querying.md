@@ -1,3 +1,6 @@
+---
+description: Запросы в sqlalchemy
+---
 # Sqlalchgemy querying
 
 [основная статья](https://docs.sqlalchemy.org/en/14/orm/tutorial.html#querying)

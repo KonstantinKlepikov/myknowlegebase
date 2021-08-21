@@ -1,3 +1,6 @@
+---
+description: Стратегии загрузки в sqlalchemy
+---
 # Sqlalchemy-loader-strategy
 
 [Ссылка на статью](https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies)

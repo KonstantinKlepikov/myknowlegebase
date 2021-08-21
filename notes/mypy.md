@@ -1,4 +1,5 @@
 ---
+description: Анотация типов в mypy на python
 type: feature
 keywords: python
 ---

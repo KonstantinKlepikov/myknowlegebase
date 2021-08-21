@@ -1,3 +1,6 @@
+---
+description: Управление procefile-based приложениями через honcho на python
+---
 # Honcho
 
 Приложение python для управления приложениями на основе `Procfile`. [Документация](https://honcho.readthedocs.io/en/latest/index.html)

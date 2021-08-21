@@ -1,5 +1,6 @@
 ---
 title: Как преобразовать строки в переменные в python
+description: Как преобразовать строки в переменные в python
 ---
 
 ## Convert a String to Variable Name in Python

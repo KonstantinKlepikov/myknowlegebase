@@ -1,3 +1,6 @@
+---
+description: Flover инстурмент мониторинга для celery
+---
 # Flower
 
 [[celery]] monitoring tool. [Ссылка на документацию](https://flower.readthedocs.io/en/latest/)

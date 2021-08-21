@@ -1,3 +1,6 @@
+---
+description: Тестирование в python с помощью docktest
+---
 # Doctest
 
 [Ссылка на доку](https://docs.python.org/3/library/doctest.html#module-doctest)

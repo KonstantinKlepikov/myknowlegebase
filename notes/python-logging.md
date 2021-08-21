@@ -1,3 +1,6 @@
+---
+description: Логирование в python
+---
 # Python-logging
 
 [Документация](https://docs.python.org/dev/library/logging.html#module-logging)

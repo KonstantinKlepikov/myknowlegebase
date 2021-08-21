@@ -1,3 +1,6 @@
+---
+description: Инструменты командной строки для heroku
+---
 # heroku-cli
 
 - [Статья](https://devcenter.heroku.com/articles/using-the-cli)

@@ -1,3 +1,6 @@
+---
+description: Работа с jinja2 на python
+---
 # Jinja2
 
 {% raw %}

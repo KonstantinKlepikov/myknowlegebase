@@ -1,5 +1,6 @@
 ---
 description: Список заметок о git
+category: list
 ---
 # Git
 

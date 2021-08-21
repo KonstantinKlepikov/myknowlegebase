@@ -1,3 +1,6 @@
+---
+description: Что на самом деле делает git mv
+---
 # git-rm
 
 ```shell

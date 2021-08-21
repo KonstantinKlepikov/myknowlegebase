@@ -1,3 +1,6 @@
+---
+description: Docker compose определение и запуск многоконтейнерных приложений
+---
 # Docker-compose
 
 [Основаня статья](https://docs.docker.com/compose/)
@@ -302,7 +305,7 @@ Docker-compose поддерживается на [[heroku]]
 [dockerfile-learn]: dockerfile-learn "Dockerfile"
 [redis]: redis "Redis"
 [redis]: redis "Redis"
-[docker-bind-mound]: docker-bind-mound "docker-bind-mound"
+[docker-bind-mound]: docker-bind-mound "docker-bind-mount"
 [postgres]: postgres "postgres"
 [redis]: redis "Redis"
 [heroku]: ../lists/heroku "Heroku основная статья"

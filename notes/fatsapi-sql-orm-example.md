@@ -1,3 +1,6 @@
+---
+description: Пример организации приложения fastapi с базой данных и orm 
+---
 # Fatsapi-sql-orm-example
 
 ## Пример построения приложения

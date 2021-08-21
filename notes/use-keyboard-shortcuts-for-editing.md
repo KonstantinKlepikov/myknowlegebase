@@ -1,3 +1,6 @@
+---
+description: Шорткаты в vscode foam
+---
 # Use Keyboard Shortcuts for Editing
 
 Here are some keyboard shortcuts you'll love when editing your notes.

@@ -1,4 +1,5 @@
 ---
+description: Openapi спецификация
 type: feature
 keywords: openapi, fastapi
 ---

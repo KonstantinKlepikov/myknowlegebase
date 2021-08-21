@@ -1,3 +1,6 @@
+---
+description: Конфигурирование библиотеки behave в python
+---
 # Behave config
 
 Конфиги для [[behave]]

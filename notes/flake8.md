@@ -1,4 +1,5 @@
 ---
+description: Линтер для python
 type: feature
 keywords: python
 ---

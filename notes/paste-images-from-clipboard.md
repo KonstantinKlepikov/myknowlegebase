@@ -1,3 +1,6 @@
+---
+description: Вcnавка изображений из кэша операционки в foam
+---
 # Paste Images from Clipboard
 
 You can paste an image from the clipboard with `cmd+alt+v`.

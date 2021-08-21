@@ -1,4 +1,5 @@
 ---
+description: Человекочитаемый предметный язык DSL для приемочных тестов
 keywords: BDD, ruby
 ---
 # Gherkin

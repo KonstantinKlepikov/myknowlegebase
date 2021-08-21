@@ -1,5 +1,6 @@
 ---
 description: Список заметок о java script
+category: list
 ---
 # Java-script
 

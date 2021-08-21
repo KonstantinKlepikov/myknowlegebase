@@ -1,3 +1,6 @@
+---
+description: Requests - обработка http-запросов в python
+---
 # Requests
 
 http-библиотечка на #python для запросов/ответов.

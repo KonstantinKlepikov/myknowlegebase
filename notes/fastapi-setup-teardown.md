@@ -1,3 +1,6 @@
+---
+description: Тестовый клиент в fastapi. Использование setup и teardown
+---
 # Fastapi-setup-teardown
 
 [Testing Events: startup - shutdown](https://fastapi.tiangolo.com/pt/advanced/testing-events/)

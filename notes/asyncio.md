@@ -1,3 +1,6 @@
+---
+description: Модуль acyncio в python
+---
 # Asyncio
 
 - [[gino]]

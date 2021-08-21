@@ -1,5 +1,6 @@
 ---
 description: Список заметок о компьютерном зрении
+category: list
 ---
 # Computer visions
 

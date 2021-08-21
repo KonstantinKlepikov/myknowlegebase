@@ -1,3 +1,6 @@
+---
+description: Как писать mock-тесты на python
+---
 # Mock-тесты
 
 [unittest.mock](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.MagicMock)

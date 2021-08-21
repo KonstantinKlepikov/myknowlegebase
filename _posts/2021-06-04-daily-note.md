@@ -1,5 +1,6 @@
 ---
-title: Как получить текст ошибки в python и немного про pylence в vscode
+title: Как получить текст ошибки в python и немного про pylance в vscode
+description: Как получить текст ошибки в python и немного про pylance в vscode
 ---
 
 ## Как получить текст ошибкки в python

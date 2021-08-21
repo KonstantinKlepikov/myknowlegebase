@@ -1,3 +1,6 @@
+---
+description: Http заголовки
+---
 # Http-заголовки
 
 [http-заголовки](https://developer.mozilla.org/ru/docs/Web/HTTP/Headers)

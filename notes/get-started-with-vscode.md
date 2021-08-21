@@ -1,3 +1,6 @@
+---
+description: Как начать работу в foam с vscode
+---
 # Getting started with VsCode
 
 VsCode is a powerful text editor, hidden behind a simple interface.

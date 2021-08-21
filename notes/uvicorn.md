@@ -1,3 +1,6 @@
+---
+description: Uvicorn
+---
 # Uvicorn
 
 [докумсентация сервера](https://www.uvicorn.org/#running-programmatically)

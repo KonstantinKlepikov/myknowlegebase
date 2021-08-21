@@ -1,3 +1,6 @@
+---
+description: Управление переменными окружения в python с помощью dot-env
+---
 # Dot-env
 
 Тулза python для управления переменными окружения. [Ссылка на доку](https://saurabh-kumar.com/python-dotenv/)

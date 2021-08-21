@@ -1,5 +1,6 @@
 ---
 description: Основаная статья и список заметок о хостинге heroku
+category: list
 ---
 # Heroku основная статья
 

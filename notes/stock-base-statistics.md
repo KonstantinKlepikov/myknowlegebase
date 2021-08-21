@@ -1,4 +1,7 @@
-# Stock base statistics
+---
+description: Базовые статистики рынка акций
+---
+# Stock basic statistics
 
 Базовые статистики [[market-stocks]]
 

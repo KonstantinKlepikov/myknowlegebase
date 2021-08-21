@@ -1,4 +1,7 @@
-# Руководство-по-html-формам
+---
+description: Руководство по html формам
+---
+# Руководство по html формам
 
 [Основная статья](https://developer.mozilla.org/ru/docs/Learn/Forms)
 

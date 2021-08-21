@@ -1,3 +1,6 @@
+---
+description: Организация отправки сообщений в fastapi
+---
 # Fastapi-mail
 
 [библиотечка](https://sabuhish.github.io/fastapi-mail/#fastapi-mail)

@@ -1,3 +1,6 @@
+---
+description: Определение метаданных в fast api
+---
 # Fastapi-Metadata-and-Docs-URLs
 
 ```python

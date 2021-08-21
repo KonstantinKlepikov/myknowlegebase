@@ -1,3 +1,6 @@
+---
+description: Триггеры и переменные в github action
+---
 # Github-action-триггеры-и-переменные
 
 [Events that trigger workflows](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request)

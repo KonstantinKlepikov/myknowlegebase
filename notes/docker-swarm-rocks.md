@@ -1,3 +1,6 @@
+---
+description: Docker swarm rock ненативная реализация swarm mode
+---
 # docker-swarm-rocks
 
 Используется для [[docker]] [swarm mode](https://docs.docker.com/engine/swarm/). 

@@ -1,3 +1,6 @@
+---
+description: Про проблему поддержки body в GET запросах openapi
+---
 # GET not support body
 
 That's true for OpenAPI 3.0, but seems to be changed in 3.1 as this PR suggests. The same change was removed from 3.0 only because it did't fit the semantics of a patch release

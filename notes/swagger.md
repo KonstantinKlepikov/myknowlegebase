@@ -1,3 +1,6 @@
+---
+description: Автодокументацйя openapi с помощью sqagger
+---
 # Swagger
 
 [Документация](https://swagger.io/docs/specification/about/)

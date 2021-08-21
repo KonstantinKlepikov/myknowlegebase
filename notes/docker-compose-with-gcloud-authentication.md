@@ -1,3 +1,6 @@
+---
+description: Docker compose с gcloud аутентификацией
+---
 # Docker-compose-with-gcloud-authentication
 
 Наиболее простой способ аутентификации в [[docker]] для создания/хренения образов - это аутентификация через gcloud

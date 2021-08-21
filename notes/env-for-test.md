@@ -1,3 +1,6 @@
+---
+description: Переменные окружения в тестировании для python
+---
 # Env variables for tests
 
 Пример реализации

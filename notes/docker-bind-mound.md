@@ -1,4 +1,7 @@
-# docker-bind-mound
+---
+description: Docker bind mount способ привязки файлов
+---
+# docker-bind-mount
 
 Способ привязки файлов в докере. [Основная статья](https://docs.docker.com/storage/bind-mounts/)
 

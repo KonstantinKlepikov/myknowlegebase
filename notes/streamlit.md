@@ -1,4 +1,5 @@
 ---
+description: Прототипирование web-приложений с помощью streamlit
 title: Streamlit
 type: feature
 keywords: python

@@ -1,3 +1,6 @@
+---
+description: Прокси-сервер с открытым исходным кодом traefic
+---
 # Traefik
 
 [Статья на хабре](https://habr.com/ru/post/508636/)

@@ -1,4 +1,5 @@
 ---
+description: Github action - управление и cl/ca на github
 type: feature
 keywords: git githunb-action
 ---
