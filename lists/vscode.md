@@ -2,7 +2,7 @@
 description: Список заметок о vscode
 category: list
 ---
-# vscode
+# Vscode
 
 - [[2021-06-04-daily-note]]
 - [[как-работать-с-foam]]

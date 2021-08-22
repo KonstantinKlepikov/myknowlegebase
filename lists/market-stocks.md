@@ -3,7 +3,7 @@ description: Список заметок о работе с биржевыми �
 category: list
 ---
 
-# market-stocks
+# Market-stocks
 
 [[stock-base-statistics]]
 

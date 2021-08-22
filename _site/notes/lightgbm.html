@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Lightgbm | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Lightgbm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Градиент бустинг фреймворк LightGBM" />
+<meta property="og:description" content="Градиент бустинг фреймворк LightGBM" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/lightgbm.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/lightgbm.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/lightgbm.html","headline":"Lightgbm","description":"Градиент бустинг фреймворк LightGBM","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">На главную</a></p>
+
+<h1 id="lightgbm">Lightgbm</h1>
+
+<p>Градиент бустинг фреймворк LightGBM для [<a href="../lists/machine-learning" title="Machine-learning">machine-learning</a>]</p>
+
+<p>LightGBM is a gradient boosting framework that uses tree based learning algorithms. It is designed to be distributed and efficient with the following advantages:</p>
+
+<ul>
+  <li>Faster training speed and higher efficiency.</li>
+  <li>Lower memory usage.</li>
+  <li>Better accuracy.</li>
+  <li>Support of parallel, distributed, and GPU learning.</li>
+  <li>Capable of handling large-scale data.</li>
+</ul>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/index.html">Ссылка на документацию</a></p>
+
+<h2 id="python-quik-start">Python quik start</h2>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Python-Intro.html">Статья</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install lightgbm</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">lightgbm</span> <span class="k">as</span> <span class="n">lgb</span>
+</code></pre></div></div>
+
+<p>The LightGBM Python module can load data from:</p>
+
+<ul>
+  <li>LibSVM (zero-based)/TSV/CSV/ XT format file</li>
+  <li>NumPy 2D array(s), pandas DataFrame, H2O DataTable’s Frame, SciPy sparse matrix</li>
+  <li>LightGBM binary file</li>
+  <li>LightGBM <code class="language-plaintext highlighter-rouge">Sequence</code> object(s)</li>
+</ul>
+
+<p>The data is stored in a <code class="language-plaintext highlighter-rouge">Dataset</code> object.</p>
+
+<p>To load a LibSVM <strong>(zero-based)</strong> text file or a LightGBM binary file into Dataset:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s">'train.svm.bin'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>To load a <strong>numpy array</strong> into Dataset:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># 500 entities, each contains 10 features
+</span><span class="n">label</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>  <span class="c1"># binary target
+</span><span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>To load a <strong>scipy.sparse.csr_matrix array</strong> into Dataset:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scipy</span>
+<span class="n">csr</span> <span class="o">=</span> <span class="n">scipy</span><span class="p">.</span><span class="n">sparse</span><span class="p">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">dat</span><span class="p">,</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)))</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">csr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Load from <strong>Sequence objects</strong>. We can implement <code class="language-plaintext highlighter-rouge">Sequence</code> interface to read binary files. The following example shows reading HDF5 file with <code class="language-plaintext highlighter-rouge">h5py</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">h5py</span>
+
+<span class="k">class</span> <span class="nc">HDFSequence</span><span class="p">(</span><span class="n">lgb</span><span class="p">.</span><span class="n">Sequence</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hdf_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">hdf_dataset</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="p">.</span><span class="n">File</span><span class="p">(</span><span class="s">'train.hdf5'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">HDFSequence</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s">'X'</span><span class="p">],</span> <span class="mi">8192</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s">'Y'</span><span class="p">][:])</span>
+</code></pre></div></div>
+
+<p><strong>Saving Dataset into a LightGBM binary file will make loading faster:</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s">'train.svm.txt'</span><span class="p">)</span>
+<span class="n">train_data</span><span class="p">.</span><span class="n">save_binary</span><span class="p">(</span><span class="s">'train.bin'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Create validation data</strong>. In LightGBM, the validation data should be aligned with training data.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">validation_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">.</span><span class="n">create_valid</span><span class="p">(</span><span class="s">'validation.svm'</span><span class="p">)</span>
+<span class="c1"># or
+</span><span class="n">validation_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s">'validation.svm'</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">train_data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Specific feature names and categorical features</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">feature_name</span><span class="o">=</span><span class="p">[</span><span class="s">'c1'</span><span class="p">,</span> <span class="s">'c2'</span><span class="p">,</span> <span class="s">'c3'</span><span class="p">],</span> <span class="n">categorical_feature</span><span class="o">=</span><span class="p">[</span><span class="s">'c3'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>LightGBM can use categorical features as input directly. It doesn’t need to convert to one-hot encoding, and is much faster than one-hot encoding (about 8x speed-up). But you should convert your categorical features to int type before you construct Dataset.</p>
+
+<p><strong>Weights can be set when needed</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+<span class="c1"># or
+</span><span class="n">train_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">train_data</span><span class="p">.</span><span class="n">set_weight</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>And you can use <code class="language-plaintext highlighter-rouge">Dataset.set_init_score()</code> to set initial score, and <code class="language-plaintext highlighter-rouge">Dataset.set_group()</code> to set group/query data for ranking tasks.</p>
+
+<p><strong>Setting parameters</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Booster parameters
+</span><span class="n">param</span> <span class="o">=</span> <span class="p">{</span><span class="s">'num_leaves'</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="s">'objective'</span><span class="p">:</span> <span class="s">'binary'</span><span class="p">}</span>
+<span class="n">param</span><span class="p">[</span><span class="s">'metric'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'auc'</span>
+<span class="c1"># You can also specify multiple eval metrics
+</span><span class="n">param</span><span class="p">[</span><span class="s">'metric'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'auc'</span><span class="p">,</span> <span class="s">'binary_logloss'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><strong>Training</strong>:</p>
+
+<p>Training a model requires a parameter list and data set</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num_round</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">bst</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">train</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">num_round</span><span class="p">,</span> <span class="n">valid_sets</span><span class="o">=</span><span class="p">[</span><span class="n">validation_data</span><span class="p">])</span>
+
+<span class="c1"># After training, the model can be saved
+</span><span class="n">json_model</span> <span class="o">=</span> <span class="n">bst</span><span class="p">.</span><span class="n">dump_model</span><span class="p">()</span>
+
+<span class="c1"># A saved model can be loaded
+</span><span class="n">bst</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">Booster</span><span class="p">(</span><span class="n">model_file</span><span class="o">=</span><span class="s">'model.txt'</span><span class="p">)</span>  <span class="c1"># init model
+</span></code></pre></div></div>
+
+<p><strong>Training with 5-fold CV</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lgb</span><span class="p">.</span><span class="n">cv</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">num_round</span><span class="p">,</span> <span class="n">nfold</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Early Stopping</strong>:</p>
+
+<p>If you have a validation set, you can use early stopping to find the optimal number of boosting rounds. Early stopping requires at least one set in <code class="language-plaintext highlighter-rouge">valid_sets</code>. If there is more than one, it will use all of them except the training data</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bst</span> <span class="o">=</span> <span class="n">lgb</span><span class="p">.</span><span class="n">train</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">num_round</span><span class="p">,</span> <span class="n">valid_sets</span><span class="o">=</span><span class="n">valid_sets</span><span class="p">,</span> <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">bst</span><span class="p">.</span><span class="n">save_model</span><span class="p">(</span><span class="s">'model.txt'</span><span class="p">,</span> <span class="n">num_iteration</span><span class="o">=</span><span class="n">bst</span><span class="p">.</span><span class="n">best_iteration</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The model will train until the validation score stops improving. Validation score needs to improve at least every <code class="language-plaintext highlighter-rouge">early_stopping_rounds</code> to continue training</p>
+
+<p><strong>Prediction</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 7 entities, each contains 10 features
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">ypred</span> <span class="o">=</span> <span class="n">bst</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If early stopping is enabled during training, you can get predictions from the best iteration with <code class="language-plaintext highlighter-rouge">bst.best_iteration</code></p>
+
+<h2 id="как-устроен-lightgbm">Как устроен LightGBM</h2>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Features.html">Читай тут</a></p>
+
+<h2 id="параметры">Параметры</h2>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Parameters.html">Читай тут</a></p>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Parameters.html">Интерактивный список параметров с пописанием</a></p>
+
+<p>Format</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s">"monotone_constraints"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="parameters-tuning">Parameters Tuning</h3>
+
+<ul>
+  <li><a href="https://github.com/microsoft/FLAML">Autotuning with FLAWL</a></li>
+  <li><a href="https://github.com/microsoft/FLAML">Autotuning with Optuna</a></li>
+</ul>
+
+<p>Несколько подходов, достыпныз в lightgbm:</p>
+
+<ul>
+  <li><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#tune-parameters-for-the-leaf-wise-best-first-tree">Tune Parameters for the Leaf-wise (Best-first) Tree</a></li>
+  <li><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#for-faster-speed">For Faster Speed</a></li>
+  <li><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#for-better-accuracy">For Better Accuracy</a></li>
+  <li><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#deal-with-over-fitting">Deal with Over-fitting</a></li>
+</ul>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#deal-with-over-fitting">Полностю статья</a></p>
+
+<h2 id="python-api">Python API</h2>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Python-API.html">см.тут</a></p>
+
+<h2 id="gpu-tutorial">GPU tutorial</h2>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/GPU-Tutorial.html#lightgbm-gpu-tutorial">см.тут</a></p>
+
+<h2 id="advanced-topics">Advanced Topics</h2>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Advanced-Topics.html">см.тут</a></p>
+
+<ul>
+  <li>Missing Value Handle</li>
+  <li>Categorical Feature Support</li>
+  <li>LambdaRank</li>
+  <li>Cost Efficient Gradient Boosting</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">На главную</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
