@@ -1,0 +1,2 @@
+# arima-alghoritm
+
