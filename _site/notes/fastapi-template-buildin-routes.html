@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>docker-bind-mount | My knowlege base</title>
+<title>Fastapi template buildin routes | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="docker-bind-mount" />
+<meta property="og:title" content="Fastapi template buildin routes" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Docker bind mount способ привязки файлов" />
-<meta property="og:description" content="Docker bind mount способ привязки файлов" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-bind-mound.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-bind-mound.html" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-buildin-routes.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-buildin-routes.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/docker-bind-mound.html","headline":"docker-bind-mount","description":"Docker bind mount способ привязки файлов","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-buildin-routes.html","headline":"Fastapi template buildin routes","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,15 +83,48 @@
 
       <p><a href="/myknowlegebase/">На главную</a></p>
 
-<h1 id="docker-bind-mount">docker-bind-mount</h1>
+<h1 id="fastapi-template-buildin-routes">Fastapi template buildin routes</h1>
 
-<p>Способ привязки файлов в докере. <a href="https://docs.docker.com/storage/bind-mounts/">Основная статья</a></p>
-
-<p>Смотри как это используется в [<a href="docker-compose" title="Docker-compose">docker-compose</a>]</p>
+<p>В postgresql-шаблоне [<a href="../lists/fastapi" title="Fastapi">fastapi</a>] четыре метки для [<a href="http-methods" title="Http-methods">http-methods</a>]:</p>
 
 <ul>
-  <li>[<a href="docker" title="Docker">docker</a>]</li>
+  <li>login</li>
+  <li>users</li>
+  <li>utils</li>
+  <li>items</li>
 </ul>
+
+<p>Login предоставляет базовый интерфейс изапросов по регистрации/авторизации в приложении:</p>
+
+<ul>
+  <li>POST (access-token) - создание [<a href="oauth2" title="OAuth2">oauth2</a>] - совмсестимого токена для дальнейших запросов</li>
+  <li>POST (test-token) реализован для тестирования API токена</li>
+  <li>POST (password-recovery) - восстановление пароля по email</li>
+  <li>POST (reset-password) - сброс пароля (нужен токен)</li>
+</ul>
+
+<p>Users - управляет созданием, чтением данных пользователя:</p>
+
+<ul>
+  <li>GET users позволяет получить список пользователей</li>
+  <li>POST create user создает юзера с имейлом, паролем, именем и статусами</li>
+  <li>GET me позволяет получить авторизованного пользователия</li>
+  <li>PUT me обновить пароль, имя или имейл юзера</li>
+  <li>POST open создать неавторизованного пользователя</li>
+  <li>GET и PUT методы получения и обновления данных пользователя по id</li>
+</ul>
+
+<p>Utils - ресурсы для тестирования бекенда (реализованты тесты [<a href="celery" title="Celery">celery</a>] и email)</p>
+
+<p>Items - это шаблон создания и обработки данных каких-то объектов, связанных с пользователем:</p>
+
+<ul>
+  <li>GET items - получить список айтемов</li>
+  <li>POST item - создать</li>
+  <li>GET/PUT/DELETE по id</li>
+</ul>
+
+<p>все методы, за исключением сброса и восстановления пароля, создания токена и создания неавторизованного юзера требуют OAuth2 аутентификации с токеном.</p>
 
 
 
