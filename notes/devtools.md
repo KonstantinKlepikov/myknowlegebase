@@ -1,7 +1,7 @@
 ---
 description: Devtools. Человекочитаемый вывод в python для дебага
 ---
-# Python-devtools
+# Python devtools
 
 Предаставляет тулзы для понятного вывода в python для дебага и разработки.
 

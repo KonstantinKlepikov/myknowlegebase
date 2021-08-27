@@ -1,3 +1,6 @@
+---
+description: Шаблон приложения на fastapi. Что есть готового вк использованию
+---
 # Fastapi template buildin routes
 
 В postgresql-шаблоне [[fastapi]] четыре метки для [[http-methods]]:

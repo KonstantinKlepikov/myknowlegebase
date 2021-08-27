@@ -871,7 +871,7 @@ WHERE :param_1 = address.user_id
 [sqlalchemy-loader-strategy]: sqlalchemy-loader-strategy "Sqlalchemy-loader-strategy"
 [sqlalchemy-querying]: sqlalchemy-querying "Sqlalchgemy querying"
 [sqlalchemy-querying]: sqlalchemy-querying "Sqlalchgemy querying"
-[fatsapi-sql-orm-example]: fatsapi-sql-orm-example "Fatsapi-sql-orm-example"
+[fatsapi-sql-orm-example]: fatsapi-sql-orm-example "Fatsapi sql orm example"
 [sqlite]: sqlite "Sqlite"
 [alembic]: alembic "Alembic"
 [sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"

@@ -7,9 +7,9 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>fastapi template deployment | My knowlege base</title>
+<title>Fastapi template deployment | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="fastapi template deployment" />
+<meta property="og:title" content="Fastapi template deployment" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Шаблон приложения на fastapi. Deployment" />
 <meta property="og:description" content="Шаблон приложения на fastapi. Deployment" />
@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-deployment.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-deployment.html","headline":"fastapi template deployment","description":"Шаблон приложения на fastapi. Deployment","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-deployment.html","headline":"Fastapi template deployment","description":"Шаблон приложения на fastapi. Deployment","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,11 +83,11 @@
 
       <p><a href="/myknowlegebase/">На главную</a></p>
 
-<h1 id="fastapi-template-deployment">fastapi template deployment</h1>
+<h1 id="fastapi-template-deployment">Fastapi template deployment</h1>
 
 <h2 id="deployment">Deployment</h2>
 
-<p>You can deploy the stack to a Docker Swarm mode cluster with a main Traefik proxy, set up using the ideas from [<a href="docker-swarm-rocks" title="docker-swarm-rocks">docker-swarm-rocks</a>], to get automatic HTTPS certificates, etc.</p>
+<p>You can deploy the stack to a Docker Swarm mode cluster with a main Traefik proxy, set up using the ideas from [<a href="docker-swarm-rocks" title="Docker swarm rocks">docker-swarm-rocks</a>], to get automatic HTTPS certificates, etc.</p>
 
 <p>And you can use CI (continuous integration) systems to do it automatically.</p>
 
@@ -218,7 +218,7 @@ c4sdf2342asdfasd4234234ii     snake.example.com      Ready               Active 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node update <span class="nt">--label-add</span> stag-tinyrewards-herokuapp-com.app-db-data<span class="o">=</span><span class="nb">true </span>cat.example.com
 </code></pre></div></div>
 
-<h3 id="deploy-to-a-docker-swarm-mode-cluster-docker-swarm-rocks">Deploy to a Docker Swarm mode cluster ([<a href="docker-swarm-rocks" title="docker-swarm-rocks">docker-swarm-rocks</a>])</h3>
+<h3 id="deploy-to-a-docker-swarm-mode-cluster-docker-swarm-rocks">Deploy to a Docker Swarm mode cluster ([<a href="docker-swarm-rocks" title="Docker swarm rocks">docker-swarm-rocks</a>])</h3>
 
 <p>There are 3 steps:</p>
 
@@ -346,7 +346,7 @@ docker stack deploy <span class="nt">-c</span> docker-stack.yml <span class="nt"
 
 <p>If you need to add more environments, for example, you could imagine using a client-approved <code class="language-plaintext highlighter-rouge">preprod</code> branch, you can just copy the configurations in <code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code> for <code class="language-plaintext highlighter-rouge">stag</code> and rename the corresponding variables. The Docker Compose file and environment variables are configured to support as many environments as you need, so that you only need to modify <code class="language-plaintext highlighter-rouge">.gitlab-ci.yml</code> (or whichever CI system configuration you are using).</p>
 
-<h2 id="docker-compose-files-and-dot-env-vars">[<a href="docker-compose" title="Docker-compose">docker-compose</a>] files and [<a href="dot-env" title="Dot-env">dot-env</a>] vars</h2>
+<h2 id="docker-compose-files-and-dot-env-vars">[<a href="docker-compose" title="Docker compose">docker-compose</a>] files and [<a href="dot-env" title="Dot-env">dot-env</a>] vars</h2>
 
 <p>There is a main <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file with all the configurations that apply to the whole stack, it is used automatically by <code class="language-plaintext highlighter-rouge">docker-compose</code>.</p>
 
@@ -371,7 +371,7 @@ docker stack deploy <span class="nt">-c</span> docker-stack.yml <span class="nt"
 <p>One way to do it could be to add each environment variable to your CI/CD system, and updating the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file to read that specific env var instead of reading the <code class="language-plaintext highlighter-rouge">.env</code> file.</p>
 
 <p>[<a href="../lists/fastapi" title="Fastapi">fastapi</a>]
-[<a href="fastapi-template-backend" title="Fastapi-template-backend">fastapi-template-backend</a>]
+[<a href="fastapi-template-backend" title="Fastapi template backend">fastapi-template-backend</a>]
 [<a href="fastapi-template-vue-frontend" title="Fastapi frontend development">fastapi-template-vue-frontend</a>]</p>
 
 

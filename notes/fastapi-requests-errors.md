@@ -1,7 +1,7 @@
 ---
 description: Обработка ошибок в запросах fastapi
 ---
-# Fastapi-requests-errors
+# Fastapi requests errors
 
 ## Поднимать руками
 

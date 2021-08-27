@@ -3,8 +3,7 @@ description: Линтер для python
 type: feature
 keywords: python
 ---
-
-# flake8
+# Flake8
 
 Линтер для python. [Ссылка на документацию](https://flake8.pycqa.org/en/latest/index.html)
 
