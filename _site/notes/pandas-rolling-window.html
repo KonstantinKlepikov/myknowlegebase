@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pandas rolling window - скользящие средние в pandas | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pandas rolling window - скользящие средние в pandas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Pandas rolling window and ewm" />
+<meta property="og:description" content="Pandas rolling window and ewm" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/pandas-rolling-window.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pandas-rolling-window.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pandas-rolling-window.html","headline":"Pandas rolling window - скользящие средние в pandas","description":"Pandas rolling window and ewm","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">На главную</a></p>
+
+<p>Простые [<a href="скользящие-средние" title="Скользящие средние (moving average)">скользящие-средние</a>] в pandas реализованы в многочисленном семействе функций <a href="https://pandas.pydata.org/docs/reference/window.html">window</a> функций. Кроме того, есть:</p>
+
+<ul>
+  <li>алгоритм скользящего окна</li>
+  <li>экспоненциальные взвешенные скользящее средние</li>
+</ul>
+
+<p>Вычисление скользящих обеспечено функциями <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.rolling.html#pandas.Series.rolling">pandas.Series.rolling</a>, <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html#pandas.DataFrame.rolling">pandas.DataFrame.rolling</a>, которые принимают объект <a href="https://pandas.pydata.org/docs/reference/window.html">window</a> для определения типа трансформации над данными. К примеру вот о<a href="https://pandas.pydata.org/docs/reference/api/pandas.core.window.rolling.Rolling.mean.html#pandas.core.window.rolling.Rolling.mean">бъект скользящего среднего</a> для расчета скользящего окна.</p>
+
+<h2 id="rolling-window"><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html">rolling window</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DataFrame</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">win_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'single'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>window int, offset, or BaseIndexer subclass</strong> - размер скользящего окна. Это количество наблюдений из фрейма, используемых для расчета статистики. Каждое окно будет фиксированного размера.</p>
+
+<p>Если это смещение, то это будет период времени каждого окна. Каждое окно будет иметь переменный размер на основе наблюдений, включенных в период времени.</p>
+
+<p>Все это работает только для индексов типа datetime. Если передан подкласс BaseIndexer, границы окна вычисляются на основе определенного метода get_window_bounds. Дополнительные аргументы скользящего окна, а именно min_periods, center и closed будут переданы в get_window_bounds.</p>
+
+<p><strong>min_periodsi nt, default None</strong> - минимальное количество наблюдений в окне, необходимое для получения значения (в противном случае результат - NA). Для окна, заданного смещением, min_periods будет по умолчанию равным 1. В противном случае min_periods будет по умолчанию равным размеру окна.</p>
+
+<p><strong>center bool, default False</strong> - устанавливает метки в центр окна</p>
+
+<p><strong>win_type str, default None</strong> - устанавливает тип окна. Если <code class="language-plaintext highlighter-rouge">none</code> - все значения будут иметь одинаковый вес. Смотри ниже о типах окон.</p>
+
+<p><strong>closed str, default None</strong> - определяет где закрыть интерфвал <code class="language-plaintext highlighter-rouge">right</code>, <code class="language-plaintext highlighter-rouge">left</code>, <code class="language-plaintext highlighter-rouge">both</code> или <code class="language-plaintext highlighter-rouge">neither</code>. Дефолтный <code class="language-plaintext highlighter-rouge">right</code></p>
+
+<p><strong>method str {‘single’, ‘table’}, default ‘single’</strong> - выполните операцию для отдельного столбца или строки <code class="language-plaintext highlighter-rouge">single</code> или для всего объекта <code class="language-plaintext highlighter-rouge">table</code>. Этот аргумент реализуется только при указании <code class="language-plaintext highlighter-rouge">engine = 'numba'</code> в вызове метода.</p>
+
+<p>По умолчанию результат устанавливается у правого края окна (см. <code class="language-plaintext highlighter-rouge">closed</code>). <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases">Большая статья про смещения в pandas</a>.</p>
+
+<p>Если <code class="language-plaintext highlighter-rouge">win_type = None</code>, все значения имеют равный вес; в противном случае <code class="language-plaintext highlighter-rouge">win_type</code> может принимать любую оконную функцию из <a href="https://docs.scipy.org/doc/scipy/reference/signal.windows.html#module-scipy.signal.windows">scipy.signal window function</a>. Некоторые типы окон Scipy требуют передачи дополнительных параметров в функцию агрегирования. Дополнительные параметры должны соответствовать ключевым словам, указанным в сигнатуре метода типа окна [[scipy]].</p>
+
+<p>Примеры</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'B'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">0.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>
+<span class="mi">2</span>  <span class="mf">2.0</span>
+<span class="mi">3</span>  <span class="n">NaN</span>
+<span class="mi">4</span>  <span class="mf">4.0</span>
+</code></pre></div></div>
+
+<p>Скользящая сумма с длиной окна 2, с использованием типа окна «треугольник»</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">win_type</span><span class="o">=</span><span class="s">'triang'</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="n">NaN</span>
+<span class="mi">1</span>  <span class="mf">0.5</span>
+<span class="mi">2</span>  <span class="mf">1.5</span>
+<span class="mi">3</span>  <span class="n">NaN</span>
+<span class="mi">4</span>  <span class="n">NaN</span>
+</code></pre></div></div>
+
+<p>Скользящая сумма с длиной окна 2, с использованием типа окна «гауссово» (обратите внимание, как нам нужно указать std)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">win_type</span><span class="o">=</span><span class="s">'gaussian'</span><span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="n">std</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+          <span class="n">B</span>
+<span class="mi">0</span>       <span class="n">NaN</span>
+<span class="mi">1</span>  <span class="mf">0.986207</span>
+<span class="mi">2</span>  <span class="mf">2.958621</span>
+<span class="mi">3</span>       <span class="n">NaN</span>
+<span class="mi">4</span>       <span class="n">NaN</span>
+</code></pre></div></div>
+
+<p>Скользящая сумма с длиной окна 2, min_periods по умолчанию равняется длине окна.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="n">NaN</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>
+<span class="mi">2</span>  <span class="mf">3.0</span>
+<span class="mi">3</span>  <span class="n">NaN</span>
+<span class="mi">4</span>  <span class="n">NaN</span>
+</code></pre></div></div>
+
+<p>Тоже, с заданным периодом</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">0.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>
+<span class="mi">2</span>  <span class="mf">3.0</span>
+<span class="mi">3</span>  <span class="mf">2.0</span>
+<span class="mi">4</span>  <span class="mf">4.0</span>
+</code></pre></div></div>
+
+<p>Тоже самое, но смотрящее вперед окно</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">indexer</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">indexers</span><span class="p">.</span><span class="n">FixedForwardWindowIndexer</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">1.0</span>
+<span class="mi">1</span>  <span class="mf">3.0</span>
+<span class="mi">2</span>  <span class="mf">2.0</span>
+<span class="mi">3</span>  <span class="mf">4.0</span>
+<span class="mi">4</span>  <span class="mf">4.0</span>
+</code></pre></div></div>
+
+<p>Неравномерный (с нерегулярной частотй) индексированный по времени датафрейм</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'B'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">]},</span>
+                  <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="p">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s">'20130101 09:00:00'</span><span class="p">),</span>
+                           <span class="n">pd</span><span class="p">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s">'20130101 09:00:02'</span><span class="p">),</span>
+                           <span class="n">pd</span><span class="p">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s">'20130101 09:00:03'</span><span class="p">),</span>
+                           <span class="n">pd</span><span class="p">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s">'20130101 09:00:05'</span><span class="p">),</span>
+                           <span class="n">pd</span><span class="p">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s">'20130101 09:00:06'</span><span class="p">)])</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+                       <span class="n">B</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">0.0</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">02</span>  <span class="mf">1.0</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">03</span>  <span class="mf">2.0</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">05</span>  <span class="n">NaN</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">06</span>  <span class="mf">4.0</span>
+</code></pre></div></div>
+
+<p>В отличие от целочисленного скользящего окна, тут будет применяться окно переменной длины, соответствующее периоду времени. По умолчанию для min_periods установлено значение 1.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">rolling</span><span class="p">(</span><span class="s">'2s'</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+                       <span class="n">B</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">0.0</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">02</span>  <span class="mf">1.0</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">03</span>  <span class="mf">3.0</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">05</span>  <span class="n">NaN</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">09</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">06</span>  <span class="mf">4.0</span>
+</code></pre></div></div>
+
+<h2 id="pandasdataframeexpanding"><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.expanding.html">pandas.DataFrame.expanding</a></h2>
+
+<p>Обеспечивает заполняющую трансформацию данных</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DataFrame</span><span class="p">.</span><span class="n">expanding</span><span class="p">(</span><span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'single'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>min_periods int, default 1</strong> - минимальное кол-во наблюдений в окне, необходимых для получения значений (иначе NA)</p>
+
+<p><strong>center bool, default False</strong> - по умолчанию результат устанавливается у правого края окна. Это можно изменить в центр окна.</p>
+
+<p>Все остальное аналогично скользящим окнам</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">"B"</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">0.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>
+<span class="mi">2</span>  <span class="mf">2.0</span>
+<span class="mi">3</span>  <span class="n">NaN</span>
+<span class="mi">4</span>  <span class="mf">4.0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">expanding</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="n">NaN</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>
+<span class="mi">2</span>  <span class="mf">3.0</span>
+<span class="mi">3</span>  <span class="mf">3.0</span>
+<span class="mi">4</span>  <span class="mf">7.0</span>
+</code></pre></div></div>
+
+<h2 id="pandasdataframeewm"><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ewm.html">pandas.DataFrame.ewm</a></h2>
+
+<p>Подробнее смотир в документации (формулы и etc.)</p>
+
+<p>Пример кода:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'B'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+     <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">0.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>
+<span class="mi">2</span>  <span class="mf">2.0</span>
+<span class="mi">3</span>  <span class="n">NaN</span>
+<span class="mi">4</span>  <span class="mf">4.0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">com</span><span class="o">=</span><span class="mf">0.5</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
+          <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">0.000000</span>
+<span class="mi">1</span>  <span class="mf">0.750000</span>
+<span class="mi">2</span>  <span class="mf">1.615385</span>
+<span class="mi">3</span>  <span class="mf">1.615385</span>
+<span class="mi">4</span>  <span class="mf">3.670213</span>
+</code></pre></div></div>
+
+<p>Указание времени с “периодом полураспада” (специфичный к алгоритму термин) timedelta при вычислении среднего значения.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="s">'2020-01-01'</span><span class="p">,</span> <span class="s">'2020-01-03'</span><span class="p">,</span> <span class="s">'2020-01-10'</span><span class="p">,</span> <span class="s">'2020-01-15'</span><span class="p">,</span> <span class="s">'2020-01-17'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">ewm</span><span class="p">(</span><span class="n">halflife</span><span class="o">=</span><span class="s">'4 days'</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">times</span><span class="p">)).</span><span class="n">mean</span><span class="p">()</span>
+          <span class="n">B</span>
+<span class="mi">0</span>  <span class="mf">0.000000</span>
+<span class="mi">1</span>  <span class="mf">0.585786</span>
+<span class="mi">2</span>  <span class="mf">1.523889</span>
+<span class="mi">3</span>  <span class="mf">1.523889</span>
+<span class="mi">4</span>  <span class="mf">3.233686</span>
+</code></pre></div></div>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">На главную</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
