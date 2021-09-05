@@ -1,5 +1,6 @@
 ---
 description: Определение метаданных в fast api
+tags: fastapi
 ---
 # Fastapi Metadata and Docs URLs
 

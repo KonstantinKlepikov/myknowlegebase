@@ -1,5 +1,6 @@
 ---
 description: Триггеры и переменные в github action
+tags: cl
 ---
 # Github action триггеры и переменные
 

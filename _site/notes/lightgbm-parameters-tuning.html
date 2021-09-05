@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Lightgbm parameters tuning | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Lightgbm parameters tuning" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Тюнинг параметров в LightGBM" />
+<meta property="og:description" content="Тюнинг параметров в LightGBM" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/lightgbm-parameters-tuning.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/lightgbm-parameters-tuning.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/lightgbm-parameters-tuning.html","headline":"Lightgbm parameters tuning","description":"Тюнинг параметров в LightGBM","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<p><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html">Основная статья тут</a></p>
+
+<h2 id="tune-parameters-for-the-leaf-wise-best-first-tree">Tune Parameters for the Leaf-wise (Best-first) Tree</h2>
+
+<p>[<a href="lightgbm" title="Lightgbm">lightgbm</a>] использует <a href="https://lightgbm.readthedocs.io/en/latest/Features.html#leaf-wise-best-first-tree-growth">leaf-wise</a> выращивание деревьев - деревья выращиваются по листьям, выбирается лист с максимальной дельта-лосс. Обычно такой алгоритм приводит к меньшим потерям, но склонен к переобучению, поэтому используется ограничение глубины дерева.</p>
+
+<p><img src="/myknowlegebase/attachments/2021-09-05-15-21-14.png" alt="leaf-wise" /></p>
+
+<p>Наиболее важные параметры для получения результатов в такой  модели:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">num_leaves</code> - основной параметр,у правляющий сложностью модели дерева. num_leaves = 2^(max_depth) дает такое-же количество листьев, как и у depth-wise дерева. На практике это не работает, т.к. leaf-wise модель обычно намного глубже, чем depth-wise c фиксированным кол-вом листьев. Неограниченная глубина вызывает переобучение. Поэтому параметр необходимо устанавливать меньше, чем 2^(max_depth)</li>
+  <li><code class="language-plaintext highlighter-rouge">min_data_in_leaf</code> позволяет предотвращать переобучение. Зависит от количества обучающихз выборок в <code class="language-plaintext highlighter-rouge">num_leaves</code>. Установка большого значения поможет избежать слишком глубокого роста дерева, но может привести к недостаточной подгонке. На практике установки сотен или тысяч достаточно для большого набора данных.</li>
+  <li><code class="language-plaintext highlighter-rouge">max_depth</code> регулирует максимальную глубину дерева</li>
+</ul>
+
+<h2 id="for-faster-speed">For Faster Speed</h2>
+
+<h3 id="add-more-computational-resources">Add More Computational Resources</h3>
+
+<h3 id="use-a-gpu-enabled-version-of-lightgbm">Use a <a href="https://lightgbm.readthedocs.io/en/latest/GPU-Tutorial.html">GPU-enabled version of LightGBM</a></h3>
+
+<h3 id="grow-shallower-trees-для-чего-можно-уменьшить-max_depth-или-num_leaves-или-увеличить-min_gain_to_split-min_data_in_leaf-and-min_sum_hessian_in_leaf"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#grow-shallower-trees">Grow Shallower Trees </a>(для чего можно уменьшить <code class="language-plaintext highlighter-rouge">max_depth</code> или <code class="language-plaintext highlighter-rouge">num_leaves</code> или увеличить <code class="language-plaintext highlighter-rouge">min_gain_to_split</code>, <code class="language-plaintext highlighter-rouge">min_data_in_leaf</code> and <code class="language-plaintext highlighter-rouge">min_sum_hessian_in_leaf</code></h3>
+
+<p>При добавлении нового узла дерева LightGBM выбирает точку разделения, которая дает наибольшее улучшение - уменьшение потерь при обучении в результате добавления точки разделения. По умолчанию LightGBM устанавливает <code class="language-plaintext highlighter-rouge">min_gain_to_split</code> равным <code class="language-plaintext highlighter-rouge">0,0</code>, что означает «не бывает улучшений, которые слишком малы, чтобы их игнорировать». Однако на практике вы можете обнаружить, что очень небольшие улучшения в потере обучения не имеют значимого влияния на ошибку обобщения модели. Увеличьте <code class="language-plaintext highlighter-rouge">min_gain_to_split,</code> чтобы сократить время обучения.</p>
+
+<p>В зависимости от размера обучающих данных и распределения функций LightGBM может добавлять узлы дерева, которые описывают только небольшое количество наблюдений. В самом крайнем случае получаются узлы дерева, в которые попадает только одно наблюдение из обучающих данных. Маловероятно, что это удастся хорошо обобщить, и, вероятно, это признак переобучения. Это можно предотвратить косвенно с помощью таких параметров, как <code class="language-plaintext highlighter-rouge">max_depth</code> и <code class="language-plaintext highlighter-rouge">num_leaves,</code>, но возможно управлять этим и напрямую.</p>
+
+<p><code class="language-plaintext highlighter-rouge">min_data_in_leaf</code>: минимальное количество наблюдений, которые должны попасть в узел дерева, чтобы его можно было добавить.</p>
+
+<p><code class="language-plaintext highlighter-rouge">min_sum_hessian_in_leaf</code>: минимальная сумма гессиана (вторая производная целевой функции, оцениваемая для каждого наблюдения) для наблюдений в листе. Для некоторых целей регрессии это минимальное количество записей, которые должны попасть в каждый узел. Для целей классификации он представляет собой сумму по распределению вероятностей. <a href="https://stats.stackexchange.com/questions/317073/explanation-of-min-child-weight-in-xgboost-algorithm">См. про значения этого параметра</a></p>
+
+<h3 id="grow-less-trees"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#grow-less-trees">Grow Less Trees</a></h3>
+
+<p>Уменьшить <code class="language-plaintext highlighter-rouge">num_iterations</code> - контролирует количество выполняемых раундов бустинга. Поскольку LightGBM использует деревья решений в качестве обучающихся, это также можно рассматривать как «количество деревьев». Изменяя этот параметр необходимо так-же изменить <code class="language-plaintext highlighter-rouge">learning_rate</code> - это не влияет на время обучения, но повлияет на точность. Увеличивая первый параметр, уменьшайте второй и наоборот. Обычно потимальное соотношение находят через тюнинг гиперпараметров.</p>
+
+<p>Использование ранней остановки так-же позволяет выращивать меньше деревьев. Ранняя остановка работает так: после каждого раунда бустинга точность обучения оценивается по валидационному сету. Затем точность сравнивается с точностю предыдущего раунда. Если точность не улучшается в течение некоторого заданного количествав раундов, обучение останавливается. <code class="language-plaintext highlighter-rouge">early_stopping_rounds</code> контроллирует число раундов перед остановкой.</p>
+
+<h3 id="consider-fewer-splits"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#consider-fewer-splits">Consider Fewer Splits</a></h3>
+
+<p>Enable Feature Pre-Filtering When Creating Datase. По умолчанию, когда создается объект набора данных LightGBM, некоторые фичи будут отфильтрованы на основе значения <code class="language-plaintext highlighter-rouge">min_data_in_leaf</code>. В качестве простого примера рассмотрим набор данных из 1000 наблюдений с фичей под названием feature_1. feature_1 принимает только два значения: 25,0 (995 наблюдений) и 50,0 (5 наблюдений). Если min_data_in_leaf = 10, для этой фичи нет разделения, что приведет к валидному разделению, по крайней мере, один из конечных узлов будет иметь только 5 наблюдений. Вместо того, чтобы пересматривать эту фичу и затем игнорировать ее на каждой итерации, LightGBM отфильтровывает ее перед обучением, когда создается набор данных. Установите feature_pre_filter = True, чтобы сократить время обучения.</p>
+
+<p>Decrease <code class="language-plaintext highlighter-rouge">max_bin</code> or <code class="language-plaintext highlighter-rouge">max_bin_by_feature</code> When Creating Dataset. Traing buckets LightGBM перегоняют непрерывные фичи в в дискретные бины, чтобы повысить скорость обучения и снизить требования к памяти для обучения. Это объединение выполняется один раз во время построения набора данных. Количество разделений, учитываемых при добавлении узла, равно O(feature*bin), поэтому уменьшение количества бинов для каждой фичи может уменьшить количество разделений, которые необходимо оценить.</p>
+
+<p><code class="language-plaintext highlighter-rouge">max_bin</code> управляет максимальным количеством бинов, в которые будут помещены фичи. Также можно установить это максимальное значение для каждой фичи, передав <code class="language-plaintext highlighter-rouge">max_bin_by_feature</code>.</p>
+
+<p>Increase <code class="language-plaintext highlighter-rouge">min_data_in_bin</code> When Creating Dataset. Некоторые бины могут содержать небольшое количество наблюдений, что может означать, что усилия по оценке границ этих бинов как возможных точек разделения вряд ли сильно повлияют на окончательную модель.</p>
+
+<p>Decrease <code class="language-plaintext highlighter-rouge">feature_fraction</code>. По умолчанию LightGBM учитывает все фичи набора данных в процессе обучения. Это поведение можно изменить, установив для feature_fraction значение [&gt; 0, &lt;= 1.0]. Например, установка feature_fraction на 0,5 указывает LightGBM случайным образом выбирать 50% фичей в начале построения каждого дерева. Это уменьшает общее количество разбиений, которые необходимо оценить для добавления каждого узла дерева.</p>
+
+<p>Decrease <code class="language-plaintext highlighter-rouge">max_cat_threshold</code>. LightGBM использует индивидуальный подход для поиска оптимального разделения для категориальных фичей. В этом процессе LightGBM исследует разбиения, которые разбивают категориальную функцию на две группы. Иногда это называют расщеплением «k-vs-rest». Более высокие значения <code class="language-plaintext highlighter-rouge">max_cat_threshold</code> соответствуют большему количеству точек разделения и большим возможным размерам групп для поиска.</p>
+
+<h3 id="use-less-data"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#use-less-data">Use Less Data</a></h3>
+
+<p>Use Bagging. По умолчанию LightGBM использует все наблюдения в обучающих данных для каждой итерации. Вместо этого можно указать LightGBM случайным образом выполнить выборку обучающих данных. Этот процесс обучения на множестве случайных выборок без замены называется беггингом. Установите для <code class="language-plaintext highlighter-rouge">bagging_fraction</code> значение &gt; 0,0 и &lt;1,0, чтобы контролировать размер выборки. Например, {“bagging_freq”: 5, “bagging_fraction”: 0.75} сообщает LightGBM «выполнять повторную выборку без замены каждые 5 итераций и реализовывать выборки из 75% обучающих данных».</p>
+
+<p>Save Constructed Datasets with <code class="language-plaintext highlighter-rouge">save_binary</code>. Это относится только к интерфейсу командной строки LightGBM. Если вы передадите параметр save_binary, набор обучающих данных и все наборы проверок будут сохранены в двоичном формате, понятном LightGBM. Это может ускорить обучение в следующий раз, потому что биннинг и другую работу, выполняемую при построении набора данных, не нужно выполнять заново.</p>
+
+<h2 id="for-better-accuracy"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#for-better-accuracy">For Better Accuracy</a></h2>
+
+<ul>
+  <li>Use large <code class="language-plaintext highlighter-rouge">max_bin</code> (may be slower)</li>
+  <li>Use small <code class="language-plaintext highlighter-rouge">learning_rate</code> with large <code class="language-plaintext highlighter-rouge">num_iterations</code></li>
+  <li>Use large <code class="language-plaintext highlighter-rouge">num_leaves</code> (may cause over-fitting)</li>
+  <li>Use bigger training data</li>
+  <li>Try <code class="language-plaintext highlighter-rouge">dart</code></li>
+</ul>
+
+<h2 id="deal-with-over-fitting"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#deal-with-over-fitting">Deal with Over-fitting</a></h2>
+
+<ul>
+  <li>Use small <code class="language-plaintext highlighter-rouge">max_bin</code></li>
+  <li>Use small <code class="language-plaintext highlighter-rouge">num_leaves</code></li>
+  <li>Use <code class="language-plaintext highlighter-rouge">min_data_in_leaf</code> and <code class="language-plaintext highlighter-rouge">min_sum_hessian_in_leaf</code></li>
+  <li>Use bagging by set <code class="language-plaintext highlighter-rouge">bagging_fraction</code> and <code class="language-plaintext highlighter-rouge">bagging_freq</code></li>
+  <li>Use feature sub-sampling by set <code class="language-plaintext highlighter-rouge">feature_fraction</code></li>
+  <li>Use bigger training data</li>
+  <li>Try <code class="language-plaintext highlighter-rouge">lambda_l1</code>, <code class="language-plaintext highlighter-rouge">lambda_l2</code> and <code class="language-plaintext highlighter-rouge">min_gain_to_split</code> for regularization</li>
+  <li>Try <code class="language-plaintext highlighter-rouge">max_depth</code> to avoid growing deep tree</li>
+  <li>Try <code class="language-plaintext highlighter-rouge">extra_trees</code></li>
+  <li>Try increasing <code class="language-plaintext highlighter-rouge">path_smooth</code></li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

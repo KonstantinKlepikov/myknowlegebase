@@ -1,5 +1,6 @@
 ---
 description: Параметризация в pytest
+tags: tests
 ---
 # Pytest parametrizing tests
 

@@ -1,5 +1,6 @@
 ---
 description: Тестирование баз данных в fastapi
+tags: fastapi
 ---
 # Fastapi тестирование базы данных
 

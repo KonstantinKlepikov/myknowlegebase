@@ -1,5 +1,6 @@
 ---
 description: Как начать работу в foam с vscode
+tags: vscode
 ---
 # Getting started with VsCode
 

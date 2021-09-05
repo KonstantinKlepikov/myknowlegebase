@@ -1,9 +1,6 @@
 ---
 description: Анотация типов в mypy на python
-type: feature
-keywords: python
 ---
-
 # Mypy
 
 [[type-annotation]] в python3.x и python 2.7. Используется в [[pydantic]] и, как следствие в [[fastapi]]

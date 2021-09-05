@@ -1,5 +1,6 @@
 ---
 description: Нестабильные тесты
+tags: tests
 ---
 # Flaky tests
 

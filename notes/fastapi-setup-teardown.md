@@ -1,5 +1,6 @@
 ---
 description: Тестовый клиент в fastapi. Использование setup и teardown
+tags: fastapi
 ---
 # Fastapi setup teardown
 

@@ -1,5 +1,6 @@
 ---
 description: Переменные окружения в fastapi
+tags: fastapi
 ---
 # Fastapi environment variables
 

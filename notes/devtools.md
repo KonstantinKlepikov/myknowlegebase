@@ -1,5 +1,6 @@
 ---
 description: Devtools. Человекочитаемый вывод в python для дебага
+tags: tests
 ---
 # Python devtools
 

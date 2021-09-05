@@ -1,5 +1,6 @@
 ---
 description: Работа с jinja2 на python
+tags: templating
 ---
 # Jinja2
 

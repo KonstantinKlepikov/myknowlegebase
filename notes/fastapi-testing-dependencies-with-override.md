@@ -1,5 +1,6 @@
 ---
 description: Тестирование с переопределением зависимостей в fastapi
+tags: fastapi
 ---
 # Fastapi testing dependencies with owerride
 

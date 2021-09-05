@@ -1,5 +1,6 @@
 ---
 description: Про проблему поддержки body в GET запросах openapi
+tags: http
 ---
 # GET not support body
 

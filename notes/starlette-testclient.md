@@ -1,5 +1,6 @@
 ---
 description: Тестовый клиент starlette
+tags: fastapi
 ---
 # Starlette test client
 

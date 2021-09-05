@@ -1,7 +1,6 @@
 ---
 description: Теги в git
-type: feature
-keywords: git
+tags: git
 ---
 # Организация тегов на git
 

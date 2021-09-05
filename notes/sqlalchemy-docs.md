@@ -1,5 +1,6 @@
 ---
 description: Документация sqlalchemy
+tags: sqlalchemy
 ---
 # Sqlalchemy документация
 

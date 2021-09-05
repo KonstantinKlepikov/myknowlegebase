@@ -1,7 +1,8 @@
 ---
 description: Ошибки в http-запросах
+tags: http
 ---
-# Http-requests
+# Http requests
 
 Коды ошибок и когда их применять
 

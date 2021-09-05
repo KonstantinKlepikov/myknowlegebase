@@ -1,5 +1,6 @@
 ---
 description: Вcnавка изображений из кэша операционки в foam
+tags: vscode
 ---
 # Paste Images from Clipboard
 

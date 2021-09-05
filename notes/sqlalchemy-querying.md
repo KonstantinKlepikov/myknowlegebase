@@ -1,5 +1,6 @@
 ---
 description: Запросы в sqlalchemy
+tags: sqlalchemy
 ---
 # Sqlalchgemy querying
 

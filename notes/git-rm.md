@@ -1,5 +1,6 @@
 ---
 description: Что на самом деле делает git mv
+tags: git
 ---
 # git-rm
 

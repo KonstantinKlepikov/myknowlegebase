@@ -1,5 +1,6 @@
 ---
 description: Организация отправки сообщений в fastapi
+tags: fastapi
 ---
 # Fastapi mail
 

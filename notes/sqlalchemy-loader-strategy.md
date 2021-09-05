@@ -1,5 +1,6 @@
 ---
 description: Стратегии загрузки в sqlalchemy
+tags: sqlalchemy
 ---
 # Sqlalchemy-loader-strategy
 

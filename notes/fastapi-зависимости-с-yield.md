@@ -1,5 +1,6 @@
 ---
 description: Зависимости с yield в fastapi
+tags: fastapi
 ---
 # Fastapi зависимости с yield
 

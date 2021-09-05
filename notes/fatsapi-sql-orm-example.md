@@ -1,5 +1,6 @@
 ---
-description: Пример организации приложения fastapi с базой данных и orm 
+description: Пример организации приложения fastapi с базой данных и orm
+tags: fastapi
 ---
 # Fatsapi sql orm example
 

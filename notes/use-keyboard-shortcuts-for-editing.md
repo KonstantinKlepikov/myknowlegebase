@@ -1,5 +1,6 @@
 ---
 description: Шорткаты в vscode foam
+tags: vscode
 ---
 # Use Keyboard Shortcuts for Editing
 

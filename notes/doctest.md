@@ -1,5 +1,6 @@
 ---
 description: Тестирование в python с помощью docktest
+tags: tests
 ---
 # Doctest
 

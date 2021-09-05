@@ -1,5 +1,6 @@
 ---
 description: Конфигурирование библиотеки behave в python
+tags: tests
 ---
 # Behave config
 

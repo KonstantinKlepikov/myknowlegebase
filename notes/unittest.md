@@ -1,5 +1,6 @@
 ---
 description: Тестирование с помозью unittest в python
+tags: tests
 ---
 # Unittest
 

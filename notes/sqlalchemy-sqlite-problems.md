@@ -1,5 +1,6 @@
 ---
 description: Ошибки миграции sqlite в alembic
+tags: sqlalchemy
 ---
 # Sqlalchemy-sqlite-problems
 

@@ -1,7 +1,6 @@
 ---
 description: Fastapi v3 спецификация и тестирование
-type: feature
-keywords: fastapi, uvicorn
+tags: fastapi
 ---
 # Fast-api v3 спецификация
 

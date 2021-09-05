@@ -1,9 +1,6 @@
 ---
 description: Анотация типов в python
-type: feature
-keywords: python
 ---
-
 # Анотация типов в python
 
 Зачем надо?

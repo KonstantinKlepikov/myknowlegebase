@@ -4,30 +4,40 @@ layout: default
 
 <p>В данном разделе собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
 {% assign pages_list = site.pages | sort: 'title' %}
+{% assign tag_list = site.site_tags | sort %}
 
 <div>
-    <h2>Списки тематик и основные статьи</h2>
+    <h2>Все заметки по тематикам</h2>
+    {% for tag in tag_list %}
+        {% for page in pages_list %}
+            {% if page.category == 'list' and page.tags == tag %}
+                {% include allpages_main.html %}
+            {% endif %}
+        {% endfor %}
+        {% for page in pages_list %}
+            <ul>
+                {% if page.tags == tag and page.category == nil %}
+                    {% include allpages_list.html %}
+                {% endif %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<div>
+    <h2>Нераспределенные заметки</h2>
     {% for page in pages_list %}
-        {% if page.category contains 'list' %}
+        {% if page.title and page.category == nil and page.tags == nil %}
             {% include allpages_block.html %}
         {% endif %}
     {% endfor %}
 </div>
 
 <div>
-    <h2>Статьи</h2>
+    <h2>Daily notes</h2>
     {% for page in pages_list %}
-        {% if page.title %}
+        {% if page.category == 'post' and page.title %}
             {% include allpages_block.html %}
-        {% endif %}
-    {% endfor %}
-</div>
-
-<div>
-    <h2>Ежедневне заметки</h2>
-    {% for post in site.posts %}
-        {% if post.title %}
-            {% include allposts_block.html %}
         {% endif %}
     {% endfor %}
 </div>

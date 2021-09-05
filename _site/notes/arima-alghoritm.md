@@ -1,1 +1,0 @@
-# Arima-alghoritm

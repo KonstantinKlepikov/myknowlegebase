@@ -1,9 +1,6 @@
 ---
 description: Pydantic - библиотека для валидации типов в python
-type: feature
-keywords: python
 ---
-
 # Pydantic
 
 Типизация для python [Документация](https://pydantic-docs.helpmanual.io/). Использует [[type-annotation]] на базе [[mypy]]

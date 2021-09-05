@@ -1,5 +1,6 @@
 ---
 description: Декоратор wait для behave
+tags: tests
 ---
 # Декоратор wait для [[behave]]
 

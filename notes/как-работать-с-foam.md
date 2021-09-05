@@ -1,7 +1,6 @@
 ---
 description: Начало работы с foam в vscode
-type: feature
-keywords: foam
+tags: vscode
 ---
 # Как работать с foam
 

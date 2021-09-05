@@ -1,5 +1,6 @@
 ---
 description: Pdb дебаггер в python
+tags: tests
 ---
 # Pdb-python-debugger
 

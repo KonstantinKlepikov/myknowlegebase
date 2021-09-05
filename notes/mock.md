@@ -1,5 +1,6 @@
 ---
 description: Как писать mock-тесты на python
+tags: tests
 ---
 # Mock-тесты
 

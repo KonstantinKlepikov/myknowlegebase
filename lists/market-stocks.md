@@ -1,10 +1,9 @@
 ---
 description: Список заметок о работе с биржевыми данными
 category: list
+title: Market stocks
+tags: market-stocks
 ---
-
-# Market-stocks
-
 - [[stock-base-statistics]]
 - [[скользящие-средние]]
 - [[arima-alghoritm]]

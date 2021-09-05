@@ -1,6 +1,7 @@
 ---
 description: Список заметок о SQLAlchemy
 category: list
+tags: sqlalchemy
 ---
 # Sqlalchemy
 

@@ -1,5 +1,6 @@
 ---
 description: Удаление данных в sqlalchemy
+tags: sqlalchemy
 ---
 # Sqlalchemy deleting
 

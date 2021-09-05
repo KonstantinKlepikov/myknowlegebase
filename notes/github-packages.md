@@ -1,5 +1,6 @@
 ---
 description: Регистри дял контейнеров и пакетов на github
+tags: cl
 ---
 # Github packages
 

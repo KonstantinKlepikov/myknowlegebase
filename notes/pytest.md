@@ -1,7 +1,6 @@
 ---
 description: Тестирование с использованием pytest на python
-type: feature
-keywords: pytest, python
+tags: tests
 ---
 # Pytest
 

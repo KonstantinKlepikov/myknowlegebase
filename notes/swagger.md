@@ -1,5 +1,5 @@
 ---
-description: Автодокументацйя openapi с помощью sqagger
+description: Автодокументацйя openapi с помощью swagger
 ---
 # Swagger
 
