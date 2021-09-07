@@ -4,6 +4,7 @@ layout: default
 
 <p>В данном разделе собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
 {% assign pages_list = site.pages | sort: 'title' %}
+{% assign notes_list = site.pages %}
 {% assign tag_list = site.site_tags | sort %}
 
 <div>
@@ -35,7 +36,7 @@ layout: default
 
 <div>
     <h2>Daily notes</h2>
-    {% for page in pages_list %}
+    {% for page in notes_list %}
         {% if page.category == 'post' and page.title %}
             {% include allpages_block.html %}
         {% endif %}

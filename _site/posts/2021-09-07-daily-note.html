@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Про гитхаб packages, архитепктуру проектов и биллинг" />
+<meta property="og:description" content="Про гитхаб packages, архитепктуру проектов и биллинг" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-07-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-07-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-07-daily-note.html","headline":"Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами","description":"Про гитхаб packages, архитепктуру проектов и биллинг","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<p>Все написанное в данной заметке относится к платным таривам github и [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]</p>
+
+<p>[<a href="../notes/github-packages" title="Github packages">github-packages</a>] шарит серверное пространство с [<a href="../notes/github-action" title="Githunb action">github-action</a>]. Это означает, что если мы пишем какие-то логи или создаем другие артефакты во время выполнения экшенов - это будет посчитано под исковму пространству пакетов. Частично решить это можно настроив удаление артефактов <a href="https://github.com/actions/upload-artifact/issues/161">для экшенов глобально</a> или локально для каждого воркфлоу.</p>
+
+<p>Есть проблема с определением размера самих пакетов. В админке на страницах пакетов это не выведено. По идее должно выводиться <a href="https://docs.github.com/en/billing/managing-billing-for-github-packages/viewing-your-github-packages-usage">здесь</a> для проекта или пользователя:</p>
+
+<p><img src="/myknowlegebase/attachments/2021-09-07-22-44-22.png" alt="package size" /></p>
+
+<p>Как видно на скриншоте, в данном случае у меня пусто, хотя на самом деле в проекте создано три пакета общим размером около 1GB. В чем проблема - пока не ясно.</p>
+
+<p>Надо иметь ввиду, что помимо диского пространства отдельно выставляется лимит на трансфер даты за пределы гитхаба. И эти лимиты довольно скромные - для Team тарифа всего 50Gb. Если не выставлены лимиты на полату, по истечению месяца будет дончисляться дополнительная плата. Как выставлять лимиты - <a href="https://docs.github.com/en/billing/managing-billing-for-github-packages/viewing-your-github-packages-usage">тут</a>. Ы целом про биллинг пакетов <a href="https://docs.github.com/en/billing/managing-billing-for-github-packages/about-billing-for-github-packages">тут</a>.</p>
+
+<p>У [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>] проблем с трансфером нет (по крайней мере тарифы пока позволяют <a href="https://docs.digitalocean.com/products/container-registry/">делать трансфер в интернет бесплатно</a>. Правда тут нет полной ясности - на лендинге регистри пишут, что <a href="https://www.digitalocean.com/products/container-registry/">трансфер наружу залимичен</a> 5-ю гигами.</p>
+
+<p>Если использовать [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>] как регистри для дроплетов DO, тор в принципе трансфера наружу не будет. Если источником пакетов использовать github, то расходы будут только на сборку в [<a href="../notes/github-action" title="Githunb action">github-action</a>], соответствнно получается, что github для небольшого проекта можно сделать бесплатный, на DO использовать Basic [<a href="../notes/digital-ocean-container-registry" title="Digital ocean container registry">digital-ocean-container-registry</a>] без трансфера наружу. Данные из регистри поставлять на дроплет DO.</p>
+
+<p>Как устроен Bandwidth Billing на [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>] можно прочитать <a href="https://docs.digitalocean.com/products/billing/bandwidth/">тут</a></p>
+
+<h2 id="size-of-github-repositories">Size of github repositories</h2>
+
+<p>Еще одно ограничение - размер репозиториев. Maximum file size is 100MB. Maximum repository size is 10GB. Это на текущий момент. Размер каждого репозитория для аккаунта можно <a href="https://github.com/settings/repositories">посмотреть так</a>. Подробнее о лимитах в этом контексте читай на этом <a href="https://stackoverflow.com/questions/38768454/repository-size-limits-for-github-com">оверфло</a></p>
+
+<h2 id="про-build-и-push-на-github-pacjages">Про build и push на github pacjages</h2>
+
+<p>Несколько готовых экшенов:</p>
+
+<ul>
+  <li><a href="https://github.com/docker/build-push-action">build-push-action</a></li>
+  <li><a href="https://github.com/redhat-actions/push-to-registry">push-to-registry</a></li>
+</ul>
+
+<p>Оба решения подходят для пуша в регистри, не только на гитхаб.</p>
+
+<p><a href="https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions">Publishing and installing a package with GitHub Actions</a> дока самого гитхаба.</p>
+
+<p><a href="https://docs.github.com/en/actions/guides/publishing-docker-images">Publishing Docker images</a> - еще описание.</p>
+
+<p><a href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry">Working with the Container registry</a> - описание того, как работать с [<a href="../notes/github-packages" title="Github packages">github-packages</a>]. <a href="https://github.com/docker/build-push-action/issues/127">Пример проблемы с объяснением как надо написать экшен</a>.</p>
+
+<p><a href="https://github.com/docker/login-action">login-action</a> - экшен, который логинит к докер регистри (сейчасgithub packages)</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Log in to the Github Package registry</span>
+<span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
+<span class="na">with</span><span class="pi">:</span>
+    <span class="na">registry</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">$</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.github.com/en/actions/reference/authentication-in-a-workflow">Подробнее примеры аутентификации в воркфло</a></p>
+
+<p><a href="https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package">Тут как законнектить пакеты к репозиторию</a></p>
+
+<p><a href="https://www.digitalocean.com/community/questions/github-action-to-deploy-docker-image-from-github-packages">github-action для деплоя с github packages на do</a></p>
+
+<h2 id="docker-error-invalid-reference-format-repository-name-must-be-lowercase">Docker error: invalid reference format: repository name must be lowercase</h2>
+
+<p>Это можно словить, к примеру, в [<a href="../notes/docker-compose" title="Docker compose">docker-compose</a>]. Часто такая ошибка возникает, когда используются недоспусчтимые символы, неверный реигстр или команда собрана некорректно, что мешает ее парсингу. Проблема объясянется <a href="https://stackoverflow.com/questions/48522615/docker-error-invalid-reference-format-repository-name-must-be-lowercase">тут</a>.</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
