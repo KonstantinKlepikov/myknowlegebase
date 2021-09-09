@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Как получить имя ошибки в python и немного про то, как импортить собственные скрипты на kaggle | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Как получить имя ошибки в python и немного про то, как импортить собственные скрипты на kaggle" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How to get the name of an exception that was caught in Python плюс немного про kaggle" />
+<meta property="og:description" content="How to get the name of an exception that was caught in Python плюс немного про kaggle" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-10-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-10-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-10-daily-note.html","headline":"Как получить имя ошибки в python и немного про то, как импортить собственные скрипты на kaggle","description":"How to get the name of an exception that was caught in Python плюс немного про kaggle","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h2 id="how-to-get-the-name-of-an-exception-that-was-caught-in-python">How to get the name of an exception that was caught in Python</h2>
+
+<p><a href="https://stackoverflow.com/a/18176682/15966204">Ссылка на оверфло</a></p>
+
+<p>Три варианта:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">type(exception).__name__</code></li>
+  <li><code class="language-plaintext highlighter-rouge">exception.__class__.__name__</code></li>
+  <li><code class="language-plaintext highlighter-rouge">exception.__class__.__qualname__</code></li>
+</ul>
+
+<p>Пример реализации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">foo</span> <span class="o">=</span> <span class="n">bar</span>
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">exception</span><span class="p">).</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">'NameError'</span>
+    <span class="k">assert</span> <span class="n">exception</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">'NameError'</span>
+    <span class="k">assert</span> <span class="n">exception</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__qualname__</span> <span class="o">==</span> <span class="s">'NameError'</span>
+</code></pre></div></div>
+
+<p>Смотри в дополнение про то, как получить сообщение ошибки в виде строки [<a href="2021-06-04-daily-note" title="Как получить текст ошибки в python и немного про pylance в vscode">2021-06-04-daily-note</a>]</p>
+
+<h2 id="feature-launch-import-scripts-into-notebook-kernels">Feature Launch: Import scripts into notebook kernels</h2>
+
+<p>Скажем так, не сильно полезная фича, т.к. нет возможности выстроить настоящую структуру пакета, а импорт ограничивается ноутом. Ну и плюс все это надо делать руками через jupyter notebook. Но, если есть какие-то сильно часто встречающиеся куски кода, то можно попробовать так реализовать.</p>
+
+<ul>
+  <li>Create a script kernel with the code you’d like to import.</li>
+  <li>Under the “File” menu, click on “Make Utility Script”. This will let you import this script to notebook kernels.</li>
+  <li>Commit your script. When you import a script, you’re importing the most recent committed version. If you haven’t committed a version yet, you won’t see it in the list of scripts you can import.</li>
+  <li>Open the notebook where you’d like to import the script.</li>
+  <li>Add the script. Under “File”, click “Add utility script”. Search for the script you want and click to add it. You should see it listed under “usr/lib” in the panel on the right hand side.</li>
+  <li>Import your script. In Python you can do this using <code class="language-plaintext highlighter-rouge">import nameof_script</code>.</li>
+  <li>
+    <p>Use the functions or objects you’ve imported!</p>
+  </li>
+  <li>a utility script can be a combination of multiple code snippets in different source files</li>
+  <li>be able to add data/non-code related files as part of the utility function</li>
+  <li>allow folder structure where code and data can reside in a structured fashion</li>
+  <li>allow access to the data area of the notebook via an environment variable or some other method</li>
+  <li>allow linking a gist where the code can reside (gist will contain the code for the utility script)</li>
+  <li>allow linking a git repo (via branch or commit points) - will contain the code for the utility script)</li>
+  <li>allow linking only a folder in a git repo where the code and data resides</li>
+</ul>
+
+<p><strong>The above will help in the following ways:</strong></p>
+
+<ul>
+  <li>keep the main utility script small, simple and modular</li>
+  <li>easy to read, change and use</li>
+  <li>can be version controlled via another public SCM system while still visible to the kernel</li>
+  <li>keep components of the utility script separate from the data or configuration files in an organised manner</li>
+</ul>
+
+<p><a href="https://www.kaggle.com/product-feedback/91185">Какое-то там обсуждение на эту тему</a></p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
