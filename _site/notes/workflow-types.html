@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Про варианты git workflow | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Про варианты git workflow" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Декоратор wait для behave" />
+<meta property="og:description" content="Декоратор wait для behave" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/workflow-types.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/workflow-types.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/workflow-types.html","headline":"Про варианты git workflow","description":"Декоратор wait для behave","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<p>В сущности вариантов версионирования кода для [<a href="../lists/cl" title="Непрервыная интеграция">cl</a>] огромное множество. Вкратце про те, котоыре основыаны на [<a href="../lists/git" title="Git">git</a>]</p>
+
+<h2 id="gitflow">Gitflow</h2>
+
+<p>Самый распространенный вариант, довольно часто применяемый в монолитных проектах. Включает в себя:</p>
+
+<ul>
+  <li>main ветвыь репозитория, которая используется для деплоя приложения на сервер</li>
+  <li>development ветвь, используемая для разработки фичей и релизов. С main никогда непосредственно не сливается</li>
+  <li>ветви фичей, образуемые от dev. Могут как завершаться. так и нет слиянием с dev. Никогда не сливаются с main</li>
+  <li>ветвь релиза. Созается из dev, после чего производятся тесты и необходимые доработки. Фичи в эту ветвь, пока она открыта, не добавляются. После подготовки релиза, релиз сливается с dev и main, после чего удаляется.</li>
+  <li>hotfix ответвляется от main чтобы исправить какие-то критичные ошибки, не останавливая процесс разработки</li>
+</ul>
+
+<p><a href="https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow">Подробнее об этом тут</a></p>
+
+<p><a href="https://danielkummer.github.io/git-flow-cheatsheet/index.ru_RU.html">Тут небольшая библиотечка</a>, позволяющая вести gitflow с одним набором команд</p>
+
+<h2 id="forking-workflow">Forking Workflow</h2>
+
+<p>В противоположность gitflow каждый разработчик ведет работу в форках основного репозитория, а не в клонах, корторые также базируются на стороне сервера. Это позволяет не комитить в основной репо, а заниматься полностью своими версиями, отправляя запрос на изменеение в основной репо, если это нужно. Вопрос объединения остается за овнером основного репо. Эта модель популярнак на опенсорсе. <a href="https://www.atlassian.com/ru/git/tutorials/comparing-workflows/forking-workflow">Подробнее тут</a>.</p>
+
+<h2 id="github-flow">Github Flow</h2>
+
+<p><a href="https://docs.github.com/en/get-started/quickstart/github-flow">Ссылка на гитхаб</a></p>
+
+<p>Остновное отличие от gitflow в том, что нет рабочей ветки и релизов:</p>
+
+<ul>
+  <li>каждая фича ведется в своей вектке</li>
+  <li>когда фича готова, запрашивается pull request в main</li>
+  <li>производится раззвертывание для тестов и обсуждение</li>
+  <li>после чего плу реквест принимается и ветка фичи мержится или плу реквест отклоняется</li>
+</ul>
+
+<p>Принципиальная разница в том, что процесс разработки в веках упрощавется и идет быстрее. Такая архитектура удобна для микросервисов. <a href="https://habr.com/ru/post/346066/">Тут подробная статья</a></p>
+
+<p><a href="https://mcs.mail.ru/help/ru_RU/manage-k8s/k8s-docker-reg">Подробнее на github</a></p>
+
+<h2 id="gitlab-flow">Gitlab Flow</h2>
+
+<p>Разница с предыдущим вариантом в том, что сначала идет мерж, а потом развертывание и тесты, что потенциально грозит сложным reverse merge в ситуации, когда измененеия необходимо откатить.</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
