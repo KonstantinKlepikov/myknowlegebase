@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Github action триггеры и переменные - документация | My knowlege base</title>
+<title>Теги в docker | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Github action триггеры и переменные - документация" />
+<meta property="og:title" content="Теги в docker" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Триггеры и переменные в github action" />
-<meta property="og:description" content="Триггеры и переменные в github action" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-%D1%82%D1%80%D0%B8%D0%B3%D0%B3%D0%B5%D1%80%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-%D1%82%D1%80%D0%B8%D0%B3%D0%B3%D0%B5%D1%80%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5.html" />
+<meta name="description" content="Кратко про теги в docker" />
+<meta property="og:description" content="Кратко про теги в docker" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-tags.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-tags.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-%D1%82%D1%80%D0%B8%D0%B3%D0%B3%D0%B5%D1%80%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5.html","headline":"Github action триггеры и переменные - документация","description":"Триггеры и переменные в github action","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/docker-tags.html","headline":"Теги в docker","description":"Кратко про теги в docker","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,25 +83,26 @@
 
       <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
 
-<h1 id="github-action-триггеры-и-переменные---документация">Github action триггеры и переменные - документация</h1>
+<h1 id="теги-в-docker">Теги в docker</h1>
 
-<p><a href="https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request">Events that trigger workflows</a></p>
+<p><a href="https://cpab.ru/kak-rabotajut-tegi-docker-cloudsavvy-it/">Статья тут</a></p>
 
-<p><a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onevent_nametypes">Workflow syntax for GitHub Actions</a></p>
+<p>Теги – это просто метки, которые обеспечивают лучший способ управления контролем версий и выпусками в [<a href="../lists/docker" title="Docker">docker</a>]. Они похожи на метки, которые вы можете назначить любой завершенной сборке. Вместо того, чтобы ссылаться на идентификатор сборки, вы можете пометить изображение меткой в ​​формате major.minor.patch и легко определить, какой образ какой, или какой формат предпочитает ваша организация.</p>
 
-<p><a href="https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#example-using-an-array">Context and expression syntax for GitHub Actions</a></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker build <span class="nt">-t</span> repository/image:tag <span class="nb">.</span>
+</code></pre></div></div>
 
-<p><a href="https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads">Webhook events and payloads</a> (в частности <a href="https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request">pull_request</a>)</p>
+<p>Если вы не укажете определенный тег, Docker автоматически помечает его как «последний». “Latest” тег немного сбивает с толку. Несмотря на то, как звучит название, оно не всегда указывает на последний выпуск. Это просто специальный тег, который присваивается автоматически, когда вы не указываете тег. Это позволяет полностью избежать тегов и просто нажать «последнюю» версию.</p>
 
-<p><a href="https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables">Дефолтные переменные</a></p>
+<p>Другой вариант - пометить комитом</p>
 
-<p><a href="https://github.community/t/skip-action-when-label-already-on-pr-vs-on-label-create-event/121037">пример использования if</a></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker build <span class="nt">-t</span> vicerust/core:<span class="si">$(</span>git rev-parse <span class="nt">--verify</span> HEAD<span class="si">)</span> <span class="nb">.</span>
+</code></pre></div></div>
 
-<ul>
-  <li>[<a href="github-action" title="Githunb action">github-action</a>]</li>
-  <li>[<a href="github-environment-variables" title="Github environment variables">github-environment-variables</a>]</li>
-  <li>[<a href="github-secrets" title="Github secrets">github-secrets</a>]</li>
-</ul>
+<p>После расстановки меток, образ можно отправить в регистри:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker push repository/image
+</code></pre></div></div>
 
 
 

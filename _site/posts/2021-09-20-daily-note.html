@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Как получить строковые имена переменных в python и несколько трюков с matplotlibe | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Как получить строковые имена переменных в python и несколько трюков с matplotlibe" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Несколько интересных вопросов про python" />
+<meta property="og:description" content="Несколько интересных вопросов про python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-20-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-20-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-09-20-daily-note.html","headline":"Как получить строковые имена переменных в python и несколько трюков с matplotlibe","description":"Несколько интересных вопросов про python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h1 id="как-получить-строковые-имена-переменных-в-python-и-несколько-трюков-с-matplotlibe">Как получить строковые имена переменных в python и несколько трюков с matplotlibe</h1>
+
+<h2 id="как-получить-строкове-имя-переменной-в-python">Как получить строкове имя переменной в python</h2>
+
+<p><a href="https://stackoverflow.com/questions/18425225/getting-the-name-of-a-variable-as-a-string">ссылка на обсуждение</a></p>
+
+<p>Вернуть строкове имя конкретной переменной не получится. так как на один и тот же объект может ссылаться несколько переменных. Но можно вернуть все переменные для конкретного объета. В данном примере две разные переменные ссылаются на два разных объекта (которые под капотом python на самом деле один объект):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">inspect</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">retrieve_name</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+    <span class="n">callers_local_vars</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">.</span><span class="n">currentframe</span><span class="p">().</span><span class="n">f_back</span><span class="p">.</span><span class="n">f_locals</span><span class="p">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">var_val</span> <span class="ow">in</span> <span class="n">callers_local_vars</span> <span class="k">if</span> <span class="n">var_val</span> <span class="ow">is</span> <span class="n">var</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">retrieve_name</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+<span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="как-получить-строкове-значение-имени-функции-в-python">Как получить строкове значение имени функции в python</h2>
+
+<p><a href="https://stackoverflow.com/questions/251464/how-to-get-a-function-name-as-a-string">Обсуждение тут</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">__name__</code> работает с build in функциями. <code class="language-plaintext highlighter-rouge">func_name</code> нет</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">func_name</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="err">?</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="s">'builtin_function_or_method'</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">'func_name'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">__name__</span> 
+<span class="s">'time'</span>
+</code></pre></div></div>
+
+<h2 id="как-удалить-линии-сетки-в-matplotlibe">Как удалить линии сетки в [<a href="../notes/matplotlibe" title="Matplotlibe">matplotlibe</a>]</h2>
+
+<p><a href="https://stackoverflow.com/questions/50543885/how-to-remove-grid-lines-on-image-in-python">Ссылка на обсуждение</a></p>
+
+<p>так</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>в ряде случаев, если создана сетка, может потребоваться проитерирвоать</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">].</span><span class="n">grid</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>или так</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">"axes.grid"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<h2 id="как-задать-размеры-изображения-для-subplots-в-matplotlib">Как задать размеры изображения для subplots в matplotlib</h2>
+
+<p>вот так, например:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">.</span><span class="n">set_figheight</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">.</span><span class="n">set_figwidth</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://dev-gang.ru/article/izmenit-razmer-risunka-v-matplotlib-9btqsjj4ff/">Статья на эту тему</a></p>
+
+<h2 id="как-создать-анотированную-матрицу-в-matplotlib">Как создать анотированную матрицу в matplotlib</h2>
+
+<p><a href="https://matplotlib.org/stable/gallery/images_contours_and_fields/image_annotated_heatmap.html">Вот подробный гайд</a> на эту тему. Если совсем лень, можно использовать <a href="https://seaborn.pydata.org/generated/seaborn.heatmap.html">seaborn.heatmap</a></p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

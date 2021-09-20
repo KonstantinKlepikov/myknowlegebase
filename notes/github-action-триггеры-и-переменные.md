@@ -2,7 +2,7 @@
 description: Триггеры и переменные в github action
 tags: cl
 ---
-# Github action триггеры и переменные
+# Github action триггеры и переменные - документация
 
 [Events that trigger workflows](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request)
 
@@ -11,6 +11,8 @@ tags: cl
 [Context and expression syntax for GitHub Actions](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#example-using-an-array)
 
 [Webhook events and payloads](https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads) (в частности [pull_request](https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request))
+
+[Дефолтные переменные](https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables)
 
 [пример использования if](https://github.community/t/skip-action-when-label-already-on-pr-vs-on-label-create-event/121037)
 

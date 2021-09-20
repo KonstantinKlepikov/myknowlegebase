@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Github action триггеры и переменные - документация | My knowlege base</title>
+<title>Ссылка на версию экшена | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Github action триггеры и переменные - документация" />
+<meta property="og:title" content="Ссылка на версию экшена" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Триггеры и переменные в github action" />
-<meta property="og:description" content="Триггеры и переменные в github action" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-%D1%82%D1%80%D0%B8%D0%B3%D0%B3%D0%B5%D1%80%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-%D1%82%D1%80%D0%B8%D0%B3%D0%B3%D0%B5%D1%80%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5.html" />
+<meta name="description" content="Как в github action получить ссылку на определенный вариант экшена в workflow" />
+<meta property="og:description" content="Как в github action получить ссылку на определенный вариант экшена в workflow" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/github-actions-links.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/github-actions-links.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-%D1%82%D1%80%D0%B8%D0%B3%D0%B3%D0%B5%D1%80%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5.html","headline":"Github action триггеры и переменные - документация","description":"Триггеры и переменные в github action","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/github-actions-links.html","headline":"Ссылка на версию экшена","description":"Как в github action получить ссылку на определенный вариант экшена в workflow","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,25 +83,22 @@
 
       <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
 
-<h1 id="github-action-триггеры-и-переменные---документация">Github action триггеры и переменные - документация</h1>
+<h1 id="ссылка-на-версию-экшена">Ссылка на версию экшена</h1>
 
-<p><a href="https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request">Events that trigger workflows</a></p>
+<p>Не обязательно юзать экшен из магазина для [<a href="github-action" title="Githunb action">github-action</a>]. Можно написать свой, форкнуть чей-то, внести изменеения и т.д. <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses">Вот статья об этом</a></p>
 
-<p><a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onevent_nametypes">Workflow syntax for GitHub Actions</a></p>
+<p>Вот такие ссылки можно использовать:</p>
 
-<p><a href="https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#example-using-an-array">Context and expression syntax for GitHub Actions</a></p>
-
-<p><a href="https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads">Webhook events and payloads</a> (в частности <a href="https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request">pull_request</a>)</p>
-
-<p><a href="https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables">Дефолтные переменные</a></p>
-
-<p><a href="https://github.community/t/skip-action-when-label-already-on-pr-vs-on-label-create-event/121037">пример использования if</a></p>
-
-<ul>
-  <li>[<a href="github-action" title="Githunb action">github-action</a>]</li>
-  <li>[<a href="github-environment-variables" title="Github environment variables">github-environment-variables</a>]</li>
-  <li>[<a href="github-secrets" title="Github secrets">github-secrets</a>]</li>
-</ul>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">steps</span><span class="pi">:</span>
+  <span class="c1"># Reference a specific commit</span>
+  <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@a81bbbf8298c0fa03ea29cdc473d45769f953675</span>
+  <span class="c1"># Reference the major version of a release</span>
+  <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+  <span class="c1"># Reference a specific version</span>
+  <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2.2.0</span>
+  <span class="c1"># Reference a branch</span>
+  <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@main</span>
+</code></pre></div></div>
 
 
 
