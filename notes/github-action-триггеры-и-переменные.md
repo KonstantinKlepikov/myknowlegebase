@@ -2,19 +2,20 @@
 description: Триггеры и переменные в github action
 tags: cl
 ---
-# Github action триггеры и переменные - документация
+# Github action триггеры и переменные - документация и полезные ссылки
 
-[Events that trigger workflows](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request)
+- [Events that trigger workflows](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request)
+- [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onevent_nametypes)
+- [Context and expression syntax for GitHub Actions](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#example-using-an-array)
+- [Webhook events and payloads](https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads) (в частности [pull_request](https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request))
+- [Дефолтные переменные](https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables)
+- [пример использования if](https://github.community/t/skip-action-when-label-already-on-pr-vs-on-label-create-event/121037)
+- [как кастомизировать среду в workflow](https://docs.github.com/en/actions/using-github-hosted-runners/customizing-github-hosted-runners)
+- [использование secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow)
+- как кастомизировать ранеры - [про установку пакетов на ОС внутри workflow](https://docs.github.com/en/actions/using-github-hosted-runners/customizing-github-hosted-runners)
+- [Migrating from GitLab CI/CD to GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/migrating-from-gitlab-cicd-to-github-actions)
+- [Trigger workflow only on pull request MERGE](https://github.community/t/trigger-workflow-only-on-pull-request-merge/17359)
 
-[Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onevent_nametypes)
-
-[Context and expression syntax for GitHub Actions](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#example-using-an-array)
-
-[Webhook events and payloads](https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads) (в частности [pull_request](https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#pull_request))
-
-[Дефолтные переменные](https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables)
-
-[пример использования if](https://github.community/t/skip-action-when-label-already-on-pr-vs-on-label-create-event/121037)
 
 - [[github-action]]
 - [[github-environment-variables]]

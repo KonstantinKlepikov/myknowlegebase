@@ -375,6 +375,14 @@ CONTAINER ID        IMAGE                COMMAND
 
 <p>В конце этой заметки про ошибку синтаксиса в некоторых командах для compose: [<a href="../posts/2021-09-07-daily-note" title="Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами">2021-09-07-daily-note</a>]</p>
 
+<p><a href="https://docs.docker.com/compose/environment-variables/#substitute-environment-variables-in-compose-files">Environment variables in Compose</a>. <a href="https://docs.docker.com/compose/compose-file/compose-file-v2/#env_file">Env files для compose v2</a>. Можно так (будут доступны все переменные, при совпадении последняя ихз последнего энва в списке):</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">env_file</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">./common.env</span>
+  <span class="pi">-</span> <span class="s">./apps/web.env</span>
+  <span class="pi">-</span> <span class="s">/opt/runtime_opts.env</span>
+</code></pre></div></div>
+
 
 
 <div class="additional-pad">

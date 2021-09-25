@@ -24,4 +24,15 @@ Foam: Create New Note from Template
 2. select me and paste
 3. [select me and paste](https://google.com)
 
-![img](attachments/2021-03-28-15-13-43.png)
+Другое
+
+`alt+shift+f` formats a table. Place the cursor in the table below and format the table.
+
+| column 1 | column 2|
+|-|-|
+| one element | another element|
+| second row| last cell|
+
+---
+
+Search in your repo with `cmd+shift+f`: type "search" (go back to the file explorer with `cmd+shift+e`)
