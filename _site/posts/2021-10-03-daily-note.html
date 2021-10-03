@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python dict concatenate and way to convert dict to namedtuple | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python dict concatenate and way to convert dict to namedtuple" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Как конкатенировать словари? как преобразовать словарь в namedtuple и немного про property в python" />
+<meta property="og:description" content="Как конкатенировать словари? как преобразовать словарь в namedtuple и немного про property в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-10-03-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-10-03-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-10-03-daily-note.html","headline":"Python dict concatenate and way to convert dict to namedtuple","description":"Как конкатенировать словари? как преобразовать словарь в namedtuple и немного про property в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h1 id="python-dict-concatenate-and-way-to-convert-dict-to-namedtuple">Python dict concatenate and way to convert dict to namedtuple</h1>
+
+<h2 id="python-dict-concatenate">Python dict concatenate</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d1</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">:</span><span class="mi">4</span><span class="p">}</span>
+<span class="n">d2</span><span class="o">=</span><span class="p">{</span><span class="mi">5</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">:</span><span class="mi">9</span><span class="p">}</span>
+<span class="n">d3</span><span class="o">=</span><span class="p">{</span><span class="mi">10</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="mi">13</span><span class="p">:</span><span class="mi">22</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Самый быстрый</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d4</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="o">**</span><span class="n">d2</span><span class="p">);</span> <span class="n">d4</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">d3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Еще</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d4</span> <span class="o">=</span> <span class="p">{}</span> 
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">d3</span><span class="p">):</span> 
+    <span class="n">d4</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d4</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> 
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">d3</span><span class="p">):</span> 
+    <span class="n">d4</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/1784128/15966204">Ссылка на источник и обсуждение</a></p>
+
+<h2 id="dict-to-namedtuple">Dict to namedtuple</h2>
+
+<p><a href="https://stackoverflow.com/a/43921348/15966204">Статья на оверфло</a></p>
+
+<p>Создаем объект именованного кортежа из словаря</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MyTuple</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">'MyTuple'</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Затем распаковываем в инстанс этот же словарь</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_tuple</span> <span class="o">=</span> <span class="n">MyTuple</span><span class="p">(</span><span class="o">**</span><span class="n">d</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="property-в-классах---как-использовать">Property в классах - как использовать</h2>
+
+<p>Приватные атрибуты через сет/гет</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SampleClass1</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="c1">## calling the set_a() method to set the value 'a' by checking certain conditions
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">set_a</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c1">## getter method to get the properties using an object
+</span>    <span class="k">def</span> <span class="nf">get_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__a</span>
+
+    <span class="c1">## setter method to change the value 'a' using an object
+</span>    <span class="k">def</span> <span class="nf">set_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+
+        <span class="c1">## condition to check whether 'a' is suitable or not
+</span>        <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__a</span> <span class="o">=</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>Через проперти</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Property</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+        <span class="c1">## initializing the attribute
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">var</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__a</span>
+
+    <span class="c1">## the attribute name and the method name must be same which is used to set the value for the attribute
+</span>    <span class="o">@</span><span class="n">a</span><span class="p">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">var</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">var</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__a</span> <span class="o">=</span> <span class="n">var</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__a</span> <span class="o">=</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>Можно создават ьконструкции, в которых “морозить” данные ээкземпляров. <a href="https://www.datacamp.com/community/tutorials/property-getters-setters?utm_source=adwords_ppc">Подробнее</a></p>
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
