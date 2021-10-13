@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Logging | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Logging" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="принципы логирования в python" />
+<meta property="og:description" content="принципы логирования в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/logging.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/logging.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/logging.html","headline":"Logging","description":"принципы логирования в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h1 id="logging">Logging</h1>
+
+<p>Основной материал - <a href="https://docs.python.org/3/howto/logging.html">Logging HOWTO</a></p>
+
+<h2 id="когда-и-какой-способ-логировапия-использовать">Когда и какой способ логировапия использовать</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task you want to perform</th>
+      <th>The best tool for the task</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Display console output for ordinary usage of a command line script or program</td>
+      <td><code class="language-plaintext highlighter-rouge">print()</code></td>
+    </tr>
+    <tr>
+      <td>Report events that occur during normal operation of a program (e.g. for status monitoring or fault investigation)</td>
+      <td><code class="language-plaintext highlighter-rouge">logging.info()</code> (or <code class="language-plaintext highlighter-rouge">logging.debug()</code> for very detailed output for diagnostic purposes)</td>
+    </tr>
+    <tr>
+      <td>Issue a warning regarding a particular runtime event</td>
+      <td><code class="language-plaintext highlighter-rouge">warnings.warn()</code> in library code if the issue is avoidable and the client application should be modified to eliminate the warning</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code class="language-plaintext highlighter-rouge">logging.warning()</code> if there is nothing the client application can do about the situation, but the event should still be noted</td>
+    </tr>
+    <tr>
+      <td>Report an error regarding a particular runtime event</td>
+      <td>Raise an exception</td>
+    </tr>
+    <tr>
+      <td>Report suppression of an error without raising an exception (e.g. error handler in a long-running server process)</td>
+      <td><code class="language-plaintext highlighter-rouge">logging.error()</code>, <code class="language-plaintext highlighter-rouge">logging.exception()</code> or <code class="language-plaintext highlighter-rouge">logging.critical()</code> as appropriate for the specific error and application domain</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="стандартные-уровни-логирования">Стандартные уровни логирования</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Level</th>
+      <th>When it’s used</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEBUG</td>
+      <td>Detailed information, typically of interest only when diagnosing problems.</td>
+    </tr>
+    <tr>
+      <td>INFO</td>
+      <td>Confirmation that things are working as expected.</td>
+    </tr>
+    <tr>
+      <td>WARNING</td>
+      <td>An indication that something unexpected happened, or indicative of some problem in the near future (e.g. ‘disk space low’). The software is still working as expected.</td>
+    </tr>
+    <tr>
+      <td>ERROR</td>
+      <td>Due to a more serious problem, the software has not been able to perform some function.</td>
+    </tr>
+    <tr>
+      <td>CRITICAL</td>
+      <td>A serious error, indicating that the program itself may be unable to continue running.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The default level is WARNING.</p>
+
+<h2 id="a-simple-example"><a href="https://docs.python.org/3/howto/logging.html#a-simple-example">A simple example</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="s">'Watch out!'</span><span class="p">)</span>  <span class="c1"># will print a message to the console
+</span><span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'I told you so'</span><span class="p">)</span>  <span class="c1"># will not print anything
+</span></code></pre></div></div>
+
+<p>INFO не выведен, потому что дефолтный уровень логирования WARNING</p>
+
+<h2 id="logging-to-a-file"><a href="https://docs.python.org/3/howto/logging.html#logging-to-a-file">Logging to a file</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">'example.log'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'This message should go to the log file'</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'So should this'</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="s">'And this, too'</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s">'And non-ASCII stuff, too, like Øresund and Malmö'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<pre><code class="language-txt">DEBUG:root:This message should go to the log file
+INFO:root:So should this
+WARNING:root:And this, too
+ERROR:root:And non-ASCII stuff, too, like Øresund and Malmö
+</code></pre>
+
+<p>Все сообщения выведены в файл, т.к. уровень DEBUG</p>
+
+<h2 id="logging-from-multiple-modules"><a href="https://docs.python.org/3/howto/logging.html#logging-from-multiple-modules">Logging from multiple modules</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># myapp.py
+</span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">mylib</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">'myapp.log'</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Started'</span><span class="p">)</span>
+    <span class="n">mylib</span><span class="p">.</span><span class="n">do_something</span><span class="p">()</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Finished'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># mylib.py
+</span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">def</span> <span class="nf">do_something</span><span class="p">():</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Doing something'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="остальная-часть-раздела---лог-переменных-дат-и-формат-вывода-смотри">Остальная часть раздела - лог переменных, дат и формат вывода. <a href="https://docs.python.org/3/howto/logging.html#logging-variable-data">Смотри</a>.</h2>
+
+<h2 id="advanced-logging-tutorial"><a href="https://docs.python.org/3/howto/logging.html#advanced-logging-tutorial">Advanced Logging Tutorial</a></h2>
+
+<p>Работа с loggers, handlers, formaters</p>
+
+<p>[<a href="loguru" title="Loguru">loguru</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
