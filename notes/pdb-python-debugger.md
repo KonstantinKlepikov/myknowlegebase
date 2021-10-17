@@ -4,7 +4,7 @@ tags: tests
 ---
 # Pdb-python-debugger
 
-Дебагер #python из стандартной сбиблиотеки.
+Дебагер python из стандартной сбиблиотеки.
 
 [Документация](https://docs.python.org/3/library/pdb.html)
 

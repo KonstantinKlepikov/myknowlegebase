@@ -1,6 +1,7 @@
 ---
 description: Градиент бустинг фреймворк LightGBM
 title: Lightgbm
+tags: ml
 ---
 Градиент бустинг фреймворк LightGBM для ml
 

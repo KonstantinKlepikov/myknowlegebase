@@ -1,6 +1,7 @@
 ---
 description: Тюнинг параметров в LightGBM
 title: Lightgbm parameters tuning
+tags: ml
 ---
 [Основная статья тут](https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html)
 

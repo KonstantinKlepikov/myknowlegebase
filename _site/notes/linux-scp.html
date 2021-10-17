@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>linux-scp | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="linux-scp" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Обмен файлами между удаленными машинами на linux с помощью scp" />
+<meta property="og:description" content="Обмен файлами между удаленными машинами на linux с помощью scp" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/linux-scp.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/linux-scp.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/linux-scp.html","headline":"linux-scp","description":"Обмен файлами между удаленными машинами на linux с помощью scp","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h1 id="linux-scp">linux-scp</h1>
+
+<ul>
+  <li>Из локальной системы на удаленную</li>
+  <li>С удаленной на локальную</li>
+  <li>Между удаленными</li>
+</ul>
+
+<h2 id="sintax">Sintax</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp <span class="o">[</span>OPTION] <span class="o">[</span>user@]SRC_HOST:]file1 <span class="o">[</span>user@]DEST_HOST:]file2
+</code></pre></div></div>
+
+<p>Наиболее часто используемые опции</p>
+
+<p><code class="language-plaintext highlighter-rouge">-P</code> - Specifies the remote host ssh port.
+<code class="language-plaintext highlighter-rouge">-p</code> - Preserves files modification and access times.
+<code class="language-plaintext highlighter-rouge">-q</code> - Use this option if you want to suppress the progress meter and non-error messages.
+<code class="language-plaintext highlighter-rouge">-C</code> - This option forces scp to compresses the data as it is sent to the destination machine.
+<code class="language-plaintext highlighter-rouge">-r</code> - This option tells scp to copy directories recursively.</p>
+
+<h2 id="примеры">Примеры</h2>
+
+<p>С локального на удаленный</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp file.txt remote_username@10.10.0.2:/remote/directory
+</code></pre></div></div>
+
+<p>С удаленного на локальный</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp remote_username@10.10.0.2:/remote/file.txt /local/directory
+</code></pre></div></div>
+
+<p>Между серверами</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp user1@host1.com:/files/file.txt user2@host2.com:/files
+</code></pre></div></div>
+
+<p><a href="https://linuxize.com/post/how-to-use-scp-command-to-securely-transfer-files/">Источник</a></p>
+
+<h2 id="вывод-лога">Вывод лога</h2>
+
+<p>Иногда полезно, чтобы понять почему что-то сработало не так, как ожидалось</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp <span class="nt">-vvv</span> <span class="nt">-P</span> 30000 /somedir/somedir/file user@domain:/somedir/somedir/
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OpenSSH_6.7p1 Debian-5+deb8u7, OpenSSL 1.0.1t  3 May 2016
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 19: Applying options <span class="k">for</span> <span class="k">*</span>
+debug2: ssh_connect: needpriv 0
+debug1: Connecting to 192.168.1.171 <span class="o">[</span>192.168.1.171] port 30000.
+debug1: Connection established.
+debug1: permanently_set_uid: 0/0
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/identity <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/identity-cert <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_rsa <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_rsa-cert <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_dsa <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_dsa-cert <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_ecdsa <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_ecdsa-cert <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_ed25519 <span class="nb">type</span> <span class="nt">-1</span>
+debug1: key_load_public: No such file or directory
+debug1: identity file /root/.ssh/id_ed25519-cert <span class="nb">type</span> <span class="nt">-1</span>
+debug1: Remote protocol version 2.0, remote software version OpenSSH_7.4p1 Debian-10+deb9u4
+debug1: match: OpenSSH_7.4p1 Debian-10+deb9u4 pat OpenSSH<span class="k">*</span> compat 0x04000000
+debug1: Enabling compatibility mode <span class="k">for </span>protocol 2.0
+debug1: Local version string SSH-2.0-OpenSSH_6.7p1 Debian-5+deb8u7
+debug2: fd 3 setting O_NONBLOCK
+debug3: put_host_port: <span class="o">[</span>192.168.1.171]:30000
+debug3: load_hostkeys: loading entries <span class="k">for </span>host <span class="s2">"[192.168.1.171]:30000"</span> from file <span class="s2">"/root/.ssh/known_hosts"</span>
+debug3: load_hostkeys: found key <span class="nb">type </span>ECDSA <span class="k">in </span>file /root/.ssh/known_hosts:7
+debug3: load_hostkeys: loaded 1 keys
+debug3: order_hostkeyalgs: prefer hostkeyalgs: ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+</code></pre></div></div>
+
+<p>Как решать проблему с доступом для scp - <a href="https://cloudlinuxtech.com/scp-permission-denied/">SCP permission denied error</a></p>
+
+<p>[<a href="../lists/linux" title="Linux">linux</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

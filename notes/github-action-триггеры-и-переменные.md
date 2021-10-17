@@ -18,7 +18,6 @@ tags: cl
 - [Trigger workflow only on pull request MERGE](https://github.community/t/trigger-workflow-only-on-pull-request-merge/17359)
 - [Contexts](https://docs.github.com/en/actions/learn-github-actions/contexts). Контексты - это способ доступа к информации о выполнении рабочего процесса, средах выполнения, заданиях и шагах.
 
-
 - [[github-action]]
 - [[github-environment-variables]]
 - [[github-secrets]]

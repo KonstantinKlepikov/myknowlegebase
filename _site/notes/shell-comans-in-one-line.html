@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Python-logging | My knowlege base</title>
+<title>Shell comand in one line | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Python-logging" />
+<meta property="og:title" content="Shell comand in one line" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Логирование в python" />
-<meta property="og:description" content="Логирование в python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-logging.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-logging.html" />
+<meta name="description" content="Как запускать множественные команды команды одной строкой в Linux" />
+<meta property="og:description" content="Как запускать множественные команды команды одной строкой в Linux" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/shell-comans-in-one-line.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/shell-comans-in-one-line.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-logging.html","headline":"Python-logging","description":"Логирование в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/shell-comans-in-one-line.html","headline":"Shell comand in one line","description":"Как запускать множественные команды команды одной строкой в Linux","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,12 +83,35 @@
 
       <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
 
-<h1 id="python-logging">Python-logging</h1>
+<h1 id="shell-comand-in-one-line">Shell comand in one line</h1>
 
-<p><a href="https://docs.python.org/dev/library/logging.html#module-logging">Документация</a></p>
+<p>В ряде случаев первая команда ожидает заданное количество аргументов и команды необходимо отделять от других. Кроме того, мы можем захотеть выполнить ту или иную команду в зависимости от результата выполнения предыдущей.</p>
 
-<p>[<a href="celery" title="Celery">celery</a>]</p>
+<h2 id="use-">Use <code class="language-plaintext highlighter-rouge">;</code></h2>
 
+<p>Выполнить вторую команду вне зависимости от результатов первой.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># cmd1; cmd2</span>
+<span class="nv">$ </span><span class="nb">cd </span>myfolder<span class="p">;</span> <span class="nb">ls</span>   <span class="c"># no matter cd to myfolder successfully, run ls</span>
+</code></pre></div></div>
+
+<h2 id="use--1">Use <code class="language-plaintext highlighter-rouge">&amp;&amp;</code></h2>
+
+<p>Выполнить вторую только если успешна первая</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># cmd1 &amp;&amp; cmd2</span>
+<span class="nv">$ </span><span class="nb">cd </span>myfolder <span class="o">&amp;&amp;</span> <span class="nb">ls</span>  <span class="c"># run ls only after cd to myfolder</span>
+</code></pre></div></div>
+
+<h2 id="use--2">Use <code class="language-plaintext highlighter-rouge">||</code></h2>
+
+<p>Выполнить вторую, если провалена первая</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># cmd1 || cmd2</span>
+<span class="nv">$ </span><span class="nb">cd </span>myfolder <span class="o">||</span> <span class="nb">ls</span>  <span class="c"># if failed cd to myfolder, `ls` will run</span>
+</code></pre></div></div>
+
+<p>Все три оператора можно использовать в одной строке</p>
 
 
 <div class="additional-pad">

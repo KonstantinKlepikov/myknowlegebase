@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How start second github action after success first | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="How start second github action after success first" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Github action - как запускать экшены последовательно" />
+<meta property="og:description" content="Github action - как запускать экшены последовательно" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action.html","headline":"How start second github action after success first","description":"Github action - как запускать экшены последовательно","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h1 id="how-start-second-github-action-after-success-first">How start second github action after success first</h1>
+
+<h2 id="тот-же-workflow-отдельный-job-с-needs-ключом">Тот же workflow, отдельный job с needs ключом</h2>
+
+<p>В одном воркфлоу можно определить дополнительный job через need - в этом случае экшен будет выполнен, только если успешно выполнен экшен в need</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI build and notify</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+    
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Docker image to Google Cloud Run</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+
+  <span class="na">notify</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Notify Slack and send eMail</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<h2 id="отдельный-workflow-использующий-workflow_run-эвент-в-качестве-триггера">Отдельный workflow, использующий workflow_run эвент в качестве триггера</h2>
+
+<p>Можно разделить события на два воркфлоу и запускать второй только, если успешен первый.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># build.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">CI build</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Docker image to Google Cloud Run</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># notify.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">CI notify</span>
+
+<span class="c1"># Only trigger, when the build workflow succeeded</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">workflow_run</span><span class="pi">:</span>
+    <span class="na">workflows</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CI</span><span class="nv"> </span><span class="s">build"</span><span class="pi">]</span>
+    <span class="na">types</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">completed</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">notify</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Notify Slack and send eMail</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<p>Важным недостатком второго подхода является то, что оба экшена должны быть реализованы в ветке по умолчанию длят ого, чтобы второй исполнился. Плюс, очевидно, заключается в том, что можно отключить второй экшен из админки github, не влезая в код.</p>
+
+<p><a href="https://stackoverflow.com/a/65698892/15966204">Ссылка на оверфло</a></p>
+
+<ul>
+  <li>[<a href="github-action" title="Githunb action">github-action</a>]</li>
+  <li>[<a href="../lists/cl" title="Ci - непрервыная интеграция">cl</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
