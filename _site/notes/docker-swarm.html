@@ -85,7 +85,82 @@
 
 <h1 id="docker-swarm">Docker swarm</h1>
 
-<p>Нативное решение [<a href="../lists/docker" title="Docker">docker</a>] для разворачивания и управления кластером контейнеров. Аналог, рекомендуемый для [<a href="../lists/fastapi" title="Fastapi">fastapi</a>] - [<a href="docker-swarm-rocks" title="Docker swarm rocks">docker-swarm-rocks</a>]</p>
+<p>Нативное решение [<a href="../lists/docker" title="Docker">docker</a>] для разворачивания и управления кластером контейнеров. Аналог, рекомендуемый для [<a href="fastapi" title="Fastapi">fastapi</a>] - [<a href="docker-swarm-rocks" title="Docker swarm rocks">docker-swarm-rocks</a>]</p>
+
+<h2 id="create-a-swarm">Create a swarm</h2>
+
+<p><a href="https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/">ссылка</a></p>
+
+<p>Если используется <code class="language-plaintext highlighter-rouge">docker-machine</code>, то подключиться к серваку по ssh (в примере <code class="language-plaintext highlighter-rouge">manager1</code>)</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-machine ssh manager1
+</code></pre></div></div>
+
+<p>Инициализировать swarm (<a href="https://docs.docker.com/engine/reference/commandline/swarm_init/">подробнее про команду</a>)</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker swarm init <span class="nt">--advertise-addr</span> &lt;MANAGER-IP&gt;
+</code></pre></div></div>
+
+<p>Посмотреть - как все прошло:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker info
+</code></pre></div></div>
+
+<p>Посмотреть инфу по нодам</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node <span class="nb">ls</span>
+</code></pre></div></div>
+
+<h2 id="пример-деплоя-на-сворм"><a href="https://docs.docker.com/engine/swarm/services/">Пример деплоя на сворм</a></h2>
+
+<p>Тут важно - связка с регистри (если используется). В примере связка с реигстри создается как сервис.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker login registry.example.com
+
+docker service create <span class="se">\</span>
+<span class="nt">--with-registry-auth</span> <span class="se">\</span>
+<span class="nt">--name</span> my_service <span class="se">\</span>
+registry.example.com/acme/my_image:latest
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">--with-registry-auth</code> обеспечивает передачу об аутентификации в частном регистри в контекст сворма.</p>
+
+<p>Деплой происходит с помозью <code class="language-plaintext highlighter-rouge">docker stack depoy</code> (<a href="https://docs.docker.com/engine/reference/commandline/stack_deploy/">ссылка на доку</a>)</p>
+
+<p>Вот так</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stack deploy <span class="o">[</span>OPTIONS] STACK
+</code></pre></div></div>
+
+<p>Или так с реигстри:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stack deploy <span class="nt">--with-registry-auth</span> STACK
+</code></pre></div></div>
+
+<p><a href="http://littlebigextra.com/installing-docker-images-private-repositories-docker-swarm/">Пример смотри тут</a></p>
+
+<h2 id="swarm-get-node-ip-and-container-ip-from-service">Swarm: Get Node Ip and Container IP from service</h2>
+
+<p>To get the node IP address you can use below command:</p>
+
+<p>docker node inspect self –format ‘{{.Status.Addr}}’</p>
+
+<p>To get the service IP address, Just add service-id in the end, like:</p>
+
+<p>docker node inspect self –format ‘{{.Status.Addr}}’ service-id</p>
+
+<p>To get the container IP address, use:</p>
+
+<p>docker inspect -f ‘{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}’ container-id</p>
+
+<p><a href="https://stackoverflow.com/a/56071286/15966204">Ссылка</a></p>
+
+<h2 id="полезные-материалы">Полезные материалы</h2>
+
+<ul>
+  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-cluster-of-docker-containers-with-docker-swarm-and-digitalocean-on-ubuntu-16-04">How to Create a Cluster of Docker Containers with Docker Swarm and DigitalOcean on Ubuntu 16.04</a></li>
+  <li><a href="https://lunar.computer/posts/docker-swarm-digitalocean/">Create a Docker Swarm Cluster on DigitalOcean</a></li>
+</ul>
 
 <p>[<a href="terraform" title="terraform">terraform</a>] - это [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>] docker swarm manager</p>
 

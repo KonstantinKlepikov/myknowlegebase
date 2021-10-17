@@ -1,5 +1,6 @@
 ---
 description: Как выбирать случайные объекты в python
+tags: python-standart-library
 ---
 # Random choice
 

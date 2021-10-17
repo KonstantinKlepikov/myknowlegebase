@@ -1,5 +1,6 @@
 ---
 description: Typing - анотация типов в python
+tags: python-standart-library
 ---
 # Typing
 
