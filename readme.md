@@ -20,7 +20,7 @@ Foam: Create New Note from Template
 
 Создание ссылок:
 
-1. copy the following text: https://google.com
+1. copy the following text: [https://google.com](https://google.com)
 2. select me and paste
 3. [select me and paste](https://google.com)
 

@@ -132,6 +132,262 @@
 
 <p>Подробнее <a href="https://dockerswarm.rocks/traefik/">тут</a></p>
 
+<h3 id="подготовка">Подготовка</h3>
+
+<ul>
+  <li>Connect via SSH to a manager node in your cluster (you might have only one node) that will have the Traefik service.</li>
+  <li>Create a network that will be shared with Traefik and the containers that should be accessible from the outside</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker network create <span class="nt">--driver</span><span class="o">=</span>overlay traefik-public
+</code></pre></div></div>
+
+<ul>
+  <li>Get the Swarm node ID of this node and store it in an environment variable</li>
+</ul>
+
+<p>export NODE_ID=$(docker info -f ‘{{.Swarm.NodeID}}’)</p>
+
+<ul>
+  <li>Create a tag in this node, so that Traefik is always deployed to the same node and uses the same volume</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker node update <span class="nt">--label-add</span> traefik-public.traefik-public-certificates<span class="o">=</span><span class="nb">true</span> <span class="nv">$NODE_ID</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Create an environment variable with your email, to be used for the generation of Let’s Encrypt certificates</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">EMAIL</span><span class="o">=</span>admin@example.com
+</code></pre></div></div>
+
+<ul>
+  <li>Create an environment variable with the domain you want to use for the Traefik UI (user interface)</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">DOMAIN</span><span class="o">=</span>traefik.sys.example.com
+</code></pre></div></div>
+
+<ul>
+  <li>You will access the Traefik dashboard at this domain, e.g. traefik.sys.example.com. So, make sure that your DNS records point the domain to one of the IPs of the cluster. Better if it is the IP where the Traefik service runs (the manager node you are currently connected to).</li>
+  <li>Create an environment variable with a username (you will use it for the HTTP Basic Auth for Traefik and Consul UIs)</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">USERNAME</span><span class="o">=</span>admin
+</code></pre></div></div>
+
+<ul>
+  <li>Create an environment variable with the password</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PASSWORD</span><span class="o">=</span>changethis
+</code></pre></div></div>
+
+<ul>
+  <li>Use openssl to generate the “hashed” version of the password and store it in an environment variable:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">HASHED_PASSWORD</span><span class="o">=</span><span class="si">$(</span>openssl passwd <span class="nt">-apr1</span> <span class="nv">$PASSWORD</span><span class="si">)</span>
+</code></pre></div></div>
+
+<p>(Optional): Alternatively, if you don’t want to put the password in an environment variable, you could type it interactively</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">HASHED_PASSWORD</span><span class="o">=</span><span class="si">$(</span>openssl passwd <span class="nt">-apr1</span><span class="si">)</span>
+Password: <span class="nv">$ </span>enter your password here
+Verifying - Password: <span class="nv">$ </span>re enter your password here
+</code></pre></div></div>
+
+<ul>
+  <li>You can check the contents with</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="nv">$HASHED_PASSWORD</span>
+</code></pre></div></div>
+
+<h3 id="next-create-docker-composeyml-file">Next, create <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file</h3>
+
+<ul>
+  <li>Download the file <code class="language-plaintext highlighter-rouge">traefik.yml</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-L</span> dockerswarm.rocks/traefik.yml <span class="nt">-o</span> traefik.yml
+</code></pre></div></div>
+
+<p>or create it by <code class="language-plaintext highlighter-rouge">nano</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano traefik.yml
+</code></pre></div></div>
+
+<p>Content</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">traefik</span><span class="pi">:</span>
+    <span class="c1"># Use the latest v2.2.x Traefik image available</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">traefik:v2.2</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="c1"># Listen on port 80, default for HTTP, necessary to redirect to HTTPS</span>
+      <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="c1"># Listen on port 443, default for HTTPS</span>
+      <span class="pi">-</span> <span class="s">443:443</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">placement</span><span class="pi">:</span>
+        <span class="na">constraints</span><span class="pi">:</span>
+          <span class="c1"># Make the traefik service run only on the node with this label</span>
+          <span class="c1"># as the node with it has the volume for the certificates</span>
+          <span class="pi">-</span> <span class="s">node.labels.traefik-public.traefik-public-certificates == </span><span class="no">true</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="c1"># Enable Traefik for this service, to make it available in the public network</span>
+        <span class="pi">-</span> <span class="s">traefik.enable=true</span>
+        <span class="c1"># Use the traefik-public network (declared below)</span>
+        <span class="pi">-</span> <span class="s">traefik.docker.network=traefik-public</span>
+        <span class="c1"># Use the custom label "traefik.constraint-label=traefik-public"</span>
+        <span class="c1"># This public Traefik will only use services with this label</span>
+        <span class="c1"># That way you can add other internal Traefik instances per stack if needed</span>
+        <span class="pi">-</span> <span class="s">traefik.constraint-label=traefik-public</span>
+        <span class="c1"># admin-auth middleware with HTTP Basic auth</span>
+        <span class="c1"># Using the environment variables USERNAME and HASHED_PASSWORD</span>
+        <span class="pi">-</span> <span class="s">traefik.http.middlewares.admin-auth.basicauth.users=${USERNAME?Variable not set}:${HASHED_PASSWORD?Variable not set}</span>
+        <span class="c1"># https-redirect middleware to redirect HTTP to HTTPS</span>
+        <span class="c1"># It can be re-used by other stacks in other Docker Compose files</span>
+        <span class="pi">-</span> <span class="s">traefik.http.middlewares.https-redirect.redirectscheme.scheme=https</span>
+        <span class="pi">-</span> <span class="s">traefik.http.middlewares.https-redirect.redirectscheme.permanent=true</span>
+        <span class="c1"># traefik-http set up only to use the middleware to redirect to https</span>
+        <span class="c1"># Uses the environment variable DOMAIN</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-http.rule=Host(`${DOMAIN?Variable not set}`)</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-http.entrypoints=http</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-http.middlewares=https-redirect</span>
+        <span class="c1"># traefik-https the actual router using HTTPS</span>
+        <span class="c1"># Uses the environment variable DOMAIN</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-https.rule=Host(`${DOMAIN?Variable not set}`)</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-https.entrypoints=https</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-https.tls=true</span>
+        <span class="c1"># Use the special Traefik service api@internal with the web UI/Dashboard</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-https.service=api@internal</span>
+        <span class="c1"># Use the "le" (Let's Encrypt) resolver created below</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-https.tls.certresolver=le</span>
+        <span class="c1"># Enable HTTP Basic auth, using the middleware created above</span>
+        <span class="pi">-</span> <span class="s">traefik.http.routers.traefik-public-https.middlewares=admin-auth</span>
+        <span class="c1"># Define the port inside of the Docker service to use</span>
+        <span class="pi">-</span> <span class="s">traefik.http.services.traefik-public.loadbalancer.server.port=8080</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="c1"># Add Docker as a mounted volume, so that Traefik can read the labels of other services</span>
+      <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+      <span class="c1"># Mount the volume to store the certificates</span>
+      <span class="pi">-</span> <span class="s">traefik-public-certificates:/certificates</span>
+    <span class="na">command</span><span class="pi">:</span>
+      <span class="c1"># Enable Docker in Traefik, so that it reads labels from Docker services</span>
+      <span class="pi">-</span> <span class="s">--providers.docker</span>
+      <span class="c1"># Add a constraint to only use services with the label "traefik.constraint-label=traefik-public"</span>
+      <span class="pi">-</span> <span class="s">--providers.docker.constraints=Label(`traefik.constraint-label`, `traefik-public`)</span>
+      <span class="c1"># Do not expose all Docker services, only the ones explicitly exposed</span>
+      <span class="pi">-</span> <span class="s">--providers.docker.exposedbydefault=false</span>
+      <span class="c1"># Enable Docker Swarm mode</span>
+      <span class="pi">-</span> <span class="s">--providers.docker.swarmmode</span>
+      <span class="c1"># Create an entrypoint "http" listening on port 80</span>
+      <span class="pi">-</span> <span class="s">--entrypoints.http.address=:80</span>
+      <span class="c1"># Create an entrypoint "https" listening on port 443</span>
+      <span class="pi">-</span> <span class="s">--entrypoints.https.address=:443</span>
+      <span class="c1"># Create the certificate resolver "le" for Let's Encrypt, uses the environment variable EMAIL</span>
+      <span class="pi">-</span> <span class="s">--certificatesresolvers.le.acme.email=${EMAIL?Variable not set}</span>
+      <span class="c1"># Store the Let's Encrypt certificates in the mounted volume</span>
+      <span class="pi">-</span> <span class="s">--certificatesresolvers.le.acme.storage=/certificates/acme.json</span>
+      <span class="c1"># Use the TLS Challenge for Let's Encrypt</span>
+      <span class="pi">-</span> <span class="s">--certificatesresolvers.le.acme.tlschallenge=true</span>
+      <span class="c1"># Enable the access log, with HTTP requests</span>
+      <span class="pi">-</span> <span class="s">--accesslog</span>
+      <span class="c1"># Enable the Traefik log, for configurations and errors</span>
+      <span class="pi">-</span> <span class="s">--log</span>
+      <span class="c1"># Enable the Dashboard and API</span>
+      <span class="pi">-</span> <span class="s">--api</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="c1"># Use the public network created to be shared between Traefik and</span>
+      <span class="c1"># any other service that needs to be publicly available with HTTPS</span>
+      <span class="pi">-</span> <span class="s">traefik-public</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="c1"># Create a volume to store the certificates, there is a constraint to make sure</span>
+  <span class="c1"># Traefik is always deployed to the same Docker node with the same volume containing</span>
+  <span class="c1"># the HTTPS certificates</span>
+  <span class="na">traefik-public-certificates</span><span class="pi">:</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="c1"># Use the previously created public network "traefik-public", shared with other</span>
+  <span class="c1"># services that need to be publicly available via this Traefik</span>
+  <span class="na">traefik-public</span><span class="pi">:</span>
+    <span class="na">external</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<h3 id="deploy">Deploy</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stack deploy <span class="nt">-c</span> traefik.yml traefik
+</code></pre></div></div>
+
+<h3 id="check">Check</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stack ps traefik
+</code></pre></div></div>
+
+<h3 id="getting-the-client-ip">Getting the client IP</h3>
+
+<p>If you need to read the client IP in your applications/stacks using the <code class="language-plaintext highlighter-rouge">X-Forwarded-For</code> or <code class="language-plaintext highlighter-rouge">X-Real-IP</code> headers provided by [<a href="traefik" title="Traefik">traefik</a>], you need to make Traefik listen directly, not through Docker Swarm mode, even while being deployed with Docker Swarm mode.</p>
+
+<p>For that, you need to publish the ports using “host” mode.</p>
+
+<p>So, the Docker Compose lines</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">80:80</span>
+    <span class="pi">-</span> <span class="s">443:443</span>
+</code></pre></div></div>
+
+<p>need to be</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">target</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">published</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="pi">-</span> <span class="na">target</span><span class="pi">:</span> <span class="m">443</span>
+    <span class="na">published</span><span class="pi">:</span> <span class="m">443</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">host</span>
+</code></pre></div></div>
+
+<p>You can use all the same instructions above, downloading the host-mode file</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-L</span> dockerswarm.rocks/traefik-host.yml <span class="nt">-o</span> traefik-host.yml
+</code></pre></div></div>
+
+<p>Or alternatively, copying it directly</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">traefik</span><span class="pi">:</span>
+    <span class="c1"># Use the latest Traefik image</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">traefik:v2.2</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="c1"># Listen on port 80, default for HTTP, necessary to redirect to HTTPS</span>
+      <span class="pi">-</span> <span class="na">target</span><span class="pi">:</span> <span class="m">80</span>
+        <span class="na">published</span><span class="pi">:</span> <span class="m">80</span>
+        <span class="na">mode</span><span class="pi">:</span> <span class="s">host</span>
+      <span class="c1"># Listen on port 443, default for HTTPS</span>
+      <span class="pi">-</span> <span class="na">target</span><span class="pi">:</span> <span class="m">443</span>
+        <span class="na">published</span><span class="pi">:</span> <span class="m">443</span>
+        <span class="na">mode</span><span class="pi">:</span> <span class="s">host</span>
+<span class="nn">...</span>
+</code></pre></div></div>
+
+<p>and then deploy</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stack deploy <span class="nt">-c</span> traefik-host.yml traefik
+</code></pre></div></div>
+
+<p>В [<a href="fastapi-template-backend" title="Fastapi template backend">fastapi-template-backend</a>] деплой traefik реализован из коробки.</p>
+
 <p><strong>Другие возможности:</strong></p>
 
 <ul>

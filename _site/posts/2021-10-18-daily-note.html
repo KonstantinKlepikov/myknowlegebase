@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Databases | My knowlege base</title>
+<title>Пррблемы с fastapi postgresql template | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Databases" />
+<meta property="og:title" content="Пррблемы с fastapi postgresql template" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Пакет python для ассинхронной работы с базами данных database" />
-<meta property="og:description" content="Пакет python для ассинхронной работы с базами данных database" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/databases.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/databases.html" />
+<meta name="description" content="Несколькор проблем в реализации темплейта fastapi" />
+<meta property="og:description" content="Несколькор проблем в реализации темплейта fastapi" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-10-18-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-10-18-daily-note.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/databases.html","headline":"Databases","description":"Пакет python для ассинхронной работы с базами данных database","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-10-18-daily-note.html","headline":"Пррблемы с fastapi postgresql template","description":"Несколькор проблем в реализации темплейта fastapi","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,18 +83,39 @@
 
       <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
 
-<h1 id="databases">Databases</h1>
+<h1 id="пррблемы-с-fastapi-postgresql-template">Пррблемы с fastapi postgresql template</h1>
 
-<p>Пакет python для ассинхронной работы с базами данных.</p>
+<h2 id="yamlloadwarning">YAMLLoadWarning</h2>
 
-<p><a href="https://github.com/encode/databases">Документация</a></p>
+<p>Specify the version of PyYaml &lt; 5.1.</p>
 
-<ul>
-  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
-  <li>[<a href="starlette" title="Starlette">starlette</a>]</li>
-  <li>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]</li>
-  <li>[<a href="fastapi" title="Fastapi">fastapi</a>]</li>
-</ul>
+<p><a href="https://github.com/tiangolo/docker-auto-labels/pull/4">link</a></p>
+
+<h2 id="servicespgadmindepends_on-must-be-a-list">services.pgadmin.depends_on must be a list</h2>
+
+<p>You have to delete all <code class="language-plaintext highlighter-rouge">depends_on</code> in your <code class="language-plaintext highlighter-rouge">docker-compose.yml.</code> As far as I know the are not mandatory for running :)</p>
+
+<p><a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/273">link</a></p>
+
+<h2 id="networkstraefik-public-additional-property-name-is-not-allowed">networks.traefik-public Additional property name is not allowed</h2>
+
+<p>Simple fix was to move the version up to <code class="language-plaintext highlighter-rouge">3.6</code> in the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> and that then enabled it to spin up the stack.</p>
+
+<p><a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/336">link</a></p>
+
+<h2 id="network-traefik-public-is-declared-as-external-but-could-not-be-found-you-need-to-create-a-swarm-scoped-network-before-the-stack-is-deployed">network “traefik-public” is declared as external, but could not be found. You need to create a swarm-scoped network before the stack is deployed</h2>
+
+<p><code class="language-plaintext highlighter-rouge">network create -d overlay traefik-public</code></p>
+
+<p><a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/221">link</a></p>
+
+<h2 id="traefik-version-problems">[<a href="../notes/traefik" title="Traefik">traefik</a>] version problems</h2>
+
+<p>Use <code class="language-plaintext highlighter-rouge">image: traefik:v2.2</code> in <code class="language-plaintext highlighter-rouge">dockero-compose.yml</code></p>
+
+<p><a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/pull/199">link</a></p>
+
+<p>[<a href="../notes/fastapi" title="Fastapi">fastapi</a>]</p>
 
 
 

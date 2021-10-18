@@ -18,7 +18,7 @@ Compose работает во всех средах: production, staging, develo
 
 Docker-compose.yml выглядит так:
 
-```yml
+```yaml
 version: "3.9"  # optional since v1.27.0
 services:
   web:
@@ -119,7 +119,7 @@ CMD ["flask", "run"]
 
 `docker-compose.yml`
 
-```yml
+```yaml
 version: "3.9"
 services:
   web:
@@ -160,7 +160,7 @@ docker-compose down
 
 Зададим привязку [[docker-bind-mound]] для web-сервиса
 
-```yml
+```yaml
 version: "3.9"
 services:
   web:
@@ -218,7 +218,7 @@ docker-compose ps
 
 The following is the `docker-compose.yml` for the application:
 
-```yml
+```yaml
 version: '2'
 services:
   web:
@@ -242,7 +242,7 @@ services:
 
 The first section defines the web service. It opens port 5000, sets environment variables defined in .env, and mounts our local code directory as a volume.
 
-```yml
+```yaml
 services:
   web:
     build: .
@@ -257,7 +257,7 @@ services:
 
 The next service is the [[postgres]] database, which opens port 5432 and uses the latest official Postgres image on Docker Hub.
 
-```yml
+```yaml
 db:
     image: postgres:latest
     ports:
@@ -266,7 +266,7 @@ db:
 
 This section defines our [[redis]] service, which opens port 6379 and uses the official Redis image on Docker Hub.
 
-```yml
+```yaml
 redis:
     image: redis:alpine
     ports:
