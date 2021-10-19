@@ -69,15 +69,27 @@ docker stack deploy --with-registry-auth STACK
 
 To get the node IP address you can use below command:
 
-docker node inspect self --format '\{\{.Status.Addr\}\}'
+```bash
+{% raw %}
+docker node inspect self --format '{{.Status.Addr}}'
+{% endraw %}
+```
 
 To get the service IP address, Just add service-id in the end, like:
 
-docker node inspect self --format '\{\{.Status.Addr\}\}' service-id
+```bash
+{% raw %}
+docker node inspect self --format '{{.Status.Addr}}' service-id
+{% endraw %}
+```
 
 To get the container IP address, use:
 
-docker inspect -f '\{\{range .NetworkSettings.Networks\}\}\{\{.IPAddress\}\}\{\{end\}\}' container-id
+```bash
+{% raw %}
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container-id
+{% endraw %}
+```
 
 [Ссылка](https://stackoverflow.com/a/56071286/15966204)
 

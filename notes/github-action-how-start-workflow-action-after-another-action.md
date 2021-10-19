@@ -77,6 +77,29 @@ jobs:
         run: ...
 ```
 
+Чтобы проверить, успешно или нет выполнен предыдущий workflow, можно запросить его статус ([подробнее тут](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#workflow_run)):
+
+```yaml
+{% raw %}
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      ...
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      ...
+{% endraw %}
+```
+
 Важным недостатком второго подхода является то, что оба экшена должны быть реализованы в ветке по умолчанию длят ого, чтобы второй исполнился. Плюс, очевидно, заключается в том, что можно отключить второй экшен из админки github, не влезая в код.
 
 [Ссылка на оверфло](https://stackoverflow.com/a/65698892/15966204)

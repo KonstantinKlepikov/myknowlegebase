@@ -143,15 +143,24 @@ registry.example.com/acme/my_image:latest
 
 <p>To get the node IP address you can use below command:</p>
 
-<p>docker node inspect self –format ‘{{.Status.Addr}}’</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+docker node inspect self <span class="nt">--format</span> <span class="s1">'{{.Status.Addr}}'</span>
+
+</code></pre></div></div>
 
 <p>To get the service IP address, Just add service-id in the end, like:</p>
 
-<p>docker node inspect self –format ‘{{.Status.Addr}}’ service-id</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+docker node inspect self <span class="nt">--format</span> <span class="s1">'{{.Status.Addr}}'</span> service-id
+
+</code></pre></div></div>
 
 <p>To get the container IP address, use:</p>
 
-<p>docker inspect -f ‘{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}’ container-id</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+docker inspect <span class="nt">-f</span> <span class="s1">'{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'</span> container-id
+
+</code></pre></div></div>
 
 <p><a href="https://stackoverflow.com/a/56071286/15966204">Ссылка</a></p>
 

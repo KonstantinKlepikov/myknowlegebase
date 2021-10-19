@@ -155,6 +155,28 @@
         <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
 </code></pre></div></div>
 
+<p>Чтобы проверить, успешно или нет выполнен предыдущий workflow, можно запросить его статус (<a href="https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#workflow_run">подробнее тут</a>):</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">workflow_run</span><span class="pi">:</span>
+    <span class="na">workflows</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">Build"</span><span class="pi">]</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">completed</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">on-success</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">${{ github.event.workflow_run.conclusion == 'success' }}</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="s">...</span>
+  <span class="na">on-failure</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">${{ github.event.workflow_run.conclusion == 'failure' }}</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="s">...</span>
+
+</code></pre></div></div>
+
 <p>Важным недостатком второго подхода является то, что оба экшена должны быть реализованы в ветке по умолчанию длят ого, чтобы второй исполнился. Плюс, очевидно, заключается в том, что можно отключить второй экшен из админки github, не влезая в код.</p>
 
 <p><a href="https://stackoverflow.com/a/65698892/15966204">Ссылка на оверфло</a></p>
