@@ -5,6 +5,24 @@ tags: linux
 ---
 # Linux
 
+Как перезагрузить сервер:
+
+```shel
+sudo reboot
+```
+
+или
+
+```shell
+sudo shutdown -r now
+```
+
+Последний вариант предпочтительнее, так как позволяет указать причину перезагрузки
+
+```shell
+sudo shutdown -r now 'System maintenance'
+```
+
 - [[linux-scp]]
 - [[linux-snap]]
 

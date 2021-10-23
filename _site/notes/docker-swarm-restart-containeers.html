@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Digital ocean dns management | My knowlege base</title>
+<title>Docker-swarm restart services | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Digital ocean dns management" />
+<meta property="og:title" content="Docker-swarm restart services" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Управление ns-записями для дроплетов в digital ocean" />
-<meta property="og:description" content="Управление ns-записями для дроплетов в digital ocean" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-dns-management.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-dns-management.html" />
+<meta name="description" content="Как перезапускать сервисы в docker-swarm mode" />
+<meta property="og:description" content="Как перезапускать сервисы в docker-swarm mode" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-swarm-restart-containeers.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-swarm-restart-containeers.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-dns-management.html","headline":"Digital ocean dns management","description":"Управление ns-записями для дроплетов в digital ocean","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/docker-swarm-restart-containeers.html","headline":"Docker-swarm restart services","description":"Как перезапускать сервисы в docker-swarm mode","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,18 +83,18 @@
 
       <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
 
-<h1 id="digital-ocean-dns-management">Digital ocean dns management</h1>
+<h1 id="docker-swarm-restart-services">Docker-swarm restart services</h1>
 
-<ul>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars">How To Point to DigitalOcean Nameservers From Common Domain Registrars</a></li>
-  <li><a href="https://docs.digitalocean.com/products/networking/dns/how-to/manage-records/">How to Create, Edit, and Delete DNS Records</a></li>
-  <li><a href="https://docs.digitalocean.com/products/networking/dns/how-to/add-subdomain/">How to Add a Subdomain to Your Domain</a></li>
-  <li><a href="https://www.digitalocean.com/community/questions/how-to-add-www-record-to-domain">How to add www record to domain</a></li>
-</ul>
+<p>Для [<a href="docker-swarm" title="Docker swarm">docker-swarm</a>] нет понятного способа рестарта множества контейнеров. Используется <code class="language-plaintext highlighter-rouge">docker service update</code> - <a href="https://docs.docker.com/engine/reference/commandline/service_update/">смотри доку</a></p>
 
-<p>Проверить ns <a href="https://www.digitalocean.com/community/tools/dns">можно через веб-сервис</a></p>
+<p>Примерно вот так:</p>
 
-<p>[<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker service update <span class="nt">--force</span> mycontainers
+</code></pre></div></div>
+
+<p>Контейнеры d [<a href="../lists/docker" title="Docker">docker</a>] перезапускаются через <code class="language-plaintext highlighter-rouge">docker container restart</code>. <a href="https://docs.docker.com/engine/reference/commandline/container_restart/">Документация</a></p>
+
+<p>[<a href="docker-networks" title="Docker networks">docker-networks</a>]</p>
 
 
 

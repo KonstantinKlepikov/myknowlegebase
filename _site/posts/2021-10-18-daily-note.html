@@ -115,6 +115,23 @@
 
 <p><a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/pull/199">link</a></p>
 
+<h2 id="traefik-proxy-deploy">[<a href="../notes/traefik" title="Traefik">traefik</a>] proxy deploy</h2>
+
+<p>Важно обратить внимание, что для [<a href="../notes/fastapi-template-deployment" title="Fastapi template deployment">fastapi-template-deployment</a>] используется два сервиса [<a href="../notes/traefik" title="Traefik">traefik</a>] - один публичный, второй внутренний. Если пренебречь этим, трафик в сеть и из сети не пойдет.</p>
+
+<p>Вначале необходимо задеплоить сервис traefik так, как описано в [<a href="../notes/docker-swarm-rocks" title="Docker swarm rocks">docker-swarm-rocks</a>] в разделе про traefik. Затем нужно реализовать стек проекта так, как указано в документации темплейта [<a href="../notes/fastapi-template-deployment" title="Fastapi template deployment">fastapi-template-deployment</a>]</p>
+
+<p>Прорблема обсуждается тут: <a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/240">Clarification on deployment with Traefik, Docker-Compose, Swarm mode (from dockerswarm.rocks)</a> и тут: <a href="https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/116">Exposing ports for docker swarm</a></p>
+
+<blockquote>
+  <ul>
+    <li>traefik that is public facing (the one in <a href="https://dockeswarm.rocks">dockeswarm.rocks</a></li>
+    <li>proxy coming from this template which does not expose anything publicly (as it sits behind traefik)</li>
+  </ul>
+</blockquote>
+
+<p>Кроме того, для всех сабдоменов из стека [<a href="../notes/fastapi-template-deployment" title="Fastapi template deployment">fastapi-template-deployment</a>] необходимо создать A-записи, иначе сервисы не будут доступны.И еще нужно прописать CNAME для <code class="language-plaintext highlighter-rouge">www</code> - иначе не будут подписаны сертификаты lets enscript и https не будет сертифицирован. Как ээто сделать на [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>] читай тут: [<a href="../notes/digital-ocean-dns-management" title="Digital ocean dns management">digital-ocean-dns-management</a>]</p>
+
 <p>[<a href="../notes/fastapi" title="Fastapi">fastapi</a>]</p>
 
 

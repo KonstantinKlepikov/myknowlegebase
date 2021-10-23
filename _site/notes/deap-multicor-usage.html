@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Digital ocean dns management | My knowlege base</title>
+<title>Multicor for [[deap]] | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Digital ocean dns management" />
+<meta property="og:title" content="Multicor for [[deap]]" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Управление ns-записями для дроплетов в digital ocean" />
-<meta property="og:description" content="Управление ns-записями для дроплетов в digital ocean" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-dns-management.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-dns-management.html" />
+<meta name="description" content="Использование нескольких процессоров во фреймворке DEAP" />
+<meta property="og:description" content="Использование нескольких процессоров во фреймворке DEAP" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/deap-multicor-usage.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/deap-multicor-usage.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/digital-ocean-dns-management.html","headline":"Digital ocean dns management","description":"Управление ns-записями для дроплетов в digital ocean","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/deap-multicor-usage.html","headline":"Multicor for [[deap]]","description":"Использование нескольких процессоров во фреймворке DEAP","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,18 +83,29 @@
 
       <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
 
-<h1 id="digital-ocean-dns-management">Digital ocean dns management</h1>
+<h1 id="multicor-for-deap">Multicor for [<a href="deap" title="Deap - генетические алгоритмы на python">deap</a>]</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Pool</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"map"</span><span class="p">,</span> <span class="n">pool</span><span class="p">.</span><span class="nb">map</span><span class="p">)</span>
+
+<span class="c1"># Continue on with the evolutionary algorithm
+</span></code></pre></div></div>
+
+<p>Не забудь <a href="https://stackoverflow.com/a/61963089/15966204">закрыть процесс</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pool</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part4.html">Ссылка на статью документации</a></p>
+
+<p><a href="https://github.com/DEAP/deap/blob/master/examples/ga/onemax_mp.py">Пример</a></p>
 
 <ul>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars">How To Point to DigitalOcean Nameservers From Common Domain Registrars</a></li>
-  <li><a href="https://docs.digitalocean.com/products/networking/dns/how-to/manage-records/">How to Create, Edit, and Delete DNS Records</a></li>
-  <li><a href="https://docs.digitalocean.com/products/networking/dns/how-to/add-subdomain/">How to Add a Subdomain to Your Domain</a></li>
-  <li><a href="https://www.digitalocean.com/community/questions/how-to-add-www-record-to-domain">How to add www record to domain</a></li>
+  <li>[<a href="deap" title="Deap - генетические алгоритмы на python">deap</a>]</li>
+  <li>[<a href="deap-docs" title="Deap документация">deap-docs</a>]</li>
 </ul>
-
-<p>Проверить ns <a href="https://www.digitalocean.com/community/tools/dns">можно через веб-сервис</a></p>
-
-<p>[<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]</p>
 
 
 

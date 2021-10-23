@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Docker shutdown services | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Docker shutdown services" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Как убрать неработающие сервисы в docker" />
+<meta property="og:description" content="Как убрать неработающие сервисы в docker" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-shutdown-services.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-shutdown-services.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/docker-shutdown-services.html","headline":"Docker shutdown services","description":"Как убрать неработающие сервисы в docker","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="page-header" role="banner">
+    <h1 class="project-name">My knowlege base</h1>
+    <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+    <p class="project-tagline">Блог автора: <a class="project-tagline header-links" href="https://konstantinklepikov.github.io/">My deep learning</a></p>
+</header>
+
+    <main id="content" class="main-content" role="main">
+
+      <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+
+<h1 id="docker-shutdown-services">Docker shutdown services</h1>
+
+<p>Используя <code class="language-plaintext highlighter-rouge">docker service ps</code> можно получить простыню из погашеных сервисов. Как-то вот так:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a0w77kj0k6jfg4r9g4nz47zzg   <span class="se">\_</span> TestService2.1   TestImage:v1  W1  Shutdown       Shutdown 36 minutes ago
+2of4mc63ekzbib01w3x7q6sdm   <span class="se">\_</span> TestService2.2   TestImage:v1  W2  Shutdown       Shutdown 37 minutes ago
+495frrpza5pxt205o1594x54a   <span class="se">\_</span> TestService2.3   TestImage:v1  W1  Shutdown       Shutdown 36 minutes ago
+57l0gsqd26u2e5gdj30w8mcn9   <span class="se">\_</span> TestService2.4   TestImage:v1  M1  Shutdown       Shutdown 36 minutes ago
+baoe1i79fswb34ydwbpafg6tm   <span class="se">\_</span> TestService2.5   TestImage:v1  M3  Shutdown       Shutdown 35 minutes ago
+3uxi7kwxb73z69km6s17son58   <span class="se">\_</span> TestService2.6   TestImage:v1  M2  Shutdown       Shutdown 37 minutes ago
+99cg4arnt1y52nd8d422bdu49   <span class="se">\_</span> TestService2.7   TestImage:v1  M3  Shutdown       Shutdown 36 minutes ago
+cq5716jqp40h6jugo1j9ilzwp   <span class="se">\_</span> TestService2.8   TestImage:v1  M1  Shutdown       Shutdown 35 minutes ago
+awlz1kxbrjk51dey7frm14d8u   <span class="se">\_</span> TestService2.9   TestImage:v1  W3  Shutdown       Shutdown 35 minutes ago
+4xdi9a1jweyehfqlt76uynf3i   <span class="se">\_</span> TestService2.10  TestImage:v1  M2  Shutdown       Shutdown 36 minutes ago
+eo4t6i0gaj5i294fcdnb3qncq   <span class="se">\_</span> TestService2.11  TestImage:v1  W3  Shutdown       Shutdown 35 minutes ago
+3ydeuxdjquulv5xj94b9ovuwu   <span class="se">\_</span> TestService2.12  TestImage:v1  W1  Shutdown       Shutdown 36 minutes ago
+</code></pre></div></div>
+
+<p>Дело в том, что это просто лог и реально как-то ресурсы на сервере не заняты. Избавиться от избыточной информации можно так:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker swarm update <span class="nt">--task-history-limit</span> 2
+</code></pre></div></div>
+
+<p>Придется перезагружать стек. <a href="https://stackoverflow.com/a/41754519/15966204">Ссылка на обсуждение</a></p>
+
+<p>Удалить же старые данные можно с помощью <code class="language-plaintext highlighter-rouge">docker system prune</code>. Ээто удалит all unused containers, networks, images (both dangling and unreferenced), and optionally, volumes. <a href="https://docs.docker.com/engine/reference/commandline/system_prune/">Ссылка на доку</a></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker system prune <span class="nt">--all</span>
+</code></pre></div></div>
+
+<ul>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="docker-swarm" title="Docker swarm">docker-swarm</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную <<<</a></p>
+</div>
+
+
+      <footer class="site-footer">
+    <span class="site-footer-owner"><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></span>
+    <span class="site-footer-credits">Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></span>
+</footer>
+
+    </main>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
