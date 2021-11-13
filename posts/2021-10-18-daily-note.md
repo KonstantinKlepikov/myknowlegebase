@@ -1,8 +1,8 @@
 ---
-description: Несколькор проблем в реализации темплейта fastapi
+description: Несколько проблем в реализации темплейта fastapi
 category: post
 ---
-# Пррблемы с fastapi postgresql template
+# Проблемы с fastapi postgresql template
 
 ## YAMLLoadWarning
 

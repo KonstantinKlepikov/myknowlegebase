@@ -1,7 +1,7 @@
 ---
 description: Список заметок о компьютерном зрении и других задачах ML
 category: list
-title: Computer visions and other tascs
+title: Computer visions and other ml tascs
 tags: ml
 ---
 - [[CV-date-of-image]]
