@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Структуры данных в python - enumerate | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Структуры данных в python - enumerate" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Enumerate в python" />
+<meta property="og:description" content="Enumerate в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/enumerate.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/enumerate.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/enumerate.html","headline":"Структуры данных в python - enumerate","description":"Enumerate в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="структуры-данных-в-python---enumerate">Структуры данных в python - enumerate</h1>
+
+<p>Enum определяет перечислимый тип данных с возможностями итерации и сравнения элементов. Позволяет создавать символические имена для элементов (альтернатива строковым литералам словарей и индексам списков)</p>
+
+<p><a href="https://docs.python.org/3/library/enum.html?highlight=enum#module-enum">Сссылка на ст.библиотеку</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">enum</span>
+
+<span class="k">class</span> <span class="nc">BugStatus</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">Enum</span><span class="p">):</span>
+
+    <span class="n">new</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">incomplete</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">wont_fix</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">in_progress</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">fix_committed</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">fix_released</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Member name: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">BugStatus</span><span class="p">.</span><span class="n">wont_fix</span><span class="p">.</span><span class="n">name</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Member value: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">BugStatus</span><span class="p">.</span><span class="n">wont_fix</span><span class="p">.</span><span class="n">value</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">BugStatus</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Member</span> <span class="n">name</span><span class="p">:</span> <span class="n">wont_fix</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Member</span> <span class="n">value</span><span class="p">:</span> <span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Member</span> <span class="n">value</span><span class="p">:</span> <span class="mi">7</span>
+</code></pre></div></div>
+
+<p>При этом элементы преобразуются в экземпляры классов, которые имеют свойство <code class="language-plaintext highlighter-rouge">name</code> и <code class="language-plaintext highlighter-rouge">value</code></p>
+
+<p>По <code class="language-plaintext highlighter-rouge">Enum</code> можно итерировать. Элементы будут предоставлены в порядке, в котором они объявлены в классе</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">BugStatus</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Так как элементы неупорядочены, то доступно только сравнение <code class="language-plaintext highlighter-rouge">==</code> или <code class="language-plaintext highlighter-rouge">is</code>. При попытке сравнить больше/меньше будет выброшено исключение <code class="language-plaintext highlighter-rouge">TypeError</code>. Чтобы сравнить элементы или использовать другое поведение, эквивалентное поведению “как числа”, надо использовать <code class="language-plaintext highlighter-rouge">IntEnum</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">IntEnum</span><span class="p">):</span>    
+    <span class="n">circle</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">squire</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">print</span><span class="p">([</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">][</span><span class="n">Shape</span><span class="p">.</span><span class="n">circle</span><span class="p">])</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<p>Элементы перечисления, которым соответствют одинаковые значения, ведут себя как алиасные ссылки на этот объект - повторяющиеся объекты в итератор Enum не добавляются. Каноническим является то имя, которое было первым связано со значением.</p>
+
+<p>Уникальность значений можно “требовать” с помощью декоратора <code class="language-plaintext highlighter-rouge">@enumunic</code> - в случае нахождения неуникальных значений будет поднято исключение <code class="language-plaintext highlighter-rouge">ValueError</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">enum</span><span class="p">.</span><span class="n">unique</span>
+<span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">circle</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">squire</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">triangle</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+</code></pre></div></div>
+
+<p>Перечисление можно создавать <a href="https://docs.python.org/3/library/enum.html?highlight=enum#programmatic-access-to-enumeration-members-and-their-attributes">программным способом</a>. Доступен также <a href="https://docs.python.org/3/library/enum.html?highlight=enum#functional-api">функциональный апи</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Enum</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">'NewEnumName'</span><span class="p">,</span> <span class="n">names</span><span class="o">=&lt;</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s">'...'</span><span class="p">,</span> <span class="n">qualname</span><span class="o">=</span><span class="s">'...'</span><span class="p">,</span> <span class="nb">type</span><span class="o">=&lt;</span><span class="n">mixed</span><span class="o">-</span><span class="ow">in</span> <span class="n">class</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># names API
+</span><span class="s">'RED GREEN BLUE'</span> <span class="o">|</span> <span class="s">'RED,GREEN,BLUE'</span> <span class="o">|</span> <span class="s">'RED, GREEN, BLUE'</span>
+<span class="p">[</span><span class="s">'RED'</span><span class="p">,</span> <span class="s">'GREEN'</span><span class="p">,</span> <span class="s">'BLUE'</span><span class="p">]</span>
+<span class="p">[(</span><span class="s">'CYAN'</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">'MAGENTA'</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s">'YELLOW'</span><span class="p">,</span> <span class="mi">6</span><span class="p">)]</span>
+<span class="p">{</span><span class="s">'CHARTREUSE'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'SEA_GREEN'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s">'ROSEMARY'</span><span class="p">:</span> <span class="mi">42</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Перечисление может быть сериализовано и для них доступны сабклассы только, если в родительском классе не реализовано ни одного члена. Для классов <code class="language-plaintext highlighter-rouge">Enum</code> доступно создание собственных методлов, включая <code class="language-plaintext highlighter-rouge">__init__</code></p>
+
+<h2 id="производные">Производные</h2>
+
+<h3 id="flag-и-intflag">Flag и IntFlag</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Может быть скомбинирован с побитовыми операторами (&amp;,</td>
+      <td>, ^, ~). IntFlag позволяет оперировать как с числами.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">Flag</span><span class="p">):</span>
+    <span class="n">RED</span> <span class="o">=</span> <span class="n">enum</span><span class="p">.</span><span class="n">auto</span><span class="p">()</span>
+    <span class="n">BLUE</span> <span class="o">=</span> <span class="n">enum</span><span class="p">.</span><span class="n">auto</span><span class="p">()</span>
+    <span class="n">GREEN</span> <span class="o">=</span> <span class="n">enum</span><span class="p">.</span><span class="n">auto</span><span class="p">()</span>
+    <span class="n">WHITE</span> <span class="o">=</span> <span class="n">RED</span> <span class="o">|</span> <span class="n">BLUE</span> <span class="o">|</span> <span class="n">GREEN</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">WHITE</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">7</span>
+</code></pre></div></div>
+
+<p>В предыдущем примере реализован <code class="language-plaintext highlighter-rouge">auto()</code> обеспечивающий автоматическое присваивание номеров.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Perm</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">IntFlag</span><span class="p">):</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="mi">1</span>
+    
+<span class="n">RW</span> <span class="o">=</span> <span class="n">Perm</span><span class="p">.</span><span class="n">R</span> <span class="o">|</span> <span class="n">Perm</span><span class="p">.</span><span class="n">W</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Perm</span><span class="p">.</span><span class="n">R</span> <span class="ow">in</span> <span class="n">RW</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Для большинства нового кода настоятельно рекомендуются <code class="language-plaintext highlighter-rouge">Enum</code> и <code class="language-plaintext highlighter-rouge">Flag</code>, поскольку <code class="language-plaintext highlighter-rouge">IntEnum</code> и <code class="language-plaintext highlighter-rouge">IntFlag</code> нарушают некоторые семантические соглашения перечислений (будучи сопоставимыми с целыми числами). <code class="language-plaintext highlighter-rouge">IntEnum</code> и <code class="language-plaintext highlighter-rouge">IntFlag</code> следует использовать только в тех случаях, когда <code class="language-plaintext highlighter-rouge">Enum</code> и <code class="language-plaintext highlighter-rouge">Flag</code> не подходят; например, когда целочисленные константы заменяются перечислениями, или для взаимодействия с другими объектами.</p>
+
+<p>В целом значения <code class="language-plaintext highlighter-rouge">Enum</code> не ограничены числами, а сам класс может включать любые методы.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BugStatus</span><span class="p">(</span><span class="n">enum</span><span class="p">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="p">[</span><span class="s">'incomplete'</span><span class="p">,</span>
+               <span class="s">'invalid'</span><span class="p">,</span>
+               <span class="s">'wont_fix'</span><span class="p">,</span>
+               <span class="s">'in_progress'</span><span class="p">])</span>
+    <span class="n">incomplete</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">[</span><span class="s">'new'</span><span class="p">,</span> <span class="s">'wont_fix'</span><span class="p">])</span>
+    <span class="n">invalid</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="s">'new'</span><span class="p">])</span>
+    <span class="n">wont_fix</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="s">'new'</span><span class="p">])</span>
+    <span class="n">in_progress</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s">'new'</span><span class="p">,</span> <span class="s">'fix_committed'</span><span class="p">])</span>
+    <span class="n">fix_committed</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s">'in_progress'</span><span class="p">,</span> <span class="s">'fix_released'</span><span class="p">])</span>
+    <span class="n">fix_released</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="s">'new'</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">transitions</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">num</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">transitions</span> <span class="o">=</span> <span class="n">transitions</span>
+
+    <span class="k">def</span> <span class="nf">can_transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_state</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">new_state</span><span class="p">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">transitions</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">BugStatus</span><span class="p">.</span><span class="n">in_progress</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BugStatus</span><span class="p">.</span><span class="n">in_progress</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Value:'</span><span class="p">,</span> <span class="n">BugStatus</span><span class="p">.</span><span class="n">in_progress</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Value</span><span class="p">:</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s">'new'</span><span class="p">,</span> <span class="s">'fix_committed'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Custom attribute:'</span><span class="p">,</span> <span class="n">BugStatus</span><span class="p">.</span><span class="n">in_progress</span><span class="p">.</span><span class="n">transitions</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Custom</span> <span class="n">attribute</span><span class="p">:</span> <span class="p">[</span><span class="s">'new'</span><span class="p">,</span> <span class="s">'fix_committed'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Using attribute:'</span><span class="p">,</span>
+      <span class="n">BugStatus</span><span class="p">.</span><span class="n">in_progress</span><span class="p">.</span><span class="n">can_transition</span><span class="p">(</span><span class="n">BugStatus</span><span class="p">.</span><span class="n">new</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Using</span> <span class="n">attribute</span><span class="p">:</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Больше примеров <a href="https://docs.python.org/3/library/enum.html?highlight=enum#interesting-examples">тут</a></p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

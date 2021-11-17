@@ -1,5 +1,6 @@
 ---
 description: Как пользоваться редактором nano
+tags: linux
 ---
 # Nano
 
