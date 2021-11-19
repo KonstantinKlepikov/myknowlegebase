@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>ChainMap | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="ChainMap" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="ChainMap - последовательность словарей со свойствами стека в python" />
+<meta property="og:description" content="ChainMap - последовательность словарей со свойствами стека в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/chainmap.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/chainmap.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/chainmap.html","headline":"ChainMap","description":"ChainMap - последовательность словарей со свойствами стека в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="chainmap">ChainMap</h1>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">ChainMap</code> предназначен для быстрого связывания нескольких отображений, чтобы их можно было рассматривать как единое целое. Это намного быстрее, чем создание нового словаря и выполнение нескольких вызовов <code class="language-plaintext highlighter-rouge">update()</code>.</p>
+
+<p>Класс может использоваться для моделирования вложенных областей видимости и полезен при создании шаблонов. Класс группирует несколько словарей вместе для создания единого обновляемого представления. Если никаких словарей не передано - формируется отображение с единственным вложенным пустым словарем, так что новый <code class="language-plaintext highlighter-rouge">ChainMap</code> всегда имеет хотя бы одно отображение.</p>
+
+<p>Cопоставления хранятся в списке. Этот список доступен и может обновлен с помощью атрибута <code class="language-plaintext highlighter-rouge">maps</code>. Запросы к представлению последовательно ищут во всех отображених, пока не будет найден верный ключ. Запись, обновление и удаление работают только с первым отображением.</p>
+
+<p><code class="language-plaintext highlighter-rouge">ChainMap</code> реализует ссылки на включения. Это значит, если одно из отображений будет обновлено, эти изменения будут отражены в <code class="language-plaintext highlighter-rouge">ChainMap</code>. Поддерживаются все обычные словарные методы. Кроме того, есть атрибут <code class="language-plaintext highlighter-rouge">map</code>, метод для создания новых подконтекстов и свойство для доступа ко всем отображениям, кроме первого.</p>
+
+<p><a href="https://docs.python.org/3/library/collections.html#chainmap-objects">Документация</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'C'</span><span class="p">}</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s">'b'</span><span class="p">:</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'D'</span><span class="p">}</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">ChainMap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Keys = {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">keys</span><span class="p">())))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Values = {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">values</span><span class="p">())))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Values</span> <span class="o">=</span> <span class="p">[</span><span class="s">'B'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">,</span> <span class="s">'A'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Items:'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">m</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'{} = {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Items</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">B</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">C</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'"d" in m: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">((</span><span class="s">'d'</span> <span class="ow">in</span> <span class="n">m</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">"d"</span> <span class="ow">in</span> <span class="n">m</span><span class="p">:</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<p>Обновить значения можно как во вложениях, так и непосредственно. Во втором случае затрагивается только первое из отображений.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'C'</span><span class="p">}</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s">'b'</span><span class="p">:</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'D'</span><span class="p">}</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">ChainMap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="s">'c'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'E'</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s">'c'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">E</span>
+
+<span class="n">m</span><span class="p">[</span><span class="s">'c'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'Z'</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s">'c'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Z</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'Z'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">new_child()</code> позволяет создавать новый экземпляр <code class="language-plaintext highlighter-rouge">ChainMap</code> с однои дополнительным отображением. Новое отображение можно заполнить сразу, передав в качестве аргумента метода.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'C'</span><span class="p">}</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="s">'b'</span><span class="p">:</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'D'</span><span class="p">}</span>
+
+<span class="n">m1</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">ChainMap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">m2</span> <span class="o">=</span> <span class="n">m1</span><span class="p">.</span><span class="n">new_child</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ChainMap</span><span class="p">({},</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'C'</span><span class="p">},</span> <span class="p">{</span><span class="s">'b'</span><span class="p">:</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'D'</span><span class="p">})</span>
+
+<span class="n">m3</span> <span class="o">=</span> <span class="n">m2</span><span class="p">.</span><span class="n">new_child</span><span class="p">({</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'E'</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ChainMap</span><span class="p">({</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'E'</span><span class="p">},</span> <span class="p">{},</span> <span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'C'</span><span class="p">},</span> <span class="p">{</span><span class="s">'b'</span><span class="p">:</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">:</span> <span class="s">'D'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Методе <code class="language-plaintext highlighter-rouge">parents</code> возвращает новый экземпляр <code class="language-plaintext highlighter-rouge">ChainMap</code> со всеми представлениями, за исключением первого.</p>
+
+<p>Примеры реализации <code class="language-plaintext highlighter-rouge">ChainMap</code> смотри <a href="https://docs.python.org/3/library/collections.html#chainmap-examples-and-recipes">тут</a></p>
+
+<p>Пример вложенного контекста</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">()</span>        <span class="c1"># Create root context
+</span><span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">new_child</span><span class="p">()</span>     <span class="c1"># Create nested child context
+</span><span class="n">e</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">new_child</span><span class="p">()</span>     <span class="c1"># Child of c, independent from d
+</span><span class="n">e</span><span class="p">.</span><span class="n">maps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>             <span class="c1"># Current context dictionary -- like Python's locals()
+</span><span class="n">e</span><span class="p">.</span><span class="n">maps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>            <span class="c1"># Root context -- like Python's globals()
+</span><span class="n">e</span><span class="p">.</span><span class="n">parents</span>             <span class="c1"># Enclosing context chain -- like Python's nonlocals
+</span>
+<span class="n">d</span><span class="p">[</span><span class="s">'x'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>            <span class="c1"># Set value in current context
+</span><span class="n">d</span><span class="p">[</span><span class="s">'x'</span><span class="p">]</span>                <span class="c1"># Get first key in the chain of contexts
+</span><span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="s">'x'</span><span class="p">]</span>            <span class="c1"># Delete from current context
+</span><span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>               <span class="c1"># All nested values
+</span><span class="n">k</span> <span class="ow">in</span> <span class="n">d</span>                <span class="c1"># Check all nested values
+</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>                <span class="c1"># Number of nested values
+</span><span class="n">d</span><span class="p">.</span><span class="n">items</span><span class="p">()</span>             <span class="c1"># All nested items
+</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>               <span class="c1"># Flatten into a regular dictionary
+</span></code></pre></div></div>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
