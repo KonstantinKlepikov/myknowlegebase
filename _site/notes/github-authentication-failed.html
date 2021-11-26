@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Ci - непрервыная интеграция | My knowlege base</title>
+<title>Github Authentication Failed | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Ci - непрервыная интеграция" />
+<meta property="og:title" content="Github Authentication Failed" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Список заметок о непрерывной интеграции" />
-<meta property="og:description" content="Список заметок о непрерывной интеграции" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/lists/cl.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/lists/cl.html" />
+<meta name="description" content="Ошибка аутентификации на Github" />
+<meta property="og:description" content="Ошибка аутентификации на Github" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/github-authentication-failed.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/github-authentication-failed.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/lists/cl.html","headline":"Ci - непрервыная интеграция","description":"Список заметок о непрерывной интеграции","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/github-authentication-failed.html","headline":"Github Authentication Failed","description":"Ошибка аутентификации на Github","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,19 +83,31 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="ci---непрервыная-интеграция">Ci - непрервыная интеграция</h1>
+      <h1 id="github-authentication-failed">Github Authentication Failed</h1>
+
+<p>Редкая, но противная ошибка, связанная с потерей связи локальных репозиториев с удаленными</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git remote add origin git@github.com:that/this.git
+fatal: remote origin already exists.
+
+<span class="nv">$ </span>git push <span class="nt">-u</span> origin master
+fatal: <span class="s1">'that'</span> does not appear to be a git repository
+fatal: Could not <span class="nb">read </span>from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+</code></pre></div></div>
+
+<p>При этом на запрос по SSH Github возвращает success. В этом случае необходимо переопределить ssh url дл remote origin. Делается это так</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote set-url origin git@github.com:that/this.git
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/26955444/15966204">источник</a></p>
 
 <ul>
-  <li>[<a href="../notes/fabric" title="Fabric">fabric</a>]</li>
-  <li>[<a href="../notes/jenkins" title="Jenkins">jenkins</a>]</li>
-  <li>[<a href="../notes/github-action" title="Githunb action">github-action</a>]</li>
-  <li>[<a href="../notes/fastapi-template-deployment" title="Fastapi template deployment">fastapi-template-deployment</a>]</li>
-  <li>[<a href="../notes/digital-ocean-doctl" title="Digital ocean doctl">digital-ocean-doctl</a>]</li>
-  <li>[<a href="../notes/workflow-types" title="Про варианты git workflow">workflow-types</a>]</li>
-  <li>[<a href="../notes/github-branch-protection" title="Githunb branch protection">github-branch-protection</a>]</li>
-  <li>[<a href="../notes/github-action-how-start-workflow-action-after-another-action" title="How start second github action after success first">github-action-how-start-workflow-action-after-another-action</a>]</li>
-  <li>[<a href="../notes/github-authentication" title="Github authentication">github-authentication</a>]</li>
-  <li>[<a href="../notes/github-authentication-failed" title="Github Authentication Failed">github-authentication-failed</a>]</li>
+  <li>[<a href="../lists/git" title="Git">git</a>]</li>
+  <li>[<a href="github-authentication" title="Github authentication">github-authentication</a>]</li>
 </ul>
 
 

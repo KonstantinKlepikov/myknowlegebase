@@ -21,12 +21,11 @@ class BugStatus(enum.Enum):
     fix_committed = 2
     fix_released = 1
 
-print('\nMember name: {}'.format(BugStatus.wont_fix.name))
-print('Member value: {}'.format(BugStatus.wont_fix.value))
-print(BugStatus(1))
-
+print('Member name: {}'.format(BugStatus.wont_fix.name))
 >>> Member name: wont_fix
+print('Member value: {}'.format(BugStatus.wont_fix.value))
 >>> Member value: 4
+print(BugStatus(1))
 >>> Member value: 7
 ```
 
@@ -47,7 +46,6 @@ class Shape(enum.IntEnum):
     squire: int = 2
 
 print(['a', 'b', 'c'][Shape.circle])
-
 >>> b
 ```
 
@@ -66,7 +64,8 @@ class Shape(enum.IntEnum):
 Перечисление можно создавать [программным способом](https://docs.python.org/3/library/enum.html?highlight=enum#programmatic-access-to-enumeration-members-and-their-attributes). Доступен также [функциональный апи](https://docs.python.org/3/library/enum.html?highlight=enum#functional-api)
 
 ```python
-Enum(value='NewEnumName', names=<...>, *, module='...', qualname='...', type=<mixed-in class>, start=1)
+Enum(value='NewEnumName', names=<...>, *, module='...', 
+    qualname='...', type=<mixed-in class>, start=1)
 
 # names API
 'RED GREEN BLUE' | 'RED,GREEN,BLUE' | 'RED, GREEN, BLUE'
@@ -91,7 +90,6 @@ class Color(enum.Flag):
     WHITE = RED | BLUE | GREEN
 
 print(Color.WHITE.value)
-
 >>> 7
 ```
 
@@ -105,7 +103,6 @@ class Perm(enum.IntFlag):
     
 RW = Perm.R | Perm.W
 print(Perm.R in RW)
-
 >>> True
 ```
 
@@ -134,17 +131,13 @@ class BugStatus(enum.Enum):
         return new_state.name in self.transitions
 
 print(BugStatus.in_progress)
-
 >>> BugStatus.in_progress
 print('Value:', BugStatus.in_progress.value)
-
 >>> Value: (3, ['new', 'fix_committed'])
 print('Custom attribute:', BugStatus.in_progress.transitions)
-
 >>> Custom attribute: ['new', 'fix_committed']
 print('Using attribute:',
       BugStatus.in_progress.can_transition(BugStatus.new))
-
 >>> Using attribute: True
 ```
 

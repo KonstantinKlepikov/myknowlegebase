@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Ci - непрервыная интеграция | My knowlege base</title>
+<title>Вызов функции по ее строковому имени в python | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Ci - непрервыная интеграция" />
+<meta property="og:title" content="Вызов функции по ее строковому имени в python" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Список заметок о непрерывной интеграции" />
-<meta property="og:description" content="Список заметок о непрерывной интеграции" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/lists/cl.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/lists/cl.html" />
+<meta name="description" content="Calling a function of by using string name" />
+<meta property="og:description" content="Calling a function of by using string name" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/calling-finction-by-name-python.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/calling-finction-by-name-python.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/lists/cl.html","headline":"Ci - непрервыная интеграция","description":"Список заметок о непрерывной интеграции","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/calling-finction-by-name-python.html","headline":"Вызов функции по ее строковому имени в python","description":"Calling a function of by using string name","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,20 +83,28 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="ci---непрервыная-интеграция">Ci - непрервыная интеграция</h1>
+      <h1 id="вызов-функции-по-ее-строковому-имени-в-python">Вызов функции по ее строковому имени в python</h1>
 
-<ul>
-  <li>[<a href="../notes/fabric" title="Fabric">fabric</a>]</li>
-  <li>[<a href="../notes/jenkins" title="Jenkins">jenkins</a>]</li>
-  <li>[<a href="../notes/github-action" title="Githunb action">github-action</a>]</li>
-  <li>[<a href="../notes/fastapi-template-deployment" title="Fastapi template deployment">fastapi-template-deployment</a>]</li>
-  <li>[<a href="../notes/digital-ocean-doctl" title="Digital ocean doctl">digital-ocean-doctl</a>]</li>
-  <li>[<a href="../notes/workflow-types" title="Про варианты git workflow">workflow-types</a>]</li>
-  <li>[<a href="../notes/github-branch-protection" title="Githunb branch protection">github-branch-protection</a>]</li>
-  <li>[<a href="../notes/github-action-how-start-workflow-action-after-another-action" title="How start second github action after success first">github-action-how-start-workflow-action-after-another-action</a>]</li>
-  <li>[<a href="../notes/github-authentication" title="Github authentication">github-authentication</a>]</li>
-  <li>[<a href="../notes/github-authentication-failed" title="Github Authentication Failed">github-authentication-failed</a>]</li>
-</ul>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">foo</span>
+<span class="n">method_to_call</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="s">'bar'</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">method_to_call</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>или для класса</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">m</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">"result"</span>
+
+<span class="n">an_object</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
+
+<span class="n">class_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="s">"m"</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">class_method</span><span class="p">(</span><span class="n">an_object</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/3061/calling-a-function-of-a-module-by-using-its-name-a-string">Больше идей</a></p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 
 
 

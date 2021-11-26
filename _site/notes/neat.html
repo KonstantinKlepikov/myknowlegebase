@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>NEAT - нейроэволюционный алгоритм | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="NEAT - нейроэволюционный алгоритм" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Алгоритм NEAT" />
+<meta property="og:description" content="Алгоритм NEAT" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/neat.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/neat.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/neat.html","headline":"NEAT - нейроэволюционный алгоритм","description":"Алгоритм NEAT","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="neat---нейроэволюционный-алгоритм">NEAT - нейроэволюционный алгоритм</h1>
+
+<p>Оригинальный алгоритм описан <a href="http://www.cs.ucf.edu/~kstanley/neat.html">тут</a></p>
+
+<p>NEAT предназначен для уменьшения размерности пространства поиска параметров посредством развития структуры нейросети в проуессе эволюции. Базовый алгоритм использует прямое кодирование генома, поэтому вычислительно затратен и не годится для построения больших сетей.</p>
+
+<p>Основное преимущество метода - построеная сеть не нуждается в обучении обратным распространением ошибки, что уменьшает вычислительные затраты. Кроме того, эволюционно развиваемая топология сети позволяет построить структуру сч высокой емкостю информации. Нет необходимости в построении однородных слоев (как это делается в классических нейронных сетях), состоящих из нейронов с функциями активации одного типа. Значительно сокращается число параметров сети, что ведет к ее крайне высокой эффективности.</p>
+
+<p>Недостаток - вычислительная сложность поиска оптимальной топологии.</p>
+
+<p><a href="http://nn.cs.utexas.edu/downloads/papers/stanley.phd04.pdf">Оригинальная статья, посвященная алгоритму</a></p>
+
+<p>Следующий шаг в развитии NEAT - топология на основе гиперкуба. Алгоритм HyperNEAT строится на базе схемы косвенного кодирования генома (CPPN). HyperNEAT сохраняет паттерн связи сети-фенотипа в виде четырехмерного гиперкуба, где каждая точка кодирует связь между двумя узлами сети. Это позволяет компактно хранить множество паттернов, а кроме того использовать их повторно. Такой метод может использовать разные функции активации для своих скрытых узлов и выражать различные геометрические закономерности наблюдаемых данных. Сам гиперкуб (который принято назывть субстратом) может иметь предварительно выбранную геометрию, что улучшает скорость и эффективность обучения.</p>
+
+<p>С HyperNEAT стало возможным строить очень большие сети. К недостатку метода можно отнести необходимость выбора начальной структуры субстрата инженером, что в целом задача нетривиальная и усложняет процесс успешного обучения.</p>
+
+<p><a href="https://axon.cs.byu.edu/Dan/778/papers/NeuroEvolution/stanley3**.pdf">Статья, посвященная HyperNEAT</a></p>
+
+<p>Алгоритм es-HyperNEAT ведет развивает идею дальше. Используется развиваемый субстрат - вместо задания начального положения узлов в субстрате инженером. алгоритм оценивает плотность распределения информации в субстрате в процессе обучения. В участках с плотностью, превышщающей пороговую и размещаются узлы. Такой подход открывает дорогу к самообучаемым сетям, способным находить оптимальную топологию в процессе эволюции без точной инициализвации субстрата.</p>
+
+<p><a href="http://eplex.cs.ucf.edu/papers/risi_alife12.pdf">Статья про es-HyperNEAT</a></p>
+
+<h2 id="библиотеки">Библиотеки</h2>
+
+<p><a href="https://neat-python.readthedocs.io/en/latest/">NEAT-python</a></p>
+
+<p><a href="https://github.com/uber-research/PyTorch-NEAT">PyTorch-NEAT</a></p>
+
+<p><a href="https://github.com/crisbodnar/TensorFlow-NEAT">TensorFlow-NEAT</a></p>
+
+<p><a href="https://github.com/KonstantinKlepikov/MultiNEAT">MultiNEAT</a> - к сожалению документация проекта на сайте не доступна</p>
+
+<p><a href="https://github.com/uber-research/deep-neuroevolution">deep-neuroevolution</a></p>
+
+<p><a href="https://github.com/ukuleleplayer/pureples">Pure Python Library for ES-HyperNEAT. Contains implementations of HyperNEAT and ES-HyperNEAT</a></p>
+
+<p>Коллекция, состоящая из оригинального алгоритма NEAT и большинства его имплементаций (включая multineat и все остальное семейство), известных к настоящему моменту: <a href="https://eplex.cs.ucf.edu/neat_software/">Find the Right Version of NEAT for Your Needs</a></p>
+
+<p>Еще про эволюционные методы:</p>
+
+<ul>
+  <li>[<a href="deap" title="Deap - генетические алгоритмы на python">deap</a>]</li>
+  <li>[<a href="deap-docs" title="Deap документация">deap-docs</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
