@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Стандартная библиотека python - список заметок | My knowlege base</title>
+<title>Defaultdict словарь с возвратом значения по умолчанию | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Стандартная библиотека python - список заметок" />
+<meta property="og:title" content="Defaultdict словарь с возвратом значения по умолчанию" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Нюансы работы со стандартной библиотекой в python" />
-<meta property="og:description" content="Нюансы работы со стандартной библиотекой в python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/lists/python-standart-library.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/lists/python-standart-library.html" />
+<meta name="description" content="collection.defaultdict в стандартной библиотеке python" />
+<meta property="og:description" content="collection.defaultdict в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/defaultdict.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/defaultdict.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/lists/python-standart-library.html","headline":"Стандартная библиотека python - список заметок","description":"Нюансы работы со стандартной библиотекой в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/defaultdict.html","headline":"Defaultdict словарь с возвратом значения по умолчанию","description":"collection.defaultdict в стандартной библиотеке python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,27 +83,25 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="стандартная-библиотека-python---список-заметок">Стандартная библиотека python - список заметок</h1>
+      <h1 id="defaultdict-словарь-с-возвратом-значения-по-умолчанию">Defaultdict словарь с возвратом значения по умолчанию</h1>
 
-<ul>
-  <li>[<a href="../notes/convert-dcit-to-dataclass" title="Convert dict to dataclass or namedtuple">convert-dcit-to-dataclass</a>]</li>
-  <li>[<a href="../notes/asyncio" title="Asyncio">asyncio</a>]</li>
-  <li>[<a href="../notes/typing" title="Typing">typing</a>]</li>
-  <li>[<a href="../notes/datetime" title="Datetime">datetime</a>]</li>
-  <li>[<a href="../notes/random-choice" title="Random choice">random-choice</a>]</li>
-  <li>[<a href="../notes/creation-of-list-matrix" title="Creation of list matrix">creation-of-list-matrix</a>]</li>
-  <li>[<a href="full-path-to-current-directory" title="Full path to current directory">full-path-to-current-directory</a>]</li>
-  <li>[<a href="../notes/enumerate" title="Enum">enumerate</a>]</li>
-  <li>[<a href="../notes/chainmap" title="ChainMap">chainmap</a>]</li>
-  <li>[<a href="../notes/remove-dict-key-python" title="Как удалить ключ словаря в python">remove-dict-key-python</a>]</li>
-  <li>[<a href="../notes/calling-finction-by-name-python" title="Вызов функции по ее строковому имени в python">calling-finction-by-name-python</a>]</li>
-  <li>[<a href="../notes/counter" title="Counter - счетчик хешируемых объектов">counter</a>]</li>
-  <li>[<a href="../notes/deque" title="Deque - двухсторонние очереди">deque</a>]</li>
-  <li>[[defaultdict]]</li>
-  <li>[<a href="../notes/ordereddict" title="OrderedDict упорядоченный словарь с опцией сравнения по порядку">ordereddict</a>]</li>
-</ul>
+<p>Разница с методом <code class="language-plaintext highlighter-rouge">defaultdict()</code> обычного словаря - позволяет заполнить словарь при инициализации. Возвращает dict-like объект</p>
 
-<p><a href="https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/">Когда использовать List Comprehension в Python</a></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="k">def</span> <span class="nf">default_factory</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">'default value'</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">collections</span><span class="p">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="n">default_factory</span><span class="p">,</span> <span class="n">foo</span><span class="o">=</span><span class="s">'bar'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'foo =&gt;'</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s">'foo'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=&gt;</span> <span class="n">bar</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'bar =&gt;'</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="s">'bar'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bar</span> <span class="o">=&gt;</span> <span class="n">default</span> <span class="n">value</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/collections.html#defaultdict-objects">Документация</a></p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 
 
 
