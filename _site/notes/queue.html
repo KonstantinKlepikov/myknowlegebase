@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Стандартная библиотека python - список заметок | My knowlege base</title>
+<title>Queue - очереди и стеки | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Стандартная библиотека python - список заметок" />
+<meta property="og:title" content="Queue - очереди и стеки" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Нюансы работы со стандартной библиотекой в python" />
-<meta property="og:description" content="Нюансы работы со стандартной библиотекой в python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/lists/python-standart-library.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/lists/python-standart-library.html" />
+<meta name="description" content="queue в стандартной библиотеке python" />
+<meta property="og:description" content="queue в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/queue.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/queue.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/lists/python-standart-library.html","headline":"Стандартная библиотека python - список заметок","description":"Нюансы работы со стандартной библиотекой в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/queue.html","headline":"Queue - очереди и стеки","description":"queue в стандартной библиотеке python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,36 +83,23 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="стандартная-библиотека-python---список-заметок">Стандартная библиотека python - список заметок</h1>
+      <h1 id="queue---очереди-и-стеки">Queue - очереди и стеки</h1>
 
-<ul>
-  <li>[<a href="../notes/convert-dcit-to-dataclass" title="Convert dict to dataclass or namedtuple">convert-dcit-to-dataclass</a>]</li>
-  <li>[<a href="../notes/asyncio" title="Asyncio">asyncio</a>]</li>
-  <li>[<a href="../notes/typing" title="Typing">typing</a>]</li>
-  <li>[<a href="../notes/datetime" title="Datetime">datetime</a>]</li>
-  <li>[<a href="../notes/random-choice" title="Random choice">random-choice</a>]</li>
-  <li>[<a href="../notes/creation-of-list-matrix" title="Creation of list matrix">creation-of-list-matrix</a>]</li>
-  <li>[<a href="full-path-to-current-directory" title="Full path to current directory">full-path-to-current-directory</a>]</li>
-  <li>[<a href="../notes/enumerate" title="Enum">enumerate</a>]</li>
-  <li>[<a href="../notes/chainmap" title="ChainMap">chainmap</a>]</li>
-  <li>[<a href="../notes/remove-dict-key-python" title="Как удалить ключ словаря в python">remove-dict-key-python</a>]</li>
-  <li>[<a href="../notes/calling-finction-by-name-python" title="Вызов функции по ее строковому имени в python">calling-finction-by-name-python</a>]</li>
-  <li>[<a href="../notes/counter" title="Counter - счетчик хешируемых объектов">counter</a>]</li>
-  <li>[<a href="../notes/deque" title="Deque - двухсторонние очереди">deque</a>]</li>
-  <li>[<a href="../notes/defaultdict" title="Defaultdict словарь с возвратом значения по умолчанию">defaultdict</a>]</li>
-  <li>[<a href="../notes/ordereddict" title="OrderedDict упорядоченный словарь с опцией сравнения по порядку">ordereddict</a>]</li>
-  <li>[<a href="../notes/heapq" title="Heapq - двоичная куча">heapq</a>]</li>
-  <li>[<a href="../notes/bisect" title="Bisect - сортирвоанные списки">bisect</a>]</li>
-  <li>[<a href="../notes/queue" title="Queue - очереди и стеки">queue</a>]</li>
-</ul>
+<p>Модуль <code class="language-plaintext highlighter-rouge">queue</code> поставляет <code class="language-plaintext highlighter-rouge">Queue()</code> (FIFO или очередь) и <code class="language-plaintext highlighter-rouge">LifoQueue()</code> (LIFO или стек). Обе конструкции потокобезопасны и их можно использовать в многопоточных процессах.</p>
 
-<p><a href="https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/">Когда использовать List Comprehension в Python</a></p>
+<p>Очереди (FIFO) позволяют добавлять объекты в последовательность в одном конце и удалять в другом с помощью методов <code class="language-plaintext highlighter-rouge">put()</code> и <code class="language-plaintext highlighter-rouge">get()</code>. Стеки (LIFO) добавляют и удаляют с одного конца.</p>
 
-<p>Смотри еще:</p>
+<p>Кроме того, доступен контейнер <code class="language-plaintext highlighter-rouge">PriorityQueue()</code>, позволяющий добавлять/убирать объекты в последовательность основываямь не на очередности добавления, а на характеристиках объекта. В данном случае используется упорядоченная очередь, из которой будет извлкаться наименьший объект.</p>
 
-<ul>
-  <li>[<a href="../notes/feedparser" title="Feedparser - rss и atom парсинг">feedparser</a>]</li>
-</ul>
+<p>Для всех типов очередей можно задать предельный размер, при превышении которого очередь заполняться не будет пока из нее не будет удален элемент. Ряд методов позволяет блокировать очередь до ее освобождения.</p>
+
+<p><a href="https://docs.python.org/3/library/queue.html?highlight=queue#queue-objects">Методы</a></p>
+
+<p><a href="https://docs.python.org/3/library/queue.html?highlight=queue#module-queue">Документация</a></p>
+
+<p>См. так-эе <a href="https://docs.python.org/3/library/asyncio-queue.html?highlight=queue#asyncio.Queue">asyncio.Queue</a> и <a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Queue">multiprocessing.Queue</a></p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 
 
 
