@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Click интерфейс командной строки | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Click интерфейс командной строки" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Click - командная строка в python" />
+<meta property="og:description" content="Click - командная строка в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/click.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/click.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/click.html","headline":"Click интерфейс командной строки","description":"Click - командная строка в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="click-интерфейс-командной-строки">Click интерфейс командной строки</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>click
+</code></pre></div></div>
+
+<h2 id="базовая-концепция">Базовая концепция</h2>
+
+<p>Клик базируется на декларации команд через декораторы. Функция становится инструментом командной строки, когда снабжена декоратором <code class="language-plaintext highlighter-rouge">@click.command()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">click</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">'Hello World!'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">hello</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">@click.eshoe()</code> используется вместо стандартного <code class="language-plaintext highlighter-rouge">print()</code> для поддержки разных окружений, чтобы не сломать реализацию, если конфигурация нарушена.</p>
+
+<p>Поддерживаются вложенные команды через декоратор <code class="language-plaintext highlighter-rouge">@click.group()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">cli</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">initdb</span><span class="p">():</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">'Initialized the database'</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dropdb</span><span class="p">():</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">'Dropped the database'</span><span class="p">)</span>
+
+<span class="n">cli</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">initdb</span><span class="p">)</span>
+<span class="n">cli</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">dropdb</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>или для простых скриптов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">cli</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="o">@</span><span class="n">cli</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">initdb</span><span class="p">():</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">'Initialized the database'</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">cli</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">dropdb</span><span class="p">():</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">'Dropped the database'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">cli</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Так-же команды могут регистрироваться в группы позже</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">():</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">group</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="n">group</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">greet</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Добавление аргументов и опций производится через <code class="language-plaintext highlighter-rouge">@click.option()</code> и <code class="language-plaintext highlighter-rouge">@click.argument()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--count'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">'number of greetings'</span><span class="p">)</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">argument</span><span class="p">(</span><span class="s">'name'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+        <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python hello.py <span class="nt">--help</span>
+Usage: hello.py <span class="o">[</span>OPTIONS] NAME
+
+Options:
+  <span class="nt">--count</span> INTEGER  number of greetings
+  <span class="nt">--help</span>           Show this message and exit.
+</code></pre></div></div>
+
+<h2 id="поддержка-интеграции-с-setuptools">Поддержка интеграции с [<a href="setuptools" title="Setuptools">setuptools</a>]</h2>
+
+<p><a href="https://click.palletsprojects.com/en/8.0.x/setuptools/">Читай доку</a></p>
+
+<h2 id="параметры">Параметры</h2>
+
+<p>Доступны два типа параметров - опции и аргументы. Рекомендуется использовать аргументы исключительно для таких вещей, как переход к подкомандам или ввод имен файлов/URL-адресов, а опции использовать для всего остального.</p>
+
+<p>Для опций доступно:</p>
+
+<ul>
+  <li>автоматическое дополнение для пропущенных опций</li>
+  <li>булевы значения</li>
+  <li>опции могут быть добавлены из переменных окружения (аругменты нет)</li>
+  <li>опции полностью задокументированы и будут отображены с вызовом <code class="language-plaintext highlighter-rouge">--help</code> флага</li>
+</ul>
+
+<p>Типы параметров определены в самом click. <a href="https://click.palletsprojects.com/en/8.0.x/parameters/#parameter-types">Смотри доки</a>. Кроме того, можно <a href="https://click.palletsprojects.com/en/8.0.x/parameters/#implementing-custom-types">задать кастомные типы параметров</a></p>
+
+<h2 id="опции">Опции</h2>
+
+<p>Имена опций могут быть использованы как аргументы при вызове декорированной функции. Порядок выбора имен:</p>
+
+<ul>
+  <li>если имя не имеет префикса, оно используется как имя аргумента и не используется как имя опции в командной строке</li>
+  <li>если хотя бы одно имя снабжено двойными черточками - первое из таких используется как имя опции</li>
+  <li>в остальных случаях используется первое имя с одинарной черточкой</li>
+</ul>
+
+<p>При ээтом большие буквы конвертятся в маленькие, а избыточные черточки игнорируются:</p>
+
+<ul>
+  <li>“-f”, “–foo-bar”, the name is <code class="language-plaintext highlighter-rouge">foo_bar</code></li>
+  <li>“-x”, the name is <code class="language-plaintext highlighter-rouge">x</code></li>
+  <li>“-f”, “–filename”, “dest”, the name is <code class="language-plaintext highlighter-rouge">dest</code></li>
+  <li>”–CamelCase”, the name is <code class="language-plaintext highlighter-rouge">camelcase</code></li>
+  <li>“-f”, “-fb”, the name is <code class="language-plaintext highlighter-rouge">f</code></li>
+  <li>”–f”, “–foo-bar”, the name is <code class="language-plaintext highlighter-rouge">f</code></li>
+  <li>”—f”, the name is <code class="language-plaintext highlighter-rouge">f</code></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'-s'</span><span class="p">,</span> <span class="s">'--string-to-echo'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">echo</span><span class="p">(</span><span class="n">string_to_echo</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">string_to_echo</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'-s'</span><span class="p">,</span> <span class="s">'--string-to-echo'</span><span class="p">,</span> <span class="s">'string'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">echo</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="наиболее-базовые-опции---это-опции-значений">Наиболее базовые опции - это <a href="https://click.palletsprojects.com/en/8.0.x/options/#basic-value-options">опции значений</a>.</h3>
+
+<p>Можно определить тип, обязательность параметра, показ дефолтных значений при запросе через <code class="language-plaintext highlighter-rouge">--help</code>. Кроме того, можно определить в качестве имен параметров заррезервированные имена</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--from'</span><span class="p">,</span> <span class="s">'-f'</span><span class="p">,</span> <span class="s">'from_'</span><span class="p">)</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--to'</span><span class="p">,</span> <span class="s">'-t'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">reserved_param_name</span><span class="p">(</span><span class="n">from_</span><span class="p">,</span> <span class="n">to</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"from </span><span class="si">{</span><span class="n">from_</span><span class="si">}</span><span class="s"> to </span><span class="si">{</span><span class="n">to</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="можно-передавать-несколько-значений-опции">Можно передавать несколько значений опции</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--pos'</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">findme</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">pos</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> / </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, <a href="https://click.palletsprojects.com/en/8.0.x/options/#tuples-as-multi-value-options">можно использовать кортежи</a> и <a href="https://click.palletsprojects.com/en/8.0.x/options/#multiple-options">множественные опции по одному имени</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'-v'</span><span class="p">,</span> <span class="s">'--verbose'</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"Verbosity: </span><span class="si">{</span><span class="n">verbose</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>commit <span class="nt">-m</span> foo <span class="nt">-m</span> bar
+foo
+bar
+</code></pre></div></div>
+
+<h3 id="булевы-флаги-используют-определение-двух-имен-через-слеш"><a href="https://click.palletsprojects.com/en/8.0.x/options/#boolean-flags">Булевы флаги</a> используют определение двух имен через слеш.</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--shout/--no-shout'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">shout</span><span class="p">):</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">platform</span>
+    <span class="k">if</span> <span class="n">shout</span><span class="p">:</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">rv</span><span class="p">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s">'!!!!111'</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">rv</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>info <span class="nt">--shout</span>
+LINUX!!!!111
+<span class="nv">$ </span>info <span class="nt">--no-shout</span>
+linux
+<span class="nv">$ </span>info
+linux
+</code></pre></div></div>
+
+<p>Если требуется только одно состояние флага, то можно так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--shout'</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">shout</span><span class="p">):</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">platform</span>
+    <span class="k">if</span> <span class="n">shout</span><span class="p">:</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">rv</span><span class="p">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s">'!!!!111'</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">rv</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="переключатель-опций"><a href="https://click.palletsprojects.com/en/8.0.x/options/#feature-switches">Переключатель опций</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--upper'</span><span class="p">,</span> <span class="s">'transformation'</span><span class="p">,</span> <span class="n">flag_value</span><span class="o">=</span><span class="s">'upper'</span><span class="p">,</span>
+              <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--lower'</span><span class="p">,</span> <span class="s">'transformation'</span><span class="p">,</span> <span class="n">flag_value</span><span class="o">=</span><span class="s">'lower'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">transformation</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">platform</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)())</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>info <span class="nt">--upper</span>
+LINUX
+<span class="nv">$ </span>info <span class="nt">--lower</span>
+linux
+<span class="nv">$ </span>info
+LINUX
+</code></pre></div></div>
+
+<h3 id="опция-выбора-опций"><a href="https://click.palletsprojects.com/en/8.0.x/options/#choice-options">Опция выбора опций</a></h3>
+
+<p>Можно передать список (или кортеж), из которого можно выбрать значение опции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--hash-type'</span><span class="p">,</span>
+              <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="p">.</span><span class="n">Choice</span><span class="p">([</span><span class="s">'MD5'</span><span class="p">,</span> <span class="s">'SHA1'</span><span class="p">],</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">digest</span><span class="p">(</span><span class="n">hash_type</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">hash_type</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="ввод"><a href="https://click.palletsprojects.com/en/8.0.x/options/#prompting">Ввод</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--name'</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Или так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--name'</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s">'Your name please'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Ввод пародей <a href="https://click.palletsprojects.com/en/8.0.x/options/#password-prompts">тоже реализован</a></p>
+
+<p><a href="https://click.palletsprojects.com/en/8.0.x/options/#dynamic-defaults-for-prompts">Еще про опции ввода</a></p>
+
+<h3 id="колбеки"><a href="https://click.palletsprojects.com/en/8.0.x/options/#callbacks-and-eager-options">Колбеки</a></h3>
+
+<h3 id="запрос-согласия-для-опасных-операций"><a href="https://click.palletsprojects.com/en/8.0.x/options/#yes-parameters">Запрос согласия для опасных операций</a></h3>
+
+<h3 id="значения-из-переменных-окружения"><a href="https://click.palletsprojects.com/en/8.0.x/options/#values-from-environment-variables">Значения из переменных окружения</a></h3>
+
+<p>Есть несколько способов. Во первых можно реализовать через <code class="language-plaintext highlighter-rouge">auto_envvar_prefix=</code> самой функции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--username'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f'Hello </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s">!'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">greet</span><span class="p">(</span><span class="n">auto_envvar_prefix</span><span class="o">=</span><span class="s">'GREETER'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Второй вариант - вручную добавить в декоратор черех <code class="language-plaintext highlighter-rouge">envvar=</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">option</span><span class="p">(</span><span class="s">'--username'</span><span class="p">,</span> <span class="n">envvar</span><span class="o">=</span><span class="s">'USERNAME'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+   <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="s">f"Hello </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s">!"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">greet</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Можно использовать <a href="https://click.palletsprojects.com/en/8.0.x/options/#multiple-values-from-environment-values">множественные переменные</a></p>
+
+<h3 id="другие-префиксы"><a href="https://click.palletsprojects.com/en/8.0.x/options/#other-prefix-characters">Другие префиксы</a></h3>
+
+<h3 id="опция-ренжа"><a href="https://click.palletsprojects.com/en/8.0.x/options/#range-options">Опция ренжа</a></h3>
+
+<h3 id="валидация"><a href="https://click.palletsprojects.com/en/8.0.x/options/#callbacks-for-validation">Валидация</a></h3>
+
+<h3 id="опциональные-значения"><a href="https://click.palletsprojects.com/en/8.0.x/options/#optional-value">Опциональные значения</a></h3>
+
+<h2 id="аргументы"><a href="https://click.palletsprojects.com/en/8.0.x/arguments/">Аргументы</a></h2>
+
+<p>Работауют идентично опциям, но являются позиционными. поддерживают лишь часть функционала и не документируются.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">argument</span><span class="p">(</span><span class="s">'filename'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">touch</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="s">"""Print FILENAME."""</span>
+    <span class="n">click</span><span class="p">.</span><span class="n">echo</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">touch </span>foo.txt
+foo.txt
+</code></pre></div></div>
+
+<p>Варианты использования:</p>
+
+<ul>
+  <li><a href="https://click.palletsprojects.com/en/8.0.x/arguments/#variadic-arguments">переменные</a></li>
+  <li><a href="https://click.palletsprojects.com/en/8.0.x/arguments/#file-arguments">аргументы файлов</a></li>
+  <li><a href="https://click.palletsprojects.com/en/8.0.x/arguments/#file-path-arguments">аргументы путей файлов</a></li>
+  <li><a href="https://click.palletsprojects.com/en/8.0.x/arguments/#environment-variables">использование переменных окружения</a></li>
+  <li><a href="https://click.palletsprojects.com/en/8.0.x/arguments/#option-like-arguments">аргументы-опции</a></li>
+</ul>
+
+<h2 id="команды-и-группы"><a href="https://click.palletsprojects.com/en/8.0.x/commands/#commands-and-groups">Команды и группы</a></h2>
+
+<p>Это одна из главных фичей пакета - возможность собирать несколько аргументво в бандлы. Реализуется через <code class="language-plaintext highlighter-rouge">command</code>, <code class="language-plaintext highlighter-rouge">group</code> и <code class="language-plaintext highlighter-rouge">multicommand</code></p>
+
+<p>Что доступно:</p>
+
+<ul>
+  <li>передача контекста между командами</li>
+  <li>создание собственных групп команд</li>
+  <li>мерж групп команд между собой</li>
+  <li>цепочки мультикоманд</li>
+  <li>пайплайны мультикоманд</li>
+  <li>переопределение дефолтных значений</li>
+  <li>дефолтные значения для разных контекстов</li>
+</ul>
+
+<p><a href="https://click.palletsprojects.com/en/8.0.x/">Документация</a></p>
+
+<h2 id="документирование-для-help"><a href="https://click.palletsprojects.com/en/8.0.x/documentation/">Документирование для –help</a></h2>
+
+<h2 id="дополнительные-паттерны"><a href="https://click.palletsprojects.com/en/8.0.x/advanced/#advanced-patterns">Дополнительные паттерны</a></h2>
+
+<ul>
+  <li>алиасы команд</li>
+  <li>модификация параметров</li>
+  <li>приведение токенов к правильному формату</li>
+  <li>вызов других команд из команд</li>
+  <li>определения порядка колбеков</li>
+  <li>передача неизвестных опций в следующий контекст</li>
+  <li>доступ к глобальному контексту</li>
+  <li>определение источника параметра (логирование)</li>
+  <li>управление ресурсами группы команд</li>
+</ul>
+
+<h2 id="как-все-это-тестировать"><a href="https://click.palletsprojects.com/en/8.0.x/testing/">Как все это тестировать</a></h2>
+
+<h2 id="дополнительные-утилиты"><a href="https://click.palletsprojects.com/en/8.0.x/utils/">Дополнительные утилиты</a></h2>
+
+<ul>
+  <li>вывод в stdout</li>
+  <li>ANSI colors</li>
+  <li>пагинация</li>
+  <li>очистка страницы</li>
+  <li>получение отдельных знаков из терминала (к примеру y/n)</li>
+  <li>press any key</li>
+  <li>запуск редактора</li>
+  <li>запуск приложения</li>
+  <li>вывод названия файла</li>
+  <li>использование стандартного потока</li>
+  <li>открытие файла через контекстный менеджер</li>
+  <li>поиск папки приложения</li>
+  <li>прогресс-бар</li>
+</ul>
+
+<p>Больше информации обо всем <a href="https://click.palletsprojects.com/en/8.0.x/">в документации проекта</a> или на <a href="https://github.com/pallets/click">github</a></p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
