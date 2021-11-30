@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Diff массивов, случайный выбор, конвертация в булев массив и произвольные заполнители в numpy | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Diff массивов, случайный выбор, конвертация в булев массив и произвольные заполнители в numpy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Заметки про работу с Numpy в Python" />
+<meta property="og:description" content="Заметки про работу с Numpy в Python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-11-30-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-11-30-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-11-30-daily-note.html","headline":"Diff массивов, случайный выбор, конвертация в булев массив и произвольные заполнители в numpy","description":"Заметки про работу с Numpy в Python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="diff-массивов-случайный-выбор-конвертация-в-булев-массив-и-произвольные-заполнители-в-numpy">Diff массивов, случайный выбор, конвертация в булев массив и произвольные заполнители в numpy</h1>
+
+<h2 id="difference-between-two-numpy-arrays-in-python">Difference between two numpy arrays in python</h2>
+
+<p>Разницу между двумя массивами numpy можно получить непосредственно</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">array1</span><span class="o">=</span><span class="n">numpy</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">])</span>
+<span class="n">array2</span><span class="o">=</span><span class="n">numpy</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">diffs</span> <span class="o">=</span> <span class="n">array1</span> <span class="o">-</span> <span class="n">array2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.3</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Или <a href="https://numpy.org/doc/stable/reference/generated/numpy.subtract.html">так</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">subtract</span><span class="p">([</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Массивы могут быть разных шейпов, но должны быть транслиремы в общую для них шейп.</p>
+
+<h2 id="how-to-set-elements-in-numpy-array-randomly">How to set elements in numpy array randomly</h2>
+
+<p>Часто бывает необходимо изменить случайный элемент массива. Можно так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">myarray</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">myarray</span><span class="p">.</span><span class="n">size</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                           <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">myarray</span><span class="p">.</span><span class="n">size</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">))</span>
+<span class="n">myarray</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+</code></pre></div></div>
+
+<p>В данном случае мы получаем случайный индекс и уже по индексу изменяем значение. <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html">numpy.random.choice</a> получает на вход последовательность, из которой будет производиться случайный выбор. Мы можем задать размерность выхода и вероятность, с которой бьудет производиться выбор. Размерность последовательности. задающей вероятность, должна соответствовать размерности последовательности, из которой будет выполнен выбор. Если вероятность не задана - используется равномерное распеределение. Еще смотри тут: [<a href="../notes/random-choice" title="Random choice">random-choice</a>]</p>
+
+<p>Случайный инт или последовательность можно получить через <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html">numpy.random.randint</a></p>
+
+<p>Раздел документации numpy, посвященный <a href="https://numpy.org/doc/stable/reference/random/index.html">random sampling</a></p>
+
+<h2 id="how-convert-a-numpy-array-into-a-boolean-array">How convert a numpy array into a boolean array</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">old_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>или</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_array</span> <span class="o">=</span> <span class="n">old_array</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="как-создать-массив-с-заполнением-произвольным-значением">Как создать массив с заполнением произвольным значением</h2>
+
+<p><a href="https://numpy.org/doc/stable/reference/generated/numpy.full.html#numpy.full">numpy.full</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="p">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">inf</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">array</span><span class="p">([[</span><span class="n">inf</span><span class="p">,</span> <span class="n">inf</span><span class="p">],</span> <span class="p">[</span><span class="n">inf</span><span class="p">,</span> <span class="n">inf</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>Если нужно получить такой же массив, только с новым заполнителем, то <a href="https://numpy.org/doc/stable/reference/generated/numpy.full_like.html">numpy.full_like</a>. При этом учитывается тип исходного массива.</p>
+
+<pre><code class="language-PYTHON">x = np.arange(6, dtype=int)
+np.full_like(x, 0.1)
+&gt;&gt;&gt; array([0, 0, 0, 0, 0, 0])
+</code></pre>
+
+<p>[<a href="../notes/numpy" title="Numpy">numpy</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

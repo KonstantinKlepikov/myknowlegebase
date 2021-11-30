@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Functools | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Functools" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Высокоуровневые функции и операции над объектами в стандартной библиотке python" />
+<meta property="og:description" content="Высокоуровневые функции и операции над объектами в стандартной библиотке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/functools.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/functools.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/functools.html","headline":"Functools","description":"Высокоуровневые функции и операции над объектами в стандартной библиотке python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="functools">Functools</h1>
+
+<p>Модуль <a href="https://docs.python.org/3/library/functools.html">functools</a> предоставляют АПИ для адаптации и расширения функций и вызываемых объектов без их измененеия. Включает в себя функции декораторы, реализующие аспектно-ориентирвоанное программирование и повторное использование кода.</p>
+
+<h2 id="cache"><a href="https://docs.python.org/3/library/functools.html#functools.cache">cache</a></h2>
+
+<p>Аналог <code class="language-plaintext highlighter-rouge">lru_cache(maxsize=None)</code></p>
+
+<h2 id="cached_property"><a href="https://docs.python.org/3/library/functools.html#functools.cached_property">cached_property</a></h2>
+
+<p>Преобразует метод класса в свойство, значение которого считается только один раз, а затем кешируется как обычный атрибут</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DataSet</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence_of_numbers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sequence_of_numbers</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="n">cached_property</span>
+    <span class="k">def</span> <span class="nf">stdev</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">statistics</span><span class="p">.</span><span class="n">stdev</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>У декоратора есть отличия в реализации по сравнению со стандартным <code class="language-plaintext highlighter-rouge">@property</code>. Смотри документацию.</p>
+
+<p>Чего-то аналогичного можно достигнуть так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DataSet</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence_of_numbers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sequence_of_numbers</span><span class="p">)</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">__stdev</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">stdev</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">__stdew</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__stdew</span> <span class="o">=</span> <span class="n">statistics</span><span class="p">.</span><span class="n">stdev</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__stdew</span>
+</code></pre></div></div>
+
+<p>Значение кеэша можно очистить, удалив атрибут. Декоратор будет работать, только если атрибут с таким же именем, как декорируемое свойство, отсутствует.</p>
+
+<h2 id="cmp_to_key"><a href="https://docs.python.org/3/library/functools.html#functools.cmp_to_key">cmp_to_key</a></h2>
+
+<p>Интерфыейс сравнения объектов для покрытия методов, сконверченных из python2</p>
+
+<h2 id="lru_cache"><a href="https://docs.python.org/3/library/functools.html#functools.lru_cache">lru_cache</a></h2>
+
+<p>Декоратор, задающий кэш возврата функции. Работает по принципу вытеснения из кэша последнего использовавшегося объекта. Декоратор требует хэшируемых атррибутов функции и предоставляет методы проверки состояния кэша. Есть возможность задать длину кэша.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="p">[</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">144</span><span class="p">,</span> <span class="mi">233</span><span class="p">,</span> <span class="mi">377</span><span class="p">,</span> <span class="mi">610</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fib</span><span class="p">.</span><span class="n">cache_info</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">CacheInfo</span><span class="p">(</span><span class="n">hits</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">misses</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">currsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="total_ordering"><a href="https://docs.python.org/3/library/functools.html#functools.total_ordering">total_ordering</a></h2>
+
+<p>Реализует расширенное сравнение объектов. Данный декоратор получает класс, который предоставляет лишь часть методов сравнения (<code class="language-plaintext highlighter-rouge">__lt__()</code>, <code class="language-plaintext highlighter-rouge">__le__()</code>, <code class="language-plaintext highlighter-rouge">__eq__()</code>, <code class="language-plaintext highlighter-rouge">__ne__()</code>, <code class="language-plaintext highlighter-rouge">__gt__()</code>, <code class="language-plaintext highlighter-rouge">__ge__()</code>) и добавляет остальные.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+
+<span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">total_ordering</span>
+<span class="k">class</span> <span class="nc">MyObject</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'  testing __eq__({}, {})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">val</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'  testing __gt__({}, {})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">val</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">val</span> <span class="o">&gt;</span> <span class="n">other</span><span class="p">.</span><span class="n">val</span>
+</code></pre></div></div>
+
+<p>Если сравнение не может быть выполнено - вернется <code class="language-plaintext highlighter-rouge">NotImplemented</code></p>
+
+<h2 id="partial"><a href="https://docs.python.org/3/library/functools.html#functools.partial">partial</a></h2>
+
+<p>Используется в качестве обертки вокруг вызываемого объекта, задавая значения по умолчанию для части или всех его аругментов. С результирующим объектом можно работать как с исходным.</p>
+
+<p><code class="language-plaintext highlighter-rouge">partial</code> не имеет <code class="language-plaintext highlighter-rouge">__doc__</code> и <code class="language-plaintext highlighter-rouge">__name__</code>. Их можно задать.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="n">basetwo</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">basetwo</span><span class="p">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">'Convert base 2 string to an int.'</span>
+<span class="n">basetwo</span><span class="p">(</span><span class="s">'10010'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">18</span>
+</code></pre></div></div>
+
+<p>Или передать из оборачиваемой функции при помощи <code class="language-plaintext highlighter-rouge">ipdate_wrapper()</code> (см. дальше)</p>
+
+<h2 id="partialmethod"><a href="https://docs.python.org/3/library/functools.html#functools.partialmethod">partialmethod</a></h2>
+
+<p>Реализует тоже самое, но только для определения методов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Cell</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_alive</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">alive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_alive</span>
+    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_alive</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">set_alive</span> <span class="o">=</span> <span class="n">partialmethod</span><span class="p">(</span><span class="n">set_state</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="n">set_dead</span> <span class="o">=</span> <span class="n">partialmethod</span><span class="p">(</span><span class="n">set_state</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">()</span>
+<span class="n">c</span><span class="p">.</span><span class="n">alive</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="bp">False</span>
+<span class="n">c</span><span class="p">.</span><span class="n">set_alive</span><span class="p">()</span>
+<span class="n">c</span><span class="p">.</span><span class="n">alive</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<h2 id="reduce"><a href="https://docs.python.org/3/library/functools.html#functools.reduce">reduce</a></h2>
+
+<p>Получает вызываемый объект и последовательность данных в качестве аргументов. Результат работы функции - последовательный вызов объекта с накоплением результата.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">def</span> <span class="nf">do_reduce</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'do_reduce({}, {})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">functools</span><span class="p">.</span><span class="nb">reduce</span><span class="p">(</span><span class="n">do_reduce</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">do_reduce</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">do_reduce</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">do_reduce</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="p">:</span> <span class="mi">10</span>
+</code></pre></div></div>
+
+<p>При этом можно задать инициализирующее значение через <code class="language-plaintext highlighter-rouge">initializer</code> - с него будет начинаться операция редуцирования. Если функция получила пустой список и инциализатор - она редуцирует к иницализирующему значению. Если в списке только одно значение и нет иницализатора - произойдет редукция к значению в списке. Если передан только пустой список, будет поднята ошибка <code class="language-plaintext highlighter-rouge">TypeError</code></p>
+
+<h2 id="singledispatch"><a href="https://docs.python.org/3/library/functools.html#functools.singledispatch">singledispatch</a></h2>
+
+<p>Декоратор позволяет реализовать обобщенную функцию - функция, которая ведет себя по разному, в зависимости от типа переданного аргумента</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+
+<span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">singledispatch</span>
+<span class="k">def</span> <span class="nf">myfunc</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'default myfunc({!r})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+
+
+<span class="o">@</span><span class="n">myfunc</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">myfunc_int</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'myfunc_int({})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+
+
+<span class="o">@</span><span class="n">myfunc</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">myfunc_list</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'myfunc_list()'</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'  {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Можно регистрировать лямбда-функции. Можно стакать регистрации над функциями. Если для специфичного типа ничего не зарегистрировано - будет предпринята попытка найти более подходящую имплементацию по дереву наследования. Смотри доку</p>
+
+<h2 id="singledispatchmethod"><a href="https://docs.python.org/3/library/functools.html#functools.singledispatchmethod">singledispatchmethod</a></h2>
+
+<p>Аналогично реализует дженерик-методы классов</p>
+
+<h2 id="update_wrapper"><a href="https://docs.python.org/3/library/functools.html#functools.update_wrapper">update_wrapper</a></h2>
+
+<p>Релизует передачу свойств оборачиваемого объекта оберачивающей функции. <a href="https://docs.python.org/3/library/functools.html#functools.wraps">wraps</a> реализует это же на уровне декоратора. Это позволяет получить имя обернутого объекта и его докстринги</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="k">def</span> <span class="nf">my_decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Calling decorated function'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="o">@</span><span class="n">my_decorator</span>
+<span class="k">def</span> <span class="nf">example</span><span class="p">():</span>
+    <span class="s">"""Docstring"""</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Called example function'</span><span class="p">)</span>
+
+<span class="n">example</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Calling</span> <span class="n">decorated</span> <span class="n">function</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Called</span> <span class="n">example</span> <span class="n">function</span>
+<span class="n">example</span><span class="p">.</span><span class="n">__name__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">example</span>
+<span class="n">example</span><span class="p">.</span><span class="n">__doc__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Docstring</span>
+</code></pre></div></div>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

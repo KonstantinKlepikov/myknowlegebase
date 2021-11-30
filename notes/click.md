@@ -145,7 +145,7 @@ def echo(string):
     click.echo(string)
 ```
 
-### Наиболее базовые опции - это [опции значений](https://click.palletsprojects.com/en/8.0.x/options/#basic-value-options).
+### Наиболее базовые опции - это [опции значений](https://click.palletsprojects.com/en/8.0.x/options/#basic-value-options)
 
 Можно определить тип, обязательность параметра, показ дефолтных значений при запросе через `--help`. Кроме того, можно определить в качестве имен параметров заррезервированные имена
 
@@ -182,7 +182,7 @@ foo
 bar
 ```
 
-### [Булевы флаги](https://click.palletsprojects.com/en/8.0.x/options/#boolean-flags) используют определение двух имен через слеш.
+### [Булевы флаги](https://click.palletsprojects.com/en/8.0.x/options/#boolean-flags) используют определение двух имен через слеш
 
 ```python
 import sys

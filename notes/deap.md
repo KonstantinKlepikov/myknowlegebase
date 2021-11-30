@@ -487,6 +487,7 @@ max_, mean_ = logbook.select('max', 'avg`)
 - как использовать несколько процессоров тут: [[deap]]
 - документация тут [[deap-docs]]
 - [sklearn-deap](https://github.com/rsteca/sklearn-deap) - имплементит эволюционный алгоритм вместо гридсерча
+- [How to write loss function with extra parameters](https://github.com/DEAP/deap/issues/331)
 
 [[evolution-for-neural-networks]]
 
