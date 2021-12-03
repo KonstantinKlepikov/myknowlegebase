@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Itertools | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Itertools" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Встроенные функции для работы с последовательностями в python" />
+<meta property="og:description" content="Встроенные функции для работы с последовательностями в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/itertools.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/itertools.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/itertools.html","headline":"Itertools","description":"Встроенные функции для работы с последовательностями в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="itertools">Itertools</h1>
+
+<p>Модуль включает функции для обработки последовательностей. Задача - повысить эффективность использования памяти и скорость выполнения операций.</p>
+
+<p>Идея заключается в том, чтобы использовать итераторы, которые возвращают данные только по вызову, что не требует расчета всей последовательности целиком переда началом операций над нею.</p>
+
+<h2 id="chain"><a href="https://docs.python.org/3/library/itertools.html#itertools.chain">chain()</a></h2>
+
+<p>Данная функция получает несколько последовательность и создает итератор, который проходит последоватлеьно по всем компонентам цепи. Такой подход не требует предварительного конструирования объединенного списка (или другой последовательности). Кроме того <code class="language-plaintext highlighter-rouge">chain()</code> не интересует какая именно последоваетльность передана функции - важно только, чтобы она поддерживала протокл итерации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="n">chain</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span>
+</code></pre></div></div>
+
+<p>Когда мы не знаем объединяемые объекты заранее или их вычисление нужно отложить, можно использовать <code class="language-plaintext highlighter-rouge">chain.from_iterable()</code> для получения итератора из итераторов. Это <a href="https://docs.python.org/3/library/itertools.html#itertools.chain.from_iterable">дополнительный конструктор</a>, который принимает в качестве аргумента единственный итерируемый объект.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">make_iterables_to_chain</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="k">yield</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">make_iterables_to_chain</span><span class="p">()):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="zip_longest"><a href="https://docs.python.org/3/library/itertools.html#itertools.zip_longest">zip_longest()</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">zip()</code> - создает итератор, который возвращает кортежи, состящие из элементов переданных <code class="language-plaintext highlighter-rouge">zip()</code> итераторов. Функция прекратит работу, когда одна из последовательностей завершится. Чтобы реализовать <a href="https://docs.python.org/3/library/itertools.html#itertools.zip_longest">другое поведение</a>, в itertools есть функция <code class="language-plaintext highlighter-rouge">zip_longest()</code>, которая заполнит <code class="language-plaintext highlighter-rouge">None</code> недостающие значения или проствит <code class="language-plaintext highlighter-rouge">fillvalue</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r1</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">zip_longest</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="bp">None</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h2 id="islice"><a href="https://docs.python.org/3/library/itertools.html#itertools.islice">islice()</a></h2>
+
+<p>Возвращает итератор, выдающий входные элементы в соответствии с заданным индексом. Протокол полностью идентичен start, step, stop за исключением того, что не поддерживаются отрицательные значения.</p>
+
+<h2 id="tee"><a href="https://docs.python.org/3/library/itertools.html#itertools.tee">tee()</a></h2>
+
+<p>Создает из одного итератора несколько идентичных, что можно использовать дял передачи данных одного источника нескольким потребителям. Деволтное значение n=2. После разделения оригинальный итератор использовать не рекомендуется, так как созданные им итераторы разделяют данные с исходным.</p>
+
+<p>Функция не является потоко-безопасной.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span><span class="p">,</span> <span class="n">tee</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">islice</span><span class="p">(</span><span class="n">count</span><span class="p">(),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">i1</span><span class="p">,</span> <span class="n">i2</span> <span class="o">=</span> <span class="n">tee</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">i1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'i2:'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">i2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="starmap"><a href="https://docs.python.org/3/library/itertools.html#itertools.starmap">starmap()</a></h2>
+
+<p>Встроенная функция <code class="language-plaintext highlighter-rouge">map()</code> применяет выбранную функцию к последовательности. исбользую элементы последовательности как атрибуты. Так-же как и в <code class="language-plaintext highlighter-rouge">zip()</code> этот процесс прекращается при исчерпании одной из переданных последоватльностей. <code class="language-plaintext highlighter-rouge">starmap()</code> использует всего два аргумента - первый это функция для map, второй - э то последовательность кортеже, которые будут распаковываться в функцию при итерации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">)]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">itertools</span><span class="p">.</span><span class="n">starmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">),</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'{} * {} = {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">=</span> <span class="mi">24</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">=</span> <span class="mi">36</span>
+</code></pre></div></div>
+
+<h2 id="count"><a href="https://docs.python.org/3/library/itertools.html#itertools.count">count()</a></h2>
+
+<p>Бесконечный счетчик. Считаться могут быть любые числа, для которых определна операция сложения. Можно указать начальное значение (дефолтное 0), считать можно в т.ч. и в обратную сторону.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">itertools</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mf">2.1</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="cycle"><a href="https://docs.python.org/3/library/itertools.html#itertools.cycle">cycle()</a></h2>
+
+<p>Повторяет содержимое переданного итератора бесконечное количество раз</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="n">cycle</span><span class="p">([</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">])):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">'b'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">'c'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s">'a'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="repeat"><a href="https://docs.python.org/3/library/itertools.html#itertools.repeat">repeat()</a></h2>
+
+<p>Всегда возвращает одно и тоже значение. Число повторов можно ограничить через аргумент <code class="language-plaintext highlighter-rouge">times</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">count</span><span class="p">,</span> <span class="n">repeat</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">count</span><span class="p">(),</span> <span class="n">repeat</span><span class="p">(</span><span class="s">'repeat'</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span> <span class="n">repeat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span> <span class="n">repeat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="n">repeat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="n">repeat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span> <span class="n">repeat</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">),</span> <span class="n">repeat</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'{:d} * {:d} = {:d}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">=</span> <span class="mi">8</span>
+</code></pre></div></div>
+
+<h2 id="dropehile"><a href="https://docs.python.org/3/library/itertools.html#itertools.dropwhile">dropehile()</a></h2>
+
+<p>Возвращает значение переданного итератора с первой позиции, которая делает условие ложным</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">dropwhile</span>
+
+<span class="k">def</span> <span class="nf">to_drop</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'to_drop:'</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dropwhile</span><span class="p">(</span><span class="n">should_drop</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'to_Yield:'</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">to_drop</span><span class="p">:</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">to_drop</span><span class="p">:</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">to_drop</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">to_Yield</span><span class="p">:</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">to_Yield</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span>
+</code></pre></div></div>
+
+<p>Обрати внимание, что проверка будет осуществляться ровно до выполнения условия, а дальше итератор возвращает значения не проверяя.</p>
+
+<h2 id="takewhile"><a href="https://docs.python.org/3/library/itertools.html#itertools.takewhile">takewhile()</a></h2>
+
+<p>Антипод <code class="language-plaintext highlighter-rouge">dropwhile()</code> - возвращает значения до тех пор, пока проверочное условие <code class="language-plaintext highlighter-rouge">True</code>. Данная функция работает немного экономнее - ей не нужно проходить последовательность предварительно, поэтому проверка условия и выдача результирующего значения происходит одновременно</p>
+
+<h2 id="filterfalse"><a href="https://docs.python.org/3/library/itertools.html#itertools.filterfalse">filterfalse()</a></h2>
+
+<p>Встроенная функция <code class="language-plaintext highlighter-rouge">filter()</code> создает итератор, включающий только те элементы, для которых тестирующая функция возвращает <code class="language-plaintext highlighter-rouge">True</code>. <code class="language-plaintext highlighter-rouge">filterfalse()</code> проверяет условие на <code class="language-plaintext highlighter-rouge">False</code></p>
+
+<h2 id="compress"><a href="https://docs.python.org/3/library/itertools.html#itertools.compress">compress()</a></h2>
+
+<p>Аналогичен <code class="language-plaintext highlighter-rouge">filter()</code>, с той лишь разницей, что фильтрация производится не с использованием придоставоленной функции, а основываясь на последовательности</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span><span class="p">,</span> <span class="n">compress</span>
+
+<span class="n">third</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">([</span><span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">compress</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">third</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="mi">6</span> <span class="mi">9</span>
+</code></pre></div></div>
+
+<h2 id="groopby"><a href="https://docs.python.org/3/library/itertools.html#itertools.groupby">groopby()</a></h2>
+
+<p>Производит группировку значений предоставленной последовательности в соответствии с общим признаком. Чтобы группировка работала, исходная последовательность должна быть отсортирована.</p>
+
+<p>Возвращаемый итератор разделяет данные с самой функцией. Есть нюансы реализации - см.документацию.</p>
+
+<h2 id="accumulate"><a href="https://docs.python.org/3/library/itertools.html#itertools.accumulate">accumulate()</a></h2>
+
+<p>Обрабатывает переданную функции последовательност с накоплением. Грубо говоря, используется первый и последующий элемент последовательности (они передаются предоставленнйо функции), а наследующем шаге в качестве первого элемента используется результат вычислений.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">accumulate</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="s">'abcde'</span><span class="p">,</span> <span class="n">f</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'bab'</span><span class="p">,</span> <span class="s">'cbabc'</span><span class="p">,</span> <span class="s">'dcbabcd'</span><span class="p">,</span> <span class="s">'edcbabcde'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Функцию можно не передавать - <code class="language-plaintext highlighter-rouge">accumulate()</code> просуммирует последовательност с накоплением. Ное если передается функция, то она должна принимать строго два аргумента. Если переда аргумент <code class="language-plaintext highlighter-rouge">initial</code>, то аккумулирование начнется с этого значения и выходна последовательность будет на один элемент больше входной.</p>
+
+<p>В качестве функций можно передавать методы из модуля <code class="language-plaintext highlighter-rouge">operator</code>, к примеру <code class="language-plaintext highlighter-rouge">mul()</code>, <code class="language-plaintext highlighter-rouge">sum()</code>. <code class="language-plaintext highlighter-rouge">min()</code> и т.д.</p>
+
+<h2 id="product"><a href="https://docs.python.org/3/library/itertools.html#itertools.product">product()</a></h2>
+
+<p>Возвращает декартово произведение элементов входящих последовательностей. Значения возвращаемой последовательности - кортежи с эелементами исходноых в том порядке ,в котором они передавались. <code class="language-plaintext highlighter-rouge">product(A, B)</code> верн6ет тоже самое что и <code class="language-plaintext highlighter-rouge">((x,y) for x in A for y in B)</code>. Функция затратная по вычислениям и работает только с последовательностями конечной длины. Атрибут <code class="language-plaintext highlighter-rouge">repeat</code> повзоляет задать число повторений (полезно, к примеру, для получения декартового произведения последовательности на себя)</p>
+
+<h2 id="permutations"><a href="https://docs.python.org/3/library/itertools.html#itertools.permutations">permutations()</a></h2>
+
+<p>Возвращает все возможные комбинации из элементов входной последовательности. Длину выходных элементов можно задать</p>
+
+<h2 id="combinations"><a href="https://docs.python.org/3/library/itertools.html#itertools.combinations">combinations()</a></h2>
+
+<p>Эта функция возвращает только уникальные возможные сочетания. Атрибут <code class="language-plaintext highlighter-rouge">r</code> задающий длину элементов выходной последовательности, в данном случае обязателен</p>
+
+<h2 id="combinations_with_replacement"><a href="https://docs.python.org/3/library/itertools.html#itertools.combinations_with_replacement">combinations_with_replacement()</a></h2>
+
+<p>Допускает сочетание одинаковых элементов - при этом такое сочетание в итоговй последовательности будет уникальным.</p>
+
+<h2 id="pairwise"><a href="https://docs.python.org/3/library/itertools.html#itertools.pairwise">pairwise()</a></h2>
+
+<p>Возвращает последовательность, состоящую из кортежей, сождержащих пары пересекающихся значений переданной последовательности.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">pairwise</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">pairwize</span><span class="p">(</span><span class="s">'ABCD'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">AB</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BC</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">CD</span>
+</code></pre></div></div>
+
+<p>Эта функция доступна начиная с 3.10</p>
+
+<p><a href="https://docs.python.org/3/library/itertools.html">Документация по itertools</a></p>
+
+<p>Смотри так-же [<a href="more-itertools" title="More-itertools">more-itertools</a>]</p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
