@@ -11,13 +11,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Datetime" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Datetime. Модуль стандартной библиотеки python для работы со временем" />
-<meta property="og:description" content="Datetime. Модуль стандартной библиотеки python для работы со временем" />
+<meta name="description" content="Datetime. Модуль стандартной библиотеки python для работы со значениями даты и времни" />
+<meta property="og:description" content="Datetime. Модуль стандартной библиотеки python для работы со значениями даты и времни" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/datetime.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/datetime.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/datetime.html","headline":"Datetime","description":"Datetime. Модуль стандартной библиотеки python для работы со временем","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/datetime.html","headline":"Datetime","description":"Datetime. Модуль стандартной библиотеки python для работы со значениями даты и времни","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -85,13 +85,91 @@
 
       <h1 id="datetime">Datetime</h1>
 
-<p>Библиотечка на python для работы со временем</p>
+<p>Библиотечка на python для синтаксического анализа значений даты и времени</p>
 
-<p>А вот тут можно <a href="https://www.unixtimestamp.com/">получить в реальном времени таймстамп</a></p>
+<p>Для представления значений времени используется класс <code class="language-plaintext highlighter-rouge">time</code>, доступ к данным времени можно получить по атрибутам. Экземпляр класса хранит только время и его разрещшающая способность ограничена микросекундами.</p>
 
-<p>[<a href="../posts/2021-04-02-daily-note" title="Про работу behave и unittest и немного про datetime">2021-04-02-daily-note</a>] - внизу заметки про то, как посчитать определенный день недели</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
 
-<p>[<a href="декоратор-wait-для-behave" title="Декоратор wait для ">декоратор-wait-для-behave</a>]</p>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">time</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">03</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">hour</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">minute</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">second</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">microsecond</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tzinfo</span><span class="p">)</span>
+<span class="bp">None</span>
+</code></pre></div></div>
+
+<p>Даты можно извлекать через класс <code class="language-plaintext highlighter-rouge">date</code> используя похожий апи. Метод <code class="language-plaintext highlighter-rouge">today()</code> создает экземпляр текущей даты. Разрешающая способность - сутки.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tt</span> <span class="o">=</span> <span class="n">today</span><span class="p">.</span><span class="n">timetuple</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_year</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_mon</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_mday</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_hour</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_min</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_sec</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_wday</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_yday</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">tm_isdst</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, экземпляр даты можно получить из существующей даты с помощью метода <code class="language-plaintext highlighter-rouge">replace()</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">timedelta()</code> позволяет получить нужный промежуток времени, с которым можно осуществлять базовый арифметические операции и сравнение. У timedelta свой апи доступа к значениям. полную длительность в секундах можно получить из объекта timedelta с помощью ёещефд_ыусщтвы()ё</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Класс datetime предоставляет методы <code class="language-plaintext highlighter-rouge">fromordinal()</code> и <code class="language-plaintext highlighter-rouge">fromtimestamp()</code>, позволяющие конвертировать представление даты и времени. <code class="language-plaintext highlighter-rouge">combine()</code> позволяет скомбинировать экземлпяр datetime из экземпляров date и time</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">time</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">'t :'</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">t</span> <span class="p">:</span> <span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">03</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">'d :'</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="n">d</span> <span class="p">:</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">05</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">combine</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">'dt:'</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+<span class="n">dt</span><span class="p">:</span> <span class="mi">2021</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">05</span> <span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">03</span>
+</code></pre></div></div>
+
+<p>Форматирование так-же доступно через функции <code class="language-plaintext highlighter-rouge">strftime()</code> и <code class="language-plaintext highlighter-rouge">strptime()</code>. Все доступные форматы <a href="https://docs.python.org/3/library/datetime.html?highlight=datetime#strftime-and-strptime-format-codes">тут</a></p>
+
+<p>Частовые пояа представлены абстрактным классом <code class="language-plaintext highlighter-rouge">tzinfo</code> - необходимо определить сабкласс и предоставить ему реализации методов. В datetime представляена тривиальная реализация в виде сабкласса <code class="language-plaintext highlighter-rouge">timezone</code> с использованием фиксированного смещения относительно UTC</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">min6</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=-</span><span class="mi">6</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">plus6</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(</span><span class="n">min6</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">astimezone()</code> обеспечивает преобразование одного часового пояса в другой.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">plus6</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="как-получимть-текущее-время">Как получимть текущее время</h2>
 
@@ -121,8 +199,8 @@
 
 <p>Или так</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">().</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d %H:%M:%S'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">().</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d %H:%M:%S'</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p><a href="https://stackoverflow.com/a/415525/15966204">Ссылка</a></p>
@@ -144,6 +222,21 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span>
 <span class="mi">0</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">43</span>
 </code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/datetime.html?highlight=datetime#module-datetime">Документация</a></p>
+
+<p>[<a href="date-and-time-in-python" title="Date and time in python">date-and-time-in-python</a>]</p>
+
+<p>Еще материалы:</p>
+
+<ul>
+  <li>[<a href="../posts/2021-04-02-daily-note" title="Про работу behave и unittest и немного про datetime">2021-04-02-daily-note</a>] - внизу заметки про то, как посчитать определенный день недели</li>
+  <li>[<a href="декоратор-wait-для-behave" title="Декоратор wait для behave">декоратор-wait-для-behave</a>]</li>
+  <li>[<a href="time" title="Time">time</a>]</li>
+  <li>[<a href="calendar" title="Calendar">calendar</a>]</li>
+  <li>[<a href="dateutil" title="Dateutil">dateutil</a>]</li>
+  <li>[<a href="pytz" title="Pytz">pytz</a>]</li>
+</ul>
 
 
 
