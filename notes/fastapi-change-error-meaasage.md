@@ -2,7 +2,7 @@
 description: Переопределение текста ошибок в fastapi
 tags: fastapi
 ---
-# Fastapi change error meaasage
+# Fastapi change error measage
 
 В фастапи сообщение ошибки выглядит примерно так
 
@@ -59,7 +59,8 @@ async def create_item(item: Item):
 
 Теперь передав в body
 
-```json{
+```json
+{
  "title": 22,
  "size": "hehe"
 }

@@ -31,7 +31,7 @@ creator.create("Developer", Employee, position="Developer", programmingLanguages
 help(creator.Developer)
 ```
 
-```txt
+```shell
     Help on class Developer in module deap.creator:
     
     class Developer(__main__.Employee)
@@ -75,7 +75,7 @@ creator.create('FitnessMax', base.Fitness, weights=(1.0,))
 help(creator.FitnessMax)
 ```
 
-```txt
+```shell
     Help on class FitnessMax in module deap.creator:
     
     class FitnessMax(deap.base.Fitness)

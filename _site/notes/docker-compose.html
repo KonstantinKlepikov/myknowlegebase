@@ -161,24 +161,24 @@
 
 <p>Создать [<a href="requirements" title="Requirements.txt">requirements</a>].txt</p>
 
-<pre><code class="language-txt">flask
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flask
 redis
-</code></pre>
+</code></pre></div></div>
 
 <h3 id="step-2-create-a-dockerfile">Step 2: Create a Dockerfile</h3>
 
-<pre><code class="language-Dockerfile"># syntax=docker/dockerfile:1
-FROM python:3.7-alpine
-WORKDIR /code
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-RUN apk add --no-cache gcc musl-dev linux-headers
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-EXPOSE 5000
-COPY . .
-CMD ["flask", "run"]
-</code></pre>
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># syntax=docker/dockerfile:1</span>
+<span class="k">FROM</span><span class="s"> python:3.7-alpine</span>
+<span class="k">WORKDIR</span><span class="s"> /code</span>
+<span class="k">ENV</span><span class="s"> FLASK_APP=app.py</span>
+<span class="k">ENV</span><span class="s"> FLASK_RUN_HOST=0.0.0.0</span>
+<span class="k">RUN </span>apk add <span class="nt">--no-cache</span> gcc musl-dev linux-headers
+<span class="k">COPY</span><span class="s"> requirements.txt requirements.txt</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+<span class="k">EXPOSE</span><span class="s"> 5000</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+<span class="k">CMD</span><span class="s"> ["flask", "run"]</span>
+</code></pre></div></div>
 
 <p>Это дает:</p>
 

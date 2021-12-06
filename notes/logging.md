@@ -50,7 +50,7 @@ logging.warning('And this, too')
 logging.error('And non-ASCII stuff, too, like Øresund and Malmö')
 ```
 
-```txt
+```shell
 DEBUG:root:This message should go to the log file
 INFO:root:So should this
 WARNING:root:And this, too

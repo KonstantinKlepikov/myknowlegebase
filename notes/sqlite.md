@@ -1,5 +1,6 @@
 ---
 description: База данных sqlite
+tags: python-standart-library
 ---
 # Sqlite
 

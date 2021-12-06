@@ -81,14 +81,14 @@ def hello():
 
 Создать [[requirements]].txt
 
-```txt
+```shell
 flask
 redis
 ```
 
 ### Step 2: Create a Dockerfile
 
-```Dockerfile
+```docker
 # syntax=docker/dockerfile:1
 FROM python:3.7-alpine
 WORKDIR /code
