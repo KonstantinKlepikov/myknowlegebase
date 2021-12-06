@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>More-itertools | My knowlege base</title>
+<title>More itertools | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="More-itertools" />
+<meta property="og:title" content="More itertools" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta name="description" content="Дополнительные объекты итераторов и генераторов в python" />
+<meta property="og:description" content="Дополнительные объекты итераторов и генераторов в python" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/more-itertools.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/more-itertools.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/more-itertools.html","headline":"More-itertools","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/more-itertools.html","headline":"More itertools","description":"Дополнительные объекты итераторов и генераторов в python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,12 +83,86 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="more-itertools">More-itertools</h1>
+      <h1 id="more-itertools">More itertools</h1>
+
+<p>Пакет утилит для манипуляций с итераторами. Дополняет набор из стандартной библиотеке [<a href="itertools" title="Itertools">itertools</a>]. В основном возвращаются итенраторы, генераторы или списки, состоящие из объектов, итераторов или генераторов.</p>
+
+<p>В наборе:</p>
 
 <ul>
+  <li><code class="language-plaintext highlighter-rouge">chunked()</code> возвращает итератор со списками последовательностей длиной n, сделанной из исходной. Можно поднять ошибку, если список не делится ровно или последний элемент</li>
+  <li><code class="language-plaintext highlighter-rouge">ichunked()</code> возвращает генератор, возвращающий списки</li>
+  <li><code class="language-plaintext highlighter-rouge">sliced()</code> возвращает <code class="language-plaintext highlighter-rouge">itertools.takewhile</code> объект. Фактически это список объектов того же типа, что и исходный. Поддерживаются только последовательности, поддерживающие слайсинг. Можно поднять ошибку при неправильной длине</li>
+  <li><code class="language-plaintext highlighter-rouge">distribute()</code> сделать n последовательностей по возможности равно длины. Это может порождать пустые списки. Возвращает список, состоящий из объектов <code class="language-plaintext highlighter-rouge">itertools.slice</code></li>
+  <li><code class="language-plaintext highlighter-rouge">divide()</code> список кортежей-итераторов</li>
+  <li><code class="language-plaintext highlighter-rouge">split_at()</code> разделить последовательность ровно по выбранному объекту (в итоговые последовательности объект не попадает). Возвращается генератор списков. Можно задать максимальное число сплитов. Разделяющий элемент так-же можно сохранять в отдельной последовательности в списке образованных</li>
+  <li><code class="language-plaintext highlighter-rouge">split_before()</code> разделяет последовательность ровно перед позицией  разделителя</li>
+  <li><code class="language-plaintext highlighter-rouge">split_after()</code> аналогично</li>
+  <li><code class="language-plaintext highlighter-rouge">split_into()</code> разделить на последовательности длиной, равной переданной в списке длин. Получаем генератор, возвращающий списки</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">more_itertools</span><span class="p">.</span><span class="n">split_into</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">split_when()</code> разделяет последовательность в том месте, где выполняется условие для предыдущего значения и последующего. Генератор, который возвращает списки</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">mi</span><span class="p">.</span><span class="n">split_when</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+<span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">bucket()</code> создает bucket объект, который имеет АПИ словаря. Словарь заполянется так, что ключ - это условие, а значения - все подходящие объекты последовательности. По ключу можно извлекать генераторы последовательностей этих объектов</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">iterable</span> <span class="o">=</span> <span class="p">[</span><span class="s">'a1'</span><span class="p">,</span> <span class="s">'b1'</span><span class="p">,</span> <span class="s">'c1'</span><span class="p">,</span> <span class="s">'a2'</span><span class="p">,</span> <span class="s">'b2'</span><span class="p">,</span> <span class="s">'c2'</span><span class="p">,</span> <span class="s">'b3'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">mi</span><span class="p">.</span><span class="n">bucket</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s">'b'</span><span class="p">]))</span>
+<span class="p">[</span><span class="s">'b1'</span><span class="p">,</span> <span class="s">'b2'</span><span class="p">,</span> <span class="s">'b3'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">unzip()</code> операция обрпатная zip</li>
+  <li><code class="language-plaintext highlighter-rouge">grouper()</code> создает <code class="language-plaintext highlighter-rouge">zip_longest()</code> объект из [<a href="itertools" title="Itertools">itertools</a>] зипуя последовательность в группы определенной длины, а нехватающую часть заполяняя филлером</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">mi</span><span class="p">.</span><span class="n">grouper</span><span class="p">(</span><span class="s">'ABCDEFG'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">'x'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+<span class="p">[(</span><span class="s">'A'</span><span class="p">,</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'C'</span><span class="p">),</span> <span class="p">(</span><span class="s">'D'</span><span class="p">,</span> <span class="s">'E'</span><span class="p">,</span> <span class="s">'F'</span><span class="p">),</span> <span class="p">(</span><span class="s">'G'</span><span class="p">,</span> <span class="s">'x'</span><span class="p">,</span> <span class="s">'x'</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">partition()</code> разделяет последовательность по условию так, что слева все что не удовлетворяет, а справа - удовлетворяет условию</li>
+  <li><code class="language-plaintext highlighter-rouge">spy()</code> возвращает список из первых n элементов и итератор всей последовательности</li>
+  <li><code class="language-plaintext highlighter-rouge">peekable()</code> создает итератор и список. Мы можем пикать следующий элемент сколько хотим раз не расходуя итератор или получать элементы последовательности по индексу. Некст передвигает “указатель”. Кроме того можно добавлять элементы в начало итератора</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">mi</span><span class="p">.</span><span class="n">peekable</span><span class="p">([</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'b'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">peek</span><span class="p">())</span>
+<span class="n">a</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">peek</span><span class="p">())</span>
+<span class="n">a</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="n">a</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="p">.</span><span class="n">prepend</span><span class="p">(</span><span class="s">'12'</span><span class="p">,</span> <span class="s">'13'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">peek</span><span class="p">())</span>
+<span class="mi">12</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="mi">12</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">seekable()</code> можно ходить по итератору вперед и назад, указывая индекс эелемента. <code class="language-plaintext highlighter-rouge">peek()</code> позволяет передвинуться вперед на один айтем без некста итератора. Кеш доступен через <code class="language-plaintext highlighter-rouge">elements()</code>, который возвращает уже израсходованные елементы (обновляется один раз, поэтому когда мы передвигаем итератор назад, кеш не обнуляется)</p>
+  </li>
   <li><a href="https://github.com/more-itertools/more-itertools">github</a></li>
   <li><a href="https://more-itertools.readthedocs.io/en/stable/">документация</a></li>
 </ul>
+
 
 
 <div class="additional-pad">
