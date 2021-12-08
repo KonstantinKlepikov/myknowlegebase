@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Работа с файлами | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Работа с файлами" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Работа с файлами в стандартной библиотеке python" />
+<meta property="og:description" content="Работа с файлами в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-filesystem.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-filesystem.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-filesystem.html","headline":"Работа с файлами","description":"Работа с файлами в стандартной библиотеке python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="работа-с-файлами">Работа с файлами</h1>
+
+<p>Это короткая заметка об инструментах работы с файловой системой, предоставляемыми стандартной библиотекой python</p>
+
+<h2 id="ospath"><a href="https://docs.python.org/3/library/os.path.html">os.path</a></h2>
+
+<p>Обеспечивает базовые манипуляции с путями файлов. Используется для разбора строк, представляющих пути и используется для повышения переносимости между платформами</p>
+
+<h2 id="pathlib"><a href="https://docs.python.org/3/library/pathlib.html?highlight=pathlib#module-pathlib">pathlib</a></h2>
+
+<p>Предоставляет объектно-ориентированный АПИ для анализа, проверки, создания и других операций с путями. Реализовано несколько представлений - чистые (pure) классы, которые реализуют представление, но не взаимодействуют с файловой системой и конкретные (concrete), которые взаимодействуют с локальной системой. Реализованы как POSIX так и windows стандарты.</p>
+
+<p><img src="/myknowlegebase/attachments/2021-12-08-02-19-06.png" alt="pathlib" /></p>
+
+<p>Можно создавать и производить синт.анализ:</p>
+
+<ul>
+  <li>пути</li>
+  <li>каталоги</li>
+  <li>файлы</li>
+  <li>символические ссылки</li>
+</ul>
+
+<p>Можно получать и устанавливать свойства объектов, включая права доступа, а так-же удалять их.</p>
+
+<h2 id="glob"><a href="https://docs.python.org/3/library/glob.html?highlight=glob#module-glob">glob</a></h2>
+
+<p>Определение шаблонов имен файлов в unix-стиле</p>
+
+<h2 id="fnmatch"><a href="https://docs.python.org/3/library/fnmatch.html?highlight=fnmatch#module-fnmatch">fnmatch</a></h2>
+
+<p>Реализует сравнение имен с шаблонами glob</p>
+
+<h2 id="linecache"><a href="https://docs.python.org/3/library/linecache.html?highlight=linecache#module-linecache">linecache</a></h2>
+
+<p>Используется для сокращения издержек чтения файлов (к примеру при трассировке или при создании отчетов ошибок). Можно использовать для задач. в которых требуется многократное чтение одного и того же файла.</p>
+
+<h2 id="tempfile"><a href="https://docs.python.org/3/library/tempfile.html?highlight=tempfile#module-tempfile">tempfile</a></h2>
+
+<p>Создание временных файлов и директорий. Есть возможность создавать неименованные файлы (для случаев, когда не требуется совместное использование) и именованные файлы (когда требуется анализ создаваемых файлов). Доступен свой менеджер контекста.</p>
+
+<p>Запись о создании файла удапляется сразу после его создания. Сам файл удаляется после его закрытия. Есть возможность создавать небольшие файлы в буфере вместо обращения к диску.</p>
+
+<h2 id="shutil"><a href="https://docs.python.org/3/library/shutil.html?highlight=shutil#module-shutil">shutil</a></h2>
+
+<p>Предоставляет выскоуровневые операции с файлами и каталогами:</p>
+
+<ul>
+  <li>копирование файлов</li>
+  <li>частичное копирование метаданных</li>
+  <li>работа с деревом каталогов - создание, перемещение и т.д.</li>
+  <li>поиск файлов</li>
+  <li>архивация (создание и распаковка архивов)</li>
+  <li>измененеие владельца</li>
+  <li>определение размера файловой системы</li>
+</ul>
+
+<h2 id="filecmp"><a href="https://docs.python.org/3/library/filecmp.html?highlight=filecmp#module-filecmp">filecmp</a></h2>
+
+<p>Реализует сравнение файлов и директорий. Смотри еще <a href="https://docs.python.org/3/library/difflib.html?highlight=difflib#module-difflib">difflib</a> - сравнение последовательностей</p>
+
+<h2 id="mmap"><a href="https://docs.python.org/3/library/mmap.html?highlight=mmap#module-mmap">mmap</a></h2>
+
+<p>Отображение файлов в память: чтение, запись, копирование.</p>
+
+<h2 id="codecs"><a href="https://docs.python.org/3/library/codecs.html?highlight=codecs#module-codecs">codecs</a></h2>
+
+<p>Перекодировка текстовых данных.</p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
