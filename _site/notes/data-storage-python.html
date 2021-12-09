@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pickle, shelve, dbm | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pickle, shelve, dbm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Сериализация данных в стандартной библиотеке python" />
+<meta property="og:description" content="Сериализация данных в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/data-storage-python.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/data-storage-python.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/data-storage-python.html","headline":"Pickle, shelve, dbm","description":"Сериализация данных в стандартной библиотеке python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="pickle-shelve-dbm">Pickle, shelve, dbm</h1>
+
+<p>Данная заметка вкратце о сериализации данных в стандартной библиотеке python с помощью модуля <code class="language-plaintext highlighter-rouge">pickle</code>, <code class="language-plaintext highlighter-rouge">shelve</code> и <code class="language-plaintext highlighter-rouge">dbm</code></p>
+
+<h2 id="pickle"><a href="https://docs.python.org/3/library/pickle.html#module-pickle">pickle</a></h2>
+
+<p>Предоставляет преобразование объектов python в последовтаельность байтов (сериализацию), что позволяет передать поток байтов в другой процесс или сохранить на диске, а затем реконструировать из этого исходный объект. Безопасность хранения не гарантируется.</p>
+
+<p>Помимо кодирования/декодирования методами <code class="language-plaintext highlighter-rouge">dumps()</code>/<code class="language-plaintext highlighter-rouge">loads()</code>, возвращающих байтовый объект, предоставляется работа с файловыми потоками - это, в частности, позволяет писать несколько объектов, а затем читать их, не зная заранее количество и размеры. См. пример</p>
+
+<script src="https://gist.github.com/7d02613ba27636446dc8f149ff2e8b17.js"> </script>
+
+<p>Важно! При работе с пользовательскими классами, пользовательский класс должен быть виден в пространстве имен процесса, выполняющего чтение сериализованного объекта. Если этого не сделать - будет поднята ошибка <code class="language-plaintext highlighter-rouge">AttributeError</code>. Кроме того, не все объекты могут быть сериализованы - к таким объектам относятся сокеты, дескрипторы, подключения к бд и другие объекты с состоянием времени выполнения, зависимым от операционной системы или другого процесса. Для таких объектов можно определить <code class="language-plaintext highlighter-rouge">__getstate__()</code> и <code class="language-plaintext highlighter-rouge">__setstate__()</code> для возврата состояния экземпляра, подлежащего сериализации. Циклическими ссылками модуль <code class="language-plaintext highlighter-rouge">pickle</code> управляет самостоятельно</p>
+
+<h2 id="shelve"><a href="https://docs.python.org/3/library/shelve.html">shelve</a></h2>
+
+<p>Предназначен для постоянного хранения объектов, доступ к которым будет осуществлен по ключам. Сериализация производится с помощью <code class="language-plaintext highlighter-rouge">pickle</code>, а бд организуется с помощью <code class="language-plaintext highlighter-rouge">dbm</code></p>
+
+<p>Создание хранилища осуществляется через <code class="language-plaintext highlighter-rouge">shelve.open()</code> - задается ключ, которому передается объект. Т.к. реализация на <code class="language-plaintext highlighter-rouge">dbm</code>, то запись в один и тот же файл несколькими процессами одновременно не поддерживается, но возможен параллельный доступ для чтения. Чтобы открыть бд только для чтения, надо передать соответствующий флаг:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">shelve</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'bdname.db'</span><span class="p">,</span> <span class="n">flag</span><span class="o">=</span><span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bd</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>По умолчанию бд, созданная <code class="language-plaintext highlighter-rouge">shelve</code> не отслеживает измененения, происходящие во временных объектах. Это означает, что хранилище нужно явно обновлять, если переданный в него объект изменился. Чтобы обеспечить автообновление, можно установить флаг <code class="language-plaintext highlighter-rouge">writeback=True</code> - это приведет к тому, чт ов кэш будут помещаться все объекты, извлекаемые из хранилища, а при закрытии бд, эти объекты будут записываться. Минусом такого подхода является то, что возникает переасход памяти и тормозится исполнение приложения в момент записи. Чтобы избежать данной проблемы, необходимо извлекать в память объект из дб, вносить в него изменения и производить перезапись.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span> <span class="o">=</span> <span class="n">shelve</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="c1"># as d was opened WITHOUT writeback=True, beware:
+</span><span class="n">d</span><span class="p">[</span><span class="s">'xx'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>        <span class="c1"># this works as expected, but...
+</span><span class="n">d</span><span class="p">[</span><span class="s">'xx'</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>          <span class="c1"># *this doesn't!* -- d['xx'] is STILL [0, 1, 2]!
+</span>
+<span class="c1"># having opened d without writeback=True, you need to code carefully:
+</span><span class="n">temp</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s">'xx'</span><span class="p">]</span>             <span class="c1"># extracts the copy
+</span><span class="n">temp</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>             <span class="c1"># mutates the copy
+</span><span class="n">d</span><span class="p">[</span><span class="s">'xx'</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>             <span class="c1"># stores the copy right back, to persist it
+</span></code></pre></div></div>
+
+<h2 id="dbm"><a href="https://docs.python.org/3/library/dbm.html?highlight=dbm#module-dbm">dbm</a></h2>
+
+<p>Предоставляет доступ к юниксовским dbm-базам: данные хранятся в виде строк, ассоциированных со строковыми ключами. Модуль поставляется с несколькими типами доступных бд, дефолтная завист от конкретной реализации платформы. Смотри доку как выбрать бд, помимо дефолтной.</p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

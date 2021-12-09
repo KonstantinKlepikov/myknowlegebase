@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Deap чекпоинты | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Deap чекпоинты" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Создание чекпоинтов в эволюционном обучении в DEAP" />
+<meta property="og:description" content="Создание чекпоинтов в эволюционном обучении в DEAP" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/deap-checkpoints.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/deap-checkpoints.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/deap-checkpoints.html","headline":"Deap чекпоинты","description":"Создание чекпоинтов в эволюционном обучении в DEAP","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="deap-чекпоинты">Deap чекпоинты</h1>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/advanced/checkpoint.html">Статья</a></p>
+
+<p>Суть в следующем: если используется стандартный алгоритм, например <code class="language-plaintext highlighter-rouge">eaSimple</code>, то необходимо сделат ьего копию и переписать, добавив сериализацию данных. Нужно получить все объекты обучения на (в примере это делается на заданном шаге обучения) и сохранить в объекте <code class="language-plaintext highlighter-rouge">pickle</code>. При запуске следующего раунда обучения можно полностью восстановить обучающие параметры, включая фенотипы генов и продолжить обучение с той же точки, на которой произошла остановка.</p>
+
+<p>Полностью пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">checkpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">checkpoint</span><span class="p">:</span>
+        <span class="c1"># A file name has been given, then load the data from the file
+</span>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">cp_file</span><span class="p">:</span>
+            <span class="n">cp</span> <span class="o">=</span> <span class="n">pickle</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">cp_file</span><span class="p">)</span>
+        <span class="n">population</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[</span><span class="s">"population"</span><span class="p">]</span>
+        <span class="n">start_gen</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[</span><span class="s">"generation"</span><span class="p">]</span>
+        <span class="n">halloffame</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[</span><span class="s">"halloffame"</span><span class="p">]</span>
+        <span class="n">logbook</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[</span><span class="s">"logbook"</span><span class="p">]</span>
+        <span class="n">random</span><span class="p">.</span><span class="n">setstate</span><span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="s">"rndstate"</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Start a new evolution
+</span>        <span class="n">population</span> <span class="o">=</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">population</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="n">start_gen</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">halloffame</span> <span class="o">=</span> <span class="n">tools</span><span class="p">.</span><span class="n">HallOfFame</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logbook</span> <span class="o">=</span> <span class="n">tools</span><span class="p">.</span><span class="n">Logbook</span><span class="p">()</span>
+
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">tools</span><span class="p">.</span><span class="n">Statistics</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ind</span><span class="p">:</span> <span class="n">ind</span><span class="p">.</span><span class="n">fitness</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">stats</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"avg"</span><span class="p">,</span> <span class="n">numpy</span><span class="p">.</span><span class="n">mean</span><span class="p">)</span>
+    <span class="n">stats</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"max"</span><span class="p">,</span> <span class="n">numpy</span><span class="p">.</span><span class="nb">max</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_gen</span><span class="p">,</span> <span class="n">NGEN</span><span class="p">):</span>
+        <span class="n">population</span> <span class="o">=</span> <span class="n">algorithms</span><span class="p">.</span><span class="n">varAnd</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">toolbox</span><span class="p">,</span> <span class="n">cxpb</span><span class="o">=</span><span class="n">CXPB</span><span class="p">,</span> <span class="n">mutpb</span><span class="o">=</span><span class="n">MUTPB</span><span class="p">)</span>
+
+        <span class="c1"># Evaluate the individuals with an invalid fitness
+</span>        <span class="n">invalid_ind</span> <span class="o">=</span> <span class="p">[</span><span class="n">ind</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">population</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">ind</span><span class="p">.</span><span class="n">fitness</span><span class="p">.</span><span class="n">valid</span><span class="p">]</span>
+        <span class="n">fitnesses</span> <span class="o">=</span> <span class="n">toolbox</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">toolbox</span><span class="p">.</span><span class="n">evaluate</span><span class="p">,</span> <span class="n">invalid_ind</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">fit</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">invalid_ind</span><span class="p">,</span> <span class="n">fitnesses</span><span class="p">):</span>
+            <span class="n">ind</span><span class="p">.</span><span class="n">fitness</span><span class="p">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">fit</span>
+
+        <span class="n">halloffame</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">population</span><span class="p">)</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">stats</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">population</span><span class="p">)</span>
+        <span class="n">logbook</span><span class="p">.</span><span class="n">record</span><span class="p">(</span><span class="n">gen</span><span class="o">=</span><span class="n">gen</span><span class="p">,</span> <span class="n">evals</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">invalid_ind</span><span class="p">),</span> <span class="o">**</span><span class="n">record</span><span class="p">)</span>
+
+        <span class="n">population</span> <span class="o">=</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">gen</span> <span class="o">%</span> <span class="n">FREQ</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Fill the dictionary using the dict(key=value[, ...]) constructor
+</span>            <span class="n">cp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">population</span><span class="o">=</span><span class="n">population</span><span class="p">,</span> <span class="n">generation</span><span class="o">=</span><span class="n">gen</span><span class="p">,</span> <span class="n">halloffame</span><span class="o">=</span><span class="n">halloffame</span><span class="p">,</span>
+                      <span class="n">logbook</span><span class="o">=</span><span class="n">logbook</span><span class="p">,</span> <span class="n">rndstate</span><span class="o">=</span><span class="n">random</span><span class="p">.</span><span class="n">getstate</span><span class="p">())</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"checkpoint_name.pkl"</span><span class="p">,</span> <span class="s">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">cp_file</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="p">.</span><span class="n">dump</span><span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="n">cp_file</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>[<a href="deap" title="Deap - генетические алгоритмы на python">deap</a>]</li>
+  <li>[<a href="deap-docs" title="Deap документация">deap-docs</a>]</li>
+  <li>[<a href="deap-multicor-usage" title="Multicor for ">deap-multicor-usage</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
