@@ -54,6 +54,8 @@ category: list
 [bisect]: ../notes/bisect "Bisect - сортирвоанные списки"
 [queue]: ../notes/queue "Queue - очереди и стеки"
 [data-storage-python]: ../notes/data-storage-python "Pickle, shelve, dbm"
+[multiprocess]: ../notes/multiprocess "Управление процессами в python"
+[threading]: ../notes/threading "Threading"
 [asyncio]: ../notes/asyncio "Asyncio"
 [feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"

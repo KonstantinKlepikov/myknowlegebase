@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Threading | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Threading" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Параллельные вычисления в процессах в python" />
+<meta property="og:description" content="Параллельные вычисления в процессах в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/threading.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/threading.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/threading.html","headline":"Threading","description":"Параллельные вычисления в процессах в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="threading">Threading</h1>
+
+<p>Модуль threading реализует управление параллельными вычислениями в рамках одного процесса. Он поставляет объектно-ориентированный АПИ - объекты потоков выполняются в рамках одного и того же процесса, разделяя общую память, что помогает сократить простой процессора.</p>
+
+<p>Использование одного и того же контекста несколькими потоками означает, что данные нужно защищать от неконтроллируемого одновременного доступа, иначе может возникнуть состояние “гонки”, когда порядок изменения в данных может повлиять на результат. Эту проблему можно решить блокировкой. Однако тут тоже есть сложности, так как могут возникать ситуации, когда несколько процессов будут одновременно блокировать ресусры, что может привести к тупикам блокировок.</p>
+
+<p>В python многопоточность используется на уровне ядра, при этом все потоки, обращающиеся к объектам python (в cpython), работают с одной глобальной блокировкой, так как большая часть внутренней реализации и сторонний код на C небезопасны для потоков. Этот механизм называется глобальной блокировкой интерпретатора ([<a href="gil" title="Gil">gil</a>]).</p>
+
+<p>Не смотря на блокировку, многопоточность в python позволяет эффективно использовать время, когда программа ожидает освобождения ресурса, так-как поток можно разбудить в момент возврата результата.</p>
+
+<h2 id="thread"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#thread-objects">Thread</a></h2>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">Thread</code> позволяет создать поток в простейшем случае</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f'Im worker </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="n">threds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ranfe</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+    <span class="n">threads</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Поток запускается методом <code class="language-plaintext highlighter-rouge">start()</code>. Кроме того, мы можем передать аргументы в поток. Кроме того, потоку можно передать имя с аргументом <code class="language-plaintext highlighter-rouge">name=</code> (в примере выше имя задано по умолчанию), которое сожно получить из объекта потока через <code class="language-plaintext highlighter-rouge">getName()</code>. К примеру текущий поток в примере выше можно узнать так: <code class="language-plaintext highlighter-rouge">threading.current_thread().getName()</code></p>
+
+<p>Можно создавать поток-демоны, которые не блокируют выход из основной программы. Это используется, когда прерывание потока затруднено или его работа не влияет на данные основной программы. Установка демона производится передачей аргумента <code class="language-plaintext highlighter-rouge">daemon=True</code> или вызовом метода <code class="language-plaintext highlighter-rouge">set_daemon()</code> с аргументом <code class="language-plaintext highlighter-rouge">True</code>. Чтобы дождаться завершения демона, надо использовать метод <code class="language-plaintext highlighter-rouge">join()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Im daemon'</span><span class="p">)</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'daemon'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">d</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">d</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Методу <code class="language-plaintext highlighter-rouge">join()</code> можно передать значение с плавающей точкой, определяющего предельное время ожидания перехода потока в неактивное состояние. Если поток не успеет завершиться за это время, то такой метод <code class="language-plaintext highlighter-rouge">join()</code> в любом случае выполнит возврат, не дождавшись завершения.</p>
+
+<p>Чтобы не хранить список потоков, можно воспользоваться встроенным методом <code class="language-plaintext highlighter-rouge">enumerate()</code>, который возвращает список всех активных экземпляров <code class="language-plaintext highlighter-rouge">Theread</code>. Основной поток так-же входит в этот список. Чтобы не создавать взаимную блокировку через <code class="language-plaintext highlighter-rouge">join()</code>, его надо исключать из списка, например так (задержка тут просто для продолжения потока):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Im worker'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">)</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">main_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">main_thread</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threading</span><span class="p">.</span><span class="nb">enumerate</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="n">main_thread</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Thread</code> можно переопределить переопределив его метод <code class="language-plaintext highlighter-rouge">run()</code>, который и вызывает функцию воркера. Соответственно в <code class="language-plaintext highlighter-rouge">run()</code> можно добавлять произвольный код. Аргументы, переданные конструктору, сохраняются в закрытых аттрибутах, поэтому следует переопределить конструктор и сохранить значения в экземпляре, чтобы они были видны в подклассе.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">class</span> <span class="nc">MyThread</span><span class="p">(</span><span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">daemon</span><span class="o">=</span><span class="n">daemon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'Im run with </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">args</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">kwargs</span><span class="si">}</span><span class="s">!'</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">MyThread</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="timer"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#threading.Thread.daemon">Timer</a></h2>
+
+<p>Поток <code class="language-plaintext highlighter-rouge">Timer</code> начинает работать сч некоторой задержкой, заданной в секундах. Кроме того, его можно отменить до того, как он начал исполняться с помощью <code class="language-plaintext highlighter-rouge">cancel()</code>.</p>
+
+<h2 id="event"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#event-objects">Event</a></h2>
+
+<p>Используется для синхронизации потоков (там где это нужно). В <code class="language-plaintext highlighter-rouge">Event</code> предоставлен флаг, котоырй можно безопасно устанавливать и сбрасывать в потока методами <code class="language-plaintext highlighter-rouge">set()</code> и <code class="language-plaintext highlighter-rouge">clear()</code>. С помощью метода <code class="language-plaintext highlighter-rouge">wait()</code> можно приостанавливать работу потока до тех пор пока не будет установлен флаг или пока не истечет время.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">wait_for</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">e</span><span class="p">.</span><span class="n">is_set</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'wait to event'</span><span class="p">)</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">event</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'event work'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'other works'</span><span class="p">)</span>
+
+<span class="n">e1</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Event</span><span class="p">()</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Event</span><span class="p">()</span>
+
+<span class="n">t1</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">wait_for</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">t1</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">t2</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">wait_for</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">t2</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">e1</span><span class="p">.</span><span class="nb">set</span><span class="p">()</span>
+<span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">e2</span><span class="p">.</span><span class="nb">set</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="lock"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#threading.Lock">Lock</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">Lock</code> позволяет залочить потоконебезопасные структуры, чтобы избежать потери данных или их разрушения. К примеру, списки и словари потоко-безопасны, чего не скажешь о таких типах как числа. <code class="language-plaintext highlighter-rouge">Lock</code> блочит все обращения к объекту до тех пор, пока не разлочится текущее.</p>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">asquire()</code> устанавливает - блокирующий или нет лок. Если нужно определить, заблокирован ли поток, не останавливая текущий, следует использовать метод <code class="language-plaintext highlighter-rouge">asquire()</code> с аргументом <code class="language-plaintext highlighter-rouge">False</code>. С помощью <code class="language-plaintext highlighter-rouge">release()</code> поток можно выпустить, при условии что он заблокирован.</p>
+
+<p>Пример демонстрирует как это может работать:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">def</span> <span class="nf">holder</span><span class="p">(</span><span class="n">lock</span><span class="p">):</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Starting holder'</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">lock</span><span class="p">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Holding'</span><span class="p">)</span>
+            <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Not holding'</span><span class="p">)</span>
+            <span class="n">lock</span><span class="p">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">lock</span><span class="p">):</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Starting worker'</span><span class="p">)</span>
+    <span class="n">num_tries</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_acquires</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">num_acquires</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Trying to acquire'</span><span class="p">)</span>
+        <span class="n">have_it</span> <span class="o">=</span> <span class="n">lock</span><span class="p">.</span><span class="n">acquire</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">num_tries</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">have_it</span><span class="p">:</span>
+                <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Iteration %d: Acquired'</span><span class="p">,</span>
+                              <span class="n">num_tries</span><span class="p">)</span>
+                <span class="n">num_acquires</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Iteration %d: Not acquired'</span><span class="p">,</span>
+                              <span class="n">num_tries</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">have_it</span><span class="p">:</span>
+                <span class="n">lock</span><span class="p">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">'Done after %d iterations'</span><span class="p">,</span> <span class="n">num_tries</span><span class="p">)</span>
+
+
+<span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s">'(%(threadName)-10s) %(message)s'</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Lock</span><span class="p">()</span>
+
+<span class="n">holder</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span>
+    <span class="n">target</span><span class="o">=</span><span class="n">holder</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">lock</span><span class="p">,),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'holder'</span><span class="p">,</span>
+    <span class="n">daemon</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">holder</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">worker</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span>
+    <span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span>
+    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">lock</span><span class="p">,),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'worker'</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">worker</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Вывод может выглядеть так:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>holder    <span class="o">)</span> Starting holder
+<span class="o">(</span>worker    <span class="o">)</span> Starting worker
+<span class="o">(</span>holder    <span class="o">)</span> Holding
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>holder    <span class="o">)</span> Not holding
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 1: Not acquired
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>holder    <span class="o">)</span> Holding
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 2: Not acquired
+<span class="o">(</span>holder    <span class="o">)</span> Not holding
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 3: Acquired
+<span class="o">(</span>holder    <span class="o">)</span> Holding
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 4: Not acquired
+<span class="o">(</span>holder    <span class="o">)</span> Not holding
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 5: Acquired
+<span class="o">(</span>holder    <span class="o">)</span> Holding
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 6: Not acquired
+<span class="o">(</span>holder    <span class="o">)</span> Not holding
+<span class="o">(</span>worker    <span class="o">)</span> Trying to acquire
+<span class="o">(</span>worker    <span class="o">)</span> Iteration 7: Acquired
+<span class="o">(</span>worker    <span class="o">)</span> Done after 7 iterations
+</code></pre></div></div>
+
+<p>Как видно, понадобилось 7 попыток, чтобы установить счетчик.</p>
+
+<p>В ситуациях, когда другой код в том же потоке должен повторно получить блокировку, надо использовать <a href="https://docs.python.org/3/library/threading.html?highlight=threading#threading.RLock">RLock</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">Lock</code> и <code class="language-plaintext highlighter-rouge">RLock</code> допускают <a href="https://docs.python.org/3/library/threading.html?highlight=threading#using-locks-conditions-and-semaphores-in-the-with-statement">использование менеджера контекста</a>. Это позволяет не заниматься явной установкой/выпуском блокировки.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">def</span> <span class="nf">worker_with</span><span class="p">(</span><span class="n">lock</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Lock with'</span><span class="p">)</span>
+
+<span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Lock</span><span class="p">()</span>
+<span class="n">w1</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker_with</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">lock</span><span class="p">,))</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker_with</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">lock</span><span class="p">,))</span>
+
+<span class="n">w1</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">w2</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="condition"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#threading.Condition">Condition</a></h2>
+
+<p>Реализует ожидание одним или несколькими потоками разблокировки другого ресурса. В качестве аргумента принимает <code class="language-plaintext highlighter-rouge">Lock</code> или <code class="language-plaintext highlighter-rouge">RLock</code>. В примере ниже два потока освобождаются после выпуска третьего:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">def</span> <span class="nf">slave</span><span class="p">(</span><span class="n">cond</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cond</span><span class="p">:</span>
+        <span class="n">cond</span><span class="p">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Im free'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">master</span><span class="p">(</span><span class="n">cond</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">cond</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Wait!'</span><span class="p">)</span>
+        <span class="n">cond</span><span class="p">.</span><span class="n">notify_all</span><span class="p">()</span>
+
+<span class="n">condition</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Condition</span><span class="p">()</span>
+<span class="n">s1</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">slave</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">condition</span><span class="p">,))</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">slave</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">condition</span><span class="p">,))</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">master</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">condition</span><span class="p">,))</span>
+
+<span class="n">s1</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">s2</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">m</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">wait_for()</code> оеализует ожидание некоего расчетного условия.</p>
+
+<h2 id="barrier"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#barrier-objects">Barrier</a></h2>
+
+<p>Реализует контрольную точку для заданного количества потоков. Когда поток достигает контрольной точки, он блокируется до тех пор, пока этой же точки не достигнут остальные потоки. Барьер можно использовать повторно любое количество раз для одного и того же количества потоков. <code class="language-plaintext highlighter-rouge">reset()</code> возвращает барьер в начальное состояние. <code class="language-plaintext highlighter-rouge">abort()</code> позволяет выполниться заблокированным потокам (полезно, к примеру, когда мы ожидаем блокировки нескольких потоков, но заданное число так и не достигнуто)</p>
+
+<p>Пример из документации:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">b</span> <span class="o">=</span> <span class="n">Barrier</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">server</span><span class="p">():</span>
+    <span class="n">start_server</span><span class="p">()</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">accept_connection</span><span class="p">()</span>
+        <span class="n">process_server_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">client</span><span class="p">():</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">wait</span><span class="p">()</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">make_connection</span><span class="p">()</span>
+        <span class="n">process_client_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="semaphore"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#semaphore-objects">Semaphore</a></h2>
+
+<p>Обеспечивает одновременный доступ к ресурсу нескольким потокам с ограничением их количества, к примеру это можэет быть сетевой пул, поддерживающий фиксированное число соединений.</p>
+
+<h2 id="local"><a href="https://docs.python.org/3/library/threading.html?highlight=threading#thread-local-data">local</a></h2>
+
+<p>Реализует объекты, доступные только части потоков. Используется для следующих задач:</p>
+
+<ul>
+  <li>сокрытие данных от потоков</li>
+  <li>инициализация потоков с одинаковыми значениями</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+
+<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">AttributeError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'No value yet'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">local</span><span class="p">()</span>
+<span class="n">show</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">data</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">show</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="p">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">,))</span>
+    <span class="n">t</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>No value yet
+1000
+No value yet
+55
+No value yet
+95
+</code></pre></div></div>
+
+<p>В примере видно, что установленная переменаня досутпна только локально, включая основной поток - атрибут <code class="language-plaintext highlighter-rouge">data.value</code> отсутствует в потоке до утсановки атрибута непосредственно внутри.</p>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="multiprocess" title="Управление процессами в python">multiprocess</a>]</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
