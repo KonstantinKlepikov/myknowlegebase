@@ -21,6 +21,8 @@ category: list
 - [[bisect]]
 - [[queue]]
 - [[data-storage-python]] pickle, shelve, dbm
+- [[multiprocess]] процессы в python
+- [[threading]] управления параллельными вычислениями в процуессах
 - [[asyncio]]
 
 [Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
