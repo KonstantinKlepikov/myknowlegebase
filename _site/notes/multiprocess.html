@@ -11,13 +11,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Управление процессами в python" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Модули subprocess и signal в стандартной библиотеке python" />
-<meta property="og:description" content="Модули subprocess и signal в стандартной библиотеке python" />
+<meta name="description" content="Модули subprocess, signal и multiprocessing в стандартной библиотеке python" />
+<meta property="og:description" content="Модули subprocess, signal и multiprocessing в стандартной библиотеке python" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/multiprocess.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/multiprocess.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/multiprocess.html","headline":"Управление процессами в python","description":"Модули subprocess и signal в стандартной библиотеке python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/multiprocess.html","headline":"Управление процессами в python","description":"Модули subprocess, signal и multiprocessing в стандартной библиотеке python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -87,7 +87,7 @@
 
 <h2 id="subprocess"><a href="https://docs.python.org/3/library/subprocess.html">subprocess</a></h2>
 
-<p>Предоставляет АПИ, позволяющий создавать дополнительные процесс и обмениваться данными с ними. Модуль поддерживает обмен через стандартные каналы ввода-вывода, поэтому удобен для работы с текстом.</p>
+<p>Предоставляет АПИ, позволяющий создавать дополнительные процессы и обмениваться данными с ними. Модуль поддерживает обмен через стандартные каналы ввода-вывода, поэтому удобен для работы с текстом.</p>
 
 <p>Предоставляются три основных интрумента:</p>
 
@@ -144,6 +144,304 @@
 
 <span class="n">signal</span><span class="p">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># Disable the alarm
 </span></code></pre></div></div>
+
+<h2 id="multiprocessing"><a href="https://docs.python.org/3/library/multiprocessing.html">multiprocessing</a></h2>
+
+<p>Позволяет инициировать процессы на разных ядрах в обход [<a href="gil" title="Gil">gil</a>]. АПИ модуля идентично [<a href="threading" title="Threading">threading</a>]</p>
+
+<p>Поддерживается три метода создания процессов:</p>
+
+<ul>
+  <li>spawn - родительский процесс запускает новый процесс интерпретатора python. Дочерний процесс наследует только те ресурсы, которые необходимы для запуска метода <code class="language-plaintext highlighter-rouge">run()</code> объекта процесса. В частности, ненужные файловые дескрипторы и дескрипторы родительского процесса не будут унаследованы. Запуск процесса с использованием этого метода довольно медленный по сравнению с использованием fork или forkserver. Доступно в Unix и Windows. По умолчанию в Windows и macOS (начиная с 3.8).</li>
+  <li>fork - родительский процесс использует <code class="language-plaintext highlighter-rouge">os.fork()</code> для получения форка интерпретатора python. Дочерний процесс, когда он начинается, фактически идентичен родительскому процессу. Все ресурсы родителя наследуются дочерним процессом. Безопасное разветвление многопоточного процесса проблематично. Доступно только в Unix. По умолчанию в Unix.</li>
+  <li>forkserver при запуске программы запускается процесс сервера. С этого момента, когда требуется новый процесс, родительский процесс подключается к серверу и запрашивает его форк для нового процесса. Процесс форкнутого сервера является однопоточным, поэтому использование <code class="language-plaintext highlighter-rouge">os.fork()</code> безопасно. Ненужные ресурсы не наследуются. Доступно на платформах Unix, которые поддерживают передачу файловых дескрипторов по каналам Unix.</li>
+</ul>
+
+<p>Установить метод можно так (пример из документации):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="n">mp</span>
+
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="n">q</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">'hello'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">mp</span><span class="p">.</span><span class="n">set_start_method</span><span class="p">(</span><span class="s">'spawn'</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">mp</span><span class="p">.</span><span class="n">Queue</span><span class="p">()</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">mp</span><span class="p">.</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">foo</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">q</span><span class="p">,))</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>или получив объект контекста через <code class="language-plaintext highlighter-rouge">get_context()</code>, апи которого идентично апи модуля, что позволяет использовать несколько контекстов одновременно (пример из документации):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="n">mp</span>
+
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="n">q</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">'hello'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">mp</span><span class="p">.</span><span class="n">get_context</span><span class="p">(</span><span class="s">'spawn'</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Queue</span><span class="p">()</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">foo</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">q</span><span class="p">,))</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Объекты из разных контекстов, особенно те, кторые реализуют ожидание с блокировкой, могут быть несовместимы с другими контекстами.</p>
+
+<h3 id="process"><a href="https://docs.python.org/3/library/multiprocessing.html#process-and-exceptions">Process</a></h3>
+
+<p>Процессы создаются с помощью <code class="language-plaintext highlighter-rouge">Process</code>, который реализует апи, аналогичный <code class="language-plaintext highlighter-rouge">threading</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">run()</code> - инициализирует процесс, можно переопределить в собственном классе</li>
+  <li><code class="language-plaintext highlighter-rouge">start()</code> - предоставляет запуск процесса</li>
+  <li><code class="language-plaintext highlighter-rouge">join()</code> блокирует выход до тех пор пока не завершится процесс, чей join() был вызван. Процесс можно джойнить много раз, нельзя приджойнить к самому себе и нельзя заджойнить до старта. Можно задать время блокировки, если в это время процесс не завершился, происходит разблокировка вне зависимости от результата.</li>
+  <li><code class="language-plaintext highlighter-rouge">daemon</code> запуск професса фоном, без блокировки выхода из основной программы</li>
+  <li>и др. методы</li>
+</ul>
+
+<p>Кроме того, поддерживается передача аргументов в том же самом виде, что и в <code class="language-plaintext highlighter-rouge">threading</code> за исключением того, что объекты, передаваемые процессам должны иметь возможность быть сериализованными с помощью <code class="language-plaintext highlighter-rouge">pickle</code> (смотри [<a href="data-storage-python" title="Pickle, shelve, dbm">data-storage-python</a>]).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="s">"""thread worker function"""</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Worker:'</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+        <span class="n">jobs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Дочерний процесс должен иметь возможность импортировать сценарий, воркера. Это порождает проблему рекурсивного выполнения при импорте. Использование конструкции <code class="language-plaintext highlighter-rouge">if __name__ == "__main__":</code> в месте запуска процессов гарантирует, что воркер не будет исполнен при импорте.</p>
+
+<p>Можно создавать дочерние классы от <code class="language-plaintext highlighter-rouge">Process</code> переопределяя метод <code class="language-plaintext highlighter-rouge">run()</code></p>
+
+<p>Аналогично <code class="language-plaintext highlighter-rouge">threading</code> мы можем определить текущий процесс по имени:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">current_process</span><span class="p">().</span><span class="n">name</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Процесс можно “убить” с помощью <code class="language-plaintext highlighter-rouge">terminate()</code> - этим не стоит злоупотреблять и стоит делать, только в ситуациях вероятного зависания процесса или при взаимоблокировке. После <code class="language-plaintext highlighter-rouge">terminate()</code> необходимо вызвать <code class="language-plaintext highlighter-rouge">join()</code> для процесса, чтобы <code class="language-plaintext highlighter-rouge">multiprocessing</code> успел обновить состояние посел преждевременного завершения (иначе мы рискуем завершить основную программу с ошибками). Кроме того, если этот метод используется, когда связанный процесс использует пайплайн, очередь или другие объекты, подразумевающие ожидание - это может привести к повреждению этих объектов. Метод <code class="language-plaintext highlighter-rouge">kill()</code> является аналогом, использующим другой код выхода.</p>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">close()</code> высвобождает все ресурсы, ассоциированные с процессом. Это становится полезным при создании пулов.</p>
+
+<h3 id="объекты-pipes-и-queue">Объекты <a href="https://docs.python.org/3/library/multiprocessing.html#pipes-and-queues">Pipes и Queue</a></h3>
+
+<p>В модуле реализованы объекты <code class="language-plaintext highlighter-rouge">Pipe</code>, <code class="language-plaintext highlighter-rouge">Queue</code>, <code class="language-plaintext highlighter-rouge">SimpleQueue</code> и <code class="language-plaintext highlighter-rouge">JoinableQueue</code>. Все они реализуют логику разделения процессов и передачи сообщений между процессами.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Pipe</code> последовательно синхронизирует работу процессов двух</li>
+  <li><code class="language-plaintext highlighter-rouge">Queue</code> создает общую очередь для процессов</li>
+  <li><code class="language-plaintext highlighter-rouge">SimpleQueue</code> упрощенный вариант очереди, похожий на <code class="language-plaintext highlighter-rouge">Pipe</code></li>
+  <li><code class="language-plaintext highlighter-rouge">JoinableQueue</code> реализует дополнительные методы  <code class="language-plaintext highlighter-rouge">task_done()</code> и <code class="language-plaintext highlighter-rouge">join()</code> для самой очереди</li>
+</ul>
+
+<p>Пример очереди процессов, возврпащающей данные сосновному рабочему процессу. В данном случае для принудительной остановки используются стоп-объекты для каждого рабочего процесса, которые добавляются в очередь. Когда рабочему процессу встречается такой объект - он завершается. Метод <code class="language-plaintext highlighter-rouge">join()</code> очереди используется, чтобы дождаться завершения всех процессов перед обработкой результата.</p>
+
+<script src="https://gist.github.com/28ac9f72918fa6436300d2c7c1ae7c02.js"> </script>
+
+<h3 id="оюмен-сигналами-между-процессами">Оюмен сигналами между процессами</h3>
+
+<p>Аналогично [<a href="threading" title="Threading">threading</a>] реализованы следующие объекты:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Event">Event</a> обмен информацией между процессами с помощью флагов</li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Lock">Lock</a> блокировка доступов к раздеяемым ресурсам</li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.RLock">RLock</a> рекурсивный аналог, позволяет повторно лочить ресурс</li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Semaphore">Semaphore</a> одновременный доступ процессов к ресурсам с ограничением количества процессов, имеющих доступ</li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.BoundedSemaphore">BoundedSemaphore</a></li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Barrier">Barrier</a> блокировка на контрольной точке, блокирцующая процессы до тех пор, пока не будет достигнуто заданное число заблокированных процессов</li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Condition">Condition</a> - синхронизация процессов таким образом, чтобы определить какие будут выполнены параллельно, а какие последовательно</li>
+</ul>
+
+<h3 id="разделяемые-типы">Разделяемые типы</h3>
+
+<p>Есть возможность создавать <a href="https://docs.python.org/3/library/multiprocessing.html#shared-ctypes-objects">объекты, разделяющие общую память для дочерних процессов</a>.</p>
+
+<h3 id="managers"><a href="https://docs.python.org/3/library/multiprocessing.html#managers">Managers</a></h3>
+
+<p>Менеджеры предоставляют способ создания данных, которые могут совместно использоваться разными процессами, включая обмен по сети между процессами, запущенными на разных машинах. Объект-менеджер управляет серверным процессом, который управляет общими объектами. Другие процессы могут получить доступ к общим объектам с помощью прокси.</p>
+
+<p>В основном придется использовать:</p>
+
+<p>В данном простом примере общий словарь, предоставленный посредством <code class="language-plaintext highlighter-rouge">Manager()</code> заполняется разными процессами. Естественно порядок вставки не гарантируется, т.к. процессы конкурируют за ресурсы процессора.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">mgr</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Manager</span><span class="p">()</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">mgr</span><span class="p">.</span><span class="nb">dict</span><span class="p">()</span>
+    <span class="n">jobs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Process</span><span class="p">(</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+        <span class="n">j</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+        <span class="n">j</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">18</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Кроме того, можно вызвать объект <code class="language-plaintext highlighter-rouge">Namespace</code> менеджера в котором реализовывать разделяемые объекты</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Manager</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Global</span> <span class="o">=</span> <span class="n">manager</span><span class="p">.</span><span class="n">Namespace</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Global</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Global</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="s">'hello'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Global</span><span class="p">.</span><span class="n">_z</span> <span class="o">=</span> <span class="mf">12.3</span>    <span class="c1"># this is an attribute of the proxy
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">Global</span><span class="p">)</span>
+<span class="n">Namespace</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'hello'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Важно - обновление содержимого изменяемых типов не рьбновляется автоматически в простарнстве имен. Такие типы как <code class="language-plaintext highlighter-rouge">list()</code> придется переопределять.</p>
+
+<p>Примеры кастомизации и использования менеджеров удаленно <a href="https://docs.python.org/3/library/multiprocessing.html#customized-managers">тут</a></p>
+
+<p>Наконец можно создавать прокси-обэекты - это объекты которые относятся к разделяемому (общему) объекту, который (предположительно) живет в другом процессе. Общий объект называется референтом прокси. У нескольких прокси-объектов может быть один и тот же референт. Прокси-объект имеет методы, которые вызывают соответствующие методы его референта (хотя не каждый метод референта обязательно будет доступен через прокси). Таким образом, прокси можно использовать так же, как и его референт. Важная особенность - прокси-объект сериализуем и его можно передавать между процессами.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Manager</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">manager</span><span class="p">.</span><span class="nb">list</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">manager</span><span class="p">.</span><span class="nb">list</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>         <span class="c1"># referent of a now contains referent of b
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">ListProxy</span> <span class="nb">object</span><span class="p">,</span> <span class="n">typeid</span> <span class="s">'list'</span> <span class="n">at</span> <span class="p">...</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'hello'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'hello'</span><span class="p">]</span> <span class="p">[</span><span class="s">'hello'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Больше примеров <a href="https://docs.python.org/3/library/multiprocessing.html#proxy-objects">тут</a></p>
+
+<h2 id="pools"><a href="https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing.pool">Pools</a></h2>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">Pool</code> обеспечивает управление фиксированным количеством процессов, когда работу можно разбить на независимые части. Строится список, который заполняется при завершении процессов, а затем возвращается. Создавая пул, можно задать количество процессов и функцию, которая будет производить работую, которая будет вызвана однократно каждым процессом при запуске.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Pool</code> поддерживает асинхронные расчеты с таймаутами и обратными вызовами и имеет реализацию <code class="language-plaintext highlighter-rouge">map</code>. Если для процессов установлено значение <code class="language-plaintext highlighter-rouge">None</code>, то используется число, возвращаемое <code class="language-plaintext highlighter-rouge">os.cpu_count()</code>. <code class="language-plaintext highlighter-rouge">maxtasksperchild</code> - это количество задач, которые рабочий процесс может выполнить до того, как он завершится и будет заменен новым рабочим процессом, чтобы освободить неиспользуемые ресурсы. Это полезно в случаях, когда есть медленные и быстрые задачи, чтобы общее время вычислений не зависело от того, насколько процесс с медленными задачами доминирует в общем времени исполнения. По умолчанию для <code class="language-plaintext highlighter-rouge">maxtasksperchild</code> установлено значение <code class="language-plaintext highlighter-rouge">None</code>, что означает, что рабочие процессы будут жить столько же, сколько и пул. <code class="language-plaintext highlighter-rouge">context</code> можно использовать для указания контекста, используемого для запуска рабочих процессов.</p>
+
+<p>Методы объекта пула должны вызываться только процессом, создавшим пул.</p>
+
+<p>Предупреждение Объекты <code class="language-plaintext highlighter-rouge">multiprocessing.pool</code> имеют внутренние ресурсы, которыми необходимо правильно управлять (как и любой другой ресурс), используя пул в качестве диспетчера контекста или вызывая <code class="language-plaintext highlighter-rouge">close()</code> и <code class="language-plaintext highlighter-rouge">terminate()</code> вручную. Невыполнение этого требования может привести к зависанию процесса при завершении. Крмое того, CPython не гарантирует, что сборщик мусора завершит и удалит пул.</p>
+
+<p>Пример (в данном случае задействован двойной доступный пул ядер):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+
+<span class="k">def</span> <span class="nf">do_calculation</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">start_process</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Starting'</span><span class="p">,</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">current_process</span><span class="p">().</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">pool_size</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Pool</span><span class="p">(</span>
+        <span class="n">processes</span><span class="o">=</span><span class="n">pool_size</span><span class="p">,</span>
+        <span class="n">initializer</span><span class="o">=</span><span class="n">start_process</span><span class="p">,</span>
+        <span class="n">maxtasksperchild</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">pool_outputs</span> <span class="o">=</span> <span class="n">pool</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">do_calculation</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+    <span class="n">pool</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># no more tasks
+</span>    <span class="n">pool</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>  <span class="c1"># wrap up current tasks
+</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">pool_outputs</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Starting ForkPoolWorker-1
+Starting ForkPoolWorker-2
+Starting ForkPoolWorker-3
+Starting ForkPoolWorker-4
+Starting ForkPoolWorker-5
+Starting ForkPoolWorker-6
+Starting ForkPoolWorker-7
+Starting ForkPoolWorker-8
+Starting ForkPoolWorker-9
+Starting ForkPoolWorker-10
+Starting ForkPoolWorker-11
+Starting ForkPoolWorker-12
+Starting ForkPoolWorker-14
+Starting ForkPoolWorker-13
+Starting ForkPoolWorker-15
+Starting ForkPoolWorker-16
+Starting ForkPoolWorker-18
+Starting ForkPoolWorker-17
+Starting ForkPoolWorker-19
+Starting ForkPoolWorker-20
+Starting ForkPoolWorker-21
+Starting ForkPoolWorker-22
+Starting ForkPoolWorker-23
+Starting ForkPoolWorker-24
+Starting ForkPoolWorker-25
+<span class="o">[</span>0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+</code></pre></div></div>
+
+<h2 id="что-посмотреть-еще">Что посмотреть еще?</h2>
+
+<p>Предоставляется внутренний <a href="https://docs.python.org/3/library/multiprocessing.html#logging">логгер</a>, доступный через <code class="language-plaintext highlighter-rouge">log_to_stderr()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">multiprocessing</span><span class="p">,</span> <span class="n">logging</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">log_to_stderr</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span><span class="p">.</span><span class="n">warning</span><span class="p">(</span><span class="s">'doomed'</span><span class="p">)</span>
+<span class="p">[</span><span class="n">WARNING</span><span class="o">/</span><span class="n">MainProcess</span><span class="p">]</span> <span class="n">doomed</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="n">Manager</span><span class="p">()</span>
+<span class="p">[</span><span class="n">INFO</span><span class="o">/</span><span class="n">SyncManager</span><span class="o">-</span><span class="p">...]</span> <span class="n">child</span> <span class="n">process</span> <span class="n">calling</span> <span class="bp">self</span><span class="p">.</span><span class="n">run</span><span class="p">()</span>
+<span class="p">[</span><span class="n">INFO</span><span class="o">/</span><span class="n">SyncManager</span><span class="o">-</span><span class="p">...]</span> <span class="n">created</span> <span class="n">temp</span> <span class="n">directory</span> <span class="o">/</span><span class="p">...</span><span class="o">/</span><span class="n">pymp</span><span class="o">-</span><span class="p">...</span>
+<span class="p">[</span><span class="n">INFO</span><span class="o">/</span><span class="n">SyncManager</span><span class="o">-</span><span class="p">...]</span> <span class="n">manager</span> <span class="n">serving</span> <span class="n">at</span> <span class="s">'/.../listener-...'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">del</span> <span class="n">m</span>
+<span class="p">[</span><span class="n">INFO</span><span class="o">/</span><span class="n">MainProcess</span><span class="p">]</span> <span class="n">sending</span> <span class="n">shutdown</span> <span class="n">message</span> <span class="n">to</span> <span class="n">manager</span>
+<span class="p">[</span><span class="n">INFO</span><span class="o">/</span><span class="n">SyncManager</span><span class="o">-</span><span class="p">...]</span> <span class="n">manager</span> <span class="n">exiting</span> <span class="k">with</span> <span class="n">exitcode</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Подробный гайд как работать с множественными процессами и примеры <a href="https://docs.python.org/3/library/multiprocessing.html#programming-guidelines">смотри здесь</a>. Если вкратце:</p>
+
+<ul>
+  <li>Насколько это возможно, следует стараться избегать перемещения больших объемов данных между процессами.</li>
+  <li>Убедитесь, что аргументы методов прокси-серверов сериализуемы</li>
+  <li>Не используйте прокси-объект из более чем одного потока, если вы не защитите его блокировкой.</li>
+  <li>В Unix, когда процесс завершается, но не присоединен, он становится зомби. Их никогда не должно быть очень много</li>
+  <li>При использовании методов запуска spawn или forkserver многие типы из многопроцессорной сборки должны быть сериализуемыми, чтобы дочерние процессы могли их использовать</li>
+  <li>необходимо избегать <code class="language-plaintext highlighter-rouge">terminate()</code></li>
+  <li>Всякий раз, когда используется очередь, необходимо убедиться, что все объекты, помещенные в очередь, в конечном итоге будут удалены до присоединения к процессу. В противном случае нельзя быть увереным, что процессы, поместившие элементы в очередь, завершатся.</li>
+</ul>
+
+<p>Пример последнего утверждения (здесь следует удалить джойн или поменять переместить его вниз):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Queue</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="n">q</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">'X'</span> <span class="o">*</span> <span class="mi">1000000</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">queue</span><span class="p">,))</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">p</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>                    <span class="c1"># this deadlocks
+</span>    <span class="n">obj</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/multiprocessing.html#examples">Примеры с использованием менеджера и проксей, пула и очередей</a></p>
 
 <p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 

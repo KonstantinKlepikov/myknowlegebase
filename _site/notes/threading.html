@@ -123,7 +123,7 @@
 <span class="n">d</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Методу <code class="language-plaintext highlighter-rouge">join()</code> можно передать значение с плавающей точкой, определяющего предельное время ожидания перехода потока в неактивное состояние. Если поток не успеет завершиться за это время, то такой метод <code class="language-plaintext highlighter-rouge">join()</code> в любом случае выполнит возврат, не дождавшись завершения.</p>
+<p>Методу <code class="language-plaintext highlighter-rouge">join()</code> можно передать значение с плавающей точкой, определяющего предельное время ожидания перехода потока в неактивное состояние. Если поток не успеет завершиться за это время, то такой метод <code class="language-plaintext highlighter-rouge">join()</code> в любом случае разлочит выход из основной программы, не дождавшись завершения потока.</p>
 
 <p>Чтобы не хранить список потоков, можно воспользоваться встроенным методом <code class="language-plaintext highlighter-rouge">enumerate()</code>, который возвращает список всех активных экземпляров <code class="language-plaintext highlighter-rouge">Theread</code>. Основной поток так-же входит в этот список. Чтобы не создавать взаимную блокировку через <code class="language-plaintext highlighter-rouge">join()</code>, его надо исключать из списка, например так (задержка тут просто для продолжения потока):</p>
 
