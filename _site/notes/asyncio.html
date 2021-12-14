@@ -85,13 +85,195 @@
 
       <h1 id="asyncio">Asyncio</h1>
 
+<p>Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма (<a href="https://docs.python.org/3/glossary.html#term-coroutine">coroutine</a>) передает управление вызвавшему ее коду без потери своего состояния. Первоначально апи ассинхронных функций был реализован на <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro">генераторах с декораторами</a>. В python3.8 такой подход уже депрекейтед. Пример такого кода:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="o">@</span><span class="n">asyncio</span><span class="p">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">outer</span><span class="p">():</span>
+    <span class="n">result1</span> <span class="o">=</span> <span class="k">yield</span> <span class="k">from</span> <span class="n">phase1</span><span class="p">()</span>
+    <span class="n">result2</span> <span class="o">=</span> <span class="k">yield</span> <span class="k">from</span> <span class="n">phase2</span><span class="p">(</span><span class="n">result1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">result1</span><span class="p">,</span> <span class="n">result2</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">asyncio</span><span class="p">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">phase1</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">'result1'</span>
+
+<span class="o">@</span><span class="n">asyncio</span><span class="p">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">phase2</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">'result2 derived from {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+<span class="n">event_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">return_value</span> <span class="o">=</span> <span class="n">event_loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">outer</span><span class="p">())</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">event_loop</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Основной рабочей структурой <code class="language-plaintext highlighter-rouge">asyncio</code> является цикл событий, в котормо регистрируются сопрограммы и который управляет событиями ввода/вывода и контекстом. Реализацию цикла можно выбрать для конкретного приложения или использовать дефолтную. Реализации специфичны к операционной системе. Приложение коммуницирует с циклом, регистрирует функции и позволяет циклу выполнять вызовы, если доступны ресурсы. Код приложения должен уступать управление, если в контексте цикла для него нет работы.</p>
+
+<p>Кроме сопрограмм реализованы <code class="language-plaintext highlighter-rouge">Future</code> и <code class="language-plaintext highlighter-rouge">Task</code> (фьючерсы и таски), а так-же объекты предоставляющие апи параллельной обработки по аналогии с [<a href="threading" title="Threading">threading</a>].</p>
+
+<p><code class="language-plaintext highlighter-rouge">asyncio</code> как модуль оформился в python3.5. Были добавлены синтаксические конструкции <code class="language-plaintext highlighter-rouge">async</code> и <code class="language-plaintext highlighter-rouge">await</code>, которые реализуют непосредственный интерфейс асинхронного программирования. <code class="language-plaintext highlighter-rouge">async</code> перед <code class="language-plaintext highlighter-rouge">def</code> определяет новую сопрограмму. Ключевое слово <code class="language-plaintext highlighter-rouge">await</code> используется для ожидания результата сопрограммы, фьючерса или таска (в текущий момент в библиотеке реализовано три awaitable объекта), после чего происходит передача циклу событий.</p>
+
+<p><code class="language-plaintext highlighter-rouge">asyncio</code> реализует два АПИ: низкоуровневый и высокоруовневый. <a href="https://docs.python.org/3/library/asyncio-api-index.html">Выкоуровневый</a> - это запуск сопрограмм, создание тасков, очередей, сабропроцессов и потоков, а так-же синхронизация в цикле (реализована в стиле <code class="language-plaintext highlighter-rouge">threading</code>). <a href="https://docs.python.org/3/library/asyncio-llapi-index.html">Низакоуровневый</a> - доступ к объектам цикла и управление циклом.</p>
+
+<h2 id="как-запускаются-сопрограммы">Как запускаются сопрограммы</h2>
+
+<p>Высокоуровнево реализовано три подхода.</p>
+
+<p><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.run">Первый подход</a> - через <code class="language-plaintext highlighter-rouge">asynco.run()</code>. Непосредственный вызов сопрограммы возвращает инициализированный объект сопрограммы, который сам по себе ничего не делает и ожидает включения в цикл событий. Функция <code class="language-plaintext highlighter-rouge">asynco.run()</code> запускает новый цикл и заботится о завершении цикла, когда все сопрограммы выполнены. Функция не может запустить новый цикл, если в текущем потоке уже есть другой цикл.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'hello'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'world'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="n">hello</span>
+<span class="n">world</span>
+</code></pre></div></div>
+
+<p>Такой подход реализован начиная с python3.7 и сейчас является основным. Запуск сопрограмм доступен и через <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_event_loop">низкоуровневое АПИ</a> посредством <code class="language-plaintext highlighter-rouge">asyncio.get_event_loop()</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'hello'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'world'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">event_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">coro</span> <span class="o">=</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">event_loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">finally</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">event_loop</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">hello</span>
+<span class="n">world</span>
+</code></pre></div></div>
+
+<p>Второй подход: добавление <code class="language-plaintext highlighter-rouge">await</code> вместо непосредственного добавления сопрограмм в цикл. Это возможно, так как на момент <code class="language-plaintext highlighter-rouge">await</code> поток выполнения уже находится в теле сопрограммы.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">say_after</span><span class="p">(</span><span class="n">delay</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">what</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f"started at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%X'</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">say_after</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'hello'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">say_after</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'world'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f"finished at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%X'</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="n">started</span> <span class="n">at</span> <span class="mi">17</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">52</span>
+<span class="n">hello</span>
+<span class="n">world</span>
+<span class="n">finished</span> <span class="n">at</span> <span class="mi">17</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">55</span>
+</code></pre></div></div>
+
+<p>Третий способ - использование <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task">asyncio.create_task()</a>. Метод делает обертку для сопрограммы и возвращает объект <code class="language-plaintext highlighter-rouge">Task</code>. Такой подход стал доступен начиная с python3.7</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">say_after</span><span class="p">(</span><span class="n">delay</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">task1</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">say_after</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'hello'</span><span class="p">))</span>
+
+<span class="p">...</span>     <span class="n">task2</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">say_after</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'world'</span><span class="p">))</span>
+
+<span class="p">...</span>     <span class="k">await</span> <span class="n">task1</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">task2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Устаревшим аналогом является вызов <code class="language-plaintext highlighter-rouge">asyncio.ensure_future</code>, который <a href="https://docs.python.org/3/library/asyncio-future.html#asyncio.ensure_future">возвращает</a> <code class="language-plaintext highlighter-rouge">Task</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">ensure_future</span><span class="p">(</span>
+<span class="p">...</span>         <span class="n">say_after</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'hello'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="awaitables"><a href="https://docs.python.org/3/library/asyncio-task.html#awaitables">Awaitables</a></h2>
+
+<p>Помимо сопрограмм используются <code class="language-plaintext highlighter-rouge">Task</code> и <code class="language-plaintext highlighter-rouge">Future</code> объекты. Фьючерсы являются низкоуровневым объектами, представляют результаты еще не выполненных асинхронных операций и обеспечивают ассинхронное получение результатов выполнения сопрограмм. Таски - это высокоуровневые фьючерсо-подобные объекты, которые используются для запуска сопрограмм и отслеживания момента их выполнения, позволяя извлечь результат после завершения сопрограммы, обеспечивая таким образом параллельное выполнение сопрограмм.</p>
+
+<p>Экземпляры фьючерса и таска обладают поведением, подобным сопрограммам, поэтому любые подходы, используемые для ожидания завершения сопрограмм, применимы и к этим объектам. Оба объекта потокон-небезопасны.</p>
+
+<p>Пример создания тасков был показан выше. Таск можно отменить до его завершения, в этом случае поднимается эксепшен <code class="language-plaintext highlighter-rouge">CancelledError</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">task_run</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">tasc_cancel</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">task</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'creating task'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">task1</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">task_run</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'task_run'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">task2</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">tasc_cancel</span><span class="p">(</span><span class="n">task1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">'task_cancel'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">await</span> <span class="n">task1</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">f'task completed </span><span class="si">{</span><span class="n">task1</span><span class="p">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">except</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">CancelledError</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">'task canceled'</span><span class="p">)</span>
+        
+<span class="p">...</span>     <span class="k">await</span> <span class="n">task2</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'task completed </span><span class="si">{</span><span class="n">task2</span><span class="p">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="n">creating</span> <span class="n">task</span>
+<span class="n">task</span> <span class="n">canceled</span>
+<span class="n">task</span> <span class="n">completed</span> <span class="n">task_cancel</span>
+</code></pre></div></div>
+
+<p>Исключение можно перехватить и выполнить другие операции (в данном примере используется низкоуровневый апи <code class="language-plaintext highlighter-rouge">asyncio.get_running_loop()</code> для доступа к циклу - <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_running_loop">метод доступен</a> начиная с python3.7)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">task_run</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">except</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">CancelledError</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">'task canceled'</span><span class="p">)</span>
+<span class="p">...</span>         <span class="k">raise</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">tasc_cancel</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">task</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'creating task'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">task</span> <span class="o">=</span> <span class="n">loop</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">task_run</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'task_run'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">loop</span><span class="p">.</span><span class="n">call_soon</span><span class="p">(</span><span class="n">tasc_cancel</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">await</span> <span class="n">task</span>
+<span class="p">...</span>     <span class="k">except</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">CancelledError</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">'task canceled to'</span><span class="p">)</span>
+        
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="n">creating</span> <span class="n">task</span>
+<span class="n">task</span> <span class="n">canceled</span>
+<span class="n">task</span> <span class="n">canceled</span> <span class="n">to</span>
+</code></pre></div></div>
+
+<p>Заметка в процессе доработки…</p>
+
 <p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 
 <p>Смотри еще:</p>
 
 <ul>
   <li>[<a href="threading" title="Threading">threading</a>]</li>
-  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>[<a href="multiprocess" title="Управление процессами в python">multiprocess</a>]</li>
 </ul>
 
 
