@@ -67,7 +67,7 @@ for t in threading.enumerate():
     t.join()
 ```
 
-`Thread` можно переопределить переопределив его метод `run()`, который и вызывает функцию воркера. Соответственно в `run()` можно добавлять произвольный код. Аргументы, переданные конструктору, сохраняются в закрытых аттрибутах, поэтому следует переопределить конструктор и сохранить значения в экземпляре, чтобы они были видны в подклассе.
+`Thread` можно переопределить переопределив его метод `run()`, который и вызывает функцию воркера. Соответственно в `run()` можно добавлять произвольный код. Аргументы, переданные конструктору, сохраняются в закрытых атрибутах, поэтому следует переопределить конструктор и сохранить значения в экземпляре, чтобы они были видны в подклассе.
 
 ```python
 import threading
@@ -92,7 +92,7 @@ for i in range(3):
 
 ## [Timer](https://docs.python.org/3/library/threading.html?highlight=threading#threading.Thread.daemon)
 
-Поток `Timer` начинает работать сч некоторой задержкой, заданной в секундах. Кроме того, его можно отменить до того, как он начал исполняться с помощью `cancel()`.
+Поток `Timer` начинает работать с некоторой задержкой, заданной в секундах. Кроме того, его можно отменить до того, как он начал исполняться с помощью `cancel()`.
 
 ## [Event](https://docs.python.org/3/library/threading.html?highlight=threading#event-objects)
 
@@ -139,7 +139,6 @@ import logging
 import threading
 import time
 
-
 def holder(lock):
     logging.debug('Starting holder')
     while True:
@@ -151,7 +150,6 @@ def holder(lock):
             logging.debug('Not holding')
             lock.release()
         time.sleep(0.5)
-
 
 def worker(lock):
     logging.debug('Starting worker')
@@ -174,7 +172,6 @@ def worker(lock):
             if have_it:
                 lock.release()
     logging.debug('Done after %d iterations', num_tries)
-
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -258,12 +255,10 @@ w2.start()
 import threading
 import time
 
-
 def slave(cond):
     with cond:
         cond.wait()
         print('Im free')
-
 
 def master(cond):
     with cond:
@@ -281,7 +276,7 @@ time.sleep(0.2)
 m.start()
 ```
 
-`wait_for()` оеализует ожидание некоего расчетного условия.
+`wait_for()` реализует ожидание некоего расчетного условия.
 
 ## [Barrier](https://docs.python.org/3/library/threading.html?highlight=threading#barrier-objects)
 

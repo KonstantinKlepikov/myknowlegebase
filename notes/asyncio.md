@@ -192,7 +192,123 @@ task canceled
 task canceled to
 ```
 
-Заметка в процессе доработки...
+Фьючерсы реализуют низкоуровневый апи. Когда ожидается объект `Future`, это означает, что сопрограмма будет ждать, пока `Future` не разрешится в каком-то другом месте. В большинстве случаев подобные объекты не требуется создавать на уровне приложения. Одно из их непосредственных применения - организация колбеков по завершению сопрограмм.
+
+```python
+>>> import asyncio
+>>> import functools
+
+>>> def callback(future, n):
+...     print(f'{n} in future: {future.result()}')
+
+>>> async def register_callbacks(fut):
+...     print('registering callbacks')
+...     fut.add_done_callback(functools.partial(callback, n='cookies'))
+...     fut.add_done_callback(functools.partial(callback, n='milk'))
+
+>>> async def main():
+...     fut = asyncio.Future()
+...     await register_callbacks(fut)
+...     print('set result')
+...     fut.set_result('done')
+
+>>> asyncio.run(main())
+registering callbacks
+set result
+cookies in future: done
+milk in future: done
+```
+
+В данном примере `finctools.partial` изи [[functools]] используется для передачи параметров в функцию колбека.
+
+## Управление сопрограммами
+
+Помимо [метода](https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep) `asynco.sleep()`, который уже использовался выше для ожидания в цикле, высокоуровневый апи предлагает несколько инстурментов для создания управляющих конструкций, которые сложно конструирвоать только с помощью `await` и `async`
+
+`wait()` реализует [ожидание завершения](https://docs.python.org/3/library/asyncio-task.html#asyncio.wait) нескольких сопрограмм. Сопрограммы передаются функции в виде последовательности, а условие завершения можно определить через константы - завершить ожидание, когда любой переданный объект выполнен или отменен, либо когда поднята первая ошибка, либо когда все "работы" выполнены. Эвейтебл объекты, переданные функции, будут сконверчены таски. Результатом выполнения метода будет кортеж, состоящий из выполненных тасков и невыполненных фьючерсов.
+
+```python
+>>> import asyncio
+
+>>> async def phase(i):
+...     print(f'in phase {i}')
+...     await asyncio.sleep(0.1 * i)
+...     print(f'done with phase {i}')
+...     return f'phase {i} result'
+
+>>> async def main(num_phases):
+...     phases = [
+...         phase(i)
+...         for i in range(num_phases)
+...     ]
+...     completed, pending = await asyncio.wait(phases)
+...     results = [t.result() for t in completed]
+...     print(results)
+
+>>> asyncio.run(main(3))
+in phase 2
+in phase 0
+in phase 1
+done with phase 0
+done with phase 1
+done with phase 2
+['phase 1 result', 'phase 2 result', 'phase 0 result']
+```
+
+В данном примере интересна последовательность. Причина неупорядоченности заключается в том, что `wait()` хранит тааски во множестве.
+
+Помимо всего прочего, для `wait()` можно установить `timeout` в секундах. Ожидание будет остановлено по времени. Тут важен следующий нюанс - `wait()` не отмсеняет задачи при выходе по таймауту. При возврате управления циклю событий сопрограммы будут возобновлены, а невыполненные таски будут выполняться. Чтобы избежать этого, следует отменить их вручную, примерно так:
+
+```python
+...
+...     if pending:
+...         for i in pending:
+...             i.cancel()
+```
+
+Более простая конструкция `wait_for()` реализует [ожидание до таймаута](https://docs.python.org/3/library/asyncio-task.html#asyncio.wait_for). При наступлении таймаута переданные методу невыполненный таск будет отменен (в отличие от `wait()` ожидается единственный объект, а не последовательность).
+
+Метод `gather()` реализует [ожидание полного успешного](https://docs.python.org/3/library/asyncio-task.html#asyncio.gather) завершения всех задач. Доступа к задачам нет и их нельзя отменить. Результат возвращается в порядке предоставления методу, в не зависимости от порядка исполнения задач. Если какая-то задач поднимет исключение - остальные не будут отменены и продолжат выполняться. По сути таким образом реализован оптимизированный сбор результатов сопрограмм.
+
+`as_completed()` реализует [генератор, который заполняется по мере выполнения тасков](https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed). Очередность не гарантируется. Ждать завершения всех тасков не обязательно. Так-же доступен таймоут. Пример:
+
+```python
+>>> import asyncio
+
+>>> async def phase(i):
+...     print(f'in phase {i}')
+...     await asyncio.sleep(0.5 - (0.1 * i))
+...     print(f'done with phase {i}')
+...     return f'phase {i} result'
+
+>>> async def main(num_phases):
+...     phases = [
+...         phase(i)
+...         for i in range(num_phases)
+...     ]
+...     results = []
+...     for next_to_complete in asyncio.as_completed(phases):
+...         answer = await next_to_complete
+...         results.append(answer)
+...     print(results)
+
+>>> asyncio.run(main(3))
+in phase 2
+in phase 0
+in phase 1
+done with phase 2
+done with phase 1
+done with phase 0
+['phase 2 result', 'phase 1 result', 'phase 0 result']
+```
+
+`asynco.shield()` [реализует защиту](https://docs.python.org/3/library/asyncio-task.html#asyncio.shield) сопрограммы от отмсены в случае отмены другой сопрограммы, содержащей защищенную. Сопрограмма оборачивается в таск и если случилась отмена, то таск отменен не будет. Если отмена происходит по какой-то другой причине (например непосредственно отменена сама переданноая в `shield()` сопрограмма), то таск все-таки будет отменен.
+
+Кроме того, в python3.9 добьавлен `asyncio.to_thread`, позволяющий запускать сопрограммы в разных потоках. В python3.7 добавлены `asyncio.current_task()` и `asyncio.all_tasks()` для получения текущей задачи из цикла и всех невыполненных тасков.
+
+## Синхронизация
+
+Заметка будет дополняться...
 
 [[python-standart-library]]
 
@@ -203,7 +319,7 @@ task canceled to
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [threading]: threading "Threading"
+[functools]: functools "Functools"
 [python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python - список заметок"
-[threading]: threading "Threading"
 [multiprocess]: multiprocess "Управление процессами в python"
 [//end]: # "Autogenerated link references"
