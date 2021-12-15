@@ -85,7 +85,7 @@
 
       <h1 id="asyncio">Asyncio</h1>
 
-<p>Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма (<a href="https://docs.python.org/3/glossary.html#term-coroutine">coroutine</a>) передает управление вызвавшему ее коду без потери своего состояния. Первоначально апи ассинхронных функций был реализован на <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro">генераторах с декораторами</a>. В python3.8 такой подход уже депрекейтед. Пример такого кода:</p>
+<p>Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма (<a href="https://docs.python.org/3/glossary.html#term-coroutine">coroutine</a>) передает управление вызвавшему ее коду без потери своего состояния. Первоначально апи асинхронных функций был реализован на <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro">генераторах с декораторами</a>. В python3.8 такой подход уже депрекейтед. Пример такого кода:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -110,7 +110,7 @@
     <span class="n">event_loop</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Основной рабочей структурой <code class="language-plaintext highlighter-rouge">asyncio</code> является цикл событий, в котормо регистрируются сопрограммы и который управляет событиями ввода/вывода и контекстом. Реализацию цикла можно выбрать для конкретного приложения или использовать дефолтную. Реализации специфичны к операционной системе. Приложение коммуницирует с циклом, регистрирует функции и позволяет циклу выполнять вызовы, если доступны ресурсы. Код приложения должен уступать управление, если в контексте цикла для него нет работы.</p>
+<p>Основной рабочей структурой <code class="language-plaintext highlighter-rouge">asyncio</code> является цикл событий, в котором регистрируются сопрограммы и который управляет событиями ввода/вывода и контекстом. Реализацию цикла можно выбрать для конкретного приложения или использовать дефолтную. Реализации специфичны к операционной системе. Приложение коммуницирует с циклом, регистрирует функции и позволяет циклу выполнять вызовы, если доступны ресурсы. Код приложения должен уступать управление, если в контексте цикла для него нет работы.</p>
 
 <p>Кроме сопрограмм реализованы <code class="language-plaintext highlighter-rouge">Future</code> и <code class="language-plaintext highlighter-rouge">Task</code> (фьючерсы и таски), а так-же объекты предоставляющие апи параллельной обработки по аналогии с [<a href="threading" title="Threading">threading</a>].</p>
 
@@ -134,7 +134,7 @@
 <span class="n">world</span>
 </code></pre></div></div>
 
-<p>Такой подход реализован начиная с python3.7 и сейчас является основным. Запуск сопрограмм доступен и через <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_event_loop">низкоуровневое АПИ</a> посредством <code class="language-plaintext highlighter-rouge">asyncio.get_event_loop()</code>:</p>
+<p>Такой подход реализован начиная с python3.7 и сейчас является основным. Запуск сопрограмм доступен и через <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_event_loop">низкоуровневое АПИ</a>, к примеру, посредством <code class="language-plaintext highlighter-rouge">asyncio.get_event_loop()</code>:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -151,7 +151,7 @@
 <span class="n">world</span>
 </code></pre></div></div>
 
-<p>Второй подход: добавление <code class="language-plaintext highlighter-rouge">await</code> вместо непосредственного добавления сопрограмм в цикл. Это возможно, так как на момент <code class="language-plaintext highlighter-rouge">await</code> поток выполнения уже находится в теле сопрограммы.</p>
+<p>Второй подход: добавление <code class="language-plaintext highlighter-rouge">await</code> к вызываемым из сопрограмм объектам вместо непосредственного добавления объектов в цикл. Это возможно, так как на момент <code class="language-plaintext highlighter-rouge">await</code> поток выполнения уже находится в теле сопрограммы.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
@@ -194,7 +194,7 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </code></pre></div></div>
 
-<p>Устаревшим аналогом является вызов <code class="language-plaintext highlighter-rouge">asyncio.ensure_future</code>, который <a href="https://docs.python.org/3/library/asyncio-future.html#asyncio.ensure_future">возвращает</a> <code class="language-plaintext highlighter-rouge">Task</code>:</p>
+<p>Низкоуровневым аналогом является вызов <code class="language-plaintext highlighter-rouge">asyncio.ensure_future</code>, который <a href="https://docs.python.org/3/library/asyncio-future.html#asyncio.ensure_future">возвращает</a> <code class="language-plaintext highlighter-rouge">Task</code>:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">ensure_future</span><span class="p">(</span>
 <span class="p">...</span>         <span class="n">say_after</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'hello'</span><span class="p">))</span>
@@ -202,7 +202,7 @@
 
 <h2 id="awaitables"><a href="https://docs.python.org/3/library/asyncio-task.html#awaitables">Awaitables</a></h2>
 
-<p>Помимо сопрограмм используются <code class="language-plaintext highlighter-rouge">Task</code> и <code class="language-plaintext highlighter-rouge">Future</code> объекты. Фьючерсы являются низкоуровневым объектами, представляют результаты еще не выполненных асинхронных операций и обеспечивают ассинхронное получение результатов выполнения сопрограмм. Таски - это высокоуровневые фьючерсо-подобные объекты, которые используются для запуска сопрограмм и отслеживания момента их выполнения, позволяя извлечь результат после завершения сопрограммы, обеспечивая таким образом параллельное выполнение сопрограмм.</p>
+<p>Помимо сопрограмм используются <code class="language-plaintext highlighter-rouge">Task</code> и <code class="language-plaintext highlighter-rouge">Future</code> объекты. Фьючерсы являются низкоуровневым объектами, представляют результаты еще не выполненных асинхронных операций и обеспечивают ассинхронное получение результатов выполнения сопрограмм. Таски - это высокоуровневые фьючерсо-подобные объекты, которые используются для запуска сопрограмм и отслеживания момента их выполнения, позволяя извлечь результат после завершения сопрограммы.</p>
 
 <p>Экземпляры фьючерса и таска обладают поведением, подобным сопрограммам, поэтому любые подходы, используемые для ожидания завершения сопрограмм, применимы и к этим объектам. Оба объекта потокон-небезопасны.</p>
 
@@ -235,7 +235,7 @@
 <span class="n">task</span> <span class="n">completed</span> <span class="n">task_cancel</span>
 </code></pre></div></div>
 
-<p>Исключение можно перехватить и выполнить другие операции (в данном примере используется низкоуровневый апи <code class="language-plaintext highlighter-rouge">asyncio.get_running_loop()</code> для доступа к циклу - <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_running_loop">метод доступен</a> начиная с python3.7)</p>
+<p>Исключение можно перехватить и выполнить другие операции (в данном примере используется низкоуровневый апи <code class="language-plaintext highlighter-rouge">asyncio.get_running_loop()</code> для доступа к циклу - <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_running_loop">метод доступен</a> начиная с python3.7). Подход с распространением эксепшена реализован для всего апи.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -295,9 +295,9 @@
 
 <h2 id="управление-сопрограммами">Управление сопрограммами</h2>
 
-<p>Помимо <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep">метода</a> <code class="language-plaintext highlighter-rouge">asynco.sleep()</code>, который уже использовался выше для ожидания в цикле, высокоуровневый апи предлагает несколько инстурментов для создания управляющих конструкций, которые сложно конструирвоать только с помощью <code class="language-plaintext highlighter-rouge">await</code> и <code class="language-plaintext highlighter-rouge">async</code></p>
+<p>Помимо <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep">метода</a> <code class="language-plaintext highlighter-rouge">asynco.sleep()</code>, который уже использовался выше для ожидания в цикле, высокоуровневый апи предлагает несколько инстурментов для создания управляющих конструкций, которые сложно конструирвоать используя одни <code class="language-plaintext highlighter-rouge">await</code> и <code class="language-plaintext highlighter-rouge">async</code></p>
 
-<p><code class="language-plaintext highlighter-rouge">wait()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.wait">ожидание завершения</a> нескольких сопрограмм. Сопрограммы передаются функции в виде последовательности, а условие завершения можно определить через константы - завершить ожидание, когда любой переданный объект выполнен или отменен, либо когда поднята первая ошибка, либо когда все “работы” выполнены. Эвейтебл объекты, переданные функции, будут сконверчены таски. Результатом выполнения метода будет кортеж, состоящий из выполненных тасков и невыполненных фьючерсов.</p>
+<p><code class="language-plaintext highlighter-rouge">wait()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.wait">ожидание завершения</a> нескольких сопрограмм. Сопрограммы передаются функции в виде последовательности, а условие завершения можно определить через константы - завершить ожидание, когда любой переданный объект выполнен или отменен, либо когда поднята первая ошибка, либо когда все “работы” выполнены. Эвейтебл объекты, переданные функции, будут сконверчены в таски. Результатом выполнения метода будет кортеж, состоящий из выполненных тасков и невыполненных фьючерсов.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -326,9 +326,9 @@
 <span class="p">[</span><span class="s">'phase 1 result'</span><span class="p">,</span> <span class="s">'phase 2 result'</span><span class="p">,</span> <span class="s">'phase 0 result'</span><span class="p">]</span>
 </code></pre></div></div>
 
-<p>В данном примере интересна последовательность. Причина неупорядоченности заключается в том, что <code class="language-plaintext highlighter-rouge">wait()</code> хранит тааски во множестве.</p>
+<p>В данном примере интересна последовательность. Причина неупорядоченности заключается в том, что <code class="language-plaintext highlighter-rouge">wait()</code> хранит таски во множестве.</p>
 
-<p>Помимо всего прочего, для <code class="language-plaintext highlighter-rouge">wait()</code> можно установить <code class="language-plaintext highlighter-rouge">timeout</code> в секундах. Ожидание будет остановлено по времени. Тут важен следующий нюанс - <code class="language-plaintext highlighter-rouge">wait()</code> не отмсеняет задачи при выходе по таймауту. При возврате управления циклю событий сопрограммы будут возобновлены, а невыполненные таски будут выполняться. Чтобы избежать этого, следует отменить их вручную, примерно так:</p>
+<p>Помимо всего прочего, для <code class="language-plaintext highlighter-rouge">wait()</code> можно установить <code class="language-plaintext highlighter-rouge">timeout</code> в секундах. Ожидание будет остановлено по времени. Тут важен следующий нюанс - <code class="language-plaintext highlighter-rouge">wait()</code> не отмсеняет задачи при выходе по таймауту. При возврате управления циклу событий сопрограммы будут возобновлены, а невыполненные таски будут выполняться. Чтобы избежать этого, следует отменить их вручную, примерно так:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
 <span class="p">...</span>     <span class="k">if</span> <span class="n">pending</span><span class="p">:</span>
@@ -336,11 +336,11 @@
 <span class="p">...</span>             <span class="n">i</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Более простая конструкция <code class="language-plaintext highlighter-rouge">wait_for()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.wait_for">ожидание до таймаута</a>. При наступлении таймаута переданные методу невыполненный таск будет отменен (в отличие от <code class="language-plaintext highlighter-rouge">wait()</code> ожидается единственный объект, а не последовательность).</p>
+<p>Более простая конструкция <code class="language-plaintext highlighter-rouge">wait_for()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.wait_for">ожидание до таймаута</a>. При наступлении таймаута переданный и невыполненный единственный таск будет отменен.</p>
 
-<p>Метод <code class="language-plaintext highlighter-rouge">gather()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.gather">ожидание полного успешного</a> завершения всех задач. Доступа к задачам нет и их нельзя отменить. Результат возвращается в порядке предоставления методу, в не зависимости от порядка исполнения задач. Если какая-то задач поднимет исключение - остальные не будут отменены и продолжат выполняться. По сути таким образом реализован оптимизированный сбор результатов сопрограмм.</p>
+<p>Метод <code class="language-plaintext highlighter-rouge">gather()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.gather">ожидание полного успешного</a> завершения всех задач. Доступа к задачам нет и их нельзя отменить. Результат возвращается в порядке предоставления методу, в не зависимости от порядка исполнения задач. Если какая-то задача поднимет исключение - остальные не будут отменены и продолжат выполняться. По сути таким образом реализован оптимизированный сбор результатов сопрограмм.</p>
 
-<p><code class="language-plaintext highlighter-rouge">as_completed()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed">генератор, который заполняется по мере выполнения тасков</a>. Очередность не гарантируется. Ждать завершения всех тасков не обязательно. Так-же доступен таймоут. Пример:</p>
+<p><code class="language-plaintext highlighter-rouge">as_completed()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.as_completed">генератор, который заполняется по мере выполнения тасков</a>. Очередность не гарантируется. Ждать завершения всех тасков не обязательно. Так-же доступен таймаут. Пример:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -371,13 +371,207 @@
 <span class="p">[</span><span class="s">'phase 2 result'</span><span class="p">,</span> <span class="s">'phase 1 result'</span><span class="p">,</span> <span class="s">'phase 0 result'</span><span class="p">]</span>
 </code></pre></div></div>
 
-<p><code class="language-plaintext highlighter-rouge">asynco.shield()</code> <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.shield">реализует защиту</a> сопрограммы от отмсены в случае отмены другой сопрограммы, содержащей защищенную. Сопрограмма оборачивается в таск и если случилась отмена, то таск отменен не будет. Если отмена происходит по какой-то другой причине (например непосредственно отменена сама переданноая в <code class="language-plaintext highlighter-rouge">shield()</code> сопрограмма), то таск все-таки будет отменен.</p>
+<p><code class="language-plaintext highlighter-rouge">asynco.shield()</code> <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.shield">реализует защиту</a> сопрограммы от отмсены в случае отмены другой сопрограммы, содержащей защищенную. Сопрограмма оборачивается в таск и если случилась отмена, то таск отменен не будет. Если отмена происходит по какой-то другой причине (например непосредственно отменена сама переданная в <code class="language-plaintext highlighter-rouge">shield()</code> сопрограмма), то таск все-таки будет отменен.</p>
 
 <p>Кроме того, в python3.9 добьавлен <code class="language-plaintext highlighter-rouge">asyncio.to_thread</code>, позволяющий запускать сопрограммы в разных потоках. В python3.7 добавлены <code class="language-plaintext highlighter-rouge">asyncio.current_task()</code> и <code class="language-plaintext highlighter-rouge">asyncio.all_tasks()</code> для получения текущей задачи из цикла и всех невыполненных тасков.</p>
 
-<h2 id="синхронизация">Синхронизация</h2>
+<h2 id="синхронизация-и-взаимодействие-в-цикле">Синхронизация и взаимодействие в цикле</h2>
 
-<p>Заметка будет дополняться…</p>
+<p><code class="language-plaintext highlighter-rouge">asynco</code> сконструирован для однопоточных процессов и конструкции синхронизации хоть и реализованы в стиле [<a href="threading" title="Threading">threading</a>], являются потоконебезопасными. Кроме того, в этих конструкциях нельзя задать время ожидания (вместо этого необходимо использовать <code class="language-plaintext highlighter-rouge">asyncio.wait_for()</code> и <code class="language-plaintext highlighter-rouge">asyncio.wait()</code>)</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/asyncio-sync.html#lock">Lock</a> защищает доступ к разделяемым потоками ресурсам. Также можно использовать как асинхронный менеджер контекста</li>
+  <li><a href="https://docs.python.org/3/library/asyncio-sync.html#event">Event</a> реализует ожидание наступления какого-либо события</li>
+  <li><a href="https://docs.python.org/3/library/asyncio-sync.html#condition">Condition</a> ожидание с возможностью указания числа возобновляемых сопрограмм</li>
+  <li><a href="https://docs.python.org/3/library/asyncio-sync.html#semaphore">Semaphore</a> и его обрезанный аналог ограничивают одновременный доступ к ресурсу</li>
+</ul>
+
+<p>Пример реализации лока. Лок может иметь только одного владельца. В данном примере показаны два разных метода блокировки: непосредственно через <code class="language-plaintext highlighter-rouge">await</code> и <code class="language-plaintext highlighter-rouge">release()</code> и через менеджер контекста. Мы лочим поток в самом начале и запускаем две сопрограммы, завершения которых ожидаем с помощью <code class="language-plaintext highlighter-rouge">wait()</code>. Как только первый лок снят, владелец лока меняется и первая сопрограмма выполняются, затем последующая.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="n">lock</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">lock</span><span class="p">.</span><span class="n">release</span><span class="p">()</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">lock</span><span class="p">.</span><span class="n">locked</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">worker1</span><span class="p">(</span><span class="n">lock</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'worker1 get lock'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">async</span> <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">'worker1 acquired lock'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'worker1 released lock'</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">worker2</span><span class="p">(</span><span class="n">lock</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'worker2 get lock'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">await</span> <span class="n">lock</span><span class="p">.</span><span class="n">acquire</span><span class="p">()</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'worker2 acquired lock'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'worker2 released lock'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">lock</span><span class="p">.</span><span class="n">release</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">Lock</span><span class="p">()</span>
+    
+<span class="p">...</span>     <span class="k">await</span> <span class="n">lock</span><span class="p">.</span><span class="n">acquire</span><span class="p">()</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">lock</span><span class="p">.</span><span class="n">locked</span><span class="p">())</span>
+    
+<span class="p">...</span>     <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+
+<span class="p">...</span>     <span class="n">loop</span><span class="p">.</span><span class="n">call_later</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">functools</span><span class="p">.</span><span class="n">partial</span><span class="p">(</span><span class="n">unlock</span><span class="p">,</span> <span class="n">lock</span><span class="p">))</span>
+
+<span class="p">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">wait</span><span class="p">([</span><span class="n">worker1</span><span class="p">(</span><span class="n">lock</span><span class="p">),</span> <span class="n">worker2</span><span class="p">(</span><span class="n">lock</span><span class="p">)]),</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="bp">True</span>
+<span class="n">worker2</span> <span class="n">get</span> <span class="n">lock</span>
+<span class="n">worker1</span> <span class="n">get</span> <span class="n">lock</span>
+<span class="bp">False</span>
+<span class="n">worker2</span> <span class="n">acquired</span> <span class="n">lock</span>
+<span class="n">worker2</span> <span class="n">released</span> <span class="n">lock</span>
+<span class="n">worker1</span> <span class="n">acquired</span> <span class="n">lock</span>
+<span class="n">worker1</span> <span class="n">released</span> <span class="n">lock</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Event</code> работает аналогично, за исключением того, что сопрограммы получат возможность выполняться одновременно как только будет установлен флаг <code class="language-plaintext highlighter-rouge">Event.set()</code></p>
+
+<p>Помимо объектов синхронизации, в высокоуровневом апи реализованы очереди. Асиннхронные очереди так-же потокнебезопасные.</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/asyncio-queue.html#asyncio.Queue">Queue</a> FIFO (очередь)</li>
+  <li><a href="https://docs.python.org/3/library/asyncio-queue.html#asyncio.PriorityQueue">PriorityQueue</a> очередь с приоритетом</li>
+  <li><a href="https://docs.python.org/3/library/asyncio-queue.html#asyncio.LifoQueue">LifoQueue</a> LIFO (стек)</li>
+</ul>
+
+<p>Очереди похожи на стандартные конструкции из [<a href="queue" title="Queue - очереди и стеки">queue</a>]</p>
+
+<h2 id="низкоуровневый-апи-в-asyncio"><a href="https://docs.python.org/3/library/asyncio-eventloop.html">Низкоуровневый апи</a> в <code class="language-plaintext highlighter-rouge">asyncio</code></h2>
+
+<p>Как говорилось выше, в стандартной библиотеке указано, что нет особой необходимости использовать низкоуровневы апи для управления асинхронными задачами на уровне приложения и данный апи должен использоваться преимущественно для написания библиотек и фреймворков.</p>
+
+<p>Доступ к циклу событий <a href="https://docs.python.org/3/library/asyncio-eventloop.html">осуществляется так</a>. Создание фьючерсов и управление ими <a href="https://docs.python.org/3/library/asyncio-future.html">можно найти тут</a>. Управление событиями в цикле реализуется <a href="https://docs.python.org/3/library/asyncio-eventloop.html#event-loop-methods">вот такими методами</a>.</p>
+
+<p>Простейший пример работы с фьючерсом (из стандартной библиотеки):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">set_after</span><span class="p">(</span><span class="n">fut</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+    <span class="n">fut</span><span class="p">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+
+    <span class="n">fut</span> <span class="o">=</span> <span class="n">loop</span><span class="p">.</span><span class="n">create_future</span><span class="p">()</span>
+
+    <span class="n">loop</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span>
+        <span class="n">set_after</span><span class="p">(</span><span class="n">fut</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'... world'</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">'hello ...'</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="k">await</span> <span class="n">fut</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>В данном случае мы создаем фьючерс в контексте текущего цикла событий с помощью <code class="language-plaintext highlighter-rouge">create_future()</code>. Затем создаем таск из сопрограммы, используя низкоуровневый апи <code class="language-plaintext highlighter-rouge">loop.create_task</code> так-как у нас уже есть доступ к текущему циклу. Сопрограмма, обернутая в таск будет ожидать выполнения 1 секунду. Основная программа будет ожидать, когда фьючер предоставит результат выполнения сопрограммы.</p>
+
+<p>Кроме доступа к циклам и фьючерсам, низкоуровневый апи предоставляет абстракции <code class="language-plaintext highlighter-rouge">Protocol</code> и <code class="language-plaintext highlighter-rouge">Transport</code>. Это используется для переключенния контекстов с блокировкой операций ввода-вывода и обеспечивает высокопроизводительную реализацию сетевых протоколов или протоколов HTTP. <code class="language-plaintext highlighter-rouge">Transport</code> определяет какой байт-код передать, а <code class="language-plaintext highlighter-rouge">Protocol</code> - в каком порядке. Совместно эти интерфейсы реализуют абстрактный интерфейс для использования сетевого ввода-вывода и межпроцессного ввода-вывода. В данной заметке я не рассматриваю эту концепцию. Смотри [<a href="asyncio-transports-and-protocols" title="Asyncio transports and protocols">asyncio-transports-and-protocols</a>].</p>
+
+<h2 id="concurrentfutures"><a href="https://docs.python.org/3/library/concurrent.futures.html">concurrent.futures</a></h2>
+
+<p>Отдельным вопросом является использование сопрограмм с несколькими потоками или процессами, так-как большинство объектов, определеннх в сторонних библиотеах не готово к взаимодействию в цикле событий и будет блокироваться.</p>
+
+<p>Эту проблему частично устраняет модуль <code class="language-plaintext highlighter-rouge">concurrent.futures</code>, предоставляющий управление пулами асинхронных задач. Модуль предоставляет классы-исполнители <code class="language-plaintext highlighter-rouge">ThreadPoolExecutor</code> и <code class="language-plaintext highlighter-rouge">ProcessPoolExecutor</code> для создания организации пулов потоков и процессов соответственно и асинхронного выполнения.</p>
+
+<p>В <code class="language-plaintext highlighter-rouge">concurrent.futures</code> для взаимодействия с пулами используются исполнители, а для управления результатами выполнения - объекты-фьючерсы. Приложение создает экземпляр исполнителя соответстющего класса и передает ему задачи. При запуске каждой задачи возвращается экземпляр <code class="language-plaintext highlighter-rouge">Future</code>, который будет использоваться для блокировки до тех пор, пока результат работы не станет доступен. Управление фьючерсами на уровне модуля не требуется.</p>
+
+<p>Примеры реализации <a href="https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor">работы с потоками</a> и <a href="https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor">с процессами</a>.</p>
+
+<p>Модуль предоставляет несколько концепций для работы в асинхронном режиме:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">submit()</code> - получение объекта фьючерса связанного с переданным объектом</li>
+  <li><code class="language-plaintext highlighter-rouge">map()</code> - получение результата всех работ из пула в том порядке, в котором они были переданы в пул</li>
+</ul>
+
+<p>Для фьючерсов доступен апи <code class="language-plaintext highlighter-rouge">asynco</code> - обратные вызовы, отмены и <code class="language-plaintext highlighter-rouge">wait()</code></p>
+
+<p>Пример с <code class="language-plaintext highlighter-rouge">map()</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">threading</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'</span><span class="si">{</span><span class="n">threading</span><span class="p">.</span><span class="n">current_thread</span><span class="p">().</span><span class="n">name</span><span class="si">}</span><span class="s">: sleeping </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'</span><span class="si">{</span><span class="n">threading</span><span class="p">.</span><span class="n">current_thread</span><span class="p">().</span><span class="n">name</span><span class="si">}</span><span class="s">: done </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">10</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ex</span> <span class="o">=</span> <span class="n">futures</span><span class="p">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">ex</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gone_results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">f'main: results: </span><span class="si">{</span><span class="n">gone_results</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0_0</span><span class="p">:</span> <span class="n">sleeping</span> <span class="mi">5</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0</span><span class="n">_1</span><span class="p">:</span> <span class="n">sleeping</span> <span class="mi">4</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0</span><span class="n">_1</span><span class="p">:</span> <span class="n">done</span> <span class="mi">4</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0</span><span class="n">_1</span><span class="p">:</span> <span class="n">sleeping</span> <span class="mi">3</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0_0</span><span class="p">:</span> <span class="n">done</span> <span class="mi">5</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0_0</span><span class="p">:</span> <span class="n">sleeping</span> <span class="mi">2</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0_0</span><span class="p">:</span> <span class="n">done</span> <span class="mi">2</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0</span><span class="n">_1</span><span class="p">:</span> <span class="n">done</span> <span class="mi">3</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0_0</span><span class="p">:</span> <span class="n">sleeping</span> <span class="mi">1</span>
+<span class="n">ThreadPoolExecutor</span><span class="o">-</span><span class="mi">0_0</span><span class="p">:</span> <span class="n">done</span> <span class="mi">1</span>
+<span class="n">main</span><span class="p">:</span> <span class="n">results</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Объекты исполнители <a href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor.shutdown">могут выполнять функции менеджеров контекста</a>. Это позволяет освободить ресурсы после выполнения всех задач потока или процесса.</p>
+
+<p>Апи пула процессов идентичен апи пула потоков, с тем лишь исключением, что если один из процессов будет завершен, то и работа всего пула будет прервана (при этом надо помнить, что прерывание процессов может занимать определенное время).</p>
+
+<p>В низкоруовневом апи <code class="language-plaintext highlighter-rouge">asyncio</code> <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor">предусмотрен метод для работы с пулами потоков и процессов</a>. <code class="language-plaintext highlighter-rouge">loop.run_in_executor</code> получает в качестве аргумента объект-исполнитель, функцию-воркера и аргументы, которые должны быть переданы воркеру. Возвращаемым объектом будет фьючерс. Если методу не предоставлен исполнитель, то в качестве исполнителя создается пул потоков. Вся эта конструкция позволяет уступать управлять циклу событий, ожидать выполнения воркеров в потоках/процессах, а затем получать результат, когда он готов.</p>
+
+<p>Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">concurrent.futures</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">blocks</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'blocks(</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">) running'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'blocks(</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s">) done'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">n</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">run_blocking_tasks</span><span class="p">(</span><span class="n">ex</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">blocking_tasks</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">...</span>         <span class="n">loop</span><span class="p">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">...</span>         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">...</span>     <span class="p">]</span>
+<span class="p">...</span>     <span class="n">completed</span><span class="p">,</span> <span class="n">pending</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">blocking_tasks</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">completed</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'results: {!r}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">ex</span> <span class="o">=</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">futures</span><span class="p">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_blocking_tasks</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="n">running</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">running</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">running</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="n">done</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="n">running</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">done</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">done</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="n">running</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="n">done</span>
+<span class="n">blocks</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="n">done</span>
+<span class="n">results</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>На этом все.</p>
 
 <p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 
@@ -386,6 +580,7 @@
 <ul>
   <li>[<a href="threading" title="Threading">threading</a>]</li>
   <li>[<a href="multiprocess" title="Управление процессами в python">multiprocess</a>]</li>
+  <li>[<a href="asyncio-transports-and-protocols" title="Asyncio transports and protocols">asyncio-transports-and-protocols</a>]</li>
 </ul>
 
 

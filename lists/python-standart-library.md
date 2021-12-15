@@ -24,6 +24,7 @@ category: list
 - [[multiprocess]] процессы в python
 - [[threading]] управления параллельными вычислениями в процуессах
 - [[asyncio]]
+- [[asyncio-transports-and-protocols]]
 
 [Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
 
@@ -57,6 +58,7 @@ category: list
 [multiprocess]: ../notes/multiprocess "Управление процессами в python"
 [threading]: ../notes/threading "Threading"
 [asyncio]: ../notes/asyncio "Asyncio"
+[asyncio-transports-and-protocols]: ../notes/asyncio-transports-and-protocols "Asyncio transports and protocols"
 [feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"

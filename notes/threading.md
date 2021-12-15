@@ -303,7 +303,7 @@ def client():
 
 ## [Semaphore](https://docs.python.org/3/library/threading.html?highlight=threading#semaphore-objects)
 
-Обеспечивает одновременный доступ к ресурсу нескольким потокам с ограничением их количества, к примеру это можэет быть сетевой пул, поддерживающий фиксированное число соединений.
+Обеспечивает одновременный доступ к ресурсу нескольким потокам с ограничением их количества, к примеру это может быть сетевой пул, поддерживающий фиксированное число соединений.
 
 ## [local](https://docs.python.org/3/library/threading.html?highlight=threading#thread-local-data)
 
