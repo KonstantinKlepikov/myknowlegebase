@@ -85,7 +85,7 @@
 
       <h1 id="asyncio">Asyncio</h1>
 
-<p>Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма (<a href="https://docs.python.org/3/glossary.html#term-coroutine">coroutine</a>) передает управление вызвавшему ее коду без потери своего состояния. Первоначально апи асинхронных функций был реализован на <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro">генераторах с декораторами</a>. В python3.8 такой подход уже депрекейтед. Пример такого кода:</p>
+<p>Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма (<a href="https://docs.python.org/3/glossary.html#term-coroutine">coroutine</a>) передает управление вызвавшему ее коду без потери своего состояния. В отличии от обычных программ, в которые входят в одной точке, а выходят в другой, в сопрограммы можно входить и выходить из них в разных точках, кроме того, их можно продолжать используя сохраненное состояние. Первоначально апи асинхронных функций был реализован на <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro">генераторах с декораторами</a>. В python3.8 такой подход уже депрекейтед. Пример такого кода:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
 
@@ -112,9 +112,13 @@
 
 <p>Основной рабочей структурой <code class="language-plaintext highlighter-rouge">asyncio</code> является цикл событий, в котором регистрируются сопрограммы и который управляет событиями ввода/вывода и контекстом. Реализацию цикла можно выбрать для конкретного приложения или использовать дефолтную. Реализации специфичны к операционной системе. Приложение коммуницирует с циклом, регистрирует функции и позволяет циклу выполнять вызовы, если доступны ресурсы. Код приложения должен уступать управление, если в контексте цикла для него нет работы.</p>
 
+<p>Определено два понятие - сопрограмма и функция сопрограммы (coroutine function). Функция сопрограммы возвращает объект сопрограммы.</p>
+
 <p>Кроме сопрограмм реализованы <code class="language-plaintext highlighter-rouge">Future</code> и <code class="language-plaintext highlighter-rouge">Task</code> (фьючерсы и таски), а так-же объекты предоставляющие апи параллельной обработки по аналогии с [<a href="threading" title="Threading">threading</a>].</p>
 
-<p><code class="language-plaintext highlighter-rouge">asyncio</code> как модуль оформился в python3.5. Были добавлены синтаксические конструкции <code class="language-plaintext highlighter-rouge">async</code> и <code class="language-plaintext highlighter-rouge">await</code>, которые реализуют непосредственный интерфейс асинхронного программирования. <code class="language-plaintext highlighter-rouge">async</code> перед <code class="language-plaintext highlighter-rouge">def</code> определяет новую сопрограмму. Ключевое слово <code class="language-plaintext highlighter-rouge">await</code> используется для ожидания результата сопрограммы, фьючерса или таска (в текущий момент в библиотеке реализовано три awaitable объекта), после чего происходит передача циклу событий.</p>
+<p><code class="language-plaintext highlighter-rouge">asyncio</code> как модуль оформился в python3.5. Были добавлены синтаксические конструкции <code class="language-plaintext highlighter-rouge">async</code> и <code class="language-plaintext highlighter-rouge">await</code>, которые реализуют непосредственный интерфейс асинхронного программирования. <code class="language-plaintext highlighter-rouge">async</code> перед <code class="language-plaintext highlighter-rouge">def</code> определяет новую функцию сопрограммы. Ключевое слово <code class="language-plaintext highlighter-rouge">await</code> используется для ожидания результата сопрограммы, фьючерса или таска (в текущий момент в библиотеке реализовано три awaitable объекта), после чего происходит передача циклу событий.</p>
+
+<p>В общем случае функция сопрограммы определяется через <code class="language-plaintext highlighter-rouge">await def</code> и может содержать в своем теле <code class="language-plaintext highlighter-rouge">async for</code>, <code class="language-plaintext highlighter-rouge">await</code> и <code class="language-plaintext highlighter-rouge">async &lt;ключевое слово&gt;</code>. Более сложные конструкции см.тут: [<a href="async-generators-and-iterators" title="Async generators and iterators">async-generators-and-iterators</a>]. Для простоты далее я не буду разделять понятия сопрограммы и функции, см. контекст.</p>
 
 <p><code class="language-plaintext highlighter-rouge">asyncio</code> реализует два АПИ: низкоуровневый и высокоруовневый. <a href="https://docs.python.org/3/library/asyncio-api-index.html">Выкоуровневый</a> - это запуск сопрограмм, создание тасков, очередей, сабропроцессов и потоков, а так-же синхронизация в цикле (реализована в стиле <code class="language-plaintext highlighter-rouge">threading</code>). <a href="https://docs.python.org/3/library/asyncio-llapi-index.html">Низакоуровневый</a> - доступ к объектам цикла и управление циклом.</p>
 
@@ -201,6 +205,8 @@
 </code></pre></div></div>
 
 <h2 id="awaitables"><a href="https://docs.python.org/3/library/asyncio-task.html#awaitables">Awaitables</a></h2>
+
+<p>Awaitable - это объект, который можно использовать в выражении <code class="language-plaintext highlighter-rouge">await</code>. Может быть сопрограммой или объектом с методом <code class="language-plaintext highlighter-rouge">__await __()</code></p>
 
 <p>Помимо сопрограмм используются <code class="language-plaintext highlighter-rouge">Task</code> и <code class="language-plaintext highlighter-rouge">Future</code> объекты. Фьючерсы являются низкоуровневым объектами, представляют результаты еще не выполненных асинхронных операций и обеспечивают ассинхронное получение результатов выполнения сопрограмм. Таски - это высокоуровневые фьючерсо-подобные объекты, которые используются для запуска сопрограмм и отслеживания момента их выполнения, позволяя извлечь результат после завершения сопрограммы.</p>
 
@@ -581,6 +587,8 @@
   <li>[<a href="threading" title="Threading">threading</a>]</li>
   <li>[<a href="multiprocess" title="Управление процессами в python">multiprocess</a>]</li>
   <li>[<a href="asyncio-transports-and-protocols" title="Asyncio transports and protocols">asyncio-transports-and-protocols</a>]</li>
+  <li>[<a href="async-generators-and-iterators" title="Async generators and iterators">async-generators-and-iterators</a>]</li>
+  <li>[<a href="contextvars" title="Contextvars">contextvars</a>]</li>
 </ul>
 
 
