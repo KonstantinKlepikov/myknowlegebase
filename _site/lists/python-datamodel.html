@@ -85,6 +85,267 @@
 
       <h1 id="python-datamodel">Python datamodel</h1>
 
+<h2 id="объекты-значения-и-типы">Объекты, значения и типы</h2>
+
+<p>У каждого объекта в python есть id, имя и значение. Объект можно представить через адрес в памяти - его идентичность никогда не меняется после создания - <code class="language-plaintext highlighter-rouge">is</code> сравнивает идентичность, а <code class="language-plaintext highlighter-rouge">id()</code> возвращает айдишник объекта (в CPython это представление адреса в памяти).</p>
+
+<p>Тип объекта определяет операции, которые поддерживаются объектом и возможные значения объекта. <code class="language-plaintext highlighter-rouge">type()</code> возвращает тип объекта. Значение типа может меняться после создания объекта - объекты с иззменяемыми типами называются изменяемыми. При этом объекты-контейнеры с неизменяемым типом (к примеру кортежи) могут “содержать” объекты с изменяемым типом. Контейнеры содержат не сами объекты, а ссылки на них, поэтому при изменеении объектов, на которые указывают ссылки контейнеров, следует ожидать изменеения и при вызове контейнеров.</p>
+
+<p>Объекты в python не уничтожаются явным способом, но при отсутствии ссылок на них, их может собрать сборщик мусора. CPython использует схему подсчета ссылок с отложенным подсчетом циклических ссылок, что обеспечивает удаление большинства объектов, на которые никто не ссылается… но не гарантирует удаление всех подобных объектов. Трассировака, отладка и перехват исключений с помощью <code class="language-plaintext highlighter-rouge">try... except</code> могут приводить к сохранению ссылок на объекты. Всегда следует явно закрывать открытые файлы через <code class="language-plaintext highlighter-rouge">close()</code> (если предоставлен), <code class="language-plaintext highlighter-rouge">try... finally</code> или менеджеры контекста <code class="language-plaintext highlighter-rouge">with...</code></p>
+
+<h3 id="иерархия-типов">Иерархия типов</h3>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">None</code> используется для обозначения отсутствия значения</li>
+  <li><code class="language-plaintext highlighter-rouge">NotImplemented</code> численные методы и методы сравнения должны возвращать этот тип, если они не реалоизуют операцию для представленных операндов. Данный тип не следует использовать в логическом контексте</li>
+  <li><code class="language-plaintext highlighter-rouge">Ellipsis</code> многоточие <code class="language-plaintext highlighter-rouge">...</code></li>
+  <li><a href="https://docs.python.org/3/library/numbers.html#numbers.Number">numbers.Number</a>. Все числовые типы неизменяемы</li>
+</ol>
+
+<ul>
+  <li>Строковее представление подчиняется следующим правилам:
+    <ul>
+      <li>это действительные числовые литералы, которые при передаче их конструктору класса создают объект, имеющий значение исходного числа</li>
+      <li>если возможно, представление выполняется в базе 10</li>
+      <li>начальные нули, за исключением, возможно, одного нуля перед десятичной точкой, не отображаются</li>
+      <li>завершающие нули, за исключением, возможно, одного нуля после десятичной точки, не отображаются</li>
+      <li>знак отображается только тогда, когда число отрицательное.</li>
+    </ul>
+  </li>
+  <li><a href="https://docs.python.org/3/library/numbers.html#numbers.Integral">numbers.Integral</a> целые числа
+    <ul>
+      <li><a href="https://docs.python.org/3/library/functions.html#int">int</a> целые числа в неограниченном диапазоне (верхний предел ограничен памятью).</li>
+      <li><a href="https://docs.python.org/3/library/functions.html#bool">bool</a> логические числа <code class="language-plaintext highlighter-rouge">False/True</code>, ведут себя как 0 и 1 за исключением преобразования в строку</li>
+    </ul>
+  </li>
+  <li><a href="https://docs.python.org/3/library/numbers.html#numbers.Real">numbers.Real</a> реализуют <a href="https://docs.python.org/3/library/functions.html#float">float</a> числа с плавающей точкой двойной точности машинного уровня, которая зависит от реализации интерпретаттора.</li>
+  <li><a href="https://docs.python.org/3/library/numbers.html#numbers.Complex">numbers.Complex</a> реализует <a href="https://docs.python.org/3/library/functions.html#complex">complex</a> комплексные числа как пару float чисел. Обе части для числа z можно получить так: <code class="language-plaintext highlighter-rouge">z.real</code> и <code class="language-plaintext highlighter-rouge">z.imag</code></li>
+</ul>
+
+<ol>
+  <li>Sequences - конечные упорядоченные наборы объектов, индексированные неотрицательными числами. Последовательность имеет длину, поддерживает операцию нарезки (в т.ч. расширенную, с шагом).</li>
+</ol>
+
+<ul>
+  <li>Неизменяемые
+    <ul>
+      <li>Strings последовательность значений Unicode символов</li>
+      <li>Tuples последовательность произвольных объектов python</li>
+      <li>Bytes последовательность состоящая из объектов байтов (неизменяемые объекты длиной 8 бит, состоящие из чисел в диапазоне 0&lt;\X&lt;=256)</li>
+    </ul>
+  </li>
+  <li>Изменяемые
+    <ul>
+      <li>Lists</li>
+      <li>Byte Arrays</li>
+    </ul>
+  </li>
+</ul>
+
+<ol>
+  <li>Sets - конечные неупорядоченные наборы уникальных неизменяемых объектов. Не индексируются. Имеют длину.</li>
+</ol>
+
+<ul>
+  <li>Sets изменяемый тип</li>
+  <li>Frozen sets неизменяемые</li>
+</ul>
+
+<ol>
+  <li>Mappings (отображения) - конечные наборы объектов, индексированные произвольным набором индексов. Имеют длину.</li>
+</ol>
+
+<ul>
+  <li>Dicts - для индекса словарей неприменимы объекты, содержащие изменяемые типы, которые сравниваются по значению, а не по хешу. Это связано с тем, что хеш ключа должен быть неимзенным. Начиная с 3.6 словари сохраняют порядок вставки, а замена ключа не меняет порядок, однако удаление и новая вставка добавляет ключ в конец.</li>
+</ul>
+
+<p>Пример с использованием двух чисел, имеющих одинаковый хеш, провоцирующий неожиданное поведение.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="mi">200</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">200</span><span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Calable tipes - типы, к которым можно применить <a href="https://docs.python.org/3/reference/expressions.html#calls">операцию вызова</a>. Это пользовательские функции, методы встроенных классов, объекты классов, методы экземпляров классов и все объекты, реализующие  метод <code class="language-plaintext highlighter-rouge">__call__()</code>.</li>
+</ol>
+
+<p>Аргументы вызываемых типов оцениваются до вызова следующим образом: первым делом создается список незаполненных слотов для параметров. Если имеется N позиционных аргументов, они помещаются в первые N слотов. Если присутствуют ключевые аргументы, они преобразуются в позиционные аргументы. Для каждого ключевого аргумента его идентификатор используется для определения соответствующего слота (если идентификатор совпадает с именем первого формального параметра, используется первый слот и т. д.). Если слот уже заполнен, возникает исключение TypeError. В противном случае значение аргумента помещается в слот, заполняя его. Когда все аргументы обработаны, пустые слоты заполняются соответствующим значением по умолчанию из определения функции. Значения по умолчанию вычисляются один раз, когда функция определена; таким образом, изменяемые объекты, используемые в качестве значений по умолчанию, будут использованы всеми вызовами, что может привести к нежелательному поведению. Если есть какие-либо незаполненные слоты, для которых не указано значение по умолчанию, возникает исключение TypeError. В противном случае список заполненных слотов используется в качестве списка аргументов для вызова.</p>
+
+<p>Попытка переопределить уже заполненный слот</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span>
+    
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;string&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="n">my</span><span class="p">()</span> <span class="n">got</span> <span class="n">multiple</span> <span class="n">values</span> <span class="k">for</span> <span class="n">argument</span> <span class="s">'b'</span>
+</code></pre></div></div>
+
+<p>Использование изменяемого объекта при повторных вызовах</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="p">[]):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">b</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">[]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Основные типы вызываемых объектов:</p>
+
+<ul>
+  <li>User-defined functions (пользорвательские функции) создаются определением функции со списком аргументов, содержащим тоже кол-во аргументов, что и формальных параметров функции. Специфические атрибуты представлены ниже</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Атрибут</th>
+      <th>Значение</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__doc__</code></td>
+      <td>Строка документации функции или, None если она недоступна; не наследуется подклассами</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__name__</code></td>
+      <td>Имя функции</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__qualname__</code></td>
+      <td><a href="https://docs.python.org/3/glossary.html#term-qualified-name">Квалифицированное имя</a> - включающее путь от глобальной области видимости</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__module__</code></td>
+      <td>Имя модуля, в котором функция была определена, или None если он недоступен</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__defaults__</code></td>
+      <td>Кортеж, содержащий значения аргументов по умолчанию для тех аргументов, которые имеют значения по умолчанию, или None если аргументы не имеют значения по умолчанию</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__code__</code></td>
+      <td>Объект кода, представляющий тело скомпилированной функции</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__globals__</code></td>
+      <td>Ссылка на словарь, содержащий глобальные переменные функции - глобальное пространство имен модуля, в котором функция была определена</td>
+      <td>только чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__dict__</code></td>
+      <td>Пространство имен, поддерживающее атрибуты функции</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__closure__</code></td>
+      <td>None или кортеж, содержащий привязки замыканий</td>
+      <td>только чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__annotations__</code></td>
+      <td>Словарь с аннотациями параметров. Ключи - это имена параметров и ‘return’ для аннотации возврата, если она есть</td>
+      <td>запись/чтение</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">__kwdefaults__</code></td>
+      <td>Словарь, содержащий значения по умолчанию для ключевых параметров. Если мы не определим * между позиционными и ключевыми параметрами, то вместо словаря будет <code class="language-plaintext highlighter-rouge">None</code>… а если определим, то <code class="language-plaintext highlighter-rouge">None</code> будет в <code class="language-plaintext highlighter-rouge">__defaults__</code></td>
+      <td>запись/чтение</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">my</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="p">...</span>     <span class="s">"""This is doc"""</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">this</span><span class="p">():</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">z</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">this</span>
+    
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__doc__</span><span class="p">)</span>\
+<span class="n">This</span> <span class="ow">is</span> <span class="n">doc</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">my</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__qualname__</span><span class="p">)</span>
+<span class="n">my</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__module__</span><span class="p">)</span>
+<span class="n">__main__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__defaults__</span><span class="p">)</span>
+<span class="bp">None</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__code__</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="n">my</span> <span class="n">at</span> <span class="mh">0x7fae9a4883a0</span><span class="p">,</span> <span class="nb">file</span> <span class="s">"&lt;string&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__globals__</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'__name__'</span><span class="p">:</span> <span class="s">'__main__'</span><span class="p">,</span> <span class="s">'__doc__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'__package__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'__loader__'</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">_frozen_importlib</span><span class="p">.</span><span class="n">BuiltinImporter</span><span class="s">'&gt;, '</span><span class="n">__spec__</span><span class="s">': None, '</span><span class="n">__annotations__</span><span class="s">': {}, '</span><span class="n">__builtins__</span><span class="s">': &lt;module '</span><span class="n">builtins</span><span class="s">' (built-in)&gt;, '</span><span class="n">z</span><span class="s">': 3, '</span><span class="n">my</span><span class="s">': &lt;function my at 0x7fee736c9d30&gt;}
+&gt;&gt;&gt; my.n = 4
+&gt;&gt;&gt; print(my.__dict__)
+{'</span><span class="n">n</span><span class="s">': 4}
+&gt;&gt;&gt; print(my.__closure__)
+None
+&gt;&gt;&gt; print(my.__annotations__)
+{'</span><span class="n">a</span><span class="s">': &lt;class '</span><span class="nb">int</span><span class="s">'&gt;, 'b': &lt;class '</span><span class="nb">int</span><span class="s">'&gt;, '</span><span class="k">return</span><span class="s">': &lt;class '</span><span class="nb">int</span><span class="s">'&gt;}
+&gt;&gt;&gt; print(my.__kwdefaults__)
+{'b': 3}
+
+&gt;&gt;&gt; f = my(1)
+&gt;&gt;&gt; print(f.__closure__)
+(&lt;cell at 0x7fee738214c0: int object at 0x955e40&gt;, &lt;cell at 0x7fee7372cd90: int object at 0x955e80&gt;)
+</span></code></pre></div></div>
+
+<ul>
+  <li>Instance methods - объект метода экземпляра объединяет класс, инстанс класса и вызываемый объект (обычно пользовательскую функцию).</li>
+</ul>
+
+<p>Специальные атрибуты только для чтения: <code class="language-plaintext highlighter-rouge">__self__</code> это объект экземпляра класса, <code class="language-plaintext highlighter-rouge">__func__</code> это объект функции; <code class="language-plaintext highlighter-rouge">__doc__</code> документация метода (то же, что и <code class="language-plaintext highlighter-rouge">__func__.__doc__</code>); <code class="language-plaintext highlighter-rouge">__name__</code> это имя метода (то же, что и <code class="language-plaintext highlighter-rouge">__func__.__name__</code>); <code class="language-plaintext highlighter-rouge">__module__</code>- это имя модуля, в котором был определен метод, или None если он недоступен.</p>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">My</span><span class="p">():</span>
+    
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">my</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="s">"""This is the doc"""</span>
+<span class="p">...</span>         <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">My</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">my</span><span class="p">.</span><span class="n">__self__</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">My</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fb701ba44c0</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">my</span><span class="p">.</span><span class="n">__doc__</span><span class="p">)</span>
+<span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">doc</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">my</span><span class="p">.</span><span class="n">__func__</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">My</span><span class="p">.</span><span class="n">my</span> <span class="n">at</span> <span class="mh">0x7fb701a4cdc0</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">my</span><span class="p">.</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">my</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">my</span><span class="p">.</span><span class="n">__module__</span><span class="p">)</span>
+<span class="n">__main__</span>
+</code></pre></div></div>
+
+<p>Объект создается при получении атрибута класса. если этот атрибут является функцией или методом класса.</p>
+
+<p>Когда объект метода экземпляра создается путем извлечения функции из экземпляра класса <code class="language-plaintext highlighter-rouge">__self__</code> является экземпляром, а объект метода называется связанным (bound method). <code class="language-plaintext highlighter-rouge">__func__</code> - это исходный объект функции.</p>
+
+<p>Когда объект метода экземпляра создается путем извлечения объекта метода класса из класса, его <code class="language-plaintext highlighter-rouge">__self__</code> атрибутом является сам класс, а его <code class="language-plaintext highlighter-rouge">__func__</code> атрибутом является объект функции, лежащий в основе метода класса.</p>
+
+<p>Заметка будет дополняться…</p>
+
 <p><a href="https://docs.python.org/3/reference/datamodel.html#implementing-descriptors">Data model</a></p>
 
 <p>Смотри еще:</p>

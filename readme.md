@@ -18,6 +18,8 @@ Foam: Create New Note from Template
 
 `ctrl+alt+v` вставка картинок из буфера
 
+`alt+d` создает заметку с текущей датой в папке journal.
+
 Создание ссылок:
 
 1. copy the following text: [https://google.com](https://google.com)
