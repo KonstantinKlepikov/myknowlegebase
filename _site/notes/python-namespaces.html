@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python namespaces | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python namespaces" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="О пространстве имен в python" />
+<meta property="og:description" content="О пространстве имен в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-namespaces.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-namespaces.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-namespaces.html","headline":"Python namespaces","description":"О пространстве имен в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="python-namespaces">Python namespaces</h1>
+
+<p>Пространства имен создаются в разные моменты и имеют разное время жизни. Пространство имен, содержащее встроенные имена, создается при запуске интерпретатора Python и никогда не удаляется. <strong>Глобальное пространство</strong> имен для модуля создается при считывании определения модуля; обычно пространства имен модулей также существуют до завершения работы интерпретатора. Операторы, выполняемые при вызове интерпретатора верхнего уровня, либо считываеме из файла сценария, либо интерактивно, считаются частью модуля с именем <code class="language-plaintext highlighter-rouge">__main__</code>, поэтому у них есть собственное глобальное пространство имен. (Встроенные имена фактически также находятся в модуле)</p>
+
+<p><strong>Локальное пространство</strong> имен для функции создается при вызове функции и удаляется, когда функция возвращает или вызывает исключение, которое не обрабатывается внутри функции. Каждый рекурсивный вызов имеет свое собственное локальное пространство имен.</p>
+
+<p><strong>Область видимости</strong> (scope) - это текстовая область программы Python, где пространство имен доступно непосредственно. «Непосредственно доступный» здесь означает, что неквалифицированная ссылка на имя пытается найти имя в пространстве имен.</p>
+
+<p>Хотя области видимости определяются статически, они используются динамически. В любой момент во время выполнения есть 3 или 4 вложенных области, чьи пространства имен доступны напрямую:</p>
+
+<ul>
+  <li>самая внутренняя (innermost) область видимости, которая ищется первой, содержит локальные имена</li>
+  <li>области видимости любых включающих функций (если таковые имеются), поиск которых начинается с ближайшей бласти видимости. Здесь содержатся нелокальные, но также и неглобальные имена</li>
+  <li>предпоследняя область содержит глобальные имена текущего модуля</li>
+  <li>самая внешняя область видимости (поиск обращается к ней в последюю очередь) - это пространство имен, содержащее встроенные имена</li>
+</ul>
+
+<p>Если имя объявлено глобально, то тогда все ссылки и назначения переходят непосредственно в область, содержащую глобальные имена модуля. Чтобы повторно привязать переменные, которые необходимо видеть за пределами innermost области, можно использовать <code class="language-plaintext highlighter-rouge">nonlocal</code>; если они не объявлены нелокальными, эти переменные доступны только для чтения (попытка записи в таку. gпеременную просто создаст новую локальную переменную во внутренней области видимости, а внешняя переменная с таким же именем останется неизменной).</p>
+
+<p>Обычно локальная область видимости ссылается на локальные имена текущей (буквальной) функции. За пределами функций локальная область видимости ссылается на то же пространство имен, что и глобальная область видимости: на пространство имен модуля. <strong>Определения классов помещают еще одно пространство имен в локальную область видимости.</strong></p>
+
+<p>Важно понимать, что области видимости определяются буквально: глобальная область видимости функции, определенной в модуле, является пространством имен этого модуля, независимо от того, откуда и под каким псевдонимом вызывается функция. С другой стороны, фактический поиск имен выполняется динамически во время выполнения - однако определение языка эволюционирует в сторону статического разрешения имен во время «компиляции», поэтому не стоит полагаться на динамическое разрешение имен. Фактически, локальные переменные уже определены статически.</p>
+
+<p>Особенность Python заключается в том, что - если не действует ни один <code class="language-plaintext highlighter-rouge">global</code> или <code class="language-plaintext highlighter-rouge">nonlocal</code> оператор - присвоения имен всегда попадают в самую внутреннюю область видимости. Назначения не копируют данные - они просто связывают имена с объектами. То же самое верно и для удалений: оператор <code class="language-plaintext highlighter-rouge">del x</code> удаляет привязку x из пространства имен, на которое ссылается локальная область видимости. Фактически, все операции, которые вводят новые имена, используют локальную область видимости: в частности, операторы импорта и определения функций связывают имя модуля или функции в локальной области.</p>
+
+<p>Оператор <code class="language-plaintext highlighter-rouge">global</code> может использоваться, чтобы указать, что определенные переменные находятся в глобальной области видимости и должны быть там повторнопривязаны; Оператор <code class="language-plaintext highlighter-rouge">nonlocal</code> указывает, что определенные локально переменные находятся во внешней области видимости и должны быть там повторно привязаны.</p>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">scope_test</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">do_local</span><span class="p">():</span>
+<span class="p">...</span>         <span class="n">spam</span> <span class="o">=</span> <span class="s">"local spam"</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">do_nonlocal</span><span class="p">():</span>
+<span class="p">...</span>         <span class="k">nonlocal</span> <span class="n">spam</span>
+<span class="p">...</span>         <span class="n">spam</span> <span class="o">=</span> <span class="s">"nonlocal spam"</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">do_global</span><span class="p">():</span>
+<span class="p">...</span>         <span class="k">global</span> <span class="n">spam</span>
+<span class="p">...</span>         <span class="n">spam</span> <span class="o">=</span> <span class="s">"global spam"</span>
+
+<span class="p">...</span>     <span class="n">spam</span> <span class="o">=</span> <span class="s">"test spam"</span>
+<span class="p">...</span>     <span class="n">do_local</span><span class="p">()</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">"After local assignment:"</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">do_nonlocal</span><span class="p">()</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">"After nonlocal assignment:"</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">do_global</span><span class="p">()</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">"After global assignment:"</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">spam</span> <span class="o">=</span> <span class="s">'spam'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">scope_test</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">"In global scope:"</span><span class="p">,</span> <span class="n">spam</span><span class="p">)</span>
+<span class="n">After</span> <span class="n">local</span> <span class="n">assignment</span><span class="p">:</span> <span class="n">test</span> <span class="n">spam</span>
+<span class="n">After</span> <span class="k">nonlocal</span> <span class="n">assignment</span><span class="p">:</span> <span class="k">nonlocal</span> <span class="n">spam</span>
+<span class="n">After</span> <span class="k">global</span> <span class="n">assignment</span><span class="p">:</span> <span class="k">nonlocal</span> <span class="n">spam</span>
+<span class="n">In</span> <span class="k">global</span> <span class="n">scope</span><span class="p">:</span> <span class="k">global</span> <span class="n">spam</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/tutorial/classes.html#a-word-about-names-and-objects">Статья целиком</a></p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
+  <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

@@ -294,7 +294,11 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__code__</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="n">my</span> <span class="n">at</span> <span class="mh">0x7fae9a4883a0</span><span class="p">,</span> <span class="nb">file</span> <span class="s">"&lt;string&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="o">&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">my</span><span class="p">.</span><span class="n">__globals__</span><span class="p">)</span>
-<span class="p">{</span><span class="s">'__name__'</span><span class="p">:</span> <span class="s">'__main__'</span><span class="p">,</span> <span class="s">'__doc__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'__package__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'__loader__'</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">_frozen_importlib</span><span class="p">.</span><span class="n">BuiltinImporter</span><span class="s">'&gt;, '</span><span class="n">__spec__</span><span class="s">': None, '</span><span class="n">__annotations__</span><span class="s">': {}, '</span><span class="n">__builtins__</span><span class="s">': &lt;module '</span><span class="n">builtins</span><span class="s">' (built-in)&gt;, '</span><span class="n">z</span><span class="s">': 3, '</span><span class="n">my</span><span class="s">': &lt;function my at 0x7fee736c9d30&gt;}
+<span class="p">{</span><span class="s">'__name__'</span><span class="p">:</span> <span class="s">'__main__'</span><span class="p">,</span><span class="s">'__doc__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'__package__'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> 
+<span class="s">'__loader__'</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">_frozen_importlib</span><span class="p">.</span><span class="n">BuiltinImporter</span><span class="s">'&gt;, 
+'</span><span class="n">__spec__</span><span class="s">': None, '</span><span class="n">__annotations__</span><span class="s">': {}, 
+'</span><span class="n">__builtins__</span><span class="s">': &lt;module '</span><span class="n">builtins</span><span class="s">' (built-in)&gt;, '</span><span class="n">z</span><span class="s">': 3, 
+'</span><span class="n">my</span><span class="s">': &lt;function my at 0x7fee736c9d30&gt;}
 &gt;&gt;&gt; my.n = 4
 &gt;&gt;&gt; print(my.__dict__)
 {'</span><span class="n">n</span><span class="s">': 4}
@@ -307,7 +311,8 @@ None
 
 &gt;&gt;&gt; f = my(1)
 &gt;&gt;&gt; print(f.__closure__)
-(&lt;cell at 0x7fee738214c0: int object at 0x955e40&gt;, &lt;cell at 0x7fee7372cd90: int object at 0x955e80&gt;)
+(&lt;cell at 0x7fee738214c0: int object at 0x955e40&gt;,
+ &lt;cell at 0x7fee7372cd90: int object at 0x955e80&gt;)
 </span></code></pre></div></div>
 
 <ul>
@@ -344,9 +349,338 @@ None
 
 <p>Когда объект метода экземпляра создается путем извлечения объекта метода класса из класса, его <code class="language-plaintext highlighter-rouge">__self__</code> атрибутом является сам класс, а его <code class="language-plaintext highlighter-rouge">__func__</code> атрибутом является объект функции, лежащий в основе метода класса.</p>
 
-<p>Заметка будет дополняться…</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">My</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">this</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">that</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">pass</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">My</span><span class="p">.</span><span class="n">this</span> <span class="o">=</span> <span class="n">this</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">My</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">.</span><span class="n">that</span> <span class="o">=</span> <span class="n">that</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">this</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">this</span> <span class="n">at</span> <span class="mh">0x7fdc845c9a60</span><span class="o">&gt;</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">My</span><span class="p">.</span><span class="n">this</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">this</span> <span class="n">at</span> <span class="mh">0x7fdc845c9a60</span><span class="o">&gt;</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">this</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">this</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">My</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fdc84698400</span><span class="o">&gt;&gt;</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">this</span><span class="p">.</span><span class="n">__func__</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">this</span> <span class="n">at</span> <span class="mh">0x7fdc845c9a60</span><span class="o">&gt;</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">this</span><span class="p">.</span><span class="n">__self__</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">My</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fdc84698400</span><span class="o">&gt;</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">that</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">that</span> <span class="n">at</span> <span class="mh">0x7fdc845c9af0</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Преобразование объекта функции в объект метода экземпляра происходит каждый раз, когда атрибут извлекается из экземпляра. В некоторых случаях хорошей оптимизацией является присвоение атрибута локальной переменной и вызов этой локальной переменной. Это преобразование происходит только для пользовательских функций; другие вызываемые объекты (и все невызываемые объекты) извлекаются без преобразования. Определяемые пользователем функции, которые являются атрибутами экземпляра класса, не преобразуются в связанные методы; это происходит только тогда, когда функция является атрибутом класса.</p>
+
+<ul>
+  <li>Generator functions - функция или метод, использующий <code class="language-plaintext highlighter-rouge">yield</code> оператор. Такая функция при вызове всегда возвращает объект-итератор, который можно использовать для выполнения тела функции: вызов <code class="language-plaintext highlighter-rouge">iterator.__next__()</code> метода итератора приведет к выполнению функции до тех пор, пока она не предоставит значение с помощью <code class="language-plaintext highlighter-rouge">yield</code> оператора. Когда функция выполняет <code class="language-plaintext highlighter-rouge">return</code> оператор или добегает до конца своего тела, возникает <code class="language-plaintext highlighter-rouge">StopIteration</code> исключение, и итератор достигает конца набора возвращаемых значений.</li>
+</ul>
+
+<p>Пример <code class="language-plaintext highlighter-rouge">yield</code> и <code class="language-plaintext highlighter-rouge">return</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">that</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">this</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">this</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">return</span> <span class="s">'this is madness'</span>
+<span class="p">...</span>         <span class="k">else</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">yield</span> <span class="n">i</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">that</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">that</span> <span class="n">at</span> <span class="mh">0x7f8468a1f580</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">except</span> <span class="nb">StopIteration</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">this</span> <span class="ow">is</span> <span class="n">madness</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="p">[]</span>
+</code></pre></div></div>
+
+<p>Пример с подъемом ошибки</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">that</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">this</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">this</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">raise</span> <span class="nb">StopIteration</span>
+<span class="p">...</span>         <span class="k">except</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">yield</span> <span class="n">i</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">that</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">that</span> <span class="n">at</span> <span class="mh">0x7fa53bbb1580</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;string&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">16</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">StopIteration</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Coroutine functions - функции определенные с <code class="language-plaintext highlighter-rouge">async def</code> возвращает экземпляр сопрограммы. Может содержать выражения <code class="language-plaintext highlighter-rouge">await</code>, <code class="language-plaintext highlighter-rouge">async with</code>, <code class="language-plaintext highlighter-rouge">async for</code>. Подробнее в [<a href="../notes/asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>Asynchronous generator functions - асинхорнные генераторные функции - это функции, определенные с <code class="language-plaintext highlighter-rouge">async def</code> и <code class="language-plaintext highlighter-rouge">yield</code> в теле. При вызове возвращает объект асинхронного итератора, который можно использовать для выполнения <code class="language-plaintext highlighter-rouge">async for</code>. Вызов через <a href="https://docs.python.org/3/reference/datamodel.html#object.__anext__">aiterator.<strong>anext</strong></a> вернет awaitable объект. Аналогично обычному генератору, при достижении конца тела или при выполнении return будет поднеята ошибка <code class="language-plaintext highlighter-rouge">StopAsyncIteration</code></li>
+  <li>Built-in functions объекты встроенных функций интерпретатора (обертка на c-реализациями).</li>
+  <li>Built-in methods - объекты встроенных методов (пример <code class="language-plaintext highlighter-rouge">alist.append()</code> при условии, что alist - это соответствующий условиям метода список)</li>
+  <li>Classes объекты классов. Передача аргументов реализуется через <code class="language-plaintext highlighter-rouge">__new__()</code> и <code class="language-plaintext highlighter-rouge">__init__()</code></li>
+  <li>Class Instances экземпляры классов, для которых определен <code class="language-plaintext highlighter-rouge">__call__()</code> в их классе</li>
+</ul>
+
+<ol>
+  <li>Modules</li>
+</ol>
+
+<p>Объект модуля имеет пространство имен, реализованное объектом словаря, на котоырй будут ссылаться все функции модуля через свой атрибут <code class="language-plaintext highlighter-rouge">__globals__</code>. Ссылки на атрибуты модуля транслируются в поиск по данному словарю. Подробнее о пространствах имен [<a href="../notes/python-namespaces" title="Python namespaces">python-namespaces</a>].</p>
+
+<p>Дефолтно определено и доступно для записи:</p>
+
+<ul>
+  <li><strong>name</strong> имя модуля</li>
+  <li><strong>doc</strong> строка документации модуля или, None если она недоступна</li>
+  <li><strong>file</strong> путь к файлу, из которого был загружен модуль, если он был загружен из файла. Атрибут может отсутствовать для некоторых типов модулей, таких как модули C, которые статически связаны к интерпретатору. Для модулей расширений, динамически загружаемых из общей библиотеки, это путь к файлу общей библиотеки</li>
+  <li><strong>annotations</strong> словарь, содержащий аннотации переменных, собранных во время выполнения тела модуля</li>
+  <li><strong>dict</strong> специальный атрибут только для чтения - пространство имен модуля</li>
+</ul>
+
+<p>В CPython словарь модуля будет очищен, когда модуль уйдет из области видимости функции, даже если в словаре все еще есть активные ссылки. Можно скопировать словарь или держать ссылку на модуль в пространстве видимости модуля.</p>
+
+<ol>
+  <li>Custom classes</li>
+</ol>
+
+<p>Типы пользовательских классов создаются определениями классов. У класса есть пространство имен, реализованное объектом словаря. Ссылки на атрибуты классов переводятся в поисковые запросы в этом словаре. Если имя атрибута там не найдено, поиск атрибута продолжается в родительских классах используя специальную схему разрешения поиска MRO.</p>
+
+<p>Когда ссылка на атрибут класса приводит к объекту метода класса, он преобразуется в объект метода экземпляра, <code class="language-plaintext highlighter-rouge">__self__</code> атрибут которого принимает сам класс. Если это статический метод, то происходит преобразование в объект статического метода.</p>
+
+<p>Назначения атрибутов класса обновляют словарь текущего класса, а не словарь родительского класса.</p>
+
+<p>Особые атрибуты:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">__name__</code> имя класса</li>
+  <li><code class="language-plaintext highlighter-rouge">__module__</code> имя модуля, в котором был определен класс</li>
+  <li><code class="language-plaintext highlighter-rouge">__dict__</code> словарь, содержащий пространство имен класса</li>
+  <li><code class="language-plaintext highlighter-rouge">__bases__</code> кортеж, содержащий родительские классы, в порядке их появления</li>
+  <li><code class="language-plaintext highlighter-rouge">__doc__</code> строка документации класса или, None если она не определена</li>
+  <li><code class="language-plaintext highlighter-rouge">__annotations__</code> словарь, содержащий аннотации переменных класса, собранные во время выполнения тела класса</li>
+</ul>
+
+<ol>
+  <li>Class instances</li>
+</ol>
+
+<p>Экземпляр класса имеет пространство имен, реализованное как словарь. При поиске ссылок на атрибуты этот словарь опрашивается в первую очередь. Если атрибут не найден, а класс экземпляра имеет атрибут с таким именем, поиск продолжается уже в словаре самого класса. Если обнаружен атрибут класса, который является объектом определяемой пользователем функции, он преобразуется в объект метода экземпляра (см.выше), <code class="language-plaintext highlighter-rouge">__self__</code> атрибут которого является экземпляром. Также преобразуются объекты статических методов и методов класса. Если атрибут класса не найден, а у класса объекта есть <code class="language-plaintext highlighter-rouge">__getattr__()</code> метод, для поиска вызывается данный метод.</p>
+
+<p>Назначение и удаление атрибутов обновляют словарь экземпляра, но не словарь класса. Если в классе есть метод <code class="language-plaintext highlighter-rouge">__setattr__()</code> или <code class="language-plaintext highlighter-rouge">__delattr__()</code> - они вызываются вместо непосредственного обновления словаря экземпляра.</p>
+
+<p>Экземпляры классов могут выполнять роль чисел, последовательностей или отображений, если у них есть методы с определенными специальными именами. <a href="https://docs.python.org/3/reference/datamodel.html#specialnames">Смотри список методов</a></p>
+
+<p>Специальные атрибуты: <code class="language-plaintext highlighter-rouge">__dict__</code> словарь атрибутов; <code class="language-plaintext highlighter-rouge">__class__</code> это класс экземпляра.</p>
+
+<ol>
+  <li>I/O objects - объекты ввода/вывода</li>
+</ol>
+
+<p>Представляют из мебя открытые файлы.</p>
+
+<ol>
+  <li>Internal types</li>
+</ol>
+
+<p>Некоторые типы, используемые внутри интерпретатора, доступны пользователю. Их определения могут измениться в будущих версиях интерпретатора</p>
+
+<ul>
+  <li>Code objects. Объекты кода представляют байт-скомпилированный исполняемый код Python или байт-код . Разница между объектом кода и объектом функции состоит в том, что объект функции содержит явную ссылку на глобальные объекты функции (модуль, в котором он был определен), в то время как объект кода не содержит контекста; также значения аргументов по умолчанию хранятся в объекте функции, а не в объекте кода (поскольку они представляют значения, вычисленные во время выполнения). В отличие от объектов функций, объекты кода неизменяемы и не содержат ссылок (прямо или косвенно) на изменяемые объекты</li>
+  <li>Frame objects. Представляют собой фреймы исполнения. Они могут встречаться в объектах трассировки , а также передаются зарегистрированным функциям трассировки</li>
+  <li>Traceback objects. Объекты трассировки представляют собой трассировку стека исключения. Объект трассировки неявно создается при возникновении исключения, а также может быть создан явно путем вызова <code class="language-plaintext highlighter-rouge">types.TracebackType</code></li>
+  <li>Slice objects. Объекты среза используются для представления срезов для <code class="language-plaintext highlighter-rouge">__getitem__()</code> методов. Они также создаются встроенной <code class="language-plaintext highlighter-rouge">slice()</code> функцией</li>
+  <li>Static method objects. Объекты статических методов позволяют предотвратить преобразование объектов функций в объекты методов. Объект статического метода - это оболочка вокруг любого другого объекта, обычно объекта метода, определенного пользователем. Когда объект статического метода извлекается из класса или экземпляра класса, фактически возвращаемый объект является обернутым объектом, который не подлежит дальнейшему преобразованию. Эти объекты являются вызываемыми. Можно создавать встроенным <code class="language-plaintext highlighter-rouge">staticmethod()</code> конструктором</li>
+  <li>Class method objects. Объект метода класса, как объект статического метода, представляет собой оболочку вокруг другого объекта, которая изменяет способ получения этого объекта из классов и экземпляров классов. Объекты метода класса создаются встроенным <code class="language-plaintext highlighter-rouge">classmethod()</code> конструктором.</li>
+</ul>
+
+<h2 id="специальные-методы">Специальные методы</h2>
+
+<p>Класс может реализовывать определенные операции, которые вызываются специальным синтаксисом (например, арифметические операции или индексирование и разрезание), определяя методы со специальными именами. Это позволяет классам определять собственное поведение по отношению к операторам языка.</p>
+
+<p>Установка специального метода в значение <code class="language-plaintext highlighter-rouge">None</code> указывает, что соответствующая операция недоступна. Например, если для класса установлено <code class="language-plaintext highlighter-rouge">__iter__()</code> значение <code class="language-plaintext highlighter-rouge">None</code>, итерация этого класса невозможна, поэтому вызов <code class="language-plaintext highlighter-rouge">iter()</code> его экземпляров вызовет <code class="language-plaintext highlighter-rouge">TypeError</code> (без возврата к <code class="language-plaintext highlighter-rouge">__getitem__()</code>).</p>
+
+<p>При реализации класса, который эмулирует любой встроенный тип, важно, чтобы эмуляция была реализована только в той степени, в которой это имеет смысл для моделируемого объекта.</p>
+
+<h3 id="базовые-спецметоды"><a href="https://docs.python.org/3/reference/datamodel.html#basic-customization">Базовые спец.методы</a></h3>
+
+<ul>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__new__"><strong>new</strong></a> используется для создания нового экземплояра класса. В основном предназначен для того, чтобы подклассы неизменяемых типов (например, <code class="language-plaintext highlighter-rouge">int</code>, <code class="language-plaintext highlighter-rouge">str</code> или <code class="language-plaintext highlighter-rouge">tuple</code>) могли настраивать создание экземпляров. Он также обычно переопределяется в настраиваемых метаклассах, чтобы настроить создание класса.</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__init__"><strong>init</strong></a> Конструктор класса. Вызывается после того, как экземпляр был создан <code class="language-plaintext highlighter-rouge">__new__()</code>, но до того, как он будет возвращен вызывающей стороне. В <code class="language-plaintext highlighter-rouge">self</code> передается экземпляр, возвращенный в <code class="language-plaintext highlighter-rouge">__new__()</code>. Если <code class="language-plaintext highlighter-rouge">__new__()</code> не возвращал cls, то и <code class="language-plaintext highlighter-rouge">__init__()</code> вызван не будет. Аргументы передаются выражению конструктора класса. Если базовый класс имеет <code class="language-plaintext highlighter-rouge">__init__()</code> метод, метод производного класса <code class="language-plaintext highlighter-rouge">__init__()</code>, если таковой имеется, должен явно вызывать его, чтобы гарантировать правильную инициализацию части экземпляра базового класса</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__del__"><strong>del</strong></a>. Вызывается при уничтожении инстанса. Если базовый класс имеет <code class="language-plaintext highlighter-rouge">__del__()</code> метод, метод производного класса <code class="language-plaintext highlighter-rouge">__del__()</code>, если таковой имеется, должен явно вызывать его, чтобы гарантировать правильное удаление части экземпляра базового класса. Не гарантируется, что <code class="language-plaintext highlighter-rouge">__del__()</code> методы вызываются для объектов, которые все еще существуют, когда интерпретатор завершает работу. См. <a href="https://docs.python.org/3/reference/datamodel.html#object.__del__">нюансы реализации для cpython</a></li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__repr__"><strong>repr</strong></a> Предоставляет строкове представление объекта. Обычно используется для дебага</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__str__"><strong>str</strong></a> Человекочитаемое строкове представление. Будет вызван <code class="language-plaintext highlighter-rouge">__repr__()</code> по умолчанию</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__bytes__"><strong>bytes</strong></a> Представление объекта в виде байт-кода</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__format__"><strong>format</strong></a> <a href="https://docs.python.org/3/reference/lexical_analysis.html#f-strings">f-строковое</a> представление. Смотри подробнее [<a href="../posts/2021-12-21-daily-note" title="Formatted string literals specificators">2021-12-21-daily-note</a>]</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__lt__"><strong>lt</strong>, <strong>le</strong>, <strong>eq</strong>, <strong>ne</strong>, <strong>gt</strong>, <strong>ge</strong></a> Реализуют сравнение объектов</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__hash__"><strong>hash</strong></a> Вызов встроенной функции <code class="language-plaintext highlighter-rouge">hash()</code>. Используется так-же для сранвнеия</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__bool__"><strong>bool</strong></a>. Реализует проверку истинности. Если этот метод не поределен, то вызывается <code class="language-plaintext highlighter-rouge">__len__()</code>. Если <code class="language-plaintext highlighter-rouge">__len__()</code> не определен, то все элементы класса считаются истинными.</li>
+</ul>
+
+<h3 id="доступ-к-атрибутам"><a href="https://docs.python.org/3/reference/datamodel.html#customizing-attribute-access">Доступ к атрибутам</a></h3>
+
+<ul>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__getattr__"><strong>getattr</strong></a>. Этот метод вернет вычисленное значение атрибута, если при попытке доступа поднято исключение <code class="language-plaintext highlighter-rouge">AttributeError</code></li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__getattribute__"><strong>getattribute</strong></a>. Вызывается безоговорочно для реализации доступа к атрибутам для экземпляров класса. Если класс также определяет <code class="language-plaintext highlighter-rouge">__getattr__()</code>, последний не будет вызываться, пока <code class="language-plaintext highlighter-rouge">__getattribute__()</code> не бвызовет его явно или пока не будет поднят <code class="language-plaintext highlighter-rouge">AttributeError</code>. Метод должен вернуть вычисленное значени либо поднять <code class="language-plaintext highlighter-rouge">AttributeError</code></li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__setattr__"><strong>setattr</strong></a> Вызывается при попытке присвоения атрибута</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__delattr__"><strong>delattr</strong></a> Вызывается при попытке удалить атрибут</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__dir__"><strong>dir</strong></a> Работает, когда мы вызываем объект через <code class="language-plaintext highlighter-rouge">dir()</code></li>
+</ul>
+
+<p><a href="https://docs.python.org/3/reference/datamodel.html#customizing-module-attribute-access">Читай про доступ к атрибутам модуля</a></p>
+
+<p>Методы применяются только тогда, когда экземпляр класса, содержащего метод (класс дескриптора), появляется в классе владельца <code class="language-plaintext highlighter-rouge">owner</code> (дескриптор должен находиться либо в словаре класса владельца, либо в словаре классов для одного из его родителей)</p>
+
+<h3 id="дескрипторы"><a href="https://docs.python.org/3/reference/datamodel.html#implementing-descriptors">Дескрипторы</a></h3>
+
+<ul>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__get__"><strong>get</strong>(self, instance, owner=None)</a> Вызывается для получения атрибута класса-владельца (доступ к атрибуту класса) или экземпляра этого класса (доступ к атрибуту экземпляра). Этот метод должен возвращать вычисленное значение атрибута или вызывать <code class="language-plaintext highlighter-rouge">AttributeError</code>.</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__set__"><strong>set</strong>(self, instance, value)</a>. Вызывается для установки атрибута экземпляра <code class="language-plaintext highlighter-rouge">instance</code> класса-владельца нового значения.</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__delete__"><strong>delete</strong>(self, instance)</a> Вызывается для удаления атрибута в экземпляре <code class="language-plaintext highlighter-rouge">instance</code> класса владельца.</li>
+</ul>
+
+<p>Дескриптор является атрибутом объекта с «связыванным поведением», один атрибут доступа которого был изменен с помощью методов в протоколе дескриптора: <code class="language-plaintext highlighter-rouge">__get__()</code>, <code class="language-plaintext highlighter-rouge">__set__()</code> и <code class="language-plaintext highlighter-rouge">__delete__()</code>. Если какой-либо из этих методов определен для объекта, он называется дескриптором. Поведение по умолчанию для доступа к атрибуту заключается в получении, установке или удалении атрибута из словаря объекта.</p>
+
+<p>Поведение по умолчанию для доступа к атрибуту заключается в получении, установке или удалении атрибута из словаря объекта. Если искомое в словаре значение является объектом, определяющим один из методов дескриптора, тогда Python может переопределить поведение по умолчанию и вместо этого вызвать метод дескриптора. То, где это происходит в цепочке приоритетов, зависит от того, какие методы дескриптора были определены и как они были вызваны.</p>
+
+<ul>
+  <li>Direct Call. Наиболее простой и распространенный вызов , когда код пользователя непосредственно вызывает метод дескриптора: <code class="language-plaintext highlighter-rouge">x.__get__(a)</code></li>
+  <li>Instance Binding. Если привязка к объекту инстанса, <code class="language-plaintext highlighter-rouge">a.x</code> трансформируется в вызов: <code class="language-plaintext highlighter-rouge">type(a).__dict__['x'].__get__(a, type(a))</code></li>
+  <li>Class Binding. Если привязка к объекту класса, то <code class="language-plaintext highlighter-rouge">A.x</code> трансформируется в вызов: <code class="language-plaintext highlighter-rouge">A.__dict__['x'].__get__(None, A)</code></li>
+  <li>Super Binding. Если используется объект, возвращаемый <a href="https://docs.python.org/3/library/functions.html#super">super</a>, тогда связка <code class="language-plaintext highlighter-rouge">super(B, obj).m()</code> ищет в <code class="language-plaintext highlighter-rouge">obj.__class__.__mro__</code> родительский класс <code class="language-plaintext highlighter-rouge">A</code> сразу после <code class="language-plaintext highlighter-rouge">B</code> и затем вызывает: <code class="language-plaintext highlighter-rouge">A.__dict__['m'].__get__(obj, obj.__class__)</code>.</li>
+</ul>
+
+<p>Методы Python (в том числе отмеченные символами <code class="language-plaintext highlighter-rouge">@staticmethod</code> и <code class="language-plaintext highlighter-rouge">@classmethod</code>) реализованы как дескрипторы, не являющиеся дескрипторами данных. Соответственно, экземпляры могут переопределять методы. Это позволяет отдельным экземплярам приобретать поведение, которое отличается от поведения других экземпляров того же класса.</p>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">property()</code> реализована в виде дескриптора данных. Соответственно, экземпляры не могут переопределить поведение свойства.</p>
+
+<p>Подробнее читай тут [<a href="../notes/python-descriptors" title="Python descriptors">python-descriptors</a>]</p>
+
+<h3 id="slots"><a href="https://docs.python.org/3/reference/datamodel.html#slots"><strong>slots</strong></a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">__slots__</code> позволяют явно объявлять данные класса (например, свойства) и запрещать создание <code class="language-plaintext highlighter-rouge">__dict__</code> и <code class="language-plaintext highlighter-rouge">__weakref__</code>. Это гарантирует экономию ресурсов при частых вызовах.</p>
 
 <p><a href="https://docs.python.org/3/reference/datamodel.html#implementing-descriptors">Data model</a></p>
+
+<h3 id="настройки-при-создании-класса-и-метаклассы"><a href="https://docs.python.org/3/reference/datamodel.html#customizing-class-creation">Настройки при создании класса и метаклассы</a></h3>
+
+<h3 id="эмуляция-универсальных-типов"><a href="https://docs.python.org/3/reference/datamodel.html#emulating-generic-types">Эмуляция универсальных типов</a></h3>
+
+<p>При использовании аннотации типа, часто бывает полезно использовать параметризацию универсального типа с помощью квадратных скобок. Класс можно параметризовать, только если он определяет специальный метод класса <code class="language-plaintext highlighter-rouge">__class_getitem__()</code></p>
+
+<h3 id="эмуляция-вызываемых-объектов"><a href="https://docs.python.org/3/reference/datamodel.html#emulating-callable-objects">Эмуляция вызываемых объектов</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">__call__</code> вызывается, когда инстанс вызывается как функция, если этот метод определен</p>
+
+<h3 id="эмуляция-поведения-контейнеров"><a href="https://docs.python.org/3/reference/datamodel.html#emulating-container-types">Эмуляция поведения контейнеров</a></h3>
+
+<p>Эта группа методов может быть определена для реализации контейнерных объектов.</p>
+
+<p>Контейнеры обычно представляют собой последовательности (например, lists или tuples) или отображения (например dictionaries), но могут также представлять другие контейнеры.</p>
+
+<p>Первый набор методов используется либо для имитации последовательности, либо для имитации отображения; разница в том , что для последовательности, допустимые ключи должны быть целыми числами к, для которых <code class="language-plaintext highlighter-rouge">0 &lt;= k &lt; N</code>, где N представляет собой длину последовательности, или <code class="language-plaintext highlighter-rouge">slice</code> объектов, которые определяют диапазон элементов.</p>
+
+<p>Рекомендуется, чтобы отображения обеспечивали методы <code class="language-plaintext highlighter-rouge">keys()</code>, <code class="language-plaintext highlighter-rouge">values()</code>, <code class="language-plaintext highlighter-rouge">items()</code>, <code class="language-plaintext highlighter-rouge">get()</code>, <code class="language-plaintext highlighter-rouge">clear()</code>, <code class="language-plaintext highlighter-rouge">setdefault()</code>, <code class="language-plaintext highlighter-rouge">pop()</code>, <code class="language-plaintext highlighter-rouge">popitem(</code>), <code class="language-plaintext highlighter-rouge">copy()</code>, и <code class="language-plaintext highlighter-rouge">update()</code> что обкспечивает поведение, подобное словарям. <code class="language-plaintext highlighter-rouge">collections.abc</code> обеспечивает абстрактный базовый класс.</p>
+
+<p>Изменяемые последовательности должны обеспечивать методы <code class="language-plaintext highlighter-rouge">append()</code>, <code class="language-plaintext highlighter-rouge">count()</code>, <code class="language-plaintext highlighter-rouge">index()</code>, <code class="language-plaintext highlighter-rouge">extend()</code>, <code class="language-plaintext highlighter-rouge">insert()</code>, <code class="language-plaintext highlighter-rouge">pop()</code>, <code class="language-plaintext highlighter-rouge">remove()</code>, <code class="language-plaintext highlighter-rouge">reverse()</code> и <code class="language-plaintext highlighter-rouge">sort()</code> аналогично python спискам.</p>
+
+<p>Последовательности так-же должны реализовывать  <code class="language-plaintext highlighter-rouge">__add__()</code>, <code class="language-plaintext highlighter-rouge">__radd__()</code>, <code class="language-plaintext highlighter-rouge">__iadd__()</code>, <code class="language-plaintext highlighter-rouge">__mul__()</code>, <code class="language-plaintext highlighter-rouge">__rmul__()</code> и <code class="language-plaintext highlighter-rouge">__imul__()</code> методы и другие численные операции.</p>
+
+<p>Рекомендуется реализовать <code class="language-plaintext highlighter-rouge">__contains__()</code> как для отображений так и для последовательностей, чтобы использовать <code class="language-plaintext highlighter-rouge">in</code> оператор, а так-же <code class="language-plaintext highlighter-rouge">__iter__()</code> для итерации.</p>
+
+<p>Дополнительный список методов <a href="https://docs.python.org/3/reference/datamodel.html#emulating-container-types">смотри тут</a></p>
+
+<h3 id="контекстные-менеджеры"><a href="https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers">Контекстные менеджеры</a></h3>
+
+<p>Менеджер контекста является объектом, который определяет контекст выполнения. Диспетчер контекста обрабатывает вход и выход из желаемого контекста для выполнения блока кода. Менеджеры контекста обычно вызываются с помощью <code class="language-plaintext highlighter-rouge">with</code> оператора, но также могут использоваться путем прямого вызова их методов.</p>
+
+<p>Типичные применения диспетчеров контекста включают сохранение и восстановление различных видов глобального состояния, блокировку и разблокировку ресурсов, закрытие открытых файлов и т.д.</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__enter__"><strong>enter</strong></a></li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__exit__"><strong>exit</strong></a></li>
+</ul>
+
+<h3 id="pattern-matching"><a href="https://docs.python.org/3/reference/datamodel.html#customizing-positional-arguments-in-class-pattern-matching">Pattern matching</a></h3>
+
+<h3 id="сопрограммы"><a href="https://docs.python.org/3/reference/datamodel.html#coroutines">Сопрограммы</a></h3>
+
+<p>Реализация <code class="language-plaintext highlighter-rouge">__await__</code> делает объект awaitable.</p>
+
+<p>Объекты сопрограмм - это awaitable объекты. Выполнением сопрограммы можно управлять путем вызова<code class="language-plaintext highlighter-rouge">__await__()</code> и повторения результата. Когда сопрограмма завершает выполнение и возвращает управление, итератор поднимает <code class="language-plaintext highlighter-rouge">StopIteration</code>, а значение атрибута <code class="language-plaintext highlighter-rouge">value</code> ошибки содержит возвращаемое значение. Если сопрограмма вызывает исключение, оно распространяется итератором. Сопрограммы не должны напрямую вызывать необработанные <code class="language-plaintext highlighter-rouge">StopIteration</code>.</p>
+
+<p>У сопрограмм также есть методы, которые аналогичны методам генераторов. <a href="https://docs.python.org/3/reference/datamodel.html#coroutine-objects">Подробнее о методах</a></p>
+
+<p>Смотри подробнее [<a href="../notes/asyncio" title="Asyncio">asyncio</a>]</p>
+
+<h3 id="асинхронные-итераторы"><a href="https://docs.python.org/3/reference/datamodel.html#asynchronous-iterators">Асинхронные итераторы</a></h3>
+
+<p>Асинхронный итератор может вызвать асинхронный код в <code class="language-plaintext highlighter-rouge">__anext__</code> методе</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__aiter__"><strong>aiter</strong></a> возвращает объект асинхронного итератора</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__anext__"><strong>anext</strong></a> возвращает awaitable значение. Должен вызывать <code class="language-plaintext highlighter-rouge">StopAsyncIteration</code> исключение по окончании итерации.</li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Reader</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">...</span>
+
+    <span class="k">def</span> <span class="nf">__aiter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__anext__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="s">b''</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">StopAsyncIteration</span>
+        <span class="k">return</span> <span class="n">val</span>
+</code></pre></div></div>
+
+<h3 id="асинхронные-менеджеры-контекста"><a href="https://docs.python.org/3/reference/datamodel.html#asynchronous-context-managers">Асинхронные менеджеры контекста</a></h3>
+
+<p>Асинхронный менеджер контекста - это контекстный менеджер, способный приостанавливать выполнение. Используется с оператором <code class="language-plaintext highlighter-rouge">await width</code></p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__aenter__"><strong>aenter</strong></a> должен возвращать ожидаемый объект</li>
+  <li><a href="https://docs.python.org/3/reference/datamodel.html#object.__aexit__"><strong>aexit</strong></a> аналогично</li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AsyncContextManager</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">log</span><span class="p">(</span><span class="s">'entering context'</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">tb</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">log</span><span class="p">(</span><span class="s">'exiting context'</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Смотри еще:</p>
 
