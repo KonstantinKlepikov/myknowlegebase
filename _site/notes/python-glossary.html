@@ -111,12 +111,6 @@
 
 <p>Функция-подпрограмма, которая передается другой функции в качестве аргумента для выполнения в будущем. Довольно часто используется, к примеру, в [<a href="asyncio" title="Asyncio">asyncio</a>]</p>
 
-<h2 id="class">class</h2>
-
-<ul>
-  <li><strong>переменная класса</strong> определяется на уровне класса и не предназначена для изменения на уровне экземпляра</li>
-</ul>
-
 <h2 id="context-variable">context variable</h2>
 
 <p>Переменная, которая может иметь разные значения в зависимости от контекста. Это похоже на локальное хранилище потока, в котором каждый поток выполнения может иметь разные значения переменной. Однако с переменными контекста может быть несколько контекстов в одном потоке выполнения, и основное использование переменных контекста - отслеживать переменные в параллельных асинхронных задачах. <a href="https://docs.python.org/3/library/contextvars.html#module-contextvars">Contextvars</a>. [<a href="contextvars" title="Contextvars">contextvars</a>]</p>
@@ -125,7 +119,175 @@
 
 <p>Любой объект, который определяет методы <code class="language-plaintext highlighter-rouge">__get__()</code>, <code class="language-plaintext highlighter-rouge">__set__()</code> или <code class="language-plaintext highlighter-rouge">__delete__()</code>. Когда атрибут класса является дескриптором, его особое поведение привязки запускается при поиске атрибута. Обычно при использовании a.b для получения, установки или удаления атрибута выполняется поиск объекта с именем b в словаре классов для a, но если b является дескриптором, вызывается соответствующий метод дескриптора. Подробнее читай тут [<a href="python-descriptors" title="Python descriptors">python-descriptors</a>]</p>
 
-<p><a href="https://docs.python.org/3/glossary.html#glossary">Глоссарий в документации python</a></p>
+<h2 id="dictionary">dictionary</h2>
+
+<p>Ассоциативный массив, мапящий ключи на значения. Ключами могут быть только объекты, реализующие <code class="language-plaintext highlighter-rouge">__hash__()</code> и <code class="language-plaintext highlighter-rouge">__eq__()</code> методы (так называемые, “хешируемые объекты”). Словарным представлением (dictionary view) являются объекты, возвращаемые методами <code class="language-plaintext highlighter-rouge">dict.keys()</code>, <code class="language-plaintext highlighter-rouge">dict.values()</code>, <code class="language-plaintext highlighter-rouge">and dict.items()</code>. Они обеспечивают динамическое представление словарей, что означает, что когда словарь изменяется, представление отражает эти изменения.</p>
+
+<h2 id="duck-typing">duck-typing</h2>
+
+<p>Стиль программирования, который не смотрит на тип объекта, чтобы определить, имеет ли он правильный интерфейс; вместо этого метод или атрибут просто вызывается или используется. За счет акцентирования внимания на интерфейсах, а не на конкретных типах, хорошо разработанный код повышает его гибкость за счет реализации полиморфизма. Утиная типизация позволяет отказаться от тестов с использованием <code class="language-plaintext highlighter-rouge">type()</code> или <code class="language-plaintext highlighter-rouge">isinstance()</code>. Вместо этого обычно используются тесты <code class="language-plaintext highlighter-rouge">hasattr()</code> или программирование EAFP.</p>
+
+<p>EAFP(Easier to ask for forgiveness than permission - проще извиниться, чем получить разрешение) - этот общий стиль программирования Python предполагает наличие существующих валидных ключей или атрибутов и перехватывает исключения, если предположение оказывается ложным. Противоположность - LBYL (Look before you leap - посмотри, прежде чем прышать), стиль программирования в котомром явно проверяют предварительные условия перед вызовом или поиском. Характеризуется наличием множества операторов if. В многопоточной среде подход LBYL может привести к возникновению состояния гонки</p>
+
+<h2 id="file-object-или-file-like-object">file object (или file-like object)</h2>
+
+<p>Объект, предоставляющий файловый API (с такими методами, как <code class="language-plaintext highlighter-rouge">read()</code> или <code class="language-plaintext highlighter-rouge">write()</code>) для лежащего в основе АПИ ресурса. В зависимости от способа создания файловый объект может опосредовать доступ к реальному файлу на диске или к другому типу запоминающего устройства или устройства связи (например, стандартный ввод). В python три категории файловых объектов - raw binary files, buffered binary files и text files.</p>
+
+<h2 id="generator-и-generator-iterator">generator и generator iterator</h2>
+
+<p>Функция, котоаря возвращает итератор генератора. Это похоже на обычную функцию, за исключением того, что она содержит выражения <code class="language-plaintext highlighter-rouge">yield</code> для создания серии значений, которые можно использовать в цикле for или которые можно получить по одному с помощью функции <code class="language-plaintext highlighter-rouge">next()</code>. Обычно определение относится к функции генератора, но в некоторых контекстах может относиться к итератору генератора.</p>
+
+<p>В итераторе генератора Каждый <code class="language-plaintext highlighter-rouge">yield</code> временно приостанавливает обработку, запоминая состояние на момент выхода] (включая локальные переменные и ожидающие состояния). Когда итератор генератора возобновляет работу, он продолжает работу с того места, где остановился (в отличие от функций, которые запускаются заново при каждом вызове).</p>
+
+<p>Смотри подробнее в [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</p>
+
+<h2 id="generic-function-и-generic-type">generic function и generic type</h2>
+
+<p>Дженерик функция - Функция, состоящая из нескольких функций, реализующих одну и ту же операцию для разных типов. Какую реализацию следует использовать во время вызова, определяется алгоритмом диспетчеризации.</p>
+
+<p>single dispatch - форма диспетчеризации универсальной функции, в которой реализация выбирается на основе типа одинственного аргумента</p>
+
+<p>Дженерик тип - тип, который можно параметризовать; обычно это контейнерный класс, такой как list или dict. Используется в основном для подсказок типа и аннотаций.</p>
+
+<p>Смотри [<a href="type-annotation" title="Анотация типов в python">type-annotation</a>]</p>
+
+<h2 id="import-path">import path</h2>
+
+<p>Список местоположений (или записей путей), который просматривается для поиска модули для импорта. Во время импорта этот список обычно берется из <code class="language-plaintext highlighter-rouge">sys.path</code>, но для подпакетов он также может поступать из атрибута <code class="language-plaintext highlighter-rouge">__path__</code> родительского пакета.</p>
+
+<h2 id="interpreted">interpreted</h2>
+
+<p>Python - это интерпретируемый язык, в отличие от скомпилированного, хотя различие может быть нечетким из-за наличия компилятора байт-кода. Это означает, что исходные файлы можно запускать напрямую, без явного создания исполняемого файла.</p>
+
+<p>Интерпретатор python запускаемый и останавливаемый. Когда интерпретатор останавливают, он входит в особую фазу, на которой он постепенно высвобождает все выделенные ресурсы, такие как модули и различные важные внутренние структуры. Он также делает несколько обращений к сборщику мусора. Это может вызвать выполнение кода в определяемых пользователем деструкторах или обратных вызовах. Код, выполняемый на этапе завершения работы, может столкнуться с различными исключениями, поскольку ресурсы, на которые он опирается, могут больше не работать.</p>
+
+<h2 id="iterable-и-iterator">iterable и iterator</h2>
+
+<p>iterable (итерируемый объект) - это объект, способный возвращать свои вхождения по одному. Примеры iterable включают все типы последовательностей (такие как <code class="language-plaintext highlighter-rouge">list</code>, <code class="language-plaintext highlighter-rouge">str</code> и <code class="language-plaintext highlighter-rouge">tuple</code>) и некоторые типы, не являющиеся последовательностями, такие как <code class="language-plaintext highlighter-rouge">dict</code>, файловые объекты и объекты любых классов, в которх определены методы <code class="language-plaintext highlighter-rouge">__iter__()</code> или методы <code class="language-plaintext highlighter-rouge">__getitem__()</code>. Итерируемые объекты можно использовать в цикле <code class="language-plaintext highlighter-rouge">for</code> и во многих других местах, где требуется последовательность (<code class="language-plaintext highlighter-rouge">zip()</code>, <code class="language-plaintext highlighter-rouge">map()</code>,…). Когда итерируемый объект передается в качестве аргумента встроенной функции <code class="language-plaintext highlighter-rouge">iter()</code>, она возвращает итератор для объекта. Этот итератор подходит для одного прохода по набору значений. При использовании итерируемых объектов обычно нет необходимости вызывать <code class="language-plaintext highlighter-rouge">iter()</code>. Оператор <code class="language-plaintext highlighter-rouge">for</code> делает это автоматически, создавая временную безымянную переменную для хранения итератора на время цикла.</p>
+
+<p>Итератор - объект, представляющий поток данных. Повторные вызовы метода <code class="language-plaintext highlighter-rouge">__next__()</code> итератора (или передача его встроенной функции <code class="language-plaintext highlighter-rouge">next()</code>) возвращают последовательные элементы в потоке. Когда больше нет доступных данных итератора, возбуждается исключение <code class="language-plaintext highlighter-rouge">StopIteration</code>. На этом этапе объект итератора исчерпан, и любые дальнейшие вызовы метода <code class="language-plaintext highlighter-rouge">__next__()</code> просто снова вызывают <code class="language-plaintext highlighter-rouge">StopIteration</code>. Итераторы должны реализовывать метод <code class="language-plaintext highlighter-rouge">__iter__()</code>, который возвращает сам объект итератора, поэтому каждый итератор также является итеративным и может использоваться в большинстве мест, где принимаются другие итераторы.</p>
+
+<p>Объект-контейнер (например, список) создает новый итератор каждый раз, когда вы передаете его функции <code class="language-plaintext highlighter-rouge">iter()</code> или используете в цикле <code class="language-plaintext highlighter-rouge">for</code>. Попытка сделать это с помощью итератора просто вернет тот же исчерпанный объект итератора, который использовался в предыдущем проходе итерации, делая его похожим на пустой контейнер. <a href="https://docs.python.org/3/library/stdtypes.html#typeiter">Подробнее тут</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="s">'abcdefg'</span><span class="p">.</span><span class="n">__iter__</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">str_iterator</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fe4db12c4c0</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">a</span>
+<span class="n">b</span>
+<span class="n">c</span>
+<span class="n">d</span>
+<span class="n">e</span>
+<span class="n">f</span>
+<span class="n">g</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;string&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">7</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">StopIteration</span>
+</code></pre></div></div>
+
+<p>Смотри подробнее в [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</p>
+
+<h2 id="key-function">key function</h2>
+
+<p>Ключевая функция или функция сопоставления - это вызываемый объект, который возвращает значение, используемое для сортировки или упорядочивания. Например, <code class="language-plaintext highlighter-rouge">locale.strxfrm()</code> используется для создания ключа сортировки, который учитывает соглашения о сортировке для конкретной локали. Ряд инструментов в Python принимают ключевые функции для управления порядком или группировкой элементов. Это <code class="language-plaintext highlighter-rouge">min()</code>, <code class="language-plaintext highlighter-rouge">max()</code>, <code class="language-plaintext highlighter-rouge">sorted()</code>, <code class="language-plaintext highlighter-rouge">list.sort()</code>, <code class="language-plaintext highlighter-rouge">heapq.merge()</code>, <code class="language-plaintext highlighter-rouge">heapq.nsmallest()</code>, <code class="language-plaintext highlighter-rouge">heapq.nlargest()</code> и <code class="language-plaintext highlighter-rouge">itertools.groupby()</code>. Есть несколько способов создать ключевую функцию. Например. метод <code class="language-plaintext highlighter-rouge">str.lower()</code> может служить ключевой функцией для сортировки без учета регистра. В качестве альтернативы, ключевая функция может быть построена из лямбда-выражения. Кроме того, модуль <code class="language-plaintext highlighter-rouge">operator</code> предоставляет три основных конструктора функций: <code class="language-plaintext highlighter-rouge">attrgetter()</code>, <code class="language-plaintext highlighter-rouge">itemgetter()</code> и <code class="language-plaintext highlighter-rouge">methodcaller()</code>. См. Sorting HOW TO для примеров того, как создавать и использовать ключевые функции.</p>
+
+<p>Смотри [<a href="python-sorting" title="Python-sorting">python-sorting</a>]</p>
+
+<h2 id="metaclass">metaclass</h2>
+
+<p>Класс класса. Определение класса создает имя класса, словарь класса и список базовых классов. Метакласс отвечает за получение этих трех аргументов и создание класса. Большинство объектно-ориентированных языков программирования предоставляют реализацию по умолчанию. Особенность Python заключается в том, что можно создавать собственные метаклассы. Они использовались для регистрации доступа к атрибутам, добавления безопасности потоков, создания объектов слежения, реализации синглтонов и многих других задач.</p>
+
+<h2 id="named-tuple">named tuple</h2>
+
+<p>Термин «именованный кортеж» применяется к любому типу или классу, который наследуется от кортежа и чьи индексируемые элементы также доступны с использованием именованных атрибутов.</p>
+
+<p>Несколько встроенных типов называются кортежами, включая значения, возвращаемые функциями <code class="language-plaintext highlighter-rouge">time.localtime()</code> и <code class="language-plaintext highlighter-rouge">os.stat()</code>. Другой пример - <code class="language-plaintext highlighter-rouge">sys.float_info</code></p>
+
+<p>Некоторые именованные кортежи являются встроенными типами. В качестве альтернативы именованный кортеж может быть создан из определения обычного класса, наследуемого от кортежа и определяющего именованные поля. Такой класс можно написать вручную или создать с помощью фабричной функции <code class="language-plaintext highlighter-rouge">collections.namedtuple()</code>.</p>
+
+<h2 id="namespace">namespace</h2>
+
+<p>Место, где хранится переменная. Пространства имен реализованы в виде словарей. Существуют локальные, глобальные и встроенные пространства имен, а также вложенные пространства имен в объектах (в методах). Пространства имен поддерживают модульность, предотвращая конфликты имен.</p>
+
+<p>Подробнее [<a href="python-namespaces" title="Python namespaces">python-namespaces</a>]</p>
+
+<h2 id="namespace-package">namespace package</h2>
+
+<p>Пакет, который служит только контейнером для подпакетов. Пакеты пространства имен могут не иметь физического представления и, в частности, не похожи на обычный пакет, потому что у них нет файла <code class="language-plaintext highlighter-rouge">__init__.py</code>.</p>
+
+<h2 id="nested-scope-вложенная-область-видимости">nested scope (вложенная область видимости)</h2>
+
+<p>Возможность ссылаться на переменную во вложенном определении. Например, функция, определенная внутри другой функции, может ссылаться на переменные во внешней функции. Вложенные области по умолчанию работают только для ссылок, а не для определения. Локальные переменные читаются и записываются в самой внутренней области. Точно так же глобальные переменные читаются и записываются в глобальном пространстве имен. <code class="language-plaintext highlighter-rouge">nonlocal</code> позволяет писать во внешние области видимости.</p>
+
+<p>Подробнее [<a href="python-namespaces" title="Python namespaces">python-namespaces</a>]</p>
+
+<h2 id="path-like-object">path-like object</h2>
+
+<p>Объект, представляющий путь к файловой системе. Это либо объект <code class="language-plaintext highlighter-rouge">str</code> или <code class="language-plaintext highlighter-rouge">bytes</code>, представляющий путь, либо объект, реализующий протокол <code class="language-plaintext highlighter-rouge">os.PathLike</code>. Объект, поддерживающий протокол <code class="language-plaintext highlighter-rouge">os.PathLike</code>, может быть преобразован в путь файловой системы <code class="language-plaintext highlighter-rouge">str</code> или <code class="language-plaintext highlighter-rouge">bytes</code> путем вызова функции <code class="language-plaintext highlighter-rouge">os.fspath()</code>; Вместо них можно использовать <code class="language-plaintext highlighter-rouge">os.fsdecode()</code> и <code class="language-plaintext highlighter-rouge">os.fsencode()</code>, чтобы гарантировать результат <code class="language-plaintext highlighter-rouge">str</code> или <code class="language-plaintext highlighter-rouge">bytes</code> соответственно.</p>
+
+<h2 id="qualified-name">qualified name</h2>
+
+<p>Doted имя, показывающее «путь» от глобальной области видимости модуля к классу, функции или методу, определенным в этом модуле. Для функций и классов верхнего уровня полное имя совпадает с именем объекта:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">class</span> <span class="nc">D</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">def</span> <span class="nf">meth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>             <span class="k">pass</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="p">.</span><span class="n">__qualname__</span>
+<span class="s">'C'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="p">.</span><span class="n">D</span><span class="p">.</span><span class="n">__qualname__</span>
+<span class="s">'C.D'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="p">.</span><span class="n">D</span><span class="p">.</span><span class="n">meth</span><span class="p">.</span><span class="n">__qualname__</span>
+<span class="s">'C.D.meth'</span>
+</code></pre></div></div>
+
+<p>При использовании для ссылки на модули полное имя означает весь путь к модулю, разделенный точками, включая все родительские пакеты:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">email.mime.text</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">email</span><span class="p">.</span><span class="n">mime</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">__name__</span>
+<span class="s">'email.mime.text'</span>
+</code></pre></div></div>
+
+<h2 id="slots"><strong>slots</strong></h2>
+
+<p>Объявление внутри класса, которое экономит память за счет предварительного объявления пространства для атрибутов экземпляра и исключения словарей экземпляра. Несмотря на популярность, этот метод довольно сложно реализовать, и его лучше всего использовать в редких случаях, когда в приложении, критичном к памяти, имеется большое количество экземпляров.</p>
+
+<h2 id="sequence">sequence</h2>
+
+<p>Итерируемый объект, который поддерживает эффективный доступ к элементам с использованием целочисленных индексов через специальный метод <code class="language-plaintext highlighter-rouge">__getitem__()</code> и определяет метод <code class="language-plaintext highlighter-rouge">__len__()</code>, который возвращает длину последовательности.</p>
+
+<p><code class="language-plaintext highlighter-rouge">dict</code> также поддерживает <code class="language-plaintext highlighter-rouge">__getitem__()</code> и <code class="language-plaintext highlighter-rouge">__len__()</code>, но считается отображением, а не последовательностью, поскольку при поиске используются произвольные неизменяемые ключи, а не целые числа.</p>
+
+<p>Абстрактный базовый класс <code class="language-plaintext highlighter-rouge">collections.abc.Sequence</code> определяет гораздо более богатый интерфейс, добавляя <code class="language-plaintext highlighter-rouge">count()</code>, <code class="language-plaintext highlighter-rouge">index()</code>, <code class="language-plaintext highlighter-rouge">__contains__()</code> и <code class="language-plaintext highlighter-rouge">__reversed __()</code>. Типы, реализующие этот расширенный интерфейс, могут быть зарегистрированы явно с помощью <a href="https://docs.python.org/3/library/abc.html#abc.ABCMeta.register">register()</a>.</p>
+
+<h2 id="special-method">special method</h2>
+
+<p>Метод, который неявно вызывается Python для выполнения определенной операции с типом, например сложения. Такие методы имеют имена, начинающиеся и заканчивающиеся двойным подчеркиванием.</p>
+
+<h2 id="statement-оператор">statement (оператор)</h2>
+
+<p>Оператор - это либо выражение, либо одна из нескольких конструкций с ключевым словом, например <code class="language-plaintext highlighter-rouge">if</code>, <code class="language-plaintext highlighter-rouge">while</code> или <code class="language-plaintext highlighter-rouge">for</code>.</p>
+
+<h2 id="strong-reference">strong reference</h2>
+
+<p>В CPython сильная ссылка - это ссылка на объект, которая увеличивает счетчик ссылок объекта при его создании и уменьшает счетчик ссылок объекта при его удалении.</p>
+
+<h2 id="type-alias-синоним-типа">type alias (синоним типа)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Color</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">remove_gray_shades</span><span class="p">(</span><span class="n">colors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Color</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Color</span><span class="p">]:</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>смотри [<a href="type-annotation" title="Анотация типов в python">type-annotation</a>]</p>
+
+<p><a href="https://docs.python.org/3/glossary.html#glossary">Полный глоссарий в документации python</a></p>
 
 <p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 

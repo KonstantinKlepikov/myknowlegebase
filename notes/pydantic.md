@@ -135,7 +135,7 @@ print(m.dict())
 """
 ```
 
-#### OEM модели
+#### ORM модели
 
 ```python
 from typing import List
@@ -179,7 +179,7 @@ print(co_model)
 #> 'foobar.com']
 ```
 
-Иногда нужно дать название колонке, после того, как зарещервирвоано название поля.
+Иногда нужно дать название колонке, после того, как зарезервирвоано название поля.
 
 ```python
 import typing
@@ -709,7 +709,7 @@ print(voice.dict(by_alias=True))
 
 [Смотри статью](https://pydantic-docs.helpmanual.io/usage/schema/) про данные, которые попадают в схему, анотированные типы в схеме, валидацию схемы и кастомизацию:
 
-## [Экспорт моделей](https://pydantic-docs.helpmanual.io/usage/exporting_models/) в другие форматы данных]
+## [Экспорт моделей](https://pydantic-docs.helpmanual.io/usage/exporting_models/) в другие форматы данных
 
 ## [Dataclasses](https://pydantic-docs.helpmanual.io/usage/dataclasses/)
 

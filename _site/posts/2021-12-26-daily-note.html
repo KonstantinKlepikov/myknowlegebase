@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Немного трюков с python: работа с csv, парсинг html и другое | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Немного трюков с python: работа с csv, парсинг html и другое" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Парсинг csv, html, работа с pandas" />
+<meta property="og:description" content="Парсинг csv, html, работа с pandas" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-12-26-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-12-26-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-12-26-daily-note.html","headline":"Немного трюков с python: работа с csv, парсинг html и другое","description":"Парсинг csv, html, работа с pandas","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="немного-трюков-с-python-работа-с-csv-парсинг-html-и-другое">Немного трюков с python: работа с csv, парсинг html и другое</h1>
+
+<p>В этой заметке:</p>
+
+<ol>
+  <li>Как проверить, что выбранная папка пустая</li>
+  <li>Релятивный импорт в jupoyter notebook</li>
+  <li>Как найти разницу между двумя датафреймами pandas (один фрейм явлется сабсетом другого)</li>
+  <li>Удаление строк в .csv</li>
+  <li>Как сконкатенировать два csv файла</li>
+  <li>Менеджер контекста для webdriver selenium</li>
+  <li>Как изменить порядок колонок датафрейма pandas</li>
+  <li>Как спарсить таблицы из html-документа</li>
+  <li>Как обрезать пробелы и переносы строк с двух коноцов строки</li>
+  <li>Как в BeautifulSoup проверить, что выбранная строка является определенным тегом</li>
+</ol>
+
+<h2 id="как-проверить-что-выбранная-папка-пустая">Как проверить, что выбранная папка пустая</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">'/your/path'</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Directory is empty"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>    
+    <span class="k">print</span><span class="p">(</span><span class="s">"Directory is not empty"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Папка так-же может отсутствовать, есть смысл проверять и это. Ссылка <a href="https://stackoverflow.com/a/59050548/15966204">на стаковерфло</a></p>
+
+<p>Обычно проверка бывает актуальна для удаления контента папки перед установкой нового содержимого (напирмем для успешного теста нам надо, что-бы нан начало теста папка была пустой). Удалять можно так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span><span class="p">,</span> <span class="n">shutil</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s">'/path/to/folder'</span>
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">islink</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="p">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="p">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Failed to delete %s. Reason: %s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>В данном примере мы делаем дополнительные проверки на случай, если в папке подпапки. В простом варианте достаточно пройти по всем файлам. <a href="https://stackoverflow.com/a/185941/15966204">Ссылка на стаковерфло</a></p>
+
+<h2 id="релятивный-импорт-в-jupoyter-notebook">Релятивный импорт в jupoyter notebook</h2>
+
+<p>В блокнотах jupyter наблюдаются проблемы с ипортом. Импорты можно прописать в <code class="language-plaintext highlighter-rouge">sys.path</code>. Пример</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> dir_1
+ ├── functions.py
+ └── dir_2
+     └── code.ipynb
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span><span class="p">,</span> <span class="n">sys</span>
+<span class="n">dir2</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+<span class="n">dir1</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dir2</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">dir1</span> <span class="ow">in</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">:</span> <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dir1</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="n">some_function</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/q/61058798/15966204">ссылка на стакоферфло</a></p>
+
+<h2 id="как-найти-разницу-между-двумя-датафреймами-pandas-один-фрейм-явлется-сабсетом-другого">Как найти разницу между двумя датафреймами pandas (один фрейм явлется сабсетом другого)</h2>
+
+<p>Это бывает полезно, когда мы получили выборку из фрейма, произвели манипуляции над ней и, если все прошло учпешно, теперь хотим отбросить эти данные из сходного фрейма.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pd</span><span class="p">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span><span class="n">df2</span><span class="p">]).</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Могут возникнуть ситуации, когда в каждом фрейме есть дубликаты. Тогда этот метод может показать неожиданные результаты. <a href="https://stackoverflow.com/a/48647840/15966204">Читай дальше</a></p>
+
+<h2 id="как-изменить-порядок-колонок-датафрейма-pandas">Как изменить порядок колонок датафрейма pandas</h2>
+
+<p>Все просто - получаем список названий колонок, меняем порядок как нужно, передаем датафрейму</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cols</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># do something with cols
+</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="удаление-строк-в-csv">Удаление строк в .csv</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">csv</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'first.csv'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s">'first_edit.csv'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="p">.</span><span class="n">writer</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="p">.</span><span class="n">reader</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="s">"0"</span><span class="p">:</span>
+            <span class="n">writer</span><span class="p">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Если нужно добавлять новые строки к уже заполненному файлу, можно открыть в режиме <code class="language-plaintext highlighter-rouge">a</code>. <a href="https://stackoverflow.com/a/29725946/15966204">Сслыка</a></p>
+
+<h2 id="как-сконкатенировать-два-csv-файла">Как сконкатенировать два .csv файла</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">file1</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"sample1.csv"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span>
+<span class="n">file2</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"sample2.csv"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file2</span><span class="p">:</span>
+   <span class="n">file1</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+<span class="n">file1</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">file2</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Ествтественно это лучше сделать через менеджер контекста</p>
+
+<h2 id="менеджер-контекста-для-webdriver-selenium">Менеджер контекста для webdriver selenium</h2>
+
+<p>Задача ни чем не отличается от стандарта</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+
+<span class="k">class</span> <span class="nc">WebDriver</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+
+
+<span class="k">with</span> <span class="n">WebDriver</span><span class="p">(</span><span class="n">webdriver</span><span class="p">.</span><span class="n">Chrome</span><span class="p">())</span> <span class="k">as</span> <span class="n">wd</span><span class="p">:</span>
+    <span class="n">wd</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://stackoverflow.com/questions/'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">wd</span><span class="p">.</span><span class="n">page_source</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/48630668/15966204">ссылка</a></p>
+
+<h2 id="как-спарсить-таблицы-из-html-документа">Как спарсить таблицы из html-документа</h2>
+
+<p>Можно попробовать написать свой парсер, а можно воспользоваться готовым <code class="language-plaintext highlighter-rouge">pandas.read_html</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://worldpopulationreview.com/countries/countries-by-gdp/#worldCountries"</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">df_list</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_html</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">)</span> <span class="c1"># this parses all the tables in webpages to a list
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2021-12-26-21-05-58.png" alt="result" /></p>
+
+<p><a href="https://stackoverflow.com/questions/23377533/python-beautifulsoup-parsing-table">ссылка</a></p>
+
+<h2 id="как-обрезать-пробелы-и-переносы-строк-с-двух-коноцов-строки">Как обрезать пробелы и переносы строк с двух коноцов строки</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">strip</span><span class="p">(</span><span class="s">' </span><span class="se">\t\n\r</span><span class="s">'</span><span class="p">).</span><span class="n">lstrip</span><span class="p">(</span><span class="s">' </span><span class="se">\t\n\r</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Еще <a href="https://stackoverflow.com/a/1185529/15966204">немного полезных примеров</a></p>
+
+<h2 id="как-в-beautifulsoup-проверить-что-выбранная-строка-является-определенным-тегом">Как в BeautifulSoup проверить, что выбранная строка является определенным тегом</h2>
+
+<p>На самом деле методов встроенных нет, поэтому так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">element</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">'div'</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+
+<p>Смотри так-же:</p>
+
+<ul>
+  <li>[<a href="../notes/python-filesystem" title="Работа с файлами">python-filesystem</a>]</li>
+  <li>[<a href="../notes/selenium" title="Selenium">selenium</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
