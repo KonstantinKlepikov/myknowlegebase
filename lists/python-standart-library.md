@@ -23,11 +23,15 @@ category: list
 - [[bisect]]
 - [[queue]]
 - [[data-storage-python]] pickle, shelve, dbm
+- [[archives-in-python]] архивация
 - [[multiprocess]] процессы в python
 - [[threading]] управления параллельными вычислениями
 - [[asyncio]]
 - [[asyncio-transports-and-protocols]]
 - [[contextvars]]
+- [[python-cryptography]]
+- [[email-tools-python]]
+- [[nets-with-python]] сети и интернет
 - [[abc]]
 
 [Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
@@ -69,11 +73,15 @@ category: list
 [bisect]: ../notes/bisect "Bisect - сортирвоанные списки"
 [queue]: ../notes/queue "Queue - очереди и стеки"
 [data-storage-python]: ../notes/data-storage-python "Pickle, shelve, dbm"
+[archives-in-python]: ../notes/archives-in-python "Архивация в python"
 [multiprocess]: ../notes/multiprocess "Управление процессами в python"
 [threading]: ../notes/threading "Threading"
 [asyncio]: ../notes/asyncio "Asyncio"
 [asyncio-transports-and-protocols]: ../notes/asyncio-transports-and-protocols "Asyncio transports and protocols"
 [contextvars]: ../notes/contextvars "Contextvars"
+[python-cryptography]: ../notes/python-cryptography "Криптография в python"
+[email-tools-python]: ../notes/email-tools-python "Email tools in python"
+[nets-with-python]: ../notes/nets-with-python "Nets and internet with python"
 [abc]: ../notes/abc "Abc"
 [feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"

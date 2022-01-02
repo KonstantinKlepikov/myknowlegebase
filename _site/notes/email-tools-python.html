@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Email tools in python | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Email tools in python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Инструменты для работы с почтой в стандартной библиотеке python" />
+<meta property="og:description" content="Инструменты для работы с почтой в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/email-tools-python.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/email-tools-python.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/email-tools-python.html","headline":"Email tools in python","description":"Инструменты для работы с почтой в стандартной библиотеке python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="email-tools-in-python">Email tools in python</h1>
+
+<p><a href="https://docs.python.org/3/library/smtplib.html">smtplib</a> - это клиент smtp-протокола, взаимодействующий с почтовым сервером. Он реализует соединение, отправку/получение сообщений, аутентификацию и шифрование.</p>
+
+<p><a href="https://docs.python.org/3/library/imaplib.html">imaplib</a> реализует клиент протокла imap4,  <a href="https://docs.python.org/3/library/poplib.html">poplib</a> клиент протокола pop3</p>
+
+<p><a href="https://docs.python.org/3/library/smtpd.html">smtpb</a> реализует smtp-сервер, используемый в smtplib. В настоящий момент устарел (т.к. построена на базе модуля <code class="language-plaintext highlighter-rouge">asyncore</code>, который депрекейтед начиная с python3.6). Вместо него рекомендуется использовать асинхронный smtp-сервер <a href="https://aiosmtpd.readthedocs.io/en/latest/">aiosmtp</a>, построенный на базе [<a href="asyncio" title="Asyncio">asyncio</a>]</p>
+
+<p><a href="https://docs.python.org/3/library/mailbox.html">mailbox</a> определяет АПИ для доступа к сообщениям электронной почты. Поддерживаемые форматы хранения Maildir, mbox, MH, Babyl и MMDF (чаще всего встречаются первые два). Формат mbox хранит содержимое почтового ящика в виде отдельного текстового файла, что упрощает работу с ним как с простым фалом. Недостаток такого подхода - потоконебезопасность из-за чего доступ к ящику приходится блокировать для других потребителей на время операций. Maildir хзранит почтовый ящик в виде папок и подпапок, что частично снимает проблему блокировки.</p>
+
+<p>mailbox обеспечивает:</p>
+
+<ul>
+  <li>создание почтовых ящиков</li>
+  <li>чтение сообщений</li>
+  <li>удаление сообщений</li>
+  <li>создание подпапок (если это допустимо форматом)</li>
+  <li>пометка сообщений флагами</li>
+</ul>
+
+<p><a href="https://docs.python.org/3/library/email.html">email</a> реализует обработку электронной почты и ее содержимого. Модуль реализует обработку и представление email-сообщений, а так-же парсинг. Так-эже полезно знать про:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mimetypes</code> преобразует имя файла или URL-адрес в тип MIME, связанный с расширением файла. Обеспечиваются преобразования из имени файла в тип MIME и из типа MIME в расширение</li>
+  <li><a href="https://docs.python.org/3/library/base64.html">base64</a></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>[<a href="python-filesystem" title="Работа с файлами">python-filesystem</a>]</li>
+</ul>
+
+<p><a href="https://github.com/Miksus/red-mail">Интересное приложение для формирования и отправки писем</a></p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
