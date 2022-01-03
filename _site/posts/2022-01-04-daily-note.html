@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Proxy в selenium, запуск локального smtp и несколько вопросов про pandas | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Proxy в selenium, запуск локального smtp и несколько вопросов про pandas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Про proxy в selenium, smtp локально и ошибки в pandas" />
+<meta property="og:description" content="Про proxy в selenium, smtp локально и ошибки в pandas" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-01-04-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-01-04-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2022-01-04-daily-note.html","headline":"Proxy в selenium, запуск локального smtp и несколько вопросов про pandas","description":"Про proxy в selenium, smtp локально и ошибки в pandas","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="proxy-в-selenium-запуск-локального-smtp-и-несколько-вопросов-про-pandas">Proxy в selenium, запуск локального smtp и несколько вопросов про pandas</h1>
+
+<h2 id="использование-proxy-вместе-с-selenium">Использование proxy вместе с [<a href="../notes/selenium" title="Selenium">selenium</a>]</h2>
+
+<p><a href="https://medium.com/ml-book/multiple-proxy-servers-in-selenium-web-driver-python-4e856136199d">статья</a></p>
+
+<p>Можно спарсить бесплатные прокси, но надо учитывать, что их доступность может быть крайне низкой. Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">selenium.webdriver.chrome.options</span> <span class="kn">import</span> <span class="n">DesiredCapabilities</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">random</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">WebDriver</span><span class="p">:</span>
+<span class="p">...</span>     <span class="s">"""Selenium webdriver context manager"""</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">:</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">service</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">firefox</span><span class="p">.</span><span class="n">service</span><span class="p">.</span><span class="n">Service</span><span class="p">(</span><span class="s">'./geckodriver'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">WebDriver</span><span class="p">(</span><span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">))</span> <span class="k">as</span> <span class="n">driver</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="n">driver</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"https://free-proxy-list.net/"</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">html</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">page_source</span>
+<span class="p">...</span>     <span class="n">soup</span> <span class="o">=</span> <span class="n">bs</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'html.parser'</span><span class="p">)</span>
+
+<span class="p">...</span>     <span class="n">proxies</span> <span class="o">=</span> <span class="n">soup</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">'textarea'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">'form-control'</span><span class="p">).</span><span class="n">string</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">prox</span> <span class="o">=</span> <span class="p">[</span><span class="n">pr</span> <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">proxies</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span> <span class="k">if</span> <span class="n">pr</span> <span class="ow">and</span> <span class="n">pr</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">isnumeric</span><span class="p">()]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">random</span><span class="p">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">prox</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">prox</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'94.247.244.120:3128'</span><span class="p">,</span>
+ <span class="s">'151.232.72.21:80'</span><span class="p">,</span>
+ <span class="s">'103.228.118.78:8080'</span><span class="p">,</span>
+ <span class="s">'103.87.164.76:8080'</span><span class="p">,</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p><a href="https://www.browserstack.com/guide/set-proxy-in-selenium">Еще статья</a>. <a href="https://stackoverflow.com/questions/17082425/running-selenium-webdriver-with-a-proxy-in-python">Обсуждение на оверфло</a></p>
+
+<h2 id="использование-smtplib-на-localhost">Использование smtplib на localhost</h2>
+
+<p>Необходимо вначале запустить сервер с выводом отладочной информации. Вот так:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> smtpd <span class="nt">-n</span> <span class="nt">-c</span> DebuggingServer localhost:1025
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/20352563/15966204">Подробнее</a></p>
+
+<p>Смотри еще [<a href="../notes/email-tools-python" title="Email tools in python">email-tools-python</a>]</p>
+
+<h2 id="несколько-вопросов-про-pandas">Несколько вопросов про [<a href="../notes/pandas" title="Pandas">pandas</a>]</h2>
+
+<h3 id="ошибка-valueerror-if-using-all-scalar-values-you-must-pass-an-index">Ошибка “ValueError: If using all scalar values, you must pass an index”</h3>
+
+<p>В сообщении об ошибке говорится, что если вы передаете скалярные значения, вы должны передать индекс. Решение - не использовать скаляры или передать индекс:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'A'</span><span class="p">:</span> <span class="p">[</span><span class="n">a</span><span class="p">,],</span> <span class="s">'B'</span><span class="p">:</span> <span class="p">[</span><span class="n">b</span><span class="p">,]})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+   <span class="n">A</span>  <span class="n">B</span>
+<span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">3</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'A'</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s">'B'</span><span class="p">:</span> <span class="n">b</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+   <span class="n">A</span>  <span class="n">B</span>
+<span class="mi">0</span>  <span class="mi">2</span>  <span class="mi">3</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/17839973/constructing-pandas-dataframe-from-values-in-variables-gives-valueerror-if-usi">Источник</a></p>
+
+<h3 id="convert-a-pandas-dataframe-into-a-single-row-dataframe">Convert a Pandas DataFrame into a single row DataFrame</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">stack</span><span class="p">().</span><span class="n">swaplevel</span><span class="p">().</span><span class="n">to_frame</span><span class="p">().</span><span class="n">T</span>
+<span class="n">df</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="nb">map</span><span class="p">(</span><span class="s">'{0[0]}_{0[1]}'</span><span class="p">.</span><span class="nb">format</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/47736022/convert-a-pandas-dataframe-into-a-single-row-dataframe">Обсуждение и варианты тут</a></p>
+
+<h3 id="converting-string-that-looks-like-a-list-into-a-real-list---python">Converting string that looks like a list into a real list - python</h3>
+
+<p>Иногда бывает полезно упаковать список в ячейку [<a href="../notes/pandas" title="Pandas">pandas</a>] в виде строки (т.к. архитектура модуля крайне не способствует хранению списков)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ast</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ast</span><span class="p">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s">"[(0, 1), (1, 3), (2, 1), (3, 1), (4, 1)]"</span><span class="p">)</span>
+<span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ast</span><span class="p">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s">"[(0, 1, 6), (1, 3,7), (3, 1,4), (3, 1,3), (8, 1,2)]"</span><span class="p">)</span>
+<span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ast</span><span class="p">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s">"[1,2,3,5,3]"</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/20250415/15966204">ссылка на оверфло</a></p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

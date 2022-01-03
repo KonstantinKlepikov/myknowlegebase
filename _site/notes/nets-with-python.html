@@ -85,11 +85,13 @@
 
       <h1 id="nets-and-internet-with-python">Nets and internet with python</h1>
 
-<h2 id="ipaddress"><a href="https://docs.python.org/3/library/ipaddress.html">ipaddress</a></h2>
+<h2 id="работа-с-сетями">Работа с сетями</h2>
+
+<h3 id="ipaddress"><a href="https://docs.python.org/3/library/ipaddress.html">ipaddress</a></h3>
 
 <p>Модуль реализует проверку, сравнение и другие операции с сетевыми адресами IPv4/IPv6. Позволяет работать с сетевыми адресами и диапазонами адресов. а так-же с сетевыми интерфейсами (сетевой адроес, предоставленный в виде адреса хоста и сетевого префикса или маски сети)</p>
 
-<h2 id="socket"><a href="https://docs.python.org/3/library/socket.html">socket</a></h2>
+<h3 id="socket"><a href="https://docs.python.org/3/library/socket.html">socket</a></h3>
 
 <p>Низкоуровневый интерфейс к c-библиотеке socket, используется для взаимодействия с сетевыми службами с использованием сокетов BSD. Решает задачи преобразования именит сервера в адрес и формирование данных для передачи по сети.</p>
 
@@ -118,17 +120,72 @@
   <li>неблокирующий ввод/вывод</li>
 </ul>
 
-<h2 id="selectors"><a href="https://docs.python.org/3/library/selectors.html">selectors</a></h2>
+<h3 id="selectors"><a href="https://docs.python.org/3/library/selectors.html">selectors</a></h3>
 
-<p>Предоставляет высокоуровневый интерфейс для одновременного наблюдения за несколькими сокетами и обеспечивает взаимодействие сетевых серверов с несколькими клиенатми одновременно.</p>
+<p>Предоставляет высокоуровневый интерфейс для одновременного наблюдения за несколькими сокетами и обеспечивает взаимодействие сетевых серверов с несколькими клиенатми. Реализован с помощью модуля <a href="https://docs.python.org/3/library/select.html">select</a>- это низкоуровневый интерфейс.</p>
 
-<h2 id="select"><a href="https://docs.python.org/3/library/select.html">select</a></h2>
+<p>Объект селектора имеет методы, позволяющие указывать какие события, связанные с сокетом, необходимо отслеживать и позволяет вызывающему оъъекту ожидать события платформенным способом и реализовывать отслеживание готовность сокетов к вводу/выводу и вызывать колбеки.</p>
 
-<p>Низкоуровневый интерфейс, реализуемый в selectors</p>
+<h3 id="socketserver"><a href="https://docs.python.org/3/library/socketserver.html">socketserver</a></h3>
 
-<h2 id="socketserver">socketserver</h2>
+<p>Реализует фреймворк для создания сетевого сервера, поддерживающие протоколы UDP, TCP и UDS. Фреймворк упрощает обработку синхронных сетевых запросов, кроме того он поставляет примесные классы, позволяющие выводить запросы в отдельный поток или процесс.</p>
 
-<p>Реализует фреймворк для создания сетевого сервера, поддерживающие протоколы UDP и TCP</p>
+<p>Фреймворк реализует высокоуровневый объектный подход, что позволяет применять классы практически без измененеий. Достыпны классы сервера и обработчика запросов. Сервер отвечает за прослушивание сокетов, установку соединений и т.д., а обработчик за протокол обработки данных (интерпретация, парсинг, отправка).</p>
+
+<h3 id="ssl"><a href="https://docs.python.org/3/library/ssl.html">ssl</a></h3>
+
+<p>Этот модуль обеспечивает доступ к средствам шифрования Transport Layer Security и одноранговой аутентификации для сетевых сокетов, как на стороне клиента, так и на стороне сервера. Этот модуль использует библиотеку OpenSSL.</p>
+
+<h2 id="работа-с-интернет">Работа с интернет</h2>
+
+<h3 id="cgi-и-wsgiref"><a href="https://docs.python.org/3/library/cgi.html">cgi</a> и <a href="https://docs.python.org/3/library/wsgiref.html">wsgiref</a></h3>
+
+<p>cgi определяет ряд утилит для использования скриптами CGI, написанными на Python.</p>
+
+<p>wsgiref - это стандартный интерфейс WSGI между программным обеспечением веб-сервера и веб-приложениями, написанными на Python. Наличие стандартного интерфейса упрощает использование приложения, поддерживающего WSGI, с рядом различных веб-серверов.</p>
+
+<p>Вникать в модули нужно в основном для разработки/поддержания http-фреймворков.</p>
+
+<p>* Модуль <a href="https://docs.python.org/3/library/cgitb.html">cgitb</a> предоставляет специальный обработчик исключений для скриптов Python</p>
+
+<h3 id="urlib"><a href="https://docs.python.org/3/library/urllib.html">urlib</a></h3>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/urllib.parse.html#module-urllib.parse">urlib.parse</a> позволяет работать со строками url-ов</li>
+  <li><a href="https://docs.python.org/3/library/urllib.request.html#module-urllib.request">urlib.requests</a> открытие удаленных ресурсов, получение удаленного содержимого</li>
+  <li><a href="https://docs.python.org/3/library/urllib.robotparser.html#module-urllib.robotparser">urlib.robotparser</a> работа с <code class="language-plaintext highlighter-rouge">robots.txt</code></li>
+  <li><a href="https://docs.python.org/3/library/urllib.error.html#module-urllib.error">urlib.errors</a> эксепшены для urlib.requests</li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://urllib3.readthedocs.io/en/stable/">urlib3</a></li>
+  <li><a href="https://docs.python-requests.org/en/latest/">Requests: HTTP for Human</a>s</li>
+</ul>
+
+<h2 id="http"><a href="https://docs.python.org/3/library/http.html">http</a></h2>
+
+<p>Реализует базовые инструменты для написания http-фреймворка (в т.ч. предоставляет обработчик коды статусов)</p>
+
+<ul>
+  <li>http.client низкоуровневый http-клиент</li>
+  <li>http.server HTTP сервер на базе socketserver</li>
+  <li>http.cookies управление куками</li>
+  <li>http.cookiejar автоматическая обработка кук</li>
+</ul>
+
+<h2 id="протоколы">Протоколы</h2>
+
+<p><a href="https://docs.python.org/3/library/ftplib.html">ftp</a>, <a href="https://docs.python.org/3/library/nntplib.html">nntp</a>, <a href="https://docs.python.org/3/library/telnetlib.html">telnet</a> а так же почтовые протоколы [<a href="email-tools-python" title="Email tools in python">email-tools-python</a>]</p>
+
+<h2 id="uuid"><a href="https://docs.python.org/3/library/uuid.html">uuid</a></h2>
+
+<p>Генерация уникальных значений идентификаторов ресурсов (uuid).</p>
+
+<h3 id="xmlrpc"><a href="https://docs.python.org/3/library/xmlrpc.html">xmlrpc</a></h3>
+
+<p>XML-RPC сервер, в настоящий момент стандарт можно считать устаревшим.</p>
 
 <p>Смотри еще:</p>
 
