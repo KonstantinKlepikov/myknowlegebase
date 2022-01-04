@@ -101,21 +101,238 @@
 
 <p>Исплементация дескрипторов описана <a href="https://docs.python.org/3/reference/datamodel.html#implementing-descriptors">тут</a></p>
 
-<p>Следующие методы применяются только тогда, когда экземпляр класса, содержащего метод (так называемый класс дескриптора), появляется в классе владельца (дескриптор должен находиться либо в словаре класса владельца, либо в словаре классов для одного из его родителей). В приведенных ниже примерах «атрибут» относится к атрибуту, имя которого является ключом свойства в классе-владельце <strong>dict</strong>.</p>
+<p>Пример реализации:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">NonNegative</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">instance</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">]</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'Cannot be negative.'</span><span class="p">)</span>
+<span class="p">...</span>         <span class="n">instance</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Order</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="n">price</span> <span class="o">=</span> <span class="n">NonNegative</span><span class="p">(</span><span class="s">'price'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">quantity</span> <span class="o">=</span> <span class="n">NonNegative</span><span class="p">(</span><span class="s">'quantity'</span><span class="p">)</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">price</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">quantity</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">apple_order</span> <span class="o">=</span> <span class="n">Order</span><span class="p">(</span><span class="s">'apple'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">apple_order</span><span class="p">.</span><span class="n">total</span><span class="p">()</span>
+<span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">apple_order</span><span class="p">.</span><span class="n">price</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="nb">ValueError</span><span class="p">:</span> <span class="n">Cannot</span> <span class="n">be</span> <span class="n">negative</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">apple_order</span><span class="p">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="nb">ValueError</span><span class="p">:</span> <span class="n">Cannot</span> <span class="n">be</span> <span class="n">negative</span>
+</code></pre></div></div>
+
+<p>Пример взят из <a href="https://webdevblog.ru/chto-takoe-deskriptory-i-ih-ispolzovanie-v-python-3-6/">этой статьи</a>. В данном случае мы определили класс дескриптора и класс владельца, в котором класс дескриптора используется для инициализации атрибутов. При попытке установить неприемлемое значение в атрибут будет вызван <code class="language-plaintext highlighter-rouge">ValueError</code>. Такая реализация является типичной для до python 3.6.</p>
+
+<p>В настоящий момент это можно реализовать короче (измененеия отмечены #):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">NonNegative</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">instance</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="c1">#
+</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'Cannot be negative.'</span><span class="p">)</span>
+<span class="p">...</span>         <span class="n">instance</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__set_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span> <span class="c1">#
+</span><span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="c1">#
+</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Order</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="n">price</span> <span class="o">=</span> <span class="n">NonNegative</span><span class="p">()</span> <span class="c1">#
+</span><span class="p">...</span>     <span class="n">quantity</span> <span class="o">=</span> <span class="n">NonNegative</span><span class="p">()</span> <span class="c1">#
+</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">price</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">quantity</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">object.__get__(self, instance, owner=None)</code> вызывается для получения атрибута класса-владельца (доступ к атрибуту класса) или экземпляра этого класса (доступ к атрибуту экземпляра). Необязательный аргумент <code class="language-plaintext highlighter-rouge">owner</code> - это класс владельца, в то время как <code class="language-plaintext highlighter-rouge">instance</code> - это экземпляр, через который был осуществлен доступ к атрибуту, или <code class="language-plaintext highlighter-rouge">None</code>, если доступ к атрибуту осуществляется через владельца. Этот метод должен возвращать вычисленное значение атрибута или вызывать исключение <code class="language-plaintext highlighter-rouge">AttributeError</code>. PEP 252 указывает, что <code class="language-plaintext highlighter-rouge">__get __()</code> вызывается с одним или двумя аргументами. Собственные встроенные дескрипторы python поддерживают эту спецификацию; однако вполне вероятно, что некоторые сторонние инструменты имеют дескрипторы, требующие обоих аргументов. Собственная реализация Python <code class="language-plaintext highlighter-rouge">__getattribute __()</code> всегда передает оба аргумента независимо от того, требуются они или нет.</p>
+
+<p><code class="language-plaintext highlighter-rouge">object.__set__(self, instance, value)</code> вызывается для установки в экземпляре <code class="language-plaintext highlighter-rouge">instance</code> класса-владельца нового значения атрибута <code class="language-plaintext highlighter-rouge">value</code>. Добавление <code class="language-plaintext highlighter-rouge">__set __()</code> или <code class="language-plaintext highlighter-rouge">__delete __()</code> изменяет тип дескриптора на «дескриптор данных».</p>
+
+<p><code class="language-plaintext highlighter-rouge">object.__delete__(self, instance)</code> вызывается для удаления атрибута в экземпляре <code class="language-plaintext highlighter-rouge">instance</code> класса владельца. Атрибут <code class="language-plaintext highlighter-rouge">__objclass__</code> интерпретируется модулем проверки как указывающий класс, в котором был определен этот объект (соответствующая установка этого параметра может помочь в самоанализе динамических атрибутов класса во время выполнения). Для вызываемых объектов это может указывать на то, что экземпляр данного типа (или подкласса) ожидается или требуется в качестве первого позиционного аргумента (например, CPython устанавливает этот атрибут для несвязанных методов, реализованных в C).</p>
+
+<p>Данные методы применяются только тогда, когда экземпляр класса, содержащего метод (так называемый класс дескриптора), появляется в классе владельца (дескриптор должен находиться либо в словаре класса владельца, либо в словаре классов для одного из его родителей).</p>
+
+<p>Про порядок вызовов методов дескриптора в разных чулаях <a href="https://docs.python.org/3/reference/datamodel.html#invoking-descriptors">читай подробнее тут</a></p>
+
+<p>Методы python (в том числе <code class="language-plaintext highlighter-rouge">@staticmethod</code> и <code class="language-plaintext highlighter-rouge">@classmethod</code>) реализованы как non-data дескрипторы. Соответственно, экземпляры могут переопределять декорированные таким образом методы. Это позволяет отдельным экземплярам приобретать поведение, которое отличается от поведения других экземпляров того же класса.</p>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">property()</code> реализована как дескриптор данных. Соответственно, экземпляры не могут переопределить поведение property.</p>
+
+<h2 id="descriptor-howto"><a href="https://docs.python.org/3/howto/descriptor.html#descriptorhowto">Descriptor HowTo</a></h2>
+
+<p>В статье документации приводистя большое число примеров реализации и обьъясняются особенности констирукции.</p>
+
+<p>Например здесь класс <code class="language-plaintext highlighter-rouge">Person</code> имеет два экземпляра дескриптора, <code class="language-plaintext highlighter-rouge">name</code> и <code class="language-plaintext highlighter-rouge">age</code>. Когда класс <code class="language-plaintext highlighter-rouge">Person</code> определяется, он выполняет обратный вызов <code class="language-plaintext highlighter-rouge">__set_name __()</code> в <code class="language-plaintext highlighter-rouge">LoggedAccess</code>, чтобы можно было определить имена полей, давая каждому дескриптору собственное имя <code class="language-plaintext highlighter-rouge">public_name</code> и <code class="language-plaintext highlighter-rouge">private_name</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">LoggedAccess</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__set_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">public_name</span> <span class="o">=</span> <span class="n">name</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">private_name</span> <span class="o">=</span> <span class="s">'_'</span> <span class="o">+</span> <span class="n">name</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">private_name</span><span class="p">)</span>
+<span class="p">...</span>         <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Accessing %r giving %r'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">public_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">value</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Updating %r to %r'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">public_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">...</span>         <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">private_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">LoggedAccess</span><span class="p">()</span>                <span class="c1"># First descriptor instance
+</span><span class="p">...</span>     <span class="n">age</span> <span class="o">=</span> <span class="n">LoggedAccess</span><span class="p">()</span>                 <span class="c1"># Second descriptor instance
+</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>                 <span class="c1"># Calls the first descriptor
+</span><span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>                   <span class="c1"># Calls the second descriptor
+</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">birthday</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">vars</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">Person</span><span class="p">)[</span><span class="s">'name'</span><span class="p">])</span>
+<span class="p">{</span><span class="s">'public_name'</span><span class="p">:</span> <span class="s">'name'</span><span class="p">,</span> <span class="s">'private_name'</span><span class="p">:</span> <span class="s">'_name'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">vars</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">Person</span><span class="p">)[</span><span class="s">'age'</span><span class="p">])</span>
+<span class="p">{</span><span class="s">'public_name'</span><span class="p">:</span> <span class="s">'age'</span><span class="p">,</span> <span class="s">'private_name'</span><span class="p">:</span> <span class="s">'_age'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pete</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">'Peter P'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Updating</span> <span class="s">'name'</span> <span class="n">to</span> <span class="s">'Peter P'</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Updating</span> <span class="s">'age'</span> <span class="n">to</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">kate</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">'Catherine C'</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Updating</span> <span class="s">'name'</span> <span class="n">to</span> <span class="s">'Catherine C'</span>
+<span class="n">INFO</span><span class="p">:</span><span class="n">root</span><span class="p">:</span><span class="n">Updating</span> <span class="s">'age'</span> <span class="n">to</span> <span class="mi">20</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">vars</span><span class="p">(</span><span class="n">pete</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'_name'</span><span class="p">:</span> <span class="s">'Peter P'</span><span class="p">,</span> <span class="s">'_age'</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">vars</span><span class="p">(</span><span class="n">kate</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'_name'</span><span class="p">:</span> <span class="s">'Catherine C'</span><span class="p">,</span> <span class="s">'_age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/howto/descriptor.html#complete-practical-example">Более близкий к практике пример</a> - определен дескриптор как абстрактный класс, наследующие классы обязаны определять ряд методов. Их инстансы используются в классе-владельце.</p>
+
+<p>Тут рассматривается <a href="https://docs.python.org/3/howto/descriptor.html#overview-of-descriptor-invocation">вызов дескрипторов.</a>:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">object.__get__(self, instance, owner=None)</code></li>
-  <li><code class="language-plaintext highlighter-rouge">object.__set__(self, instance, value)</code></li>
-  <li><code class="language-plaintext highlighter-rouge">object.__delete__(self, instance)</code></li>
+  <li>из инстанса</li>
+  <li>из класса</li>
+  <li>с помощью <code class="language-plaintext highlighter-rouge">super()</code></li>
 </ul>
 
-<p><a href="https://docs.python.org/3/howto/descriptor.html#descriptorhowto">Descriptor HowTo Guide</a></p>
+<p>Общие принципы:</p>
+
+<ul>
+  <li>Механизм дескрипторов встроен в методы <code class="language-plaintext highlighter-rouge">__getattribute__()</code> для <code class="language-plaintext highlighter-rouge">object</code>, <code class="language-plaintext highlighter-rouge">type</code> и <code class="language-plaintext highlighter-rouge">super() </code></li>
+  <li>Дескрипторы вызываются методом <code class="language-plaintext highlighter-rouge">__getattribute__()</code></li>
+  <li>Классы наследуют этот механизм от <code class="language-plaintext highlighter-rouge">object</code>, <code class="language-plaintext highlighter-rouge">type</code> или <code class="language-plaintext highlighter-rouge">super()</code></li>
+  <li>Переопределение предотвращает автоматические вызовы дескриптора, потому что вся логика дескриптора находится в этом методе</li>
+  <li><code class="language-plaintext highlighter-rouge">object.__ getattribute__()</code> и <code class="language-plaintext highlighter-rouge">type.__getattribute__()</code> по-разному вызывают <code class="language-plaintext highlighter-rouge">__get__()</code>. Первый включает экземпляр и может включать класс. Второй определяет <code class="language-plaintext highlighter-rouge">None</code> для экземпляра и всегда включает класс</li>
+  <li>Дескрипторы данных всегда имеют приоритет над словарями экземпляров</li>
+  <li>Дескрипторы, не относящиеся к данным, могут быть переопределены словарями экземпляров</li>
+</ul>
+
+<p><a href="https://docs.python.org/3/howto/descriptor.html#orm-example">Пример для ОРМ</a></p>
+
+<p>Далее описываются <a href="https://docs.python.org/3/howto/descriptor.html#pure-python-equivalents">встроенные конструкции python на дескрипторах</a></p>
+
+<p>Properties, bound methods, static methods, class methods и <code class="language-plaintext highlighter-rouge">__slots__</code> основаны на протоколе дескриптора:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/howto/descriptor.html#properties">property</a> Вызов <code class="language-plaintext highlighter-rouge">property()</code> - это краткий способ создания дескриптора данных, который запускает вызов функции при доступе к атрибуту. Встроенная функция <code class="language-plaintext highlighter-rouge">property()</code> помогает всякий раз, когда пользовательский интерфейс предоставляет доступ к атрибутам, а затем для последующих изменений требуется вмешательство метода</li>
+  <li><a href="https://docs.python.org/3/howto/descriptor.html#functions-and-methods">функции и методы</a> Используя дескрипторы, не относящиеся к данным, эти два элемента легко объединяются. Функции, хранящиеся в словарях классов, при вызове превращаются в методы. Методы отличаются от обычных функций только тем, что экземпляр объекта добавляется к другим аргументам. По соглашению экземпляр называется self, но может называться этим или любым другим именем переменной</li>
+  <li><a href="https://docs.python.org/3/howto/descriptor.html#static-methods">static methods</a> Возвращают возвращают базовую функцию без изменений. Хорошими кандидатами на статические методы являются методы, которые не ссылаются на переменную self.</li>
+  <li><a href="https://docs.python.org/3/howto/descriptor.html#class-methods">class methods</a> В отличие от статических методов, методы класса добавляют ссылку на класс к списку аргументов перед вызовом функции. Этот формат одинаков для экземпляра или класса. Это поведение полезно, когда методу нужна только ссылка на класс, и он не полагается на данные, хранящиеся в конкретном экземпляре. Одно из применений методов класса - создание альтернативных конструкторов класса</li>
+</ul>
+
+<p>Кроме того, дескрипторы <a href="https://docs.python.org/3/howto/descriptor.html#member-objects-and-slots">реализуют</a> логику <code class="language-plaintext highlighter-rouge">__clots__</code></p>
+
+<p>Когда класс определяет <code class="language-plaintext highlighter-rouge">__slots__</code>, он заменяет словари экземпляров массивом значений слотов фиксированной длины. С точки зрения пользователя, это имеет несколько эффектов:</p>
+
+<p>Во-первых обеспечивает немедленное обнаружение ошибок из-за неправильного написания атрибутов, т.к. разрешены только имена атрибутов, указанные в <code class="language-plaintext highlighter-rouge">__slots__</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Vehicle</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">'id_number'</span><span class="p">,</span> <span class="s">'make'</span><span class="p">,</span> <span class="s">'model'</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">auto</span> <span class="o">=</span> <span class="n">Vehicle</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">auto</span><span class="p">.</span><span class="n">id_nubmer</span> <span class="o">=</span> <span class="s">'VYE483814LQEX'</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+    <span class="p">...</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="s">'Vehicle'</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">'id_nubmer'</span>
+</code></pre></div></div>
+
+<p>Во-вторых помогает создавать неизменяемые объекты, в которых дескрипторы управляют доступом к закрытым атрибутам, хранящимся в <code class="language-plaintext highlighter-rouge">__slots__</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Immutable</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">'_dept'</span><span class="p">,</span> <span class="s">'_name'</span><span class="p">)</span>          <span class="c1"># Replace the instance dictionary
+</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dept</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">_dept</span> <span class="o">=</span> <span class="n">dept</span>                   <span class="c1"># Store to private attribute
+</span><span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>                   <span class="c1"># Store to private attribute
+</span>
+<span class="p">...</span>     <span class="o">@</span><span class="nb">property</span>                               <span class="c1"># Read-only descriptor
+</span><span class="p">...</span>     <span class="k">def</span> <span class="nf">dept</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_dept</span>
+
+<span class="p">...</span>     <span class="o">@</span><span class="nb">property</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                         <span class="c1"># Read-only descriptor
+</span><span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_name</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mark</span> <span class="o">=</span> <span class="n">Immutable</span><span class="p">(</span><span class="s">'Botany'</span><span class="p">,</span> <span class="s">'Mark Watney'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mark</span><span class="p">.</span><span class="n">dept</span>
+<span class="s">'Botany'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mark</span><span class="p">.</span><span class="n">dept</span> <span class="o">=</span> <span class="s">'Space Pirate'</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+    <span class="p">...</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s">'t set attribute
+&gt;&gt;&gt; mark.location = '</span><span class="n">Mars</span><span class="s">'
+Traceback (most recent call last):
+    ...
+AttributeError: '</span><span class="n">Immutable</span><span class="s">' object has no attribute '</span><span class="n">location</span><span class="s">'
+</span></code></pre></div></div>
+
+<p>Кроме того, это <code class="language-plaintext highlighter-rouge">__slots__</code>:</p>
+
+<ul>
+  <li>Экономит память. В 64-битной сборке Linux экземпляр с двумя атрибутами занимает 48 байтов с <code class="language-plaintext highlighter-rouge">__slots__</code> и 152 байта без. Этот шаблон проектирования легковесного проекта, вероятно, имеет значение только тогда, когда будет создано большое количество экземпляров.</li>
+  <li>Повышает скорость. Чтение переменных экземпляра выполняется на 35% быстрее из <code class="language-plaintext highlighter-rouge">__slots__</code> (по измерениям с Python 3.10 на процессоре Apple M1)</li>
+  <li>Но это блокирует такие инструменты, как <code class="language-plaintext highlighter-rouge">functools.cached_property()</code>, которым для правильной работы требуется словарь экземпляра</li>
+</ul>
 
 <p>Смотри еще:</p>
 
 <ul>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
   <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]</li>
+  <li>[<a href="functools" title="Functools">functools</a>]</li>
 </ul>
 
 
