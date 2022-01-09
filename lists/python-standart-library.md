@@ -32,12 +32,14 @@ category: list
 - [[python-cryptography]]
 - [[email-tools-python]]
 - [[nets-with-python]] сети и интернет
+- [[python-interptetator-and-env-utils]] взаимодействие с интерпретатором и окружением в python
 - [[abc]]
 
 [Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
 
 Смотри еще:
 
+- [[python-logging]]
 - [[feedparser]]
 - [[remove-dict-key-python]]
 - [[calling-finction-by-name-python]]
@@ -82,7 +84,9 @@ category: list
 [python-cryptography]: ../notes/python-cryptography "Криптография в python"
 [email-tools-python]: ../notes/email-tools-python "Email tools in python"
 [nets-with-python]: ../notes/nets-with-python "Nets and internet with python"
+[python-interptetator-and-env-utils]: ../notes/python-interptetator-and-env-utils "Утилиты взаимодействия с интерпретатором и окружением в python"
 [abc]: ../notes/abc "Abc"
+[python-logging]: python-logging "Python-logging"
 [feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"

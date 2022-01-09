@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Утилиты взаимодействия с интерпретатором и окружением в python | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Утилиты взаимодействия с интерпретатором и окружением в python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Что предоставляет стандартная библиотека python для взаимодействия с интерпретатором и окружением" />
+<meta property="og:description" content="Что предоставляет стандартная библиотека python для взаимодействия с интерпретатором и окружением" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-interptetator-and-env-utils.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-interptetator-and-env-utils.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-interptetator-and-env-utils.html","headline":"Утилиты взаимодействия с интерпретатором и окружением в python","description":"Что предоставляет стандартная библиотека python для взаимодействия с интерпретатором и окружением","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="утилиты-взаимодействия-с-интерпретатором-и-окружением-в-python">Утилиты взаимодействия с интерпретатором и окружением в python</h1>
+
+<p><a href="https://docs.python.org/3/library/python.html">В документации</a></p>
+
+<h2 id="site"><a href="https://docs.python.org/3/library/site.html">site</a></h2>
+
+<p>Модуль автоматически импортируется во время инициализации и обрабатывает специфические конфигурационные параметры, такие как пути импорта.</p>
+
+<h2 id="sys"><a href="https://docs.python.org/3/library/sys.html">sys</a></h2>
+
+<p>Позволяет определять или изменять конфигурацию интерпретатора во время выполнения пприложения и его взаимодействия с окружением. Предоставляет информацию о версии интерпретатора, его реализации и реализации платформы. Кроме того, предоставляет доступ к системе вне приложения за счет обработки аргументво командной строки, получения доступа к пользовательскому выводу и передаче пользователю сообщений. Кроме того, реализовано управление памятью (подсчет ссылок и размера объектов), а иак-же лимиты для рекурсивных вызовов, а так-же низкоуровневый интерфейс для переключения между потоками.</p>
+
+<p>Sys предоставляет информацию о встроенных или импортируемых модулях, доступных приложению, а так-же реализует функции, позволяющие перехватывать и переопределять стандартный импорт.</p>
+
+<p>Кроме того реализована трассировка (более удобными инстурментами являются модули <a href="https://docs.python.org/3/library/trace.html">trace</a> и <a href="https://docs.python.org/3/library/profile.html">profile</a>)</p>
+
+<p>Модуль <a href="https://docs.python.org/3/library/platform.html">platform</a> возвращает извлекать информацию об интерпретаторе, операционной системе и аппаратной платформе во время выполнения приложения.</p>
+
+<p>Модуль <a href="https://docs.python.org/3/library/resource.html">resource</a> предоставляет базовые механизмы для измерения и контроля системных ресурсов, используемых приложением в unix (в том числе позволяет получать информацию о текущем потреблении ресуроов и лимитировать потребление)</p>
+
+<h2 id="os"><a href="https://docs.python.org/3/library/os.html">os</a></h2>
+
+<p>Не смотря на то, чт омодуль находится в другом разделе, он предоставляет АПИ для работы с функциями, доступность которых мы ожидаем на всех платформах.</p>
+
+<ul>
+  <li>работа с файловой системой <code class="language-plaintext highlighter-rouge">os.listdir()</code>, <code class="language-plaintext highlighter-rouge">os.walk()</code>, <code class="language-plaintext highlighter-rouge">os.scandir()</code></li>
+  <li>права доступа к объектам файловой системы и управление правами</li>
+  <li>создание и удаление каталогов</li>
+  <li>работа  с символическими ссылками и переименование/замена существующих файлов (смотри так-же [<a href="python-filesystem" title="Работа с файлами">python-filesystem</a>])</li>
+  <li>работа с процессами (определение и измененеие владельцев, управление окружением процесса и его рабочими каталогами)</li>
+  <li>создание, форки и ожидание выполнения процессов</li>
+</ul>
+
+<p>Для реализации процессов смотри [<a href="multiprocess" title="Управление процессами в python">multiprocess</a>]</p>
+
+<h2 id="gs"><a href="https://docs.python.org/3/library/gc.html">gs</a></h2>
+
+<p>Управление сборщиком мусора, позволяет:</p>
+
+<ul>
+  <li>отслеживать ссылки и обнаруживать объекты, которые не могут быть собраны сборщиком</li>
+  <li>принудителоьно собирать мусор</li>
+  <li>управлять порогами и поколениями сборки мусора</li>
+  <li>обнаруживать утечки памяти</li>
+</ul>
+
+<h2 id="sysconfig"><a href="https://docs.python.org/3/library/sysconfig.html">sysconfig</a></h2>
+
+<p>Конфигурация интерпретатора во время компиляции</p>
+
+<p>Смотри так-же:</p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
+  <li>[<a href="abc" title="Abc">abc</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
