@@ -91,56 +91,56 @@
 
 <p>А примере мы получаем инстансы юзеров, корторе можно итерировать</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; for instance in session.query(User).order_by(User.id):
-...     print(instance.name, instance.fullname)
-ed Ed Jones
-wendy Wendy Williams
-mary Mary Contrary
-fred Fred Flintstone
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">).</span><span class="n">order_by</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="nb">id</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">instance</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">fullname</span><span class="p">)</span>
+<span class="n">ed</span> <span class="n">Ed</span> <span class="n">Jones</span>
+<span class="n">wendy</span> <span class="n">Wendy</span> <span class="n">Williams</span>
+<span class="n">mary</span> <span class="n">Mary</span> <span class="n">Contrary</span>
+<span class="n">fred</span> <span class="n">Fred</span> <span class="n">Flintstone</span>
+</code></pre></div></div>
 
 <p>Когда мы запрашиваем несколько объектов, базирусяь на колонках, возвращается кортеж</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; for name, fullname in session.query(User.name, User.fullname):
-...     print(name, fullname)
-ed Ed Jones
-wendy Wendy Williams
-mary Mary Contrary
-fred Fred Flintstone
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">fullname</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">User</span><span class="p">.</span><span class="n">fullname</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fullname</span><span class="p">)</span>
+<span class="n">ed</span> <span class="n">Ed</span> <span class="n">Jones</span>
+<span class="n">wendy</span> <span class="n">Wendy</span> <span class="n">Williams</span>
+<span class="n">mary</span> <span class="n">Mary</span> <span class="n">Contrary</span>
+<span class="n">fred</span> <span class="n">Fred</span> <span class="n">Flintstone</span>
+</code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">query</code> возвращает <code class="language-plaintext highlighter-rouge">named tuples</code> object, ключи совпадают с именами ОРМ-бейсед объектов</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; for row in session.query(User, User.name).all():
-...    print(row.User, row.name)
-&lt;User(name='ed', fullname='Ed Jones', nickname='eddie')&gt; ed
-&lt;User(name='wendy', fullname='Wendy Williams', nickname='windy')&gt; wendy
-&lt;User(name='mary', fullname='Mary Contrary', nickname='mary')&gt; mary
-&lt;User(name='fred', fullname='Fred Flintstone', nickname='freddy')&gt; fred
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">User</span><span class="p">.</span><span class="n">name</span><span class="p">).</span><span class="nb">all</span><span class="p">():</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">.</span><span class="n">User</span><span class="p">,</span> <span class="n">row</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ed'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Ed Jones'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'eddie'</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">ed</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'wendy'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Wendy Williams'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'windy'</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">wendy</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'mary'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Mary Contrary'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'mary'</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">mary</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'fred'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Fred Flintstone'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'freddy'</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">fred</span>
+</code></pre></div></div>
 
 <p>Ключ можно изменить</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; for row in session.query(User.name.label('name_label')).all():
-...    print(row.name_label)
-ed
-wendy
-mary
-fred
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">User</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="s">'name_label'</span><span class="p">)).</span><span class="nb">all</span><span class="p">():</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">.</span><span class="n">name_label</span><span class="p">)</span>
+<span class="n">ed</span>
+<span class="n">wendy</span>
+<span class="n">mary</span>
+<span class="n">fred</span>
+</code></pre></div></div>
 
 <p>Имена классов можно контроллировать через алияс</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; from sqlalchemy.orm import aliased
-&gt;&gt;&gt; user_alias = aliased(User, name='user_alias')
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">aliased</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">user_alias</span> <span class="o">=</span> <span class="n">aliased</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'user_alias'</span><span class="p">)</span>
 
-SQL&gt;&gt;&gt; for row in session.query(user_alias, user_alias.name).all():
-...    print(row.user_alias)
-&lt;User(name='ed', fullname='Ed Jones', nickname='eddie')&gt;
-&lt;User(name='wendy', fullname='Wendy Williams', nickname='windy')&gt;
-&lt;User(name='mary', fullname='Mary Contrary', nickname='mary')&gt;
-&lt;User(name='fred', fullname='Fred Flintstone', nickname='freddy')&gt;
-</code></pre>
+<span class="n">SQL</span><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">user_alias</span><span class="p">,</span> <span class="n">user_alias</span><span class="p">.</span><span class="n">name</span><span class="p">).</span><span class="nb">all</span><span class="p">():</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">.</span><span class="n">user_alias</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ed'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Ed Jones'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'eddie'</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'wendy'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Wendy Williams'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'windy'</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'mary'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Mary Contrary'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'mary'</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'fred'</span><span class="p">,</span> <span class="n">fullname</span><span class="o">=</span><span class="s">'Fred Flintstone'</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">'freddy'</span><span class="p">)</span><span class="o">&gt;</span>
+</code></pre></div></div>
 
 <p>Можно задавать порядок выдачи</p>
 
