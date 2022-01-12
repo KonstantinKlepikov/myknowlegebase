@@ -143,7 +143,6 @@
 <p><a href="https://github.com/faif/python-patterns/blob/master/patterns/creational/factory.py">Пример</a></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">GreekLocalizer</span><span class="p">:</span>
-    <span class="s">"""A simple localizer a la gettext"""</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="p">.</span><span class="n">translations</span> <span class="o">=</span> <span class="p">{</span><span class="s">"dog"</span><span class="p">:</span> <span class="s">"σκύλος"</span><span class="p">,</span> <span class="s">"cat"</span><span class="p">:</span> <span class="s">"γάτα"</span><span class="p">}</span>
@@ -154,7 +153,6 @@
 
 
 <span class="k">class</span> <span class="nc">EnglishLocalizer</span><span class="p">:</span>
-    <span class="s">"""Simply echoes the message"""</span>
 
     <span class="k">def</span> <span class="nf">localize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">msg</span>
@@ -162,7 +160,6 @@
 
 <span class="k">def</span> <span class="nf">get_localizer</span><span class="p">(</span><span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">"English"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
 
-    <span class="s">"""Factory"""</span>
     <span class="n">localizers</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">"English"</span><span class="p">:</span> <span class="n">EnglishLocalizer</span><span class="p">,</span>
         <span class="s">"Greek"</span><span class="p">:</span> <span class="n">GreekLocalizer</span><span class="p">,</span>
@@ -369,23 +366,357 @@
 
 <p>Разделяет представлоение, процессинг приложения и менеджмент данных</p>
 
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/3-tier.py">Простенький пример</a> (на самом деле разделение на слои в приложениях реализуются как минимум в модулях)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">KeysView</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+
+<span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
+
+    <span class="n">products</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">"milk"</span><span class="p">:</span> <span class="p">{</span><span class="s">"price"</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+        <span class="s">"eggs"</span><span class="p">:</span> <span class="p">{</span><span class="s">"price"</span><span class="p">:</span> <span class="mf">0.20</span><span class="p">,</span> <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+        <span class="s">"cheese"</span><span class="p">:</span> <span class="p">{</span><span class="s">"price"</span><span class="p">:</span> <span class="mf">2.00</span><span class="p">,</span> <span class="s">"quantity"</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">klas</span><span class="p">):</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">"(Fetching from Data Store)"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"products"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">products</span><span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">BusinessLogic</span><span class="p">:</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">product_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KeysView</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="s">"products"</span><span class="p">].</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">product_information</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="s">"products"</span><span class="p">].</span><span class="n">get</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Ui</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">business_logic</span> <span class="o">=</span> <span class="n">BusinessLogic</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_product_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"PRODUCT LIST:"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">business_logic</span><span class="p">.</span><span class="n">product_list</span><span class="p">():</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_product_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">product_info</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">business_logic</span><span class="p">.</span><span class="n">product_information</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">product_info</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"PRODUCT INFORMATION:"</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span>
+                <span class="s">f"Name: </span><span class="si">{</span><span class="n">product</span><span class="p">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s">, "</span>
+                <span class="o">+</span> <span class="s">f"Price: </span><span class="si">{</span><span class="n">product_info</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'price'</span><span class="p">,</span> <span class="mi">0</span><span class="p">):.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">, "</span>
+                <span class="o">+</span> <span class="s">f"Quantity: </span><span class="si">{</span><span class="n">product_info</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'quantity'</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span><span class="si">}</span><span class="s">"</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f"That product '</span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s">' does not exist in the records"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ui</span> <span class="o">=</span> <span class="n">Ui</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ui</span><span class="p">.</span><span class="n">get_product_list</span><span class="p">()</span>
+<span class="n">PRODUCT</span> <span class="n">LIST</span><span class="p">:</span>
+<span class="p">(</span><span class="n">Fetching</span> <span class="k">from</span> <span class="n">Data</span> <span class="n">Store</span><span class="p">)</span>
+<span class="n">milk</span>
+<span class="n">eggs</span>
+<span class="n">cheese</span>
+<span class="o">&lt;</span><span class="n">BLANKLINE</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ui</span><span class="p">.</span><span class="n">get_product_information</span><span class="p">(</span><span class="s">"cheese"</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Fetching</span> <span class="k">from</span> <span class="n">Data</span> <span class="n">Store</span><span class="p">)</span>
+<span class="n">PRODUCT</span> <span class="n">INFORMATION</span><span class="p">:</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">Cheese</span><span class="p">,</span> <span class="n">Price</span><span class="p">:</span> <span class="mf">2.00</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">:</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ui</span><span class="p">.</span><span class="n">get_product_information</span><span class="p">(</span><span class="s">"eggs"</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Fetching</span> <span class="k">from</span> <span class="n">Data</span> <span class="n">Store</span><span class="p">)</span>
+<span class="n">PRODUCT</span> <span class="n">INFORMATION</span><span class="p">:</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">Eggs</span><span class="p">,</span> <span class="n">Price</span><span class="p">:</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">:</span> <span class="mi">100</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ui</span><span class="p">.</span><span class="n">get_product_information</span><span class="p">(</span><span class="s">"milk"</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Fetching</span> <span class="k">from</span> <span class="n">Data</span> <span class="n">Store</span><span class="p">)</span>
+<span class="n">PRODUCT</span> <span class="n">INFORMATION</span><span class="p">:</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">Milk</span><span class="p">,</span> <span class="n">Price</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">:</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ui</span><span class="p">.</span><span class="n">get_product_information</span><span class="p">(</span><span class="s">"arepas"</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Fetching</span> <span class="k">from</span> <span class="n">Data</span> <span class="n">Store</span><span class="p">)</span>
+<span class="n">That</span> <span class="n">product</span> <span class="s">'arepas'</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">records</span>
+</code></pre></div></div>
+
 <h3 id="adapter">Adapter</h3>
 
 <p>Адаптирует один интерфейс к другому. Полезен для интеграции классов, которые несовместимы напрямую из-за разных интерфейсов.</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/adapter.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">"T"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Dog"</span>
+
+    <span class="k">def</span> <span class="nf">bark</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">"woof!"</span>
+
+
+<span class="k">class</span> <span class="nc">Cat</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Cat"</span>
+
+    <span class="k">def</span> <span class="nf">meow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">"meow!"</span>
+
+
+<span class="k">class</span> <span class="nc">Human</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Human"</span>
+
+    <span class="k">def</span> <span class="nf">speak</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">"'hello'"</span>
+
+
+<span class="k">class</span> <span class="nc">Car</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Car"</span>
+
+    <span class="k">def</span> <span class="nf">make_noise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">octane_level</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">f"vroom</span><span class="si">{</span><span class="s">'!'</span> <span class="o">*</span> <span class="n">octane_level</span><span class="si">}</span><span class="s">"</span>
+
+
+<span class="k">class</span> <span class="nc">Adapter</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="o">**</span><span class="n">adapted_methods</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="s">"""We set the adapted methods in the object's dict."""</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="n">adapted_methods</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="s">"""All non-adapted calls are passed to the object."""</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">original_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">obj</span><span class="p">.</span><span class="n">__dict__</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">dog</span><span class="p">.</span><span class="n">__dict__</span><span class="p">)</span>
+<span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Dog'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">objects</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Adapter</span><span class="p">(</span><span class="n">dog</span><span class="p">,</span> <span class="n">make_noise</span><span class="o">=</span><span class="n">dog</span><span class="p">.</span><span class="n">bark</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'obj'</span><span class="p">],</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'make_noise'</span><span class="p">]</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="p">...</span><span class="n">Dog</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">Dog</span><span class="p">.</span><span class="n">bark</span> <span class="n">of</span> <span class="o">&lt;</span><span class="p">...</span><span class="n">Dog</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;&gt;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">original_dict</span><span class="p">())</span>
+<span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Dog'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">objects</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Adapter</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span> <span class="n">make_noise</span><span class="o">=</span><span class="n">cat</span><span class="p">.</span><span class="n">meow</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">human</span> <span class="o">=</span> <span class="n">Human</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">objects</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Adapter</span><span class="p">(</span><span class="n">human</span><span class="p">,</span> <span class="n">make_noise</span><span class="o">=</span><span class="n">human</span><span class="p">.</span><span class="n">speak</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">car</span> <span class="o">=</span> <span class="n">Car</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">objects</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Adapter</span><span class="p">(</span><span class="n">car</span><span class="p">,</span> <span class="n">make_noise</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">car</span><span class="p">.</span><span class="n">make_noise</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="s">"A {0} goes {1}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">.</span><span class="n">make_noise</span><span class="p">()))</span>
+<span class="n">A</span> <span class="n">Dog</span> <span class="n">goes</span> <span class="n">woof</span><span class="err">!</span>
+<span class="n">A</span> <span class="n">Cat</span> <span class="n">goes</span> <span class="n">meow</span><span class="err">!</span>
+<span class="n">A</span> <span class="n">Human</span> <span class="n">goes</span> <span class="s">'hello'</span>
+<span class="n">A</span> <span class="n">Car</span> <span class="n">goes</span> <span class="n">vroom</span><span class="err">!!!</span>
+</code></pre></div></div>
 
 <h3 id="bridge">Bridge</h3>
 
 <p>Отделяет абстракцию от реализации</p>
 
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/bridge.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># ConcreteImplementor 1/2
+</span><span class="k">class</span> <span class="nc">DrawingAPI1</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"API1.circle at </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s"> radius </span><span class="si">{</span><span class="n">radius</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="c1"># ConcreteImplementor 2/2
+</span><span class="k">class</span> <span class="nc">DrawingAPI2</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"API2.circle at </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s"> radius </span><span class="si">{</span><span class="n">radius</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="c1"># Refined Abstraction
+</span><span class="k">class</span> <span class="nc">CircleShape</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">drawing_api</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_drawing_api</span> <span class="o">=</span> <span class="n">drawing_api</span>
+
+    <span class="c1"># low-level i.e. Implementation specific
+</span>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_drawing_api</span><span class="p">.</span><span class="n">draw_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">_radius</span><span class="p">)</span>
+
+    <span class="c1"># high-level i.e. Abstraction specific
+</span>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pct</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_radius</span> <span class="o">*=</span> <span class="n">pct</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">shapes</span> <span class="o">=</span> <span class="p">(</span><span class="n">CircleShape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">DrawingAPI1</span><span class="p">()),</span> <span class="n">CircleShape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="n">DrawingAPI2</span><span class="p">()))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+<span class="p">...</span>    <span class="n">shape</span><span class="p">.</span><span class="n">scale</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="p">...</span>    <span class="n">shape</span><span class="p">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">API1</span><span class="p">.</span><span class="n">circle</span> <span class="n">at</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span> <span class="n">radius</span> <span class="mf">7.5</span>
+<span class="n">API2</span><span class="p">.</span><span class="n">circle</span> <span class="n">at</span> <span class="mi">5</span><span class="p">:</span><span class="mi">7</span> <span class="n">radius</span> <span class="mf">27.5</span>
+</code></pre></div></div>
+
 <h3 id="composite">Composite</h3>
 
-<p>Позволяет клиентам одинаково воспринимать отдлельные объекты и их композиции. Шаблон обрабатывает группу объектов как один экземпляр объекта того же типа.</p>
+<p>Позволяет клиентам одинаково воспринимать отдельные объекты и их композиции. Шаблон обрабатывает группу объектов как один экземпляр объекта того же типа.</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/composite.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+
+<span class="k">class</span> <span class="nc">Graphic</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">NotImplementedError</span><span class="p">(</span><span class="s">"You should implement this!"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CompositeGraphic</span><span class="p">(</span><span class="n">Graphic</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">graphics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Graphic</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">graphic</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">graphics</span><span class="p">:</span>
+            <span class="n">graphic</span><span class="p">.</span><span class="n">render</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphic</span><span class="p">:</span> <span class="n">Graphic</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">graphics</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">graphic</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphic</span><span class="p">:</span> <span class="n">Graphic</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">graphics</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">graphic</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Ellipse</span><span class="p">(</span><span class="n">Graphic</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"Ellipse: </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ellipse1</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ellipse2</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ellipse3</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="s">"3"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ellipse4</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="s">"4"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic1</span> <span class="o">=</span> <span class="n">CompositeGraphic</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic2</span> <span class="o">=</span> <span class="n">CompositeGraphic</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic1</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">ellipse1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic1</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">ellipse2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic1</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">ellipse3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic2</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">ellipse4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">CompositeGraphic</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">graphic1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">graphic2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graphic</span><span class="p">.</span><span class="n">render</span><span class="p">()</span>
+<span class="n">Ellipse</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">Ellipse</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">Ellipse</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">Ellipse</span><span class="p">:</span> <span class="mi">4</span>
+</code></pre></div></div>
 
 <h3 id="decorator">Decorator</h3>
+
+<p>Реализует обертку над объектом, обспечивая дополнительное поведение. В python можно использовать [<a href="python-decorator" title="Python decorator">python-decorator</a>]</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/decorator.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TextTag</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_text</span>
+
+
+<span class="k">class</span> <span class="nc">BoldWrapper</span><span class="p">(</span><span class="n">TextTag</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapped</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_wrapped</span> <span class="o">=</span> <span class="n">wrapped</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">f"&lt;b&gt;</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">_wrapped</span><span class="p">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s">&lt;/b&gt;"</span>
+
+
+<span class="k">class</span> <span class="nc">ItalicWrapper</span><span class="p">(</span><span class="n">TextTag</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wrapped</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_wrapped</span> <span class="o">=</span> <span class="n">wrapped</span>
+
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">f"&lt;i&gt;</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">_wrapped</span><span class="p">.</span><span class="n">render</span><span class="p">()</span><span class="si">}</span><span class="s">&lt;/i&gt;"</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">simple_hello</span> <span class="o">=</span> <span class="n">TextTag</span><span class="p">(</span><span class="s">"hello, world!"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">special_hello</span> <span class="o">=</span> <span class="n">ItalicWrapper</span><span class="p">(</span><span class="n">BoldWrapper</span><span class="p">(</span><span class="n">simple_hello</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">"before:"</span><span class="p">,</span> <span class="n">simple_hello</span><span class="p">.</span><span class="n">render</span><span class="p">())</span>
+<span class="n">before</span><span class="p">:</span> <span class="n">hello</span><span class="p">,</span> <span class="n">world</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="s">"after:"</span><span class="p">,</span> <span class="n">special_hello</span><span class="p">.</span><span class="n">render</span><span class="p">())</span>
+<span class="n">after</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">i</span><span class="o">&gt;&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">hello</span><span class="p">,</span> <span class="n">world</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;&lt;/</span><span class="n">i</span><span class="o">&gt;</span>
+</code></pre></div></div>
 
 <h3 id="facade">Facade</h3>
 
 <p>Один класс используется как API для группы других классов. Предоставляет обобщенный и унифицированный интерфейс для более сложных систем.</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/facade.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CPU</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Freezing processor."</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Jumping to:"</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Executing."</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Memory</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"Loading from </span><span class="si">{</span><span class="n">position</span><span class="si">}</span><span class="s"> data: '</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s">'."</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SolidStateDrive</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lba</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">f"Some data from sector </span><span class="si">{</span><span class="n">lba</span><span class="si">}</span><span class="s"> with size </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s">"</span>
+
+
+<span class="k">class</span> <span class="nc">ComputerFacade</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="n">CPU</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">ssd</span> <span class="o">=</span> <span class="n">SolidStateDrive</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cpu</span><span class="p">.</span><span class="n">freeze</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">memory</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">"0x00"</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">ssd</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="s">"100"</span><span class="p">,</span> <span class="s">"1024"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cpu</span><span class="p">.</span><span class="n">jump</span><span class="p">(</span><span class="s">"0x00"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cpu</span><span class="p">.</span><span class="n">execute</span><span class="p">()</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">computer_facade</span> <span class="o">=</span> <span class="n">ComputerFacade</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">computer_facade</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">Freezing</span> <span class="n">processor</span><span class="p">.</span>
+<span class="n">Loading</span> <span class="k">from</span> <span class="mh">0x00</span> <span class="n">data</span><span class="p">:</span> <span class="s">'Some data from sector 100 with size 1024'</span><span class="p">.</span>
+<span class="n">Jumping</span> <span class="n">to</span><span class="p">:</span> <span class="mh">0x00</span>
+<span class="n">Executing</span><span class="p">.</span>
+</code></pre></div></div>
 
 <h3 id="fly-weight-приспособленецй">Fly weight (приспособленецй)</h3>
 
@@ -393,13 +724,133 @@
 
 <p>Направлен на минимизацию количества объектов, которые нужны приложению во время выполнения. Шаблон производит объекты, которые используется одновременно несколькими контейнерами.</p>
 
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/flyweight.py">Пример</a></p>
+
+<h3 id="front-controller">Front controller</h3>
+
+<p>Разделяет логику клиента и объекта, предоставляющего данные, что позволяет контроллировать поведение</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/front_controller.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MobileView</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">show_index_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Displaying mobile index page"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">TabletView</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">show_index_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Displaying tablet index page"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Dispatcher</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">mobile_view</span> <span class="o">=</span> <span class="n">MobileView</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">tablet_view</span> <span class="o">=</span> <span class="n">TabletView</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="n">Request</span><span class="p">.</span><span class="n">mobile_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">mobile_view</span><span class="p">.</span><span class="n">show_index_page</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">request</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="n">Request</span><span class="p">.</span><span class="n">tablet_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">tablet_view</span><span class="p">.</span><span class="n">show_index_page</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Cannot dispatch the request"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">RequestController</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">dispatch_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">Request</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">dispatcher</span><span class="p">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"request must be a Request object"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Request</span><span class="p">:</span>
+
+    <span class="n">mobile_type</span> <span class="o">=</span> <span class="s">"mobile"</span>
+    <span class="n">tablet_type</span> <span class="o">=</span> <span class="s">"tablet"</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">type</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">request</span> <span class="o">==</span> <span class="bp">self</span><span class="p">.</span><span class="n">mobile_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">mobile_type</span>
+        <span class="k">elif</span> <span class="n">request</span> <span class="o">==</span> <span class="bp">self</span><span class="p">.</span><span class="n">tablet_type</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">tablet_type</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">front_controller</span> <span class="o">=</span> <span class="n">RequestController</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">front_controller</span><span class="p">.</span><span class="n">dispatch_request</span><span class="p">(</span><span class="n">Request</span><span class="p">(</span><span class="s">'mobile'</span><span class="p">))</span>
+<span class="n">Displaying</span> <span class="n">mobile</span> <span class="n">index</span> <span class="n">page</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">front_controller</span><span class="p">.</span><span class="n">dispatch_request</span><span class="p">(</span><span class="n">Request</span><span class="p">(</span><span class="s">'tablet'</span><span class="p">))</span>
+<span class="n">Displaying</span> <span class="n">tablet</span> <span class="n">index</span> <span class="n">page</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">front_controller</span><span class="p">.</span><span class="n">dispatch_request</span><span class="p">(</span><span class="n">Request</span><span class="p">(</span><span class="s">'desktop'</span><span class="p">))</span>
+<span class="n">Cannot</span> <span class="n">dispatch</span> <span class="n">the</span> <span class="n">request</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">front_controller</span><span class="p">.</span><span class="n">dispatch_request</span><span class="p">(</span><span class="s">'mobile'</span><span class="p">)</span>
+<span class="n">request</span> <span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">Request</span> <span class="nb">object</span>
+</code></pre></div></div>
+
 <h3 id="mvc-model-view-controller">Mvc (model-&gt;view-&gt;controller)</h3>
+
+<p>Расширяет предыдущую модель. <a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/mvc.py">Пример</a> с использованием [<a href="abc" title="Abc">abc</a>]</p>
 
 <h3 id="proxy">Proxy</h3>
 
-<p>Объект передает операции кому-то еще. Прокси используется там, где надо добавить в класс функциональность, не меняя ее (например добавление журналирования, кешировавния, авторизацию и т.д.)</p>
+<p>Объект передает операции кому-то еще. Прокси используется там, где надо добавить в класс функциональность, не меняя его (например добавление журналирования, кешировавния, авторизацию и т.д.)</p>
 
 <p>Субъекты и прокси в паттерне требуют реализации одинаковых интерфейсов.</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/structural/proxy.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+
+<span class="k">class</span> <span class="nc">Subject</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">do_the_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">NotImplementedError</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">RealSubject</span><span class="p">(</span><span class="n">Subject</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">do_the_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"I am doing the job for </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Proxy</span><span class="p">(</span><span class="n">Subject</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_real_subject</span> <span class="o">=</span> <span class="n">RealSubject</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">do_the_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"[log] Doing the job for </span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s"> is requested."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="s">"admin"</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_real_subject</span><span class="p">.</span><span class="n">do_the_job</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"[log] I can do the job just for `admins`."</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="n">job_doer</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">RealSubject</span><span class="p">,</span> <span class="n">Proxy</span><span class="p">],</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">job_doer</span><span class="p">.</span><span class="n">do_the_job</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">real_subject</span> <span class="o">=</span> <span class="n">RealSubject</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">client</span><span class="p">(</span><span class="n">proxy</span><span class="p">,</span> <span class="s">'admin'</span><span class="p">)</span>
+<span class="p">[</span><span class="n">log</span><span class="p">]</span> <span class="n">Doing</span> <span class="n">the</span> <span class="n">job</span> <span class="k">for</span> <span class="n">admin</span> <span class="ow">is</span> <span class="n">requested</span><span class="p">.</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">doing</span> <span class="n">the</span> <span class="n">job</span> <span class="k">for</span> <span class="n">admin</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">client</span><span class="p">(</span><span class="n">proxy</span><span class="p">,</span> <span class="s">'anonymous'</span><span class="p">)</span>
+<span class="p">[</span><span class="n">log</span><span class="p">]</span> <span class="n">Doing</span> <span class="n">the</span> <span class="n">job</span> <span class="k">for</span> <span class="n">anonymous</span> <span class="ow">is</span> <span class="n">requested</span><span class="p">.</span>
+<span class="p">[</span><span class="n">log</span><span class="p">]</span> <span class="n">I</span> <span class="n">can</span> <span class="n">do</span> <span class="n">the</span> <span class="n">job</span> <span class="n">just</span> <span class="k">for</span> <span class="sb">`admins`</span><span class="p">.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">client</span><span class="p">(</span><span class="n">real_subject</span><span class="p">,</span> <span class="s">'admin'</span><span class="p">)</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">doing</span> <span class="n">the</span> <span class="n">job</span> <span class="k">for</span> <span class="n">admin</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">client</span><span class="p">(</span><span class="n">real_subject</span><span class="p">,</span> <span class="s">'anonymous'</span><span class="p">)</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">doing</span> <span class="n">the</span> <span class="n">job</span> <span class="k">for</span> <span class="n">anonymous</span>
+</code></pre></div></div>
 
 <h2 id="поведенческие-паттерны">Поведенческие паттерны</h2>
 
@@ -407,31 +858,210 @@
 
 <p>Продолжимть выполнение операций обратным вызовом следующего метода</p>
 
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/behavioral/chaining_method.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action</span>
+
+    <span class="k">def</span> <span class="nf">do_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Action</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">action</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">" "</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">action</span>
+
+
+<span class="k">class</span> <span class="nc">Action</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">amount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Action</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">" "</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"then stop"</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">move</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span><span class="s">'move'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">'Jack'</span><span class="p">,</span> <span class="n">move</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">person</span><span class="p">.</span><span class="n">do_action</span><span class="p">().</span><span class="n">amount</span><span class="p">(</span><span class="s">'5m'</span><span class="p">).</span><span class="n">stop</span><span class="p">()</span>
+<span class="n">Jack</span> <span class="n">move</span> <span class="mi">5</span><span class="n">m</span> <span class="n">then</span> <span class="n">stop</span>
+</code></pre></div></div>
+
 <h3 id="chain-of-responsibility">Chain of responsibility</h3>
 
 <p>Цепочка последовательнывх обработчиков. (if… elif…elif…else)</p>
 
 <p>Блоки могут быть переставлены реконфигурированы во время выполнения. Отделяет отправителя запроса от принимающего. Принимающий знает только последнего отправителя.</p>
 
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/behavioral/chain_of_responsibility.py">Пример</a></p>
+
 <h3 id="catalog">Catalog</h3>
 
 <p>Обобщенный метод вызывает специальные методы, основываясь на параметре состояния.</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/behavioral/catalog.py">Пример (и примеры других реализаций)</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Catalog</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_static_method_choices</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">"param_value_1"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">_static_method_1</span><span class="p">,</span>
+            <span class="s">"param_value_2"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">_static_method_2</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># simple test to validate param value
+</span>        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">_static_method_choices</span><span class="p">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">param</span> <span class="o">=</span> <span class="n">param</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">f"Invalid Value for Param: </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">_static_method_1</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"executed method 1!"</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">_static_method_2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"executed method 2!"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">main_method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_static_method_choices</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">param</span><span class="p">]()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">(</span><span class="s">'param_value_2'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">test</span><span class="p">.</span><span class="n">main_method</span><span class="p">()</span>
+<span class="n">executed</span> <span class="n">method</span> <span class="mi">2</span><span class="err">!</span>
+</code></pre></div></div>
 
 <h3 id="command">Command</h3>
 
 <p>Создаем бандл из аргументов и методов для вызова позже.</p>
 
-<p>Отделяет объект, выдающий задачу от того, кто знает как ее сделать. Пример - пункты в меню, вызывающие один и тот же метод при нажатии.</p>
+<p>Отделяет объект, выдающий задачу от того, кто знает как ее сделать.</p>
+
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/behavioral/command.py">Пример</a> - пункты в меню, вызывающие один и тот же метод при нажатии.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+
+<span class="k">class</span> <span class="nc">HideFileCommand</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c1"># an array of files hidden, to undo them as needed
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_hidden_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"hiding </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_hidden_files</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_hidden_files</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"un-hiding </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">DeleteFileCommand</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c1"># an array of deleted files, to undo them as needed
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_deleted_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"deleting </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_deleted_files</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_deleted_files</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"restoring </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MenuItem</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">HideFileCommand</span><span class="p">,</span> <span class="n">DeleteFileCommand</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
+
+    <span class="k">def</span> <span class="nf">on_do_press</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_command</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_undo_press</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_command</span><span class="p">.</span><span class="n">undo</span><span class="p">()</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">item1</span> <span class="o">=</span> <span class="n">MenuItem</span><span class="p">(</span><span class="n">DeleteFileCommand</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">item2</span> <span class="o">=</span> <span class="n">MenuItem</span><span class="p">(</span><span class="n">HideFileCommand</span><span class="p">())</span>
+<span class="c1"># create a file named `test-file` to work with
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">test_file_name</span> <span class="o">=</span> <span class="s">'test-file'</span>
+<span class="c1"># deleting `test-file`
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">item1</span><span class="p">.</span><span class="n">on_do_press</span><span class="p">(</span><span class="n">test_file_name</span><span class="p">)</span>
+<span class="n">deleting</span> <span class="n">test</span><span class="o">-</span><span class="nb">file</span>
+<span class="c1"># restoring `test-file`
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">item1</span><span class="p">.</span><span class="n">on_undo_press</span><span class="p">()</span>
+<span class="n">restoring</span> <span class="n">test</span><span class="o">-</span><span class="nb">file</span>
+<span class="c1"># hiding `test-file`
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">item2</span><span class="p">.</span><span class="n">on_do_press</span><span class="p">(</span><span class="n">test_file_name</span><span class="p">)</span>
+<span class="n">hiding</span> <span class="n">test</span><span class="o">-</span><span class="nb">file</span>
+<span class="c1"># un-hiding `test-file`
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">item2</span><span class="p">.</span><span class="n">on_undo_press</span><span class="p">()</span>
+<span class="n">un</span><span class="o">-</span><span class="n">hiding</span> <span class="n">test</span><span class="o">-</span><span class="nb">file</span>
+</code></pre></div></div>
 
 <h3 id="iterator">Iterator</h3>
 
 <p>Пройти через контейнер и получить доступ к его элементам</p>
 
+<p>В python итераторы реализуются на уровне маг.методов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Count</span><span class="p">:</span>
+    <span class="s">"""Iterator that counts upward forever"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">num</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">num</span>
+</code></pre></div></div>
+
+<p>смотри <a href="https://github.com/faif/python-patterns/blob/master/patterns/behavioral/iterator_alt.py">другой пример</a></p>
+
 <h3 id="mediator">Mediator</h3>
 
-<p>Соединяет другие объектыф в одном объекте и действует как прокси. Сокращает чяисло связей в коде.</p>
+<p>Соединяет другие объекты в одном объекте и действует как прокси. Сокращает число связей в коде.</p>
 
-<h3 id="memnento">Memnento</h3>
+<p><a href="https://github.com/faif/python-patterns/blob/master/patterns/behavioral/mediator.py">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ChatRoom</span><span class="p">:</span>
+    <span class="s">"""Mediator class"""</span>
+
+    <span class="k">def</span> <span class="nf">display_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">User</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"[</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s"> says]: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="s">"""A class whose instances want to interact with each other"""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">chat_room</span> <span class="o">=</span> <span class="n">ChatRoom</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">chat_room</span><span class="p">.</span><span class="n">display_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">name</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">molly</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s">'Molly'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mark</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s">'Mark'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ethan</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s">'Ethan'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">molly</span><span class="p">.</span><span class="n">say</span><span class="p">(</span><span class="s">"Hi Team! Meeting at 3 PM today."</span><span class="p">)</span>
+<span class="p">[</span><span class="n">Molly</span> <span class="n">says</span><span class="p">]:</span> <span class="n">Hi</span> <span class="n">Team</span><span class="err">!</span> <span class="n">Meeting</span> <span class="n">at</span> <span class="mi">3</span> <span class="n">PM</span> <span class="n">today</span><span class="p">.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mark</span><span class="p">.</span><span class="n">say</span><span class="p">(</span><span class="s">"Roger that!"</span><span class="p">)</span>
+<span class="p">[</span><span class="n">Mark</span> <span class="n">says</span><span class="p">]:</span> <span class="n">Roger</span> <span class="n">that</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ethan</span><span class="p">.</span><span class="n">say</span><span class="p">(</span><span class="s">"Alright."</span><span class="p">)</span>
+<span class="p">[</span><span class="n">Ethan</span> <span class="n">says</span><span class="p">]:</span> <span class="n">Alright</span><span class="p">.</span>
+</code></pre></div></div>
+
+<h3 id="memento">Memento</h3>
 
 <p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
 
