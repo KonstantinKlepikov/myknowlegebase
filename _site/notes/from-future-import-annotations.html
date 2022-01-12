@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Python sorting | My knowlege base</title>
+<title>From future import annotations | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Python sorting" />
+<meta property="og:title" content="From future import annotations" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Методы и практики ссортировки в python" />
-<meta property="og:description" content="Методы и практики ссортировки в python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-sorting.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-sorting.html" />
+<meta name="description" content="Отложенная аннотация python" />
+<meta property="og:description" content="Отложенная аннотация python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/from-future-import-annotations.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/from-future-import-annotations.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-sorting.html","headline":"Python sorting","description":"Методы и практики ссортировки в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/from-future-import-annotations.html","headline":"From future import annotations","description":"Отложенная аннотация python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,11 +83,34 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="python-sorting">Python sorting</h1>
+      <h1 id="from-future-import-annotations">From future import annotations</h1>
 
-<p><a href="https://docs.python.org/3/howto/sorting.html#sortinghowto">Статья в документации</a></p>
+<p>Объясняю значение <code class="language-plaintext highlighter-rouge">from __future__ import annotations</code></p>
 
-<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</p>
+<p>Функция <code class="language-plaintext highlighter-rouge">annotations</code> относится к PEP 563 - речь идет об Отложенной оценке аннотаций. Это усовершенствование существующей функции аннотаций, которая изначально была введена в python 3.0 и переопределена для подсказок типа в python 3.5</p>
+
+<p>Поскольку это изменение нарушает совместимость, новое поведение должно быть включено для каждого модуля в Python3.7+, подразумевающего отложенную аннотацию. Необходимо использовать <code class="language-plaintext highlighter-rouge">from __future__ import annotations</code>. Такое поведение является поведением по умолчанию начиная Python 3.10</p>
+
+<p>Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">A</span><span class="p">:</span> <span class="c1"># NameError: name 'A' is not defined
+</span>        <span class="k">pass</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">A</span><span class="p">:</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
+  <li>[<a href="python-patterns" title="Python patterns">python-patterns</a>]</li>
+  <li>[<a href="type-annotation" title="Анотация типов в python">type-annotation</a>]</li>
+  <li>[<a href="typing" title="Typing">typing</a>]</li>
+</ul>
 
 
 

@@ -1,9 +1,62 @@
 ---
 description: Объектные паттерны в python
+tags: python-standart-library
 ---
 # Python patterns
 
 Примеры кода и тесты, демонстрирующие работу паттернов, можно найти [в этом репозитории](https://github.com/faif/python-patterns)
+
+В ряде примеров можно встретить конструкцию `from __future__ import annotations`. Для чего это используется смотри тут: [[from-future-import-annotations]]. Больше про аннотации читай в [[type-annotation]] и [[typing]]
+
+## Delegation
+
+Здесь делегейтору передается делегируемый экземпляр клесса, обрабатывающий запрос. Внутри делегатора мы получаем атрибуты делегируемого класса и реализуем новое поведение для них.
+
+```python
+from __future__ import annotations
+
+from typing import Any, Callable
+
+
+class Delegator:
+
+    def __init__(self, delegate: Delegate):
+        self.delegate = delegate
+
+    def __getattr__(self, name: str) -> Any | Callable:
+        attr = getattr(self.delegate, name)
+
+        if not callable(attr):
+            return attr
+
+        def wrapper(*args, **kwargs):
+            return attr(*args, **kwargs)
+
+        return wrapper
+
+
+class Delegate:
+    def __init__(self):
+        self.p1 = 123
+
+    def do_something(self, something: str) -> str:
+        return f"Doing {something}"
+
+
+>>> delegator = Delegator(Delegate())
+>>> delegator.p1
+123
+>>> delegator.p2
+Traceback (most recent call last):
+...
+AttributeError: 'Delegate' object has no attribute 'p2'
+>>> delegator.do_something("nothing")
+'Doing nothing'
+>>> delegator.do_anything()
+Traceback (most recent call last):
+...
+AttributeError: 'Delegate' object has no attribute 'do_anything'
+```
 
 ## Порождающие паттерны
 
@@ -235,6 +288,7 @@ if not sample_queue.empty():
 [Пример](https://github.com/faif/python-patterns/blob/master/patterns/creational/prototype.py)
 
 ```python
+from __future__ import annotations
 from typing import Any
 
 
@@ -792,6 +846,9 @@ I am doing the job for anonymous
 [Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/chaining_method.py)
 
 ```python
+from __future__ import annotations
+
+
 class Person:
     def __init__(self, name: str, action: Action) -> None:
         self.name = name
@@ -965,6 +1022,9 @@ class Count:
 [Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/mediator.py)
 
 ```python
+from __future__ import annotations
+
+
 class ChatRoom:
     """Mediator class"""
 
@@ -999,10 +1059,687 @@ class User:
 
 ### Memento
 
+Создает вложенный объект (как правило замыкание) - токен, который можно использовать для возврата другого объекта к предыдущему состоянию. [Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/memento.py)
+
+### Observer (наблюдатель)
+
+Обеспечивает обратный вызов для уведомления о событиях
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/observer.py)
+
+```python
+from __future__ import annotations
+from contextlib import suppress
+from typing import Protocol
+
+
+# define a generic observer type
+class Observer(Protocol):
+    def update(self, subject: Subject) -> None:
+        pass
+
+
+class Subject:
+    def __init__(self) -> None:
+        self._observers: list[Observer] = []
+
+    def attach(self, observer: Observer) -> None:
+        if observer not in self._observers:
+            self._observers.append(observer)
+
+    def detach(self, observer: Observer) -> None:
+        with suppress(ValueError):
+            self._observers.remove(observer)
+
+    def notify(self, modifier: Observer | None = None) -> None:
+        for observer in self._observers:
+            if modifier != observer:
+                observer.update(self)
+
+
+class Data(Subject):
+    def __init__(self, name: str = "") -> None:
+        super().__init__()
+        self.name = name
+        self._data = 0
+
+    @property
+    def data(self) -> int:
+        return self._data
+
+    @data.setter
+    def data(self, value: int) -> None:
+        self._data = value
+        self.notify()
+
+
+class HexViewer:
+    def update(self, subject: Data) -> None:
+        print(f"HexViewer: Subject {subject.name} has data 0x{subject.data:x}")
+
+
+class DecimalViewer:
+    def update(self, subject: Data) -> None:
+        print(f"DecimalViewer: Subject {subject.name} has data {subject.data}")
+
+
+>>> data1 = Data('Data 1')
+>>> data2 = Data('Data 2')
+>>> view1 = DecimalViewer()
+>>> view2 = HexViewer()
+>>> data1.attach(view1)
+>>> data1.attach(view2)
+>>> data2.attach(view2)
+>>> data2.attach(view1)
+>>> data1.data = 10
+DecimalViewer: Subject Data 1 has data 10
+HexViewer: Subject Data 1 has data 0xa
+>>> data2.data = 15
+HexViewer: Subject Data 2 has data 0xf
+DecimalViewer: Subject Data 2 has data 15
+>>> data1.data = 3
+DecimalViewer: Subject Data 1 has data 3
+HexViewer: Subject Data 1 has data 0x3
+>>> data2.data = 5
+HexViewer: Subject Data 2 has data 0x5
+DecimalViewer: Subject Data 2 has data 5
+# Detach HexViewer from data1 and data2
+>>> data1.detach(view2)
+>>> data2.detach(view2)
+>>> data1.data = 10
+DecimalViewer: Subject Data 1 has data 10
+>>> data2.data = 15
+DecimalViewer: Subject Data 2 has data 15
+```
+
+### Publish subscribe
+
+Источник данных аккумулирует и рассылает данные для неопределенного круга подписчиков
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/publish_subscribe.py)
+
+```python
+class Provider:
+    def __init__(self):
+        self.msg_queue = []
+        self.subscribers = {}
+
+    def notify(self, msg):
+        self.msg_queue.append(msg)
+
+    def subscribe(self, msg, subscriber):
+        self.subscribers.setdefault(msg, []).append(subscriber)
+
+    def unsubscribe(self, msg, subscriber):
+        self.subscribers[msg].remove(subscriber)
+
+    def update(self):
+        for msg in self.msg_queue:
+            for sub in self.subscribers.get(msg, []):
+                sub.run(msg)
+        self.msg_queue = []
+
+
+class Publisher:
+    def __init__(self, msg_center):
+        self.provider = msg_center
+
+    def publish(self, msg):
+        self.provider.notify(msg)
+
+
+class Subscriber:
+    def __init__(self, name, msg_center):
+        self.name = name
+        self.provider = msg_center
+
+    def subscribe(self, msg):
+        self.provider.subscribe(msg, self)
+
+    def unsubscribe(self, msg):
+        self.provider.unsubscribe(msg, self)
+
+    def run(self, msg):
+        print(f"{self.name} got {msg}")
+
+
+>>> message_center = Provider()
+>>> fftv = Publisher(message_center)
+>>> jim = Subscriber("jim", message_center)
+>>> jim.subscribe("cartoon")
+>>> jack = Subscriber("jack", message_center)
+>>> jack.subscribe("music")
+>>> gee = Subscriber("gee", message_center)
+>>> gee.subscribe("movie")
+>>> vani = Subscriber("vani", message_center)
+>>> vani.subscribe("movie")
+>>> vani.unsubscribe("movie")
+# Note that no one subscribed to `ads`
+# and that vani changed their mind
+>>> fftv.publish("cartoon")
+>>> fftv.publish("music")
+>>> fftv.publish("ads")
+>>> fftv.publish("movie")
+>>> fftv.publish("cartoon")
+>>> fftv.publish("cartoon")
+>>> fftv.publish("movie")
+>>> fftv.publish("blank")
+>>> message_center.update()
+jim got cartoon
+jack got music
+gee got movie
+jim got cartoon
+jim got cartoon
+gee got movie
+```
+
+### Registry
+
+Позволяет отслеживать все подклассы исходного класса. Реализуется через метаклассы - смотри [[abc]]
+
+Пример
+
+```python
+class RegistryHolder(type):
+
+    REGISTRY = {}
+
+    def __new__(cls, name, bases, attrs):
+        new_cls = type.__new__(cls, name, bases, attrs)
+        """Here the name of the class is used as key but it could be any class
+        parameter.
+        """
+        cls.REGISTRY[new_cls.__name__] = new_cls
+        return new_cls
+
+    @classmethod
+    def get_registry(cls):
+        return dict(cls.REGISTRY)
+
+
+class BaseRegisteredClass(metaclass=RegistryHolder):
+    """Any class that will inherits from BaseRegisteredClass will be included
+    inside the dict RegistryHolder.REGISTRY, the key being the name of the
+    class and the associated value, the class itself.
+    """
+
+
+# Before subclassing
+>>> sorted(RegistryHolder.REGISTRY)
+['BaseRegisteredClass']
+>>> class ClassRegistree(BaseRegisteredClass):
+...    def __init__(self, *args, **kwargs):
+...        pass
+# After subclassing
+>>> sorted(RegistryHolder.REGISTRY)
+['BaseRegisteredClass', 'ClassRegistree']
+```
+
+### Specification
+
+Бизнес логика может быть повторно использована с помощью рекомбенации и булевой логики.
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/specification.py) реализуется чсерез [[abc]]
+
+### State
+
+Реализация логики в виде дискретного числа потенциальных состояний и следующего состояния, в которое можно перейти.
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/state.py)
+
+```python
+class State:
+    """Base state. This is to share functionality"""
+
+    def scan(self):
+        """Scan the dial to the next station"""
+        self.pos += 1
+        if self.pos == len(self.stations):
+            self.pos = 0
+        print(f"Scanning... Station is {self.stations[self.pos]} {self.name}")
+
+
+class AmState(State):
+    def __init__(self, radio):
+        self.radio = radio
+        self.stations = ["1250", "1380", "1510"]
+        self.pos = 0
+        self.name = "AM"
+
+    def toggle_amfm(self):
+        print("Switching to FM")
+        self.radio.state = self.radio.fmstate
+
+
+class FmState(State):
+    def __init__(self, radio):
+        self.radio = radio
+        self.stations = ["81.3", "89.1", "103.9"]
+        self.pos = 0
+        self.name = "FM"
+
+    def toggle_amfm(self):
+        print("Switching to AM")
+        self.radio.state = self.radio.amstate
+
+
+class Radio:
+    """A radio. It has a scan button, and an AM/FM toggle switch."""
+
+    def __init__(self):
+        """We have an AM state and an FM state"""
+        self.amstate = AmState(self)
+        self.fmstate = FmState(self)
+        self.state = self.amstate
+
+    def toggle_amfm(self):
+        self.state.toggle_amfm()
+
+    def scan(self):
+        self.state.scan()
+
+
+>>> radio = Radio()
+>>> actions = [radio.scan] * 2 + [radio.toggle_amfm] + [radio.scan] * 2
+>>> actions *= 2
+
+>>> for action in actions:
+...    action()
+Scanning... Station is 1380 AM
+Scanning... Station is 1510 AM
+Switching to FM
+Scanning... Station is 89.1 FM
+Scanning... Station is 103.9 FM
+Scanning... Station is 81.3 FM
+Scanning... Station is 89.1 FM
+Switching to AM
+Scanning... Station is 1250 AM
+Scanning... Station is 1380 AM
+```
+
+Маленькая ремарка: на мой взгляд этот паттерн и несколько аналогичных вышеобозначенных, нежизнеспособны в python по ряду причин:
+
+- громоздкость
+- росто сложности по мере роста числа реализаций
+- плохая передача/наследование структурной информации между объектами на уровне кода (потребуется значительный объем работы для того, чтобы разобраться как это устроено). Особенно это заметно в данном примере
+
+### Strategy
+
+Реализует выбор операций над одними и теми же данными. Определяет семейство алгоритмов, инкапсулирует каждый из них и делает их взаимозаменяемыми. Стратегия позволяет алгоритму изменяться независимо от клиентов, которые его используют.
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/strategy.py). В данном примере реализован класс-валидатор и несколько дисконтных стратегий. Мы валидируем применеение стратегий, чтобы не допустить непримлемое снижение цены.
+
+```python
+from __future__ import annotations
+from typing import Callable
+
+
+class DiscountStrategyValidator:  # Descriptor class for check perform
+    @staticmethod
+    def validate(obj: Order, value: Callable) -> bool:
+        try:
+            if obj.price - value(obj) < 0:
+                raise ValueError(
+                    f"Discount cannot be applied due to negative price resulting. {value.__name__}"
+                )
+        except ValueError as ex:
+            print(str(ex))
+            return False
+        else:
+            return True
+
+    def __set_name__(self, owner, name: str) -> None:
+        self.private_name = f"_{name}"
+
+    def __set__(self, obj: Order, value: Callable = None) -> None:
+        if value and self.validate(obj, value):
+            setattr(obj, self.private_name, value)
+        else:
+            setattr(obj, self.private_name, None)
+
+    def __get__(self, obj: object, objtype: type = None):
+        return getattr(obj, self.private_name)
+
+
+class Order:
+    discount_strategy = DiscountStrategyValidator()
+
+    def __init__(self, price: float, discount_strategy: Callable = None) -> None:
+        self.price: float = price
+        self.discount_strategy = discount_strategy
+
+    def apply_discount(self) -> float:
+        if self.discount_strategy:
+            discount = self.discount_strategy(self)
+        else:
+            discount = 0
+
+        return self.price - discount
+
+    def __repr__(self) -> str:
+        return f"<Order price: {self.price} with discount strategy: {getattr(self.discount_strategy,'__name__',None)}>"
+
+
+def ten_percent_discount(order: Order) -> float:
+    return order.price * 0.10
+
+
+def on_sale_discount(order: Order) -> float:
+    return order.price * 0.25 + 20
+
+
+>>> order = Order(100, discount_strategy=ten_percent_discount)
+>>> print(order)
+<Order price: 100 with discount strategy: ten_percent_discount>
+>>> print(order.apply_discount())
+90.0
+>>> order = Order(100, discount_strategy=on_sale_discount)
+>>> print(order)
+<Order price: 100 with discount strategy: on_sale_discount>
+>>> print(order.apply_discount())
+55.0
+>>> order = Order(10, discount_strategy=on_sale_discount)
+Discount cannot be applied due to negative price resulting. on_sale_discount
+>>> print(order)
+<Order price: 10 with discount strategy: None>
+```
+
+В данном примере реализован дескриптор (смотри [[python-descriptors]]).  `__set_name__` вызывается сразу после того, как определен класс-владелец. Затем, при создании экземпляра класса владельца функция расчета скидки вызывается первый раз, чтобы провалидировать ее параметры валидатором дескриптора и сохранить в дескрипторе объект функции для дальнейшего вызова. При вызове метода `apply_discount()` мы обращаемся к дескриптору, чтобы применить скидку или не сделать ничего.
+
+### Template
+
+Объект определяет структуру и принимает подключаемые компоненты
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/template.py)
+
+```python
+def get_text():
+    return "plain-text"
+
+
+def get_pdf():
+    return "pdf"
+
+
+def get_csv():
+    return "csv"
+
+
+def convert_to_text(data):
+    print("[CONVERT]")
+    return f"{data} as text"
+
+
+def saver():
+    print("[SAVE]")
+
+
+def template_function(getter, converter=False, to_save=False):
+    data = getter()
+    print(f"Got `{data}`")
+
+    if len(data) <= 3 and converter:
+        data = converter(data)
+    else:
+        print("Skip conversion")
+
+    if to_save:
+        saver()
+
+    print(f"`{data}` was processed")
+
+
+>>> template_function(get_text, to_save=True)
+Got `plain-text`
+Skip conversion
+[SAVE]
+`plain-text` was processed
+>>> template_function(get_pdf, converter=convert_to_text)
+Got `pdf`
+[CONVERT]
+`pdf as text` was processed
+>>> template_function(get_csv, to_save=True)
+Got `csv`
+Skip conversion
+[SAVE]
+`csv` was processed
+```
+
+### Visitor (посетитель)
+
+Реализует обратный вызов для всех объектов коллекции
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/behavioral/visitor.py)
+
+```python
+class Node:
+    pass
+
+
+class A(Node):
+    pass
+
+
+class B(Node):
+    pass
+
+
+class C(A, B):
+    pass
+
+
+class Visitor:
+    def visit(self, node, *args, **kwargs):
+        meth = None
+        for cls in node.__class__.__mro__:
+            meth_name = "visit_" + cls.__name__
+            meth = getattr(self, meth_name, None)
+            if meth:
+                break
+
+        if not meth:
+            meth = self.generic_visit
+        return meth(node, *args, **kwargs)
+
+    def generic_visit(self, node, *args, **kwargs):
+        print("generic_visit " + node.__class__.__name__)
+
+    def visit_B(self, node, *args, **kwargs):
+        print("visit_B " + node.__class__.__name__)
+
+
+>>> a, b, c = A(), B(), C()
+>>> visitor = Visitor()
+>>> visitor.visit(a)
+generic_visit A
+>>> visitor.visit(b)
+visit_B B
+>>> visitor.visit(c)
+visit_B C
+```
+
+## Другие паттерны
+
+### Три способа инъекции зависимостей
+
+Внедрение зависимостей — это метод, при котором один объект предоставляет зависимости (сервисы) другому объекту (клиенту). Это позволяет отделять объекты: нет необходимости изменять клиентский код если возникла потребность изменить код сервиса.
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/dependency_injection.py)
+
+```python
+import datetime
+from typing import Callable
+
+class ConstructorInjection:
+    def __init__(self, time_provider: Callable) -> None:
+        self.time_provider = time_provider
+
+    def get_current_time_as_html_fragment(self) -> str:
+        current_time = self.time_provider()
+        current_time_as_html_fragment = '<span class="tinyBoldText">{}</span>'.format(
+            current_time
+        )
+        return current_time_as_html_fragment
+
+
+class ParameterInjection:
+    def __init__(self) -> None:
+        pass
+
+    def get_current_time_as_html_fragment(self, time_provider: Callable) -> str:
+        current_time = time_provider()
+        current_time_as_html_fragment = '<span class="tinyBoldText">{}</span>'.format(
+            current_time
+        )
+        return current_time_as_html_fragment
+
+
+class SetterInjection:
+    """Setter Injection"""
+
+    def __init__(self) -> None:
+        pass
+
+    def set_time_provider(self, time_provider: Callable):
+        self.time_provider = time_provider
+
+    def get_current_time_as_html_fragment(self):
+        current_time = self.time_provider()
+        current_time_as_html_fragment = '<span class="tinyBoldText">{}</span>'.format(
+            current_time
+        )
+        return current_time_as_html_fragment
+
+
+def production_code_time_provider() -> str:
+    """
+    Production code version of the time provider (just a wrapper for formatting
+    datetime for this example).
+    """
+    current_time = datetime.datetime.now()
+    current_time_formatted = f"{current_time.hour}:{current_time.minute}"
+    return current_time_formatted
+
+
+def midnight_time_provider() -> str:
+    """Hard-coded stub"""
+    return "24:01"
+
+
+>>> time_with_ci1 = ConstructorInjection(midnight_time_provider)
+>>> time_with_ci1.get_current_time_as_html_fragment()
+'<span class="tinyBoldText">24:01</span>'
+>>> time_with_ci2 = ConstructorInjection(production_code_time_provider)
+>>> time_with_ci2.get_current_time_as_html_fragment()
+'<span class="tinyBoldText">...</span>'
+>>> time_with_pi = ParameterInjection()
+>>> time_with_pi.get_current_time_as_html_fragment(midnight_time_provider)
+'<span class="tinyBoldText">24:01</span>'
+>>> time_with_si = SetterInjection()
+>>> time_with_si.get_current_time_as_html_fragment()
+Traceback (most recent call last):
+...
+AttributeError: 'SetterInjection' object has no attribute 'time_provider'
+>>> time_with_si.set_time_provider(midnight_time_provider)
+>>> time_with_si.get_current_time_as_html_fragment()
+'<span class="tinyBoldText">24:01</span>'
+```
+
+### Blackboard
+
+В шаблоне Blackboard несколько специализированных подсистем (источников данных) собирают свои знания для построения, возможно, частичного или приблизительного решения. Таким образом, подсистемы работают вместе для решения проблемы, где решение представляет собой сумму решений подсистем. [Пример](https://github.com/faif/python-patterns/blob/master/patterns/other/blackboard.py)
+
+### graph search
+
+Варианты поиска путей в графе на оснвое поиска в глубину, а так-же кратчайшие пути через поиск в глубину и в ширину. [Пример](https://github.com/faif/python-patterns/blob/master/patterns/other/graph_search.py)
+
+```python
+
+class GraphSearch:
+
+    def __init__(self, graph):
+        self.graph = graph
+
+    def find_path_dfs(self, start, end, path=None):
+        path = path or []
+
+        path.append(start)
+        if start == end:
+            return path
+        for node in self.graph.get(start, []):
+            if node not in path:
+                newpath = self.find_path_dfs(node, end, path[:])
+                if newpath:
+                    return newpath
+
+    def find_all_paths_dfs(self, start, end, path=None):
+        path = path or []
+        path.append(start)
+        if start == end:
+            return [path]
+        paths = []
+        for node in self.graph.get(start, []):
+            if node not in path:
+                newpaths = self.find_all_paths_dfs(node, end, path[:])
+                paths.extend(newpaths)
+        return paths
+
+    def find_shortest_path_dfs(self, start, end, path=None):
+        path = path or []
+        path.append(start)
+
+        if start == end:
+            return path
+        shortest = None
+        for node in self.graph.get(start, []):
+            if node not in path:
+                newpath = self.find_shortest_path_dfs(node, end, path[:])
+                if newpath:
+                    if not shortest or len(newpath) < len(shortest):
+                        shortest = newpath
+        return shortest
+
+    def find_shortest_path_bfs(self, start, end):
+        queue = [start]
+        dist_to = {start: 0}
+        edge_to = {}
+
+        if start == end:
+            return queue
+
+        while len(queue):
+            value = queue.pop(0)
+            for node in self.graph[value]:
+                if node not in dist_to.keys():
+                    edge_to[node] = value
+                    dist_to[node] = dist_to[value] + 1
+                    queue.append(node)
+                    if end in edge_to.keys():
+                        path = []
+                        node = end
+                        while dist_to[node] != 0:
+                            path.insert(0, node)
+                            node = edge_to[node]
+                        path.insert(0, start)
+                        return 
+```
+
+### Hiearchical state machine
+
+[Пример](https://github.com/faif/python-patterns/blob/master/patterns/other/hsm/hsm.py)
+
 [[python-standart-library]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
+[from-future-import-annotations]: from-future-import-annotations "From future import annotations"
+[type-annotation]: type-annotation "Анотация типов в python"
+[typing]: typing "Typing"
+[abc]: abc "Abc"
 [abc]: abc "Abc"
 [python-decorator]: python-decorator "Python decorator"
+[abc]: abc "Abc"
+[abc]: abc "Abc"
+[abc]: abc "Abc"
+[python-descriptors]: python-descriptors "Python descriptors"
 [python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python - список заметок"
 [//end]: # "Autogenerated link references"

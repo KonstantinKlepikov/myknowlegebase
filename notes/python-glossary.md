@@ -223,7 +223,7 @@ def remove_gray_shades(colors: list[Color]) -> list[Color]:
 [python-datamodel]: ../lists/python-datamodel "Python datamodel"
 [type-annotation]: type-annotation "Анотация типов в python"
 [python-datamodel]: ../lists/python-datamodel "Python datamodel"
-[python-sorting]: python-sorting "Python-sorting"
+[python-sorting]: python-sorting "Python sorting"
 [python-namespaces]: python-namespaces "Python namespaces"
 [python-namespaces]: python-namespaces "Python namespaces"
 [type-annotation]: type-annotation "Анотация типов в python"

@@ -89,6 +89,313 @@
 
 <p><a href="https://docs.python.org/3/library/typing.html#module-typing">Ссылка на документацию</a></p>
 
+<h2 id="основные-принципы">Основные принципы</h2>
+
+<h3 id="aliaces"><a href="https://docs.python.org/3/library/typing.html#type-aliases">Aliaces</a></h3>
+
+<p>Псевдонимы служат для сокращения аннотирующих конструкций</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">scalar</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">vector</span><span class="p">:</span> <span class="n">Vector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">scalar</span> <span class="o">*</span> <span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="new-type"><a href="https://docs.python.org/3/library/typing.html#newtype">New Type</a></h3>
+
+<p>Специальная обертка, необходимая когда требуется новый тип, без затрат на создание класса</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NewType</span>
+
+<span class="n">UserId</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s">'UserId'</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">UserId</span><span class="p">):</span> <span class="p">...</span>
+
+<span class="n">get_user</span><span class="p">(</span><span class="n">UserId</span><span class="p">(</span><span class="mi">123456</span><span class="p">))</span> <span class="c1"># this is fine
+</span><span class="n">get_user</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span> <span class="c1"># that's an int, not a UserId
+</span>
+<span class="n">UserId</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span> <span class="o">+</span> <span class="mi">123456</span> <span class="c1"># fine, because UserId is a subclass of int
+</span></code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/58775376/15966204">Смотри подробнее на оверфло</a></p>
+
+<h3 id="callable"><a href="https://docs.python.org/3/library/typing.html#callable">Callable</a></h3>
+
+<p>Аннотация вызываемых объектов</p>
+
+<p><code class="language-plaintext highlighter-rouge">Callable[[Arg1Type, Arg2Type], ReturnType]</code> или так <code class="language-plaintext highlighter-rouge">Callable[..., ReturnType]</code></p>
+
+<p>Вызываемые объекты, которые принимают другие вызываемые объекты в качестве аргументов, могут указывать, что их типы параметров зависят друг от друга, используя <a href="https://docs.python.org/3/library/typing.html#typing.ParamSpec">ParamSpec</a>. Кроме того, если этот вызываемый объект добавляет или удаляет аргументы из других вызываемых объектов, может использоваться оператор <a href="https://docs.python.org/3/library/typing.html#typing.Concatenate">Concatenate</a>. Они принимают форму <code class="language-plaintext highlighter-rouge">Callable[ParamSpecVariable, ReturnType]</code> и <code class="language-plaintext highlighter-rouge">Callable[Concatenate[Arg1Type, Arg2Type, ..., ParamSpecVariable], ReturnType]</code> соответственно.</p>
+
+<h3 id="generics"><a href="https://docs.python.org/3/library/typing.html#generics">Generics</a></h3>
+
+<p>Поскольку информация о типах объектов, хранящихся в контейнерах, не может быть статически выведена универсальным способом, абстрактные базовые классы были расширены для поддержки обозначения ожидаемых типов для элементов контейнеров.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="k">def</span> <span class="nf">notify_by_email</span><span class="p">(</span><span class="n">employees</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Employee</span><span class="p">],</span>
+                    <span class="n">overrides</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span> <span class="p">...</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/typing.html#user-defined-generic-types">Пользователи могут определять собственные дженерики</a>, наследуясь от <code class="language-plaintext highlighter-rouge">Generic</code> с помощью <code class="language-plaintext highlighter-rouge">TypeVar</code></p>
+
+<h3 id="typevar"><a href="https://docs.python.org/3/library/typing.html#typing.TypeVar">TypeVar</a></h3>
+
+<p>Переменные типа позволяют ссылаться на один и тот же тип более одного раза, не указывая точно, какой это тип.</p>
+
+<p>У <code class="language-plaintext highlighter-rouge">TypeVar</code> есть еще несколько вариантов. Вы можете ограничить возможные значения, передав больше типов (например, <code class="language-plaintext highlighter-rouge">TypeVar(name, int, str)</code>), или вы можете указать граничное состояние, чтобы каждое значение переменной типа было подтипом этого типа (например, <code class="language-plaintext highlighter-rouge">TypeVar(name, bound=int)</code>). Кроме того, вы можете решить, является ли переменная типа ковариантной, контравариантной или ни той, ни другой при ее объявлении. По сути, это решает, когда подклассы или суперклассы могут использоваться вместо универсального типа.</p>
+
+<p>Без <code class="language-plaintext highlighter-rouge">TypeVar</code> не было бы хорошего способа реализовать следующий пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="c1"># Two type variables, named T and R
+</span><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">'T'</span><span class="p">)</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">'R'</span><span class="p">)</span>
+
+<span class="c1"># Put in a list of Ts and get out one T
+</span><span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span> <span class="p">...</span>
+
+<span class="c1"># Put in a T and an R, get back an R and a T
+</span><span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
+
+<span class="c1"># A simple generic class that holds a value of type T
+</span><span class="k">class</span> <span class="nc">ValueHolder</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">value</span>
+
+<span class="n">x</span><span class="p">:</span> <span class="n">ValueHolder</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValueHolder</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">y</span><span class="p">:</span> <span class="n">ValueHolder</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValueHolder</span><span class="p">(</span><span class="s">'abc'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Типичный пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">'T'</span><span class="p">)</span>  <span class="c1"># Can be anything
+</span><span class="n">A</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">'A'</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>  <span class="c1"># Must be str or bytes
+</span></code></pre></div></div>
+
+<h3 id="the-any-type"><a href="https://docs.python.org/3/library/typing.html#the-any-type">The Any type</a></h3>
+
+<p>Особым типом является <code class="language-plaintext highlighter-rouge">Any</code>. Средство проверки статического типа будет рассматривать каждый тип как совместимый с <code class="language-plaintext highlighter-rouge">Any</code>, а <code class="language-plaintext highlighter-rouge">Any</code> — как совместимый со всеми типами.</p>
+
+<h3 id="duck-typing"><a href="https://docs.python.org/3/library/typing.html#nominal-vs-structural-subtyping">Duck typing</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">typing</code> поддерживает утиную типизацию, что означает, что классы реализующие соответствующее поведение не обязаны наследоваться от всех классов, подразумеваемых в типизируемом.</p>
+
+<h2 id="специальные-типы-и-примитивы"><a href="https://docs.python.org/3/library/typing.html#special-typing-primitives">Специальные типы и примитивы</a></h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Any</code></li>
+  <li><code class="language-plaintext highlighter-rouge">NoReturn</code> специальный тип, указывающий, что функция никогда не возвращает значение</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NoReturn</span>
+
+<span class="k">def</span> <span class="nf">stop</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'no way'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">TypeAlias</code> Специальная аннотация для явного объявления алиаса</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeAlias</span>
+
+<span class="n">Factors</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Tuple</code> (<code class="language-plaintext highlighter-rouge">Tuple[int, float, str]</code>, <code class="language-plaintext highlighter-rouge">Tuple[()]</code>, <code class="language-plaintext highlighter-rouge">Tuple[int, ...].</code>)</li>
+  <li><code class="language-plaintext highlighter-rouge">Union</code> эквивалент <code class="language-plaintext highlighter-rouge">X | Y</code> (последний вариант рекомендуем)</li>
+</ul>
+
+<p>Нюансы реализации:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Union</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">==</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+<span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">==</span> <span class="nb">int</span>
+<span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">==</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">==</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span>
+<span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">==</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Optional</code> эквивалент <code class="language-plaintext highlighter-rouge">X | None</code> или <code class="language-plaintext highlighter-rouge">Union[X, None]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Callable</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Concatenate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Type(Generic[CT_co])</code>  Переменная, аннотированная с помощью C, может принимать значение типа C.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>         <span class="c1"># Has type 'int'
+</span><span class="n">b</span> <span class="o">=</span> <span class="nb">int</span>       <span class="c1"># Has type 'Type[int]'
+</span><span class="n">c</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>   <span class="c1"># Also has type 'Type[int]'
+</span></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Literal</code> указывает на один или несколько литералов</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">validate_simple</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="bp">True</span><span class="p">]:</span>  <span class="c1"># always returns True
+</span>    <span class="p">...</span>
+
+<span class="n">MODE</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s">'r'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">open_helper</span><span class="p">(</span><span class="nb">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">MODE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">open_helper</span><span class="p">(</span><span class="s">'/some/path'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>  <span class="c1"># Passes type check
+</span><span class="n">open_helper</span><span class="p">(</span><span class="s">'/other/path'</span><span class="p">,</span> <span class="s">'typo'</span><span class="p">)</span>  <span class="c1"># Error in type checker
+</span></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ClassVar</code> Разметка переменных класса</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Starship</span><span class="p">:</span>
+    <span class="n">stats</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># class variable
+</span>    <span class="n">damage</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>                     <span class="c1"># instance variable
+</span></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Final</code> указывает на то. что переменная не может быть переопределена в сабклассах</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MAX_SIZE</span><span class="p">:</span> <span class="n">Final</span> <span class="o">=</span> <span class="mi">9000</span>
+<span class="n">MAX_SIZE</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Error reported by type checker
+</span>
+<span class="k">class</span> <span class="nc">Connection</span><span class="p">:</span>
+    <span class="n">TIMEOUT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="k">class</span> <span class="nc">FastConnector</span><span class="p">(</span><span class="n">Connection</span><span class="p">):</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Error reported by type checker
+</span></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Annotated</code> анотация с помощью метаданных, например так: <code class="language-plaintext highlighter-rouge">Annotated[int, ValueRange(3, 10), ctype("char")]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">TypeGuard</code> Используется для аннотации возвращаемого типа с помощью определяемой пользователем guard функции, когда тип нельзя установить корректно на этапе объявления. <code class="language-plaintext highlighter-rouge">TypeGuard</code> принимает только один аргумент. Во время выполнения функции, помеченные таким образом, должны возвращать логическое значение. Добавлен в 3.10</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_str_list</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TypeGuard</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="s">'''Determines whether all objects in the list are strings'''</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">func1</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">is_str_list</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+        <span class="c1"># Type of ``val`` is narrowed to ``List[str]``.
+</span>        <span class="k">print</span><span class="p">(</span><span class="s">" "</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Type of ``val`` remains as ``List[object]``.
+</span>        <span class="k">print</span><span class="p">(</span><span class="s">"Not a list of strings!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="дженерики"><a href="https://docs.python.org/3/library/typing.html#building-generic-types">Дженерики</a></h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Generic</code></li>
+  <li><code class="language-plaintext highlighter-rouge">TypeVar</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ParamSpec</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ParamSpecArgs</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ParamSpecKwargs</code></li>
+  <li><code class="language-plaintext highlighter-rouge">AnyStr</code> эквивалент <code class="language-plaintext highlighter-rouge">TypeVar('AnyStr', str, bytes)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Protocol(Generic)</code> аннотирует проткол классов (поддерживает утиную типизацию в т.ч.)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Proto</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">meth</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="p">...</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">meth</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Proto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">meth</span><span class="p">()</span>
+
+<span class="n">func</span><span class="p">(</span><span class="n">C</span><span class="p">())</span>  <span class="c1"># Passes static type check
+</span></code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">runtime_checkable</code> рантайм проктол</li>
+</ul>
+
+<h2 id="другие-спецдирективы"><a href="https://docs.python.org/3/library/typing.html#other-special-directives">Другие спец.директивы</a></h2>
+
+<p>В данном разделе не конструкции аннотации, а специальные типы, использующие аннотацию.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">NamedTuple</code> поддерживающий аннотацию вариант <code class="language-plaintext highlighter-rouge">namedtuple</code></li>
+  <li><code class="language-plaintext highlighter-rouge">NewType</code></li>
+  <li><code class="language-plaintext highlighter-rouge">TypedDict</code> тип, поддерживающий аннотацию для словаря</li>
+</ul>
+
+<h2 id="коллекция-дженериков"><a href="https://docs.python.org/3/library/typing.html#generic-concrete-collections">Коллекция дженериков</a></h2>
+
+<p>Основные типы: <code class="language-plaintext highlighter-rouge">List</code>, <code class="language-plaintext highlighter-rouge">Dict</code>, <code class="language-plaintext highlighter-rouge">FrozenSet</code>, <code class="language-plaintext highlighter-rouge">Set</code></p>
+
+<p>Типы, поддерживающие модуль <code class="language-plaintext highlighter-rouge">collections</code>: <code class="language-plaintext highlighter-rouge">DefaultDict</code>, <code class="language-plaintext highlighter-rouge">OrderedDict</code>, <code class="language-plaintext highlighter-rouge">ChainMap</code>, <code class="language-plaintext highlighter-rouge">Counter</code>, <code class="language-plaintext highlighter-rouge">Deque</code> (смотри [<a href="deque" title="Deque - двухсторонние очереди">deque</a>], [<a href="chainmap" title="ChainMap">chainmap</a>], [<a href="counter" title="Counter - счетчик хешируемых объектов">counter</a>], [<a href="ordereddict" title="OrderedDict упорядоченный словарь с опцией сравнения по порядку">ordereddict</a>], [<a href="defaultdict" title="Defaultdict словарь с возвратом значения по умолчанию">defaultdict</a>])</p>
+
+<p><a href="https://docs.python.org/3/library/typing.html#other-concrete-types">Другие типы</a> (в основном депрекейтед)</p>
+
+<h2 id="abc"><a href="https://docs.python.org/3/library/typing.html#abstract-base-classes">ABC</a></h2>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/typing.html#corresponding-to-collections-in-collections-abc">связанные</a> с <code class="language-plaintext highlighter-rouge">collections.abc</code></li>
+  <li><a href="https://docs.python.org/3/library/typing.html#asynchronous-programming">асинхронные объекты</a></li>
+  <li><a href="https://docs.python.org/3/library/typing.html#context-manager-types">контекстные менеджеры</a></li>
+</ul>
+
+<h2 id="протоколы"><a href="https://docs.python.org/3/library/typing.html#protocols">Протоколы</a></h2>
+
+<h2 id="функции-и-декораторы"><a href="https://docs.python.org/3/library/typing.html#functions-and-decorators">Функции и декораторы</a></h2>
+
+<ul>
+  <li>cast(typ, val) приводит переменную к типу, без изменеения значения</li>
+  <li>@overload Декоратор @overload позволяет описывать функции и методы, поддерживающие различные комбинации типов аргументов. За серией декорированных @overload определений должно следовать ровно одно недекорированное @overload определение</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">overload</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+<span class="o">@</span><span class="n">overload</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="p">...</span>
+<span class="o">@</span><span class="n">overload</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="p">...</span>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+    <span class="o">&lt;</span><span class="n">actual</span> <span class="n">implementation</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>@final запрет переопределения</li>
+  <li>@no_type_check указание на то, что анотации не определяют тип</li>
+  <li>@no_type_check_decorator декоратор декоратора</li>
+  <li>@type_check_only определяет, что функция или класс не доступны в рантайм</li>
+</ul>
+
+<h2 id="хелперы-интроспекции"><a href="https://docs.python.org/3/library/typing.html#introspection-helpers">Хелперы интроспекции</a></h2>
+
+<h2 id="type_checking"><a href="https://docs.python.org/3/library/typing.html#constant">TYPE_CHECKING</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">True</code> на првоерке и <code class="language-plaintext highlighter-rouge">False</code> в рантайм</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">expensive_mod</span>
+
+<span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="s">'expensive_mod.SomeType'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">local_var</span><span class="p">:</span> <span class="n">expensive_mod</span><span class="p">.</span><span class="n">AnotherType</span> <span class="o">=</span> <span class="n">other_fun</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
+  <li>[<a href="type-annotation" title="Анотация типов в python">type-annotation</a>]</li>
+  <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="python-patterns" title="Python patterns">python-patterns</a>]</li>
+  <li>[<a href="from-future-import-annotations" title="From future import annotations">from-future-import-annotations</a>]</li>
+</ul>
+
 
 
 <div class="additional-pad">

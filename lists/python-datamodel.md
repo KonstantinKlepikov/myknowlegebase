@@ -421,6 +421,8 @@ StopIteration
 
 При использовании аннотации типа, часто бывает полезно использовать параметризацию универсального типа с помощью квадратных скобок. Класс можно параметризовать, только если он определяет специальный метод класса `__class_getitem__()`
 
+Смотри [[typing]]
+
 ### [Эмуляция вызываемых объектов](https://docs.python.org/3/reference/datamodel.html#emulating-callable-objects)
 
 `__call__` вызывается, когда инстанс вызывается как функция, если этот метод определен
@@ -516,6 +518,7 @@ class AsyncContextManager:
 [python-namespaces]: ../notes/python-namespaces "Python namespaces"
 [2021-12-21-daily-note]: ../posts/2021-12-21-daily-note "Formatted string literals specificators"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"
+[typing]: ../notes/typing "Typing"
 [asyncio]: ../notes/asyncio "Asyncio"
 [python-standart-library]: python-standart-library "Стандартная библиотека python - список заметок"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"

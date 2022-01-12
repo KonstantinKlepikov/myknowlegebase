@@ -47,6 +47,8 @@ category: list
 - [[creation-of-list-matrix]]
 - [[full-path-to-current-directory]]
 - [[convert-dcit-to-dataclass]]
+- [[type-annotation]]
+- [[from-future-import-annotations]]
 - [[numpy]]
 - [[python-decorator]]
 - [[python-descriptors]]
@@ -95,10 +97,12 @@ category: list
 [creation-of-list-matrix]: ../notes/creation-of-list-matrix "Creation of list matrix"
 [full-path-to-current-directory]: full-path-to-current-directory "Full path to current directory"
 [convert-dcit-to-dataclass]: ../notes/convert-dcit-to-dataclass "Convert dict to dataclass or namedtuple"
+[type-annotation]: ../notes/type-annotation "Анотация типов в python"
+[from-future-import-annotations]: ../notes/from-future-import-annotations "From future import annotations"
 [numpy]: ../notes/numpy "Numpy"
 [python-decorator]: ../notes/python-decorator "Python decorator"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"
-[python-sorting]: ../notes/python-sorting "Python-sorting"
+[python-sorting]: ../notes/python-sorting "Python sorting"
 [2021-12-20-daily-note]: ../posts/2021-12-20-daily-note "Операторы сравнения, запуск модуля с аругментами и др.тонкости python"
 [2021-12-21-daily-note]: ../posts/2021-12-21-daily-note "Formatted string literals specificators"
 [try-except]: ../notes/try-except "Try-except-raise"

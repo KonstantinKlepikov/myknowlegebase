@@ -1,4 +1,8 @@
-# Python-sorting
+---
+description: Методы и практики ссортировки в python
+tags: python-standart-library
+---
+# Python sorting
 
 [Статья в документации](https://docs.python.org/3/howto/sorting.html#sortinghowto)
 
