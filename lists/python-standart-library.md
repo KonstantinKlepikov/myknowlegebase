@@ -39,6 +39,7 @@ category: list
 
 Смотри еще:
 
+- [[python-patterns]]
 - [[python-logging]]
 - [[feedparser]]
 - [[remove-dict-key-python]]
@@ -86,6 +87,7 @@ category: list
 [nets-with-python]: ../notes/nets-with-python "Nets and internet with python"
 [python-interptetator-and-env-utils]: ../notes/python-interptetator-and-env-utils "Утилиты взаимодействия с интерпретатором и окружением в python"
 [abc]: ../notes/abc "Abc"
+[python-patterns]: ../notes/python-patterns "Python patterns"
 [python-logging]: python-logging "Python-logging"
 [feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
