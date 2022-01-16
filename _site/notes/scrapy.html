@@ -85,6 +85,277 @@
 
       <h1 id="scrapy">Scrapy</h1>
 
+<p>Scrapy - это dысокоуровневый fcby[hjyysq фреймворк для web-скрапинга и краулинга на python</p>
+
+<p>Создание проекта: <code class="language-plaintext highlighter-rouge">scrapy startproject proj_name</code></p>
+
+<p>Результат:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proj_name/
+    scrapy.cfg            <span class="c"># deploy configuration file</span>
+
+    proj_name/            <span class="c"># project's Python module, you'll import your code from here</span>
+        __init__.py
+
+        items.py          <span class="c"># project items definition file</span>
+
+        middlewares.py    <span class="c"># project middlewares file</span>
+
+        pipelines.py      <span class="c"># project pipelines file</span>
+
+        settings.py       <span class="c"># project settings file</span>
+
+        spiders/          <span class="c"># a directory where you'll later put your spiders</span>
+            __init__.py
+</code></pre></div></div>
+
+<p>Краулер можно создать, наслудуясь от класса <code class="language-plaintext highlighter-rouge">Spider</code> в spiders/</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scrapy</span> <span class="kn">import</span> <span class="n">Spider</span>
+
+
+<span class="k">class</span> <span class="nc">QuotesSpider</span><span class="p">(</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">"quotes"</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">'http://quotes.toscrape.com/page/1/'</span><span class="p">,</span>
+        <span class="s">'http://quotes.toscrape.com/page/2/'</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">url</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s">f'quotes-</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s">.html'</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">body</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>АПИ scrapy активно использует колбеки (смотри [<a href="python-glossary" title="Python glossary">python-glossary</a>]). <code class="language-plaintext highlighter-rouge">parse()</code> метод будет вызываться для обработки каждого запроса URL-адресов, даже если мы явно не указали Scrapy делать это. Это происходит потому, что <code class="language-plaintext highlighter-rouge">parse()</code> это колбек по умолчанию, который вызывается для запросов без явно назначенного обратного вызова.</p>
+
+<p><code class="language-plaintext highlighter-rouge">name</code> и <code class="language-plaintext highlighter-rouge">start_urls</code> это определенные в АПИ дефолтные атрибуты класса. <code class="language-plaintext highlighter-rouge">start_urls</code> это аналог вот этого:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">'http://quotes.toscrape.com/page/1/'</span><span class="p">,</span>
+        <span class="s">'http://quotes.toscrape.com/page/2/'</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">parse</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В АПИ scrapy использщуются генераторы. За счет конструкции <code class="language-plaintext highlighter-rouge">yield</code> обеспечивается большинство операций извлечения контента из запросов, а за счет колбеков - вызов, в том числе рекурсивный, необходимых операций.</p>
+
+<p>В библиотеке реализован <a href="https://docs.scrapy.org/en/latest/topics/shell.html#topics-shell">собственный шел</a>, с помощью которого можно попробовать запросы или извлечение данных из объектов запроса, а так-же можно выполнить дебагинг. Пример ниже:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scrapy shell <span class="s1">'http://quotes.toscrape.com/page/1/'</span>
+
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.utils.log] INFO: Scrapy 2.5.1 started <span class="o">(</span>bot: scrapybot<span class="o">)</span>
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.utils.log] INFO: Versions: lxml 4.7.1.0, libxml2 2.9.12, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 21.7.0, Python 3.8.10 <span class="o">(</span>default, Jun  2 2021, 10:49:15<span class="o">)</span> - <span class="o">[</span>GCC 10.3.0], pyOpenSSL 21.0.0 <span class="o">(</span>OpenSSL 1.1.1m  14 Dec 2021<span class="o">)</span>, cryptography 36.0.1, Platform Linux-5.8.0-7630-generic-x86_64-with-glibc2.32
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.utils.log] DEBUG: Using reactor: twisted.internet.epollreactor.EPollReactor
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.crawler] INFO: Overridden settings:
+<span class="o">{</span><span class="s1">'DUPEFILTER_CLASS'</span>: <span class="s1">'scrapy.dupefilters.BaseDupeFilter'</span>,
+ <span class="s1">'LOGSTATS_INTERVAL'</span>: 0<span class="o">}</span>
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.extensions.telnet] INFO: Telnet Password: a6f662f302955377
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.middleware] INFO: Enabled extensions:
+<span class="o">[</span><span class="s1">'scrapy.extensions.corestats.CoreStats'</span>,
+ <span class="s1">'scrapy.extensions.telnet.TelnetConsole'</span>,
+ <span class="s1">'scrapy.extensions.memusage.MemoryUsage'</span><span class="o">]</span>
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.middleware] INFO: Enabled downloader middlewares:
+<span class="o">[</span><span class="s1">'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.retry.RetryMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.redirect.RedirectMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.cookies.CookiesMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware'</span>,
+ <span class="s1">'scrapy.downloadermiddlewares.stats.DownloaderStats'</span><span class="o">]</span>
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.middleware] INFO: Enabled spider middlewares:
+<span class="o">[</span><span class="s1">'scrapy.spidermiddlewares.httperror.HttpErrorMiddleware'</span>,
+ <span class="s1">'scrapy.spidermiddlewares.offsite.OffsiteMiddleware'</span>,
+ <span class="s1">'scrapy.spidermiddlewares.referer.RefererMiddleware'</span>,
+ <span class="s1">'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware'</span>,
+ <span class="s1">'scrapy.spidermiddlewares.depth.DepthMiddleware'</span><span class="o">]</span>
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.middleware] INFO: Enabled item pipelines:
+<span class="o">[]</span>
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2022-01-16 01:35:35 <span class="o">[</span>scrapy.core.engine] INFO: Spider opened
+2022-01-16 01:35:36 <span class="o">[</span>scrapy.core.engine] DEBUG: Crawled <span class="o">(</span>200<span class="o">)</span> &lt;GET http://quotes.toscrape.com/page/1/&gt; <span class="o">(</span>referer: None<span class="o">)</span>
+2022-01-16 01:35:36 <span class="o">[</span>asyncio] DEBUG: Using selector: EpollSelector
+<span class="o">[</span>s] Available Scrapy objects:
+<span class="o">[</span>s]   scrapy     scrapy module <span class="o">(</span>contains scrapy.Request, scrapy.Selector, etc<span class="o">)</span>
+<span class="o">[</span>s]   crawler    &lt;scrapy.crawler.Crawler object at 0x7ff2693c20a0&gt;
+<span class="o">[</span>s]   item       <span class="o">{}</span>
+<span class="o">[</span>s]   request    &lt;GET http://quotes.toscrape.com/page/1/&gt;
+<span class="o">[</span>s]   response   &lt;200 http://quotes.toscrape.com/page/1/&gt;
+<span class="o">[</span>s]   settings   &lt;scrapy.settings.Settings object at 0x7ff2693c0d90&gt;
+<span class="o">[</span>s]   spider     &lt;DefaultSpider <span class="s1">'default'</span> at 0x7ff269178dc0&gt;
+<span class="o">[</span>s] Useful shortcuts:
+<span class="o">[</span>s]   fetch<span class="o">(</span>url[, <span class="nv">redirect</span><span class="o">=</span>True]<span class="o">)</span> Fetch URL and update <span class="nb">local </span>objects <span class="o">(</span>by default, redirects are followed<span class="o">)</span>
+<span class="o">[</span>s]   fetch<span class="o">(</span>req<span class="o">)</span>                  Fetch a scrapy.Request and update <span class="nb">local </span>objects 
+<span class="o">[</span>s]   shelp<span class="o">()</span>           Shell <span class="nb">help</span> <span class="o">(</span>print this <span class="nb">help</span><span class="o">)</span>
+<span class="o">[</span>s]   view<span class="o">(</span>response<span class="o">)</span>    View response <span class="k">in </span>a browser
+2022-01-16 01:35:36 <span class="o">[</span>asyncio] DEBUG: Using selector: EpollSelector
+In <span class="o">[</span>1]: 
+</code></pre></div></div>
+
+<p>Для разбора html используются [<a href="css-selectors" title="Css-selectors">css-selectors</a>] и [<a href="xpath" title="XPath">xpath</a>]. При этом CSS позволяет реализовать навигацию по html, а XPath более функциональный разбор ( а именно извлечение контента). Фактически CSS транслируется в XPath.</p>
+
+<p>Пример извлечения данных с помощью селекторов:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scrapy</span> <span class="kn">import</span> <span class="n">Spider</span>
+
+
+<span class="k">class</span> <span class="nc">QuotesSpider</span><span class="p">(</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">"quotes"</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">'http://quotes.toscrape.com/page/1/'</span><span class="p">,</span>
+        <span class="s">'http://quotes.toscrape.com/page/2/'</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">quote</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'div.quote'</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">{</span>
+                <span class="s">'text'</span><span class="p">:</span> <span class="n">quote</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'span.text::text'</span><span class="p">).</span><span class="n">get</span><span class="p">(),</span>
+                <span class="s">'author'</span><span class="p">:</span> <span class="n">quote</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'small.author::text'</span><span class="p">).</span><span class="n">get</span><span class="p">(),</span>
+                <span class="s">'tags'</span><span class="p">:</span> <span class="n">quote</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'div.tags a.tag::text'</span><span class="p">).</span><span class="n">getall</span><span class="p">(),</span>
+            <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Результат:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2016-09-19 18:57:19 <span class="o">[</span>scrapy.core.scraper] DEBUG: Scraped from 
+&lt;200 http://quotes.toscrape.com/page/1/&gt;
+<span class="o">{</span><span class="s1">'tags'</span>: <span class="o">[</span><span class="s1">'life'</span>, <span class="s1">'love'</span><span class="o">]</span>, <span class="s1">'author'</span>: <span class="s1">'André Gide'</span>, 
+<span class="s1">'text'</span>: <span class="s1">'“It is better to be hated for what you are than to be loved for what you are not.”'</span><span class="o">}</span>
+2016-09-19 18:57:19 <span class="o">[</span>scrapy.core.scraper] DEBUG: Scraped from 
+&lt;200 http://quotes.toscrape.com/page/1/&gt;
+<span class="o">{</span><span class="s1">'tags'</span>: <span class="o">[</span><span class="s1">'edison'</span>, <span class="s1">'failure'</span>, <span class="s1">'inspirational'</span>, <span class="s1">'paraphrased'</span><span class="o">]</span>, <span class="s1">'author'</span>: <span class="s1">'Thomas A. Edison'</span>, 
+<span class="s1">'text'</span>: <span class="s2">"“I have not failed. I've just found 10,000 ways that won't work.”"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Сохранение данных реализовано через <a href="https://docs.scrapy.org/en/latest/topics/item-pipeline.html#topics-item-pipeline">Item Pipline</a>. Можно сохранять в <code class="language-plaintext highlighter-rouge">.json</code> или в базы данных, сохранять файлы или делать скриншоты. Особых огранисений нет, в основном используется для:</p>
+
+<ul>
+  <li>очистка HTML-данных</li>
+  <li>проверка очищенных данных (проверка того, что элементы содержат определенные поля)</li>
+  <li>проверка на наличие дубликатов (и удаление их)</li>
+  <li>сохранение очищенных элементов в базе данных или в виде файлов</li>
+</ul>
+
+<p>Пример сохранения в MongoDB:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pymongo</span>
+<span class="kn">from</span> <span class="nn">itemadapter</span> <span class="kn">import</span> <span class="n">ItemAdapter</span>
+
+<span class="k">class</span> <span class="nc">MongoPipeline</span><span class="p">:</span>
+
+    <span class="n">collection_name</span> <span class="o">=</span> <span class="s">'scrapy_items'</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mongo_uri</span><span class="p">,</span> <span class="n">mongo_db</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="n">mongo_uri</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">mongo_db</span> <span class="o">=</span> <span class="n">mongo_db</span>
+
+    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">from_crawler</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span>
+            <span class="n">mongo_uri</span><span class="o">=</span><span class="n">crawler</span><span class="p">.</span><span class="n">settings</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'MONGO_URI'</span><span class="p">),</span>
+            <span class="n">mongo_db</span><span class="o">=</span><span class="n">crawler</span><span class="p">.</span><span class="n">settings</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'MONGO_DATABASE'</span><span class="p">,</span> <span class="s">'items'</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">open_spider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">mongo_uri</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">client</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">mongo_db</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">close_spider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">db</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">collection_name</span><span class="p">].</span><span class="n">insert_one</span><span class="p">(</span><span class="n">ItemAdapter</span><span class="p">(</span><span class="n">item</span><span class="p">).</span><span class="n">asdict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">item</span>
+</code></pre></div></div>
+
+<p>Рекурсивный обход реализуется через колбеки. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scrapy</span> <span class="kn">import</span> <span class="n">Spider</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorSpider</span><span class="p">(</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">'author'</span>
+
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s">'http://quotes.toscrape.com/'</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">author_page_links</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'.author + a'</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="k">from</span> <span class="n">response</span><span class="p">.</span><span class="n">follow_all</span><span class="p">(</span><span class="n">author_page_links</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">parse_author</span><span class="p">)</span>
+
+        <span class="n">pagination_links</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'li.next a'</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="k">from</span> <span class="n">response</span><span class="p">.</span><span class="n">follow_all</span><span class="p">(</span><span class="n">pagination_links</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">parse</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse_author</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">extract_with_css</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="n">query</span><span class="p">).</span><span class="n">get</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s">''</span><span class="p">).</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">yield</span> <span class="p">{</span>
+            <span class="s">'name'</span><span class="p">:</span> <span class="n">extract_with_css</span><span class="p">(</span><span class="s">'h3.author-title::text'</span><span class="p">),</span>
+            <span class="s">'birthdate'</span><span class="p">:</span> <span class="n">extract_with_css</span><span class="p">(</span><span class="s">'.author-born-date::text'</span><span class="p">),</span>
+            <span class="s">'bio'</span><span class="p">:</span> <span class="n">extract_with_css</span><span class="p">(</span><span class="s">'.author-description::text'</span><span class="p">),</span>
+        <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Этот паук запустится с главной страницы, он будет переходить по всем ссылкам на страницы авторов, вызывая <code class="language-plaintext highlighter-rouge">parse_author</code> для каждого из них, а также ссылки пагинации с <code class="language-plaintext highlighter-rouge">parse</code> рекурсивно. В данном примере реализован шаблон запроса по селектору <code class="language-plaintext highlighter-rouge">extract_with_css</code> а колбеки мы передаем в качестве аргументов в <code class="language-plaintext highlighter-rouge">response.follow_all()</code>.</p>
+
+<p>Scrapy самостоятельно отфильтровывает повторяющиеся запросы к уже посещенным страницам (это можно настроить отдельно).</p>
+
+<h2 id="архитектура">Архитектура</h2>
+
+<p><img src="/myknowlegebase/attachments/2022-01-16-02-10-33.png" alt="Scrapy architecture" /></p>
+
+<ol>
+  <li>Engine получает первоначальные запросы на сканирование от Spider</li>
+  <li>Engine планирует запросы в Scheduler и запрашивает следующие запросы для сканирования</li>
+  <li>Scheduler возвращает следующие запросы движку</li>
+  <li>Engine отправляет запросы Downloader, проходя через ПО промежуточного слоя Downloader</li>
+  <li>Как только страница завершает загрузку, Downloader генерирует ответ (с этой страницей) и отправляет его в Engine, проходя через промежуточный смлой Downloader</li>
+  <li>Engine получает ответ от Downloader и отправляет его Spider для обработки, проходя через промежуточное слой Spider</li>
+  <li>Spider обрабатывает ответ и возвращает очищенные элементы и новые запросы в Engine, проходя через промежуточный слой Spider</li>
+  <li>Engine отправляет обработанные элементы в Item Pipelines, затем отправляет обработанные запросы планировщику и запрашивает возможные следующие запросы для сканирования.</li>
+  <li>Процесс повторяется (с шага 1) до тех пор, пока не закончатся запросы от Scheduler</li>
+</ol>
+
+<p>Engine отвечает за управление потоком данных между всеми компонентами системы и инициирование событий при выполнении определенных действий</p>
+
+<p>Scheduler получает запросы от движка и ставит их в очередь для передачи позже (также в движок), когда движок их запрашивает</p>
+
+<p>Downloader отвечает за получение веб-страниц и передачу их движку, который, в свою очередь, передает их в Spiders</p>
+
+<p>Spiders — это настраиваемые классы, написанные пользователями Scrapy для анализа ответов и извлечения из них элементов или дополнительных запросов</p>
+
+<p>Item Pipelines отвечает за обработку элементов после их извлечения (или очистки) пауками. Типичные задачи включают очистку, проверку и сохранение (например, сохранение элемента в базе данных)</p>
+
+<p>Промежуточный слой Downloader — это специальные перехватчики, которые находятся между движком и загрузчиком и обрабатывают запросы, когда они передаются от движка к загрузчику, и ответы, которые передаются от загрузчика к движку. Их надо использовать для следующих задач:</p>
+
+<ul>
+  <li>обрабатывать запрос непосредственно перед его отправкой загрузчику (т. е. прямо перед тем, как Scrapy отправит запрос на веб-сайт)</li>
+  <li>изменить полученный ответ перед передачей его пауку</li>
+  <li>отправить новый запрос вместо передачи полученного ответа пауку</li>
+  <li>передать ответ пауку, не загружая веб-страницу</li>
+  <li>отбрасывать некоторые запросы</li>
+</ul>
+
+<p>Промежуточный слой Spider — это специальные хуки, которые находятся между движком и пауками и могут обрабатывать ввод (ответы) и вывод паука (элементы и запросы). Их надо использовать для следующих задач:</p>
+
+<ul>
+  <li>постобработка колбеков паука - изменение/добавление/удаление запросов или элементов</li>
+  <li>постобработка start_requests</li>
+  <li>обрабатывать исключения пауков</li>
+  <li>вызывать errback вместо обратного вызова для некоторых запросов на основе содержимого ответа</li>
+</ul>
+
+<p>Network для скрапи написан на <a href="https://twistedmatrix.com/trac/">Twisted</a>, таким образом он является асинхронным (см. [<a href="asyncio" title="Asyncio">asyncio</a>])</p>
+
+<p>Ссылки на оригинальный материал: <a href="https://docs.scrapy.org/en/latest/intro/tutorial.html">один</a>, <a href="https://docs.scrapy.org/en/latest/topics/architecture.html">два</a></p>
+
 <p><a href="https://docs.scrapy.org/en/latest/index.html">Документация</a></p>
 
 <p>Смотри еще:</p>
