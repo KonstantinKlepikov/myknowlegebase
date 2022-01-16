@@ -358,6 +358,286 @@ In <span class="o">[</span>1]:
 
 <p><a href="https://docs.scrapy.org/en/latest/index.html">Документация</a></p>
 
+<h2 id="компоненты">Компоненты</h2>
+
+<h3 id="command-line-tool"><a href="https://docs.scrapy.org/en/latest/topics/commands.html">Command line tool</a></h3>
+
+<p>Конфиг устанавливается в <code class="language-plaintext highlighter-rouge">scrapy.cfg</code> в ini стиле</p>
+
+<p><code class="language-plaintext highlighter-rouge">scrapy --info</code> - доступные опции</p>
+
+<p><code class="language-plaintext highlighter-rouge">scrapy -h</code> все доступные команды</p>
+
+<p><a href="https://docs.scrapy.org/en/latest/topics/commands.html#available-tool-commands">Глобальные</a>:</p>
+
+<ul>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#startproject">startproject</a> создать новый проект</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#genspider">genspider</a> создать нового спайдера (опционально из темплейта <code class="language-plaintext highlighter-rouge">scrapy genspider [-t template] &lt;name&gt; &lt;domain&gt;</code>)</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#settings">settings</a></li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#runspider">runspider</a> Запустите автономный паук в файле Python, не создавая проект.</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#shell">shell</a> Запускает оболочку Scrapy для заданного URL-адреса (если он указан) или пуст, если URL-адрес не указан</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#fetch">fetch</a> Загружает указанный URL-адрес с помощью загрузчика Scrapy и записывает содержимое в стандартный вывод.</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#view">view</a> Запускает оболочку Scrapy для заданного URL-адреса (если он указан) или пустой, если URL-адрес не указан.</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#version">version</a></li>
+</ul>
+
+<p>Локальные (только для проекта):</p>
+
+<ul>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#crawl">crawl</a> запустить краулер</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#check">check</a> запустить проверку контрактов</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#list">list</a> список доступных спайдеров для проекта</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#edit">edit</a> малополезный доступ к редактору</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#parse">parse</a> Извлекает указанный URL-адрес и анализирует его с помощью паука, который его обрабатывает, используя метод, переданный с опцией <code class="language-plaintext highlighter-rouge">--callback</code>, или <code class="language-plaintext highlighter-rouge">parse</code>, если колбек не указан</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/commands.html#bench">bench</a> Быстрый бенчмарк-тест</li>
+</ul>
+
+<h3 id="spiders"><a href="https://docs.scrapy.org/en/latest/topics/spiders.html">Spiders</a></h3>
+
+<p>Пауки — это классы, которые определяют, как будет исследоваться определенный сайт (или группа сайтов), в том числе как выполнять сканирование (т. е. переход по ссылкам) и как извлекать структурированные данные.</p>
+
+<p>Для пауков цикл парсинга проходит примерно так: все начинается с создания начальных запросов для сканирования первых URL-адресов и указнияе функции обратного вызова, которая будет вызываться с ответом, полученным из этих запросов. Первые запросы для выполнения получаются путем вызова метода start_requests(), который (по умолчанию) генерирует запрос для URL-адресов, указанных в start_urls, и метода разбора в качестве функции обратного вызова.</p>
+
+<p>В функции обратного вызова анализируется ответ (веб-страница) и возвращаются объекты. объекты запросмов или итераторы объектов. Объекты запросов также могут содержать обратные вызовы (возможно, рекурсивные).</p>
+
+<p>При анализе содержимого страниц обычно используя селекторы (<strong>но вы также можете использовать [[BeautifulSoup]], lxml или любой другой механизм, который вы предпочитаете</strong>). Наконец, элементы, возвращаемые пауком, обычно сохраняются в базе данных (в каком-либо конвейере элементов) или записываются в файл с использованием Feed export. Несмотря на то, что этот цикл применим (более или менее) к любому типу пауков, существуют разные виды пауков по умолчанию, встроенные в Scrapy для разных целей</p>
+
+<p>Основной класс <a href="https://docs.scrapy.org/en/latest/topics/spiders.html#scrapy-spider">scrapy.Spider</a> Это самый простой паук, от которого наследуются все остальные пауки (включая пауков, поставляемых в комплекте с Scrapy). Никакого специального функционала он не предоставляет. Он просто предоставляет реализацию <code class="language-plaintext highlighter-rouge">start_requests()</code> по умолчанию, которая отправляет запросы из атрибута паука <code class="language-plaintext highlighter-rouge">start_urls</code> и вызывает анализ метода паука для каждого из полученных ответов.</p>
+
+<p>Атрибуты, котоыре можно определить для паука:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">name</code> - адишник, по которому scrapy находит паука</li>
+  <li><code class="language-plaintext highlighter-rouge">allowed_domains</code> - списко доменов, ограничивающих область поиска</li>
+  <li><code class="language-plaintext highlighter-rouge">start_urls</code> - список стартовых урлов краулера</li>
+  <li><code class="language-plaintext highlighter-rouge">custom_settings</code> - кастомные настройки краулера, переопределяющие настройки проекта. <a href="https://docs.scrapy.org/en/latest/topics/settings.html#topics-settings-ref">Есть набор готовых настроек</a></li>
+  <li><code class="language-plaintext highlighter-rouge">crawler</code> реализует связку с <a href="https://docs.scrapy.org/en/latest/topics/api.html#topics-api-crawler">АПИ scrapi</a></li>
+  <li><code class="language-plaintext highlighter-rouge">settings</code> настройки паука. Смотри <a href="https://docs.scrapy.org/en/latest/topics/settings.html#topics-settings">раздел настроек</a></li>
+  <li><code class="language-plaintext highlighter-rouge">logger</code> обычный python logger, который создается с атрибутом name. Смотри <a href="https://docs.scrapy.org/en/latest/topics/logging.html#topics-logging-from-spiders">про логирпование</a> в scrapy и [<a href="logging" title="Logging - основные принципы">logging</a>]</li>
+</ul>
+
+<p>Методы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">from_crawler(crawler, *args, **kwargs)</code> создает паука</li>
+  <li><code class="language-plaintext highlighter-rouge">start_requests()</code> Этот метод должен возвращать итерируемый объект с первым Requests для этого паука. Он вызывается Scrapy, когда паук запускается. Scrapy вызывает его только один раз, поэтому безопасно также реализовать <code class="language-plaintext highlighter-rouge">start_requests()</code> в качестве генератора через <code class="language-plaintext highlighter-rouge">yield</code></li>
+  <li><code class="language-plaintext highlighter-rouge">parse(response)</code> Это колбек по умолчанию, используемый Scrapy для обработки загруженных ответов, когда в их запросах не указан обратный вызов.</li>
+  <li><code class="language-plaintext highlighter-rouge">log(message[, level, component])</code> Обертка, которая отправляет сообщение журнала через регистратор Spider, нужна для обратной совместимости.</li>
+  <li><code class="language-plaintext highlighter-rouge">closed(reason)</code> вызывается для закрытия спайдера</li>
+</ul>
+
+<p>Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="k">class</span> <span class="nc">MySpider</span><span class="p">(</span><span class="n">scrapy</span><span class="p">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">'example.com'</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s">'example.com'</span><span class="p">]</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">'http://www.example.com/1.html'</span><span class="p">,</span>
+        <span class="s">'http://www.example.com/2.html'</span><span class="p">,</span>
+        <span class="s">'http://www.example.com/3.html'</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">h3</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//h3'</span><span class="p">).</span><span class="n">getall</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="p">{</span><span class="s">"title"</span><span class="p">:</span> <span class="n">h3</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">href</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//a/@href'</span><span class="p">).</span><span class="n">getall</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">href</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">parse</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Спайдер может получать аргументы командной строки. Это делается через переопределение <code class="language-plaintext highlighter-rouge">__init__</code>. <a href="https://docs.scrapy.org/en/latest/topics/spiders.html#spider-arguments">Смотри тут</a></p>
+
+<p>Генерик спайдеры, реализованные в библиотеке:</p>
+
+<ul>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/spiders.html#crawlspider">CrawlSpider</a> Это наиболее часто используемый паук для сканирования обычных веб-сайтов, поскольку он обеспечивает удобный механизм перехода по ссылкам путем определения набора правил. Класс реализует атрибут <code class="language-plaintext highlighter-rouge">rules</code>. Как определять правила краулинга, так-же пример, <a href="https://docs.scrapy.org/en/latest/topics/spiders.html#crawling-rules">смотри тут</a></li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/spiders.html#xmlfeedspider">XMLFeedSpider</a> Предназначен для разбора XML-каналов путем их итерации по определенному имени узла. Итератор можно выбрать из: <code class="language-plaintext highlighter-rouge">iternodes</code>, <code class="language-plaintext highlighter-rouge">xml</code> и <code class="language-plaintext highlighter-rouge">html</code>. Рекомендуется использовать итератор <code class="language-plaintext highlighter-rouge">iternodes</code> из соображений производительности, поскольку итераторы <code class="language-plaintext highlighter-rouge">xml</code> и <code class="language-plaintext highlighter-rouge">html</code> генерируют сразу весь DOM для его анализа.</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/spiders.html#csvfeedspider">CSVFeedSpider</a> Этот паук очень похож на XMLFeedSpider, за исключением того, что он перебирает строки, а не узлы</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/spiders.html#sitemapspider">SitemapSpider</a> Позволяет сканировать сайт, обнаруживая URL-адреса с помощью файлов Sitemap. Он поддерживает вложенные сайтмапы и обнаружение URL-адресов сайтмапов из robots.txt.</li>
+</ul>
+
+<h3 id="selectors"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html">Selectors</a></h3>
+
+<p>Собственный механизм извлечения структуры html-документа. Построен аокруг <a href="https://parsel.readthedocs.io/en/latest/">parsel</a> это библиотека Python под лицензией BSD для извлечения и удаления данных из HTML и XML с использованием селекторов [<a href="xpath" title="XPath">xpath</a>] и [<a href="css-selectors" title="Css-selectors">css-selectors</a>], в сочетании с регулярными выражениями.</p>
+
+<p>Руководство по использованию см. <a href="https://docs.scrapy.org/en/latest/topics/selectors.html">тут</a></p>
+
+<h3 id="items"><a href="https://docs.scrapy.org/en/latest/topics/items.html">Items</a></h3>
+
+<p>Основная цель скрейпинга — извлечь структурированные данные из неструктурированных источников, как правило, веб-страниц. Пауки могут возвращать извлеченные данные в виде элементов, объектов Python, которые определяют пары ключ-значение. Scrapy поддерживает несколько типов элементов, реализованных в <a href="https://github.com/scrapy/itemadapter">itemadapter</a>. Поддерживаются следующие типы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">scrapy.item.Item</code></li>
+  <li><code class="language-plaintext highlighter-rouge">dict</code></li>
+  <li><code class="language-plaintext highlighter-rouge">dataclass</code>-based classes</li>
+  <li><code class="language-plaintext highlighter-rouge">attrs</code>-based classes</li>
+  <li><code class="language-plaintext highlighter-rouge">pydantic</code>-based classes</li>
+</ul>
+
+<p>Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemadapter</span> <span class="kn">import</span> <span class="n">ItemAdapter</span><span class="p">,</span> <span class="n">is_item</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">dataclass</span>
+<span class="p">...</span> <span class="k">class</span> <span class="nc">InventoryItem</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">...</span>     <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">...</span>     <span class="n">stock</span><span class="p">:</span> <span class="nb">int</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">InventoryItem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'foo'</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">20.5</span><span class="p">,</span> <span class="n">stock</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_item</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span> <span class="o">=</span> <span class="n">ItemAdapter</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">adapter</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">[</span><span class="s">"name"</span><span class="p">]</span>
+<span class="s">'foo'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"price"</span><span class="p">)</span>
+<span class="mf">20.5</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">[</span><span class="s">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="s">"price"</span><span class="p">:</span> <span class="mf">12.7</span><span class="p">,</span> <span class="s">"stock"</span><span class="p">:</span> <span class="mi">9</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">.</span><span class="n">item</span>
+<span class="n">InventoryItem</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'bar'</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">12.7</span><span class="p">,</span> <span class="n">stock</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">.</span><span class="n">item</span> <span class="ow">is</span> <span class="n">obj</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">adapter</span><span class="p">.</span><span class="n">asdict</span><span class="p">()</span>
+<span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'bar'</span><span class="p">,</span> <span class="s">'price'</span><span class="p">:</span> <span class="mf">12.7</span><span class="p">,</span> <span class="s">'stock'</span><span class="p">:</span> <span class="mi">9</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+
+<h3 id="item-loaders"><a href="https://docs.scrapy.org/en/latest/topics/loaders.html">Item Loaders</a></h3>
+
+<p>Загрузчики айтемов предоставляют удобный механизм для заполнения айтемов извлеченными данными. Несмотря на то, что айтемы могут быть заполнены напрямую, загрузчики элементов предоставляют гораздо более удобный API для их заполнения из процесса очистки за счет автоматизации некоторых общих задач, таких как синтаксический анализ необработанных извлеченных данных перед их назначением. Другими словами, айтемы предоставляют контейнер очищенных данных, а загрузчики элементов предоставляют механизм для заполнения этого контейнера. Загрузчики элементов разработаны, чтобы обеспечить гибкий, эффективный и простой механизм для расширения и переопределения различных правил синтаксического анализа полей, либо с помощью паука, либо с помощью исходного формата (HTML, XML и т. д.).</p>
+
+<p>Чтобы использовать загрузчик элементов, вы должны сначала создать его экземпляр. Вы можете создать его экземпляр с объектом айтема или без него, и в этом случае объект айтема автоматически создается в методе <code class="language-plaintext highlighter-rouge">__init__</code> загрузчика айтемов с использованием класса, указанного в атрибуте <code class="language-plaintext highlighter-rouge">ItemLoader.default_item_class</code>. Затем вы начинаете собирать значения в загрузчик, обычно используя селекторы. Вы можете добавить более одного значения в одно и то же поле; загрузчик айтемов знает, как «соединить» эти значения позже, используя соответствующую функцию обработки. Собранные данные хранятся внутри в виде списков, что позволяет добавлять несколько значений в одно и то же поле. Если аргумент айтема передается при создании загрузчика, каждое из значений айтема будет сохранено как есть, если оно уже является итерируемым, или заключено в список.</p>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scrapy.loader</span> <span class="kn">import</span> <span class="n">ItemLoader</span>
+<span class="kn">from</span> <span class="nn">myproject.items</span> <span class="kn">import</span> <span class="n">Product</span>
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">Product</span><span class="p">(),</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'//div[@class="product_name"]'</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'//div[@class="product_title"]'</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'price'</span><span class="p">,</span> <span class="s">'//p[@id="price"]'</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">add_css</span><span class="p">(</span><span class="s">'stock'</span><span class="p">,</span> <span class="s">'p#stock]'</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'last_updated'</span><span class="p">,</span> <span class="s">'today'</span><span class="p">)</span> <span class="c1"># you can also use literal values
+</span>    <span class="k">return</span> <span class="n">l</span><span class="p">.</span><span class="n">load_item</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Конструкция поддерживает определение инпута и аутпута, контексты, вложенные лоадеры и повторное использование. <a href="https://docs.scrapy.org/en/latest/topics/loaders.html#scrapy.loader.ItemLoader.add_xpath">Смотри подробнее</a></p>
+
+<h3 id="item-pipeline"><a href="https://docs.scrapy.org/en/latest/topics/item-pipeline.html">Item Pipeline</a></h3>
+
+<p>Конвеер айтемов обрабатывает айтем через несколько компонентов, которые выполняются последовательно. Каждый компонент конвейера эайтемов представляет собой класс Python, реализующий простой метод обработки. Пример приводился выше. Смотри доку и больше примеров <a href="https://docs.scrapy.org/en/latest/topics/item-pipeline.html">тут</a></p>
+
+<h3 id="feed-exports"><a href="https://docs.scrapy.org/en/latest/topics/feed-exports.html">Feed Exports</a></h3>
+
+<p>Обеспечивает хранение очищенных данных. Вот форматы сериализации, которые поддерживает scrapy:</p>
+
+<ul>
+  <li>JSON</li>
+  <li>JSON lines</li>
+  <li>CSV</li>
+  <li>XML</li>
+  <li>Pickle</li>
+  <li>Marshal</li>
+</ul>
+
+<p>Так-же реализован доступ к хранилищам в локальных файловых системах, с доступом по ftp S3, GSC и с передачей объектов через стандартный выход.</p>
+
+<h3 id="requests-and-responses"><a href="https://docs.scrapy.org/en/latest/topics/request-response.html">Requests and Responses</a></h3>
+
+<p>Как правило, объекты Куйгуыеы генерируются в пауках и проходят через систему, пока не достигнут загрузчика, который выполняет запрос и возвращает объект ответа, который возвращается к пауку, выдавшему запрос. Оба класса Request и Response имеют подклассы, которые добавляют функциональность, не требуемую в базовых классах. Они описаны ниже в подклассах запроса и подклассах ответа.</p>
+
+<p>В частности мы можем определять тело запроса, [<a href="http-заголовки" title="Http заголовки">http-заголовки</a>], cookies, кодировки и другие параметры запроса, а так-же передавать дополнительтные данные в функцию колбека.</p>
+
+<p>Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">parse_page1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s">"http://www.example.com/some_page.html"</span><span class="p">,</span>
+                          <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">parse_page2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">parse_page2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="c1"># this would log http://www.example.com/some_page.html
+</span>    <span class="bp">self</span><span class="p">.</span><span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"Visited %s"</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, реализованы:</p>
+
+<ul>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/request-response.html#using-errbacks-to-catch-exceptions-in-request-processing">обработчики ошибок</a>, котоыре возникают в процессе запроса/ответа</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/request-response.html#request-meta-special-keys">параметры запроса</a>, например таймаут запрсоа или прокси</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/request-response.html#stopping-the-download-of-a-response">операции остановки загрузки по запросу</a></li>
+</ul>
+
+<p>Реализовано несколько сабклассов запроса:</p>
+
+<ul>
+  <li>scrapy.http.FormRequest</li>
+  <li>scrapy.http.JsonRequest</li>
+</ul>
+
+<p>Объект Response представляет собой HTTP-ответ, который обычно загружается загрузчиком и передается паукам для обработки. Реализует весь набор [<a href="../lists/http" title="Http">http</a>]. Кроме того, реализованы сабклассы:</p>
+
+<ul>
+  <li>TextResponse для доп.кодирования и получения не только бинарных данных</li>
+  <li>HtmlResponse</li>
+  <li>XmlResponse</li>
+</ul>
+
+<h3 id="link-extractors"><a href="https://docs.scrapy.org/en/latest/topics/link-extractors.html">Link Extractors</a></h3>
+
+<p>Реализует извлечение ссылок из ответов</p>
+
+<h3 id="settings"><a href="https://docs.scrapy.org/en/latest/topics/settings.html">Settings</a></h3>
+
+<h3 id="exceptions"><a href="https://docs.scrapy.org/en/latest/topics/exceptions.html">Exceptions</a></h3>
+
+<h2 id="в-дополнение-библиотека-поддердживает">В дополнение библиотека поддердживает</h2>
+
+<ul>
+  <li>сбор статистики</li>
+  <li>отправку сообщений</li>
+  <li>извлечение данных из инструментов разработчика браузера</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/media-pipeline.html">загрузку и фильтрацию файлов и изображений</a> (в т.ч. отброс повторов. эффективное храниение и т.д.)</li>
+</ul>
+
+<p>пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scrapy</span>
+<span class="kn">from</span> <span class="nn">itemadapter</span> <span class="kn">import</span> <span class="n">ItemAdapter</span>
+<span class="kn">from</span> <span class="nn">scrapy.exceptions</span> <span class="kn">import</span> <span class="n">DropItem</span>
+<span class="kn">from</span> <span class="nn">scrapy.pipelines.images</span> <span class="kn">import</span> <span class="n">ImagesPipeline</span>
+
+<span class="k">class</span> <span class="nc">MyImagesPipeline</span><span class="p">(</span><span class="n">ImagesPipeline</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_media_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">image_url</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="s">'image_urls'</span><span class="p">]:</span>
+            <span class="k">yield</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">item_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="n">image_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s">'path'</span><span class="p">]</span> <span class="k">for</span> <span class="n">ok</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="n">ok</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">image_paths</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DropItem</span><span class="p">(</span><span class="s">"Item contains no images"</span><span class="p">)</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="n">ItemAdapter</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">adapter</span><span class="p">[</span><span class="s">'image_paths'</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_paths</span>
+        <span class="k">return</span> <span class="n">item</span>
+</code></pre></div></div>
+
+<ul>
+  <li>АПИ для деплоя на удаленный сервак</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/autothrottle.html">автоматическое управление временем задержки загрузки</a></li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/jobs.html">свой собственный шедалер</a></li>
+  <li>поддержку сопрограмм и [<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>имеет открытый <a href="https://docs.scrapy.org/en/latest/topics/api.html#">низкоуровневый АПИ</a></li>
+</ul>
+
 <p>Смотри еще:</p>
 
 <ul>
