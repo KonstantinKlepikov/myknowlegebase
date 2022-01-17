@@ -1,5 +1,6 @@
 ---
 description: Системное время в стандартной библиотеке python
+tags: python-standart-library
 ---
 # Time
 

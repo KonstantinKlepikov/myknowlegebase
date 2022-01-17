@@ -11,13 +11,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Celery" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Распределение задач в python с помощью celery" />
-<meta property="og:description" content="Распределение задач в python с помощью celery" />
+<meta name="description" content="Очередь задач в python с помощью celery" />
+<meta property="og:description" content="Очередь задач в python с помощью celery" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html","headline":"Celery","description":"Распределение задач в python с помощью celery","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html","headline":"Celery","description":"Очередь задач в python с помощью celery","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -85,92 +85,238 @@
 
       <h1 id="celery">Celery</h1>
 
+<h2 id="intro">Intro</h2>
+
 <p><a href="https://docs.celeryproject.org/en/stable/">Celery</a> is a simple, flexible, and reliable distributed system to process vast amounts of messages, while providing operations with the tools required to maintain such a system.</p>
 
-<p>Очереди используются как механизм для распределения работы по потокам или машинам. Вход в очередь задач - это единица работы, называемая задачей. Выделенные рабочие процессы постоянно отслеживают очереди задач на предмет выполнения новой работы. Celery общается через сообщения, обычно используя брокера для посредничества между клиентами и воркерами. Чтобы инициировать задачу, клиент добавляет сообщение в очередь, а затем брокер доставляет это сообщение воркеру. Система Celery может состоять из нескольких воркеров и брокеров, уступая место высокой доступности и горизонтальному масштабированию. Celery написан на python, но протокол может быть реализован на любом языке. В дополнение к Python есть node-celery и node-celery-ts для Node.js и клиент PHP. Взаимодействие языков также может быть достигнуто путем раскрытия конечной точки HTTP и наличия задачи, которая ее запрашивает (веб-перехватчики).</p>
+<p>Очереди используются как механизм для распределения работы по потокам или процессам.</p>
 
-<pre><code class="language-Python">from celery import Celery
+<p>Celery использует брокера для посредничества между клиентами и воркерами. Чтобы инициировать задачу, клиент добавляет сообщение в очередь, а затем брокер доставляет это сообщение воркеру.</p>
 
-app = Celery('hello', broker='amqp://guest@localhost//')
+<p>Система Celery может состоять из нескольких воркеров и брокеров. Celery написан на python, но протокол может быть реализован на любом языке.</p>
 
-@app.task
-def hello():
-    return 'hello world'
-</code></pre>
+<p>Простейший пример приложения.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'hello'</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s">'amqp://guest@localhost//'</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">'hello world'</span>
+</code></pre></div></div>
+
+<p>Celery поддерживает:</p>
+
+<ul>
+  <li>brokers [<a href="redis" title="Redis">redis</a>], [<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>], amazonsqs и <a href="https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/index.html#brokers">т.д.</a></li>
+  <li>совместная работа обеспечивается через multiprocessing, eventied, gevent, multithreading или solo threading реализации</li>
+  <li>поддерживает хранилища: AMQP, Redis, Memcached, SQLAlchemy, Django ORM, Apache Cassandra, Elasticsearch, Riak, MongoDB, CouchDB, Couchbase, ArangoDB, Amazon DynamoDB, Amazon S3, Microsoft Azure Block Blob, Microsoft Azure Cosmos DB, file system</li>
+  <li>сериализация: pickle, json, yaml, msgpack, zlib, bzip2, Cryptographic message signing.</li>
+</ul>
+
+<p>Фичи:</p>
+
+<ul>
+  <li>мониторинг событий</li>
+  <li>планировщик задач</li>
+  <li>планировщик рабочих процессов</li>
+  <li>защита от утечки ресурсов</li>
+  <li>установка лимитов по времени и скорости</li>
+  <li>кастомизируемость</li>
+</ul>
+
+<p>Как инсталить <a href="https://docs.celeryproject.org/en/stable/getting-started/introduction.html#installation">смотри тут</a>. Там же весь набор бандлов для установки бекендов, сериализации, транспорта и т.д.</p>
 
 <p><a href="https://docs.celeryproject.org/en/stable/getting-started/introduction.html#celery-is">introduction</a></p>
+
+<h2 id="быстрый-запуск"><a href="https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html#redis">Быстрый запуск</a></h2>
+
+<ul>
+  <li>Выбираем и ставим транспорт сообщений (брокер)</li>
+  <li>ставим Celery и создаем первую задачу</li>
+  <li>запуск воркера и вызываем задачу</li>
+  <li>отслеживаем задачи по мере их перехода через разные состояния и првоеряем возвращаемые значения</li>
+</ul>
+
+<p>Брокеры: [<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>] или [<a href="redis" title="Redis">redis</a>]</p>
+
+<p>Для редиса можно черех [<a href="../lists/docker" title="Docker">docker</a>]: <code class="language-plaintext highlighter-rouge">docker run -d -p 6379:6379 redis</code></p>
+
+<p>Ставим celery: <code class="language-plaintext highlighter-rouge">pip install celery</code></p>
+
+<p><a href="https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/redis.html#broker-redis">Ставим коннектор</a> для [<a href="redis" title="Redis">redis</a>]: <code class="language-plaintext highlighter-rouge">pip install -U "celery[redis]"</code></p>
+
+<p>Пишем апку (в боевых условия нам конечно понадобится сконфигурировать <a href="https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/redis.html#broker-redis">доступ к redis</a>, задав и указав логин/пароль)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'tasks'</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s">'redis://localhost:6379/0'</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>Первым аргументом Celery является имя текущего модуля. Это нужно только для того, чтобы имена могли генерироваться автоматически, когда задачи определены в модуле <code class="language-plaintext highlighter-rouge">__main__</code>. Второй аргумент — это аргумент ключа брокера, указывающий URL-адрес брокера сообщений, который вы хотите использовать.</p>
+
+<ul>
+  <li>для rabbitmq <code class="language-plaintext highlighter-rouge">amqp://localhost</code></li>
+  <li>для redis <code class="language-plaintext highlighter-rouge">redis://localhost</code></li>
+</ul>
+
+<p>Стартуема сервер из папки приложения: <code class="language-plaintext highlighter-rouge">celery -A tasks worker --loglevel=INFO</code> В данном случае сервак запускается в лоб. В реальности нужен демон - <a href="https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing">смотри тут</a></p>
+
+<p>Тада:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">--------------</span> celery@pop-os v5.2.3 <span class="o">(</span>dawn-chorus<span class="o">)</span>
+<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span> 
+<span class="nt">--</span> <span class="k">*******</span> <span class="nt">----</span> Linux-5.8.0-7630-generic-x86_64-with-glibc2.32 2022-01-17 23:32:33
+- <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span> 
+- <span class="k">**</span> <span class="nt">----------</span> <span class="o">[</span>config]
+- <span class="k">**</span> <span class="nt">----------</span> .&gt; app:         tasks:0x7fdfe7e14a60
+- <span class="k">**</span> <span class="nt">----------</span> .&gt; transport:   redis://localhost:6379/0
+- <span class="k">**</span> <span class="nt">----------</span> .&gt; results:     disabled://
+- <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span> .&gt; concurrency: 12 <span class="o">(</span>prefork<span class="o">)</span>
+<span class="nt">--</span> <span class="k">*******</span> <span class="nt">----</span> .&gt; task events: OFF <span class="o">(</span><span class="nb">enable</span> <span class="nt">-E</span> to monitor tasks <span class="k">in </span>this worker<span class="o">)</span>
+<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span> 
+ <span class="nt">--------------</span> <span class="o">[</span>queues]
+                .&gt; celery           <span class="nv">exchange</span><span class="o">=</span>celery<span class="o">(</span>direct<span class="o">)</span> <span class="nv">key</span><span class="o">=</span>celery
+                
+
+<span class="o">[</span>tasks]
+  <span class="nb">.</span> tasks.add
+
+<span class="o">[</span>2022-01-17 23:32:33,390: INFO/MainProcess] Connected to redis://localhost:6379/0
+<span class="o">[</span>2022-01-17 23:32:33,394: INFO/MainProcess] mingle: searching <span class="k">for </span>neighbors
+<span class="o">[</span>2022-01-17 23:32:34,401: INFO/MainProcess] mingle: all alone
+<span class="o">[</span>2022-01-17 23:32:34,440: INFO/MainProcess] celery@pop-os ready.
+</code></pre></div></div>
+
+<p>Хелпы: <code class="language-plaintext highlighter-rouge">celery worker --help</code> и <code class="language-plaintext highlighter-rouge">celery --help</code></p>
+
+<p>Для вызова тасков можно использовать метод delay().</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Теперь задача обработана воркером, назначенным ранее. Вы можете убедиться в этом в консоли. Вызов задачи возвращает экземпляр AsyncResult. Это можно использовать для проверки состояния задачи, ожидания завершения задачи или получения возвращаемого значения (или, если задача не удалась, для получения исключения и обратной трассировки). Результаты не включены по умолчанию. Чтобы выполнять удаленные вызовы процедур или отслеживать результаты задач в базе данных, вам необходимо настроить Celery для использования серверной части результатов.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>2022-01-18 00:02:45,633: INFO/MainProcess] 
+Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] received
+<span class="o">[</span>2022-01-18 00:02:45,634: INFO/ForkPoolWorker-8] 
+Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">in </span>0.00025742400612216443s: 8
+</code></pre></div></div>
+
+<p>Чтобы получить результат - его надо где-то хранить или куда-то отправить. На выбор куча бекендов под эти задачи, включая реляционыне базы данных и в т.ч. редис.</p>
+
+<p>В <a href="https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html#keeping-results">этом примере</a> используется rpc. Бекенд задается через аргумент при создании экземпляра воркера или через конфиг, например так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'tasks'</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s">'redis://localhost'</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s">'redis://localhost'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Теперь задача ставится в очередь, а результат отправляется на бекенд как только будет посчитан. Отправка осуществляется в асинхронном режиме. <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends">Подробнее про бекенды</a></p>
+
+<p>Конфигурация celery - нужно сконфигурировать брокера и сконфигурировать бекенд. Про конфиги и дефолты <a href="https://docs.celeryproject.org/en/stable/userguide/configuration.html#configuration">читай тут</a>. Хорошей практикой является создание конфига <code class="language-plaintext highlighter-rouge">celeryconfig.py</code> и вызов конфигурации в app через <code class="language-plaintext highlighter-rouge">app.config_from_object('celeryconfig')</code></p>
+
+<p>Пример конфига:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">broker_url</span> <span class="o">=</span> <span class="s">'pyamqp://'</span>
+<span class="n">result_backend</span> <span class="o">=</span> <span class="s">'rpc://'</span>
+
+<span class="n">task_serializer</span> <span class="o">=</span> <span class="s">'json'</span>
+<span class="n">result_serializer</span> <span class="o">=</span> <span class="s">'json'</span>
+<span class="n">accept_content</span> <span class="o">=</span> <span class="p">[</span><span class="s">'json'</span><span class="p">]</span>
+<span class="n">timezone</span> <span class="o">=</span> <span class="s">'Europe/Oslo'</span>
+<span class="n">enable_utc</span> <span class="o">=</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Поддерживается формат в виде слвоаря. Отвалидировать конфиг можно так: <code class="language-plaintext highlighter-rouge">python -m celeryconfig</code>. Естественно можно создавать множество конфигов называя их как угодно для использования в разных приложениях celery</p>
+
+<p>Более подробный пример <a href="https://docs.celeryproject.org/en/stable/getting-started/next-steps.html">реализован тут</a> и включает:</p>
+
+<ul>
+  <li>Using Celery in your Application</li>
+  <li>Calling Tasks</li>
+  <li>Canvas: Designing Work-flows</li>
+  <li>Routing</li>
+  <li>Remote Control</li>
+  <li>Timezone</li>
+  <li>Optimization</li>
+</ul>
 
 <h2 id="user-guide"><a href="https://docs.celeryproject.org/en/stable/userguide/index.html">user guide</a></h2>
 
 <h3 id="application"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html">Application</a></h3>
 
-<pre><code class="language-Python">&gt;&gt;&gt; from celery import Celery
-&gt;&gt;&gt; app = Celery()
-&gt;&gt;&gt; app
-&lt;Celery __main__:0x100469fd0&gt;
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">app</span>
+<span class="o">&lt;</span><span class="n">Celery</span> <span class="n">__main__</span><span class="p">:</span><span class="mh">0x100469fd0</span><span class="o">&gt;</span>
+</code></pre></div></div>
 
 <p>Значение имеет main имя модуля, т.к. селери общается с помощью меседжей. Извлекается имя таска для того чтобы каждый воркер знал к какой функции ему образщаться.</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; @app.task
-... def add(x, y):
-...     return x + y
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="p">...</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-&gt;&gt;&gt; add
-&lt;@task: __main__.add&gt;
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span>
+<span class="o">&lt;@</span><span class="n">task</span><span class="p">:</span> <span class="n">__main__</span><span class="p">.</span><span class="n">add</span><span class="o">&gt;</span>
 
-&gt;&gt;&gt; add.name
-__main__.add
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">name</span>
+<span class="n">__main__</span><span class="p">.</span><span class="n">add</span>
 
-&gt;&gt;&gt; app.tasks['__main__.add']
-&lt;@task: __main__.add&gt;
-</code></pre>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">tasks</span><span class="p">[</span><span class="s">'__main__.add'</span><span class="p">]</span>
+<span class="o">&lt;@</span><span class="n">task</span><span class="p">:</span> <span class="n">__main__</span><span class="p">.</span><span class="n">add</span><span class="o">&gt;</span>
+</code></pre></div></div>
 
 <p>Мы можем извлечь имя в main к примеру для tasks.py</p>
 
-<pre><code class="language-Python">from celery import Celery
-app = Celery()
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
 
-@app.task
-def add(x, y): return x + y
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-if __name__ == '__main__':
-    app.worker_main()
-</code></pre>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">worker_main</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>Но при импорте это будет выглядеть иначе:</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; from tasks import add
-&gt;&gt;&gt; add.name
-tasks.add
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">name</span>
+<span class="n">tasks</span><span class="p">.</span><span class="n">add</span>
+</code></pre></div></div>
 
 <p>Кроме того, имя main модуля можно задать нгепосредственно</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; app = Celery('tasks')
-&gt;&gt;&gt; app.main
-'tasks'
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'tasks'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">main</span>
+<span class="s">'tasks'</span>
 
-&gt;&gt;&gt; @app.task
-... def add(x, y):
-...     return x + y
+<span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="p">...</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-&gt;&gt;&gt; add.name
-tasks.add
-</code></pre>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">name</span>
+<span class="n">tasks</span><span class="p">.</span><span class="n">add</span>
+</code></pre></div></div>
 
 <h4 id="configuration"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html#configuration">Configuration</a></h4>
 
 <p>Конфиг доступен через <code class="language-plaintext highlighter-rouge">app.conf</code></p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; app.conf.timezone
-'Europe/London'
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">timezone</span>
+<span class="s">'Europe/London'</span>
+</code></pre></div></div>
 
 <p>можно задать значения напрямую</p>
 
-<pre><code class="language-Python">&gt;&gt;&gt; app.conf.enable_utc = True
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">enable_utc</span> <span class="o">=</span> <span class="bp">True</span>
+</code></pre></div></div>
 
 <p>или через апдейт сразу нескольких</p>
 

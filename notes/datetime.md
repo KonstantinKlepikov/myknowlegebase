@@ -1,5 +1,6 @@
 ---
 description: Datetime. Модуль стандартной библиотеки python для работы со значениями даты и времни
+tags: python-standart-library
 ---
 # Datetime
 

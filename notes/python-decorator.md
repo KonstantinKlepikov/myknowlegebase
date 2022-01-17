@@ -1,5 +1,6 @@
 ---
 description: Декораторы в python. Примеры
+tags: python-standart-library
 ---
 # Python decorator
 

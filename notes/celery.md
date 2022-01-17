@@ -1,13 +1,21 @@
 ---
-description: Распределение задач в python с помощью celery
+description: Очередь задач в python с помощью celery
 ---
 # Celery
 
+## Intro
+
 [Celery](https://docs.celeryproject.org/en/stable/) is a simple, flexible, and reliable distributed system to process vast amounts of messages, while providing operations with the tools required to maintain such a system.
 
-Очереди используются как механизм для распределения работы по потокам или машинам. Вход в очередь задач - это единица работы, называемая задачей. Выделенные рабочие процессы постоянно отслеживают очереди задач на предмет выполнения новой работы. Celery общается через сообщения, обычно используя брокера для посредничества между клиентами и воркерами. Чтобы инициировать задачу, клиент добавляет сообщение в очередь, а затем брокер доставляет это сообщение воркеру. Система Celery может состоять из нескольких воркеров и брокеров, уступая место высокой доступности и горизонтальному масштабированию. Celery написан на python, но протокол может быть реализован на любом языке. В дополнение к Python есть node-celery и node-celery-ts для Node.js и клиент PHP. Взаимодействие языков также может быть достигнуто путем раскрытия конечной точки HTTP и наличия задачи, которая ее запрашивает (веб-перехватчики).
+Очереди используются как механизм для распределения работы по потокам или процессам.
 
-```Python
+Celery использует брокера для посредничества между клиентами и воркерами. Чтобы инициировать задачу, клиент добавляет сообщение в очередь, а затем брокер доставляет это сообщение воркеру.
+
+Система Celery может состоять из нескольких воркеров и брокеров. Celery написан на python, но протокол может быть реализован на любом языке.
+
+Простейший пример приложения.
+
+```python
 from celery import Celery
 
 app = Celery('hello', broker='amqp://guest@localhost//')
@@ -17,13 +25,147 @@ def hello():
     return 'hello world'
 ```
 
+Celery поддерживает:
+
+- brokers [[redis]], [[rabbitmq]], amazonsqs и [т.д.](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/index.html#brokers)
+- совместная работа обеспечивается через multiprocessing, eventied, gevent, multithreading или solo threading реализации
+- поддерживает хранилища: AMQP, Redis, Memcached, SQLAlchemy, Django ORM, Apache Cassandra, Elasticsearch, Riak, MongoDB, CouchDB, Couchbase, ArangoDB, Amazon DynamoDB, Amazon S3, Microsoft Azure Block Blob, Microsoft Azure Cosmos DB, file system
+- сериализация: pickle, json, yaml, msgpack, zlib, bzip2, Cryptographic message signing.
+
+Фичи:
+
+- мониторинг событий
+- планировщик задач
+- планировщик рабочих процессов
+- защита от утечки ресурсов
+- установка лимитов по времени и скорости
+- кастомизируемость
+
+Как инсталить [смотри тут](https://docs.celeryproject.org/en/stable/getting-started/introduction.html#installation). Там же весь набор бандлов для установки бекендов, сериализации, транспорта и т.д.
+
 [introduction](https://docs.celeryproject.org/en/stable/getting-started/introduction.html#celery-is)
+
+## [Быстрый запуск](https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html#redis)
+
+- Выбираем и ставим транспорт сообщений (брокер)
+- ставим Celery и создаем первую задачу
+- запуск воркера и вызываем задачу
+- отслеживаем задачи по мере их перехода через разные состояния и првоеряем возвращаемые значения
+
+Брокеры: [[rabbitmq]] или [[redis]]
+
+Для редиса можно черех [[docker]]: `docker run -d -p 6379:6379 redis`
+
+Ставим celery: `pip install celery`
+
+[Ставим коннектор](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/redis.html#broker-redis) для [[redis]]: `pip install -U "celery[redis]"`
+
+Пишем апку (в боевых условия нам конечно понадобится сконфигурировать [доступ к redis](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/redis.html#broker-redis), задав и указав логин/пароль)
+
+```python
+from celery import Celery
+
+app = Celery('tasks', broker='redis://localhost:6379/0')
+
+@app.task
+def add(x, y):
+    return x + y
+```
+
+Первым аргументом Celery является имя текущего модуля. Это нужно только для того, чтобы имена могли генерироваться автоматически, когда задачи определены в модуле `__main__`. Второй аргумент — это аргумент ключа брокера, указывающий URL-адрес брокера сообщений, который вы хотите использовать.
+
+- для rabbitmq `amqp://localhost`
+- для redis `redis://localhost`
+
+Стартуема сервер из папки приложения: `celery -A tasks worker --loglevel=INFO` В данном случае сервак запускается в лоб. В реальности нужен демон - [смотри тут](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing)
+
+Тада:
+
+```shell
+ -------------- celery@pop-os v5.2.3 (dawn-chorus)
+--- ***** ----- 
+-- ******* ---- Linux-5.8.0-7630-generic-x86_64-with-glibc2.32 2022-01-17 23:32:33
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         tasks:0x7fdfe7e14a60
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     disabled://
+- *** --- * --- .> concurrency: 12 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . tasks.add
+
+[2022-01-17 23:32:33,390: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2022-01-17 23:32:33,394: INFO/MainProcess] mingle: searching for neighbors
+[2022-01-17 23:32:34,401: INFO/MainProcess] mingle: all alone
+[2022-01-17 23:32:34,440: INFO/MainProcess] celery@pop-os ready.
+```
+
+Хелпы: `celery worker --help` и `celery --help`
+
+Для вызова тасков можно использовать метод delay().
+
+```python
+>>> from tasks import add
+>>> add.delay(4, 4)
+```
+
+Теперь задача обработана воркером, назначенным ранее. Вы можете убедиться в этом в консоли. Вызов задачи возвращает экземпляр AsyncResult. Это можно использовать для проверки состояния задачи, ожидания завершения задачи или получения возвращаемого значения (или, если задача не удалась, для получения исключения и обратной трассировки). Результаты не включены по умолчанию. Чтобы выполнять удаленные вызовы процедур или отслеживать результаты задач в базе данных, вам необходимо настроить Celery для использования серверной части результатов.
+
+```shell
+[2022-01-18 00:02:45,633: INFO/MainProcess] 
+Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] received
+[2022-01-18 00:02:45,634: INFO/ForkPoolWorker-8] 
+Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded in 0.00025742400612216443s: 8
+```
+
+Чтобы получить результат - его надо где-то хранить или куда-то отправить. На выбор куча бекендов под эти задачи, включая реляционыне базы данных и в т.ч. редис.
+
+В [этом примере](https://docs.celeryproject.org/en/stable/getting-started/first-steps-with-celery.html#keeping-results) используется rpc. Бекенд задается через аргумент при создании экземпляра воркера или через конфиг, например так:
+
+```python
+app = Celery('tasks', backend='redis://localhost', broker='redis://localhost')
+```
+
+Теперь задача ставится в очередь, а результат отправляется на бекенд как только будет посчитан. Отправка осуществляется в асинхронном режиме. [Подробнее про бекенды](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends)
+
+Конфигурация celery - нужно сконфигурировать брокера и сконфигурировать бекенд. Про конфиги и дефолты [читай тут](https://docs.celeryproject.org/en/stable/userguide/configuration.html#configuration). Хорошей практикой является создание конфига `celeryconfig.py` и вызов конфигурации в app через `app.config_from_object('celeryconfig')`
+
+Пример конфига:
+
+```python
+broker_url = 'pyamqp://'
+result_backend = 'rpc://'
+
+task_serializer = 'json'
+result_serializer = 'json'
+accept_content = ['json']
+timezone = 'Europe/Oslo'
+enable_utc = True
+```
+
+Поддерживается формат в виде слвоаря. Отвалидировать конфиг можно так: `python -m celeryconfig`. Естественно можно создавать множество конфигов называя их как угодно для использования в разных приложениях celery
+
+Более подробный пример [реализован тут](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html) и включает:
+
+- Using Celery in your Application
+- Calling Tasks
+- Canvas: Designing Work-flows
+- Routing
+- Remote Control
+- Timezone
+- Optimization
 
 ## [user guide](https://docs.celeryproject.org/en/stable/userguide/index.html)
 
 ### [Application](https://docs.celeryproject.org/en/stable/userguide/application.html)
 
-```Python
+```python
 >>> from celery import Celery
 >>> app = Celery()
 >>> app
@@ -32,7 +174,7 @@ def hello():
 
 Значение имеет main имя модуля, т.к. селери общается с помощью меседжей. Извлекается имя таска для того чтобы каждый воркер знал к какой функции ему образщаться.
 
-```Python
+```python
 >>> @app.task
 ... def add(x, y):
 ...     return x + y
@@ -49,7 +191,7 @@ __main__.add
 
 Мы можем извлечь имя в main к примеру для tasks.py
 
-```Python
+```python
 from celery import Celery
 app = Celery()
 
@@ -62,7 +204,7 @@ if __name__ == '__main__':
 
 Но при импорте это будет выглядеть иначе:
 
-```Python
+```python
 >>> from tasks import add
 >>> add.name
 tasks.add
@@ -70,7 +212,7 @@ tasks.add
 
 Кроме того, имя main модуля можно задать нгепосредственно
 
-```Python
+```python
 >>> app = Celery('tasks')
 >>> app.main
 'tasks'
@@ -87,14 +229,14 @@ tasks.add
 
 Конфиг доступен через `app.conf`
 
-```Python
+```python
 >>> app.conf.timezone
 'Europe/London'
 ```
 
 можно задать значения напрямую
 
-```Python
+```python
 >>> app.conf.enable_utc = True
 ```
 
@@ -329,6 +471,12 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 Мониторить celery можно через [[flower]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
+[redis]: redis "Redis"
+[rabbitmq]: rabbitmq "Rabbitmq"
+[rabbitmq]: rabbitmq "Rabbitmq"
+[redis]: redis "Redis"
+[docker]: ../lists/docker "Docker"
+[redis]: redis "Redis"
 [python-logging]: ../lists/python-logging "Python-logging"
 [flower]: flower "Flower"
 [//end]: # "Autogenerated link references"

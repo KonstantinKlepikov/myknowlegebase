@@ -10,6 +10,8 @@ category: list
 - [[typing]]
 - [[python-filesystem]] работа с файлами
 - [[date-and-time-in-python]]
+- [[datetime]]
+- [[time]]
 - [[mathematic-in-python]]
 - [[functools]]
 - [[itertools]]
@@ -65,6 +67,8 @@ category: list
 [typing]: ../notes/typing "Typing"
 [python-filesystem]: ../notes/python-filesystem "Работа с файлами"
 [date-and-time-in-python]: ../notes/date-and-time-in-python "Date and time in python"
+[datetime]: ../notes/datetime "Datetime"
+[time]: ../notes/time "Time"
 [mathematic-in-python]: ../notes/mathematic-in-python "Mathematic in python"
 [functools]: ../notes/functools "Functools"
 [itertools]: ../notes/itertools "Itertools"

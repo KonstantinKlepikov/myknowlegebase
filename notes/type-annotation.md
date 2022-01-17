@@ -1,5 +1,6 @@
 ---
 description: Небольшая заметка про принципы аннотации типов
+tags: python-standart-library
 ---
 # Анотация типов в python
 

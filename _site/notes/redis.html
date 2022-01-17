@@ -11,13 +11,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Redis" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta name="description" content="Брокер сообщений и система управления nosql БД" />
+<meta property="og:description" content="Брокер сообщений и система управления nosql БД" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/redis.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/redis.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/redis.html","headline":"Redis","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/redis.html","headline":"Redis","description":"Брокер сообщений и система управления nosql БД","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -84,6 +84,58 @@
     <main id="main-content" class="container" role="main">
 
       <h1 id="redis">Redis</h1>
+
+<p>Резидентная система управления базами данных класса NoSQL с открытым исходным кодом, работающая со структурами данных типа «ключ — значение». Используется как для баз данных, так и для реализации кэшей и брокеров сообщений. Ориентирована на достижение максимальной производительности на атомарных операциях. <a href="https://ru.wikipedia.org/wiki/Redis">Статья в вики</a></p>
+
+<p>Используется совместно с [<a href="celery" title="Celery">celery</a>]. Тут описано <a href="https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/redis.html#broker-redis">как установить и конфигурировать</a></p>
+
+<p>Можно из [<a href="../lists/docker" title="Docker">docker</a>]: <code class="language-plaintext highlighter-rouge">docker run -d -p 6379:6379 redis</code></p>
+
+<h2 id="установка-и-использование-redis"><a href="https://redis.io/topics/quickstart">Установка и использование redis</a></h2>
+
+<p>Предлагаемый способ установки Redis — это компиляция из исходников, поскольку Redis не имеет никаких зависимостей, кроме работающего компилятора GCC и libc. Не рекомендуется устанавливать его с помощью менеджера пакетов вашего дистрибутива Linux, поскольку обычно доступная версия не является последней.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://download.redis.io/redis-stable.tar.gz
+<span class="nb">tar </span>xvzf redis-stable.tar.gz
+<span class="nb">cd </span>redis-stable
+make
+</code></pre></div></div>
+
+<p>Далее доступно:</p>
+
+<ul>
+  <li>redis-server сам сервер</li>
+  <li>redis-sentinel исполняемый файл Redis Sentinel (мониторинг и аварийное переключение)</li>
+  <li>redis-cli кли</li>
+  <li>redis-benchmark проверка производительности</li>
+</ul>
+
+<p>Старт сервера:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>redis-server
+<span class="o">[</span>28550] 01 Aug 19:29:28 <span class="c"># Warning: no config file specified, using the default config. In order to specify a config file use 'redis-server /path/to/redis.conf'</span>
+<span class="o">[</span>28550] 01 Aug 19:29:28 <span class="k">*</span> Server started, Redis version 2.2.12
+<span class="o">[</span>28550] 01 Aug 19:29:28 <span class="k">*</span> The server is now ready to accept connections on port 6379
+... more logs ...
+</code></pre></div></div>
+
+<p>Проверка работоспособности</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>redis-cli ping
+PONG
+</code></pre></div></div>
+
+<p><strong>Безопаснсость</strong>. Редис торчит в сеть и чтобы обеспечить безопасность надо проверить следующее:</p>
+
+<ul>
+  <li>Убедитесь, что порт, который Redis использует для прослушивания подключений (по умолчанию 6379 и дополнительно 16379, если вы запускаете Redis в кластерном режиме, плюс 26379 для Sentinel), защищен брандмауэром, чтобы невозможно было связаться с Redis из внешней сети</li>
+  <li>Используйте файл конфигурации, в котором установлена директива bind, чтобы гарантировать, что Redis прослушивает только те сетевые интерфейсы, которые вы используете. Например, только интерфейс (127.0.0.1), если вы получаете доступ к Redis только локально с того же компьютера и так далее</li>
+  <li>Используйте параметр requirepass, чтобы добавить дополнительный уровень безопасности, чтобы клиенты требовали аутентификации с помощью команды AUTH</li>
+  <li>Используйте ПО для туннелирования SSL, чтобы зашифровать трафик между серверами Redis и клиентами Redis, если ваша среда требует шифрования.</li>
+</ul>
+
+<p>Использование редиса в приложении требует <a href="https://redis.io/clients">установки соответствующего коннектора</a> для языка приложения.</p>
+
 
 
 <div class="additional-pad">
