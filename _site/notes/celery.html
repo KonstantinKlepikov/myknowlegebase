@@ -87,7 +87,7 @@
 
 <h2 id="intro">Intro</h2>
 
-<p><a href="https://docs.celeryproject.org/en/stable/">Celery</a> is a simple, flexible, and reliable distributed system to process vast amounts of messages, while providing operations with the tools required to maintain such a system.</p>
+<p><a href="https://docs.celeryproject.org/en/stable/">Celery</a> это простая, гибкая и надежная распределенная система для обработки большого количества сообщений, предоставляющая операции с инструментами, необходимыми для обслуживания такой системы.</p>
 
 <p>Очереди используются как механизм для распределения работы по потокам или процессам.</p>
 
@@ -234,7 +234,7 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
 
 <p>Поддерживается формат в виде слвоаря. Отвалидировать конфиг можно так: <code class="language-plaintext highlighter-rouge">python -m celeryconfig</code>. Естественно можно создавать множество конфигов называя их как угодно для использования в разных приложениях celery</p>
 
-<p>Более подробный пример <a href="https://docs.celeryproject.org/en/stable/getting-started/next-steps.html">реализован тут</a> и включает:</p>
+<h2 id="более-подробный-пример"><a href="https://docs.celeryproject.org/en/stable/getting-started/next-steps.html">Более подробный пример</a></h2>
 
 <ul>
   <li>Using Celery in your Application</li>
@@ -245,6 +245,233 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
   <li>Timezone</li>
   <li>Optimization</li>
 </ul>
+
+<h3 id="счоздание-воркеров-и-тасков">СЧоздание воркеров и тасков</h3>
+
+<p>В примере разбирается проект с такой структурой:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>proj/__init__.py
+    /celery.py
+    /tasks.py
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">celery.py</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'proj'</span><span class="p">,</span>
+             <span class="n">broker</span><span class="o">=</span><span class="s">'amqp://'</span><span class="p">,</span>
+             <span class="n">backend</span><span class="o">=</span><span class="s">'rpc://'</span><span class="p">,</span>
+             <span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s">'proj.tasks'</span><span class="p">])</span>
+
+<span class="c1"># Optional configuration, see the application user guide.
+</span><span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">result_expires</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>В данном случае в качестве брокера задан [<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>], бекендом является rpc, а в include мы прописываем путь к таскам - это необходимо, чтобы воркер знал где их искать после старта. Название воркера должно совпадать с названием содержащего фолдера, иначе celery не найдет приложение. <a href="https://docs.celeryproject.org/en/stable/getting-started/next-steps.html#about-the-app-argument">Другие варианты</a>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">tasks.py</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">.celery</span> <span class="kn">import</span> <span class="n">app</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">xsum</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="два-режима-запуска">Два режима запуска</h3>
+
+<p>Стуртуем воркера снаружи <code class="language-plaintext highlighter-rouge">proj</code> вот так: <code class="language-plaintext highlighter-rouge">celery -A proj worker -l INFO</code>. В данном режиме воркер запускается локально на одной ноде. Видим что-то типа этого:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------</span> celery@halcyon.local v4.0 <span class="o">(</span>latentcall<span class="o">)</span>
+<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span>
+<span class="nt">--</span> <span class="k">*******</span> <span class="nt">----</span> <span class="o">[</span>Configuration]
+- <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span> <span class="nb">.</span> broker:      amqp://guest@localhost:5672//
+- <span class="k">**</span> <span class="nt">----------</span> <span class="nb">.</span> app:         __main__:0x1012d8590
+- <span class="k">**</span> <span class="nt">----------</span> <span class="nb">.</span> concurrency: 8 <span class="o">(</span>processes<span class="o">)</span>
+- <span class="k">**</span> <span class="nt">----------</span> <span class="nb">.</span> events:      OFF <span class="o">(</span><span class="nb">enable</span> <span class="nt">-E</span> to monitor this worker<span class="o">)</span>
+- <span class="k">**</span> <span class="nt">----------</span>
+- <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span> <span class="o">[</span>Queues]
+<span class="nt">--</span> <span class="k">*******</span> <span class="nt">----</span> <span class="nb">.</span> celery:      exchange:celery<span class="o">(</span>direct<span class="o">)</span> binding:celery
+<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span>
+
+<span class="o">[</span>2012-06-08 16:23:51,078: WARNING/MainProcess] celery@halcyon.local has started.
+</code></pre></div></div>
+
+<p>здесь <code class="language-plaintext highlighter-rouge">broker</code> - это юрл к нашему брокеру. <code class="language-plaintext highlighter-rouge">concurrency</code>  определяет сколько доступно ядер. <code class="language-plaintext highlighter-rouge">events</code> это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [<a href="flower" title="Flower">flower</a>]. <code class="language-plaintext highlighter-rouge">queues</code> это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через <a href="https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing">маршрутизацию</a>.</p>
+
+<p>В текущем режиме воркера можно остановить через <code class="language-plaintext highlighter-rouge">ctrl-c</code>. В реальных условиях воркеров придется запускать в фоне - <a href="https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing">читай руководство по “демонизации”</a>. Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является <code class="language-plaintext highlighter-rouge">/etc/default/celeryd</code>. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через <code class="language-plaintext highlighter-rouge">celery multy</code>, которому рут-права не нужны. Выглядит это примерно так:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>celery multi start w1 <span class="nt">-A</span> proj <span class="nt">-l</span> INFO
+celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
+<span class="o">&gt;</span> Starting nodes...
+    <span class="o">&gt;</span> w1.halcyon.local: OK
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>celery  multi restart w1 <span class="nt">-A</span> proj <span class="nt">-l</span> INFO
+celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
+<span class="o">&gt;</span> Stopping nodes...
+    <span class="o">&gt;</span> w1.halcyon.local: TERM -&gt; 64024
+<span class="o">&gt;</span> Waiting <span class="k">for </span>1 node.....
+    <span class="o">&gt;</span> w1.halcyon.local: OK
+<span class="o">&gt;</span> Restarting node w1.halcyon.local: OK
+celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
+<span class="o">&gt;</span> Stopping nodes...
+    <span class="o">&gt;</span> w1.halcyon.local: TERM -&gt; 64052
+</code></pre></div></div>
+
+<p>Запущенный в фоне воркер не помнит контекеста, поэтому все переданные ему аругменты командной строки необходимо передавать каждый раз при каждой кманде (wtf). Остановить можно через <code class="language-plaintext highlighter-rouge">multi stop</code>, но надо понить, что такая остановка будет синхронной, что может привести к незавершению ряда задач. Для асинхронного стпа использовать <code class="language-plaintext highlighter-rouge">stopwait</code></p>
+
+<p>Вот так на самом деле придется запускать воркеров (создавая разделы для логов, чтобы не возникли ошибки <code class="language-plaintext highlighter-rouge">IOError: [Errno 13] Permission denied</code>):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">$</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">celery</span>
+<span class="err">$</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">celery</span>
+<span class="err">$</span> <span class="n">celery</span> <span class="n">multi</span> <span class="n">start</span> <span class="n">w1</span> <span class="o">-</span><span class="n">A</span> <span class="n">proj</span> <span class="o">-</span><span class="n">l</span> <span class="n">INFO</span> <span class="o">--</span><span class="n">pidfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">celery</span><span class="o">/%</span><span class="n">n</span><span class="p">.</span><span class="n">pid</span> \
+                                        <span class="o">--</span><span class="n">logfile</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">celery</span><span class="o">/%</span><span class="n">n</span><span class="o">%</span><span class="n">I</span><span class="p">.</span><span class="n">log</span>
+</code></pre></div></div>
+
+<p>Кроме того. возможны ошибки с пермишеном к логам. Надо передать права. Смотри <a href="https://stackoverflow.com/questions/28825760/celery-not-running-permission-denied/28826090">тут</a> и <a href="https://stackoverflow.com/questions/22736808/celery-daemon-permission-denied-on-log-file">тут</a></p>
+
+<h3 id="вызов-тасков">Вызов тасков</h3>
+
+<p>Вызов тасков делается, как писалось выше, через <code class="language-plaintext highlighter-rouge">sig.delay(*args, **kwargs)</code>, котоырй является оберткой для <code class="language-plaintext highlighter-rouge">sig.apply_async(args=(), kwargs={}, **options)</code>, получающий больше конфигурационных аргументов (например название очереди или значение колдауна).</p>
+
+<p>Если реализован бекенд, то результат можно получить через <code class="language-plaintext highlighter-rouge">get()</code>. Поддерживаются атрибуты, дающие доступ к состояниям:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">add</span><span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="nb">id</span>
+<span class="n">d6b3aea2</span><span class="o">-</span><span class="n">fb9b</span><span class="o">-</span><span class="mi">4</span><span class="n">ebc</span><span class="o">-</span><span class="mi">8</span><span class="n">da4</span><span class="o">-</span><span class="mi">848818</span><span class="n">db9114</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">failed</span><span class="p">()</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">successful</span><span class="p">()</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Если что-то пошло не так, будет поднята ошибка, избежать пропогейта которой можно так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">propagate</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nb">TypeError</span><span class="p">(</span><span class="s">"unsupported operand type(s) for +: 'int' and 'str'"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Такс проходит через три состояния (на самом деле состояние таска может меняться произволяно и SUCCESS не окончательный): PENDING -&gt; STARTED -&gt; RETRY -&gt; STARTED -&gt; RETRY -&gt; STARTED -&gt; SUCCESS. Извлечь можно так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">state</span>
+<span class="s">'FAILURE'</span>
+</code></pre></div></div>
+
+<p>Состояние STARTED появляется только если таск инициализирвоан через декоратор <code class="language-plaintext highlighter-rouge">@task(track_started=True)</code>, а PENDING просто определяет неопределенное состояние (дефолтное). <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-states">Про статусы подробно</a></p>
+
+<h3 id="work-flow">Work-flow</h3>
+
+<p>Для построения сложных конструкций в Celery предусмотрены сигнатуры (signature). Сигнатура упаковывает таск и аргументы полностью или частично для передачи всего этого как объекта дрвгим таскам или для сериализации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">signature</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">countdown</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">tasks</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>сокращенный вариант:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">s1</span><span class="p">.</span><span class="n">delay</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+<span class="mi">4</span>
+</code></pre></div></div>
+
+<p>частичная передача аргументов:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># incomplete partial: add(?, 2)
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># resolves the partial: add(8, 2)
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">s2</span><span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+<span class="mi">10</span>
+</code></pre></div></div>
+
+<h3 id="примитивы">Примитивы</h3>
+
+<p>Все примитивы поддерживают частичные аргументы и могут быть скомбинированы между собой в любом порядке.</p>
+
+<h4 id="groups">Groups</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">group</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">proj.tasks</span> <span class="kn">import</span> <span class="n">add</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">group</span><span class="p">(</span><span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="p">().</span><span class="n">get</span><span class="p">()</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h4 id="chains">Chains</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">chain</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">proj.tasks</span> <span class="kn">import</span> <span class="n">add</span><span class="p">,</span> <span class="n">mul</span>
+
+<span class="c1"># (4 + 4) * 8
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">chain</span><span class="p">(</span><span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="n">mul</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">8</span><span class="p">))().</span><span class="n">get</span><span class="p">()</span>
+<span class="mi">64</span>
+</code></pre></div></div>
+
+<p>Короткий вариант записи</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="n">mul</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">8</span><span class="p">))().</span><span class="n">get</span><span class="p">()</span>
+<span class="mi">64</span>
+</code></pre></div></div>
+
+<h4 id="chords">Chords</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">chord</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">proj.tasks</span> <span class="kn">import</span> <span class="n">add</span><span class="p">,</span> <span class="n">xsum</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">chord</span><span class="p">((</span><span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span> <span class="n">xsum</span><span class="p">.</span><span class="n">s</span><span class="p">())().</span><span class="n">get</span><span class="p">()</span>
+<span class="mi">90</span>
+</code></pre></div></div>
+
+<p>Если группа чейнится в другой таск, она автоматически конверстится в чорд:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">group</span><span class="p">(</span><span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">|</span> <span class="n">xsum</span><span class="p">.</span><span class="n">s</span><span class="p">())().</span><span class="n">get</span><span class="p">()</span>
+<span class="mi">90</span>
+</code></pre></div></div>
+
+<p>Больше конструкций и подробности <a href="https://docs.celeryproject.org/en/stable/userguide/canvas.html#guide-canvas">смотри тут</a></p>
+
+<h3 id="routing">Routing</h3>
+
+<p>Определять очереди можно как в конфигах, непосредственно в тасках или через cli:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">task_routes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'proj.tasks.add'</span><span class="p">:</span> <span class="p">{</span><span class="s">'queue'</span><span class="p">:</span> <span class="s">'hipri'</span><span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>или</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">proj.tasks</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">queue</span><span class="o">=</span><span class="s">'hipri'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="remote-control"><a href="https://docs.celeryproject.org/en/stable/getting-started/next-steps.html#remote-control">Remote control</a></h3>
+
+<p>Через <code class="language-plaintext highlighter-rouge">celery -A proj inspect</code> и <code class="language-plaintext highlighter-rouge">celery -A control</code>. К примеру все активные воркеры: <code class="language-plaintext highlighter-rouge">celery -A proj inspect active</code></p>
 
 <h2 id="user-guide"><a href="https://docs.celeryproject.org/en/stable/userguide/index.html">user guide</a></h2>
 
@@ -340,11 +567,13 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
 
 <p>Если ваша задача идемпотентна, вы можете установить опцию acks_late, чтобы вместо этого воркер подтвердил сообщение после того, как задача вернется.</p>
 
-<p>Обратите внимание, что воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей sys.exit (), либо сигналом), даже если acks_late включен. Такое поведение преднамеренно, поскольку мы не хотим повторно запускать таски, которые заставляют ядро ​​отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу … и мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска.</p>
+<p>Обратите внимание, что воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей sys.exit(), либо сигналом), даже если acks_late включен. Такое поведение преднамеренно, поскольку мы не хотим повторно запускать таски, которые заставляют ядро отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу … и мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска.</p>
 
 <p>Таск, который выделяет слишком много памяти, рискует скрашить ядро, то же самое может произойти снова. Таск, который всегда завершается ошибкой при повторной доставке, может вызвать высокочастотный цикл передачи сообщений, приводящий к остановке системы.</p>
 
-<p>Если вы действительно хотите, чтобы задача была повторно доставлена ​​в этих сценариях, вам следует рассмотреть возможность включения параметра task_reject_on_worker_lost.</p>
+<p>Если вы действительно хотите, чтобы задача была повторно доставлена в этих сценариях, вам следует рассмотреть возможность включения параметра task_reject_on_worker_lost.</p>
+
+<p>Если для текущего таска не нужны результаты, их можно отключить через декоратор <code class="language-plaintext highlighter-rouge">@task(ignore_result=True)</code></p>
 
 <h4 id="базовые-принципы"><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#basics">Базовые принципы</a></h4>
 
@@ -535,6 +764,16 @@ expires in 2 days, set using datetime.</p>
 <h3 id="configuration-and-defaults"><a href="https://docs.celeryproject.org/en/stable/userguide/configuration.html">Configuration and defaults</a></h3>
 
 <p>Мониторить celery можно через [<a href="flower" title="Flower">flower</a>]</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.celeryproject.org/en/stable/reference/cli.html?highlight=command">документация cli celery</a></li>
+  <li>[<a href="redis" title="Redis">redis</a>]</li>
+  <li>[<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>]</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>[<a href="fastapi" title="Fastapi">fastapi</a>]</li>
+</ul>
 
 
 

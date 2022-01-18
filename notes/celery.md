@@ -5,7 +5,7 @@ description: Очередь задач в python с помощью celery
 
 ## Intro
 
-[Celery](https://docs.celeryproject.org/en/stable/) is a simple, flexible, and reliable distributed system to process vast amounts of messages, while providing operations with the tools required to maintain such a system.
+[Celery](https://docs.celeryproject.org/en/stable/) это простая, гибкая и надежная распределенная система для обработки большого количества сообщений, предоставляющая операции с инструментами, необходимыми для обслуживания такой системы.
 
 Очереди используются как механизм для распределения работы по потокам или процессам.
 
@@ -151,7 +151,7 @@ enable_utc = True
 
 Поддерживается формат в виде слвоаря. Отвалидировать конфиг можно так: `python -m celeryconfig`. Естественно можно создавать множество конфигов называя их как угодно для использования в разных приложениях celery
 
-Более подробный пример [реализован тут](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html) и включает:
+## [Более подробный пример](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html)
 
 - Using Celery in your Application
 - Calling Tasks
@@ -160,6 +160,253 @@ enable_utc = True
 - Remote Control
 - Timezone
 - Optimization
+
+### СЧоздание воркеров и тасков
+
+В примере разбирается проект с такой структурой:
+
+```shell
+proj/__init__.py
+    /celery.py
+    /tasks.py
+```
+
+`celery.py`
+
+```python
+from celery import Celery
+
+app = Celery('proj',
+             broker='amqp://',
+             backend='rpc://',
+             include=['proj.tasks'])
+
+# Optional configuration, see the application user guide.
+app.conf.update(
+    result_expires=3600,
+)
+
+if __name__ == '__main__':
+    app.start()
+```
+
+В данном случае в качестве брокера задан [[rabbitmq]], бекендом является rpc, а в include мы прописываем путь к таскам - это необходимо, чтобы воркер знал где их искать после старта. Название воркера должно совпадать с названием содержащего фолдера, иначе celery не найдет приложение. [Другие варианты](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html#about-the-app-argument).
+
+`tasks.py`
+
+```python
+from .celery import app
+
+
+@app.task
+def add(x, y):
+    return x + y
+
+
+@app.task
+def mul(x, y):
+    return x * y
+
+
+@app.task
+def xsum(numbers):
+    return sum(numbers)
+```
+
+### Два режима запуска
+
+Стуртуем воркера снаружи `proj` вот так: `celery -A proj worker -l INFO`. В данном режиме воркер запускается локально на одной ноде. Видим что-то типа этого:
+
+```shell
+--------------- celery@halcyon.local v4.0 (latentcall)
+--- ***** -----
+-- ******* ---- [Configuration]
+- *** --- * --- . broker:      amqp://guest@localhost:5672//
+- ** ---------- . app:         __main__:0x1012d8590
+- ** ---------- . concurrency: 8 (processes)
+- ** ---------- . events:      OFF (enable -E to monitor this worker)
+- ** ----------
+- *** --- * --- [Queues]
+-- ******* ---- . celery:      exchange:celery(direct) binding:celery
+--- ***** -----
+
+[2012-06-08 16:23:51,078: WARNING/MainProcess] celery@halcyon.local has started.
+```
+
+здесь `broker` - это юрл к нашему брокеру. `concurrency`  определяет сколько доступно ядер. `events` это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [[flower]]. `queues` это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через [маршрутизацию](https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing).
+
+В текущем режиме воркера можно остановить через `ctrl-c`. В реальных условиях воркеров придется запускать в фоне - [читай руководство по "демонизации"](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing). Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является `/etc/default/celeryd`. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через `celery multy`, которому рут-права не нужны. Выглядит это примерно так:
+
+```bash
+$ celery multi start w1 -A proj -l INFO
+celery multi v4.0.0 (latentcall)
+> Starting nodes...
+    > w1.halcyon.local: OK
+```
+
+```bash
+$ celery  multi restart w1 -A proj -l INFO
+celery multi v4.0.0 (latentcall)
+> Stopping nodes...
+    > w1.halcyon.local: TERM -> 64024
+> Waiting for 1 node.....
+    > w1.halcyon.local: OK
+> Restarting node w1.halcyon.local: OK
+celery multi v4.0.0 (latentcall)
+> Stopping nodes...
+    > w1.halcyon.local: TERM -> 64052
+```
+
+Запущенный в фоне воркер не помнит контекеста, поэтому все переданные ему аругменты командной строки необходимо передавать каждый раз при каждой кманде (wtf). Остановить можно через `multi stop`, но надо понить, что такая остановка будет синхронной, что может привести к незавершению ряда задач. Для асинхронного стпа использовать `stopwait`
+
+Вот так на самом деле придется запускать воркеров (создавая разделы для логов, чтобы не возникли ошибки `IOError: [Errno 13] Permission denied`):
+
+```python
+$ mkdir -p /var/run/celery
+$ mkdir -p /var/log/celery
+$ celery multi start w1 -A proj -l INFO --pidfile=/var/run/celery/%n.pid \
+                                        --logfile=/var/log/celery/%n%I.log
+```
+
+Кроме того. возможны ошибки с пермишеном к логам. Надо передать права. Смотри [тут](https://stackoverflow.com/questions/28825760/celery-not-running-permission-denied/28826090) и [тут](https://stackoverflow.com/questions/22736808/celery-daemon-permission-denied-on-log-file)
+
+### Вызов тасков
+
+Вызов тасков делается, как писалось выше, через `sig.delay(*args, **kwargs)`, котоырй является оберткой для `sig.apply_async(args=(), kwargs={}, **options)`, получающий больше конфигурационных аргументов (например название очереди или значение колдауна).
+
+Если реализован бекенд, то результат можно получить через `get()`. Поддерживаются атрибуты, дающие доступ к состояниям:
+
+```python
+>>> res = add.delay(2, 2)
+>>> res.get(timeout=1)
+4
+>>> res.id
+d6b3aea2-fb9b-4ebc-8da4-848818db9114
+>>> res.failed()
+False
+>>> res.successful()
+True
+```
+
+Если что-то пошло не так, будет поднята ошибка, избежать пропогейта которой можно так:
+
+```python
+>>> res.get(propagate=False)
+TypeError("unsupported operand type(s) for +: 'int' and 'str'")
+```
+
+Такс проходит через три состояния (на самом деле состояние таска может меняться произволяно и SUCCESS не окончательный): PENDING -> STARTED -> RETRY -> STARTED -> RETRY -> STARTED -> SUCCESS. Извлечь можно так:
+
+```python
+>>> res.state
+'FAILURE'
+```
+
+Состояние STARTED появляется только если таск инициализирвоан через декоратор `@task(track_started=True)`, а PENDING просто определяет неопределенное состояние (дефолтное). [Про статусы подробно](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-states)
+
+### Work-flow
+
+Для построения сложных конструкций в Celery предусмотрены сигнатуры (signature). Сигнатура упаковывает таск и аргументы полностью или частично для передачи всего этого как объекта дрвгим таскам или для сериализации.
+
+```python
+>>> add.signature((2, 2), countdown=10)
+tasks.add(2, 2)
+```
+
+сокращенный вариант:
+
+```python
+>>> s1 = add.s(2, 2)
+>>> res = s1.delay()
+>>> res.get()
+4
+```
+
+частичная передача аргументов:
+
+```python
+# incomplete partial: add(?, 2)
+>>> s2 = add.s(2)
+# resolves the partial: add(8, 2)
+>>> res = s2.delay(8)
+>>> res.get()
+10
+```
+
+### Примитивы
+
+Все примитивы поддерживают частичные аргументы и могут быть скомбинированы между собой в любом порядке.
+
+#### Groups
+
+```python
+>>> from celery import group
+>>> from proj.tasks import add
+
+>>> g = group(add.s(i, i) for i in range(10))
+>>> g().get()
+[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+```
+
+#### Chains
+
+```python
+>>> from celery import chain
+>>> from proj.tasks import add, mul
+
+# (4 + 4) * 8
+>>> chain(add.s(4, 4) | mul.s(8))().get()
+64
+```
+
+Короткий вариант записи
+
+```python
+>>> (add.s(4, 4) | mul.s(8))().get()
+64
+```
+
+#### Chords
+
+```python
+>>> from celery import chord
+>>> from proj.tasks import add, xsum
+
+>>> chord((add.s(i, i) for i in range(10)), xsum.s())().get()
+90
+```
+
+Если группа чейнится в другой таск, она автоматически конверстится в чорд:
+
+```python
+>>> (group(add.s(i, i) for i in range(10)) | xsum.s())().get()
+90
+```
+
+Больше конструкций и подробности [смотри тут](https://docs.celeryproject.org/en/stable/userguide/canvas.html#guide-canvas)
+
+### Routing
+
+Определять очереди можно как в конфигах, непосредственно в тасках или через cli:
+
+```python
+app.conf.update(
+    task_routes = {
+        'proj.tasks.add': {'queue': 'hipri'},
+    },
+)
+```
+
+или
+
+```python
+>>> from proj.tasks import add
+>>> add.apply_async((2, 2), queue='hipri')
+```
+
+### [Remote control](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html#remote-control)
+
+Через `celery -A proj inspect` и `celery -A control`. К примеру все активные воркеры: `celery -A proj inspect active`
 
 ## [user guide](https://docs.celeryproject.org/en/stable/userguide/index.html)
 
@@ -263,11 +510,13 @@ tasks.add
 
 Если ваша задача идемпотентна, вы можете установить опцию acks_late, чтобы вместо этого воркер подтвердил сообщение после того, как задача вернется.
 
-Обратите внимание, что воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей sys.exit (), либо сигналом), даже если acks_late включен. Такое поведение преднамеренно, поскольку мы не хотим повторно запускать таски, которые заставляют ядро ​​отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу ... и мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска.
+Обратите внимание, что воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей sys.exit(), либо сигналом), даже если acks_late включен. Такое поведение преднамеренно, поскольку мы не хотим повторно запускать таски, которые заставляют ядро отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу ... и мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска.
 
 Таск, который выделяет слишком много памяти, рискует скрашить ядро, то же самое может произойти снова. Таск, который всегда завершается ошибкой при повторной доставке, может вызвать высокочастотный цикл передачи сообщений, приводящий к остановке системы.
 
-Если вы действительно хотите, чтобы задача была повторно доставлена ​​в этих сценариях, вам следует рассмотреть возможность включения параметра task_reject_on_worker_lost.
+Если вы действительно хотите, чтобы задача была повторно доставлена в этих сценариях, вам следует рассмотреть возможность включения параметра task_reject_on_worker_lost.
+
+Если для текущего таска не нужны результаты, их можно отключить через декоратор `@task(ignore_result=True)`
 
 #### [Базовые принципы](https://docs.celeryproject.org/en/stable/userguide/tasks.html#basics)
 
@@ -470,6 +719,14 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 
 Мониторить celery можно через [[flower]]
 
+Смотри еще:
+
+- [документация cli celery](https://docs.celeryproject.org/en/stable/reference/cli.html?highlight=command)
+- [[redis]]
+- [[rabbitmq]]
+- [[asyncio]]
+- [[fastapi]]
+
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"
@@ -477,6 +734,12 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 [redis]: redis "Redis"
 [docker]: ../lists/docker "Docker"
 [redis]: redis "Redis"
+[rabbitmq]: rabbitmq "Rabbitmq"
+[flower]: flower "Flower"
 [python-logging]: ../lists/python-logging "Python-logging"
 [flower]: flower "Flower"
+[redis]: redis "Redis"
+[rabbitmq]: rabbitmq "Rabbitmq"
+[asyncio]: asyncio "Asyncio"
+[fastapi]: fastapi "Fastapi"
 [//end]: # "Autogenerated link references"
