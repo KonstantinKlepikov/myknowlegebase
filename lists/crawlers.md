@@ -14,6 +14,13 @@ tags: crawlers
 - [[BeautifulSoup]]
 - [[2022-01-04-daily-note]] использование proxy в selenium
 
+Либы:
+
+- [ultimate-sitemap-parser](https://github.com/mediacloud/ultimate-sitemap-parser)
+- [Scrapyd - an application for deploying and running Scrapy spiders](https://scrapyd.readthedocs.io/en/stable/index.html)
+
+## Что такое веб-краулеры
+
 Веб-краулер - интернет интернет-бот, который систематически просматривает web и обычно используется поисковыми системами для веб-индексации.
 
 Сканеры могут проверять гиперссылки и HTML - код. Их также можно использовать для парсинга веб - страниц и программирования на основе данных.

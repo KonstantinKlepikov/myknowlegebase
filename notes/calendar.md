@@ -1,5 +1,6 @@
 ---
 description: Работа со значением даты в стандартной библиотеке python
+tags: python-standart-library
 ---
 # Calendar
 

@@ -12,6 +12,7 @@ category: list
 - [[date-and-time-in-python]]
 - [[datetime]]
 - [[time]]
+- [[calendar]]
 - [[mathematic-in-python]]
 - [[functools]]
 - [[itertools]]
@@ -36,8 +37,14 @@ category: list
 - [[nets-with-python]] сети и интернет
 - [[python-interptetator-and-env-utils]] взаимодействие с интерпретатором и окружением в python
 - [[abc]]
+- [[python-decorator]]
+- [[python-descriptors]]
 
-[Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
+Ссылки на статьи:
+
+- [Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
+- [Списковые включения в примерах](https://codecamp.ru/blog/python-list-comprehensions/)
+- [Временная сложность структур python](https://wiki.python.org/moin/TimeComplexity)
 
 Смотри еще:
 
@@ -52,8 +59,6 @@ category: list
 - [[type-annotation]]
 - [[from-future-import-annotations]]
 - [[numpy]]
-- [[python-decorator]]
-- [[python-descriptors]]
 - [[python-sorting]]
 - [[2021-12-20-daily-note]] про приоритет операторов при сравнении, порядок импорта модулей и пактов, и пара нюансов со встроенными функциями
 - [[2021-12-21-daily-note]] про форматирование f-строк
@@ -69,6 +74,7 @@ category: list
 [date-and-time-in-python]: ../notes/date-and-time-in-python "Date and time in python"
 [datetime]: ../notes/datetime "Datetime"
 [time]: ../notes/time "Time"
+[calendar]: ../notes/calendar "Calendar"
 [mathematic-in-python]: ../notes/mathematic-in-python "Mathematic in python"
 [functools]: ../notes/functools "Functools"
 [itertools]: ../notes/itertools "Itertools"
@@ -93,6 +99,8 @@ category: list
 [nets-with-python]: ../notes/nets-with-python "Nets and internet with python"
 [python-interptetator-and-env-utils]: ../notes/python-interptetator-and-env-utils "Утилиты взаимодействия с интерпретатором и окружением в python"
 [abc]: ../notes/abc "Abc"
+[python-decorator]: ../notes/python-decorator "Python decorator"
+[python-descriptors]: ../notes/python-descriptors "Python descriptors"
 [python-patterns]: ../notes/python-patterns "Python patterns"
 [python-logging]: python-logging "Python-logging"
 [feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
@@ -104,8 +112,6 @@ category: list
 [type-annotation]: ../notes/type-annotation "Анотация типов в python"
 [from-future-import-annotations]: ../notes/from-future-import-annotations "From future import annotations"
 [numpy]: ../notes/numpy "Numpy"
-[python-decorator]: ../notes/python-decorator "Python decorator"
-[python-descriptors]: ../notes/python-descriptors "Python descriptors"
 [python-sorting]: ../notes/python-sorting "Python sorting"
 [2021-12-20-daily-note]: ../posts/2021-12-20-daily-note "Операторы сравнения, запуск модуля с аругментами и др.тонкости python"
 [2021-12-21-daily-note]: ../posts/2021-12-21-daily-note "Formatted string literals specificators"

@@ -1,6 +1,6 @@
 ---
-description: Список заметок о компьютерном зрении и других задачах ML
-title: Computer visions and other ml tascs
+description: Список заметок о компьютерном зрении
+title: Computer visions
 tags: ml
 ---
 
