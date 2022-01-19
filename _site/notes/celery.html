@@ -246,7 +246,7 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
   <li>Optimization</li>
 </ul>
 
-<h3 id="счоздание-воркеров-и-тасков">СЧоздание воркеров и тасков</h3>
+<h3 id="создание-воркеров-и-тасков">Создание воркеров и тасков</h3>
 
 <p>В примере разбирается проект с такой структурой:</p>
 
@@ -273,7 +273,7 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
     <span class="n">app</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>В данном случае в качестве брокера задан [<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>], бекендом является rpc, а в include мы прописываем путь к таскам - это необходимо, чтобы воркер знал где их искать после старта. Название воркера должно совпадать с названием содержащего фолдера, иначе celery не найдет приложение. <a href="https://docs.celeryproject.org/en/stable/getting-started/next-steps.html#about-the-app-argument">Другие варианты</a>.</p>
+<p>В данном случае в качестве брокера задан [<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>], Бекендом является rpc, а в include мы прописываем путь к таскам - это необходимо, чтобы воркер знал где их искать после старта. Название воркера может не совпадать с названием содержащего фолдера.</p>
 
 <p><code class="language-plaintext highlighter-rouge">tasks.py</code></p>
 
@@ -297,7 +297,13 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
 
 <h3 id="два-режима-запуска">Два режима запуска</h3>
 
-<p>Стуртуем воркера снаружи <code class="language-plaintext highlighter-rouge">proj</code> вот так: <code class="language-plaintext highlighter-rouge">celery -A proj worker -l INFO</code>. В данном режиме воркер запускается локально на одной ноде. Видим что-то типа этого:</p>
+<p>Стуртуем воркера снаружи <code class="language-plaintext highlighter-rouge">proj</code> вот так: <code class="language-plaintext highlighter-rouge">celery -A proj worker -l INFO</code>. В данном режиме воркер запускается локально на одной ноде.</p>
+
+<p>Аргумент <code class="language-plaintext highlighter-rouge">--app</code> (<code class="language-plaintext highlighter-rouge">-A</code>) указывает используемый экземпляр приложения Celery в виде <code class="language-plaintext highlighter-rouge">module.path:attribute</code>. Но он также поддерживает форму быстрого доступа. Если указано только имя пакета, он попытается найти экземпляр приложения в следующем порядке:</p>
+
+<p>С <code class="language-plaintext highlighter-rouge">--app=proj</code> - атрибут с именем <code class="language-plaintext highlighter-rouge">proj.app</code>, или атрибут с именем <code class="language-plaintext highlighter-rouge">proj.celery</code>, или любой атрибут в модуль <code class="language-plaintext highlighter-rouge">proj</code>, где значением является приложение Celery, или если ничего из этого не найдено, он попытается использовать подмодуль с именем <code class="language-plaintext highlighter-rouge">proj.celery</code> и найти в нем атрибут с именем <code class="language-plaintext highlighter-rouge">proj.celery.app</code>, или атрибут с именем <code class="language-plaintext highlighter-rouge">proj.celery.celery</code>, или любой атрибут в модуле <code class="language-plaintext highlighter-rouge">proj.celery</code>, где значением является приложение Celery. Эта схема имитирует приемы, используемые в документации, то есть <code class="language-plaintext highlighter-rouge">proj:app</code> для одного автономного модуля и <code class="language-plaintext highlighter-rouge">proj.celery:app</code> для более крупных проектов.</p>
+
+<p>Видим что-то типа этого:</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------</span> celery@halcyon.local v4.0 <span class="o">(</span>latentcall<span class="o">)</span>
 <span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span>
@@ -314,9 +320,9 @@ Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">i
 <span class="o">[</span>2012-06-08 16:23:51,078: WARNING/MainProcess] celery@halcyon.local has started.
 </code></pre></div></div>
 
-<p>здесь <code class="language-plaintext highlighter-rouge">broker</code> - это юрл к нашему брокеру. <code class="language-plaintext highlighter-rouge">concurrency</code>  определяет сколько доступно ядер. <code class="language-plaintext highlighter-rouge">events</code> это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [<a href="flower" title="Flower">flower</a>]. <code class="language-plaintext highlighter-rouge">queues</code> это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через <a href="https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing">маршрутизацию</a>.</p>
+<p>Здесь <code class="language-plaintext highlighter-rouge">broker</code> - это юрл к нашему брокеру. <code class="language-plaintext highlighter-rouge">concurrency</code>  определяет сколько доступно ядер. <code class="language-plaintext highlighter-rouge">events</code> это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [<a href="flower" title="Flower">flower</a>]. <code class="language-plaintext highlighter-rouge">queues</code> это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через <a href="https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing">маршрутизацию</a>.</p>
 
-<p>В текущем режиме воркера можно остановить через <code class="language-plaintext highlighter-rouge">ctrl-c</code>. В реальных условиях воркеров придется запускать в фоне - <a href="https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing">читай руководство по “демонизации”</a>. Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является <code class="language-plaintext highlighter-rouge">/etc/default/celeryd</code>. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через <code class="language-plaintext highlighter-rouge">celery multy</code>, которому рут-права не нужны. Выглядит это примерно так:</p>
+<p>В текущем режиме воркера можно остановить через <code class="language-plaintext highlighter-rouge">ctrl-c</code>. В реальных условиях воркеров потребуется запускать в фоне - <a href="https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing">читай руководство по “демонизации”</a>. Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является <code class="language-plaintext highlighter-rouge">/etc/default/celeryd</code>. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через <code class="language-plaintext highlighter-rouge">celery multy</code>, которому рут-права не нужны. Выглядит это примерно так:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>celery multi start w1 <span class="nt">-A</span> proj <span class="nt">-l</span> INFO
 celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
@@ -477,13 +483,15 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 
 <h3 id="application"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html">Application</a></h3>
 
+<p>Вначале необходимо инициализировать экземпляр celery. Этот объект является потокобезопасным, так что несколько приложений Celery с разными конфигурациями, компонентами и задачами могут сосуществовать в одном и том же пространстве процессов.</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">app</span>
 <span class="o">&lt;</span><span class="n">Celery</span> <span class="n">__main__</span><span class="p">:</span><span class="mh">0x100469fd0</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
-<p>Значение имеет main имя модуля, т.к. селери общается с помощью меседжей. Извлекается имя таска для того чтобы каждый воркер знал к какой функции ему образщаться.</p>
+<p>Здесь имеется название, название модуля и адрес в памяти, но значение имеет только имя модуля, т.к. селери общается с помощью меседжей, которые не содержат кода, а содержат только имена тасков, которые необходимо вызвать. Задачи добавояются в локальный регистр задач:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
 <span class="p">...</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -499,26 +507,14 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 <span class="o">&lt;@</span><span class="n">task</span><span class="p">:</span> <span class="n">__main__</span><span class="p">.</span><span class="n">add</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
-<p>Мы можем извлечь имя в main к примеру для tasks.py</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
-
-<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
-<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
-    <span class="n">app</span><span class="p">.</span><span class="n">worker_main</span><span class="p">()</span>
-</code></pre></div></div>
-
-<p>Но при импорте это будет выглядеть иначе:</p>
+<p>Когда celery не может определить к какому модуля принадлэеит функция, он использует <code class="language-plaintext highlighter-rouge">__main__</code>. Эта ситуация возникает при вызове модуля, в котором определена задача, как программы или через терминал python. Но при импорте это будет выглядеть иначе:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">add</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">name</span>
 <span class="n">tasks</span><span class="p">.</span><span class="n">add</span>
 </code></pre></div></div>
 
-<p>Кроме того, имя main модуля можно задать нгепосредственно</p>
+<p>В конечном итоге имя основного модуля можно указать непосредственно, тогда в вызове из <code class="language-plaintext highlighter-rouge">__main__</code> все будет ок</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'tasks'</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">main</span>
@@ -532,9 +528,9 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 <span class="n">tasks</span><span class="p">.</span><span class="n">add</span>
 </code></pre></div></div>
 
-<h4 id="configuration"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html#configuration">Configuration</a></h4>
+<h4 id="configuration-приложения"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html#configuration">Configuration</a> приложения</h4>
 
-<p>Конфиг доступен через <code class="language-plaintext highlighter-rouge">app.conf</code></p>
+<p>Конфиг доступен через атрибут <code class="language-plaintext highlighter-rouge">app.conf</code></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">timezone</span>
 <span class="s">'Europe/London'</span>
@@ -545,19 +541,39 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">enable_utc</span> <span class="o">=</span> <span class="bp">True</span>
 </code></pre></div></div>
 
-<p>или через апдейт сразу нескольких</p>
+<p>или через апдейт сразу нескольких атрибутов</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">conf</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
 <span class="p">...</span>     <span class="n">enable_utc</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
 <span class="p">...</span>     <span class="n">timezone</span><span class="o">=</span><span class="s">'Europe/London'</span><span class="p">,</span>
-<span class="p">...)</span>
+<span class="p">...</span> <span class="p">)</span>
 </code></pre></div></div>
 
-<p>Другие способы (к примеру из ф-ла, переменных окружения или из конфигурационного класса) см. в доке. Как правильно писать таски и использовать абстрактные таски для создания собственных, <a href="https://docs.celeryproject.org/en/stable/userguide/application.html#laziness">смотри тут</a>.</p>
+<p>Другие способы (к примеру из ф-ла, переменных окружения или из конфигурационного класса) смотри <a href="https://docs.celeryproject.org/en/stable/userguide/application.html#config-from-object">в доке</a>.</p>
+
+<p>Запретить вывод в отладку определененых конфигов <a href="https://docs.celeryproject.org/en/stable/userguide/application.html#censored-configuration">можно так</a>.</p>
+
+<p><a href="https://docs.celeryproject.org/en/stable/userguide/configuration.html#configuration">Список доступных конфигов</a></p>
+
+<h4 id="laziness"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html#laziness">Laziness</a></h4>
+
+<p>Экземпляр приложения является ленивым (laziness), то есть он не будет извлекаться до тех пор, пока он действительно не понадобится.</p>
+
+<p><code class="language-plaintext highlighter-rouge">app.task()</code> декораторы не создают задачи в тот момент, когда задача определена, вместо этого они откладывают создание задачи до того момента, как она будет использована, или после того, как приложение celery будет финализировано/</p>
+
+<p>Финализация приложения происходит или явно путем вызова <code class="language-plaintext highlighter-rouge">app.finalize()</code> или неявно, путем доступа атрибуту таска приложения. При финализации задачи, которые должны быть разделены между приложениями, корпиуются, оцениваются все декораторы задач, происходит сверка принадлежности задач приложению.</p>
+
+<h4 id="breaking-the-chain"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html#breaking-the-chain">Breaking the chain</a></h4>
+
+<p>Здесь объясняется как правильно передавать экземпляры приложений другим объектам.</p>
+
+<h4 id="абстрактные-задачи"><a href="https://docs.celeryproject.org/en/stable/userguide/application.html#abstract-tasks">Абстрактные задачи</a></h4>
+
+<p>Объясняется как создавать задачи из других базовых классов кроме <code class="language-plaintext highlighter-rouge">Task</code></p>
 
 <h3 id="tasks"><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html">Tasks</a></h3>
 
-<p>ЗNfcr - это класс, который можно сконструировать из любого вызываемого объекта. Он выполняет двойную роль: определяет что происходит при вызове задачи (отправляет сообщение), и что происходит, когда воркер получает это сообщение.</p>
+<p>Задача - это класс, который можно сконструировать из любого вызываемого объекта. Он выполняет двойную роль: определяет что происходит при вызове задачи (отправляет сообщение), и что происходит, когда воркер получает это сообщение.</p>
 
 <p>Каждый класс задач имеет уникальное имя, и на это имя ссылаются в сообщениях, чтобы воркер мог найти нужную функцию для выполнения.</p>
 
@@ -565,26 +581,33 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 
 <p>В идеале функции тасков должны быть идемпотентными: это означает, что <strong>функция не будет вызывать непредвиденных эффектов, даже если вызывается несколько раз с одними и теми же аргументами</strong>. Поскольку рабочий процесс не может определить, являются ли ваши таски идемпотентными, поведение по умолчанию заключается в том, чтобы заранее подтвердить сообщение, непосредственно перед его выполнением. Тогда вызов таска, который уже был запущен, никогда не выполнялся снова.</p>
 
-<p>Если ваша задача идемпотентна, вы можете установить опцию acks_late, чтобы вместо этого воркер подтвердил сообщение после того, как задача вернется.</p>
+<p>Если ваша задача идемпотентна, вы можете установить опцию <code class="language-plaintext highlighter-rouge">acks_late</code>, чтобы вместо этого воркер подтвердил сообщение после того, как задача вернется.</p>
 
-<p>Обратите внимание, что воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей sys.exit(), либо сигналом), даже если acks_late включен. Такое поведение преднамеренно, поскольку мы не хотим повторно запускать таски, которые заставляют ядро отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу … и мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска.</p>
+<p>Воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей <code class="language-plaintext highlighter-rouge">sys.exit()</code>, либо сигналом), даже если <code class="language-plaintext highlighter-rouge">acks_late</code> включен. Такое поведение выполнено преднамеренно, поскольку:</p>
 
-<p>Таск, который выделяет слишком много памяти, рискует скрашить ядро, то же самое может произойти снова. Таск, который всегда завершается ошибкой при повторной доставке, может вызвать высокочастотный цикл передачи сообщений, приводящий к остановке системы.</p>
+<ul>
+  <li>мы не хотим повторно запускать таски, которые заставляют ядро отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу</li>
+  <li>мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска</li>
+  <li>таск, который выделяет слишком много памяти, рискует скрашить ядро, то же самое может произойти снова</li>
+  <li>таск, который всегда завершается ошибкой при повторной доставке, может вызвать высокочастотный цикл передачи сообщений, приводящий к остановке системы.</li>
+</ul>
 
-<p>Если вы действительно хотите, чтобы задача была повторно доставлена в этих сценариях, вам следует рассмотреть возможность включения параметра task_reject_on_worker_lost.</p>
+<p>Если вы действительно хотите, чтобы задача была повторно доставлена в этих сценариях, вам следует рассмотреть возможность включения параметра <code class="language-plaintext highlighter-rouge">task_reject_on_worker_lost</code>.</p>
 
 <p>Если для текущего таска не нужны результаты, их можно отключить через декоратор <code class="language-plaintext highlighter-rouge">@task(ignore_result=True)</code></p>
 
-<h4 id="базовые-принципы"><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#basics">Базовые принципы</a></h4>
+<h4 id="базовое-использование"><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#basics">Базовое использование</a></h4>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">serializer</span><span class="o">=</span><span class="s">'json'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">serializer</span><span class="o">=</span><span class="s">'json'</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
     <span class="n">User</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>В данном случае при создании таска использовалась <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#list-of-options">опция</a> - смотри список опций для тасков.</p>
+<p>В данном случае при создании таска использовалась опция serializer - смотри <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-options">список опций для тасков</a>.</p>
 
-<p><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#bound-tasks">Bound task</a> - это такие таски, в которых первый аргумент это всегда инстанс таска (self), так же как в методах #python</p>
+<p><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#bound-tasks">Bound task</a> - это такие таски, в которых первый аргумент это всегда инстанс таска (self), так же как в методах python. Связанные задачи необходимы для повторных попыток (с помощью <code class="language-plaintext highlighter-rouge">app.Task.retry()</code>), для доступа к информации о текущем запросе задачи и для любых дополнительных функций, которые вы добавляете в базовые классы пользовательских задач.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">logger</span> <span class="o">=</span> <span class="n">get_task_logger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -593,7 +616,7 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
     <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nb">id</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Возможно наследование таска от базового класса</p>
+<p>Возможно наследование таска от базового класса при помощи аргумента декоратора <code class="language-plaintext highlighter-rouge">base</code></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">celery</span>
 
@@ -607,17 +630,11 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
     <span class="k">raise</span> <span class="nb">KeyError</span><span class="p">()</span>
 </code></pre></div></div>
 
+<h4 id="name">Name</h4>
+
 <p>У каждого таска должно быть уникальное имя. Если имя не задано - оно будет сгенерировано из имени модуля и имени функции</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'sum-of-two-numbers'</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="p">...</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">name</span>
-<span class="s">'sum-of-two-numbers'</span>
-</code></pre></div></div>
-
-<p>Лучшая практика - использовать имя модуля как неймспейс для имени таска. В данном случае задано такое же имя, какое могло бы быть сгенерировано автоматически для таска, заданного в модуле tasks.py</p>
+<p>Лучшая практика - использовать имя модуля как неймспейс для имени таска, чтобы избежат ьконфликта имен. В данном случае задано такое же имя, какое могло бы быть сгенерировано автоматически для таска, заданного в модуле <code class="language-plaintext highlighter-rouge">tasks.py</code></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'tasks.add'</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -629,7 +646,9 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 
 <p>Вопрос автонейминга и релятивного импорта описан <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#automatic-naming-and-relative-imports">тут</a>. Как менять схему автонейминга описано <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#changing-the-automatic-naming-behavior">тут</a>.</p>
 
-<p>Task Request содержит <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request">информацию</a> и состояние текущего таска. Подробнее о полях смотри в доке.</p>
+<h4 id="task-request">Task request</h4>
+
+<p><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request">Запрос задачи</a> осуществляется через <code class="language-plaintext highlighter-rouge">app.Task.request</code>, который содержит информацию и состояние текущего таска. Подробнее об атрибутах запрсоа смотри <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request">в доке</a>. Пример:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">dump_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -637,6 +656,8 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
         <span class="s">'Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">request</span><span class="p">)</span>
         <span class="p">)</span>
 </code></pre></div></div>
+
+<h4 id="logging">Logging</h4>
 
 <p>Воркер может автоматически логировать данные. Это можно настроить вручную. <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#logging">Подробнее</a>. Лучшая практика - создать простой логгер для всех тасков в модуле:</p>
 
@@ -652,7 +673,13 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 
 <p>Селери использует стандартную питоню библиотеку для логирования. [<a href="../lists/python-logging" title="Python-logging">python-logging</a>]</p>
 
-<p><code class="language-plaintext highlighter-rouge">app.Task.retry()</code> используется для извлечения таска, например для того, чтобы <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying">поднять ошибку</a></p>
+<h4 id="args-check">Args check</h4>
+
+<p>Реализована стандартная для python проверка аргументво таска, которую <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#argument-checking">можно отключить</a>. Кроме того, конфиденциальную информацию аргументво <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#hiding-sensitive-information-in-arguments">можно скрывать</a>.</p>
+
+<h4 id="retrying">Retrying</h4>
+
+<p><code class="language-plaintext highlighter-rouge">app.Task.retry()</code> используется для повтороного извлечения таска, например в случае ошибки. В этом случае будет оправлено новое сообщение с тем же идентификатором, чтобы сообщение было поставлено в туже очередь, что и исходная задача. <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying">Подробнее</a></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">send_twitter_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oauth</span><span class="p">,</span> <span class="n">tweet</span><span class="p">):</span>
@@ -663,11 +690,36 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
         <span class="k">raise</span> <span class="bp">self</span><span class="p">.</span><span class="n">retry</span><span class="p">(</span><span class="n">exc</span><span class="o">=</span><span class="n">exc</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p>Что еще доступно:</p>
+
+<ul>
+  <li><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#using-a-custom-retry-delay">пользовательская задержка повтора</a></li>
+  <li><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#automatic-retry-for-known-exceptions">автоматический повтор</a> для известных исключений</li>
+</ul>
+
 <p>Подробнее читай <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying">в доке</a>.</p>
 
-<p>Celery может <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#states">хранить состояние текущего таска</a> - это результат задачи или поднятая ошибка. Реализовано несколько бекендов для резалтов, <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends">смотри чем они отличаются тут</a>.</p>
+<h4 id="состояния">Состояния</h4>
 
-<p>Можно поднять несколько экцепшенов, которые <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#semipredicates">обеспечат определенное поведение воркера</a> для записи финального состояния. Это позволяет игнорить или отклонять таски.</p>
+<p>Celery может <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#states">хранить состояние текущего таска</a> - это результат задачи или поднятая ошибка. Реализовано несколько бекендов для резалтов, <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends">Смотри чем они отличаются тут</a>. Про <a href="https://docs.celeryproject.org/en/stable/userguide/configuration.html#conf-result-backend">настройку бекендов</a>. Про <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#result-backends">бекенды в целом</a>.</p>
+
+<p>За время своего существования задача будет проходить через несколько возможных состояний, и к каждому состоянию могут быть присоединены произвольные метаданные. Когда задача переходит в новое состояние, о предыдущем состоянии будет забыть, но некоторые переходы можно вывести (например, FAILED подразумевается, что задача, находящаяся сейчас в состоянии, находилась в STARTED состоянии в какой-то момент).</p>
+
+<p>Существуют также наборы состояний, такие как набор FAILURE_STATES и набор READY_STATES.</p>
+
+<p>Клиент использует членство в этих наборах, чтобы решить, следует ли повторно инициировать исключение (PROPAGATE_STATES) или можно ли кэшировать состояние.</p>
+
+<p>Кроме торго, можно определить <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#custom-states">пользовательские состояния</a>. Встреонные статусы <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#built-in-states">описаны тут</a></p>
+
+<h4 id="полупредикаты">Полупредикаты</h4>
+
+<p>Можно поднять несколько экцепшенов, которые <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#semipredicates">обеспечат определенное поведение воркера</a> для записи финального состояния. Это позволяет игнорить или отклонять таски. Реализовано:</p>
+
+<ul>
+  <li>Ignore</li>
+  <li>Reject</li>
+  <li>Retry</li>
+</ul>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">celery.exceptions</span> <span class="kn">import</span> <span class="n">Ignore</span>
 
@@ -682,6 +734,29 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
 <p>Можно <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#ignore-results-you-don-t-want">игнорить резалт таска</a>, если он неважен. Есть и другие способы <a href="https://docs.celeryproject.org/en/stable/userguide/optimizing.html#guide-optimizing">оптимизировать производительность</a>.</p>
 
 <p>Если нужно организовать таски последовательно, это может привести к непредвиденным задержкам в выполнении цепочки. Лучше организовать цепочку <a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#avoid-launching-synchronous-subtasks">асинхронно</a>.</p>
+
+<p>Пример (плохо)</p>
+
+<pre><code class="language-pythpn">@app.task
+def update_page_info(url):
+    page = fetch_page.delay(url).get()
+    info = parse_page.delay(url, page).get()
+    store_page_info.delay(url, info)
+
+@app.task
+def fetch_page(url):
+    return myhttplib.get(url)
+
+@app.task
+def parse_page(page):
+    return myparser.parse_document(page)
+
+@app.task
+def store_page_info(url, info):
+    return PageInfo.objects.create(url, info)
+</code></pre>
+
+<p>С использованием сейна тасков (хорошо):</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">update_page_info</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
     <span class="c1"># fetch_page -&gt; parse_page -&gt; store_page
@@ -701,9 +776,13 @@ celery multi v4.0.0 <span class="o">(</span>latentcall<span class="o">)</span>
     <span class="n">PageInfo</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-example">Пример использования тасков для фильтрации спама на джанго тут</a></p>
+<h4 id="стратегии-повышения-производительности"><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#performance-and-strategies">Стратегии повышения производительности</a></h4>
 
-<h3 id="calling-tasks"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html">Calling tasks</a></h3>
+<h4 id="пример-использования-тасков-для-фильтрации-спама-на-джанго-тут"><a href="https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-example">Пример использования тасков для фильтрации спама на джанго тут</a></h4>
+
+<h3 id="как-вызывать-таски"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html">Как вызывать таски</a></h3>
+
+<h4 id="базавые-принципы">Базавые принципы</h4>
 
 <p><code class="language-plaintext highlighter-rouge">T.delay(arg, kwarg=value)</code>
 Star arguments shortcut to .apply_async. (.delay(*args, **kwargs) calls .apply_async(args, kwargs)).</p>
@@ -711,41 +790,115 @@ Star arguments shortcut to .apply_async. (.delay(*args, **kwargs) calls .apply_a
 <p><code class="language-plaintext highlighter-rouge">T.apply_async((arg,), {'kwarg': value})</code></p>
 
 <p><code class="language-plaintext highlighter-rouge">T.apply_async(countdown=10)</code>
-executes in 10 seconds from now.</p>
+выполняется через 10 секунд</p>
 
 <p><code class="language-plaintext highlighter-rouge">T.apply_async(eta=now + timedelta(seconds=10))</code>
-executes in 10 seconds from now, specified using eta</p>
+выполняется через 10 секунд, указанный с помощью eta</p>
 
 <p><code class="language-plaintext highlighter-rouge">T.apply_async(countdown=60, expires=120)</code>
-executes in one minute from now, but expires after 2 minutes.</p>
+выполняется через одну минуту, но истекает через 2 минуты</p>
 
 <p><code class="language-plaintext highlighter-rouge">T.apply_async(expires=now + timedelta(days=2))</code>
-expires in 2 days, set using datetime.</p>
+истекает через 2 дня, устанавливается с помощью datetime.</p>
 
-<p>Поддерживаются <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks">слинкованные таски</a>, <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#on-message">сборщик состояний</a> таска, <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown">утсановка</a> времени срабатывания и экспирейшен, а так-же жругие опции, включая сборщики ошибок, сжатие и т.д.</p>
+<p>В большинстве случаев используется <code class="language-plaintext highlighter-rouge">delay()</code>, но если нужны дополнительные опции, то <code class="language-plaintext highlighter-rouge">apply_async</code>. Еще один способ - вызвать через signature, вот так: <code class="language-plaintext highlighter-rouge">task.s(arg1, arg2, kwarg1='x', kwargs2='y').apply_async()</code>. Читай про <a href="https://docs.celeryproject.org/en/stable/userguide/canvas.html">построение воркфлоу через signature</a></p>
 
-<p>Другой способ выполнения тасков - <a href="https://docs.celeryproject.org/en/stable/userguide/canvas.html">построение воркфлоу через signature</a></p>
+<p>Все примеры ниже для этой функции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<h4 id="linking-callbackserrbacks">Linking (callbacks/errbacks)</h4>
+
+<p>Поддерживаются <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks">слинкованные таски</a>, так что одна задача следует за другой. Задача обратного вызова будет применяться с результатом родительской задачи в качестве частичного аргумента:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">add</span><span class="p">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">link</span><span class="o">=</span><span class="n">add</span><span class="p">.</span><span class="n">s</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Если таск поднимает исключение, можно вызвать <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks">колбек напрямую</a></p>
+
+<p>Кроме того, Celery поддерживает перехват всех изменений состояния, <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#on-message">устанавливая обратный вызов on_message</a>.</p>
+
+<h4 id="eta-and-countdown"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown">ETA and Countdown</a></h4>
+
+<p>Поддерживается <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown">установка</a> времени срабатывания и ожидаемого времени выполнения</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">add</span><span class="p">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">countdown</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>    <span class="c1"># не раньше чем через 3 секунды
+</span><span class="mi">20</span>
+</code></pre></div></div>
+
+<p>ETA (расчетное время прибытия) позволяет установить конкретную дату и время, которые являются самым ранним временем выполнения задачи. Eta должен быть datetime объектом, указывающим точную дату и время (включая точность в миллисекундах и информацию о часовом поясе)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tomorrow</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">eta</span><span class="o">=</span><span class="n">tomorrow</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="expiration">Expiration</h4>
+
+<p>Аргумент expires определяет необязательное время истечения срока действия, либо в секундах после публикации задачи, либо в определенную дату и время, используя datetime. Когда рабочий процесс получает задачу с истекшим сроком действия, он помечает задачу как REVOKED(TaskRevokedError).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Task expires after one minute from now.
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">expires</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Also supports datetime
+</span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">.</span><span class="n">apply_async</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">kwargs</span><span class="p">,</span>
+<span class="p">...</span>                 <span class="n">expires</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="повторная-отправка">Повторная отправка</h4>
+
+<p>Celery будет автоматически повторять отправку сообщений в случае сбоя подключения, а поведение повторных попыток <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#message-sending-retry">можно настроить</a></p>
+
+<h4 id="обработка-ошибок-соединения-с-транспортом"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#connection-error-handling">Обработка ошибок соединения с транспортом</a></h4>
+
+<h4 id="serializers"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#serializers">Serializers</a></h4>
+
+<p>Данные, передаваемые между клиентами и работниками, должны быть сериализованы, поэтому каждое сообщение в Celery имеет content_type заголовок, описывающий метод сериализации, используемый для его кодирования.</p>
+
+<h4 id="compression"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#compression">Compression</a></h4>
+
+<h4 id="connections"><a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#connections">Connections</a></h4>
+
+<p>Соединения можно обрабатывать вручную, создавая паблишеров.</p>
+
+<p>Смотри еще <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#routing-options">перенаправление задач в разные очереди</a> и как <a href="https://docs.celeryproject.org/en/stable/userguide/calling.html#results-options">отклонять результаты задач</a>.</p>
+
+<h3 id="canvas-designing-work-flows"><a href="https://docs.celeryproject.org/en/stable/userguide/canvas.html">Canvas: Designing Work-flows</a></h3>
+
+<p>В разделе перечисляются примитивы и конструкции для signatures и как собирать асинхронные цепочки выполнения тасков.</p>
 
 <h3 id="workers"><a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide">Workers</a></h3>
 
 <p>Самый простой способ запустить воркера - <code class="language-plaintext highlighter-rouge">celery -A proj worker -l INFO</code></p>
 
-<p>Можно запускать множество воркеров</p>
+<p>Можно запускать множество воркеров, при этом обязательно указание имени узла</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>celery <span class="nt">-A</span> proj worker <span class="nt">--loglevel</span><span class="o">=</span>INFO <span class="nt">--concurrency</span><span class="o">=</span>10 <span class="nt">-n</span> worker1@%h
 <span class="nv">$ </span>celery <span class="nt">-A</span> proj worker <span class="nt">--loglevel</span><span class="o">=</span>INFO <span class="nt">--concurrency</span><span class="o">=</span>10 <span class="nt">-n</span> worker2@%h
 <span class="nv">$ </span>celery <span class="nt">-A</span> proj worker <span class="nt">--loglevel</span><span class="o">=</span>INFO <span class="nt">--concurrency</span><span class="o">=</span>10 <span class="nt">-n</span> worker3@%h
 </code></pre></div></div>
 
-<p>Воркера можно <a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#stopping-the-worker">завершить</a> или <a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#restarting-the-worker">рестартнуть</a>. Все остальное смотри в <a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide">документации</a></p>
+<p>Воркера можно <a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#stopping-the-worker">завершить</a> или <a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#restarting-the-worker">рестартнуть</a>. Все остальное (совместная работа, управление и т.д.) смотри в <a href="https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide">документации</a></p>
 
 <h3 id="запуск-демонов"><a href="https://docs.celeryproject.org/en/stable/userguide/daemonizing.html">Запуск демонов</a></h3>
 
 <h3 id="периодически-запускаемые-таски"><a href="https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html">Периодически запускаемые таски</a></h3>
 
+<p>В разделе рассматривается работа celery beat - планировщика, запускающего таски через равные промежутки времени.</p>
+
 <h3 id="routing-tasks"><a href="https://docs.celeryproject.org/en/stable/userguide/routing.html">Routing Tasks</a></h3>
 
+<p>Рассматривается автоматическое и ручное распределение по очередям и некотоыре опции.</p>
+
 <h3 id="monitoring-and-management-guide"><a href="https://docs.celeryproject.org/en/stable/userguide/monitoring.html">Monitoring and Management Guide</a></h3>
+
+<p>В том числе про [<a href="flower" title="Flower">flower</a>]</p>
 
 <h3 id="security"><a href="https://docs.celeryproject.org/en/stable/userguide/security.html">Security</a></h3>
 
@@ -763,17 +916,18 @@ expires in 2 days, set using datetime.</p>
 
 <h3 id="configuration-and-defaults"><a href="https://docs.celeryproject.org/en/stable/userguide/configuration.html">Configuration and defaults</a></h3>
 
-<p>Мониторить celery можно через [<a href="flower" title="Flower">flower</a>]</p>
-
 <p>Смотри еще:</p>
 
 <ul>
   <li><a href="https://docs.celeryproject.org/en/stable/reference/cli.html?highlight=command">документация cli celery</a></li>
   <li>[<a href="redis" title="Redis">redis</a>]</li>
   <li>[<a href="rabbitmq" title="Rabbitmq">rabbitmq</a>]</li>
+  <li>[<a href="flower" title="Flower">flower</a>]</li>
   <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
   <li>[<a href="fastapi" title="Fastapi">fastapi</a>]</li>
 </ul>
+
+<p>Более простой аналог: [<a href="python-rq" title="Python-rq">python-rq</a>]</p>
 
 
 

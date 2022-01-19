@@ -161,7 +161,7 @@ enable_utc = True
 - Timezone
 - Optimization
 
-### СЧоздание воркеров и тасков
+### Создание воркеров и тасков
 
 В примере разбирается проект с такой структурой:
 
@@ -190,7 +190,7 @@ if __name__ == '__main__':
     app.start()
 ```
 
-В данном случае в качестве брокера задан [[rabbitmq]], бекендом является rpc, а в include мы прописываем путь к таскам - это необходимо, чтобы воркер знал где их искать после старта. Название воркера должно совпадать с названием содержащего фолдера, иначе celery не найдет приложение. [Другие варианты](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html#about-the-app-argument).
+В данном случае в качестве брокера задан [[rabbitmq]], Бекендом является rpc, а в include мы прописываем путь к таскам - это необходимо, чтобы воркер знал где их искать после старта. Название воркера может не совпадать с названием содержащего фолдера.
 
 `tasks.py`
 
@@ -215,7 +215,13 @@ def xsum(numbers):
 
 ### Два режима запуска
 
-Стуртуем воркера снаружи `proj` вот так: `celery -A proj worker -l INFO`. В данном режиме воркер запускается локально на одной ноде. Видим что-то типа этого:
+Стуртуем воркера снаружи `proj` вот так: `celery -A proj worker -l INFO`. В данном режиме воркер запускается локально на одной ноде.
+
+Аргумент `--app` (`-A`) указывает используемый экземпляр приложения Celery в виде `module.path:attribute`. Но он также поддерживает форму быстрого доступа. Если указано только имя пакета, он попытается найти экземпляр приложения в следующем порядке:
+
+С `--app=proj` - атрибут с именем `proj.app`, или атрибут с именем `proj.celery`, или любой атрибут в модуль `proj`, где значением является приложение Celery, или если ничего из этого не найдено, он попытается использовать подмодуль с именем `proj.celery` и найти в нем атрибут с именем `proj.celery.app`, или атрибут с именем `proj.celery.celery`, или любой атрибут в модуле `proj.celery`, где значением является приложение Celery. Эта схема имитирует приемы, используемые в документации, то есть `proj:app` для одного автономного модуля и `proj.celery:app` для более крупных проектов.
+
+Видим что-то типа этого:
 
 ```shell
 --------------- celery@halcyon.local v4.0 (latentcall)
@@ -233,9 +239,9 @@ def xsum(numbers):
 [2012-06-08 16:23:51,078: WARNING/MainProcess] celery@halcyon.local has started.
 ```
 
-здесь `broker` - это юрл к нашему брокеру. `concurrency`  определяет сколько доступно ядер. `events` это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [[flower]]. `queues` это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через [маршрутизацию](https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing).
+Здесь `broker` - это юрл к нашему брокеру. `concurrency`  определяет сколько доступно ядер. `events` это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [[flower]]. `queues` это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через [маршрутизацию](https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing).
 
-В текущем режиме воркера можно остановить через `ctrl-c`. В реальных условиях воркеров придется запускать в фоне - [читай руководство по "демонизации"](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing). Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является `/etc/default/celeryd`. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через `celery multy`, которому рут-права не нужны. Выглядит это примерно так:
+В текущем режиме воркера можно остановить через `ctrl-c`. В реальных условиях воркеров потребуется запускать в фоне - [читай руководство по "демонизации"](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing). Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является `/etc/default/celeryd`. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через `celery multy`, которому рут-права не нужны. Выглядит это примерно так:
 
 ```bash
 $ celery multi start w1 -A proj -l INFO
@@ -412,6 +418,8 @@ app.conf.update(
 
 ### [Application](https://docs.celeryproject.org/en/stable/userguide/application.html)
 
+Вначале необходимо инициализировать экземпляр celery. Этот объект является потокобезопасным, так что несколько приложений Celery с разными конфигурациями, компонентами и задачами могут сосуществовать в одном и том же пространстве процессов.
+
 ```python
 >>> from celery import Celery
 >>> app = Celery()
@@ -419,7 +427,7 @@ app.conf.update(
 <Celery __main__:0x100469fd0>
 ```
 
-Значение имеет main имя модуля, т.к. селери общается с помощью меседжей. Извлекается имя таска для того чтобы каждый воркер знал к какой функции ему образщаться.
+Здесь имеется название, название модуля и адрес в памяти, но значение имеет только имя модуля, т.к. селери общается с помощью меседжей, которые не содержат кода, а содержат только имена тасков, которые необходимо вызвать. Задачи добавояются в локальный регистр задач:
 
 ```python
 >>> @app.task
@@ -436,20 +444,7 @@ __main__.add
 <@task: __main__.add>
 ```
 
-Мы можем извлечь имя в main к примеру для tasks.py
-
-```python
-from celery import Celery
-app = Celery()
-
-@app.task
-def add(x, y): return x + y
-
-if __name__ == '__main__':
-    app.worker_main()
-```
-
-Но при импорте это будет выглядеть иначе:
+Когда celery не может определить к какому модуля принадлэеит функция, он использует `__main__`. Эта ситуация возникает при вызове модуля, в котором определена задача, как программы или через терминал python. Но при импорте это будет выглядеть иначе:
 
 ```python
 >>> from tasks import add
@@ -457,7 +452,7 @@ if __name__ == '__main__':
 tasks.add
 ```
 
-Кроме того, имя main модуля можно задать нгепосредственно
+В конечном итоге имя основного модуля можно указать непосредственно, тогда в вызове из `__main__` все будет ок
 
 ```python
 >>> app = Celery('tasks')
@@ -472,9 +467,9 @@ tasks.add
 tasks.add
 ```
 
-#### [Configuration](https://docs.celeryproject.org/en/stable/userguide/application.html#configuration)
+#### [Configuration](https://docs.celeryproject.org/en/stable/userguide/application.html#configuration) приложения
 
-Конфиг доступен через `app.conf`
+Конфиг доступен через атрибут `app.conf`
 
 ```python
 >>> app.conf.timezone
@@ -487,20 +482,40 @@ tasks.add
 >>> app.conf.enable_utc = True
 ```
 
-или через апдейт сразу нескольких
+или через апдейт сразу нескольких атрибутов
 
 ```python
 >>> app.conf.update(
 ...     enable_utc=True,
 ...     timezone='Europe/London',
-...)
+... )
 ```
 
-Другие способы (к примеру из ф-ла, переменных окружения или из конфигурационного класса) см. в доке. Как правильно писать таски и использовать абстрактные таски для создания собственных, [смотри тут](https://docs.celeryproject.org/en/stable/userguide/application.html#laziness).
+Другие способы (к примеру из ф-ла, переменных окружения или из конфигурационного класса) смотри [в доке](https://docs.celeryproject.org/en/stable/userguide/application.html#config-from-object). 
+
+Запретить вывод в отладку определененых конфигов [можно так](https://docs.celeryproject.org/en/stable/userguide/application.html#censored-configuration).
+
+[Список доступных конфигов](https://docs.celeryproject.org/en/stable/userguide/configuration.html#configuration)
+
+#### [Laziness](https://docs.celeryproject.org/en/stable/userguide/application.html#laziness)
+
+Экземпляр приложения является ленивым (laziness), то есть он не будет извлекаться до тех пор, пока он действительно не понадобится.
+
+`app.task()` декораторы не создают задачи в тот момент, когда задача определена, вместо этого они откладывают создание задачи до того момента, как она будет использована, или после того, как приложение celery будет финализировано/
+
+Финализация приложения происходит или явно путем вызова `app.finalize()` или неявно, путем доступа атрибуту таска приложения. При финализации задачи, которые должны быть разделены между приложениями, корпиуются, оцениваются все декораторы задач, происходит сверка принадлежности задач приложению.
+
+#### [Breaking the chain](https://docs.celeryproject.org/en/stable/userguide/application.html#breaking-the-chain)
+
+Здесь объясняется как правильно передавать экземпляры приложений другим объектам.
+
+#### [Абстрактные задачи](https://docs.celeryproject.org/en/stable/userguide/application.html#abstract-tasks)
+
+Объясняется как создавать задачи из других базовых классов кроме `Task`
 
 ### [Tasks](https://docs.celeryproject.org/en/stable/userguide/tasks.html)
 
-ЗNfcr - это класс, который можно сконструировать из любого вызываемого объекта. Он выполняет двойную роль: определяет что происходит при вызове задачи (отправляет сообщение), и что происходит, когда воркер получает это сообщение.
+Задача - это класс, который можно сконструировать из любого вызываемого объекта. Он выполняет двойную роль: определяет что происходит при вызове задачи (отправляет сообщение), и что происходит, когда воркер получает это сообщение.
 
 Каждый класс задач имеет уникальное имя, и на это имя ссылаются в сообщениях, чтобы воркер мог найти нужную функцию для выполнения.
 
@@ -508,27 +523,32 @@ tasks.add
 
 В идеале функции тасков должны быть идемпотентными: это означает, что **функция не будет вызывать непредвиденных эффектов, даже если вызывается несколько раз с одними и теми же аргументами**. Поскольку рабочий процесс не может определить, являются ли ваши таски идемпотентными, поведение по умолчанию заключается в том, чтобы заранее подтвердить сообщение, непосредственно перед его выполнением. Тогда вызов таска, который уже был запущен, никогда не выполнялся снова.
 
-Если ваша задача идемпотентна, вы можете установить опцию acks_late, чтобы вместо этого воркер подтвердил сообщение после того, как задача вернется.
+Если ваша задача идемпотентна, вы можете установить опцию `acks_late`, чтобы вместо этого воркер подтвердил сообщение после того, как задача вернется.
 
-Обратите внимание, что воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей sys.exit(), либо сигналом), даже если acks_late включен. Такое поведение преднамеренно, поскольку мы не хотим повторно запускать таски, которые заставляют ядро отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу ... и мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска.
+Воркер подтвердит сообщение, если дочерний процесс, выполняющий задачу, будет завершен (либо задачей, вызывающей `sys.exit()`, либо сигналом), даже если `acks_late` включен. Такое поведение выполнено преднамеренно, поскольку:
 
-Таск, который выделяет слишком много памяти, рискует скрашить ядро, то же самое может произойти снова. Таск, который всегда завершается ошибкой при повторной доставке, может вызвать высокочастотный цикл передачи сообщений, приводящий к остановке системы.
+- мы не хотим повторно запускать таски, которые заставляют ядро отправлять SIGSEGV (ошибка сегментации) или аналогичные сигналы процессу
+- мы предполагаем, что системный администратор, намеренно завершающий задачу, не хочет ее автоматического перезапуска
+- таск, который выделяет слишком много памяти, рискует скрашить ядро, то же самое может произойти снова
+- таск, который всегда завершается ошибкой при повторной доставке, может вызвать высокочастотный цикл передачи сообщений, приводящий к остановке системы.
 
-Если вы действительно хотите, чтобы задача была повторно доставлена в этих сценариях, вам следует рассмотреть возможность включения параметра task_reject_on_worker_lost.
+Если вы действительно хотите, чтобы задача была повторно доставлена в этих сценариях, вам следует рассмотреть возможность включения параметра `task_reject_on_worker_lost`.
 
 Если для текущего таска не нужны результаты, их можно отключить через декоратор `@task(ignore_result=True)`
 
-#### [Базовые принципы](https://docs.celeryproject.org/en/stable/userguide/tasks.html#basics)
+#### [Базовое использование](https://docs.celeryproject.org/en/stable/userguide/tasks.html#basics)
 
 ```python
+from .models import User
+
 @app.task(serializer='json')
 def create_user(username, password):
     User.objects.create(username=username, password=password)
 ```
 
-В данном случае при создании таска использовалась [опция](https://docs.celeryproject.org/en/stable/userguide/tasks.html#list-of-options) - смотри список опций для тасков.
+В данном случае при создании таска использовалась опция serializer - смотри [список опций для тасков](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-options).
 
-[Bound task](https://docs.celeryproject.org/en/stable/userguide/tasks.html#bound-tasks) - это такие таски, в которых первый аргумент это всегда инстанс таска (self), так же как в методах #python
+[Bound task](https://docs.celeryproject.org/en/stable/userguide/tasks.html#bound-tasks) - это такие таски, в которых первый аргумент это всегда инстанс таска (self), так же как в методах python. Связанные задачи необходимы для повторных попыток (с помощью `app.Task.retry()`), для доступа к информации о текущем запросе задачи и для любых дополнительных функций, которые вы добавляете в базовые классы пользовательских задач.
 
 ```python
 logger = get_task_logger(__name__)
@@ -538,7 +558,7 @@ def add(self, x, y):
     logger.info(self.request.id)
 ```
 
-Возможно наследование таска от базового класса
+Возможно наследование таска от базового класса при помощи аргумента декоратора `base`
 
 ```python
 import celery
@@ -553,18 +573,11 @@ def add(x, y):
     raise KeyError()
 ```
 
+#### Name
+
 У каждого таска должно быть уникальное имя. Если имя не задано - оно будет сгенерировано из имени модуля и имени функции
 
-```python
->>> @app.task(name='sum-of-two-numbers')
->>> def add(x, y):
-...     return x + y
-
->>> add.name
-'sum-of-two-numbers'
-```
-
-Лучшая практика - использовать имя модуля как неймспейс для имени таска. В данном случае задано такое же имя, какое могло бы быть сгенерировано автоматически для таска, заданного в модуле tasks.py
+Лучшая практика - использовать имя модуля как неймспейс для имени таска, чтобы избежат ьконфликта имен. В данном случае задано такое же имя, какое могло бы быть сгенерировано автоматически для таска, заданного в модуле `tasks.py`
 
 ```python
 >>> @app.task(name='tasks.add')
@@ -577,7 +590,9 @@ def add(x, y):
 
 Вопрос автонейминга и релятивного импорта описан [тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#automatic-naming-and-relative-imports). Как менять схему автонейминга описано [тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#changing-the-automatic-naming-behavior).
 
-Task Request содержит [информацию](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request) и состояние текущего таска. Подробнее о полях смотри в доке.
+#### Task request
+
+[Запрос задачи](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request) осуществляется через `app.Task.request`, который содержит информацию и состояние текущего таска. Подробнее об атрибутах запрсоа смотри [в доке](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-request). Пример:
 
 ```python
 @app.task(bind=True)
@@ -586,6 +601,8 @@ def dump_context(self, x, y):
         'Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'.format(self.request)
         )
 ```
+
+#### Logging
 
 Воркер может автоматически логировать данные. Это можно настроить вручную. [Подробнее](https://docs.celeryproject.org/en/stable/userguide/tasks.html#logging). Лучшая практика - создать простой логгер для всех тасков в модуле:
 
@@ -602,7 +619,13 @@ def add(x, y):
 
 Селери использует стандартную питоню библиотеку для логирования. [[python-logging]]
 
-`app.Task.retry()` используется для извлечения таска, например для того, чтобы [поднять ошибку](https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying)
+#### Args check
+
+Реализована стандартная для python проверка аргументво таска, которую [можно отключить](https://docs.celeryproject.org/en/stable/userguide/tasks.html#argument-checking). Кроме того, конфиденциальную информацию аргументво [можно скрывать](https://docs.celeryproject.org/en/stable/userguide/tasks.html#hiding-sensitive-information-in-arguments).
+
+#### Retrying
+
+`app.Task.retry()` используется для повтороного извлечения таска, например в случае ошибки. В этом случае будет оправлено новое сообщение с тем же идентификатором, чтобы сообщение было поставлено в туже очередь, что и исходная задача. [Подробнее](https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying)
 
 ```python
 @app.task(bind=True)
@@ -614,11 +637,32 @@ def send_twitter_status(self, oauth, tweet):
         raise self.retry(exc=exc)
 ```
 
+Что еще доступно:
+
+- [пользовательская задержка повтора](https://docs.celeryproject.org/en/stable/userguide/tasks.html#using-a-custom-retry-delay)
+- [автоматический повтор](https://docs.celeryproject.org/en/stable/userguide/tasks.html#automatic-retry-for-known-exceptions) для известных исключений
+
 Подробнее читай [в доке](https://docs.celeryproject.org/en/stable/userguide/tasks.html#retrying).
 
-Celery может [хранить состояние текущего таска](https://docs.celeryproject.org/en/stable/userguide/tasks.html#states) - это результат задачи или поднятая ошибка. Реализовано несколько бекендов для резалтов, [смотри чем они отличаются тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends).
+#### Состояния
 
-Можно поднять несколько экцепшенов, которые [обеспечат определенное поведение воркера](https://docs.celeryproject.org/en/stable/userguide/tasks.html#semipredicates) для записи финального состояния. Это позволяет игнорить или отклонять таски.
+Celery может [хранить состояние текущего таска](https://docs.celeryproject.org/en/stable/userguide/tasks.html#states) - это результат задачи или поднятая ошибка. Реализовано несколько бекендов для резалтов, [Смотри чем они отличаются тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends). Про [настройку бекендов](https://docs.celeryproject.org/en/stable/userguide/configuration.html#conf-result-backend). Про [бекенды в целом](https://docs.celeryproject.org/en/stable/userguide/tasks.html#result-backends).
+
+За время своего существования задача будет проходить через несколько возможных состояний, и к каждому состоянию могут быть присоединены произвольные метаданные. Когда задача переходит в новое состояние, о предыдущем состоянии будет забыть, но некоторые переходы можно вывести (например, FAILED подразумевается, что задача, находящаяся сейчас в состоянии, находилась в STARTED состоянии в какой-то момент).
+
+Существуют также наборы состояний, такие как набор FAILURE_STATES и набор READY_STATES.
+
+Клиент использует членство в этих наборах, чтобы решить, следует ли повторно инициировать исключение (PROPAGATE_STATES) или можно ли кэшировать состояние.
+
+Кроме торго, можно определить [пользовательские состояния](https://docs.celeryproject.org/en/stable/userguide/tasks.html#custom-states). Встреонные статусы [описаны тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#built-in-states)
+
+#### Полупредикаты
+
+Можно поднять несколько экцепшенов, которые [обеспечат определенное поведение воркера](https://docs.celeryproject.org/en/stable/userguide/tasks.html#semipredicates) для записи финального состояния. Это позволяет игнорить или отклонять таски. Реализовано:
+
+- Ignore
+- Reject
+- Retry
 
 ```python
 from celery.exceptions import Ignore
@@ -634,6 +678,30 @@ def some_task(self):
 Можно [игнорить резалт таска](https://docs.celeryproject.org/en/stable/userguide/tasks.html#ignore-results-you-don-t-want), если он неважен. Есть и другие способы [оптимизировать производительность](https://docs.celeryproject.org/en/stable/userguide/optimizing.html#guide-optimizing).
 
 Если нужно организовать таски последовательно, это может привести к непредвиденным задержкам в выполнении цепочки. Лучше организовать цепочку [асинхронно](https://docs.celeryproject.org/en/stable/userguide/tasks.html#avoid-launching-synchronous-subtasks).
+
+Пример (плохо)
+
+```pythpn
+@app.task
+def update_page_info(url):
+    page = fetch_page.delay(url).get()
+    info = parse_page.delay(url, page).get()
+    store_page_info.delay(url, info)
+
+@app.task
+def fetch_page(url):
+    return myhttplib.get(url)
+
+@app.task
+def parse_page(page):
+    return myparser.parse_document(page)
+
+@app.task
+def store_page_info(url, info):
+    return PageInfo.objects.create(url, info)
+```
+
+С использованием сейна тасков (хорошо):
 
 ```python
 def update_page_info(url):
@@ -654,9 +722,13 @@ def store_page_info(info, url):
     PageInfo.objects.create(url=url, info=info)
 ```
 
-[Пример использования тасков для фильтрации спама на джанго тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-example)
+#### [Стратегии повышения производительности](https://docs.celeryproject.org/en/stable/userguide/tasks.html#performance-and-strategies)
 
-### [Calling tasks](https://docs.celeryproject.org/en/stable/userguide/calling.html)
+#### [Пример использования тасков для фильтрации спама на джанго тут](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-example)
+
+### [Как вызывать таски](https://docs.celeryproject.org/en/stable/userguide/calling.html)
+
+#### Базавые принципы
 
 `T.delay(arg, kwarg=value)`
 Star arguments shortcut to .apply_async. (.delay(*args, **kwargs) calls .apply_async(args, kwargs)).
@@ -664,26 +736,99 @@ Star arguments shortcut to .apply_async. (.delay(*args, **kwargs) calls .apply_a
 `T.apply_async((arg,), {'kwarg': value})`
 
 `T.apply_async(countdown=10)`
-executes in 10 seconds from now.
+выполняется через 10 секунд
 
 `T.apply_async(eta=now + timedelta(seconds=10))`
-executes in 10 seconds from now, specified using eta
+выполняется через 10 секунд, указанный с помощью eta
 
 `T.apply_async(countdown=60, expires=120)`
-executes in one minute from now, but expires after 2 minutes.
+выполняется через одну минуту, но истекает через 2 минуты
 
 `T.apply_async(expires=now + timedelta(days=2))`
-expires in 2 days, set using datetime.
+истекает через 2 дня, устанавливается с помощью datetime.
 
-Поддерживаются [слинкованные таски](https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks), [сборщик состояний](https://docs.celeryproject.org/en/stable/userguide/calling.html#on-message) таска, [утсановка](https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown) времени срабатывания и экспирейшен, а так-же жругие опции, включая сборщики ошибок, сжатие и т.д.
+В большинстве случаев используется `delay()`, но если нужны дополнительные опции, то `apply_async`. Еще один способ - вызвать через signature, вот так: `task.s(arg1, arg2, kwarg1='x', kwargs2='y').apply_async()`. Читай про [построение воркфлоу через signature](https://docs.celeryproject.org/en/stable/userguide/canvas.html)
 
-Другой способ выполнения тасков - [построение воркфлоу через signature](https://docs.celeryproject.org/en/stable/userguide/canvas.html)
+Все примеры ниже для этой функции
+
+```python
+@app.task
+def add(x, y):
+    return x + y
+```
+
+#### Linking (callbacks/errbacks)
+
+Поддерживаются [слинкованные таски](https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks), так что одна задача следует за другой. Задача обратного вызова будет применяться с результатом родительской задачи в качестве частичного аргумента:
+
+```python
+add.apply_async((2, 2), link=add.s(16))
+```
+
+Если таск поднимает исключение, можно вызвать [колбек напрямую](https://docs.celeryproject.org/en/stable/userguide/calling.html#linking-callbacks-errbacks)
+
+Кроме того, Celery поддерживает перехват всех изменений состояния, [устанавливая обратный вызов on_message](https://docs.celeryproject.org/en/stable/userguide/calling.html#on-message).
+
+#### [ETA and Countdown](https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown)
+
+Поддерживается [установка](https://docs.celeryproject.org/en/stable/userguide/calling.html#eta-and-countdown) времени срабатывания и ожидаемого времени выполнения
+
+```python
+>>> result = add.apply_async((2, 2), countdown=3)
+>>> result.get()    # не раньше чем через 3 секунды
+20
+```
+
+ETA (расчетное время прибытия) позволяет установить конкретную дату и время, которые являются самым ранним временем выполнения задачи. Eta должен быть datetime объектом, указывающим точную дату и время (включая точность в миллисекундах и информацию о часовом поясе)
+
+```python
+>>> from datetime import datetime, timedelta
+
+>>> tomorrow = datetime.utcnow() + timedelta(days=1)
+>>> add.apply_async((2, 2), eta=tomorrow)
+```
+
+#### Expiration
+
+Аргумент expires определяет необязательное время истечения срока действия, либо в секундах после публикации задачи, либо в определенную дату и время, используя datetime. Когда рабочий процесс получает задачу с истекшим сроком действия, он помечает задачу как REVOKED(TaskRevokedError).
+
+```python
+>>> # Task expires after one minute from now.
+>>> add.apply_async((10, 10), expires=60)
+
+>>> # Also supports datetime
+>>> from datetime import datetime, timedelta
+>>> add.apply_async((10, 10), kwargs,
+...                 expires=datetime.now() + timedelta(days=1)
+```
+
+#### Повторная отправка
+
+Celery будет автоматически повторять отправку сообщений в случае сбоя подключения, а поведение повторных попыток [можно настроить](https://docs.celeryproject.org/en/stable/userguide/calling.html#message-sending-retry)
+
+#### [Обработка ошибок соединения с транспортом](https://docs.celeryproject.org/en/stable/userguide/calling.html#connection-error-handling)
+
+#### [Serializers](https://docs.celeryproject.org/en/stable/userguide/calling.html#serializers)
+
+Данные, передаваемые между клиентами и работниками, должны быть сериализованы, поэтому каждое сообщение в Celery имеет content_type заголовок, описывающий метод сериализации, используемый для его кодирования.
+
+#### [Compression](https://docs.celeryproject.org/en/stable/userguide/calling.html#compression)
+
+#### [Connections](https://docs.celeryproject.org/en/stable/userguide/calling.html#connections)
+
+Соединения можно обрабатывать вручную, создавая паблишеров.
+
+Смотри еще [перенаправление задач в разные очереди](https://docs.celeryproject.org/en/stable/userguide/calling.html#routing-options) и как [отклонять результаты задач](https://docs.celeryproject.org/en/stable/userguide/calling.html#results-options).
+
+### [Canvas: Designing Work-flows](https://docs.celeryproject.org/en/stable/userguide/canvas.html)
+
+В разделе перечисляются примитивы и конструкции для signatures и как собирать асинхронные цепочки выполнения тасков.
 
 ### [Workers](https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide)
 
 Самый простой способ запустить воркера - `celery -A proj worker -l INFO`
 
-Можно запускать множество воркеров
+Можно запускать множество воркеров, при этом обязательно указание имени узла
 
 ```shell
 celery -A proj worker --loglevel=INFO --concurrency=10 -n worker1@%h
@@ -691,15 +836,21 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker2@%h
 $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 ```
 
-Воркера можно [завершить](https://docs.celeryproject.org/en/stable/userguide/workers.html#stopping-the-worker) или [рестартнуть](https://docs.celeryproject.org/en/stable/userguide/workers.html#restarting-the-worker). Все остальное смотри в [документации](https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide)
+Воркера можно [завершить](https://docs.celeryproject.org/en/stable/userguide/workers.html#stopping-the-worker) или [рестартнуть](https://docs.celeryproject.org/en/stable/userguide/workers.html#restarting-the-worker). Все остальное (совместная работа, управление и т.д.) смотри в [документации](https://docs.celeryproject.org/en/stable/userguide/workers.html#workers-guide)
 
 ### [Запуск демонов](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html)
 
 ### [Периодически запускаемые таски](https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html)
 
+В разделе рассматривается работа celery beat - планировщика, запускающего таски через равные промежутки времени.
+
 ### [Routing Tasks](https://docs.celeryproject.org/en/stable/userguide/routing.html)
 
+Рассматривается автоматическое и ручное распределение по очередям и некотоыре опции.
+
 ### [Monitoring and Management Guide](https://docs.celeryproject.org/en/stable/userguide/monitoring.html)
+
+В том числе про [[flower]]
 
 ### [Security](https://docs.celeryproject.org/en/stable/userguide/security.html)
 
@@ -717,15 +868,16 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 
 ### [Configuration and defaults](https://docs.celeryproject.org/en/stable/userguide/configuration.html)
 
-Мониторить celery можно через [[flower]]
-
 Смотри еще:
 
 - [документация cli celery](https://docs.celeryproject.org/en/stable/reference/cli.html?highlight=command)
 - [[redis]]
 - [[rabbitmq]]
+- [[flower]]
 - [[asyncio]]
 - [[fastapi]]
+
+Более простой аналог: [[python-rq]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [redis]: redis "Redis"
@@ -740,6 +892,8 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 [flower]: flower "Flower"
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"
+[flower]: flower "Flower"
 [asyncio]: asyncio "Asyncio"
 [fastapi]: fastapi "Fastapi"
+[python-rq]: python-rq "Python-rq"
 [//end]: # "Autogenerated link references"
