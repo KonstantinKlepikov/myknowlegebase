@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Python-logging | My knowlege base</title>
+<title>Atexit и sched | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Python-logging" />
+<meta property="og:title" content="Atexit и sched" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Логирование в python" />
-<meta property="og:description" content="Логирование в python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/lists/python-logging.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/lists/python-logging.html" />
+<meta name="description" content="Колбеки по завершению программ и шедалеры в стандартной библиотеке python" />
+<meta property="og:description" content="Колбеки по завершению программ и шедалеры в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/atexit-and-sched.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/atexit-and-sched.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/lists/python-logging.html","headline":"Python-logging","description":"Логирование в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/atexit-and-sched.html","headline":"Atexit и sched","description":"Колбеки по завершению программ и шедалеры в стандартной библиотеке python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,24 +83,43 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="python-logging">Python-logging</h1>
+      <h1 id="atexit-и-sched">Atexit и sched</h1>
 
-<p><a href="https://docs.python.org/dev/library/logging.html#module-logging">Документация</a></p>
+<p>Модуль <a href="https://docs.python.org/3/library/atexit.html?highlight=atexit#module-atexit">atexit</a> реализует интерфейс, позволяющий регистрировать или отменять регистрации функций, которые должны быть вызваны по зваершении программы.</p>
 
-<p><a href="https://stackoverflow.com/questions/2266646/how-to-disable-logging-on-the-standard-error-stream">How to disable logging on the standard error stream?</a></p>
+<p>Зарегистрированные функции выполняются в порядке, обратном регистрации. При регистрации функции ей можно передать аргументы либо зарегистрирвоать через декоратор без аргументов.</p>
+
+<p>Для отмены зарегистрирвоанной функции, ее регистарция не обязательна. Это позволяет отменять произвольные колбеки без подъема ошибок.</p>
+
+<p>В следующих случаях вызов зарегистрированных функций не состоится:</p>
 
 <ul>
-  <li>[<a href="../notes/logging" title="Logging - основные принципы">logging</a>]</li>
-  <li>[<a href="../notes/loguru" title="Loguru">loguru</a>]</li>
+  <li>в случае поступления сигнала от другого процесса (смотри [<a href="multiprocess" title="Управление процессами в python">multiprocess</a>])</li>
+  <li>при явном вызове <code class="language-plaintext highlighter-rouge">os._exit()</code> для завершения прогнраммы</li>
+  <li>при возникновении фатальной ошибки в интеретаторе</li>
 </ul>
 
-<p>Библиотека <a href="https://github.com/brandon-rhodes/logging_tree">loging-tree</a> позволяет отображать иерархическое дерево логгеров</p>
+<p><code class="language-plaintext highlighter-rouge">sys.exit()</code> гарантирует выполнение колбека перед завершением</p>
+
+<p>Модуль sched реализует шедалер, позволяющий запускать события в определенное или через определенное время. Единицы времени не имеют значения.</p>
+
+<p><a href="https://docs.python.org/3/library/sched.html?highlight=sched#module-sched">sched</a> сопряжен с другими библиотеками [<a href="date-and-time-in-python" title="Date and time in python">date-and-time-in-python</a>]</p>
+
+<p>Есть два режима:</p>
+
+<ul>
+  <li>запуск событий с задержками</li>
+  <li>одновременный запуск с приоритетами</li>
+</ul>
+
+<p>Шедалер запускает все в одном потоке. Если предыдущий поток не завершен, то передача следующему будет отложено. Это может привести к тому, что последующие события будут запускаться позже, чем ожидается. В этом случае можно воспользоваться отменой события.</p>
 
 <p>Смотри еще:</p>
 
 <ul>
-  <li>[<a href="python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
-  <li>[<a href="../notes/celery" title="Celery">celery</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python - список заметок">python-standart-library</a>]</li>
+  <li>[<a href="celery" title="Celery">celery</a>]</li>
+  <li>[<a href="python-rq" title="Python-rq">python-rq</a>]</li>
 </ul>
 
 
