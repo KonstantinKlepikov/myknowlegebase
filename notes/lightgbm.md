@@ -174,7 +174,7 @@ If early stopping is enabled during training, you can get predictions from the b
 
 [Читай тут](https://lightgbm.readthedocs.io/en/latest/Parameters.html)
 
-[Интерактивный список параметров с пописанием](https://lightgbm.readthedocs.io/en/latest/Parameters.html)
+[Интерактивное описание параметров](https://sites.google.com/view/lauraepp/parameters)
 
 Format
 

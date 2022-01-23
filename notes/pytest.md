@@ -1007,6 +1007,7 @@ pip uninstall pytest-NAME
 [фикстуры]: фикстуры "Фикстуры"
 [doctest]: doctest "Doctest"
 [unittest]: unittest "Unittest"
+[Flaky-tests]: flaky-tests "Flaky tests"
 [pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests"
 [unittest]: unittest "Unittest"
 [doctest]: doctest "Doctest"

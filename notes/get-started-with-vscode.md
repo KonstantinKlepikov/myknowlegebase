@@ -42,7 +42,7 @@ If you want to learn more about VsCode, check out their [website](https://code.v
 You can see a few panels on the left, including:
 
 - `Outline`: this panel shows you the structure of the file based on the headings
-- `Tag Explorer`: This shows you the tags in your workspace, see [[tags-and-tag-explorer]] for more information on tags
+- `Tag Explorer`: This shows you the tags in your workspace
 
 ## Settings
 

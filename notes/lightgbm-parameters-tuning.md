@@ -5,6 +5,8 @@ tags: ml
 ---
 [Основная статья тут](https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html)
 
+[Интерактивное описание параметров](https://sites.google.com/view/lauraepp/parameters)
+
 ## Tune Parameters for the Leaf-wise (Best-first) Tree
 
 [[lightgbm]] использует [leaf-wise](https://lightgbm.readthedocs.io/en/latest/Features.html#leaf-wise-best-first-tree-growth) выращивание деревьев - деревья выращиваются по листьям, выбирается лист с максимальной дельта-лосс. Обычно такой алгоритм приводит к меньшим потерям, но склонен к переобучению, поэтому используется ограничение глубины дерева.
@@ -23,7 +25,7 @@ tags: ml
 
 ### Use a [GPU-enabled version of LightGBM](https://lightgbm.readthedocs.io/en/latest/GPU-Tutorial.html)
 
-### [Grow Shallower Trees ](https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#grow-shallower-trees)(для чего можно уменьшить `max_depth` или `num_leaves` или увеличить `min_gain_to_split`, `min_data_in_leaf` and `min_sum_hessian_in_leaf`
+### [Grow Shallower Trees](https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#grow-shallower-trees)(для чего можно уменьшить `max_depth` или `num_leaves` или увеличить `min_gain_to_split`, `min_data_in_leaf` and `min_sum_hessian_in_leaf`
 
 При добавлении нового узла дерева LightGBM выбирает точку разделения, которая дает наибольшее улучшение - уменьшение потерь при обучении в результате добавления точки разделения. По умолчанию LightGBM устанавливает `min_gain_to_split` равным `0,0`, что означает «не бывает улучшений, которые слишком малы, чтобы их игнорировать». Однако на практике вы можете обнаружить, что очень небольшие улучшения в потере обучения не имеют значимого влияния на ошибку обобщения модели. Увеличьте `min_gain_to_split,` чтобы сократить время обучения.
 

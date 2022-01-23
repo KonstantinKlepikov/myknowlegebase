@@ -85,6 +85,8 @@
 
       <p><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html">Основная статья тут</a></p>
 
+<p><a href="https://sites.google.com/view/lauraepp/parameters">Интерактивное описание параметров</a></p>
+
 <h2 id="tune-parameters-for-the-leaf-wise-best-first-tree">Tune Parameters for the Leaf-wise (Best-first) Tree</h2>
 
 <p>[<a href="lightgbm" title="Lightgbm">lightgbm</a>] использует <a href="https://lightgbm.readthedocs.io/en/latest/Features.html#leaf-wise-best-first-tree-growth">leaf-wise</a> выращивание деревьев - деревья выращиваются по листьям, выбирается лист с максимальной дельта-лосс. Обычно такой алгоритм приводит к меньшим потерям, но склонен к переобучению, поэтому используется ограничение глубины дерева.</p>
@@ -105,7 +107,7 @@
 
 <h3 id="use-a-gpu-enabled-version-of-lightgbm">Use a <a href="https://lightgbm.readthedocs.io/en/latest/GPU-Tutorial.html">GPU-enabled version of LightGBM</a></h3>
 
-<h3 id="grow-shallower-trees-для-чего-можно-уменьшить-max_depth-или-num_leaves-или-увеличить-min_gain_to_split-min_data_in_leaf-and-min_sum_hessian_in_leaf"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#grow-shallower-trees">Grow Shallower Trees </a>(для чего можно уменьшить <code class="language-plaintext highlighter-rouge">max_depth</code> или <code class="language-plaintext highlighter-rouge">num_leaves</code> или увеличить <code class="language-plaintext highlighter-rouge">min_gain_to_split</code>, <code class="language-plaintext highlighter-rouge">min_data_in_leaf</code> and <code class="language-plaintext highlighter-rouge">min_sum_hessian_in_leaf</code></h3>
+<h3 id="grow-shallower-treesдля-чего-можно-уменьшить-max_depth-или-num_leaves-или-увеличить-min_gain_to_split-min_data_in_leaf-and-min_sum_hessian_in_leaf"><a href="https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html#grow-shallower-trees">Grow Shallower Trees</a>(для чего можно уменьшить <code class="language-plaintext highlighter-rouge">max_depth</code> или <code class="language-plaintext highlighter-rouge">num_leaves</code> или увеличить <code class="language-plaintext highlighter-rouge">min_gain_to_split</code>, <code class="language-plaintext highlighter-rouge">min_data_in_leaf</code> and <code class="language-plaintext highlighter-rouge">min_sum_hessian_in_leaf</code></h3>
 
 <p>При добавлении нового узла дерева LightGBM выбирает точку разделения, которая дает наибольшее улучшение - уменьшение потерь при обучении в результате добавления точки разделения. По умолчанию LightGBM устанавливает <code class="language-plaintext highlighter-rouge">min_gain_to_split</code> равным <code class="language-plaintext highlighter-rouge">0,0</code>, что означает «не бывает улучшений, которые слишком малы, чтобы их игнорировать». Однако на практике вы можете обнаружить, что очень небольшие улучшения в потере обучения не имеют значимого влияния на ошибку обобщения модели. Увеличьте <code class="language-plaintext highlighter-rouge">min_gain_to_split,</code> чтобы сократить время обучения.</p>
 

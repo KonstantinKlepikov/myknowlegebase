@@ -549,6 +549,7 @@ class MyImagesPipeline(ImagesPipeline):
 [css-selectors]: css-selectors "Css-selectors"
 [xpath]: xpath "XPath"
 [asyncio]: asyncio "Asyncio"
+[BeautifulSoup]: beautifulsoup "BeautifulSoup"
 [logging]: logging "Logging - основные принципы"
 [xpath]: xpath "XPath"
 [css-selectors]: css-selectors "Css-selectors"

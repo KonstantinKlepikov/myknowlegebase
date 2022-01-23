@@ -525,7 +525,7 @@ results: [9, 0, 16, 1, 4]
 [threading]: threading "Threading"
 [queue]: queue "Queue - очереди и стеки"
 [asyncio-transports-and-protocols]: asyncio-transports-and-protocols "Asyncio transports and protocols"
-[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python - список заметок"
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
 [threading]: threading "Threading"
 [multiprocess]: multiprocess "Управление процессами в python"
 [asyncio-transports-and-protocols]: asyncio-transports-and-protocols "Asyncio transports and protocols"

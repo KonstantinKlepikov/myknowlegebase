@@ -309,7 +309,7 @@ def fun(arg: 'expensive_mod.SomeType') -> None:
 [counter]: counter "Counter - счетчик хешируемых объектов"
 [ordereddict]: ordereddict "OrderedDict упорядоченный словарь с опцией сравнения по порядку"
 [defaultdict]: defaultdict "Defaultdict словарь с возвратом значения по умолчанию"
-[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python - список заметок"
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
 [type-annotation]: type-annotation "Анотация типов в python"
 [python-datamodel]: ../lists/python-datamodel "Python datamodel"
 [python-patterns]: python-patterns "Python patterns"

@@ -10,7 +10,7 @@ Backend Requirements
 - [[docker-compose-with-gcloud-authentication]]
 - [[poetry]]
   
-Frontend Requirements: [[Node.js]] (with [[npm]]).
+Frontend Requirements: Node.js (with npm).
 
 **Backend local development**
 Start the stack with Docker Compose:

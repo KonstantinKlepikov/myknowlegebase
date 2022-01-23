@@ -230,6 +230,7 @@ Heroku CI automatically runs your app’s test suite with every push to your app
 [docker]: docker "Docker"
 [heroku-piplines]: ../notes/heroku-piplines "Heroku-piplines"
 [heroku-review]: ../notes/heroku-review "Heroku-review"
+[Heroku-CI]: ../notes/heroku-ci "Heroku-CI"
 [heroku-release-phase]: ../notes/heroku-release-phase "Heroku-release-phase"
 [heroku-variables-config]: ../notes/heroku-variables-config "Heroku-variables-config"
 [requirements]: ../notes/requirements "Requirements.txt"
