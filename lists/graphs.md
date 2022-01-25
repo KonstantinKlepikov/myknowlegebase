@@ -4,17 +4,26 @@ title: Machine learning with graphs
 tags: ml
 ---
 
+[graph-based-deep-learning-literature](https://github.com/naganandy/graph-based-deep-learning-literature)
+
 Библиотеки, работающие с графами:
 
 - [Networkx](https://networkx.org/)
 - [Scikit-Network](https://scikit-network.readthedocs.io/en/latest/index.html#)
 - [graph-tool](https://graph-tool.skewed.de/)
+- [dgl.ai](https://www.dgl.ai/)
 - [igraph](https://igraph.org/)
 - [networkit](https://networkit.github.io/)
 - [SNAP](https://snap.stanford.edu/snap/)
 - [deep snap](https://snap.stanford.edu/deepsnap/)
 - [GraphGym](https://github.com/snap-stanford/GraphGym)
 - [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
+
+- [CSRGraphs](https://github.com/VHRanger/CSRGraph) - Fast and memory efficient library for large read-only graphs
+- [nodevectors](https://github.com/VHRanger/nodevectors) some alghoritms, depends on CSRGraphs
+- [karateclub](https://github.com/benedekrozemberczki/KarateClub) is an unsupervised machine learning extension library for [NetworkX](https://networkx.org/)
+
+- [GraphGalery](https://github.com/EdisonLeeeee/GraphGallery) GraphGallery is a gallery for benchmarking Graph Neural Networks (GNNs)
 
 Смотри еще:
 

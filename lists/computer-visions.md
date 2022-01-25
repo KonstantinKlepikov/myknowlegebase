@@ -4,11 +4,13 @@ title: Computer visions
 tags: ml
 ---
 
-- [[CV-date-of-image]]
-
-## Библиотеки и методы cv (подборка)
+## Библиотеки cv
 
 - [scikit-image.org](https://scikit-image.org/)
+- [albumentations](https://github.com/albumentations-team/albumentations) Python library for image augmentation for computer-visions
+
+Статьи:
+
 - [image-quality-assessment](https://github.com/idealo/image-quality-assessment) Определение качества изображения модель на основе [NIMA: Neural Image Assessment](https://arxiv.org/abs/1709.05424). [Подробнее](https://ai.googleblog.com/2017/12/introducing-nima-neural-image-assessment.html)
 - [Automatic Image Quality Assessment in Python](https://towardsdatascience.com/automatic-image-quality-assessment-in-python-391a6be52c11) Определение качества изображения статья
 
