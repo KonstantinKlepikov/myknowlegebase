@@ -105,7 +105,7 @@
         <span class="bp">self</span><span class="p">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">widget</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
 </code></pre></div></div>
 
-<p>Используется <code class="language-plaintext highlighter-rouge">TestCase</code> или <code class="language-plaintext highlighter-rouge">FunctionTestCase</code> (для легаси). Unittest распознает как фейлы только собственные ассерты, предоставленные классом <code class="language-plaintext highlighter-rouge">TestCase</code>. Все остальное идентифицируется как ошибки.</p>
+<p>Используется <code class="language-plaintext highlighter-rouge">TestCase</code> или <code class="language-plaintext highlighter-rouge">FunctionTestCase</code> (для легаси). Unittest распознает как фейлы только собственные ассерты, предоставленные классом <code class="language-plaintext highlighter-rouge">TestCase</code>. В наборе есть сравнение успешных и неуспещных случаев, приблизительное сравнение, а так-же специальные методы для сравнения контейнеров (к примеру списков). <a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.assertEqual">Полный список тут</a>. Все остальные ассерты идентифицируются как ошибки.</p>
 
 <p>Для каждого теста мы можем задать как собственные сетапы/тирдауны так и для всех тестов сразу. Порядок запуска тестов определяется сортировкой по имени. Тирдаун и тирап запускаются вне зависимости от результатов теста.</p>
 
@@ -164,7 +164,18 @@
 
 <h2 id="сабтесты"><a href="https://docs.python.org/3/library/unittest.html#distinguishing-test-iterations-using-subtests">Сабтесты</a></h2>
 
-<p>Используется, когда разница между тестами небольшая. Например когда тестируется определенный ренж значений для объекта тестирования. Это позволяет увидеть все фейлы (иначе тест фейлится на первом кейсе.</p>
+<p>Используется, к примеру, когда разница между тестами небольшая. Например когда тестируется определенный ренж значений для объекта тестирования. Это позволяет увидеть все фейлы (иначе тест фейлится на первом кейсе. Это полезно, когда надо тестировать одну и туже логику с различными данными - когда мы ожидаем одинакового результата, но часть тестов падает.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">unittest</span>
+
+
+<span class="k">class</span> <span class="nc">SubTest</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_with_subtest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pat</span> <span class="ow">in</span> <span class="p">[</span><span class="s">'a'</span><span class="p">,</span> <span class="s">'B'</span><span class="p">,</span> <span class="s">'c'</span><span class="p">,</span> <span class="s">'d'</span><span class="p">]:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">subTest</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">pat</span><span class="p">):</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">assertRegex</span><span class="p">(</span><span class="s">'abc'</span><span class="p">,</span> <span class="n">pat</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="api-unittest">API unittest</h2>
 
@@ -173,17 +184,65 @@
 <p>Методы в <code class="language-plaintext highlighter-rouge">TestCase</code></p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">setUp()</code></li>
-  <li><code class="language-plaintext highlighter-rouge">tearDown()</code></li>
-  <li><code class="language-plaintext highlighter-rouge">setUpClass()</code></li>
-  <li><code class="language-plaintext highlighter-rouge">tearDownClass()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setUp()</code> реализует предоставление разделяемого ресурса</li>
+  <li><code class="language-plaintext highlighter-rouge">tearDown()</code> освобождает разделяемый ресурс</li>
+  <li><code class="language-plaintext highlighter-rouge">setUpClass()</code> устанавливает разделяемые ресурсы для класса</li>
+  <li><code class="language-plaintext highlighter-rouge">tearDownClass()</code> освобождает ресурсы для класса</li>
+  <li><code class="language-plaintext highlighter-rouge">setUpModule()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tearDownModule()</code></li>
   <li><code class="language-plaintext highlighter-rouge">run(result=None)</code></li>
   <li><code class="language-plaintext highlighter-rouge">skipTest(reason)</code></li>
   <li><code class="language-plaintext highlighter-rouge">subTest(msg=None, **params)</code></li>
   <li><code class="language-plaintext highlighter-rouge">debug()</code> тест запускается без агрегации результата</li>
 </ul>
 
-<p><a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.debug">Список всех ассертов</a></p>
+<p>Подробнее смотри <a href="https://docs.python.org/3/library/unittest.html#class-and-module-fixtures">Class and module fixtures</a></p>
+
+<p>Обычно сетапы и тирдауны выносятся в отельный класс, наследуемый от <code class="language-plaintext highlighter-rouge">TestCase</code>, от которого уже могут наследоваться конкретные тесты. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyUnitTests</span><span class="p">(</span><span class="n">unittest</span><span class="p">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="s">"""Unit tests basic
+    """</span>
+    
+    <span class="k">def</span> <span class="nf">setTestingEngine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">):</span>
+        <span class="s">"""Set temporal base
+        """</span> 
+        <span class="p">[...]</span>
+
+    <span class="k">def</span> <span class="nf">setTemporalBase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Set temporal data to base for tests
+        """</span>
+        <span class="p">[...]</span>
+
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""start test server
+        """</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">setTestingEngine</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">setTemporalBase</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">uvicorn</span><span class="p">.</span><span class="n">run</span><span class="p">,</span>
+                            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">app</span><span class="p">,),</span>
+                            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span>
+                                <span class="s">'host'</span><span class="p">:</span> <span class="n">ALLOWED_HOSTS</span><span class="p">,</span>
+                                <span class="s">'port'</span><span class="p">:</span> <span class="n">PORT</span><span class="p">,</span>
+                                <span class="s">'debug'</span><span class="p">:</span> <span class="n">DEBUG</span><span class="p">,</span>
+                                <span class="s">'log_level'</span><span class="p">:</span> <span class="s">'info'</span><span class="p">},</span>
+                            <span class="n">daemon</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">proc</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+        
+        <span class="k">with</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="bp">self</span><span class="p">.</span><span class="n">client</span><span class="p">:</span>
+            <span class="p">[...]</span>
+
+    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Stop test server
+        """</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">proc</span><span class="p">.</span><span class="n">kill</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Если в процессе очистки ресурсов упадет ошибка, не все ресурсы могут быть освобождены. Чтобы избежать этой проблемы можно добавить <code class="language-plaintext highlighter-rouge">addCleanup()</code>, которая будет вызываться после <code class="language-plaintext highlighter-rouge">tearDown()</code>. Если <code class="language-plaintext highlighter-rouge">setUp()</code> завершается ошибкой, что означает, что <code class="language-plaintext highlighter-rouge">tearDown()</code> не вызывается, то любые добавленные функции очистки все равно будут вызываться.</p>
+
+<p><code class="language-plaintext highlighter-rouge">doClenups()</code> вызывается безоговорочно после <code class="language-plaintext highlighter-rouge">tearDown()</code> или после <code class="language-plaintext highlighter-rouge">setUp()</code>, если <code class="language-plaintext highlighter-rouge">setUp()</code> вызывает исключение. Он отвечает за вызов всех функций очистки, добавленных функцией <code class="language-plaintext highlighter-rouge">addCleanup()</code>. Если вам нужно, чтобы функции очистки вызывались до <code class="language-plaintext highlighter-rouge">tearDown()</code>, вы можете сами вызвать <code class="language-plaintext highlighter-rouge">doCleanups()</code>. <code class="language-plaintext highlighter-rouge">doCleanups()</code> извлекает методы из стека функций очистки по одному, поэтому ее можно вызвать в любое время.</p>
+
+<p>Есть функции, доступные на урвоне класса и модуля. Смотри <a href="https://docs.python.org/3/library/unittest.html#unittest.TestCase.addCleanup">подробности тут</a></p>
 
 <h3 id="тестирование-неудачных-случаев">Тестирование неудачных случаев</h3>
 
@@ -218,8 +277,6 @@
 
 <h3 id="load-test-protocol"><a href="https://docs.python.org/3/library/unittest.html#load-tests-protocol">load test protocol</a></h3>
 
-<h2 id="class-and-module-fixtures"><a href="https://docs.python.org/3/library/unittest.html#class-and-module-fixtures">Class and module fixtures</a></h2>
-
 <h2 id="signal-handling"><a href="https://docs.python.org/3/library/unittest.html#signal-handling">Signal Handling</a></h2>
 
 <hr />
@@ -228,7 +285,7 @@
   <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
   <li>[<a href="doctest" title="Doctest">doctest</a>]</li>
   <li>[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</li>
-  <li>[[daily-note-2021-04-02]]</li>
+  <li>[<a href="../posts/2021-04-02-daily-note" title="Про работу behave и unittest и немного про datetime">2021-04-02-daily-note</a>]</li>
   <li>[<a href="mock" title="Mock-тесты">mock</a>]</li>
 </ul>
 

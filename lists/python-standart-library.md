@@ -67,6 +67,12 @@ category: list
 - [[email-tools-python]]
 - [[nets-with-python]] сети и интернет
 
+### Development tools
+
+- [[pydoc]]
+- [[doctest]]
+- [[unittest]]
+
 ### Ссылки на статьи
 
 - [Когда использовать List Comprehension в Python](https://webdevblog.ru/kogda-ispolzovat-list-comprehension-v-python/)
@@ -90,7 +96,6 @@ category: list
 - [Twisted](https://github.com/twisted/twisted) is an event-based framework for internet applications, supporting Python 3.6+
 - [python-qrcode](https://github.com/lincolnloop/python-qrcode) Pure python QR Code generator
 - [WTForms](https://wtforms.readthedocs.io/en/3.0.x/) is a flexible forms validation and rendering library for Python web development
-
 
 ## Смотри еще
 
@@ -151,6 +156,9 @@ category: list
 [contextvars]: ../notes/contextvars "Contextvars"
 [email-tools-python]: ../notes/email-tools-python "Email tools in python"
 [nets-with-python]: ../notes/nets-with-python "Nets and internet with python"
+[pydoc]: ../notes/pydoc "Pydoc"
+[doctest]: ../notes/doctest "Doctest"
+[unittest]: ../notes/unittest "Unittest"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [creation-of-list-matrix]: ../notes/creation-of-list-matrix "Creation of list matrix"

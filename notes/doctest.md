@@ -1,17 +1,164 @@
 ---
-description: Тестирование в python с помощью docktest
+description: Тестирование в python с помощью doctest
 tags: tests
 ---
 # Doctest
 
-[Ссылка на доку](https://docs.python.org/3/library/doctest.html#module-doctest)
+Обеспеичвает тестирование на оснвое документиации.
 
+```python
+"""
+This is the "example" module.
+
+The example module supplies one function, factorial().  For example,
+
+>>> factorial(5)
+120
+"""
+
+def factorial(n):
+    """Return the factorial of n, an exact integer >= 0.
+
+    >>> [factorial(n) for n in range(6)]
+    [1, 1, 2, 6, 24, 120]
+    >>> factorial(30)
+    265252859812191058636308480000000
+    >>> factorial(-1)
+    Traceback (most recent call last):
+        ...
+    ValueError: n must be >= 0
+
+    Factorials of floats are OK, but the float must be an exact integer:
+    >>> factorial(30.1)
+    Traceback (most recent call last):
+        ...
+    ValueError: n must be exact integer
+    >>> factorial(30.0)
+    265252859812191058636308480000000
+
+    It must also not be ridiculously large:
+    >>> factorial(1e100)
+    Traceback (most recent call last):
+        ...
+    OverflowError: n too large
+    """
+
+    import math
+    if not n >= 0:
+        raise ValueError("n must be >= 0")
+    if math.floor(n) != n:
+        raise ValueError("n must be exact integer")
+    if n+1 == n:  # catch a value like 1e300
+        raise OverflowError("n too large")
+    result = 1
+    factor = 2
+    while factor <= n:
+        result *= factor
+        factor += 1
+    return result
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+```
+
+Описание тестов можно создавать, тестируя код и дополняя докстринги выводом интерактивного интерпретатора. Если мы не указали запуск доктеста из мейна, то запустить можно так: `python -m doctest -v filename.py` - здась параметр `-v` отвечает за verbosity
+
+Отдельные тесты должны начинаться с значка `>>> ` и завершаться пустой строкой или с началом следующего `>>> `. Внутри можно назмещать `... `, все выражение должно завершаться ожидаемым результатом. [Подробнее тут](https://docs.python.org/3/library/doctest.html#how-are-docstring-examples-recognized)
+
+Наличие коментария `#docktest: +ELLIPSIS` после вызова тестируемой функции указывает интерпретатору, что часть данных, должна быть заменена на `...`, таким образом можно сделать успешными тесты, в которых возвращаются плохо предсказуемые объекты. [Подробнее](https://docs.python.org/3/library/doctest.html#doctest.ELLIPSIS)
+
+```python
+class MyClass:
+    pass
+
+
+def unpredictable(obj):
+    """Returns a new list containing obj.
+
+    >>> unpredictable(MyClass()) #doctest: +ELLIPSIS
+    [<doctest_ellipsis.MyClass object at 0x...>]
+    """
+    return [obj]
+
+```
+
+Другие флаги [можно посмотреть здесь](https://docs.python.org/3/library/doctest.html#option-flags). Например вот так можно проигнорироват детали поднятого эксепшена (будет проигнорирован его заголовок). Фактически же doctest игнорирует всю трассировочную информацию ниже заголовка кроме сообщения, поэтому их спокойно можно пропускать при написании теста
+
+```python
+>>> raise CustomError('message')
+Traceback (most recent call last):
+CustomError: message
+```
+
+Следует следить за лишними пробельными знаками и пустыми стркоами в примерах doctest. Пробельные строки можно заменить на `<BLANKLINE>`, если в выводе ожидаются пробелы. С лишними пробелами сложнее - их можно случайно добавить в пример при копировании - тогда будет ошибка. Это можно увидеть, добавив флаг `#doctest: +REPORT_NDIFF`.
+
+Кроме того, можно зарегистрировать [кастомные флаги](https://docs.python.org/3/library/doctest.html#doctest.register_optionflag).
+
+Примеры можно вынести в текстовый файл и вызвать так:
+
+```python
+import doctest
+doctest.testfile("example.txt")
+```
+
+Или через терминал: `python -m doctest -v example.txt`. В тексте у тестов формат RestructedText
+
+Езе один вариант - размещение тестов в переменной `__test__`, которая присваивается словарю на уровне модуля. Если значение словаря - строка, то она интерпретируется как строка документации и проверяется на наличие тестов. Если значение класс или функция - то doctest рекурсивно ищет в их строках документации тесты. Все это позволяет создать приватные тесты, которые не будут видны в документации.
+
+```python
+"""External tests associated with doctest_private_tests.py.
+
+>>> my_function(['A', 'B', 'C'], 2)
+['A', 'B', 'C', 'A', 'B', 'C']
+"""
+```
+
+```python
+import doctest_private_tests_external
+
+__test__ = {
+    'numbers': """
+>>> my_function(2, 3)
+6
+
+>>> my_function(2.0, 3)
+6.0
+""",
+
+    'strings': """
+>>> my_function('a', 3)
+'aaa'
+
+>>> my_function(3, 'a')
+'aaa'
+""",
+
+    'external': doctest_private_tests_external,
+}
+
+
+def my_function(a, b):
+    """Returns a * b
+    """
+    return a * b
+```
+
+Можно создавать интеграцию с [[unittest]] на базе [общего апи](https://docs.python.org/3/library/doctest.html#unittest-api)
+
+Смотри еще:
+
+- [Ссылка на доку](https://docs.python.org/3/library/doctest.html#module-doctest)
 - [[тестирование]]
 - [[unittest]]
 - [[pytest]]
+- [[python-standart-library]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
+[unittest]: unittest "Unittest"
 [тестирование]: ../lists/тестирование "Основные принципы тестровния"
 [unittest]: unittest "Unittest"
 [pytest]: pytest "Pytest"
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
 [//end]: # "Autogenerated link references"

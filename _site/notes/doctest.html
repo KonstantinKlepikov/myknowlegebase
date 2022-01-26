@@ -11,13 +11,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Doctest" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Тестирование в python с помощью docktest" />
-<meta property="og:description" content="Тестирование в python с помощью docktest" />
+<meta name="description" content="Тестирование в python с помощью doctest" />
+<meta property="og:description" content="Тестирование в python с помощью doctest" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/doctest.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/doctest.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/doctest.html","headline":"Doctest","description":"Тестирование в python с помощью docktest","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/doctest.html","headline":"Doctest","description":"Тестирование в python с помощью doctest","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -85,12 +85,151 @@
 
       <h1 id="doctest">Doctest</h1>
 
-<p><a href="https://docs.python.org/3/library/doctest.html#module-doctest">Ссылка на доку</a></p>
+<p>Обеспеичвает тестирование на оснвое документиации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+This is the "example" module.
+
+The example module supplies one function, factorial().  For example,
+
+&gt;&gt;&gt; factorial(5)
+120
+"""</span>
+
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="s">"""Return the factorial of n, an exact integer &gt;= 0.
+
+    &gt;&gt;&gt; [factorial(n) for n in range(6)]
+    [1, 1, 2, 6, 24, 120]
+    &gt;&gt;&gt; factorial(30)
+    265252859812191058636308480000000
+    &gt;&gt;&gt; factorial(-1)
+    Traceback (most recent call last):
+        ...
+    ValueError: n must be &gt;= 0
+
+    Factorials of floats are OK, but the float must be an exact integer:
+    &gt;&gt;&gt; factorial(30.1)
+    Traceback (most recent call last):
+        ...
+    ValueError: n must be exact integer
+    &gt;&gt;&gt; factorial(30.0)
+    265252859812191058636308480000000
+
+    It must also not be ridiculously large:
+    &gt;&gt;&gt; factorial(1e100)
+    Traceback (most recent call last):
+        ...
+    OverflowError: n too large
+    """</span>
+
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"n must be &gt;= 0"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">math</span><span class="p">.</span><span class="n">floor</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"n must be exact integer"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>  <span class="c1"># catch a value like 1e300
+</span>        <span class="k">raise</span> <span class="nb">OverflowError</span><span class="p">(</span><span class="s">"n too large"</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">factor</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="n">factor</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="p">.</span><span class="n">testmod</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Описание тестов можно создавать, тестируя код и дополняя докстринги выводом интерактивного интерпретатора. Если мы не указали запуск доктеста из мейна, то запустить можно так: <code class="language-plaintext highlighter-rouge">python -m doctest -v filename.py</code> - здась параметр <code class="language-plaintext highlighter-rouge">-v</code> отвечает за verbosity</p>
+
+<p>Отдельные тесты должны начинаться с значка <code class="language-plaintext highlighter-rouge">&gt;&gt;&gt; </code> и завершаться пустой строкой или с началом следующего <code class="language-plaintext highlighter-rouge">&gt;&gt;&gt; </code>. Внутри можно назмещать <code class="language-plaintext highlighter-rouge">... </code>, все выражение должно завершаться ожидаемым результатом. <a href="https://docs.python.org/3/library/doctest.html#how-are-docstring-examples-recognized">Подробнее тут</a></p>
+
+<p>Наличие коментария <code class="language-plaintext highlighter-rouge">#docktest: +ELLIPSIS</code> после вызова тестируемой функции указывает интерпретатору, что часть данных, должна быть заменена на <code class="language-plaintext highlighter-rouge">...</code>, таким образом можно сделать успешными тесты, в которых возвращаются плохо предсказуемые объекты. <a href="https://docs.python.org/3/library/doctest.html#doctest.ELLIPSIS">Подробнее</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MyClass</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">unpredictable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="s">"""Returns a new list containing obj.
+
+    &gt;&gt;&gt; unpredictable(MyClass()) #doctest: +ELLIPSIS
+    [&lt;doctest_ellipsis.MyClass object at 0x...&gt;]
+    """</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="p">]</span>
+
+</code></pre></div></div>
+
+<p>Другие флаги <a href="https://docs.python.org/3/library/doctest.html#option-flags">можно посмотреть здесь</a>. Например вот так можно проигнорироват детали поднятого эксепшена (будет проигнорирован его заголовок). Фактически же doctest игнорирует всю трассировочную информацию ниже заголовка кроме сообщения, поэтому их спокойно можно пропускать при написании теста</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">raise</span> <span class="n">CustomError</span><span class="p">(</span><span class="s">'message'</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="n">CustomError</span><span class="p">:</span> <span class="n">message</span>
+</code></pre></div></div>
+
+<p>Следует следить за лишними пробельными знаками и пустыми стркоами в примерах doctest. Пробельные строки можно заменить на <code class="language-plaintext highlighter-rouge">&lt;BLANKLINE&gt;</code>, если в выводе ожидаются пробелы. С лишними пробелами сложнее - их можно случайно добавить в пример при копировании - тогда будет ошибка. Это можно увидеть, добавив флаг <code class="language-plaintext highlighter-rouge">#doctest: +REPORT_NDIFF</code>.</p>
+
+<p>Кроме того, можно зарегистрировать <a href="https://docs.python.org/3/library/doctest.html#doctest.register_optionflag">кастомные флаги</a>.</p>
+
+<p>Примеры можно вынести в текстовый файл и вызвать так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">doctest</span>
+<span class="n">doctest</span><span class="p">.</span><span class="n">testfile</span><span class="p">(</span><span class="s">"example.txt"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Или через терминал: <code class="language-plaintext highlighter-rouge">python -m doctest -v example.txt</code>. В тексте у тестов формат RestructedText</p>
+
+<p>Езе один вариант - размещение тестов в переменной <code class="language-plaintext highlighter-rouge">__test__</code>, которая присваивается словарю на уровне модуля. Если значение словаря - строка, то она интерпретируется как строка документации и проверяется на наличие тестов. Если значение класс или функция - то doctest рекурсивно ищет в их строках документации тесты. Все это позволяет создать приватные тесты, которые не будут видны в документации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""External tests associated with doctest_private_tests.py.
+
+&gt;&gt;&gt; my_function(['A', 'B', 'C'], 2)
+['A', 'B', 'C', 'A', 'B', 'C']
+"""</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">doctest_private_tests_external</span>
+
+<span class="n">__test__</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'numbers'</span><span class="p">:</span> <span class="s">"""
+&gt;&gt;&gt; my_function(2, 3)
+6
+
+&gt;&gt;&gt; my_function(2.0, 3)
+6.0
+"""</span><span class="p">,</span>
+
+    <span class="s">'strings'</span><span class="p">:</span> <span class="s">"""
+&gt;&gt;&gt; my_function('a', 3)
+'aaa'
+
+&gt;&gt;&gt; my_function(3, 'a')
+'aaa'
+"""</span><span class="p">,</span>
+
+    <span class="s">'external'</span><span class="p">:</span> <span class="n">doctest_private_tests_external</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="s">"""Returns a * b
+    """</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+</code></pre></div></div>
+
+<p>Можно создавать интеграцию с [<a href="unittest" title="Unittest">unittest</a>] на базе <a href="https://docs.python.org/3/library/doctest.html#unittest-api">общего апи</a></p>
+
+<p>Смотри еще:</p>
 
 <ul>
+  <li><a href="https://docs.python.org/3/library/doctest.html#module-doctest">Ссылка на доку</a></li>
   <li>[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</li>
   <li>[<a href="unittest" title="Unittest">unittest</a>]</li>
   <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
 </ul>
 
 
