@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Flake8 | My knowlege base</title>
+<title>Venv | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Flake8" />
+<meta property="og:title" content="Venv" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Линтер для python" />
-<meta property="og:description" content="Линтер для python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/flake8.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/flake8.html" />
+<meta name="description" content="Создание виртуальных окружений в python" />
+<meta property="og:description" content="Создание виртуальных окружений в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/venv.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/venv.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/flake8.html","headline":"Flake8","description":"Линтер для python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/venv.html","headline":"Venv","description":"Создание виртуальных окружений в python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,38 +83,37 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="flake8">Flake8</h1>
+      <h1 id="venv">Venv</h1>
 
-<p>Линтер для python. <a href="https://flake8.pycqa.org/en/latest/index.html">Ссылка на документацию</a></p>
+<p>Предпочтительный способ установки:</p>
 
-<h2 id="using-flake8">Using Flake8</h2>
+<p><code class="language-plaintext highlighter-rouge">python -m venv version /path/to/new/virtual/environment</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flake8 path/to/code/to/check.py
-<span class="c"># or</span>
-flake8 path/to/code/
-</code></pre></div></div>
+<p>На практике есть смысл использовать стороннее дополнение <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> и вот почему:</p>
 
-<p>If you only want to see the instances of a specific warning or error, you can select that error like so</p>
+<ul>
+  <li>venv медленнее</li>
+  <li>не расширяем</li>
+  <li>не может создавать виртуальные среды для произвольно установленных версий Python (и автоматически обнаруживать их)</li>
+  <li>не может быть обновлен через pip</li>
+  <li>не имеет богатого программного API</li>
+</ul>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flake8 <span class="nt">--select</span> E123,W503 path/to/code/
-</code></pre></div></div>
+<p>Установка для virtualenv</p>
 
-<p>or ignore</p>
+<p><code class="language-plaintext highlighter-rouge">python virtualenv -p version /path/to/new/virtual/environment</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flake8 <span class="nt">--ignore</span> E24,W504 path/to/code/
-</code></pre></div></div>
+<p>запуск: <code class="language-plaintext highlighter-rouge">source /path/to/new/virtual/environment/bin/activate</code></p>
 
-<p>example для [<a href="github-action" title="Githunb action">github-action</a>]:</p>
+<p>В остальнмо все похоже. Смотри <a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment">инструкцию по установке пакетов через pip</a></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># stop the build if there are Python syntax errors or undefined names</span>
-flake8 <span class="nb">.</span> <span class="nt">--count</span> <span class="nt">--select</span><span class="o">=</span>E9,F63,F7,F82 <span class="nt">--show-source</span> <span class="nt">--statistics</span>
-<span class="c"># exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide</span>
-flake8 <span class="nb">.</span> <span class="nt">--count</span> <span class="nt">--exit-zero</span> <span class="nt">--max-complexity</span><span class="o">=</span>10 <span class="nt">--max-line-length</span><span class="o">=</span>127 <span class="nt">--statistics</span>
-</code></pre></div></div>
+<p>Смотри еще:</p>
 
-<p><a href="https://flake8.pycqa.org/en/latest/user/options.html">Все опции</a></p>
-
-<p>В [<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>] есть модуль <a href="https://docs.python.org/3/library/tabnanny.html?highlight=tabnanny#module-tabnanny">tabnanni</a>, реализующий проверку отступов</p>
+<ul>
+  <li><a href="https://docs.python.org/3/library/venv.html">документация</a></li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="tox" title="Tox">tox</a>]</li>
+</ul>
 
 
 

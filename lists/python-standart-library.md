@@ -79,6 +79,12 @@ category: list
 - [[profile]]
 - [[timeit]]
 - [[pdb-python-debugger]]
+- [tabnanni](https://docs.python.org/3/library/tabnanny.html?highlight=tabnanny#module-tabnanny) проверка неоднозначного использования пробелов (смотри еще [[flake8]])
+- [compileall](https://docs.python.org/3/library/compileall.html?highlight=compileall#module-compileall) поиск и компиляция файлов в `.pyc`
+- [pyclbr](https://docs.python.org/3/library/pyclbr.html?highlight=pyclbr#module-pyclbr) предоставляет ограниченную информацию о функциях, классах и методах, определенных в модуле, написанном на Python. Информации достаточно для реализации обозревателя модулей. Информация извлекается из исходного кода, а не путем импорта модуля, поэтому этот модуль безопасно использовать с ненадежным кодом. Это ограничение делает невозможным использование этого модуля с модулями, не реализованными в Python, включая все стандартные и дополнительные расширения.
+- [[venv]]
+
+Смотри так-же [python packaging user guide](https://packaging.python.org/en/latest/)
 
 ### Ссылки на статьи
 
@@ -173,6 +179,8 @@ category: list
 [profile]: ../notes/profile "Profile"
 [timeit]: ../notes/timeit "Timeit"
 [pdb-python-debugger]: ../notes/pdb-python-debugger "Pdb python debugger"
+[flake8]: ../notes/flake8 "Flake8"
+[venv]: ../notes/venv "Venv"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [creation-of-list-matrix]: ../notes/creation-of-list-matrix "Creation of list matrix"

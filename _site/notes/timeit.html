@@ -85,12 +85,44 @@
 
       <h1 id="timeit">Timeit</h1>
 
+<p>timeit предоставляет интерфейс, позволяющий замерить время выполнения небольших врагментов кода. Точность обьеспечивается за счет функции <code class="language-plaintext highlighter-rouge">time()</code>, а снижение накладных расходов запуска достигается путем многократного запуска. Модуль определяет <a href="https://docs.python.org/3/library/timeit.html#timeit.Timer">единственный класс</a> <code class="language-plaintext highlighter-rouge">Timer</code>, который инициализируется тестируемым выражением и и инструкцией настроек пролифировщика, задающим переменные выражения. Модуль выполняет инструкцию настройки один раз, после чего можно выполнить замер через метод <code class="language-plaintext highlighter-rouge">timeit()</code>, которому можно передать число ожидаемых повторений (дефолтное значение 1000000). Повторить весь цикл можно методом <code class="language-plaintext highlighter-rouge">repeat()</code> (дефолтное значение повторов - 5)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">timeit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">timeit</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="s">'char in text'</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="s">'text = "sample string"; char = "g"'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">timeit</span><span class="p">()</span>
+<span class="mf">0.3955516149999312</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">repeat</span><span class="p">()</span>
+<span class="p">[</span><span class="mf">0.40183617287970225</span><span class="p">,</span> <span class="mf">0.37027556854118704</span><span class="p">,</span> <span class="mf">0.38344867356679524</span><span class="p">,</span> <span class="mf">0.3712595970846668</span><span class="p">,</span> <span class="mf">0.37866875250654886</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Для простых случаев проверку можно запустить не устанавливыая переменные используя <code class="language-plaintext highlighter-rouge">timeit()</code> уровня модуля:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">timeit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'"-".join(str(n) for n in range(100))'</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="mf">0.3018611848820001</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'"-".join([str(n) for n in range(100)])'</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="mf">0.2727368790656328</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'"-".join(map(str, range(100)))'</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="mf">0.23702679807320237</span>
+</code></pre></div></div>
+
+<p>Также профилировщик можно вызвать через командную строку: <code class="language-plaintext highlighter-rouge">python -m timeit '"-".join(str(n) for n in range(100))'</code>. Интерфейс командной строки <a href="https://docs.python.org/3/library/timeit.html#command-line-interface">тут</a></p>
+
+<p>Модуль выполняет инструкцию настройки один раз, после чего выполняет переданное выражение</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">timeit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'char in text'</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="s">'text = "sample string"; char = "g"'</span><span class="p">)</span>
+<span class="mf">0.41440500499993504</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'text.find(char)'</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="s">'text = "sample string"; char = "g"'</span><span class="p">)</span>
+<span class="mf">1.7246671520006203</span>
+</code></pre></div></div>
+
 <p>Смотри сеще:</p>
 
 <ul>
   <li><a href="https://docs.python.org/3/library/timeit.html#module-timeit">документация</a></li>
   <li>[<a href="profile" title="Profile">profile</a>]</li>
-  <li>[<a href="time" title="Time">time</a>]</li>
+  <li>[<a href="date-and-time-in-python" title="Date and time in python">date-and-time-in-python</a>]</li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
 </ul>
 
