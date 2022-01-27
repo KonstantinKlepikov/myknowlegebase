@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Криптография в python | My knowlege base</title>
+<title>Cgitb | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Криптография в python" />
+<meta property="og:title" content="Cgitb" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Криптография в стандартной библиотеке python" />
-<meta property="og:description" content="Криптография в стандартной библиотеке python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-cryptography.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-cryptography.html" />
+<meta name="description" content="Отладка кода в python с помощью cgitb" />
+<meta property="og:description" content="Отладка кода в python с помощью cgitb" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/cgitb.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/cgitb.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-cryptography.html","headline":"Криптография в python","description":"Криптография в стандартной библиотеке python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/cgitb.html","headline":"Cgitb","description":"Отладка кода в python с помощью cgitb","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,27 +83,32 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="криптография-в-python">Криптография в python</h1>
+      <h1 id="cgitb">Cgitb</h1>
 
-<p>Щифрование данных позволяет проверять целостность при передаче и скрывать содержимое от несанкционированного доступа.</p>
+<p>Расширяент доступ к отладочной информации, предоставляемой модулем [<a href="traceback" title="Traceback">traceback</a>]</p>
 
-<p><a href="https://docs.python.org/3/library/hashlib.html">hashlib</a> предоставляет интерфейс доступа к алгоритмам хеширования. Конкретный список доступных алгоритмов зависит от от плоатформы реализации. По дефолту доступны все алгоритмы OpenSSL: SHA1, SHA224, SHA256, SHA384, SHA512 и MD5. Список поддерживаемых алгоритмов можно получить так <code class="language-plaintext highlighter-rouge">hashlib.algorithms_guaranteed</code>, а список доступных - так: <code class="language-plaintext highlighter-rouge">hashlib.algorithms_available</code></p>
+<p>Реализует специальный обработчик исключений для скриптов Python. (Его название немного вводит в заблуждение. Первоначально он был разработан для отображения обширной информации о трассировке в HTML для скриптов CGI. Позже он был обобщен для отображения этой информации в виде простого текста). Отчет включает трассировку, показывающую фрагменты исходного кода для каждого уровня, а также значения аргументов и локальных переменных для текущих запущенных функций, чтобы помочь отладить проблему. Отчет можно сохранять в виде html(устарело), в видет простого текста или писать в лог.</p>
 
-<p>Модуль поддерживает инкрементное обновление</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cgitb</span>
+<span class="n">cgitb</span><span class="p">.</span><span class="n">enable</span><span class="p">()</span>
+</code></pre></div></div>
 
-<p><a href="https://docs.python.org/3/library/hmac.html">hmac</a> реализует цифровые подписи и верификацию. Его можно использовать для проверки целостности данных</p>
-
-<p><a href="https://docs.python.org/3/library/hmac.html">secrets</a> предоставляет безопасный генератор случайных значений для хеширования и верификации. Его следует использовать в подобных задачах вместо обычсной рендом-генерации, т.к. он более стойкий. П для управления такими данными, как пароли, аутентификация учетной записи, токены безопасности и связанные с ними секреты. Доступна генерация чисел и токенов.</p>
-
-<p>Более расширенный функционал предоставляют сторонние модулей <a href="https://github.com/pyca/cryptography">cryptography</a> и <a href="https://github.com/Legrandin/pycryptodome">PyCryptodome</a>.</p>
-
-<p>На основе нативного бекенда и сторонних модулей реализован <a href="https://github.com/mpdavis/python-jose">python-jose</a>, предоставляющий JavaScript Object Signing and Encryption (JOSE) - веб-подпись JSON (JWS), веб-шифрование JSON (JWE), веб-ключ JSON (JWK) и веб-алгоритмы JSON (JWA). В частности это используется в [<a href="fastapi" title="Fastapi">fastapi</a>] для [<a href="oauth2" title="OAuth2">oauth2</a>]</p>
-
-<p>Смотри еще:</p>
+<p>При активации функция <code class="language-plaintext highlighter-rouge">sys.excepthook()</code> будет заменена собственной функцией с расширенной трассировочной информацией. Дефольтно отчет будет отправлен в браузер, но можно выгрузить в файл. В отчете будут предоставлены:</p>
 
 <ul>
+  <li>полный путь к файлу исходного кода</li>
+  <li>значения аргументов для каждой функции в стеке</li>
+  <li>несколько строк с исходным кодом контекста, окружающего строку, в которой возникло исключение</li>
+  <li>значения переменных в выражении, ставшем причиной ошибки</li>
+</ul>
+
+<p>Отчет так-же будет содержать подробное описание объекта исключения и дамп трассировочной информации в первоначальном виде.</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/cgitb.html">документация</a></li>
+  <li>[<a href="traceback" title="Traceback">traceback</a>]</li>
+  <li>[<a href="inspect" title="Inspect">inspect</a>]</li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
-  <li>[<a href="fastapi" title="Fastapi">fastapi</a>]</li>
 </ul>
 
 

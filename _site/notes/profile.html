@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Profile | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Profile" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cбор и анализ потребления процессорного времени в python" />
+<meta property="og:description" content="Cбор и анализ потребления процессорного времени в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/profile.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/profile.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/profile.html","headline":"Profile","description":"Cбор и анализ потребления процессорного времени в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="profile">Profile</h1>
+
+<ul>
+  <li>cProfile рекомендуется большинству пользователей; это расширение C</li>
+  <li>profile, чистый модуль Python, интерфейс которого имитирует cProfile, но который значительно увеличивает нагрузку на профилируемые программы</li>
+</ul>
+
+<p>Вывод отчетов организован с помощью pstats. Для маленьких объектов кода лучше использовать [<a href="timeit" title="Timeit">timeit</a>]</p>
+
+<p>Запускается через <code class="language-plaintext highlighter-rouge">run()</code>. В данном примере мы получим вывод функции и отчет</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cProfile</span>
+
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">fib_seq</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">seq</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="n">fib_seq</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">seq</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">seq</span>
+
+
+<span class="n">cProfile</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">'print(fib_seq(20)); print()'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+
+         57358 <span class="k">function </span>calls <span class="o">(</span>68 primitive calls<span class="o">)</span> <span class="k">in </span>0.009 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno<span class="o">(</span><span class="k">function</span><span class="o">)</span>
+        1    0.000    0.000    0.009    0.009 &lt;string&gt;:1<span class="o">(</span>&lt;module&gt;<span class="o">)</span>
+ 57291/21    0.009    0.000    0.009    0.000 profile_fibonacci_raw.py:11<span class="o">(</span>fib<span class="o">)</span>
+     21/1    0.000    0.000    0.009    0.009 profile_fibonacci_raw.py:22<span class="o">(</span>fib_seq<span class="o">)</span>
+        1    0.000    0.000    0.009    0.009 <span class="o">{</span>built-in method builtins.exec<span class="o">}</span>
+        2    0.000    0.000    0.000    0.000 <span class="o">{</span>built-in method builtins.print<span class="o">}</span>
+       21    0.000    0.000    0.000    0.000 <span class="o">{</span>method <span class="s1">'append'</span> of <span class="s1">'list'</span> objects<span class="o">}</span>
+        1    0.000    0.000    0.000    0.000 <span class="o">{</span>method <span class="s1">'disable'</span> of <span class="s1">'_lsprof.Profiler'</span> objects<span class="o">}</span>
+       20    0.000    0.000    0.000    0.000 <span class="o">{</span>method <span class="s1">'extend'</span> of <span class="s1">'list'</span> objects<span class="o">}</span>
+</code></pre></div></div>
+
+<p>В данном отчете указано сколько всего было вызовов (и сколько примитивов, что указывает на долю рекурсии) и затраченное время. Подробно расписано на что потрачено процессорное время. ncalls  - количество вызовов. tottime общее затраченное время. percall время затраченное на вызов (tottime/ncalls). cumtime кумулятивное время, затраченное на функцию и последнее - отноешине кумулятивного времени к количеству примитивных вызовов (cumtime/primitive calls).</p>
+
+<p>Другой вариант запуска прпофилировщика - <code class="language-plaintext highlighter-rouge">runctx()</code>? который позволяет передать простое выражение  с параметрами через контекст. <a href="https://docs.python.org/3/library/profile.html#profile.runctx">Смотри тут</a></p>
+
+<p>pstats позволяет создавать пользовательский отчет, сохраняя исходные данные профилирования, полученные с <code class="language-plaintext highlighter-rouge">run()</code> или <code class="language-plaintext highlighter-rouge">runctx()</code>. Обработку данных выполняет <code class="language-plaintext highlighter-rouge">pstats.Stats</code>. <a href="https://docs.python.org/3/library/profile.html#the-stats-class">Смотри тут</a></p>
+
+<p>С помощью <a href="https://github.com/jrfonseca/gprof2dot">gprof2dot</a> результат работы профилировщика можно визуализировать.</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/profile.html">документация</a></li>
+  <li>[<a href="timeit" title="Timeit">timeit</a>]</li>
+  <li>[<a href="time" title="Time">time</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

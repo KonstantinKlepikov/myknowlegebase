@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Trace | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Trace" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Трассировка выполнения программ в python" />
+<meta property="og:description" content="Трассировка выполнения программ в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/trace.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/trace.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/trace.html","headline":"Trace","description":"Трассировка выполнения программ в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="trace">Trace</h1>
+
+<p>Используется для трассировки выполнения программ. Можно вызывать непосредственно из командной строки с <a href="https://docs.python.org/3/library/trace.html#main-options">различными опциями</a></p>
+
+<p>Пример: <code class="language-plaintext highlighter-rouge">python -m trace -t example.py</code> выведет построчно отображение кода по мере выполнения (в ряде случаев полезно отфильтровать тарсировку импортов - это можно задать через cli). Трасировщик выведет операции настройки, а затем вход в каждую функцию, включая модули, в котором находятся функции, и строки исходного файла по мере их выполнения.</p>
+
+<p>Применение параметра <code class="language-plaintext highlighter-rouge">--count</code> создает отчет с расширением .cover о покрытии кода, в котором будет информация о том, какие строки выполнены, а какие пропущены. Файл отчета создается отдельно для каждого файла python скрипта. Кроме того, можно создавать объединенные файлы покрытия, прогоняя несколько разных параметров запуска. Так-же реализован отчет о взаимных вызовах функций.</p>
+
+<p>У модуля есть <a href="https://docs.python.org/3/library/trace.html#programmatic-interface">программный интерфейс</a>, который в общем случае сводится к созданию инстанса <code class="language-plaintext highlighter-rouge">Trace</code>, который определяет контекст трассировки и другие опции.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">trace</span>
+<span class="kn">from</span> <span class="nn">trace_example</span> <span class="kn">import</span> <span class="n">example</span>
+
+<span class="n">tracer</span> <span class="o">=</span> <span class="n">trace</span><span class="p">.</span><span class="n">Trace</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tracer</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">'example(42)'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>или так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">trace</span>
+<span class="kn">from</span> <span class="nn">trace_example</span> <span class="kn">import</span> <span class="n">example</span>
+
+<span class="n">tracer</span> <span class="o">=</span> <span class="n">trace</span><span class="p">.</span><span class="n">Trace</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tracer</span><span class="p">.</span><span class="n">runагтс</span><span class="p">(</span><span class="n">example</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Программный интерфейс так-же позволяет писать отчет в файл .cover</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">trace</span>
+
+<span class="c1"># create a Trace object, telling it what to ignore, and whether to
+# do tracing or line-counting or both.
+</span><span class="n">tracer</span> <span class="o">=</span> <span class="n">trace</span><span class="p">.</span><span class="n">Trace</span><span class="p">(</span>
+    <span class="n">ignoredirs</span><span class="o">=</span><span class="p">[</span><span class="n">sys</span><span class="p">.</span><span class="n">prefix</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">exec_prefix</span><span class="p">],</span>
+    <span class="n">trace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># run the new command using the given tracer
+</span><span class="n">tracer</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">'main()'</span><span class="p">)</span>
+
+<span class="c1"># make a report, placing output in the current directory
+</span><span class="n">r</span> <span class="o">=</span> <span class="n">tracer</span><span class="p">.</span><span class="n">results</span><span class="p">()</span>
+<span class="n">r</span><span class="p">.</span><span class="n">write_results</span><span class="p">(</span><span class="n">show_missing</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">coverdir</span><span class="o">=</span><span class="s">"."</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/trace.html">документация</a></li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="devtools" title="Python devtools">devtools</a>]</li>
+  <li>[<a href="pdb-python-debugger" title="Pdb python debugger">pdb-python-debugger</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

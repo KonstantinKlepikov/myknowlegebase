@@ -7,9 +7,9 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Pdb-python-debugger | My knowlege base</title>
+<title>Pdb python debugger | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Pdb-python-debugger" />
+<meta property="og:title" content="Pdb python debugger" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Pdb дебаггер в python" />
 <meta property="og:description" content="Pdb дебаггер в python" />
@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pdb-python-debugger.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pdb-python-debugger.html","headline":"Pdb-python-debugger","description":"Pdb дебаггер в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pdb-python-debugger.html","headline":"Pdb python debugger","description":"Pdb дебаггер в python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,9 +83,9 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="pdb-python-debugger">Pdb-python-debugger</h1>
+      <h1 id="pdb-python-debugger">Pdb python debugger</h1>
 
-<p>Дебагер python из стандартной сбиблиотеки.</p>
+<p>Дебагер python из стандартной библиотеки. Реализует интерактивную среду отладки, поддерживает приостановку выполнения, просмотр переменных и выполнение в пошаговом режиме.</p>
 
 <p><a href="https://docs.python.org/3/library/pdb.html">Документация</a></p>
 
@@ -101,13 +101,90 @@
 <span class="p">(</span><span class="n">Pdb</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Можно запускать из терминала. <a href="https://docs.python.org/3/library/pdb.html#debugger-commands">Подробнее как работать через терминал</a></p>
+<p>Отладчик можно запускать:</p>
+
+<ul>
+  <li>из командной строки</li>
+  <li>из интерпретатора</li>
+  <li>из программы</li>
+  <li>поставарийно</li>
+</ul>
+
+<p>При запуске из командной строки отладчик прекращает выполнение как только встречает первую инструкцию. Инструкции можно передать аргументы и увидеть результат выполнения. Запуск производится вот так:</p>
 
 <p><code class="language-plaintext highlighter-rouge">python3 -m pdb myscript.py</code></p>
 
+<p>Отладчик можно вызвать из интерпретатора. Для этого следует запустить интерактивную оболочку интепретатора, импортировать тестируемый скрипт и pdb, а затем запустить <code class="language-plaintext highlighter-rouge">pdb.run()</code> или <code class="language-plaintext highlighter-rouge">pdb.runeval()</code>  передав им тестируемый объект с требуемыми аргументами в виде строки.</p>
+
+<p>Из программы отладчик запускается с помщью <code class="language-plaintext highlighter-rouge">set_trace()</code>. Это устанавливает точку старта - отладчик остановит выполнение на ближайшей инструкции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pdb</span>
+
+
+<span class="k">class</span> <span class="nc">MyObj</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_loops</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">num_loops</span>
+
+    <span class="k">def</span> <span class="nf">go</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">pdb</span><span class="p">.</span><span class="n">set_trace</span><span class="p">()</span> <span class="c1"># start
+</span>            <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># stop
+</span>        <span class="k">return</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">MyObj</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="n">go</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>За поставарийный трейсинг отвечает <code class="language-plaintext highlighter-rouge">pdb.pm()</code> - функция ищет активный объект traceback. содержащий трассировочную информацию, и запускает трассировщик в той точке стека вызовов, в которой возникло исключение</p>
+
+<h2 id="управление">Управление</h2>
+
+<p>Управление производится с помозью спец.команд, которые позволяют перемещаться по стеку вызова, изменять значения переменных  и выполнять скрипт под управлением отладчика. Здесь используется readline из [<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>] для получения команд и автозаполнения через <code class="language-plaintext highlighter-rouge">&lt;TAB&gt;</code>.</p>
+
+<p>Список команд <a href="https://docs.python.org/3/library/pdb.html#debugger-commands">тут</a></p>
+
+<p>Основные команды:</p>
+
 <ul>
+  <li><code class="language-plaintext highlighter-rouge">w(here)</code> - возвращает точную позицию выполняемой строки скрипта</li>
+  <li><code class="language-plaintext highlighter-rouge">l(ist) [first[, last]]</code> - выводит исходный код с указанной строки по указанную строку. Без аргументов - выводит 11 строк аокруг теущей строки. Если предоставлен только один аргусент - выводится 11 стрко начиная с указанной строки. <code class="language-plaintext highlighter-rouge">ll | longlist</code> выводит весь сорцкод текущей функции или фрейма. <code class="language-plaintext highlighter-rouge">source</code> - весь исходный код</li>
+  <li><code class="language-plaintext highlighter-rouge">u(p)</code>, <code class="language-plaintext highlighter-rouge">d(own)</code> вверх/вниз по стеку/фрейму. Можно передать числовой аргумент шага</li>
+  <li><code class="language-plaintext highlighter-rouge">a(args)</code> все аргументы функции</li>
+  <li><code class="language-plaintext highlighter-rouge">p</code> вычисляет выражение, предоставленное в качестве аргумента (<code class="language-plaintext highlighter-rouge">(Pdb) p somearg</code>). Изменять значение аргументов/переменных можно через <code class="language-plaintext highlighter-rouge">!</code> вот так: <code class="language-plaintext highlighter-rouge">!somearg='some changes'</code></li>
+  <li><code class="language-plaintext highlighter-rouge">pp</code> возвращает значение через pprint</li>
+  <li>можно выходить из отладчика в интерпретатор через <code class="language-plaintext highlighter-rouge">interact</code> и обратно обычным выходом из интерпертатора</li>
+  <li><code class="language-plaintext highlighter-rouge">whatis</code> возвращает тип выражения</li>
+  <li><code class="language-plaintext highlighter-rouge">s(tep)</code> пошаговое выполнение</li>
+  <li><code class="language-plaintext highlighter-rouge">n(ext)</code> выполняет весь вызов текущей функции до начала следующей</li>
+  <li><code class="language-plaintext highlighter-rouge">unt(il) [lineno]</code> без аргумента продолжить выполнение до тех пор, пока не будет достигнута строка с номером больше текущего. С номером строки продолжайте выполнение до тех пор, пока не будет достигнута строка с номером, большим или равным этому. В обоих случаях также останавливайтесь при завершении текущего фрейма. Передаваемый номер строки должен превышать текущий</li>
+  <li><code class="language-plaintext highlighter-rouge">r(eturn)</code> перейти к ближайшему ретурну</li>
+  <li>возможна установка точек останова - через <code class="language-plaintext highlighter-rouge">b(reak) [([filename:]lineno | function) [, condition]]</code> с указанием номера строки или файла и имени функции. <code class="language-plaintext highlighter-rouge">break</code> без аргументов выводит список точек останова</li>
+  <li><code class="language-plaintext highlighter-rouge">c(ont(inue))</code> возобновляет выполнение до следующей точки останова</li>
+  <li>точкам останова присваивается идентификатор. <code class="language-plaintext highlighter-rouge">disable [bpnumber ...]</code> позволяет выключить точки по айдишнику без их удаления. <code class="language-plaintext highlighter-rouge">cl(ear) [filename:lineno | bpnumber ...]</code> сбрасывает точки</li>
+  <li><code class="language-plaintext highlighter-rouge">tbreak [([filename:]lineno | function) [, condition]]</code> создает временную точку, котоаря будет сброшена после первого прогона</li>
+  <li>condition при установке точек позволяет задать условия, при которых поток будет останавливатсья в точке (например это может быть значение определенных переменных). Так же условие можно применить к существующей точке через <code class="language-plaintext highlighter-rouge">condition bpnumber [condition]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ignore bpnumber [count]</code> игнорировать точку определенное число проходов (полезно, когда в коде есть рекурсии или циклы)</li>
+  <li><code class="language-plaintext highlighter-rouge">commands [bpnumber]</code> запуск простых сценариев по достижению точки. Команды вводятся вручную по одной на строку (это могут быть принты, сравнения и т.п.). Ввод команд завершается через <code class="language-plaintext highlighter-rouge">end</code></li>
+  <li><code class="language-plaintext highlighter-rouge">display [expression]</code> выводит значение предоставленного выражения на каждом шаге (полезно для контроля переменных в коде)</li>
+  <li><code class="language-plaintext highlighter-rouge">j(ump) lineno</code> перемещает по потоку выполнения. Переходы вперед перемещают поток вперед без выполнения промежуточных инструкций. Перемещение назад приводит к повторному выполнению. При этом <code class="language-plaintext highlighter-rouge">jump</code> не допускает переход в функцию, аргумент которой не определен, с ним нельзя входить внутрь цикла или в инструкции [<a href="try-except" title="Try-except-raise">try-except</a>]. Выход из <code class="language-plaintext highlighter-rouge">finally</code> также невозможен, так как код в этой инструкции должен быть всегда выполнен</li>
+  <li>отладчик автоматически перезапускает скрипт в конце программы или явно через <code class="language-plaintext highlighter-rouge">run [args ...]</code> или
+<code class="language-plaintext highlighter-rouge">restart [args ...]</code>. Аргументы передаются следующему запуску в качестве аргументво командной строки (анализируются через shlex - смотри [<a href="argparsing" title="Arguments parsing in python">argparsing</a>])</li>
+  <li><code class="language-plaintext highlighter-rouge">alias [name [command]]</code> создает псевдонимы длинным команда. Без аргументов команда выведет список алиасов. <code class="language-plaintext highlighter-rouge">unalias</code> удаляет алиас</li>
+  <li><code class="language-plaintext highlighter-rouge">q(uit)</code> выход</li>
+  <li><code class="language-plaintext highlighter-rouge">h(elp) [command]</code> подсказка. <code class="language-plaintext highlighter-rouge">h pdb</code> вся дока</li>
+</ul>
+
+<p>Все настройки можно прописать в специальном файле настроек <code class="language-plaintext highlighter-rouge">.pdbrc</code>. В нем можно прописат ьвсе алиасы, точки останова и т.п.</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/pdb.html">Документация</a></li>
+  <li>[<a href="trace" title="Trace">trace</a>]</li>
+  <li>[<a href="traceback" title="Traceback">traceback</a>]</li>
+  <li>[<a href="cgitb" title="Cgitb">cgitb</a>]</li>
   <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
   <li>[<a href="devtools" title="Python devtools">devtools</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
 </ul>
 
 

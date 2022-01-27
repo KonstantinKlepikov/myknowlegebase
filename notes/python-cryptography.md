@@ -1,5 +1,5 @@
 ---
-description: Криптография в стандартной библиотеке
+description: Криптография в стандартной библиотеке python
 tags: python-standart-library
 ---
 # Криптография в python

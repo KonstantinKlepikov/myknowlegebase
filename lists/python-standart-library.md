@@ -72,6 +72,13 @@ category: list
 - [[pydoc]]
 - [[doctest]]
 - [[unittest]]
+- [[trace]]
+- [[traceback]]
+- [[cgitb]]
+- [[inspect]]
+- [[profile]]
+- [[timeit]]
+- [[pdb-python-debugger]]
 
 ### Ссылки на статьи
 
@@ -159,6 +166,13 @@ category: list
 [pydoc]: ../notes/pydoc "Pydoc"
 [doctest]: ../notes/doctest "Doctest"
 [unittest]: ../notes/unittest "Unittest"
+[trace]: ../notes/trace "Trace"
+[traceback]: ../notes/traceback "Traceback"
+[cgitb]: ../notes/cgitb "Cgitb"
+[inspect]: ../notes/inspect "Inspect"
+[profile]: ../notes/profile "Profile"
+[timeit]: ../notes/timeit "Timeit"
+[pdb-python-debugger]: ../notes/pdb-python-debugger "Pdb python debugger"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [creation-of-list-matrix]: ../notes/creation-of-list-matrix "Creation of list matrix"
