@@ -85,6 +85,7 @@ category: list
 - [[venv]]
 - [[warnings]]
 - [[dis]]
+- [[python-import-tools]]
 
 Смотри так-же [python packaging user guide](https://packaging.python.org/en/latest/)
 
@@ -185,6 +186,7 @@ category: list
 [venv]: ../notes/venv "Venv"
 [warnings]: ../notes/warnings "Warnings"
 [dis]: ../notes/dis "Dis"
+[python-import-tools]: ../notes/python-import-tools "Python import tools"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [creation-of-list-matrix]: ../notes/creation-of-list-matrix "Creation of list matrix"
