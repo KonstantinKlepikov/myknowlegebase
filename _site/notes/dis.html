@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Python logging | My knowlege base</title>
+<title>Dis | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Python logging" />
+<meta property="og:title" content="Dis" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Логирование в python" />
-<meta property="og:description" content="Логирование в python" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/lists/python-logging.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/lists/python-logging.html" />
+<meta name="description" content="Дизассемблирование в python" />
+<meta property="og:description" content="Дизассемблирование в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/dis.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/dis.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/lists/python-logging.html","headline":"Python logging","description":"Логирование в python","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/dis.html","headline":"Dis","description":"Дизассемблирование в python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,25 +83,31 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="python-logging">Python logging</h1>
+      <h1 id="dis">Dis</h1>
 
-<p><a href="https://docs.python.org/dev/library/logging.html#module-logging">Документация</a></p>
+<p>Модуль dis предоставляет инструменты исследования байт-кода python. Наиболее полезно это для обнаружения состояния “гонки” в многопоточных процессах.</p>
 
-<p><a href="https://stackoverflow.com/questions/2266646/how-to-disable-logging-on-the-standard-error-stream">How to disable logging on the standard error stream?</a></p>
+<p>Дизасемблирование модуля не включает автоматический рекурсивный вход в функции. При дизассемблировании модуля будет получена операция загрузки кода функции и его последующего преобразования, но не тело функции. Чтобы заглянуть внутрь, необходимо передать тело функции в <code class="language-plaintext highlighter-rouge">dis()</code></p>
+
+<p>Подробнее об <a href="https://docs.python.org/3/library/dis.html?highlight=dis#analysis-functions">анализе функций тут</a></p>
+
+<p>Дизасемблирование класса приводит к поочередному дизасемблированию всех методов.</p>
+
+<p>Другие варианты использования:</p>
 
 <ul>
-  <li>[<a href="../notes/logging" title="Logging - основные принципы">logging</a>]</li>
-  <li>[<a href="../notes/loguru" title="Loguru">loguru</a>]</li>
+  <li>дизасмеблирование исходного кода</li>
+  <li>дизассемблирование в процессе отладки (если не передавать аргументы, <code class="language-plaintext highlighter-rouge">dis()</code> найдет исключение и дизасемблирует верхний кадр. В этом случае стрелкой <code class="language-plaintext highlighter-rouge">--&gt;</code> будет размечено место возникновения ошибки)</li>
+  <li>анализ производительности циклов</li>
+  <li>исследование производительности скомпилированного кода</li>
 </ul>
-
-<p>Библиотека <a href="https://github.com/brandon-rhodes/logging_tree">loging-tree</a> позволяет отображать иерархическое дерево логгеров</p>
 
 <p>Смотри еще:</p>
 
 <ul>
-  <li>[<a href="python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
-  <li>[<a href="../notes/warnings" title="Warnings">warnings</a>]</li>
-  <li>[<a href="../notes/celery" title="Celery">celery</a>]</li>
+  <li><a href="https://docs.python.org/3/library/dis.html?highlight=dis#bytecode-analysis">документация</a></li>
+  <li>[<a href="inspect" title="Inspect">inspect</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
 </ul>
 
 

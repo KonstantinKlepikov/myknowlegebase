@@ -15,7 +15,7 @@ category: list
 - [[python-decorator]]
 - [[python-descriptors]]
 - [[python-patterns]]
-- [[abc]]
+- [[abc]] абстрактные базовые классы
 - [[try-except]] про ошибки в python
 
 ### Support
@@ -83,6 +83,8 @@ category: list
 - [compileall](https://docs.python.org/3/library/compileall.html?highlight=compileall#module-compileall) поиск и компиляция файлов в `.pyc`
 - [pyclbr](https://docs.python.org/3/library/pyclbr.html?highlight=pyclbr#module-pyclbr) предоставляет ограниченную информацию о функциях, классах и методах, определенных в модуле, написанном на Python. Информации достаточно для реализации обозревателя модулей. Информация извлекается из исходного кода, а не путем импорта модуля, поэтому этот модуль безопасно использовать с ненадежным кодом. Это ограничение делает невозможным использование этого модуля с модулями, не реализованными в Python, включая все стандартные и дополнительные расширения.
 - [[venv]]
+- [[warnings]]
+- [[dis]]
 
 Смотри так-же [python packaging user guide](https://packaging.python.org/en/latest/)
 
@@ -140,7 +142,7 @@ category: list
 [try-except]: ../notes/try-except "Try-except-raise"
 [type-annotation]: ../notes/type-annotation "Анотация типов в python"
 [typing]: ../notes/typing "Typing"
-[python-logging]: python-logging "Python-logging"
+[python-logging]: python-logging "Python logging"
 [argparsing]: ../notes/argparsing "Arguments parsing in python"
 [atexit-and-sched]: ../notes/atexit-and-sched "Atexit и sched"
 [date-and-time-in-python]: ../notes/date-and-time-in-python "Date and time in python"
@@ -181,6 +183,8 @@ category: list
 [pdb-python-debugger]: ../notes/pdb-python-debugger "Pdb python debugger"
 [flake8]: ../notes/flake8 "Flake8"
 [venv]: ../notes/venv "Venv"
+[warnings]: ../notes/warnings "Warnings"
+[dis]: ../notes/dis "Dis"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [creation-of-list-matrix]: ../notes/creation-of-list-matrix "Creation of list matrix"

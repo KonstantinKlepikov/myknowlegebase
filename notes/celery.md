@@ -888,7 +888,7 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"
 [flower]: flower "Flower"
-[python-logging]: ../lists/python-logging "Python-logging"
+[python-logging]: ../lists/python-logging "Python logging"
 [flower]: flower "Flower"
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"

@@ -4,12 +4,168 @@ tags: python-standart-library
 ---
 # Abc
 
+Абстрактные базовые классы обеспечивают строгую проверку интерфейса, предоставляемого исходным классом. Таким образом можно установить общий апи для набора длочерних классов.
+
+abc помещает классы как абстрактные, а затем регистрирует конкретные классы как реализации абстрактных. Проверка принадлежности к зарегистрирвоанному абс.классу осуществляется через `isinstance()` и `issubclass()`.
+
+В [collections.abc](https://docs.python.org/3/library/collections.abc.html#module-collections.abc) так-же реализовано несколько собственных абстрактных базовых классов. [Смотри подробнее тут](https://docs.python.org/3/library/collections.abc.html#collections-abstract-base-classes)
+
+Модуль abc предоставляет метакласс `ABCMeta` для определения абстрактных базовых классов и вспомогательный класс `ABC` для альтернативного определения abc посредством наследования.
+
+```python
+from abc import ABC
+
+class MyABC(ABC):
+    pass
+
+from abc import ABCMeta
+
+class MyABC(metaclass=ABCMeta):
+    pass
+```
+
+В данном примере видно, что `ABC` - это просто класс, который определен как класс имеющий `metaclass=ABCMeta`. Это сделано по причине того, что если метакласс не установлен надлежащим образом, то интерфейс не будет обязательным для реализации. По этой причине был представлен абстрактный базовый класс, в котором предусмотрено автоматическое определение метакласса.
+
+Есть два способа зарегистрировать конкретный класс, реализующий интерфейс асбстрактного:
+
+- явно зарегистрирвоать подкласс
+- создать подкласс на основе абстрактного
+
+Первый вариант выглядит так:
+
+```python
+from abc import ABC
+
+class MyABC(ABC):
+    pass
+
+MyABC.register(tuple)
+
+assert issubclass(tuple, MyABC)
+assert isinstance((), MyABC)
+```
+
+можно через декоратор
+
+```python
+from abc import ABC
+
+class MyABC(ABC):
+    pass
+
+class LocalClass:
+    pass
+
+
+@MyABC.register
+class AnotherLocal(LocalClass):
+    pass
+
+assert issubclass(AnotherLocal, MyABC)
+
+print(AnotherLocal.__mro__)
+(<class '__main__.AnotherLocal'>, <class '__main__.LocalClass'>, <class 'object'>)
+```
+
+В первом спримере мы явно регистрируем MyABC как сабкласс асбтрактного tuple и наследуемся от абстрактного ABC. Во втором случае, не смотря на то, что AnotherLocal наследуется от LocalClass, он регистрируется как сабкласс абстрактного MyABC. Побочным эффектом первого способа является то, что мы можем запросить у базового класса список известных классов, полученных из него путем наследования через `__subclasses__()`
+
+Подклассы, созданные непосредственно на основе абстрактного базового класса не могут создавать экземпляры, если в данных подклассах не реализован апи абстрактного класса. Это так называемая неполная реализация - все `@abstractmethod` предложенные абстрактным классом должны быть реализованы в дочерних или при попытке создать экземпляр будет поднята ошибка `TypeError`
+
+Подкласы абстрактных классов могут вызывать абстрактные методы родителя через `super()`, но сам метод все равно потребуется реализовать
+
+```python
+import abc
+
+
+class MyABC(abc.ABC):
+
+    @abc.abstractmethod
+    def retrieve_values(self, input):
+        return input.read()
+
+
+class Override(MyABC):
+
+    def retrieve_values(self, input):
+        base_data = super(ConcreteOverride,
+                          self).retrieve_values(input)
+        return sorted(base_data.splitlines())
+```
+
+`abstractmethod()` сочетается со свойствами, методами класса и статическими методами (о реализации последних смотри в [[python-descriptors]]). [Смотри подробнее](https://docs.python.org/3/library/abc.html#abc.abstractmethod)
+
+```python
+class C(ABC):
+    @abstractmethod
+    def my_abstract_method(self, arg1):
+        ...
+    @classmethod
+    @abstractmethod
+    def my_abstract_classmethod(cls, arg2):
+        ...
+    @staticmethod
+    @abstractmethod
+    def my_abstract_staticmethod(arg3):
+        ...
+
+    @property
+    @abstractmethod
+    def my_abstract_property(self):
+        ...
+    @my_abstract_property.setter
+    @abstractmethod
+    def my_abstract_property(self, val):
+        ...
+
+    @abstractmethod
+    def _get_x(self):
+        ...
+    @abstractmethod
+    def _set_x(self, val):
+        ...
+    x = property(_get_x, _set_x)
+```
+
+Кроме того, можно определить свойства как `@setter` и `@getter`
+
+```python
+import abc
+
+
+class Base(abc.ABC):
+
+    @property
+    @abc.abstractmethod
+    def value(self):
+        pass
+
+    @value.setter
+    @abc.abstractmethod
+    def value(self, new_value):
+        pass
+
+
+class Implementation(Base):
+
+    _value = 'Default value'
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        self._value = new_value
+```
+
 Смотри еще:
 
+- [документация](https://docs.python.org/3/library/abc.html)
 - [[python-standart-library]]
 - [[python-patterns]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
+[python-descriptors]: python-descriptors "Python descriptors"
 [python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
 [python-patterns]: python-patterns "Python patterns"
 [//end]: # "Autogenerated link references"

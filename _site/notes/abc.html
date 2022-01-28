@@ -85,9 +85,160 @@
 
       <h1 id="abc">Abc</h1>
 
+<p>Абстрактные базовые классы обеспечивают строгую проверку интерфейса, предоставляемого исходным классом. Таким образом можно установить общий апи для набора длочерних классов.</p>
+
+<p>abc помещает классы как абстрактные, а затем регистрирует конкретные классы как реализации абстрактных. Проверка принадлежности к зарегистрирвоанному абс.классу осуществляется через <code class="language-plaintext highlighter-rouge">isinstance()</code> и <code class="language-plaintext highlighter-rouge">issubclass()</code>.</p>
+
+<p>В <a href="https://docs.python.org/3/library/collections.abc.html#module-collections.abc">collections.abc</a> так-же реализовано несколько собственных абстрактных базовых классов. <a href="https://docs.python.org/3/library/collections.abc.html#collections-abstract-base-classes">Смотри подробнее тут</a></p>
+
+<p>Модуль abc предоставляет метакласс <code class="language-plaintext highlighter-rouge">ABCMeta</code> для определения абстрактных базовых классов и вспомогательный класс <code class="language-plaintext highlighter-rouge">ABC</code> для альтернативного определения abc посредством наследования.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="k">class</span> <span class="nc">MyABC</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+
+<span class="k">class</span> <span class="nc">MyABC</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>В данном примере видно, что <code class="language-plaintext highlighter-rouge">ABC</code> - это просто класс, который определен как класс имеющий <code class="language-plaintext highlighter-rouge">metaclass=ABCMeta</code>. Это сделано по причине того, что если метакласс не установлен надлежащим образом, то интерфейс не будет обязательным для реализации. По этой причине был представлен абстрактный базовый класс, в котором предусмотрено автоматическое определение метакласса.</p>
+
+<p>Есть два способа зарегистрировать конкретный класс, реализующий интерфейс асбстрактного:</p>
+
+<ul>
+  <li>явно зарегистрирвоать подкласс</li>
+  <li>создать подкласс на основе абстрактного</li>
+</ul>
+
+<p>Первый вариант выглядит так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="k">class</span> <span class="nc">MyABC</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">MyABC</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">MyABC</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">((),</span> <span class="n">MyABC</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>можно через декоратор</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+
+<span class="k">class</span> <span class="nc">MyABC</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">LocalClass</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="o">@</span><span class="n">MyABC</span><span class="p">.</span><span class="n">register</span>
+<span class="k">class</span> <span class="nc">AnotherLocal</span><span class="p">(</span><span class="n">LocalClass</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">AnotherLocal</span><span class="p">,</span> <span class="n">MyABC</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">AnotherLocal</span><span class="p">.</span><span class="n">__mro__</span><span class="p">)</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">AnotherLocal</span><span class="s">'&gt;, &lt;class '</span><span class="n">__main__</span><span class="p">.</span><span class="n">LocalClass</span><span class="s">'&gt;, &lt;class '</span><span class="nb">object</span><span class="s">'&gt;)
+</span></code></pre></div></div>
+
+<p>В первом спримере мы явно регистрируем MyABC как сабкласс асбтрактного tuple и наследуемся от абстрактного ABC. Во втором случае, не смотря на то, что AnotherLocal наследуется от LocalClass, он регистрируется как сабкласс абстрактного MyABC. Побочным эффектом первого способа является то, что мы можем запросить у базового класса список известных классов, полученных из него путем наследования через <code class="language-plaintext highlighter-rouge">__subclasses__()</code></p>
+
+<p>Подклассы, созданные непосредственно на основе абстрактного базового класса не могут создавать экземпляры, если в данных подклассах не реализован апи абстрактного класса. Это так называемая неполная реализация - все <code class="language-plaintext highlighter-rouge">@abstractmethod</code> предложенные абстрактным классом должны быть реализованы в дочерних или при попытке создать экземпляр будет поднята ошибка <code class="language-plaintext highlighter-rouge">TypeError</code></p>
+
+<p>Подкласы абстрактных классов могут вызывать абстрактные методы родителя через <code class="language-plaintext highlighter-rouge">super()</code>, но сам метод все равно потребуется реализовать</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">abc</span>
+
+
+<span class="k">class</span> <span class="nc">MyABC</span><span class="p">(</span><span class="n">abc</span><span class="p">.</span><span class="n">ABC</span><span class="p">):</span>
+
+    <span class="o">@</span><span class="n">abc</span><span class="p">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">input</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">Override</span><span class="p">(</span><span class="n">MyABC</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">retrieve_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="n">base_data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">ConcreteOverride</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="p">).</span><span class="n">retrieve_values</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">base_data</span><span class="p">.</span><span class="n">splitlines</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">abstractmethod()</code> сочетается со свойствами, методами класса и статическими методами (о реализации последних смотри в [<a href="python-descriptors" title="Python descriptors">python-descriptors</a>]). <a href="https://docs.python.org/3/library/abc.html#abc.abstractmethod">Смотри подробнее</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">my_abstract_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg1</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">my_abstract_classmethod</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arg2</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">my_abstract_staticmethod</span><span class="p">(</span><span class="n">arg3</span><span class="p">):</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">my_abstract_property</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="o">@</span><span class="n">my_abstract_property</span><span class="p">.</span><span class="n">setter</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">my_abstract_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_get_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="o">@</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_set_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_x</span><span class="p">,</span> <span class="n">_set_x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, можно определить свойства как <code class="language-plaintext highlighter-rouge">@setter</code> и <code class="language-plaintext highlighter-rouge">@getter</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">abc</span>
+
+
+<span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="n">abc</span><span class="p">.</span><span class="n">ABC</span><span class="p">):</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="o">@</span><span class="n">abc</span><span class="p">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="o">@</span><span class="n">value</span><span class="p">.</span><span class="n">setter</span>
+    <span class="o">@</span><span class="n">abc</span><span class="p">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+
+    <span class="n">_value</span> <span class="o">=</span> <span class="s">'Default value'</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_value</span>
+
+    <span class="o">@</span><span class="n">value</span><span class="p">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">new_value</span>
+</code></pre></div></div>
+
 <p>Смотри еще:</p>
 
 <ul>
+  <li><a href="https://docs.python.org/3/library/abc.html">документация</a></li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
   <li>[<a href="python-patterns" title="Python patterns">python-patterns</a>]</li>
 </ul>
