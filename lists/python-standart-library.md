@@ -14,6 +14,7 @@ category: list
 - [[python-interptetator-and-env-utils]] взаимодействие с интерпретатором и окружением в python
 - [[python-decorator]]
 - [[python-descriptors]]
+- [[python-iterators-example]]
 - [[python-patterns]]
 - [[abc]] абстрактные базовые классы
 - [[try-except]] про ошибки в python
@@ -139,6 +140,7 @@ category: list
 [python-interptetator-and-env-utils]: ../notes/python-interptetator-and-env-utils "Утилиты взаимодействия с интерпретатором и окружением в python"
 [python-decorator]: ../notes/python-decorator "Python decorator"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"
+[python-iterators-example]: ../notes/python-iterators-example "Python iterators"
 [python-patterns]: ../notes/python-patterns "Python patterns"
 [abc]: ../notes/abc "Abc"
 [try-except]: ../notes/try-except "Try-except-raise"

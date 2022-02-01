@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python iterators | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python iterators" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Как сделать итератор в python" />
+<meta property="og:description" content="Как сделать итератор в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-iterators-example.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-iterators-example.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-iterators-example.html","headline":"Python iterators","description":"Как сделать итератор в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="python-iterators">Python iterators</h1>
+
+<p>Итераторы в python реализуют метод <code class="language-plaintext highlighter-rouge">__iter__</code> и могут реализовать метод <code class="language-plaintext highlighter-rouge">__next__</code>. <code class="language-plaintext highlighter-rouge">__iter__</code> должен всегда возвращать <code class="language-plaintext highlighter-rouge">self</code>, а <code class="language-plaintext highlighter-rouge">__next__</code> может возвращать некое значение.</p>
+
+<p>В данном примере мы получаем бесконечный итератор, который возвращает порядковый номер итерации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Count</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">count</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">x</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Count</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">count</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<p>Встроенные функции <code class="language-plaintext highlighter-rouge">next()</code> и <code class="language-plaintext highlighter-rouge">iter()</code> позволяют получить итератор и извлечь значение. В цикле <code class="language-plaintext highlighter-rouge">for..if</code> это происходит неявно:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>         <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="p">...</span>
+<span class="mi">9</span>
+</code></pre></div></div>
+
+<p>В данном случае итератор был создан заново. Обратите внимание на условие, которое пришлось задать в цикле - без этого условия нам бы пришлось упереться в бесконечную итерацию. Чтобы решить эту логическую проблему, метод <code class="language-plaintext highlighter-rouge">__next__</code> может поднимать исключение, если мы достигли граничного условия. Перепишем пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Count</span><span class="p">:</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="bp">self</span>
+
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">count</span>
+<span class="p">...</span>         <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+<span class="p">...</span>             <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="p">...</span>             <span class="k">return</span> <span class="n">x</span>
+<span class="p">...</span>         <span class="k">else</span><span class="p">:</span>
+<span class="p">...</span>             <span class="k">raise</span> <span class="nb">StopIteration</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Count</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="p">...</span>
+<span class="mi">9</span>
+</code></pre></div></div>
+
+<p>Отлично, итератор остановился там где надо, к тому же <code class="language-plaintext highlighter-rouge">for...in</code> самостяотельно обработал исключение. Если же мы попробуем сделать это через <code class="language-plaintext highlighter-rouge">next()</code>, то вот что будет:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<span class="mi">8</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+<span class="mi">9</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="p">...</span>
+<span class="nb">StopIteration</span>
+</code></pre></div></div>
+
+<p>Более сложные итераторы могут уметь возвращать себя в виде списка, иметь длину и т.д. Смотри <a href="https://docs.python.org/3/reference/datamodel.html#emulating-container-types">подробности тут</a></p>
+
+<p>Основное преимущество итераторов - они вычисляют значения по запросу. Таким образом не требуется вычислит ьвсю последовательность или отображение сразу, что экономит память.</p>
+
+<p>Чтобы облегчить страдания программистов, в python добавлен синтаксис <code class="language-plaintext highlighter-rouge">yield</code>, который превращает функцию в генератор, возвращающий итератор генератора. В отличие от обычной функции с <code class="language-plaintext highlighter-rouge">return</code>, которая имеет одну точку входа и после возвращения значения забывает свое состояние, такой итератор будет помнить последнее состояние и при каждом вызове возобновлять работу с той точки, в которой остановился. Подробнее смотри тут: [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]. Для асинхронных вызовов реализованы исинхронные генераторы через <code class="language-plaintext highlighter-rouge">__aiter__</code> и <code class="language-plaintext highlighter-rouge">__anext__</code>.</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="python-glossary" title="Python glossary">python-glossary</a>]</li>
+  <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

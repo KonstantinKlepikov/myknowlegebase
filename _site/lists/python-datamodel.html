@@ -445,6 +445,8 @@ None
 <span class="nb">StopIteration</span>
 </code></pre></div></div>
 
+<p>Смотри пример с итератором: [<a href="../notes/python-iterators-example" title="Python iterators">python-iterators-example</a>]</p>
+
 <ul>
   <li><strong>Coroutine functions</strong> - функции определенные с <code class="language-plaintext highlighter-rouge">async def</code> возвращает экземпляр сопрограммы. Может содержать выражения <code class="language-plaintext highlighter-rouge">await</code>, <code class="language-plaintext highlighter-rouge">async with</code>, <code class="language-plaintext highlighter-rouge">async for</code>. Подробнее в [<a href="../notes/asyncio" title="Asyncio">asyncio</a>]</li>
   <li><strong>Asynchronous generator functions</strong> - асинхорнные генераторные функции - это функции, определенные с <code class="language-plaintext highlighter-rouge">async def</code> и <code class="language-plaintext highlighter-rouge">yield</code> в теле. При вызове возвращает объект асинхронного итератора, который можно использовать для выполнения <code class="language-plaintext highlighter-rouge">async for</code>. Вызов через <a href="https://docs.python.org/3/reference/datamodel.html#object.__anext__"><code class="language-plaintext highlighter-rouge">aiterator.__anext__</code></a> вернет awaitable объект. Аналогично обычному генератору, при достижении конца тела или при выполнении <code class="language-plaintext highlighter-rouge">return</code> будет поднеята ошибка <code class="language-plaintext highlighter-rouge">StopAsyncIteration</code></li>
