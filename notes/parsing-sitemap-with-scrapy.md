@@ -4,6 +4,67 @@ tags: crawlers
 ---
 # Parsing sitemap with scrapy
 
+Для парсинга на основе сайтмапа есть стандартный паук - [смотри тут](https://docs.scrapy.org/en/latest/topics/spiders.html#sitemapspider)
+
+Можно задать следующие параметры:
+
+- `sitemap_urls` - список адресов сайтмапов (парсер может выполнить поиск в `robots.txt` если указать урл на роботс в этом списке)
+- `sitemap_rules` - список кортежей, содержащих два объекта - строку регулярного выражения для поиска соответствий в урле и имя метода, котоырй будет использован для парсинга данного урла (колбек). В качестве вторго объекта можно передать непосредственно объект колбека
+- `sitemap_follow` cписок регулярных выражений для сайтмапов, которым следует следовать. Это можно реализовать для [nested sitemaps](https://www.sitemaps.org/protocol.html#index) в ситуации, когда мы не хотим исследовать часть пространства
+- `sitemap_alternate_links` обычно альтернативные урлы подразумевают ссылки на зеркала и другие ресурсы, дублирующие или предосталяющие альтернативный контент. По дефолту отключено
+- `sitemap_filter(entries)` - эта функция переопредяляет фильтрацию контента
+
+Пример
+
+```python
+from datetime import datetime
+from scrapy.spiders import SitemapSpider
+
+class FilteredSitemapSpider(SitemapSpider):
+    name = 'filtered_sitemap_spider'
+    allowed_domains = ['example.com']
+    sitemap_urls = ['http://example.com/sitemap.xml']
+
+    def sitemap_filter(self, entries):
+        for entry in entries:
+            date_time = datetime.strptime(entry['lastmod'], '%Y-%m-%d')
+            if date_time.year >= 2005:
+                yield entry
+```
+
+[Больше примеров тут](https://docs.scrapy.org/en/latest/topics/spiders.html#sitemapspider-examples)
+
+Как скомбинировать сайтмап с другими сорсами
+
+```python
+from scrapy.spiders import SitemapSpider
+
+class MySpider(SitemapSpider):
+    sitemap_urls = ['http://www.example.com/robots.txt']
+    sitemap_rules = [
+        ('/shop/', 'parse_shop'),
+    ]
+
+    other_urls = ['http://www.example.com/about']
+
+    def start_requests(self):
+        requests = list(super(MySpider, self).start_requests())
+        requests += [scrapy.Request(x, self.parse_other) for x in self.other_urls]
+        return requests
+
+    def parse_shop(self, response):
+        pass # ... scrape shop here ...
+
+    def parse_other(self, response):
+        pass # ... scrape other here ...
+```
+
+Исходный код scrapy.spiders.sitemap [здась](https://docs.scrapy.org/en/latest/_modules/scrapy/spiders/sitemap.html)
+
+## Некоторые проблемы парсинга sitemap
+
+Иногда нужно создать специфические фильтры для очистки sitemap. В данном примере паук [собирает урлы в список](https://stackoverflow.com/a/46236452/15966204). В следующем примере паук [проверят даты перезаписи строк в сайтмапе](https://stackoverflow.com/a/46236452/15966204). Оба решения потребовали переопределить `scrapy.spiders.sitemap.iterloc`
+
 Смотри еще:
 
 - [[scrapy]]

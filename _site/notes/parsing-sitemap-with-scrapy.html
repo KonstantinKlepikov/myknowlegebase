@@ -85,6 +85,67 @@
 
       <h1 id="parsing-sitemap-with-scrapy">Parsing sitemap with scrapy</h1>
 
+<p>Для парсинга на основе сайтмапа есть стандартный паук - <a href="https://docs.scrapy.org/en/latest/topics/spiders.html#sitemapspider">смотри тут</a></p>
+
+<p>Можно задать следующие параметры:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sitemap_urls</code> - список адресов сайтмапов (парсер может выполнить поиск в <code class="language-plaintext highlighter-rouge">robots.txt</code> если указать урл на роботс в этом списке)</li>
+  <li><code class="language-plaintext highlighter-rouge">sitemap_rules</code> - список кортежей, содержащих два объекта - строку регулярного выражения для поиска соответствий в урле и имя метода, котоырй будет использован для парсинга данного урла (колбек). В качестве вторго объекта можно передать непосредственно объект колбека</li>
+  <li><code class="language-plaintext highlighter-rouge">sitemap_follow</code> cписок регулярных выражений для сайтмапов, которым следует следовать. Это можно реализовать для <a href="https://www.sitemaps.org/protocol.html#index">nested sitemaps</a> в ситуации, когда мы не хотим исследовать часть пространства</li>
+  <li><code class="language-plaintext highlighter-rouge">sitemap_alternate_links</code> обычно альтернативные урлы подразумевают ссылки на зеркала и другие ресурсы, дублирующие или предосталяющие альтернативный контент. По дефолту отключено</li>
+  <li><code class="language-plaintext highlighter-rouge">sitemap_filter(entries)</code> - эта функция переопредяляет фильтрацию контента</li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">scrapy.spiders</span> <span class="kn">import</span> <span class="n">SitemapSpider</span>
+
+<span class="k">class</span> <span class="nc">FilteredSitemapSpider</span><span class="p">(</span><span class="n">SitemapSpider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">'filtered_sitemap_spider'</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s">'example.com'</span><span class="p">]</span>
+    <span class="n">sitemap_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s">'http://example.com/sitemap.xml'</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">sitemap_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+            <span class="n">date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s">'lastmod'</span><span class="p">],</span> <span class="s">'%Y-%m-%d'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">date_time</span><span class="p">.</span><span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">2005</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">entry</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.scrapy.org/en/latest/topics/spiders.html#sitemapspider-examples">Больше примеров тут</a></p>
+
+<p>Как скомбинировать сайтмап с другими сорсами</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scrapy.spiders</span> <span class="kn">import</span> <span class="n">SitemapSpider</span>
+
+<span class="k">class</span> <span class="nc">MySpider</span><span class="p">(</span><span class="n">SitemapSpider</span><span class="p">):</span>
+    <span class="n">sitemap_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s">'http://www.example.com/robots.txt'</span><span class="p">]</span>
+    <span class="n">sitemap_rules</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">'/shop/'</span><span class="p">,</span> <span class="s">'parse_shop'</span><span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="n">other_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s">'http://www.example.com/about'</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">requests</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">MySpider</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">start_requests</span><span class="p">())</span>
+        <span class="n">requests</span> <span class="o">+=</span> <span class="p">[</span><span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">parse_other</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">other_urls</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">requests</span>
+
+    <span class="k">def</span> <span class="nf">parse_shop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">pass</span> <span class="c1"># ... scrape shop here ...
+</span>
+    <span class="k">def</span> <span class="nf">parse_other</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">pass</span> <span class="c1"># ... scrape other here ...
+</span></code></pre></div></div>
+
+<p>Исходный код scrapy.spiders.sitemap <a href="https://docs.scrapy.org/en/latest/_modules/scrapy/spiders/sitemap.html">здась</a></p>
+
+<h2 id="некоторые-проблемы-парсинга-sitemap">Некоторые проблемы парсинга sitemap</h2>
+
+<p>Иногда нужно создать специфические фильтры для очистки sitemap. В данном примере паук <a href="https://stackoverflow.com/a/46236452/15966204">собирает урлы в список</a>. В следующем примере паук <a href="https://stackoverflow.com/a/46236452/15966204">проверят даты перезаписи строк в сайтмапе</a>. Оба решения потребовали переопределить <code class="language-plaintext highlighter-rouge">scrapy.spiders.sitemap.iterloc</code></p>
+
 <p>Смотри еще:</p>
 
 <ul>
