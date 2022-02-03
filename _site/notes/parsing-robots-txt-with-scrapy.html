@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Parsing robots txt with scrapy | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Parsing robots txt with scrapy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Извлечение данных из robots.txt в scrapy" />
+<meta property="og:description" content="Извлечение данных из robots.txt в scrapy" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/parsing-robots-txt-with-scrapy.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/parsing-robots-txt-with-scrapy.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/parsing-robots-txt-with-scrapy.html","headline":"Parsing robots txt with scrapy","description":"Извлечение данных из robots.txt в scrapy","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="parsing-robots-txt-with-scrapy">Parsing robots txt with scrapy</h1>
+
+<p>За проверку <code class="language-plaintext highlighter-rouge">robots.txt</code> в [<a href="scrapy" title="Scrapy">scrapy</a>] отвечает <a href="https://docs.scrapy.org/en/latest/topics/settings.html#std-setting-DOWNLOADER_MIDDLEWARES">встреонный middlewire</a>, с самым высоким приоритетом</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># here
+</span>    <span class="s">'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware'</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware'</span><span class="p">:</span> <span class="mi">350</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware'</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware'</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.retry.RetryMiddleware'</span><span class="p">:</span> <span class="mi">550</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware'</span><span class="p">:</span> <span class="mi">560</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware'</span><span class="p">:</span> <span class="mi">580</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware'</span><span class="p">:</span> <span class="mi">590</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.redirect.RedirectMiddleware'</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.cookies.CookiesMiddleware'</span><span class="p">:</span> <span class="mi">700</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware'</span><span class="p">:</span> <span class="mi">750</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.stats.DownloaderStats'</span><span class="p">:</span> <span class="mi">850</span><span class="p">,</span>
+    <span class="s">'scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware'</span><span class="p">:</span> <span class="mi">900</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Рекомендуется не влезать в эту часть, а управлять ею за счет <a href="https://docs.scrapy.org/en/latest/topics/settings.html#robotstxt-obey">настройки параметров</a> и <a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html?highlight=robots#module-scrapy.downloadermiddlewares.robotstxt">парсера</a>.</p>
+
+<p>Исходный код обработчика <code class="language-plaintext highlighter-rouge">robots.txt</code> <a href="https://docs.scrapy.org/en/latest/_modules/scrapy/robotstxt.html">находится тут</a>: обработчик инициализирует класс и получает строки из <code class="language-plaintext highlighter-rouge">robots.txt</code>, после чего преобразует их в объект <code class="language-plaintext highlighter-rouge">RobotFileParser</code> из <a href="https://docs.python.org/3/library/urllib.robotparser.html">urllib.robotparser</a>, который хранить распарсенные данные и позволяет сравниваться с ними при проверке запрашиваемого урла в дальнейшем.</p>
+
+<p>В <code class="language-plaintext highlighter-rouge">scrapy</code> реализовано несколько парсеров <code class="language-plaintext highlighter-rouge">robots.txt</code>:</p>
+
+<ul>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html?highlight=robots#protego-parser">Protego parser</a> основан на пакете <a href="https://github.com/scrapy/protego">protego</a> для парсинга в соответствии с <a href="https://developers.google.com/search/docs/advanced/robots/robots_txt">google спецификацией</a></li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html?highlight=robots#robotfileparser">RobotFileParser</a> совместимый с <a href="https://www.robotstxt.org/norobots-rfc.txt">Martijn Koster’s 1996 draft specification</a> парсер</li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html?highlight=robots#reppy-parser">Reppy parser</a> python реализация парсера <a href="https://github.com/seomoz/reppy/">reppy</a> для <a href="https://github.com/seomoz/rep-cpp">c++ либы</a></li>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html?highlight=robots#robotexclusionrulesparser">Robotexclusionrulesparser</a> реализует вот <a href="https://pypi.org/project/robotexclusionrulesparser/">этот парсер</a></li>
+</ul>
+
+<p>Два последних парсера так-же реализуют <a href="https://www.robotstxt.org/norobots-rfc.txt">Martijn Koster’s 1996 draft specification</a></p>
+
+<p>Иногда нужно написать свой парсер (например когда необходимо сохзранять строки, содержащиеся в <code class="language-plaintext highlighter-rouge">robots.txt</code> или извдлекать и обрабатывать sitemap). Это можно сделать унаследовавшись от абстрактного базового класса <a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html?highlight=robots#implementing-support-for-a-new-parser">вот так</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="scrapy" title="Scrapy">scrapy</a>]</li>
+  <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
+  <li><a href="https://en.wikipedia.org/wiki/Robots_exclusion_standard">Robots exclusion standard</a> (wiki)</li>
+  <li><a href="https://vc.ru/seo/63058-opisanie-i-nastroyka-direktivy-clean-param">Описание и настройка директивы Clean-param</a> для <code class="language-plaintext highlighter-rouge">robots.txt</code></li>
+  <li><a href="https://developers.google.com/search/docs/advanced/robots/robots_txt">google спецификацией</a> для <code class="language-plaintext highlighter-rouge">robots.txt</code></li>
+  <li><a href="https://www.robotstxt.org/norobots-rfc.txt">Martijn Koster’s 1996 draft specification</a></li>
+  <li><a href="https://developers.google.com/search/docs/advanced/robots/intro?hl=ru">про файлы robots.txt у google</a></li>
+  <li>[<a href="parsing-sitemap-with-scrapy" title="Parsing sitemap with scrapy">parsing-sitemap-with-scrapy</a>]</li>
+  <li>[<a href="urllibparse" title="Urllib.parse - парсинг урлов в компоненты">urllibparse</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

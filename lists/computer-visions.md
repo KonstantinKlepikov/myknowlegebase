@@ -8,6 +8,7 @@ tags: ml
 
 - [scikit-image.org](https://scikit-image.org/)
 - [albumentations](https://github.com/albumentations-team/albumentations) Python library for image augmentation for computer-visions
+- [IMAGEIO](https://github.com/imageio/imageio) Imageio is a Python library that provides an easy interface to read and write a wide range of image data, including animated images, video, volumetric data, and scientific formats. It is cross-platform, runs on Python 3.7+, and is easy to install
 
 Статьи:
 

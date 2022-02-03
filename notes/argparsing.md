@@ -5,7 +5,7 @@ tags: python-standart-library
 # Arguments parsing in python
 
 - [argparse](https://docs.python.org/3/library/argparse.html) реализует интерфейс для создания процессоров аргументов и параметров командной строки. [Туториал смотри тут](https://docs.python.org/3/howto/argparse.html). Более продвинутым аналогом является [[click]]
-- [getopt](https://docs.python.org/3/library/getopt.html?highlight=getopt#module-getopt) лексический анализатор, соответствующий правилам ф-ии getopt() в Unix. Устарел - использовать argparse или сторонние аналоги
+- [getopt](https://docs.python.org/3/library/getopt.html?highlight=getopt#module-getopt) лексический анализатор, соответствующий правилам ф-ии `getopt()` в Unix. Устарел - использовать argparse или сторонние аналоги
 - [readline](https://docs.python.org/3/library/readline.html?highlight=readline#module-readline) - интерфейс библиотеки GNU Readline, позволяющий реализовать автозавершение и историю ввода для утилит командной строки
 - [getpass](https://docs.python.org/3/library/getpass.html?highlight=getpass#module-getpass) сокрытие вывода паролей
 - [cmd](https://docs.python.org/3/library/cmd.html?highlight=cmd#module-cmd) дальнейшее развитие идеи readline
