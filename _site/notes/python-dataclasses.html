@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python dataclasses | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python dataclasses" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Датаклассы в python" />
+<meta property="og:description" content="Датаклассы в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-dataclasses.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-dataclasses.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-dataclasses.html","headline":"Python dataclasses","description":"Датаклассы в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="python-dataclasses">Python dataclasses</h1>
+
+<p>Модуль <code class="language-plaintext highlighter-rouge">dataclasses</code> предоставляет [<a href="python-decorator" title="Python decorator">python-decorator</a>] и функции для автоматического добавления сгенерированных специальных методов, таких как <code class="language-plaintext highlighter-rouge">__init__()</code> и <code class="language-plaintext highlighter-rouge">__repr__()</code>, в пользовательские классы.</p>
+
+<p><code class="language-plaintext highlighter-rouge">@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False</code> - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор <code class="language-plaintext highlighter-rouge">dataclass()</code> проверяет класс, чтобы найти поля. <strong>Поле определяется как переменная класса, имеющая аннотацию типа</strong>. За двумя исключениями, описанными ниже, в <code class="language-plaintext highlighter-rouge">dataclass()</code> ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. <code class="language-plaintext highlighter-rouge">dataclass()</code> так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если <code class="language-plaintext highlighter-rouge">dataclass()</code> используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.</p>
+
+<p>Три эквивалентных варианта использования <code class="language-plaintext highlighter-rouge">dataclass()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">dataclass</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unsafe_hash</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+    <span class="n">frozen</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">match_args</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+   <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Параметры декоратора устанавливают какие специальные методы должны быть сгенерированы.</p>
+
+<p>Если у класса уже определены <code class="language-plaintext highlighter-rouge">__init__()</code>, <code class="language-plaintext highlighter-rouge">__repr__()</code>, <code class="language-plaintext highlighter-rouge">__eq__()</code> то параметры декоратора будут проигнорированы. В случае других методов ожидается иное поведение, <a href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass">смотри документацию</a>.</p>
+
+<p>Для переменных класса допускается указание дефолтных значений. При этом переменные с дефолтными значениями должны следовать после переменных без дефолта (в обычном порядке), иначе будет поднят <code class="language-plaintext highlighter-rouge">TypeError</code>.</p>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">dataclasses.field(*, default=MISSING, default_factory=MISSING, init=True, repr=True, hash=None, compare=True, metadata=None, kw_only=MISSING)</code> позволяет добавить дополнительную информацию о поле дата-класса.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="n">mylist</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
+<span class="n">c</span><span class="p">.</span><span class="n">mylist</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">default</code>: если указано, это будет значение по умолчанию для этого поля. Это необходимо, потому что сам вызов <code class="language-plaintext highlighter-rouge">field()</code> заменяет нзначения по умолчанию</li>
+  <li><code class="language-plaintext highlighter-rouge">default_factory</code>: если указано, это должна быть вызываемая функция без аргументов, которая будет вызываться, когда для этого поля требуется значение по умолчанию. Помимо прочего, это можно использовать для указания полей с изменяемыми значениями по умолчанию. Нельзя указывать и <code class="language-plaintext highlighter-rouge">default</code>, и <code class="language-plaintext highlighter-rouge">default_factory</code></li>
+  <li><code class="language-plaintext highlighter-rouge">init</code>: если <code class="language-plaintext highlighter-rouge">True</code> (по умолчанию), это поле включается в качестве параметра в сгенерированный метод <code class="language-plaintext highlighter-rouge">__init__()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">repr</code>: аналогично</li>
+  <li>см. <a href="https://docs.python.org/3/library/dataclasses.html#dataclasses.field">остальные параметры в доке</a></li>
+</ul>
+
+<p>Следующие методы реализуют конвертацию в стандартные типы python:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">dataclasses.asdict(obj, *, dict_factory=dict)</code> (по факту это глубокая копия)</li>
+  <li><code class="language-plaintext highlighter-rouge">dataclasses.astuple(obj, *, tuple_factory=tuple)</code> (аналогично)</li>
+</ul>
+
+<p>Предоставлен <a href="https://docs.python.org/3/library/dataclasses.html#dataclasses.make_dataclass">метод для создания дата-класса</a> (это может быть полезно в каких-то фабриках)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">C</span> <span class="o">=</span> <span class="n">make_dataclass</span><span class="p">(</span><span class="s">'C'</span><span class="p">,</span>
+                   <span class="p">[(</span><span class="s">'x'</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+                     <span class="s">'y'</span><span class="p">,</span>
+                    <span class="p">(</span><span class="s">'z'</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">))],</span>
+                   <span class="n">namespace</span><span class="o">=</span><span class="p">{</span><span class="s">'add_one'</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="c1"># equal
+</span><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="s">'typing.Any'</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="k">def</span> <span class="nf">add_one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>После генерации <code class="language-plaintext highlighter-rouge">__init__()</code> в датаклассе вызывается <code class="language-plaintext highlighter-rouge">__post_init__()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">b</span>
+</code></pre></div></div>
+
+<p>Сабклассы не вызывают унаследованный <code class="language-plaintext highlighter-rouge">__init__()</code>, поэтому хорошим кейсом будет вызывать <code class="language-plaintext highlighter-rouge">__init__()</code> из родителя через постинит дочернего класса</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">Rectangle</span><span class="p">:</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">Square</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">):</span>
+    <span class="n">side</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">side</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">side</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Одним из двух мест, где <code class="language-plaintext highlighter-rouge">dataclass()</code> фактически проверяет тип поля, является определение того, является ли поле переменной класса. Он делает это, проверяя, является ли тип поля <code class="language-plaintext highlighter-rouge">typing.ClassVar</code>. Если поле является <code class="language-plaintext highlighter-rouge">ClassVar</code>, оно исключается из рассмотрения как поле и игнорируется механизмами класса данных. Такие псевдополя <code class="language-plaintext highlighter-rouge">ClassVar</code> не возвращаются функцией <code class="language-plaintext highlighter-rouge">fields()</code> уровня модуля.</p>
+
+<p>Другое место, где <code class="language-plaintext highlighter-rouge">dataclass()</code> проверяет аннотацию типа — это определение того, является ли поле переменной только для инициализации. Он делает это, проверяя, относится ли тип поля к типу <code class="language-plaintext highlighter-rouge">dataclasses.InitVar</code>. Если поле является <code class="language-plaintext highlighter-rouge">InitVar</code>, оно считается псевдополем, называемым полем только для инициализации. Поскольку это не настоящее поле, оно не возвращается функцией <code class="language-plaintext highlighter-rouge">fields()</code> уровня модуля. Поля только для инициализации добавляются в качестве параметров в сгенерированный метод <code class="language-plaintext highlighter-rouge">__init__()</code> и передаются в необязательный метод <code class="language-plaintext highlighter-rouge">__post_init__()</code>. В противном случае они не используются классами данных. <a href="https://docs.python.org/3/library/dataclasses.html#init-only-variables">Подробнее</a></p>
+
+<p>Можно инициализировать looks like неизменяемый инстанс датакласса - при попытке доступа через <code class="language-plaintext highlighter-rouge">__setattr__()</code> и <code class="language-plaintext highlighter-rouge">__delattr__()</code> будут подняты ошибки. <a href="https://docs.python.org/3/library/dataclasses.html#frozen-instances">Подробнее</a></p>
+
+<p>Стандартная схема наследования python полностью реализована для dataclass</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/dataclasses.html#frozen-instances">документация</a></li>
+  <li>[<a href="python-decorator" title="Python decorator">python-decorator</a>]</li>
+  <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

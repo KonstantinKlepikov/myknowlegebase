@@ -13,6 +13,7 @@ category: list
 - [[python-filesystem]] работа с файлами
 - [[python-interptetator-and-env-utils]] взаимодействие с интерпретатором и окружением в python
 - [[python-decorator]]
+- [[python-dataclasses]]
 - [[python-descriptors]]
 - [[python-iterators-example]]
 - [[python-patterns]]
@@ -143,6 +144,7 @@ category: list
 [python-filesystem]: ../notes/python-filesystem "Работа с файлами"
 [python-interptetator-and-env-utils]: ../notes/python-interptetator-and-env-utils "Утилиты взаимодействия с интерпретатором и окружением в python"
 [python-decorator]: ../notes/python-decorator "Python decorator"
+[python-dataclasses]: ../notes/python-dataclasses "Python dataclasses"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"
 [python-iterators-example]: ../notes/python-iterators-example "Python iterators"
 [python-patterns]: ../notes/python-patterns "Python patterns"

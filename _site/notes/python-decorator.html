@@ -87,6 +87,8 @@
 
 <p>Декораторм в python является функция, возвращающая другую функцию. Обычно применяется как преобразование функции с использованием синтаксиса <code class="language-plaintext highlighter-rouge">@wrapper</code>. Распространенными примерами декораторов являются <code class="language-plaintext highlighter-rouge">classmethod()</code> и <code class="language-plaintext highlighter-rouge">staticmethod()</code>.</p>
 
+<p>Декоратор - это именованный вызываемый объект (лямбда-функции не допускаются), который принимает один объект при вызове (декорируемый объект) и возвращает другой объект. Вызываемым объектом может быть любой объект, реализующий метод <code class="language-plaintext highlighter-rouge">__call__</code></p>
+
 <p>Cледующие два определения декоратора семантически эквивалентны:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">f</span><span class="p">(...):</span>
@@ -159,9 +161,58 @@
 <span class="ow">in</span> <span class="n">main</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>
 </code></pre></div></div>
 
+<p>Еще один вопрос - это параметризация декоратора. Для этого необходим еще один уровень упаковке. Ниже пример декоратора, который можно использовать для теста функций. Обратите внимание насколько сложным может быть вызлов без использования синтаксиса <code class="language-plaintext highlighter-rouge">@</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s">'time'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">parametrized</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="p">...</span>             <span class="k">print</span><span class="p">(</span><span class="s">'wraper'</span><span class="p">)</span>
+<span class="p">...</span>             <span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="p">...</span>             <span class="kn">from</span> <span class="nn">cProfile</span> <span class="kn">import</span> <span class="n">Profile</span>
+<span class="p">...</span>             <span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">Stats</span>
+            
+<span class="p">...</span>             <span class="n">s</span> <span class="o">=</span> <span class="n">tempfile</span><span class="p">.</span><span class="n">mktemp</span><span class="p">()</span>
+            
+<span class="p">...</span>             <span class="n">profiler</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">()</span>
+<span class="p">...</span>             <span class="n">profiler</span><span class="p">.</span><span class="n">runcall</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="p">...</span>             <span class="n">profiler</span><span class="p">.</span><span class="n">dump_stats</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="p">...</span>             
+<span class="p">...</span>             <span class="n">p</span> <span class="o">=</span> <span class="n">Stats</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="p">...</span>             <span class="k">print</span><span class="p">(</span><span class="s">'-'</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="s">f'</span><span class="si">{</span><span class="n">function</span><span class="p">.</span><span class="n">__name__</span><span class="si">}</span><span class="s">() profile'</span><span class="p">,</span> <span class="s">'-'</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">...</span>             <span class="n">p</span><span class="p">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">column</span><span class="p">).</span><span class="n">print_stats</span><span class="p">(</span><span class="n">how</span><span class="p">)</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">wrapper</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="n">parametrized</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">what</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">profile</span><span class="p">()(</span><span class="n">what</span><span class="p">)()</span>
+</code></pre></div></div>
+
+<p>Через сахар декоратора это было бы так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">profile</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">what</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что вызов <code class="language-plaintext highlighter-rouge">@profile</code> осуществляется с <code class="language-plaintext highlighter-rouge">()</code> - даже если мы не передаем аргументы это необходимо сделать, чтобы не получить исключение.</p>
+
+<p>Пример: <a href="https://stackoverflow.com/a/25827070/15966204">как сделать параметризированный декоратор</a> с помощью [<a href="functools" title="Functools">functools</a>]</p>
+
 <p>Подробнее о <a href="https://docs.python.org/3/reference/compound_stmts.html#function">декорировании функций</a> и <a href="https://docs.python.org/3/reference/compound_stmts.html#class">декорирвоании классов</a></p>
 
-<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</p>
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="python-dataclasses" title="Python dataclasses">python-dataclasses</a>]</li>
+</ul>
 
 
 
