@@ -136,6 +136,8 @@
   <li><code class="language-plaintext highlighter-rouge">dataclasses.astuple(obj, *, tuple_factory=tuple)</code> (аналогично)</li>
 </ul>
 
+<p>Так-как используется глубокая копия, это может быть медленно. Если не нужен рекурсивный обход, дешевле может быть вызвать <code class="language-plaintext highlighter-rouge">dataclass_instance.__dict__</code>. <a href="https://stackoverflow.com/questions/52229521/why-is-dataclasses-asdictobj-10x-slower-than-obj-dict">Ссылка на оверфлоу</a></p>
+
 <p>Предоставлен <a href="https://docs.python.org/3/library/dataclasses.html#dataclasses.make_dataclass">метод для создания дата-класса</a> (это может быть полезно в каких-то фабриках)</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">C</span> <span class="o">=</span> <span class="n">make_dataclass</span><span class="p">(</span><span class="s">'C'</span><span class="p">,</span>
@@ -196,6 +198,7 @@
   <li><a href="https://docs.python.org/3/library/dataclasses.html#frozen-instances">документация</a></li>
   <li>[<a href="python-decorator" title="Python decorator">python-decorator</a>]</li>
   <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="convert-dcit-to-dataclass" title="Convert dict to dataclass or namedtuple">convert-dcit-to-dataclass</a>]</li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
 </ul>
 
