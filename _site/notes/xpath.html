@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>XPath | My knowlege base</title>
+<title>XPath в scrapy | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="XPath" />
+<meta property="og:title" content="XPath в scrapy" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Язык выражений XQuery и Xpath" />
-<meta property="og:description" content="Язык выражений XQuery и Xpath" />
+<meta name="description" content="Язык выражений XQuery и Xpath в библиотеке scrapy" />
+<meta property="og:description" content="Язык выражений XQuery и Xpath в библиотеке scrapy" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/xpath.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/xpath.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/xpath.html","headline":"XPath","description":"Язык выражений XQuery и Xpath","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/xpath.html","headline":"XPath в scrapy","description":"Язык выражений XQuery и Xpath в библиотеке scrapy","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,11 +83,176 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="xpath">XPath</h1>
+      <h1 id="xpath-в-scrapy">XPath в scrapy</h1>
 
 <p>XPath — это язык выражений, который позволяет обрабатывать значения, соответствующие модели данных, определенной в XQuery и модели данных Xpath</p>
 
 <p><a href="https://www.w3.org/TR/xpath/all/">Ссылка на спецификацию</a></p>
+
+<p>В [<a href="scrapy" title="Scrapy">scrapy</a>] используются два подхода - [<a href="css-selectors" title="Css-selectors">css-selectors</a>] и собственно xpath. Собственно обертка для обоих реализована через библиотеку <a href="https://parsel.readthedocs.io/en/latest/index.html">parsel</a>.</p>
+
+<p>Данная статья будет связана с работай в xpath в [<a href="scrapy" title="Scrapy">scrapy</a>] на базе parsel.</p>
+
+<p>[<a href="scrapy" title="Scrapy">scrapy</a>] оперирует селекторами, потому что они «выбирают» определенные части HTML-документа, заданные выражениями XPath или CSS. XPath — это язык для выбора узлов в XML-документах, который также можно использовать с HTML.</p>
+
+<p>Типичный подход выглядит так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//span/text()'</span><span class="p">).</span><span class="n">get</span><span class="p">()</span>
+<span class="s">'good'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'span::text'</span><span class="p">).</span><span class="n">get</span><span class="p">()</span>
+<span class="s">'good'</span>
+</code></pre></div></div>
+
+<p>Селекторы scrapy реализованы через инстанцы класса <a href="https://docs.scrapy.org/en/latest/topics/selectors.html#scrapy.selector.Selector">scrapy.selector.Selector</a> (или, когда нужно обработать список селекторов <code class="language-plaintext highlighter-rouge">scrapy.selector.SelectorList</code>). Практического смысла конструировать селекторы в ручную нет, так как объект <code class="language-plaintext highlighter-rouge">response</code> доступен через колбеки и имеет соответствующие методы <code class="language-plaintext highlighter-rouge">.css()</code> и <code class="language-plaintext highlighter-rouge">.xpath()</code>. Но, в любом случае можно и вручную</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">scrapy.selector</span> <span class="kn">import</span> <span class="n">Selector</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">scrapy.http</span> <span class="kn">import</span> <span class="n">HtmlResponse</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">HtmlResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">'http://example.com'</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Selector</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">).</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//span/text()'</span><span class="p">).</span><span class="n">get</span><span class="p">()</span>
+<span class="s">'good'</span>
+</code></pre></div></div>
+
+<p><strong>Классы предоставляют следующие методы:</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">xpath(xpath, namespaces=None, **kwargs)</code> находит узлы, соответствующие запросу xpath, и возвращает результат в виде экземпляра <code class="language-plaintext highlighter-rouge">SelectorList</code> со всеми сведенными элементами. Элементы возвращенного списка также реализуют интерфейс <code class="language-plaintext highlighter-rouge">Selector</code>.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">query</code> - это строка с синтаксисом xpath запроса</li>
+  <li><code class="language-plaintext highlighter-rouge">namespaces</code> позволяет использовать собственные пространства имен (параметр не регистрируется для будущих вызовов - надо использовать особый метод для регистрации)</li>
+  <li><code class="language-plaintext highlighter-rouge">**kwargs</code> - дополнительные аргумсенты, котоыре могут быть переданы в выражение xpath во так</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">selector</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//a[href=$url]'</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s">"http://www.example.com"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">css(query)</code> применяет селектор CSS и возвращает экземпляр <code class="language-plaintext highlighter-rouge">SelectorList</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">get()</code> возвращает единственную строку, соответствующую запросу или <code class="language-plaintext highlighter-rouge">None</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'title::text'</span><span class="p">).</span><span class="n">get</span><span class="p">()</span>
+<span class="s">'Example website'</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">attrib</code> возвращает словарь атрибутов для элемента</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'img'</span><span class="p">).</span><span class="n">attrib</span><span class="p">[</span><span class="s">'src'</span><span class="p">]</span>
+<span class="s">'image1_thumb.jpg'</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">re(regex, replace_entities=True)</code> применить регулярное выражение и вернуть список стрко с совпадениями. Или первое встреченное вот так: <code class="language-plaintext highlighter-rouge">re_first(regex, default=None, replace_entities=True)</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">register_namespace(prefix, uri)</code> позволяет зарегистрировать нестандартное пространство имен (это бывает важно, если реализуются узлы, не предусмотренные стандартной спецификацией). <code class="language-plaintext highlighter-rouge">remove_namespaces()</code> удаляет пространство имен.</p>
+
+<p><code class="language-plaintext highlighter-rouge">__bool__()</code> вернет <code class="language-plaintext highlighter-rouge">True</code> если в селекторе есть хоть что-то. Иначе <code class="language-plaintext highlighter-rouge">False</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">getall()</code> возвращает список соответствий запросу или пустой список</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'img'</span><span class="p">).</span><span class="n">xpath</span><span class="p">(</span><span class="s">'@src'</span><span class="p">).</span><span class="n">getall</span><span class="p">()</span>
+<span class="p">[</span><span class="s">'image1_thumb.jpg'</span><span class="p">,</span>
+ <span class="s">'image2_thumb.jpg'</span><span class="p">,</span>
+ <span class="s">'image3_thumb.jpg'</span><span class="p">,</span>
+ <span class="s">'image4_thumb.jpg'</span><span class="p">,</span>
+ <span class="s">'image5_thumb.jpg'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Кроме того <a href="https://docs.scrapy.org/en/latest/topics/selectors.html#extract-and-extract-first">поддерживаются методы</a> <code class="language-plaintext highlighter-rouge">extract()</code> и <code class="language-plaintext highlighter-rouge">extract_first()</code>, однако они устарели и предпочтительно использовать <code class="language-plaintext highlighter-rouge">get()</code> и <code class="language-plaintext highlighter-rouge">getall()</code></p>
+
+<p>Пример использования xpath и селекторов в scrapy <a href="https://docs.scrapy.org/en/latest/topics/selectors.html#id1">смотри тут</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sel</span> <span class="o">=</span> <span class="n">Selector</span><span class="p">(</span><span class="n">html_response</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sel</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">"//h1"</span><span class="p">).</span><span class="n">getall</span><span class="p">()</span>         <span class="c1"># this includes the h1 tag
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">sel</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">"//h1/text()"</span><span class="p">).</span><span class="n">getall</span><span class="p">()</span>  <span class="c1"># this excludes the h1 tag
+</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">"//p"</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">'class'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Можно сотавлять <a href="https://docs.scrapy.org/en/latest/topics/selectors.html#nesting-selectors">вложенные селекторы</a>, так как <code class="language-plaintext highlighter-rouge">xpath()</code> и <code class="language-plaintext highlighter-rouge">css()</code> возвращают списки селекторов.</p>
+
+<p>Выбор атрибутов осуществляется через нотацию <code class="language-plaintext highlighter-rouge">@</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">"//a/@href"</span><span class="p">).</span><span class="n">getall</span><span class="p">()</span>
+<span class="p">[</span><span class="s">'image1.html'</span><span class="p">,</span> <span class="s">'image2.html'</span><span class="p">,</span> <span class="s">'image3.html'</span><span class="p">,</span> <span class="s">'image4.html'</span><span class="p">,</span> <span class="s">'image5.html'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Выбор css-селекторов через <code class="language-plaintext highlighter-rouge">::</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'a::attr(href)'</span><span class="p">).</span><span class="n">getall</span><span class="p">()</span>
+<span class="p">[</span><span class="s">'image1.html'</span><span class="p">,</span> <span class="s">'image2.html'</span><span class="p">,</span> <span class="s">'image3.html'</span><span class="p">,</span> <span class="s">'image4.html'</span><span class="p">,</span> <span class="s">'image5.html'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Кроме того можно использовать свойство <code class="language-plaintext highlighter-rouge">attrib</code> самого селектора</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">'href'</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'a'</span><span class="p">)]</span>
+<span class="p">[</span><span class="s">'image1.html'</span><span class="p">,</span> <span class="s">'image2.html'</span><span class="p">,</span> <span class="s">'image3.html'</span><span class="p">,</span> <span class="s">'image4.html'</span><span class="p">,</span> <span class="s">'image5.html'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Использование регулярок так-же не является сложной задачей:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">response</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//a[contains(@href, "image")]/text()'</span><span class="p">).</span><span class="n">re</span><span class="p">(</span><span class="s">r'Name:\s*(.*)'</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'My image 1'</span><span class="p">,</span>
+ <span class="s">'My image 2'</span><span class="p">,</span>
+ <span class="s">'My image 3'</span><span class="p">,</span>
+ <span class="s">'My image 4'</span><span class="p">,</span>
+ <span class="s">'My image 5'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="особенности-работы-с-xpath"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html#working-with-relative-xpaths">Особенности работы с xpath</a></h2>
+
+<h3 id="все-селекторы-на-оснвое-xpath-отсчитываются-от-корня-документа-это-надо-иметь-ввиду-когда-извлекаются-объекты-с-помощью-вложенных-селекторов">Все селекторы на оснвое xpath отсчитываются от корня документа. Это надо иметь ввиду, когда извлекаются объекты с помощью вложенных селекторов</h3>
+
+<p>плохо</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">divs</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//div'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">divs</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'//p'</span><span class="p">):</span>  <span class="c1"># this is wrong - gets all &lt;p&gt; from the whole document
+</span>    <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>лучше</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">divs</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'.//p'</span><span class="p">):</span>  <span class="c1"># extracts all &lt;p&gt; inside
+</span>    <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>или</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">divs</span><span class="p">.</span><span class="n">xpath</span><span class="p">(</span><span class="s">'p'</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="выбирать-элемент-по-классу-можно-разными-способами-тк-в-может-быть-много-разных-классов">Выбирать элемент по классу можно разными способами, т.к. в <a href="https://docs.scrapy.org/en/latest/topics/selectors.html#when-querying-by-class-consider-using-css">может быть много разных классов</a></h3>
+
+<p>Можно использовать цепь селекторов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">scrapy</span> <span class="kn">import</span> <span class="n">Selector</span>
+<span class="n">sel</span> <span class="o">=</span> <span class="n">Selector</span><span class="p">(</span>
+    <span class="n">text</span><span class="o">=</span><span class="s">'&lt;div class="hero shout"&gt;&lt;time datetime="2014-07-23 19:00"&gt;Special date&lt;/time&gt;&lt;/div&gt;'</span>
+    <span class="p">)</span>
+<span class="n">sel</span><span class="p">.</span><span class="n">css</span><span class="p">(</span><span class="s">'.shout'</span><span class="p">).</span><span class="n">xpath</span><span class="p">(</span><span class="s">'./time/@datetime'</span><span class="p">).</span><span class="n">getall</span><span class="p">()</span>
+<span class="p">[</span><span class="s">'2014-07-23 19:00'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="beware-of-the-difference-between-node1-and-node1"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html#beware-of-the-difference-between-node-1-and-node-1">Beware of the difference</a> between //node[1] and (//node)[1]</h3>
+
+<h3 id="using-text-nodes-in-a-condition"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html#using-text-nodes-in-a-condition">Using text nodes in a condition</a></h3>
+
+<h3 id="variables-in-xpath-expressions"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html#variables-in-xpath-expressions">Variables in XPath expressions</a></h3>
+
+<h3 id="removing-namespaces"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html#removing-namespaces">Removing namespaces</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">Selector.remove_namespaces()</code> позволяет избавиться от пространства имен, чтобы оперировать более простыми понятиями</p>
+
+<h3 id="using-exslt-extensions"><a href="https://docs.scrapy.org/en/latest/topics/selectors.html#using-exslt-extensions">Using EXSLT extensions</a></h3>
+
+<p><strong>Больше подробностей прои работу с xpath и селекторами можно найти смотри тут</strong>:</p>
+
+<ul>
+  <li><a href="https://parsel.readthedocs.io/en/latest/usage.html#learning-css-and-xpath">подробное руководство по использованию селекторов и xpath в parsel</a></li>
+  <li><a href="https://en.wikibooks.org/wiki/XPath/CSS_Equivalents">XPath/CSS Equivalents in Wikibooks</a></li>
+  <li><a href="https://devhints.io/xpath">Xpath cheatsheet</a></li>
+  <li><a href="https://www.w3schools.com/xml/xpath_intro.asp">XPath Tutorial</a> w3s</li>
+</ul>
 
 <p>Еще ссылки:</p>
 
@@ -95,6 +260,7 @@
   <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
   <li>[<a href="scrapy" title="Scrapy">scrapy</a>]</li>
   <li>[<a href="css-selectors" title="Css-selectors">css-selectors</a>]</li>
+  <li><a href="https://parsel.readthedocs.io/en/latest/index.html">parsel</a></li>
 </ul>
 
 
