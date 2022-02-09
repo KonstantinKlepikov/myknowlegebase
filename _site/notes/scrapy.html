@@ -530,7 +530,177 @@ In <span class="o">[</span>1]:
 </span>    <span class="k">return</span> <span class="n">l</span><span class="p">.</span><span class="n">load_item</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Конструкция поддерживает определение инпута и аутпута, контексты, вложенные лоадеры и повторное использование. <a href="https://docs.scrapy.org/en/latest/topics/loaders.html#scrapy.loader.ItemLoader.add_xpath">Смотри подробнее</a></p>
+<p>Пример использования:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">l</span> <span class="o">=</span> <span class="n">ItemLoader</span><span class="p">(</span><span class="n">Product</span><span class="p">(),</span> <span class="n">some_selector</span><span class="p">)</span>
+<span class="n">l</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">xpath1</span><span class="p">)</span> <span class="c1"># (1)
+</span><span class="n">l</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">xpath2</span><span class="p">)</span> <span class="c1"># (2)
+</span><span class="n">l</span><span class="p">.</span><span class="n">add_css</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">css</span><span class="p">)</span> <span class="c1"># (3)
+</span><span class="n">l</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'test'</span><span class="p">)</span> <span class="c1"># (4)
+</span><span class="k">return</span> <span class="n">l</span><span class="p">.</span><span class="n">load_item</span><span class="p">()</span> <span class="c1"># (5)
+</span></code></pre></div></div>
+
+<ol>
+  <li>Данные из xpath1 извлекаются и передаются через входной процессор поля имени. Результат процессора ввода собирается и сохраняется в лоадере (но еще не присваивается полю).</li>
+  <li>Данные из xpath2 извлекаются и передаются через тот же входной процессор, что и в (1). Результат процессора ввода добавляется к данным, собранным в (1) (если они есть).</li>
+  <li>Этот случай аналогичен предыдущим, за исключением того, что данные извлекаются из CSS-селектора css и передаются через тот же процессор ввода, что и в (1) и (2). Результат процессора ввода добавляется к данным, собранным в (1) и (2) (если есть).</li>
+  <li>Этот случай также аналогичен предыдущим, за исключением того, что собираемое значение назначается напрямую, а не извлекается из выражения XPath или селектора CSS. Однако значение по-прежнему передается через процессоры ввода. В этом случае, поскольку значение не является итератором, оно преобразуется в итератор значение одного элемента перед передачей его процессору ввода, поскольку процессор ввода всегда получает итерируемые объекты.</li>
+  <li>Данные, собранные на этапах (1), (2), (3) и (4), проходят через выходной процессор. Результатом процессора вывода является значение, присвоенное полю имени</li>
+</ol>
+
+<p>Таким образом мы можем собирать необходимые данные в лоадере через процессор ввода, а затем проводить необходимую обработку и заполнять поля айтема уже готовыми значениями через процессор вывода. Процессором может быть любая функция - единственное тербование к ней% она должна получать всего один аргумент, который должен быть итерируемым.</p>
+
+<p>Лоадеры объявляются как классы. а процессоры как методы с <code class="language-plaintext highlighter-rouge">_in</code> и <code class="language-plaintext highlighter-rouge">_out</code> суффаиксами:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">TakeFirst</span><span class="p">,</span> <span class="n">MapCompose</span><span class="p">,</span> <span class="n">Join</span>
+<span class="kn">from</span> <span class="nn">scrapy.loader</span> <span class="kn">import</span> <span class="n">ItemLoader</span>
+
+<span class="k">class</span> <span class="nc">ProductLoader</span><span class="p">(</span><span class="n">ItemLoader</span><span class="p">):</span>
+
+    <span class="n">default_output_processor</span> <span class="o">=</span> <span class="n">TakeFirst</span><span class="p">()</span>
+
+    <span class="n">name_in</span> <span class="o">=</span> <span class="n">MapCompose</span><span class="p">(</span><span class="nb">str</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">name_out</span> <span class="o">=</span> <span class="n">Join</span><span class="p">()</span>
+
+    <span class="n">price_in</span> <span class="o">=</span> <span class="n">MapCompose</span><span class="p">(</span><span class="nb">str</span><span class="p">.</span><span class="n">strip</span><span class="p">)</span>
+
+    <span class="c1"># ...
+</span></code></pre></div></div>
+
+<h4 id="build-in-процессоры">Build-in процессоры</h4>
+
+<p>Для удобства реализовано <a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#built-in-processors">несколько build-in процессоров</a></p>
+
+<p><a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.Compose">Compose</a> позволяет объединить несколько функций</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">Compose</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">Compose</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">.</span><span class="n">upper</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">([</span><span class="s">'hello'</span><span class="p">,</span> <span class="s">'world'</span><span class="p">])</span>
+<span class="s">'HELLO'</span>
+</code></pre></div></div>
+
+<p><a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.Identity">Identity</a> просто возвращает данные. Видимо нужен для передачи данных из входа на выход как есть.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">Identity</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">Identity</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">([</span><span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">])</span>
+<span class="p">[</span><span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.Join">Join(separator=’ ‘)</a> возвращает данные, объединенные сепаратором</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">Join</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">Join</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">([</span><span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">])</span>
+<span class="s">'one two three'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">Join</span><span class="p">(</span><span class="s">'&lt;br&gt;'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">([</span><span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">])</span>
+<span class="s">'one&lt;br&gt;two&lt;br&gt;three'</span>
+</code></pre></div></div>
+
+<p><a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.MapCompose">MapCompose(*functions, **default_loader_context)</a>. Процессор, построенный из композиции заданных функций, аналогичный процессору Compose. Отличие этого процессора заключается в том, как внутренние результаты передаются между функциями</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">filter_world</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">return</span> <span class="bp">None</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s">'world'</span> <span class="k">else</span> <span class="n">x</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">MapCompose</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">MapCompose</span><span class="p">(</span><span class="n">filter_world</span><span class="p">,</span> <span class="nb">str</span><span class="p">.</span><span class="n">upper</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">([</span><span class="s">'hello'</span><span class="p">,</span> <span class="s">'world'</span><span class="p">,</span> <span class="s">'this'</span><span class="p">,</span> <span class="s">'is'</span><span class="p">,</span> <span class="s">'something'</span><span class="p">])</span>
+<span class="p">[</span><span class="s">'HELLO'</span><span class="p">,</span> <span class="s">'THIS'</span><span class="p">,</span> <span class="s">'IS'</span><span class="p">,</span> <span class="s">'SOMETHING'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.SelectJmes">SelectJmes(json_path)</a>. Позоляет эффективно извлекать даныне из json на основе библиотеки <a href="https://github.com/jmespath/jmespath.py">jmespath.py</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">SelectJmes</span><span class="p">,</span> <span class="n">Compose</span><span class="p">,</span> <span class="n">MapCompose</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">SelectJmes</span><span class="p">(</span><span class="s">"foo"</span><span class="p">)</span> <span class="c1"># for direct use on lists and dictionaries
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">({</span><span class="s">'foo'</span><span class="p">:</span> <span class="s">'bar'</span><span class="p">})</span>
+<span class="s">'bar'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">({</span><span class="s">'foo'</span><span class="p">:</span> <span class="p">{</span><span class="s">'bar'</span><span class="p">:</span> <span class="s">'baz'</span><span class="p">}})</span>
+<span class="p">{</span><span class="s">'bar'</span><span class="p">:</span> <span class="s">'baz'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.TakeFirst">TakeFirst</a> возвращает первое ненулевое/непустое значение из полученных значений</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">TakeFirst</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span> <span class="o">=</span> <span class="n">TakeFirst</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">proc</span><span class="p">([</span><span class="s">''</span><span class="p">,</span> <span class="s">'one'</span><span class="p">,</span> <span class="s">'two'</span><span class="p">,</span> <span class="s">'three'</span><span class="p">])</span>
+<span class="s">'one'</span>
+</code></pre></div></div>
+
+<p>Кроме того, процессоры могут быть объявлены в полях модели Item, если айтем реализован на оснвое <code class="language-plaintext highlighter-rouge">scrapy.Item</code>. Пример <a href="https://docs.scrapy.org/en/latest/topics/loaders.html#declaring-input-and-output-processors">смотри тут</a></p>
+
+<h4 id="контексты">Контексты</h4>
+
+<p><strong><a href="https://docs.scrapy.org/en/latest/topics/loaders.html#item-loader-context">Item Loader Context</a></strong> — это словарь, который используется всеми процессорами ввода и вывода в загрузчике элементов. Его можно передать при объявлении, создании экземпляра или использовании загрузчика элементов. Они используются для изменения поведения процессоров ввода/вывода.</p>
+
+<h4 id="объект-itemloader"><a href="https://docs.scrapy.org/en/latest/topics/loaders.html#itemloader-objects">Объект ItemLoader</a></h4>
+
+<p><code class="language-plaintext highlighter-rouge">classscrapy.loader.ItemLoader(item=None, selector=None, response=None, parent=None, **context)</code></p>
+
+<ul>
+  <li>item (<code class="language-plaintext highlighter-rouge">scrapy.item.Item</code>) — экземпляр элемента для заполнения с помощью последующих вызовов <code class="language-plaintext highlighter-rouge">add_xpath()</code>, <code class="language-plaintext highlighter-rouge">add_css()</code> или <code class="language-plaintext highlighter-rouge">add_value()</code></li>
+  <li>selector (<code class="language-plaintext highlighter-rouge">Selector</code>) — селектор для извлечения данных при использовании метода <code class="language-plaintext highlighter-rouge">add_xpath()</code>, <code class="language-plaintext highlighter-rouge">add_css()</code>, <code class="language-plaintext highlighter-rouge">replace_xpath()</code> или <code class="language-plaintext highlighter-rouge">replace_css()</code></li>
+  <li>response (<code class="language-plaintext highlighter-rouge">Response</code>) — ответ, используемый для создания другого селектора с использованием <code class="language-plaintext highlighter-rouge">default_selector_class</code>, если не указан аргумент селектора (в большинстве случаев этот аргумент игнорируется).</li>
+</ul>
+
+<p>Если item не задан, он создается автоматически с использованием класса в default_item_class. Все аргументы передаются в контекст лоадера.</p>
+
+<p>Атрибуты и методы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">item</code></li>
+  <li><code class="language-plaintext highlighter-rouge">context</code></li>
+  <li><code class="language-plaintext highlighter-rouge">default_item_class</code> используется, если не задан айтем</li>
+  <li><code class="language-plaintext highlighter-rouge">default_input_processor</code> используется если в операции не задан входной процессор</li>
+  <li><code class="language-plaintext highlighter-rouge">default_output_processor</code></li>
+  <li><code class="language-plaintext highlighter-rouge">default_selector_class</code> дефолтный класс, используемый для конструирования селектора</li>
+  <li><code class="language-plaintext highlighter-rouge">selector</code> - объект, из которого извлекаются данные</li>
+  <li><code class="language-plaintext highlighter-rouge">add_css(field_name, css, *processors, **kw)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">add_value(field_name, value, *processors, **kw)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">add_xpath(field_name, xpath, *processors, **kw)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_collected_values(field_name)</code> возвращет собранные значения для поля</li>
+  <li><code class="language-plaintext highlighter-rouge">get_css(css, *processors, **kw)</code> обработать css процессорами</li>
+  <li><code class="language-plaintext highlighter-rouge">get_output_value(field_name)</code> Возвращает собранные значения, проанализированные с помощью выходного процессора, для данного поля. Этот метод не заполняет и не изменяет элемент.</li>
+  <li><code class="language-plaintext highlighter-rouge">get_value(value, *processors, **kw)</code> обработать значение процессорами</li>
+  <li><code class="language-plaintext highlighter-rouge">get_xpath(xpath, *processors, **kw)</code> обработать xpath процессорами</li>
+  <li><code class="language-plaintext highlighter-rouge">load_item()</code> заполнить все поля айтема имеющимися данными</li>
+  <li><code class="language-plaintext highlighter-rouge">nested_css(css, **context)</code> создание вложенных загрузчиков</li>
+  <li><code class="language-plaintext highlighter-rouge">nested_xpath(xpath, **context)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">replace_css(field_name, css, *processors, **kw)</code> аналогично add, но не добавляет, а заменяет</li>
+  <li><code class="language-plaintext highlighter-rouge">replace_value(field_name, value, *processors, **kw)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">replace_xpath(field_name, xpath, *processors, **kw)</code></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># HTML snippet: &lt;p class="product-name"&gt;Color TV&lt;/p&gt;
+</span><span class="n">loader</span><span class="p">.</span><span class="n">add_css</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'p.product-name'</span><span class="p">)</span>
+<span class="c1"># HTML snippet: &lt;p id="price"&gt;the price is $1200&lt;/p&gt;
+</span><span class="n">loader</span><span class="p">.</span><span class="n">add_css</span><span class="p">(</span><span class="s">'price'</span><span class="p">,</span> <span class="s">'p#price'</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="s">'the price is (.*)'</span><span class="p">)</span>
+<span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'Color TV'</span><span class="p">)</span>
+<span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'colours'</span><span class="p">,</span> <span class="p">[</span><span class="s">'white'</span><span class="p">,</span> <span class="s">'blue'</span><span class="p">])</span>
+<span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'length'</span><span class="p">,</span> <span class="s">'100'</span><span class="p">)</span>
+<span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'name: foo'</span><span class="p">,</span> <span class="n">TakeFirst</span><span class="p">(),</span> <span class="n">re</span><span class="o">=</span><span class="s">'name: (.+)'</span><span class="p">)</span>
+<span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'foo'</span><span class="p">,</span> <span class="s">'sex'</span><span class="p">:</span> <span class="s">'male'</span><span class="p">})</span>
+<span class="c1"># HTML snippet: &lt;p class="product-name"&gt;Color TV&lt;/p&gt;
+</span><span class="n">loader</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'//p[@class="product-name"]'</span><span class="p">)</span>
+<span class="c1"># HTML snippet: &lt;p id="price"&gt;the price is $1200&lt;/p&gt;
+</span><span class="n">loader</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'price'</span><span class="p">,</span> <span class="s">'//p[@id="price"]'</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="s">'the price is (.*)'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.scrapy.org/en/latest/topics/loaders.html#nested-loaders">Вложенные загрузчики</a> используются для умсеньшения дублирования в строках селекторов.</p>
+
+<h4 id="повторное-использование-и-расширение"><a href="https://docs.scrapy.org/en/latest/topics/loaders.html#reusing-and-extending-item-loaders">Повторное использование и расширение</a></h4>
+
+<p>Пример (через наследование и переопредлеление процессора)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">itemloaders.processors</span> <span class="kn">import</span> <span class="n">MapCompose</span>
+<span class="kn">from</span> <span class="nn">myproject.ItemLoaders</span> <span class="kn">import</span> <span class="n">ProductLoader</span>
+
+<span class="k">def</span> <span class="nf">strip_dashes</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">.</span><span class="n">strip</span><span class="p">(</span><span class="s">'-'</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">SiteSpecificLoader</span><span class="p">(</span><span class="n">ProductLoader</span><span class="p">):</span>
+    <span class="n">name_in</span> <span class="o">=</span> <span class="n">MapCompose</span><span class="p">(</span><span class="n">strip_dashes</span><span class="p">,</span> <span class="n">ProductLoader</span><span class="p">.</span><span class="n">name_in</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h3 id="item-pipeline"><a href="https://docs.scrapy.org/en/latest/topics/item-pipeline.html">Item Pipeline</a></h3>
 

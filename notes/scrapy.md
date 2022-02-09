@@ -440,7 +440,181 @@ def parse(self, response):
     return l.load_item()
 ```
 
-Конструкция поддерживает определение инпута и аутпута, контексты, вложенные лоадеры и повторное использование. [Смотри подробнее](https://docs.scrapy.org/en/latest/topics/loaders.html#scrapy.loader.ItemLoader.add_xpath)
+Пример использования:
+
+```python
+l = ItemLoader(Product(), some_selector)
+l.add_xpath('name', xpath1) # (1)
+l.add_xpath('name', xpath2) # (2)
+l.add_css('name', css) # (3)
+l.add_value('name', 'test') # (4)
+return l.load_item() # (5)
+```
+
+1. Данные из xpath1 извлекаются и передаются через входной процессор поля имени. Результат процессора ввода собирается и сохраняется в лоадере (но еще не присваивается полю).
+2. Данные из xpath2 извлекаются и передаются через тот же входной процессор, что и в (1). Результат процессора ввода добавляется к данным, собранным в (1) (если они есть).
+3. Этот случай аналогичен предыдущим, за исключением того, что данные извлекаются из CSS-селектора css и передаются через тот же процессор ввода, что и в (1) и (2). Результат процессора ввода добавляется к данным, собранным в (1) и (2) (если есть).
+4. Этот случай также аналогичен предыдущим, за исключением того, что собираемое значение назначается напрямую, а не извлекается из выражения XPath или селектора CSS. Однако значение по-прежнему передается через процессоры ввода. В этом случае, поскольку значение не является итератором, оно преобразуется в итератор значение одного элемента перед передачей его процессору ввода, поскольку процессор ввода всегда получает итерируемые объекты.
+5. Данные, собранные на этапах (1), (2), (3) и (4), проходят через выходной процессор. Результатом процессора вывода является значение, присвоенное полю имени
+
+Таким образом мы можем собирать необходимые данные в лоадере через процессор ввода, а затем проводить необходимую обработку и заполнять поля айтема уже готовыми значениями через процессор вывода. Процессором может быть любая функция - единственное тербование к ней% она должна получать всего один аргумент, который должен быть итерируемым.
+
+Лоадеры объявляются как классы. а процессоры как методы с `_in` и `_out` суффаиксами:
+
+```python
+from itemloaders.processors import TakeFirst, MapCompose, Join
+from scrapy.loader import ItemLoader
+
+class ProductLoader(ItemLoader):
+
+    default_output_processor = TakeFirst()
+
+    name_in = MapCompose(str.title)
+    name_out = Join()
+
+    price_in = MapCompose(str.strip)
+
+    # ...
+```
+
+#### Build-in процессоры
+
+Для удобства реализовано [несколько build-in процессоров](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#built-in-processors)
+
+[Compose](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.Compose) позволяет объединить несколько функций
+
+```python
+>>> from itemloaders.processors import Compose
+>>> proc = Compose(lambda v: v[0], str.upper)
+>>> proc(['hello', 'world'])
+'HELLO'
+```
+
+[Identity](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.Identity) просто возвращает данные. Видимо нужен для передачи данных из входа на выход как есть.
+
+```python
+>>> from itemloaders.processors import Identity
+>>> proc = Identity()
+>>> proc(['one', 'two', 'three'])
+['one', 'two', 'three']
+```
+
+[Join(separator=' ')](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.Join) возвращает данные, объединенные сепаратором
+
+```python
+>>> from itemloaders.processors import Join
+>>> proc = Join()
+>>> proc(['one', 'two', 'three'])
+'one two three'
+>>> proc = Join('<br>')
+>>> proc(['one', 'two', 'three'])
+'one<br>two<br>three'
+```
+
+[MapCompose(*functions, **default_loader_context)](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.MapCompose). Процессор, построенный из композиции заданных функций, аналогичный процессору Compose. Отличие этого процессора заключается в том, как внутренние результаты передаются между функциями
+
+```python
+>>> def filter_world(x):
+...     return None if x == 'world' else x
+...
+>>> from itemloaders.processors import MapCompose
+>>> proc = MapCompose(filter_world, str.upper)
+>>> proc(['hello', 'world', 'this', 'is', 'something'])
+['HELLO', 'THIS', 'IS', 'SOMETHING']
+```
+
+[SelectJmes(json_path)](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.SelectJmes). Позоляет эффективно извлекать даныне из json на основе библиотеки [jmespath.py](https://github.com/jmespath/jmespath.py)
+
+```python
+>>> from itemloaders.processors import SelectJmes, Compose, MapCompose
+>>> proc = SelectJmes("foo") # for direct use on lists and dictionaries
+>>> proc({'foo': 'bar'})
+'bar'
+>>> proc({'foo': {'bar': 'baz'}})
+{'bar': 'baz'}
+```
+
+[TakeFirst](https://itemloaders.readthedocs.io/en/latest/built-in-processors.html#itemloaders.processors.TakeFirst) возвращает первое ненулевое/непустое значение из полученных значений
+
+```python
+>>> from itemloaders.processors import TakeFirst
+>>> proc = TakeFirst()
+>>> proc(['', 'one', 'two', 'three'])
+'one'
+```
+
+Кроме того, процессоры могут быть объявлены в полях модели Item, если айтем реализован на оснвое `scrapy.Item`. Пример [смотри тут](https://docs.scrapy.org/en/latest/topics/loaders.html#declaring-input-and-output-processors)
+
+#### Контексты
+
+**[Item Loader Context](https://docs.scrapy.org/en/latest/topics/loaders.html#item-loader-context)** — это словарь, который используется всеми процессорами ввода и вывода в загрузчике элементов. Его можно передать при объявлении, создании экземпляра или использовании загрузчика элементов. Они используются для изменения поведения процессоров ввода/вывода.
+
+#### [Объект ItemLoader](https://docs.scrapy.org/en/latest/topics/loaders.html#itemloader-objects)
+
+`classscrapy.loader.ItemLoader(item=None, selector=None, response=None, parent=None, **context)`
+
+- item (`scrapy.item.Item`) — экземпляр элемента для заполнения с помощью последующих вызовов `add_xpath()`, `add_css()` или `add_value()`
+- selector (`Selector`) — селектор для извлечения данных при использовании метода `add_xpath()`, `add_css()`, `replace_xpath()` или `replace_css()`
+- response (`Response`) — ответ, используемый для создания другого селектора с использованием `default_selector_class`, если не указан аргумент селектора (в большинстве случаев этот аргумент игнорируется).
+
+Если item не задан, он создается автоматически с использованием класса в default_item_class. Все аргументы передаются в контекст лоадера.
+
+Атрибуты и методы:
+
+- `item`
+- `context`
+- `default_item_class` используется, если не задан айтем
+- `default_input_processor` используется если в операции не задан входной процессор
+- `default_output_processor`
+- `default_selector_class` дефолтный класс, используемый для конструирования селектора
+- `selector` - объект, из которого извлекаются данные
+- `add_css(field_name, css, *processors, **kw)`
+- `add_value(field_name, value, *processors, **kw)`
+- `add_xpath(field_name, xpath, *processors, **kw)`
+- `get_collected_values(field_name)` возвращет собранные значения для поля
+- `get_css(css, *processors, **kw)` обработать css процессорами
+- `get_output_value(field_name)` Возвращает собранные значения, проанализированные с помощью выходного процессора, для данного поля. Этот метод не заполняет и не изменяет элемент.
+- `get_value(value, *processors, **kw)` обработать значение процессорами
+- `get_xpath(xpath, *processors, **kw)` обработать xpath процессорами
+- `load_item()` заполнить все поля айтема имеющимися данными
+- `nested_css(css, **context)` создание вложенных загрузчиков
+- `nested_xpath(xpath, **context)`
+- `replace_css(field_name, css, *processors, **kw)` аналогично add, но не добавляет, а заменяет
+- `replace_value(field_name, value, *processors, **kw)`
+- `replace_xpath(field_name, xpath, *processors, **kw)`
+
+```python
+# HTML snippet: <p class="product-name">Color TV</p>
+loader.add_css('name', 'p.product-name')
+# HTML snippet: <p id="price">the price is $1200</p>
+loader.add_css('price', 'p#price', re='the price is (.*)')
+loader.add_value('name', 'Color TV')
+loader.add_value('colours', ['white', 'blue'])
+loader.add_value('length', '100')
+loader.add_value('name', 'name: foo', TakeFirst(), re='name: (.+)')
+loader.add_value(None, {'name': 'foo', 'sex': 'male'})
+# HTML snippet: <p class="product-name">Color TV</p>
+loader.add_xpath('name', '//p[@class="product-name"]')
+# HTML snippet: <p id="price">the price is $1200</p>
+loader.add_xpath('price', '//p[@id="price"]', re='the price is (.*)')
+```
+
+[Вложенные загрузчики](https://docs.scrapy.org/en/latest/topics/loaders.html#nested-loaders) используются для умсеньшения дублирования в строках селекторов.
+
+#### [Повторное использование и расширение](https://docs.scrapy.org/en/latest/topics/loaders.html#reusing-and-extending-item-loaders)
+
+Пример (через наследование и переопредлеление процессора)
+
+```python
+from itemloaders.processors import MapCompose
+from myproject.ItemLoaders import ProductLoader
+
+def strip_dashes(x):
+    return x.strip('-')
+
+class SiteSpecificLoader(ProductLoader):
+    name_in = MapCompose(strip_dashes, ProductLoader.name_in)
+```
 
 ### [Item Pipeline](https://docs.scrapy.org/en/latest/topics/item-pipeline.html)
 
@@ -551,11 +725,8 @@ class MyImagesPipeline(ImagesPipeline):
 [asyncio]: asyncio "Asyncio"
 [BeautifulSoup]: beautifulsoup "BeautifulSoup"
 [logging]: logging "Logging - основные принципы"
-[xpath]: xpath "XPath в scrapy"
-[css-selectors]: css-selectors "Css-selectors"
 [http-заголовки]: http-заголовки "Http заголовки"
 [http]: ../lists/http "Http"
-[asyncio]: asyncio "Asyncio"
 [crawlers]: ../lists/crawlers "Crawlers"
 [selenium]: selenium "Selenium"
 [//end]: # "Autogenerated link references"
