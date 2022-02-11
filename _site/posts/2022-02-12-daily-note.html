@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Несколько вопросов о реализации пауков в scrapy | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Несколько вопросов о реализации пауков в scrapy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Парсинг sitemap, фильтрацияи и способы обхода в scrapy" />
+<meta property="og:description" content="Парсинг sitemap, фильтрацияи и способы обхода в scrapy" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-02-12-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-02-12-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2022-02-12-daily-note.html","headline":"Несколько вопросов о реализации пауков в scrapy","description":"Парсинг sitemap, фильтрацияи и способы обхода в scrapy","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="несколько-вопросов-о-реализации-пауков-в-scrapy">Несколько вопросов о реализации пауков в scrapy</h1>
+
+<h2 id="паук-с-парсингом-sitemap-и-других-страниц-в-scrapy">Паук с парсингом sitemap и других страниц в [<a href="../notes/scrapy" title="Scrapy">scrapy</a>]</h2>
+
+<p>Самый простой сопособ получить такого паука - сделать дочерний класс из двух готовых.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">WebCrawler</span><span class="p">(</span><span class="n">SitemapSpider</span><span class="p">,</span> <span class="n">CrawlSpider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">"flipkart"</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s">'flipkart.com'</span><span class="p">]</span>
+    <span class="n">sitemap_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s">'http://www.flipkart.com/robots.txt'</span><span class="p">]</span>
+    <span class="n">sitemap_rules</span> <span class="o">=</span> <span class="p">[(</span><span class="n">regex</span><span class="p">(</span><span class="s">'/(.*?)/p/(.*?)'</span><span class="p">),</span> <span class="s">'parse_product'</span><span class="p">)]</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s">'http://www.flipkart.com/'</span><span class="p">]</span>
+    <span class="n">rules</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Rule</span><span class="p">(</span><span class="n">LinkExtractor</span><span class="p">(</span>
+                <span class="n">allow</span><span class="o">=</span><span class="p">[</span><span class="s">'/(.*?)/product-reviews/(.*?)'</span><span class="p">]</span>
+                <span class="p">),</span> <span class="s">'parse_reviews'</span><span class="p">),</span>
+            <span class="n">Rule</span><span class="p">(</span><span class="n">LinkExtractor</span><span class="p">(</span>
+                <span class="n">restrict_xpaths</span><span class="o">=</span><span class="s">'//div[@class="fk-navigation fk-text-center tmargin10"]'</span>
+                <span class="p">),</span> <span class="n">follow</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">FlipkartItemLoader</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'pid'</span><span class="p">,</span> <span class="s">'value of pid'</span><span class="p">)</span>
+        <span class="n">loader</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'xpath to name'</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">loader</span><span class="p">.</span><span class="n">load_item</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">parse_reviews</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">ReviewItemLoader</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">loader</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">'pid'</span><span class="p">,</span><span class="s">'value of pid'</span><span class="p">)</span>
+        <span class="n">loader</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'review_title'</span><span class="p">,</span> <span class="s">'xpath to review title'</span><span class="p">)</span>
+        <span class="n">loader</span><span class="p">.</span><span class="n">add_xpath</span><span class="p">(</span><span class="s">'review_text'</span><span class="p">,</span> <span class="s">'xpath to review text'</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">loader</span><span class="p">.</span><span class="n">load_item</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/28797762/multiple-inheritance-in-scrapy-spiders">Пример со стековерфло</a></p>
+
+<p>Тут придется решить ряд проблем:</p>
+
+<ol>
+  <li>Основной интерфейс наследуется от <a href="https://docs.scrapy.org/en/latest/_modules/scrapy/spiders.html#Spider">scrapy.spiders</a>, обход по правилам от <a href="https://docs.scrapy.org/en/latest/_modules/scrapy/spiders/crawl.html#CrawlSpider">scrapy.spiders.crawl</a>, а парсинг сайтмапа от <a href="https://docs.scrapy.org/en/latest/_modules/scrapy/spiders/sitemap.html#SitemapSpider">scrapy.spiders.sitemap</a> (последние два производные от первого)</li>
+  <li>Оба класса имеют разную реализациюб методов. К тому же sitemap сам по себе не поддерживате обход в глубину/ширину</li>
+  <li>
+    <p>возможно потребуется применить другой метод запроса страницы вместо <a href="https://docs.scrapy.org/en/latest/topics/request-response.html">scrapy Request</a> - в этом случае надо переопределить метод <code class="language-plaintext highlighter-rouge">start_requests</code> из базового класа, прописав в нем правильно способ обработки стартовых урлов, добавив урлы из сайтмапа. Вот так он выглядит в дефолтном варианте:</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="n">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">__class__</span>
+         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">start_urls</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">'start_url'</span><span class="p">):</span>
+             <span class="k">raise</span> <span class="nb">AttributeError</span><span class="p">(</span>
+                 <span class="s">"Crawling could not start: 'start_urls' not found "</span>
+                 <span class="s">"or empty (but found 'start_url' attribute instead, "</span>
+                 <span class="s">"did you miss an 's'?)"</span><span class="p">)</span>
+         <span class="k">if</span> <span class="n">method_is_overridden</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">Spider</span><span class="p">,</span> <span class="s">'make_requests_from_url'</span><span class="p">):</span>
+             <span class="n">warnings</span><span class="p">.</span><span class="n">warn</span><span class="p">(</span>
+                 <span class="s">"Spider.make_requests_from_url method is deprecated; it "</span>
+                 <span class="s">"won't be called in future Scrapy releases. Please "</span>
+                 <span class="s">"override Spider.start_requests method instead "</span>
+                 <span class="s">f"(see </span><span class="si">{</span><span class="n">cls</span><span class="p">.</span><span class="n">__module__</span><span class="si">}</span><span class="s">.</span><span class="si">{</span><span class="n">cls</span><span class="p">.</span><span class="n">__name__</span><span class="si">}</span><span class="s">)."</span><span class="p">,</span>
+             <span class="p">)</span>
+             <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">start_urls</span><span class="p">:</span>
+                 <span class="k">yield</span> <span class="bp">self</span><span class="p">.</span><span class="n">make_requests_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+         <span class="k">else</span><span class="p">:</span>
+             <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">start_urls</span><span class="p">:</span>
+                 <span class="k">yield</span> <span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dont_filter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Переопределить способ обработки урлов и сайтмапа можно в методе <code class="language-plaintext highlighter-rouge">_parse_sitemap</code> класса sitemap. Здесь надо иметь ввиду, что класс <code class="language-plaintext highlighter-rouge">crawl</code> отправляет все обработанные на старте урлы в дефолтнгый метод <code class="language-plaintext highlighter-rouge">parse</code> или методs, определенный в rules. Есть смысл убрать прямые ссылки на колбеки и в обрабочике sitemap</li>
+  <li>Класс sitemap не поддерживает rules, поэтому для него придется как минимум сохранить атрибуты класса, задающие параметры обхода, такие как sitemap_urls, sitemap_rules, sitemap_follow, sitemap_alternate_links.</li>
+  <li>rules будет скомпилирован при создании инстанса и механизм его довольно сложный</li>
+</ol>
+
+<p>Как реализовать правила показано <a href="https://docs.scrapy.org/en/latest/topics/spiders.html#crawlspider-example">в этом примере</a>. Здесь <a href="https://docs.scrapy.org/en/latest/topics/link-extractors.html?highlight=LinkExtractor#scrapy.linkextractors.lxmlhtml.LxmlLinkExtractor">находится описание апи</a> для динкэкстрактора.</p>
+
+<h2 id="how-does-adding-dont_filtertrue-argument-in-scrapy">How does adding dont_filter=True argument in [<a href="../notes/scrapy" title="Scrapy">scrapy</a>]</h2>
+
+<p>В Scrapy, если установлен start_urls и опреден метод start_requests(), паук автоматически запрашивает URL-адреса и передает респонсы методу анализа, который является методом по умолчанию, используемым для анализа запросов.</p>
+
+<p>Теперь можно получать отсюда новые запросы, которые снова будут анализироваться Scrapy. Scrapy имеет встроенный фильтр, который блокирует повторяющиеся запросы. То есть, если Scrapy уже просканировал сайт и проанализировал респонс, даже если будет отправлен другой запрос с таким же URL-адресом, scrapy не обработает его.</p>
+
+<p>Чтобы избежать эту проблему в Request можно установить <code class="language-plaintext highlighter-rouge">dont_filter=True</code>, однако надо быть внимательным - это может провоцировать циклические обходы.</p>
+
+<p><a href="https://stackoverflow.com/questions/38951878/how-does-adding-dont-filter-true-argument-in-scrapy-request-make-my-parsing-meth">Источник</a></p>
+
+<h2 id="does-scrapy-crawl-in-breadth-first-or-depth-first-order">Does Scrapy crawl in breadth-first or depth-first order</h2>
+
+<p>Дефолтно реализован стек (LIFO), иными словами обход осуществляется по Deep First Search. Если нужно реализовать BFS, то это можно сделать в сеттингсах вот так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DEPTH_PRIORITY</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">SCHEDULER_DISK_QUEUE</span> <span class="o">=</span> <span class="s">'scrapy.squeues.PickleFifoDiskQueue'</span>
+<span class="n">SCHEDULER_MEMORY_QUEUE</span> <span class="o">=</span> <span class="s">'scrapy.squeues.FifoMemoryQueue'</span>
+</code></pre></div></div>
+
+<p>Пока ожидающие запросы находятся ниже настроенных значений CONCURRENT_REQUESTS, CONCURRENT_REQUESTS_PER_DOMAIN или CONCURRENT_REQUESTS_PER_IP, эти запросы отправляются одновременно. В результате первые несколько запросов сканирования редко следуют желаемому порядку. Снижение этих параметров до 1 обеспечивает желаемый порядок, но значительно замедляет сканирование в целом.</p>
+
+<p><a href="https://doc.scrapy.org/en/latest/faq.html#does-scrapy-crawl-in-breadth-first-or-depth-first-order">Источник</a></p>
+
+<h2 id="scrapy-missing-scheme-in-request-url">scrapy “Missing scheme in request url”</h2>
+
+<p>Проблема в относительных ссылках. Восстановить ссылку можно с помощью <code class="language-plaintext highlighter-rouge">urlib.urljoin</code> или встроенног ометода scrapy Request</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">next_url</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">href</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/34979757/15966204">источник</a></p>
+
+<h2 id="how-to-use-not-contains-in-xpath">How to use not contains() in [<a href="../notes/xpath" title="XPath в scrapy">xpath</a>]</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//production[not<span class="o">(</span>contains<span class="o">(</span>category,<span class="s1">'Business'</span><span class="o">))]</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/11024080/how-to-use-not-contains-in-xpath">источник</a></p>
+
+<h2 id="xpath-with-multiple-contains-on-different-elements">[<a href="../notes/xpath" title="XPath в scrapy">xpath</a>] with multiple contains on different elements</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//person[contains<span class="o">(</span>firstname, <span class="s1">'Kerr'</span><span class="o">)</span> and contains<span class="o">(</span>lastname, <span class="s1">'och'</span><span class="o">)]</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/18547410/xpath-with-multiple-contains-on-different-elements/18547533">источник</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
+  <li>[<a href="../notes/scrapy" title="Scrapy">scrapy</a>]</li>
+  <li>[<a href="../notes/xpath" title="XPath в scrapy">xpath</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

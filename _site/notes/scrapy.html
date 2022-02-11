@@ -192,11 +192,11 @@
 <span class="o">[</span>s]   spider     &lt;DefaultSpider <span class="s1">'default'</span> at 0x7ff269178dc0&gt;
 <span class="o">[</span>s] Useful shortcuts:
 <span class="o">[</span>s]   fetch<span class="o">(</span>url[, <span class="nv">redirect</span><span class="o">=</span>True]<span class="o">)</span> Fetch URL and update <span class="nb">local </span>objects <span class="o">(</span>by default, redirects are followed<span class="o">)</span>
-<span class="o">[</span>s]   fetch<span class="o">(</span>req<span class="o">)</span>                  Fetch a scrapy.Request and update <span class="nb">local </span>objects 
+<span class="o">[</span>s]   fetch<span class="o">(</span>req<span class="o">)</span>                  Fetch a scrapy.Request and update <span class="nb">local </span>objects
 <span class="o">[</span>s]   shelp<span class="o">()</span>           Shell <span class="nb">help</span> <span class="o">(</span>print this <span class="nb">help</span><span class="o">)</span>
 <span class="o">[</span>s]   view<span class="o">(</span>response<span class="o">)</span>    View response <span class="k">in </span>a browser
 2022-01-16 01:35:36 <span class="o">[</span>asyncio] DEBUG: Using selector: EpollSelector
-In <span class="o">[</span>1]: 
+In <span class="o">[</span>1]:
 </code></pre></div></div>
 
 <p>Для разбора html используются [<a href="css-selectors" title="Css-selectors">css-selectors</a>] и [<a href="xpath" title="XPath в scrapy">xpath</a>]. При этом CSS позволяет реализовать навигацию по html, а XPath более функциональный разбор ( а именно извлечение контента). Фактически CSS транслируется в XPath.</p>
@@ -224,13 +224,13 @@ In <span class="o">[</span>1]:
 
 <p>Результат:</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2016-09-19 18:57:19 <span class="o">[</span>scrapy.core.scraper] DEBUG: Scraped from 
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2016-09-19 18:57:19 <span class="o">[</span>scrapy.core.scraper] DEBUG: Scraped from
 &lt;200 http://quotes.toscrape.com/page/1/&gt;
-<span class="o">{</span><span class="s1">'tags'</span>: <span class="o">[</span><span class="s1">'life'</span>, <span class="s1">'love'</span><span class="o">]</span>, <span class="s1">'author'</span>: <span class="s1">'André Gide'</span>, 
+<span class="o">{</span><span class="s1">'tags'</span>: <span class="o">[</span><span class="s1">'life'</span>, <span class="s1">'love'</span><span class="o">]</span>, <span class="s1">'author'</span>: <span class="s1">'André Gide'</span>,
 <span class="s1">'text'</span>: <span class="s1">'“It is better to be hated for what you are than to be loved for what you are not.”'</span><span class="o">}</span>
-2016-09-19 18:57:19 <span class="o">[</span>scrapy.core.scraper] DEBUG: Scraped from 
+2016-09-19 18:57:19 <span class="o">[</span>scrapy.core.scraper] DEBUG: Scraped from
 &lt;200 http://quotes.toscrape.com/page/1/&gt;
-<span class="o">{</span><span class="s1">'tags'</span>: <span class="o">[</span><span class="s1">'edison'</span>, <span class="s1">'failure'</span>, <span class="s1">'inspirational'</span>, <span class="s1">'paraphrased'</span><span class="o">]</span>, <span class="s1">'author'</span>: <span class="s1">'Thomas A. Edison'</span>, 
+<span class="o">{</span><span class="s1">'tags'</span>: <span class="o">[</span><span class="s1">'edison'</span>, <span class="s1">'failure'</span>, <span class="s1">'inspirational'</span>, <span class="s1">'paraphrased'</span><span class="o">]</span>, <span class="s1">'author'</span>: <span class="s1">'Thomas A. Edison'</span>,
 <span class="s1">'text'</span>: <span class="s2">"“I have not failed. I've just found 10,000 ways that won't work.”"</span><span class="o">}</span>
 </code></pre></div></div>
 
@@ -808,11 +808,25 @@ In <span class="o">[</span>1]:
   <li>имеет открытый <a href="https://docs.scrapy.org/en/latest/topics/api.html#">низкоуровневый АПИ</a></li>
 </ul>
 
+<h2 id="middlewire">Middlewire</h2>
+
+<p>Реализует расширяющие функциональность scrapy хуки двух типаов - <a href="https://docs.scrapy.org/en/latest/topics/downloader-middleware.html">даунлоадеры</a> и <a href="https://docs.scrapy.org/en/latest/topics/spider-middleware.html">хуки паков</a>. К примеру обработка [<a href="parsing-robots-txt-with-scrapy" title="Parsing robots txt with scrapy">parsing-robots-txt-with-scrapy</a>] осуществляется специальным middlewire, котоырй запускается первым в очереди хуков загрузки.</p>
+
+<p>Порядок исполнения middlewire задается в settings</p>
+
+<ul>
+  <li>For downloader middlewares, the <code class="language-plaintext highlighter-rouge">process_request</code> method is called in <strong>increasing</strong> order</li>
+  <li>For downloader middlewares, the <code class="language-plaintext highlighter-rouge">process_response</code> method is called in <strong>decreasing</strong> order</li>
+  <li>For spider middlewares, the <code class="language-plaintext highlighter-rouge">process_spider_input</code> method is called in <strong>increasing</strong> order</li>
+  <li>For spider middlewares, the <code class="language-plaintext highlighter-rouge">process_spider_output</code> method is called in <strong>decreasing</strong> order</li>
+</ul>
+
 <p>Смотри еще:</p>
 
 <ul>
   <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
   <li>[<a href="selenium" title="Selenium">selenium</a>]</li>
+  <li>[<a href="../posts/2022-02-12-daily-note" title="Несколько вопросов о реализации пауков в scrapy">2022-02-12-daily-note</a>] парсинг sitemap, фильтрацияи и способы обхода в scrapy</li>
   <li><a href="https://scrapyd.readthedocs.io/en/stable/index.html">Scrapyd - an application for deploying and running Scrapy spiders</a></li>
 </ul>
 

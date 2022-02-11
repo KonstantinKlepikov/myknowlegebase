@@ -17,6 +17,8 @@ tags: ml
 - [[deap-docs]]
 - [[deap-multicor-usage]]
 - [[neat]]
+- [gplearn](https://github.com/trevorstephens/gplearn) implements Genetic Programming in Python. [Документация](https://gplearn.readthedocs.io/en/stable/)
+- [PyGAD](https://github.com/ahmedfgad/GeneticAlgorithmPython) - Python Genetic Algorithm. [Документация](https://pygad.readthedocs.io/en/latest/)
 
 ## Boosting
 

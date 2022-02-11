@@ -159,7 +159,7 @@ tags: crawlers
 [urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
 [2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"
 [parsing-robots-txt-with-scrapy]: ../notes/parsing-robots-txt-with-scrapy "Parsing robots txt with scrapy"
-[2022-02-04-daily-note]: ../posts/2022-02-04-daily-note "Daily note,  2022-02-04, Friday"
+[2022-02-04-daily-note]: ../posts/2022-02-04-daily-note "Работа в selenium с firefox"
 [selenium]: ../notes/selenium "Selenium"
 [selenium]: ../notes/selenium "Selenium"
 [scrapy]: ../notes/scrapy "Scrapy"
