@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Playwright | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Playwright" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Пакет для сквозного тестирования web-приложений" />
+<meta property="og:description" content="Пакет для сквозного тестирования web-приложений" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/playwright.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/playwright.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/playwright.html","headline":"Playwright","description":"Пакет для сквозного тестирования web-приложений","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="playwright">Playwright</h1>
+
+<p>Playwright enables reliable end-to-end testing for modern web apps</p>
+
+<p>Предоставляет два API - синхронный и асинхронный. Смотри <a href="https://playwright.dev/python/docs/intro">intro</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">playwright.sync_api</span> <span class="kn">import</span> <span class="n">sync_playwright</span>
+
+<span class="k">with</span> <span class="n">sync_playwright</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">chromium</span><span class="p">.</span><span class="n">launch</span><span class="p">()</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">new_page</span><span class="p">()</span>
+    <span class="n">page</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="s">"http://playwright.dev"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">page</span><span class="p">.</span><span class="n">title</span><span class="p">())</span>
+    <span class="n">browser</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">playwright.async_api</span> <span class="kn">import</span> <span class="n">async_playwright</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">async_playwright</span><span class="p">()</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="n">p</span><span class="p">.</span><span class="n">chromium</span><span class="p">.</span><span class="n">launch</span><span class="p">()</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">browser</span><span class="p">.</span><span class="n">new_page</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">page</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="s">"http://playwright.dev"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="k">await</span> <span class="n">page</span><span class="p">.</span><span class="n">title</span><span class="p">())</span>
+        <span class="k">await</span> <span class="n">browser</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Браузер запускается в headless режиме по дефолту. Как изменить <a href="https://playwright.dev/python/docs/debug">смотри тут</a></p>
+
+<p>Важные особенности:</p>
+
+<ul>
+  <li>необходимо использовать <code class="language-plaintext highlighter-rouge">page.wait_for_timeout(5000)</code> вместо <code class="language-plaintext highlighter-rouge">time.sleep(5)</code> и лучше вообще не ждать таймаута, но иногда это полезно для отладки. Это связано с тем, что playwright реализует асинхронные операции, и при использовании time.sleep(5) они не могут быть обработаны правильно.</li>
+  <li>API Playwright не является потокобезопасным. Cледует создать экземпляр playwright для каждого потока.</li>
+</ul>
+
+<p>Инструменты пакета:</p>
+
+<ul>
+  <li><a href="https://playwright.dev/python/docs/inspector">inspector</a> это инструмент с графическим интерфейсом, который помогает создавать и отлаживать сценарии Playwright</li>
+  <li><a href="https://playwright.dev/python/docs/trace-viewer">Trace Viewer</a> это инструмент с графическим интерфейсом, который помогает исследовать логи playwright после запуска сценария. Открывайте трассировки локально или в браузере на странице trace.playwright.dev</li>
+  <li><a href="https://playwright.dev/python/docs/codegen">Test Generator</a> граф.интерфейс для генерации тестов на основе пользовательского приложения</li>
+  <li><a href="https://playwright.dev/python/docs/debug">Debugging tools</a> playwright сценарии работают с существующими инструментами отладки, такими как отладчики Node.js и инструменты разработчика браузера. Playwright также представляет свои функции отладки для автоматизации браузера</li>
+  <li><a href="https://playwright.dev/python/docs/test-runners">Pytest plugin</a></li>
+</ul>
+
+<h2 id="функционал">Функционал</h2>
+
+<h3 id="autowaiting">Autowaiting</h3>
+
+<p>Playwright позволяет выполнять ряд проверок работоспособности элементов, прежде чем предпринимает действия, чтобы убедиться, что эти действия приведут к ожидемым последствиям. Он автоматически ожидает прохождения всех соответствующих проверок и только после этого выполняет запрошенное действие. Если требуемые проверки не проходят в течение заданного времени ожидания, действие завершается с ошибкой <code class="language-plaintext highlighter-rouge">TimeoutError</code>.</p>
+
+<p>Список доступных экшенов <a href="https://playwright.dev/python/docs/actionability">тут</a></p>
+
+<h3 id="api-testing"><a href="https://playwright.dev/python/docs/api-testing">API testing</a></h3>
+
+<ul>
+  <li>Test your server API.</li>
+  <li>Prepare server side state before visiting the web application in a test.</li>
+  <li>Validate server side post-conditions after running some actions in the browser.</li>
+</ul>
+
+<h3 id="assertions"><a href="https://playwright.dev/python/docs/assertions">Assertions</a></h3>
+
+<p>Это API, предоставляющий различные элементы полученного контента для проверок в тестах</p>
+
+<h3 id="authentication"><a href="https://playwright.dev/python/docs/auth">Authentication</a></h3>
+
+<p>Апи для автоматизации сценариев регистрации/авторизации</p>
+
+<h3 id="browser-contexts"><a href="https://playwright.dev/python/docs/browser-contexts">Browser Contexts</a></h3>
+
+<p>Поддерживаются изолированные контексты для бразуера. Каждый контекст существует только в рамках одной сесси. Можно реализовать несколько контекстов одновременно</p>
+
+<h3 id="command-line-tools"><a href="https://playwright.dev/python/docs/cli">Command line tools</a></h3>
+
+<h3 id="dialogs"><a href="https://playwright.dev/python/docs/dialogs">Dialogs</a></h3>
+
+<p>Интерфейс для взаимодействия с диалоговыми окнами приложения</p>
+
+<h3 id="downloads"><a href="https://playwright.dev/python/docs/downloads">Downloads</a></h3>
+
+<p>АПИ для загрузки файлов</p>
+
+<h3 id="emulation"><a href="https://playwright.dev/python/docs/emulation">Emulation</a></h3>
+
+<p>Playwright позволяет переопределять различные параметры устройства, на котором запущен браузер:</p>
+
+<ul>
+  <li>размер области просмотра</li>
+  <li>коэффициент масштабирования устройства</li>
+  <li>локаль поддержки сенсорного экрана</li>
+  <li>геолокацию цветовой схемы часового пояса</li>
+</ul>
+
+<h3 id="evaluating-javascrip"><a href="https://playwright.dev/python/docs/evaluating">Evaluating JavaScrip</a></h3>
+
+<p>Сценарии Playwright запускаются в изолированной среде Playwright. Скрипты страницы запускаются в среде страницы браузера. Эти среды не пересекаются, они работают на разных виртуальных машинах в разных процессах и даже потенциально на разных компьютерах.</p>
+
+<p>API <code class="language-plaintext highlighter-rouge">page.evaluate(expression, **kwargs)</code> может запускать функцию JavaScript в контексте веб-страницы и возвращать результаты в среду Playwright. Глобальные переменные браузера, такие как окно и документ, могут использоваться в оценке.</p>
+
+<h3 id="events"><a href="https://playwright.dev/python/docs/events">Events</a></h3>
+
+<ul>
+  <li>Waiting for event</li>
+  <li>Adding/removing event listener</li>
+  <li>Adding one-off listeners</li>
+</ul>
+
+<h3 id="playwright-supports-custom-selector-engines">Playwright supports <a href="https://playwright.dev/python/docs/extensibility">custom selector engines</a></h3>
+
+<h3 id="frames"><a href="https://playwright.dev/python/docs/frames">Frames</a></h3>
+
+<h3 id="handles"><a href="https://playwright.dev/python/docs/handles">Handles</a></h3>
+
+<p>Можно создать дескрипторы для элементов страницы DOM или любых других объектов внутри страницы. Эти дескрипторы находятся в процессе Playwright, тогда как настоящие объекты находятся в браузере.</p>
+
+<ul>
+  <li>JSHandle для ссылки на любые объекты JavaScript на странице.</li>
+  <li>ElementHandle для ссылки на элементы DOM на странице, Можно ыполнять действия над элементами и утверждать их свойства.</li>
+</ul>
+
+<h3 id="input"><a href="https://playwright.dev/python/docs/input">Input</a></h3>
+
+<ul>
+  <li>Text input</li>
+  <li>Checkboxes and radio buttons</li>
+  <li>Select options</li>
+  <li>Mouse click</li>
+  <li>Type characters</li>
+  <li>Keys and shortcuts</li>
+  <li>Upload files</li>
+  <li>Focus element</li>
+</ul>
+
+<h3 id="locators"><a href="https://playwright.dev/python/docs/locators">Locators</a></h3>
+
+<h3 id="navigations"><a href="https://playwright.dev/python/docs/navigations">Navigations</a></h3>
+
+<p>Playwright может переходить по URL-адресам и обрабатывать переходы, вызванные взаимодействием со страницей.</p>
+
+<h3 id="network"><a href="https://playwright.dev/python/docs/network">Network</a></h3>
+
+<ul>
+  <li>HTTP Authentication</li>
+  <li>HTTP Proxy</li>
+  <li>Network events</li>
+  <li>Handle requests</li>
+  <li>Modify requests</li>
+  <li>Abort requests</li>
+  <li>WebSockets</li>
+</ul>
+
+<h3 id="pages"><a href="https://playwright.dev/python/docs/pages">Pages</a></h3>
+
+<ul>
+  <li>Pages</li>
+  <li>Multiple pages</li>
+  <li>Handling new pages</li>
+  <li>Handling popups</li>
+</ul>
+
+<h3 id="page-object-models"><a href="https://playwright.dev/python/docs/pom">Page Object Models</a></h3>
+
+<p>Большие наборы тестов могут быть структурированы для упрощения разработки и обслуживания. Объектные модели страниц — один из таких подходов к структурированию набора тестов.</p>
+
+<h3 id="screenshots"><a href="https://playwright.dev/python/docs/screenshots">Screenshots</a></h3>
+
+<h3 id="selectors"><a href="https://playwright.dev/python/docs/selectors">Selectors</a></h3>
+
+<ul>
+  <li>Text selector</li>
+  <li>CSS selector</li>
+  <li>Selecting visible elements</li>
+  <li>Selecting elements that contain other elements</li>
+  <li>Selecting elements matching one of the conditions</li>
+  <li>Selecting elements in Shadow DOM</li>
+  <li>Selecting elements based on layout</li>
+  <li>[<a href="xpath" title="XPath в scrapy">xpath</a>] selectors</li>
+  <li>N-th element selector</li>
+  <li>React selectors</li>
+  <li>Vue selectors</li>
+  <li>id, data-testid, data-test-id, data-test selectors</li>
+  <li>Pick n-th match from the query result</li>
+  <li>Chaining selectors</li>
+</ul>
+
+<h3 id="logs"><a href="https://playwright.dev/python/docs/verification">Logs</a></h3>
+
+<h3 id="videos"><a href="https://playwright.dev/python/docs/videos">Videos</a></h3>
+
+<h2 id="scrapy-playwright">scrapy-playwright</h2>
+
+<p>Playwright integration for [<a href="scrapy" title="Scrapy">scrapy</a>]. <a href="https://github.com/scrapy-plugins/scrapy-playwright">На гитхабе</a></p>
+
+<p>Предоставляет Scrapy Download Handler, который выполняет запросы с помощью Playwright для Python. Его можно использовать для рендеринга страниц с JavaScript. Этот пакет не конфликтует с обычными рабочими процессами Scrapy, такими как планирование запросов или обработка элементов.</p>
+
+<p>Ставится так:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">pip install scrapy-playwright</code></li>
+  <li>
+    <p>заменить дефолтные хендлеры в <code class="language-plaintext highlighter-rouge">settings.py</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">DOWNLOAD_HANDLERS</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s">"http"</span><span class="p">:</span> <span class="s">"scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler"</span><span class="p">,</span>
+     <span class="s">"https"</span><span class="p">:</span> <span class="s">"scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler"</span><span class="p">,</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Установить [<a href="asyncio" title="Asyncio">asyncio</a>] <a href="https://docs.scrapy.org/en/latest/topics/asyncio.html#installing-the-asyncio-reactor">Twisted reactor</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">TWISTED_REACTOR</span> <span class="o">=</span> <span class="s">"twisted.internet.asyncioreactor.AsyncioSelectorReactor"</span>
+</code></pre></div>    </div>
+
+    <p>Опция является экспериментальной для текущей (на момент написания заметки) реалитзации [<a href="scrapy" title="Scrapy">scrapy</a>]. Если используются <code class="language-plaintext highlighter-rouge">CrawlerRunner</code> надо дополнительно включить асинко вручную через <code class="language-plaintext highlighter-rouge">install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')</code></p>
+  </li>
+</ol>
+
+<p>Поддерживаемые опции:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">PLAYWRIGHT_BROWSER_TYPE</code> (type str, default chromium) - chromium, firefox, webkit</li>
+  <li><code class="language-plaintext highlighter-rouge">PLAYWRIGHT_LAUNCH_OPTIONS</code> (type dict, default {}) лаунчопции браузера. <a href="https://playwright.dev/python/docs/api/class-browsertype#">Подробнее тут</a></li>
+  <li><code class="language-plaintext highlighter-rouge">PLAYWRIGHT_CONTEXTS</code> (type dict[str, dict], default {}) Словарь, который определяет контексты браузера, которые будут созданы при запуске. Если не определен - создается контекст по умолчанию.</li>
+  <li><code class="language-plaintext highlighter-rouge">PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT</code> (type Optional[float], default None) Время ожидания, используемое при запросе страниц Playwright. Если <code class="language-plaintext highlighter-rouge">None</code> или не установлено, будет использоваться значение по умолчанию (30000 мс)</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">PLAYWRIGHT_PROCESS_REQUEST_HEADERS</code> (type str, default scrapy_playwright.headers.use_scrapy_headers). Путь к функции сопрограммы, которая обрабатывает заголовки для данного запроса и возвращает словарь с заголовками, которые будут использоваться (в зависимости от браузера также будут отправлены дополнительные заголовки по умолчанию).</p>
+
+    <p>Функция должна возвращать словарь и принимать следуюшие аргументы:
+    - browser_type: str
+    - playwright_request: playwright.async_api.Request
+    - scrapy_headers: scrapy.http.headers.Headers</p>
+
+    <p>Значение по умолчанию (<code class="language-plaintext highlighter-rouge">scrapy_playwright.headers.use_scrapy_headers</code>) пытается эмулировать поведение Scrapy для запросов навигации, т. е. переопределяет заголовки их значениями из запроса Scrapy. Для ненавигационных запросов (например, изображений, таблиц стилей, скриптов и т. д.) для согласованности переопределяется только заголовок User-Agent. Доступна еще одна функция: <code class="language-plaintext highlighter-rouge">scrapy_playwright.headers.use_playwright_headers</code>, которая вернет заголовки из запроса Playwright без каких-либо изменений.</p>
+  </li>
+</ul>
+
+<p>Использование (через meta):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="k">class</span> <span class="nc">AwesomeSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="p">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">"awesome"</span>
+
+    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># GET request
+</span>        <span class="k">yield</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span><span class="s">"https://httpbin.org/get"</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s">"playwright"</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+        <span class="c1"># POST request
+</span>        <span class="k">yield</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">FormRequest</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="s">"https://httpbin.org/post"</span><span class="p">,</span>
+            <span class="n">formdata</span><span class="o">=</span><span class="p">{</span><span class="s">"foo"</span><span class="p">:</span> <span class="s">"bar"</span><span class="p">},</span>
+            <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s">"playwright"</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># 'response' contains the page as seen by the browser
+</span>        <span class="k">yield</span> <span class="p">{</span><span class="s">"url"</span><span class="p">:</span> <span class="n">response</span><span class="p">.</span><span class="n">url</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>По умолчанию исходящие запросы включают User-Agent, установленный Scrapy (либо с настройками <code class="language-plaintext highlighter-rouge">USER_AGENT</code>, либо с настройками <code class="language-plaintext highlighter-rouge">DEFAULT_REQUEST_HEADERS</code>, либо с помощью атрибута <code class="language-plaintext highlighter-rouge">Request.headers</code>). Это может привести к неожиданной реакции некоторых сайтов, например, если пользовательский агент не соответствует работающему браузеру. Если вы предпочитаете, чтобы пользовательский агент отправлялся по умолчанию конкретным браузером, который вы используете, установите для пользовательского агента Scrapy значение <code class="language-plaintext highlighter-rouge">None</code>.</p>
+
+<p>Указание значения, отличного от <code class="language-plaintext highlighter-rouge">False</code>, для метаключа <code class="language-plaintext highlighter-rouge">playwright_include_page</code> для запроса приведет к тому, что соответствующий объект <code class="language-plaintext highlighter-rouge">playwright.async_api.Page</code> будет доступен в метаключе <code class="language-plaintext highlighter-rouge">playwright_page</code> в обратном вызове запроса. Чтобы иметь возможность ожидать сопрограммы для предоставленного объекта <code class="language-plaintext highlighter-rouge">Page</code>, <strong>обратный вызов должен быть определен как функция сопрограммы</strong>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">scrapy</span>
+<span class="kn">import</span> <span class="nn">playwright</span>
+
+<span class="k">class</span> <span class="nc">AwesomeSpiderWithPage</span><span class="p">(</span><span class="n">scrapy</span><span class="p">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">"page"</span>
+
+    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">scrapy</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="s">"https://example.org"</span><span class="p">,</span>
+            <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s">"playwright"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"playwright_include_page"</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">meta</span><span class="p">[</span><span class="s">"playwright_page"</span><span class="p">]</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="k">await</span> <span class="n">page</span><span class="p">.</span><span class="n">title</span><span class="p">()</span>  <span class="c1"># "Example Domain"
+</span>        <span class="k">await</span> <span class="n">page</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"title"</span><span class="p">:</span> <span class="n">title</span><span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Во избежание проблем с памятью рекомендуется вручную закрыть страницу, ожидая сопрограмму <code class="language-plaintext highlighter-rouge">Page.close</code>.</li>
+  <li>Любые сетевые операции, возникающие в результате ожидания сопрограммы для объекта <code class="language-plaintext highlighter-rouge">Page</code> (goto, go_back и т. д.), будут выполняться непосредственно Playwright, минуя рабочий процесс запроса Scrapy (планировщик, промежуточное ПО и т. д.).</li>
+</ul>
+
+<p>Еще доступно:</p>
+
+<ul>
+  <li><a href="https://github.com/scrapy-plugins/scrapy-playwright#proxy-support">Proxy support</a></li>
+  <li><a href="https://github.com/scrapy-plugins/scrapy-playwright#multiple-browser-contexts">Multiple browser contexts</a></li>
+  <li><a href="https://github.com/scrapy-plugins/scrapy-playwright#page-coroutines">Page coroutines</a></li>
+  <li><a href="https://github.com/scrapy-plugins/scrapy-playwright#page-events">Page events</a></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://playwright.dev/python/docs/intro">документация для python</a>. <a href="https://github.com/microsoft/playwright-python">На гитхаб</a></li>
+  <li><a href="https://playwright.dev/python/docs/api/class-playwright">API reference</a></li>
+  <li>scrapy-playwright со [<a href="scrapy" title="Scrapy">scrapy</a>]</li>
+  <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
+  <li>[<a href="splash" title="Splash">splash</a>]</li>
+  <li>[<a href="selenium" title="Selenium">selenium</a>]</li>
+  <li>[<a href="xpath" title="XPath в scrapy">xpath</a>]</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</li>
+</ul>
+
+<p>На playwright <a href="https://github.com/MarketSquare/robotframework-browser">построен браузер</a> <a href="https://robotframework.org/">robotframework</a></p>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
