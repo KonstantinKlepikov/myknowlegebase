@@ -51,7 +51,7 @@ tags: python-standart-library
 - **Изменяемые**
   - Lists
   - Byte Arrays
-  
+
 #### Sets
 
 Конечные неупорядоченные наборы уникальных неизменяемых объектов. Не индексируются. Имеют длину
@@ -85,7 +85,7 @@ tags: python-standart-library
 ```python
 >>> def my(a, b, c=4):
 ...     print(a + b + c)
-    
+
 >>> my(1, 2, b=3)
 Traceback (most recent call last):
   File "<string>", line 4, in <module>
@@ -99,7 +99,7 @@ TypeError: my() got multiple values for argument 'b'
 ...     print(b)
 ...     b.append(a)
 ...     print(b)
-    
+
 >>> my(1)
 []
 [1]
@@ -135,9 +135,9 @@ TypeError: my() got multiple values for argument 'b'
 ...     def this():
 ...         return a + b + z
 ...     return this
-    
+
 >>> print(my.__doc__)
-This is doc  
+This is doc
 >>> print(my.__name__)
 my
 >>> print(my.__qualname__)
@@ -149,10 +149,10 @@ None
 >>> print(my.__code__)
 <code object my at 0x7fae9a4883a0, file "<string>", line 2>
 >>> print(my.__globals__)
-{'__name__': '__main__','__doc__': None, '__package__': None, 
-'__loader__': <class '_frozen_importlib.BuiltinImporter'>, 
-'__spec__': None, '__annotations__': {}, 
-'__builtins__': <module 'builtins' (built-in)>, 'z': 3, 
+{'__name__': '__main__','__doc__': None, '__package__': None,
+'__loader__': <class '_frozen_importlib.BuiltinImporter'>,
+'__spec__': None, '__annotations__': {},
+'__builtins__': <module 'builtins' (built-in)>, 'z': 3,
 'my': <function my at 0x7fee736c9d30>}
 >>> my.n = 4
 >>> print(my.__dict__)
@@ -178,7 +178,7 @@ None
 
 ```python
 >>> class My():
-    
+
 ...     def my(self):
 ...         """This is the doc"""
 ...         pass
@@ -408,7 +408,7 @@ StopIteration
 
 Методы Python (в том числе отмеченные символами `@staticmethod` и `@classmethod`) реализованы как дескрипторы, не являющиеся дескрипторами данных. Соответственно, экземпляры могут переопределять методы. Это позволяет отдельным экземплярам приобретать поведение, которое отличается от поведения других экземпляров того же класса.
 
-Функция `property()` реализована в виде дескриптора данных. Соответственно, экземпляры не могут переопределить поведение свойства.
+Функция `property()` реализована в виде дескриптора данных. Соответственно, экземпляры не могут переопределить поведение свойства. Смотри [[python-buildin-functions]]
 
 Подробнее читай тут [[python-descriptors]]
 
@@ -536,6 +536,7 @@ class AsyncContextManager:
 [python-namespaces]: ../notes/python-namespaces "Python namespaces"
 [traceback]: ../notes/traceback "Traceback"
 [2021-12-21-daily-note]: ../posts/2021-12-21-daily-note "Formatted string literals specificators"
+[python-buildin-functions]: ../notes/python-buildin-functions "Python build-in functions"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"
 [typing]: ../notes/typing "Typing"
 [asyncio]: ../notes/asyncio "Asyncio"
@@ -548,6 +549,7 @@ class AsyncContextManager:
 [python-namespaces]: ../notes/python-namespaces "Python namespaces"
 [traceback]: ../notes/traceback "Traceback"
 [2021-12-21-daily-note]: ../posts/2021-12-21-daily-note "Formatted string literals specificators"
+[python-buildin-functions]: ../notes/python-buildin-functions "Python build-in functions"
 [python-descriptors]: ../notes/python-descriptors "Python descriptors"
 [typing]: ../notes/typing "Typing"
 [asyncio]: ../notes/asyncio "Asyncio"

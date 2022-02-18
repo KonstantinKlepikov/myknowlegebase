@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python build-in functions | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python build-in functions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Встроенные функции в python" />
+<meta property="og:description" content="Встроенные функции в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-buildin-functions.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-buildin-functions.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-buildin-functions.html","headline":"Python build-in functions","description":"Встроенные функции в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="python-build-in-functions">Python build-in functions</h1>
+
+<p><img src="/myknowlegebase/attachments/2022-02-18-00-04-39.png" alt="build-in functions in python" /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">abs(x)</code> абсолютное значение, если объект реализует метод <code class="language-plaintext highlighter-rouge">__abs__()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">aiter(async_iterable)</code> возвращает асинхронный итератор для асинхронного итерируемого объекта. Аналог <code class="language-plaintext highlighter-rouge">x.__aiter__()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">all(iterable)</code> вернет <code class="language-plaintext highlighter-rouge">True</code>, если все эелементы итерируемого объекта <code class="language-plaintext highlighter-rouge">True</code>, иначе <code class="language-plaintext highlighter-rouge">False</code></li>
+  <li><code class="language-plaintext highlighter-rouge">any(iterable)</code> вернет <code class="language-plaintext highlighter-rouge">True</code>, если любой (первый встречный) элемент итерируемого объекта <code class="language-plaintext highlighter-rouge">True</code>, иначе <code class="language-plaintext highlighter-rouge">False</code></li>
+  <li>awaitable  <code class="language-plaintext highlighter-rouge">anext(async_iterator[, default])</code> - когда вызывается в await, вернет следующее значение из асинхронного генератора. Вызывает <code class="language-plaintext highlighter-rouge">__anext__()</code> асинхронного итератора. default вернется, когда поднимется <code class="language-plaintext highlighter-rouge">StopAsyncIteration</code> (почвилось в 3.10)</li>
+  <li><code class="language-plaintext highlighter-rouge">ascii(object)</code> как и <code class="language-plaintext highlighter-rouge">repr()</code>, возвращает строку, содержащую человекочитаемое представление объекта, но экранирует не-ASCII-символы в строке</li>
+  <li><code class="language-plaintext highlighter-rouge">bin(x)</code> int -&gt; bin</li>
+  <li>class <code class="language-plaintext highlighter-rouge">bool()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">breakpoint(*args, **kws)</code> вызывает отладчик в точке определения</li>
+  <li>class <code class="language-plaintext highlighter-rouge">bytearray([source[, encoding[, errors]]])</code> новый байтаррай объект</li>
+  <li>class <code class="language-plaintext highlighter-rouge">bytes([source[, encoding[, errors]]])</code> новый байт объект</li>
+  <li><code class="language-plaintext highlighter-rouge">callable(object)</code> если объект вызываемый -&gt; <code class="language-plaintext highlighter-rouge">True</code>, иначе ‘False`</li>
+  <li><code class="language-plaintext highlighter-rouge">chr(i)</code> -&gt; строковая репрезентация символа с Unicode-номером i</li>
+  <li><code class="language-plaintext highlighter-rouge">@classmethod</code> method -&gt; classmwthod. Начиная с 3.9 может декорировать дескрипторы (тип <code class="language-plaintext highlighter-rouge">property()</code>). В 3.10 получил <code class="language-plaintext highlighter-rouge">__module__</code>, <code class="language-plaintext highlighter-rouge">__name__</code>, <code class="language-plaintext highlighter-rouge">__qualname__</code>, <code class="language-plaintext highlighter-rouge">__doc__</code>, <code class="language-plaintext highlighter-rouge">__annotations__</code>, <code class="language-plaintext highlighter-rouge">__wrapped__</code></li>
+  <li><code class="language-plaintext highlighter-rouge">compile(source, filename, mode, flags=0, dont_inherit=False, optimize=- 1)</code></li>
+  <li>class <code class="language-plaintext highlighter-rouge">complex([real[, imag]])</code> string/number -&gt; complex number</li>
+  <li><code class="language-plaintext highlighter-rouge">delattr(object, name)</code> name - это строкове имя атрибута object. Аналог <code class="language-plaintext highlighter-rouge">del x.foobr</code></li>
+  <li><code class="language-plaintext highlighter-rouge">dir([object])</code> без аргументов ворзращает спиоск имен локального scope (смотри [<a href="python-namespaces" title="Python namespaces">python-namespaces</a>]). С аргументом - возвращает список атрибутов обхекта. Если у объекта есть <code class="language-plaintext highlighter-rouge">__dir__()</code> будет вызван этот ментод (это позволяет определить <code class="language-plaintext highlighter-rouge">__getattr__()</code> или <code class="language-plaintext highlighter-rouge">__gettatribute__()</code> для переопределения способа возврата списка атрибутов). Если <code class="language-plaintext highlighter-rouge">__dir__()</code> не определен - функция пытается выдернуть имена из <code class="language-plaintext highlighter-rouge">__dict__</code>. Для разных объектов поведение отличается:
+    <ul>
+      <li>если объект Модуль - в список включены атрибуты</li>
+      <li>если type или класс - имена атрибутов и рекурсивно имена атрибутов унаследованных классов</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">divmod(a, b)</code> два некомплексных числа -&gt; пара чисел, состоящая из их частного и остатка при использовании целочисленного деления. Для int аналог <code class="language-plaintext highlighter-rouge">(a // b, a % b)</code>. Для float аналог <code class="language-plaintext highlighter-rouge">(math.floor(a / b), a % b)</code></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">enumerate(iterable, start=0)</code> -&gt; enumerate объект, <code class="language-plaintext highlighter-rouge">__next__()</code> метод которого возвращает кортеж с порядковым номером и значением из последовательности (дефолтный номер старта 0). Аналог;</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">start</span>
+  <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+      <span class="k">yield</span> <span class="n">n</span><span class="p">,</span> <span class="n">elem</span>
+      <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">eval(expression[, globals[, locals]])</code>. Аргументы представляют собой строку и необязательные глобальные и локальные переменные. globals должен быть словарем. locals может быть любым отображением. Аргумент оценивается как выражение python с использованием отображений globals и locals в качестве глобального и локального пространства имен. Результатом функции будет выполнение оцененного выражения. <a href="https://docs.python.org/3/library/functions.html#eval">Подробнее</a></li>
+  <li><code class="language-plaintext highlighter-rouge">exec(object[, globals[, locals]])</code> реализует динамическое выполнение кода. Объект - это либо строка либо объек5т кода. Строка анализируется как набор операторов, которая будет выполнена, если не поднимается ошибка. Код просто выполняется. <a href="https://docs.python.org/3/library/functions.html#exec">Подробннее</a></li>
+  <li>Отличие exec и eval <a href="https://stackoverflow.com/a/29456463/15966204">тут</a>. Вкратце - eval принимает только одно выражение, exec может принять целый блок кода. При этом eval возвращает результат вычислений, а exec всегда игнорирует.</li>
+  <li><code class="language-plaintext highlighter-rouge">filter(function, iterable)</code> - создает итератор из элементов итерируемого объекта, для которых функция возвращает <code class="language-plaintext highlighter-rouge">True</code>. аналог <code class="language-plaintext highlighter-rouge">(item for item in iterable if function(item))</code></li>
+  <li>class <code class="language-plaintext highlighter-rouge">float([x])</code> str(decimale number with string representation)/int -&gt; float. Для строковой сигнатуры игнорирует пробелы с обоих концов и знаки перевода строки. <a href="https://docs.python.org/3/library/functions.html#float">Подробнее</a></li>
+  <li><code class="language-plaintext highlighter-rouge">format(value[, format_spec])</code></li>
+  <li>class <code class="language-plaintext highlighter-rouge">frozenset([iterable])</code></li>
+  <li><code class="language-plaintext highlighter-rouge">getattr(object, name[, default])</code> -&gt; значение атрибута по строковому имени. Аналогично <code class="language-plaintext highlighter-rouge">x.foobar</code></li>
+  <li><code class="language-plaintext highlighter-rouge">hasattr(object, name)</code> -&gt; bool для атрибута по его строковому имени, если exist</li>
+  <li><code class="language-plaintext highlighter-rouge">globals()</code> -&gt; словарь имен текущего неймспейса уровня модуля. Смотри [<a href="python-namespaces" title="Python namespaces">python-namespaces</a>]</li>
+  <li><code class="language-plaintext highlighter-rouge">hash(object)</code> -&gt; int hash value</li>
+  <li><code class="language-plaintext highlighter-rouge">help([object])</code> вызов встреонной справки</li>
+  <li><code class="language-plaintext highlighter-rouge">hex(x)</code> int -&gt; hex</li>
+  <li><code class="language-plaintext highlighter-rouge">id(object)</code> -&gt; int id значение объекта. Смотри [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>] - в cpython это адрес памяти объекта</li>
+  <li><code class="language-plaintext highlighter-rouge">input([prompt])</code> читает инпут, конвертит в строку и возвращает. Параметр prompt устанавливает значение строки приглашения</li>
+  <li><code class="language-plaintext highlighter-rouge">int([x])</code> <code class="language-plaintext highlighter-rouge">class int(x, base=10)</code> num/str -&gt; int. Если определенs <code class="language-plaintext highlighter-rouge">x.__int__()</code>, <code class="language-plaintext highlighter-rouge">x.__index__()</code>, <code class="language-plaintext highlighter-rouge">x.__trunc__()</code> - вернет из них. Про base <a href="https://docs.python.org/3/library/functions.html#int">подробнее тут</a></li>
+  <li><code class="language-plaintext highlighter-rouge">isinstance(object, classinfo)</code> -&gt; bool</li>
+  <li><code class="language-plaintext highlighter-rouge">issubclass(class, classinfo)</code> -&gt; bool</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">iter(object[, sentinel])</code> возвращает итератор объекта. Если не передан второй параметр, объект должен поддерживать протокол итератора (реализовать <code class="language-plaintext highlighter-rouge">__iter__()</code>) или протокол последовательности (<code class="language-plaintext highlighter-rouge">__getitem__()</code> начиная с 0). Если передан второй аргумент - объект должен быть вызываемым. В этом случае при каждом <code class="language-plaintext highlighter-rouge">__next__()</code> полученного итератора будет вызываться объект без аргументов, если возвращенное значение эквивалентно sentinel, будет поднят <code class="language-plaintext highlighter-rouge">StopIteration</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'mydata.db'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="s">b''</span><span class="p">):</span>
+        <span class="n">process_block</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">len(s)</code></li>
+  <li>class <code class="language-plaintext highlighter-rouge">list([iterable])</code></li>
+  <li><code class="language-plaintext highlighter-rouge">locals()</code> -&gt; словарь имен локальной области (на уровне модуля тоже самое что и <code class="language-plaintext highlighter-rouge">globals()</code>). Смотри [<a href="python-namespaces" title="Python namespaces">python-namespaces</a>]</li>
+  <li><code class="language-plaintext highlighter-rouge">map(function, iterable, ...)</code> -&gt; итератор, в котором функция применяется к каждому элементу итерируемого объекта. Если жополнительные параметры переданы - они передаются как аргументы в функцию</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">max(iterable, *[, key, default])</code> <code class="language-plaintext highlighter-rouge">max(arg1, arg2, *args[, key])</code>. Если передан один объект - это должен быть итерируемый объект. key - одноаргументная функция, определяющая порядок определения максимума. default возвращается, если итерируемый объект пустой.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">'aim'</span><span class="p">:</span><span class="mi">99</span><span class="p">,</span> <span class="s">'aid'</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span> <span class="s">'axe'</span><span class="p">:</span> <span class="mi">59</span><span class="p">,</span> <span class="s">'big'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+<span class="p">...</span> <span class="s">'short'</span><span class="p">:</span> <span class="mi">995</span><span class="p">,</span> <span class="s">'sin'</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="s">'sword'</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s">'friend'</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span>
+<span class="p">...</span> <span class="s">'artwork'</span><span class="p">:</span><span class="mi">23</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="s">'artwork'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+<span class="s">'friend'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>class <code class="language-plaintext highlighter-rouge">memoryview(object)</code> <a href="https://docs.python.org/3/library/stdtypes.html#typememoryview">подробнее</a></li>
+  <li><code class="language-plaintext highlighter-rouge">min(iterable, *[, key, default])</code> <code class="language-plaintext highlighter-rouge">min(arg1, arg2, *args[, key])</code> см. max()</li>
+  <li><code class="language-plaintext highlighter-rouge">next(iterator[, default])</code> вызывает <code class="language-plaintext highlighter-rouge">__next__()</code> итератора</li>
+  <li><code class="language-plaintext highlighter-rouge">next(iterator[, default])</code> -&gt; объект, базовый для всех классов</li>
+  <li><code class="language-plaintext highlighter-rouge">oct(x)</code> int -&gt; oct</li>
+  <li><code class="language-plaintext highlighter-rouge">open(file, mode='r', buffering=- 1, encoding=None, errors=None, newline=None, closefd=True, opener=None)</code> открывает файл и возвращает связанный file-объект. Смотри подробнее в [<a href="python-reading-and-writing-files" title="Режимы чтения и записи файлов">python-reading-and-writing-files</a>]</li>
+  <li><code class="language-plaintext highlighter-rouge">ord(c)</code> str one Unicode character-&gt; int Unicode point</li>
+  <li><code class="language-plaintext highlighter-rouge">pow(base, exp[, mod])</code> -&gt; base^exp с опциональным делением по модулю mod. Еквивалент: <code class="language-plaintext highlighter-rouge">base ** exp</code> или <code class="language-plaintext highlighter-rouge">base * exp% mod</code></li>
+  <li><code class="language-plaintext highlighter-rouge">print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)</code></li>
+  <li>
+    <p>class <code class="language-plaintext highlighter-rouge">property(fget=None, fset=None, fdel=None, doc=None)</code> возвращает атрибут-свойство. fget функция которая возвращает значение атрибута, fset устанавливает, fdel удаляет, doc - строки документации.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">None</span>
+
+  <span class="k">def</span> <span class="nf">getx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_x</span>
+
+  <span class="k">def</span> <span class="nf">setx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+      <span class="bp">self</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">value</span>
+
+  <span class="k">def</span> <span class="nf">delx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">_x</span>
+
+  <span class="n">x</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">getx</span><span class="p">,</span> <span class="n">setx</span><span class="p">,</span> <span class="n">delx</span><span class="p">,</span> <span class="s">"I'm the 'x' property."</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>Можно и через декоратор <code class="language-plaintext highlighter-rouge">@property</code> - в примере ниже мы устанавливаем getter, setter и deleter (сам декоратор <code class="language-plaintext highlighter-rouge">@property</code> по дефолту устанавливает getter) - методы декоратора <code class="language-plaintext highlighter-rouge">@property</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">None</span>
+
+  <span class="o">@</span><span class="nb">property</span>
+  <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="s">"""I'm the 'x' property."""</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_x</span>
+
+  <span class="o">@</span><span class="n">x</span><span class="p">.</span><span class="n">setter</span>
+  <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+      <span class="bp">self</span><span class="p">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">value</span>
+
+  <span class="o">@</span><span class="n">x</span><span class="p">.</span><span class="n">deleter</span>
+  <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">_x</span>
+</code></pre></div>    </div>
+
+    <p>Смотри подробнее [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</p>
+  </li>
+  <li>class <code class="language-plaintext highlighter-rouge">range(stop)</code> class <code class="language-plaintext highlighter-rouge">range(start, stop[, step])</code> -&gt; объект Range. <a href="https://docs.python.org/3/library/stdtypes.html#typesseq-range">Подробнее</a></li>
+  <li><code class="language-plaintext highlighter-rouge">repr(object)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">reversed(seq)</code> -&gt; итератор с последовательностью в обратном порядке. У последовательности должен быть реализован <code class="language-plaintext highlighter-rouge">__reversed__()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">round(number[, ndigits])</code></li>
+  <li>class <code class="language-plaintext highlighter-rouge">set([iterable])</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setattr(object, name, value)</code> см. getattr()</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">class slice(stop)</code> class <code class="language-plaintext highlighter-rouge">slice(start, stop[, step])</code> -&gt; <a href="https://docs.python.org/3/glossary.html#term-slice">slice объект</a>. <code class="language-plaintext highlighter-rouge">itertools.islice()</code> <a href="https://docs.python.org/3/library/itertools.html#itertools.islice">вернет итератор</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">this</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">this</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">sorted(iterable, /, *, key=None, reverse=False)</code> -&gt; sorted <strong>list</strong>. key определяет функцию, которая будет оценивать принцип сортировки. Алгоритм сортировки использует только сравнения между элементами. Хотя определения метода <code class="language-plaintext highlighter-rouge">__lt__()</code> будет достаточно для сортировки,  рекомендуется реализовать все шесть расширенных сравнений. Смотри [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]. Смотри [<a href="python-sorting" title="Python sorting">python-sorting</a>]</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">@staticmethod</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+<span class="o">@</span><span class="nb">staticmethod</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="p">...):</span> <span class="p">...</span>
+</code></pre></div>    </div>
+
+    <p>Или так:</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">regular_function</span><span class="p">():</span>
+  <span class="p">...</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">regular_function</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>В 3.10 получил <code class="language-plaintext highlighter-rouge">__module__</code>, <code class="language-plaintext highlighter-rouge">__name__</code>, <code class="language-plaintext highlighter-rouge">__qualname__</code>, <code class="language-plaintext highlighter-rouge">__doc__</code>, <code class="language-plaintext highlighter-rouge">__annotations__</code>, <code class="language-plaintext highlighter-rouge">__wrapped__</code>. Смотри [<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</p>
+  </li>
+  <li>class <code class="language-plaintext highlighter-rouge">str(object='')</code> class <code class="language-plaintext highlighter-rouge">str(object=b'', encoding='utf-8', errors='strict')</code> -&gt; str version of object</li>
+  <li><code class="language-plaintext highlighter-rouge">sum(iterable, /, start=0)</code> -&gt; сумма слева направою Для флотов лучше <code class="language-plaintext highlighter-rouge">math.fsum()</code> [<a href="mathematic-in-python" title="Mathematic in python">mathematic-in-python</a>]</li>
+  <li>
+    <p>class <code class="language-plaintext highlighter-rouge">super([type[, object-or-type]])</code> - возвращает прокси-объект, который делегирует вызовы методов родительскому или одноуровневому классу. Это полезно для доступа к унаследованным методам, которые были переопределены в классе. <a href="https://docs.python.org/3/library/functions.html#super">Подробнее</a>. Смотри [<a href="python-super-guide" title="Python super guide">python-super-guide</a>]</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">().</span><span class="n">method</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>    <span class="c1"># This does the same thing as:
+</span>                             <span class="c1"># super(C, self).method(arg)
+</span></code></pre></div>    </div>
+  </li>
+  <li>class <code class="language-plaintext highlighter-rouge">tuple([iterable])</code></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">class type(object)</code> <code class="language-plaintext highlighter-rouge">class type(name, bases, dict, **kwds)</code> с одним аргументов возвращает тип объекта (эквивалент <code class="language-plaintext highlighter-rouge">object.__class__</code>). С тремя аргументами возвращает новый объект <code class="language-plaintext highlighter-rouge">type</code>. Это идентично:</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">X</span><span class="p">:</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s">'X'</span><span class="p">,</span> <span class="p">(),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">vars([object])</code> -&gt; <code class="language-plaintext highlighter-rouge">__dict__</code> атрибут, там где он определен. Без аргументов vars эквивалентен locals()</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">zip(*iterables, strict=False)</code> -&gt; итератор, составленный из последовательностей. Длина - по наименьшей длине. Насиная с 3.10 <code class="language-plaintext highlighter-rouge">strict=True</code> поднимет ошибку, если длина последовательностей разная. <a href="https://docs.python.org/3/library/functions.html#zip">Подробнее</a>. Смотри [<a href="itertools" title="Itertools">itertools</a>] и [<a href="more-itertools" title="More itertools">more-itertools</a>] для большего функционала</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s">'sugar'</span><span class="p">,</span> <span class="s">'spice'</span><span class="p">,</span> <span class="s">'everything nice'</span><span class="p">]):</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'sugar'</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">'spice'</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">'everything nice'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">__import__(name, globals=None, locals=None, fromlist=(), level=0)</code> испорт модуля. Для рутинных задач не требуется. <a href="https://docs.python.org/3/library/functions.html#import__">Смотри подробнее</a>. Если нужно просто заимпортить модуль по имени - используй <code class="language-plaintext highlighter-rouge">importlib.import_module()</code> из [<a href="python-import-tools" title="Python import tools">python-import-tools</a>]</li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/functions.html">документация</a></li>
+  <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="python-glossary" title="Python glossary">python-glossary</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

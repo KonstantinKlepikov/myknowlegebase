@@ -10,6 +10,7 @@ category: list
 - [[python-glossary]]
 - [[python-datamodel]]
 - [[python-namespaces]] о пространстве имен в python
+- [[python-buildin-functions]]
 - [[python-filesystem]] работа с файлами
 - [[python-interptetator-and-env-utils]] взаимодействие с интерпретатором и окружением в python
 - [[python-decorator]]
@@ -19,7 +20,8 @@ category: list
 - [[python-patterns]]
 - [[abc]] абстрактные базовые классы
 - [[try-except]] про ошибки в python
-- [[built-in-functions]]
+- [[python-buildin-functions]]
+- [[python-super-guide]]
 
 ### Support
 
@@ -141,6 +143,7 @@ category: list
 [python-glossary]: ../notes/python-glossary "Python glossary"
 [python-datamodel]: python-datamodel "Python datamodel"
 [python-namespaces]: ../notes/python-namespaces "Python namespaces"
+[python-buildin-functions]: ../notes/python-buildin-functions "Python build-in functions"
 [python-filesystem]: ../notes/python-filesystem "Работа с файлами"
 [python-interptetator-and-env-utils]: ../notes/python-interptetator-and-env-utils "Утилиты взаимодействия с интерпретатором и окружением в python"
 [python-decorator]: ../notes/python-decorator "Python decorator"
@@ -150,7 +153,8 @@ category: list
 [python-patterns]: ../notes/python-patterns "Python patterns"
 [abc]: ../notes/abc "Abc"
 [try-except]: ../notes/try-except "Try-except-raise"
-[built-in-functions]: ../notes/built-in-functions "Python built in functions"
+[python-buildin-functions]: ../notes/python-buildin-functions "Python build-in functions"
+[python-super-guide]: ../notes/python-super-guide "Python super guide"
 [type-annotation]: ../notes/type-annotation "Анотация типов в python"
 [typing]: ../notes/typing "Typing"
 [python-logging]: python-logging "Python logging"
