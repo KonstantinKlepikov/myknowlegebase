@@ -85,10 +85,86 @@
 
       <h1 id="urllibparse---парсинг-урлов-в-компоненты">Urllib.parse - парсинг урлов в компоненты</h1>
 
+<p>Модуль определяет стандартный интерфейс для разбиения строк URL на компоненты, для объединения компонентов обратно в строку URL и для преобразования «относительного URL» в абсолютный URL-адрес, заданный «базовым URL-адресом». Поддерживаются: file, ftp, gopher, hdl, http, https, imap, mailto, mms, news, nntp, prospero, rsync, rtsp, rtspu, sftp, shttp, sip, sips, snews, svn, svn+ssh, telnet, wais.wswss</p>
+
+<h2 id="парсинг"><a href="https://docs.python.org/3/library/urllib.parse.html#url-parsing">Парсинг</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urlparse(urlstring, scheme='', allow_fragments=True)</code> - преобразует урл в именованный кортеж из  шести компонентов <code class="language-plaintext highlighter-rouge">scheme://netloc/path;parameters?query#fragment</code>. Каждый эелемент - строка (возможно пустая). Разделители в результат не добавляются (за исключением начального слешка в пути, если он есть). Компоненты не разбиваются на более мелкие части (например по <code class="language-plaintext highlighter-rouge">%</code>).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">urlparse</span><span class="p">(</span><span class="s">"scheme://netloc/path;parameters?query#fragment"</span><span class="p">)</span>
+<span class="n">ParseResult</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s">'scheme'</span><span class="p">,</span> <span class="n">netloc</span><span class="o">=</span><span class="s">'netloc'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">'/path;parameters'</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s">''</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="s">'query'</span><span class="p">,</span> <span class="n">fragment</span><span class="o">=</span><span class="s">'fragment'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="s">"http://docs.python.org:80/3/library/urllib.parse.html?"</span>
+<span class="p">...</span>              <span class="s">"highlight=params#url-parsing"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span>
+<span class="n">ParseResult</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s">'http'</span><span class="p">,</span> <span class="n">netloc</span><span class="o">=</span><span class="s">'docs.python.org:80'</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s">'/3/library/urllib.parse.html'</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s">''</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="s">'highlight=params'</span><span class="p">,</span> <span class="n">fragment</span><span class="o">=</span><span class="s">'url-parsing'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">scheme</span>
+<span class="s">'http'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">netloc</span>
+<span class="s">'docs.python.org:80'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">hostname</span>
+<span class="s">'docs.python.org'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">port</span>
+<span class="mi">80</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">fragment</span><span class="o">=</span><span class="s">""</span><span class="p">).</span><span class="n">geturl</span><span class="p">()</span>
+<span class="s">'http://docs.python.org:80/3/library/urllib.parse.html?highlight=params'</span>
+</code></pre></div></div>
+
+<p>Результат:</p>
+
+<p><img src="/myknowlegebase/attachments/2022-02-19-23-35-06.png" alt="urlib parse" /></p>
+
+<p>Строки query можно разобрать с помощью методов <code class="language-plaintext highlighter-rouge">urllib.parse.parse_qs</code> и <code class="language-plaintext highlighter-rouge">urllib.parse.parse_qsl</code>. <a href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs">Смотри тут</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urlunparse(parts)</code> возвращает строку, собранную из кортежа urlparse()</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urlsplit( urlstring , схема = '' , allow_fragments = True )</code> - аналогично urlparse(), но параметры не отделяются от строки path. <code class="language-plaintext highlighter-rouge">urllib.parse.urlunsplit(parts)</code> работает аналогично urlunparse()</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urljoin(base, url, allow_fragments=True)</code> - создает новый абсолютный адрес, объединяя url с частью base, отсутствующей в url. При этом, если изменяемый адрес уже является абсолютным - изменения внесены не будут.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">urljoin</span><span class="p">(</span><span class="s">'http://www.cwi.nl/%7Eguido/Python.html'</span><span class="p">,</span> <span class="s">'FAQ.html'</span><span class="p">)</span>
+<span class="s">'http://www.cwi.nl/%7Eguido/FAQ.html'</span>
+</code></pre></div></div>
+
+<p>``rllib.parse.urldefrag(url)` - разделяет урл на основную строку и фрагмент.</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.unwrap(url)</code> извлекает урл из обернутого прдставления, например таких <code class="language-plaintext highlighter-rouge">&lt;URL:scheme://host/path&gt;', '&lt;scheme://host/path&gt;</code>, <code class="language-plaintext highlighter-rouge">URL:scheme://host/path</code>, <code class="language-plaintext highlighter-rouge">scheme://host/path</code></p>
+
+<h2 id="parsing-ascii-encoded-bytes"><a href="https://docs.python.org/3/library/urllib.parse.html#parsing-ascii-encoded-bytes">Parsing ASCII Encoded Bytes</a></h2>
+
+<h2 id="structured-parse-results"><a href="https://docs.python.org/3/library/urllib.parse.html#structured-parse-results">Structured Parse Results</a></h2>
+
+<p>urlparse предоставлет доп.методы для объектов именованных кортежей, полученных при парсинге.</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.SplitResult.geturl()</code> - возвращает строку урла, объединенную из кортежа. Он может отличаться от исходного (регистр и удаление пустых компонентов)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">url</span> <span class="o">=</span> <span class="s">'HTTP://www.Python.org/doc/#'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r1</span><span class="p">.</span><span class="n">geturl</span><span class="p">()</span>
+<span class="s">'http://www.Python.org/doc/'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">r1</span><span class="p">.</span><span class="n">geturl</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r2</span><span class="p">.</span><span class="n">geturl</span><span class="p">()</span>
+<span class="s">'http://www.Python.org/doc/'</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/urllib.parse.html#structured-parse-results">смотри другие методы тут</a></p>
+
+<h2 id="url-quoting"><a href="https://docs.python.org/3/library/urllib.parse.html#url-quoting">URL Quoting</a></h2>
+
+<p>Предоставлет безопасное преобразование данных, которые планируется использовать в качестве компонентов урла, за счет размещения в кавычки специальнех символов или кодирования текста, отличного от ASCII. Кроме того предоставлены методы для реверса этоих операций</p>
+
 <p>Смотри еще:</p>
 
 <ul>
   <li><a href="https://docs.python.org/3/library/urllib.parse.html">документация</a></li>
+  <li><a href="https://docs.python.org/3/howto/urllib2.html#urllib-howto">как получать данные из интернет-ресурсов с помощью urlib</a></li>
+  <li><a href="https://docs.python.org/3/library/urllib.request.html#examples">примеры обработки адресов и запросов</a></li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
   <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
   <li>[<a href="scrapy" title="Scrapy">scrapy</a>]</li>
