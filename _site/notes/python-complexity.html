@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python time complexity | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python time complexity" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Временная сложность стандартных контейнеров в python" />
+<meta property="og:description" content="Временная сложность стандартных контейнеров в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-complexity.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-complexity.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-complexity.html","headline":"Python time complexity","description":"Временная сложность стандартных контейнеров в python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="python-time-complexity">Python time complexity</h1>
+
+<h2 id="list">List</h2>
+
+<p>Внутри список представлен как массив; самые большие затраты связаны с выходом за пределы текущего размера (потому что приходится сдвигать весь массив) или со вставкой или удалением где-то в начале списка (по той же причине). Если нужно добавлять/удалять с обоих концов, то лучше использовать [<a href="deque" title="Deque - двухсторонние очереди">deque</a>]</p>
+
+<table><tbody>
+<tr>
+  <td><strong>Operation</strong></td>
+  <td><strong>Average Case</strong></td>
+  <td><strong>Amortized Worst Case</strong></td>
+</tr>
+<tr>
+  <td>Copy</td>
+  <td>O(n)</td>
+  <td>O(n)</td>
+</tr>
+<tr>
+  <td>Append[1] </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>Pop last </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>Pop intermediate[2] </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>
+  <td>Insert </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>
+  <td>Get Item </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>Set Item </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>Delete Item </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>
+  <td>Iteration </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>
+  <td>Get Slice </td>
+  <td>O(k) </td>
+  <td>O(k) </td>
+</tr>
+<tr>
+  <td>Del Slice </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>
+  <td>Set Slice </td>
+  <td>O(k+n) </td>
+  <td>O(k+n) </td>
+</tr>
+<tr>
+  <td>Extend[1] </td>
+  <td>O(k) </td>
+  <td>O(k) </td>
+</tr>
+<tr>
+  <td>Sort </td>
+  <td>O(n log n) </td>
+  <td>O(n log n) </td>
+</tr>
+<tr>
+  <td>Multiply </td>
+  <td>O(nk) </td>
+  <td>O(nk) </td>
+</tr>
+<tr>
+  <td>x in s </td>
+  <td>O(n) </td>
+  <td> </td>
+</tr>
+<tr>
+  <td>min(s), max(s) </td>
+  <td>O(n) </td>
+  <td> </td>
+</tr>
+<tr>
+  <td>Get Length </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>Concatenate two lists </td>
+  <td>O(n + m) </td>
+  <td>O(n + m) </td>
+</tr>
+</tbody></table>
+
+<h2 id="deque">[<a href="deque" title="Deque - двухсторонние очереди">deque</a>]</h2>
+
+<p>Deque (двусторонняя очередь) внутренне представляется как двусвязный список. (список массивов, а не объектов, для большей эффективности) Оба конца доступны для операций. Поиск, выбор, добавление и удаление элементов из середины очень медленные.</p>
+
+<table><tbody>
+<tr>
+  <td><strong>Operation</strong> </td>
+  <td><strong>Average Case</strong> </td>
+  <td><strong>Amortized Worst Case</strong> </td>
+</tr>
+<tr>
+  <td>Copy </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>
+  <td>append </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>appendleft </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>pop </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>popleft </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>
+  <td>extend </td>
+  <td>O(k) </td>
+  <td>O(k) </td>
+</tr>
+<tr>
+  <td>extendleft </td>
+  <td>O(k) </td>
+  <td>O(k) </td>
+</tr>
+<tr>
+  <td>rotate </td>
+  <td>O(k) </td>
+  <td>O(k) </td>
+</tr>
+<tr>
+  <td>remove </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+</tbody></table>
+
+<h2 id="set">Set</h2>
+
+<p>Реализация множества похожа на словарь</p>
+
+<table><tbody><tr>  <td><strong>Operation</strong> </td>
+  <td><strong>Average case</strong> </td>
+  <td><strong>Worst Case</strong> </td>
+</tr>
+<tr>  <td>add </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>  <td>del </td>
+  <td>O(1) </td>
+  <td>O(1) </td>
+</tr>
+<tr>  <td>x in s </td>
+  <td>O(1) </td>
+  <td>O(n) </td>
+</tr>
+<tr>  <td>Union s|t </td>
+  <td>O(len(s)+len(t)) </td>
+  <td> </td>
+</tr>
+<tr>  <td>Intersection s&amp;t </td>
+  <td>O(min(len(s), len(t)) (replace "min" with "max" if t is not a set)</td>
+  <td>O(len(s) * len(t)) </td>
+</tr>
+<tr>  <td>Multiple intersection s1&amp;s2&amp;..&amp;sn </td>
+  <td> </td>
+  <td>(n-1)*O(l) where l is max(len(s1),..,len(sn)) </td>
+</tr>
+<tr>  <td>Difference s-t </td>
+  <td>O(len(s)) </td>
+  <td> </td>
+</tr>
+<tr>  <td>s.difference_update(t) </td>
+  <td>O(len(t)) </td>
+  <td> </td>
+</tr>
+<tr>  <td>Symmetric Difference s^t </td>
+  <td>O(len(s)) </td>
+  <td>O(len(s) * len(t)) </td>
+</tr>
+<tr>  <td>s.symmetric_difference_update(t) </td>
+  <td>O(len(t)) </td>
+  <td>O(len(t) * len(s)) </td>
+</tr>
+</tbody></table>
+
+<p>Сложность s-t или s.difference(t) (set_difference()) и разницы вычисляемой на месте s.difference_update(t) (set_difference_update_internal()) различна! Первый — O(len(s)) (для каждого элемента в s добавить его в новый набор, если он не в t). Второй — O(len(t)) (для каждого элемента t удалить его из s). Таким образом, необходимо подумать о том, какой из них предпочтительнее, в зависимости от того, какой из наборов является самым длинным и нужен ли новый набор.</p>
+
+<p>Для выполнения операций над множествами, таких как s-t, и s, и t должны быть множествами. Однако можно реализовать и эквивалент, даже если t является любым итерируемым объектом, например, s.difference(l), где l — список.</p>
+
+<h2 id="dict">Dict</h2>
+
+<p>Среднее время обработки, указанное для объектов dict, предполагает, что хеш-функция для объектов достаточно надежна, чтобы избежать коллизий. Средний случай предполагает, что ключи, используемые в параметрах, выбираются случайным образом из набора всех ключей.</p>
+
+<p>Обратите внимание, что существует быстрый путь для словарей, который (на практике) работает только с ключами str; это не влияет на алгоритмическую сложность, но может значительно повлиять на константы: как быстро фактически завершается программа</p>
+
+<table><tbody><tr>  <td><strong>Operation</strong> </td>
+  <td><strong>Average Case</strong> </td>
+  <td><strong>Amortized Worst Case</strong> </td>
+</tr>
+<tr>  <td>k in d </td>
+  <td>O(1) </td>
+  <td>O(n) </td>
+</tr>
+<tr>  <td>Copy[3] </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+<tr>  <td>Get Item </td>
+  <td>O(1) </td>
+  <td>O(n) </td>
+</tr>
+<tr>  <td>Set Item[1] </td>
+  <td>O(1) </td>
+  <td>O(n) </td>
+</tr>
+<tr>  <td>Delete Item </td>
+  <td>O(1) </td>
+  <td>O(n) </td>
+</tr>
+<tr>  <td>Iteration[3] </td>
+  <td>O(n) </td>
+  <td>O(n) </td>
+</tr>
+</tbody></table>
+
+<p>[1] - Эти операции основаны на «амортизированной» части «наихудшего случая». Отдельные действия могут занять гораздо больше времени, в зависимости от истории контейнера.</p>
+
+<p>[2] - Извлечение промежуточного элемента с индексом k из списка размера n смещает все элементы после k на один слот влево с помощью memmove. n - k элементов должны быть перемещены, поэтому O(n-k). В лучшем случае извлекается предпоследний элемент, что требует одного шага, в худшем случае извлекается первый элемент, для чего требуется n-1 шагов. Средний случай для среднего значения k — выталкивание элемента из середины списка, для чего требуется O(n/2) = O(n) операций.</p>
+
+<p>[3] - Для этих операций наихудший случай n — это максимальный размер контейнера, когда-либо достигнутый, а не только текущий размер. Например, если в словарь добавляются N объектов, то N-1 удаляются, словарь по-прежнему будет рассчитан на N объектов (как минимум) до тех пор, пока не будет сделана другая вставка.</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://wiki.python.org/moin/TimeComplexity">основная статья на wiki</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Amortized_analysis">амортизационный анализ</a></li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

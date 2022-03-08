@@ -21,6 +21,7 @@ category: list
 - [[abc]] абстрактные базовые классы
 - [[try-except]] про ошибки в python
 - [[python-buildin-functions]]
+- [[python-complexity]]
 - [[python-super-guide]]
 
 ### Support
@@ -154,6 +155,7 @@ category: list
 [abc]: ../notes/abc "Abc"
 [try-except]: ../notes/try-except "Try-except-raise"
 [python-buildin-functions]: ../notes/python-buildin-functions "Python build-in functions"
+[python-complexity]: ../notes/python-complexity "Python time complexity"
 [python-super-guide]: ../notes/python-super-guide "Python super guide"
 [type-annotation]: ../notes/type-annotation "Анотация типов в python"
 [typing]: ../notes/typing "Typing"
