@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Работа с alembic и БД в docker, вопросы с poetry, linux и общие вопросы про python | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Работа с alembic и БД в docker, вопросы с poetry, linux и общие вопросы про python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Заметка про БД в докер, алембик, поэтри и несколько вопросов работы с python" />
+<meta property="og:description" content="Заметка про БД в докер, алембик, поэтри и несколько вопросов работы с python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-03-18-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-03-18-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2022-03-18-daily-note.html","headline":"Работа с alembic и БД в docker, вопросы с poetry, linux и общие вопросы про python","description":"Заметка про БД в докер, алембик, поэтри и несколько вопросов работы с python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="работа-с-alembic-и-бд-в-docker-вопросы-с-poetry-linux-и-общие-вопросы-про-python">Работа с alembic и БД в docker, вопросы с poetry, linux и общие вопросы про python</h1>
+
+<h2 id="database-and-alembic">Database and alembic</h2>
+
+<h3 id="how-to-autogenerate-and-apply-migrations-with-alembic-when-the-database-runs-in-a-container">How to autogenerate and apply migrations with alembic when the database runs in a container</h3>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5432:5432"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_USER=username</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD=password</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_DB=database</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+  <span class="na">app</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="s">bash -c "cd app/database &amp;&amp; alembic upgrade head &amp;&amp; cd ../.. &amp;&amp; python app/main.py"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.:/code</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">app-network</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h3 id="change-default-postgres-port">Change default postgres port</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="nb">export </span><span class="nv">PGHOST</span><span class="o">=</span>localhost
+
+<span class="o">&gt;</span><span class="nb">export </span><span class="nv">PGPORT</span><span class="o">=</span>5432
+</code></pre></div></div>
+
+<h3 id="multiple-databases-in-docker-and-docker-compose">Multiple databases in docker and docker-compose</h3>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.0'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_DB</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_USER</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">${POSTGRES_DEV_PORT}:5432</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-volume:/var/lib/postgresql/data</span>
+
+  <span class="na">db-test</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_DB</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_USER</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">${POSTGRES_TEST_PORT}:5432</span>
+    <span class="c1"># Notice I don't even use a volume here since I don't care to persist test data between runs</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">app-volume</span><span class="pi">:</span> <span class="c1">#</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/46668342/15966204">more solution</a></p>
+
+<h2 id="docker">[<a href="../lists/docker" title="Docker">docker</a>]</h2>
+
+<h3 id="container-exited-with-code-0-when-run-from-docker-compose">Container exited with code 0 when run from docker-compose</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+<span class="c"># ... do other pre-launch setup ...</span>
+<span class="c"># Run the CMD</span>
+<span class="nb">exec</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/61695237/15966204">Подробное объяснение</a></p>
+
+<h2 id="poetry">[<a href="../notes/poetry" title="Poetry">poetry</a>]</h2>
+
+<h3 id="transfer-dependency-to-dev-in-poetry">Transfer dependency to –dev in poetry</h3>
+
+<p>You can move the corresponding line in the pyproject.toml from the [tool.poetry.dependencies] section to [tool.poetry.dev-dependencies] by hand and run poetry lock –no-update afterwards.</p>
+
+<p>You can also <code class="language-plaintext highlighter-rouge">poetry add -D dep</code> and <code class="language-plaintext highlighter-rouge">poetry remove dep</code> in either order. Just be sure to use the same version constraint. Poetry stops/warns you if you use different constraints as they’d conflict.</p>
+
+<h2 id="linux">[<a href="../lists/linux" title="Linux">linux</a>]</h2>
+
+<h3 id="how-to-generate-a-random-string"><a href="https://unix.stackexchange.com/questions/230673/how-to-generate-a-random-string">How to generate a random string</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">openssl rand -base64 12</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">openssl rand -hex 12</code></p>
+
+<h2 id="python-standart-library">[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</h2>
+
+<ul>
+  <li><a href="https://stackoverflow.com/questions/51093564/how-to-remove-query-string-from-a-url">How to remove query string from a url</a></li>
+  <li><a href="https://stackoverflow.com/questions/41748464/pytest-cannot-import-module-while-python-can">pytest cannot import module while python can</a></li>
+  <li><a href="https://stackoverflow.com/questions/1604471/how-can-i-find-an-element-by-css-class-with-xpath">How can I find an element by CSS class with XPath</a> (смотри еще [<a href="../notes/xpath" title="XPath в scrapy">xpath</a>])</li>
+  <li><a href="https://stackoverflow.com/questions/2220699/whats-the-difference-between-eval-exec-and-compile#:~:text=Basically%2C%20eval%20is%20used%20to,only%20for%20its%20side%20effects.">What’s the difference between eval, exec, and compile</a></li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

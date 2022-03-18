@@ -119,8 +119,10 @@ tags: crawlers
 - [scrapy-silenium](https://github.com/clemfromspace/scrapy-selenium) [[selenium]] в качестве мидлвейра для [[scrapy]]
 - [scrapy-playwright](https://github.com/scrapy-plugins/scrapy-playwright) Playwright integration for Scrapy
 - [scrapy-rotating-proxies](https://github.com/TeamHG-Memex/scrapy-rotating-proxies) This package provides a Scrapy middleware to use rotating proxies, check that they are alive and adjust crawling speed.
+- [Scrapy Cluster](https://scrapy-cluster.readthedocs.io/en/latest/index.html) Scrapy based distributed crawling project, Scrapy Cluster.
 
 - [selenium-wire](https://github.com/wkeeling/selenium-wire) extends Selenium's Python bindings to give you access to the underlying requests made by the browser. You author your code in the same way as you do with Selenium, but you get extra APIs for inspecting requests and responses and making changes to them on the fly
+- [docker-selenium](https://github.com/SeleniumHQ/docker-selenium) Docker images for the Selenium Grid Server
 
 - [detectem](https://github.com/alertot/detectem) specialized software web detector (command line tool)
 - [builtwith](https://github.com/richardpenman/builtwith) info about web-source engines [look at solution of problem with long waiting](https://github.com/varnitsingh/builtwith/commit/aa23671d968f5ad0e64a059a30b5ebb9bdbaa56f)
@@ -132,6 +134,7 @@ tags: crawlers
 - [requests-threads](https://github.com/requests/requests-threads) This repo contains a Requests session that returns the amazing Twisted's awaitable Deferreds instead of Response objects
 
 - [autoscraper](https://github.com/alirezamika/autoscraper) A Smart, Automatic, Fast and Lightweight Web Scraper for Python
+- [dude](https://github.com/roniemartinez/dude) Dude is a very simple framework for writing a web scraper using Python decorators. The design, inspired by Flask, was to easily build a web scraper in just a few lines of code. Dude has an easy-to-learn syntax.
 - [Splash - A javascript rendering service](https://splash.readthedocs.io/en/stable/)
 - [portia](https://github.com/scrapinghub/portia) crawler with ui interface
 - [requests-html](https://github.com/psf/requests-html) This library intends to make parsing HTML (e.g. scraping the web) as simple and intuitive as possible

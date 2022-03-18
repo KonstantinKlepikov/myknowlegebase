@@ -85,6 +85,146 @@
 
       <h1 id="python-super-guide">Python super guide</h1>
 
+<p>Базовый вариант использования</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoggingDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Setting %r to %r'</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Этот класс имеет все те же возможности, что и его родитель, dict , но он расширяет метод <code class="language-plaintext highlighter-rouge">__setitem__</code>, чтобы создавать записи в журнале при каждом обновлении ключа. После внесения записи в журнал метод использует <code class="language-plaintext highlighter-rouge">super()</code> для делегирования работы по фактическому обновлению словаря с помощью пары ключ/значение.</p>
+
+<p>Класс, которому делегируется работа указаывать по имени не нужно</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoggingDict</span><span class="p">(</span><span class="n">SomeOtherMapping</span><span class="p">):</span>            <span class="c1"># new base class
+</span>    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Setting %r to %r'</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>         <span class="c1"># no change needed
+</span></code></pre></div></div>
+
+<p>Какой именно класс будет вызван зависит от того, как образовано дерево родительских классов. В примере ниже оно выглядит так: LoggingOD, LoggingDict, OrderedDict, dict, object - работа будет делегирована нужному нам методу в <code class="language-plaintext highlighter-rouge">OrderedDict</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoggingOD</span><span class="p">(</span><span class="n">LoggingDict</span><span class="p">,</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>Мы не изменяли исходный код LoggingDict. Вместо этого мы создали подкласс, единственная логика которого состоит в том, чтобы объединить два существующих класса и управлять порядком поиска в них. Порядок поиска реализован через модель MRO</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">pprint</span><span class="p">(</span><span class="n">LoggingOD</span><span class="p">.</span><span class="n">__mro__</span><span class="p">)</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">LoggingOD</span><span class="s">'&gt;,
+ &lt;class '</span><span class="n">__main__</span><span class="p">.</span><span class="n">LoggingDict</span><span class="s">'&gt;,
+ &lt;class '</span><span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="s">'&gt;,
+ &lt;class '</span><span class="nb">dict</span><span class="s">'&gt;,
+ &lt;class '</span><span class="nb">object</span><span class="s">'&gt;)
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">super()</code> занимается делегированием вызовов методов некоторому классу в дереве предков экземпляра. Чтобы переупорядочиваемые вызовы методов работали, классы должны разрабатываться совместно. При этом возникают три легко решаемых правила:</p>
+
+<ul>
+  <li>метод, вызываемый <code class="language-plaintext highlighter-rouge">super()</code>, должен существовать</li>
+  <li>вызывающий и вызываемый методы должны иметь совпадающую сигнатуру аргумента</li>
+  <li>каждое вхождение метода должно использовать <code class="language-plaintext highlighter-rouge">super()</code></li>
+</ul>
+
+<p>Рассмотрим стратегии получения аргументов вызывающего объекта, чтобы они соответствовали сигнатуре вызываемого метода. Это немного сложнее, чем традиционные вызовы методов, когда вызываемый объект известен заранее. При использовании <code class="language-plaintext highlighter-rouge">super()</code> вызываемый объект неизвестен во время написания класса (поскольку подкласс, написанный позже, может ввести новые классы в MRO).</p>
+
+<p>Один из подходов состоит в том, чтобы придерживаться фиксированной подписи, используя позиционные аргументы. Это хорошо работает с такими методами, как <code class="language-plaintext highlighter-rouge">__setitem__</code>, которые имеют фиксированную сигнатуру из двух аргументов, ключа и значения.</p>
+
+<p>Более гибкий подход состоит в том, чтобы каждый метод в дереве родителей был разработан совместно, чтобы принимать ключевые аргументы словарь ключевых аргументов, удалять любые аргументы, и перенаправлять оставшиеся аргументы с помощью **kwds, в конечном итоге оставляя словарь пустым. для последнего вызова в цепочке.</p>
+
+<p>Каждый уровень убирает ключевые аргументы, которые ему нужны, чтобы окончательный пустой словарь мог быть отправлен методу, который вообще не ожидает аргументов (например, <code class="language-plaintext highlighter-rouge">object.__init__</code> в примере ниже не ожидает аргументов)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Shape</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">shapename</span> <span class="o">=</span> <span class="n">shapename</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ColoredShape</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ColoredShape</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">shapename</span><span class="o">=</span><span class="s">'circle'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Следующая проблема - как убедиться, что целевой метод существует. В примере выше мы знаем, что у <code class="language-plaintext highlighter-rouge">object</code> всегда есть <code class="language-plaintext highlighter-rouge">__init__()</code> и <code class="language-plaintext highlighter-rouge">object</code> - всегда последний в цепочке МРО, поэтому любая последовательность из <code class="language-plaintext highlighter-rouge">super().__init__(**kwds)</code> гарантированно завершается вызовом метода <code class="language-plaintext highlighter-rouge">object.__init__()</code>. Но так бывает далеко не всегда и <code class="language-plaintext highlighter-rouge">object</code> может не иметь необходимого нам метода. Для таких случаев требуется написать корневой класс, который гарантированно будет вызываться перед <code class="language-plaintext highlighter-rouge">object</code> и будет иметь нужный нам метод. Задача такого корневого класса - стать последним в цепочке вызовов, заменив собойс <code class="language-plaintext highlighter-rouge">object</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Root</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the delegation chain stops here
+</span>        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">super</span><span class="p">(),</span> <span class="s">'draw'</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">Root</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">shapename</span> <span class="o">=</span> <span class="n">shapename</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Drawing.  Setting shape to:'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">shapename</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ColoredShape</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Drawing.  Setting color to:'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">color</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ColoredShape</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">shapename</span><span class="o">=</span><span class="s">'square'</span><span class="p">)</span>
+<span class="n">cs</span><span class="p">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>В данном примере, если мы захотим внедрить дополнительные классы, нам придется так-же отнаследовать их от корневого, чтобы ни один из путей в дереве не мог достичь <code class="language-plaintext highlighter-rouge">object</code> минуя <code class="language-plaintext highlighter-rouge">Root.draw()</code>. Необходимо написать об этом в документации.</p>
+
+<p>Наконец, для гарантирантий выполнения всей цепочки, каждый делегирующий метод каждого класса должен реализовывать <code class="language-plaintext highlighter-rouge">super()</code>.</p>
+
+<p>Иногда подкласс может захотеть использовать совместные методы, доступные через множественне наследование со сторонним классом, который не был предназначен для этого (к примеру, в нем не реализован <code class="language-plaintext highlighter-rouge">super()</code> или не реализован корневой класс). Для этого реализуется класс-адаптер.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Moveable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Drawing at position:'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Адаптером для этого класса будет:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MoveableAdapter</span><span class="p">(</span><span class="n">Root</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">movable</span> <span class="o">=</span> <span class="n">Moveable</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">movable</span><span class="p">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>И далее:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MovableColoredShape</span><span class="p">(</span><span class="n">ColoredShape</span><span class="p">,</span> <span class="n">MoveableAdapter</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">MovableColoredShape</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">shapename</span><span class="o">=</span><span class="s">'triangle'</span><span class="p">,</span>
+                    <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">).</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="нюансы">Нюансы</h2>
+
+<ul>
+  <li>При создании подклассов встроенной функции, такой как <code class="language-plaintext highlighter-rouge">dict()</code>, часто необходимо переопределить или расширить несколько методов одновременно. В приведенных выше примерах расширение <code class="language-plaintext highlighter-rouge">__setitem__</code> не используется другими методами, такими как <code class="language-plaintext highlighter-rouge">dict.update</code>, поэтому может потребоваться их расширение. Это требование не уникально для <code class="language-plaintext highlighter-rouge">super()</code>; скорее, оно возникает всякий раз, когда встроенные функции являются подклассами.</li>
+  <li>
+    <p>Если класс опирается на один родительский класс, предшествующий другому (например, <code class="language-plaintext highlighter-rouge">LoggingOD</code> зависит от  <code class="language-plaintext highlighter-rouge">LoggingDict</code> , следующего перед <code class="language-plaintext highlighter-rouge">OrderedDict</code>, который стоит перед <code class="language-plaintext highlighter-rouge">dict</code>), легко добавить утверждения для проверки и документирования предполагаемого порядка разрешения методов:</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="n">position</span> <span class="o">=</span> <span class="n">LoggingOD</span><span class="p">.</span><span class="n">__mro__</span><span class="p">.</span><span class="n">index</span>
+      <span class="k">assert</span> <span class="n">position</span><span class="p">(</span><span class="n">LoggingDict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">position</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">)</span>
+      <span class="k">assert</span> <span class="n">position</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">position</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Полный пример кода <a href="https://code.activestate.com/recipes/577720-how-to-use-super-effectively/">тут</a></p>
+
 <p>Смотри еще:</p>
 
 <ul>
