@@ -5,23 +5,39 @@ tags: linux
 ---
 # Linux
 
-Как перезагрузить сервер:
+## Как перезагрузить сервер
 
-```shel
-sudo reboot
-```
-
-или
-
-```shell
-sudo shutdown -r now
-```
+`sudo reboot` или `sudo shutdown -r now`
 
 Последний вариант предпочтительнее, так как позволяет указать причину перезагрузки
 
 ```shell
 sudo shutdown -r now 'System maintenance'
 ```
+
+## Группы и юзеры
+
+`who` или так `whoami`  или так `echo $USER` юзер
+
+с подробностями: `w`
+
+`id -g` текущая группа
+
+`id -G` все группы, в которых состоит текущий юзер
+
+имена вмето айдишников `id -Gn` или так `groups`
+
+## Права
+
+`sudo chmod 777 name_of_partition` это вообще все права
+
+Подробнее [как выдать более ограниченно](https://askubuntu.com/a/628898)
+
+## Диски
+
+`sudo fdisk -l1` доступные диски
+
+[Как добавить диск на ubuntu](https://askubuntu.com/questions/125257/how-do-i-add-an-additional-hard-drive)
 
 - [[linux-scp]]
 - [[linux-snap]]
