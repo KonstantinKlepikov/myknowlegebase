@@ -108,20 +108,58 @@
 
 <h2 id="права">Права</h2>
 
-<p><code class="language-plaintext highlighter-rouge">sudo chmod 777 name_of_partition</code> это вообще все права</p>
+<p><code class="language-plaintext highlighter-rouge">sudo chmod 777 name_of_partition</code> это выдает вообще все права</p>
 
 <p>Подробнее <a href="https://askubuntu.com/a/628898">как выдать более ограниченно</a></p>
 
-<h2 id="диски">Диски</h2>
+<h2 id="диски-и-друстройства">Диски и др.устройства</h2>
 
-<p><code class="language-plaintext highlighter-rouge">sudo fdisk -l1</code> доступные диски</p>
+<p><code class="language-plaintext highlighter-rouge">sudo fdisk -l1</code> доступные диски. <code class="language-plaintext highlighter-rouge">fdisc</code> позволяет управлять разделами (требует рут права). Другой вариант через утилиту <code class="language-plaintext highlighter-rouge">parted</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">blkid /dev/discname</code> аналог. Флаг -p дает подробную инфу. Если надо без рут прав: <code class="language-plaintext highlighter-rouge">lsblk /dev/discname</code></p>
+
+<p>Утилита <code class="language-plaintext highlighter-rouge">dd</code> позволяет замерить быстродействие (острожно, т.к. влечет запись перезапись). Запускать лучше через <code class="language-plaintext highlighter-rouge">iostat</code>. Более точно измеряет быстродействие <code class="language-plaintext highlighter-rouge">fio</code></p>
 
 <p><a href="https://askubuntu.com/questions/125257/how-do-i-add-an-additional-hard-drive">Как добавить диск на ubuntu</a></p>
+
+<h2 id="сетевые-утилиты">Сетевые утилиты</h2>
+
+<p>ssh-туннелирование через утилиту <code class="language-plaintext highlighter-rouge">ssh</code>, позволяющую создавать соединение и перенаправлять порты</p>
+
+<p>Оценка быстродействия [<a href="http" title="Http">http</a>] с поможью <code class="language-plaintext highlighter-rouge">ab</code> - [<a href="../notes/apache-banchmark" title="Apache-banchmark">apache-banchmark</a>]</p>
+
+<p>Нагрузочное [<a href="тестирование" title="Основные принципы тестровния">тестирование</a>] с помощью python приложения [<a href="../notes/molotov" title="Molotov">molotov</a>] - асинхронный тестировщик нагрузки приложения.</p>
+
+<h2 id="cpu">CPU</h2>
+
+<p>Простейший способ через <code class="language-plaintext highlighter-rouge">ps</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">ps -eo pcpu,pid,user,args | sort -r | head -10</code></p>
+
+<p>Интерактивно - черехз <code class="language-plaintext highlighter-rouge">htop</code>. <a href="https://htop.dev/">Смотри тут</a>. <a href="https://habr.com/ru/post/316806/">Статья на баше</a></p>
+
+<h2 id="процессы">Процессы</h2>
+
+<p>Все процессы <code class="language-plaintext highlighter-rouge">ps auxw</code>. Фильрация по конкретным запросам <code class="language-plaintext highlighter-rouge">ps auxw | grep root | -v grep</code> - в данном случае находятся все рут процессы, за исключением самого grep. Можно задать псевдоним:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">pg</span><span class="o">=</span><span class="s1">'ps aux | grep -v grep | grep $1'</span>
+
+pg something
+</code></pre></div></div>
+
+<p>Другие ресурсы:</p>
 
 <ul>
   <li>[<a href="../notes/linux-scp" title="linux-scp">linux-scp</a>]</li>
   <li>[<a href="../notes/linux-snap" title="linux-snap">linux-snap</a>]</li>
   <li>[<a href="../notes/shell-comans-in-one-line" title="Shell comand in one line">shell-comans-in-one-line</a>]</li>
+</ul>
+
+<p>Статьи:</p>
+
+<ul>
+  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux">How To Read and Set Environmental and Shell Variables on Linux</a></li>
+  <li><a href="https://www.digitalocean.com/community/questions/how-to-find-the-processes-that-are-consuming-the-most-server-resources">How to find the processes that are consuming the most server resources</a></li>
 </ul>
 
 

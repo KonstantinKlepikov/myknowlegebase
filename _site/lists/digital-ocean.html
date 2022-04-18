@@ -165,21 +165,21 @@
   <span class="na">build_and_push</span><span class="pi">:</span>
     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
     <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo</span> 
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout the repo</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build image</span> 
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build image</span>
         <span class="na">run</span><span class="pi">:</span> <span class="s">docker build -t sample/my-page .</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install doctl</span> 
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install doctl</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">digitalocean/action-doctl@v2</span>
         <span class="na">with</span><span class="pi">:</span>
           <span class="na">token</span><span class="pi">:</span> <span class="s">$</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Log in to DO Container Registry</span> 
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Log in to DO Container Registry</span>
         <span class="na">run</span><span class="pi">:</span> <span class="s">doctl registry login --expiry-seconds </span><span class="m">600</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Tag image</span> 
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Tag image</span>
         <span class="na">run</span><span class="pi">:</span>
           <span class="s">docker tag sample/my-page \</span>
           <span class="s">registry.digitalocean.com/my-sample-registry/my-sample-page:$</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Push image to DO Container Registry</span> 
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Push image to DO Container Registry</span>
         <span class="na">run</span><span class="pi">:</span> <span class="s">docker push registry.digitalocean.com/my-sample-registry/my-sample-page:$</span>
 </code></pre></div></div>
 
@@ -192,15 +192,16 @@
   <li>Finally, the image is pushed to the repository.</li>
 </ul>
 
-<p>Установка [<a href="docker" title="Docker">docker</a>] описана в [<a href="../notes/digital-ocean-docker-install" title="Digital ocean docker install">digital-ocean-docker-install</a>]</p>
+<p>Статьи:</p>
 
-<p>Работа с базами данных описана в [<a href="../notes/digital-ocean-databases" title="Digital ocean databases">digital-ocean-databases</a>]</p>
-
-<p>Проблемы трансфера данных между github и [<a href="../notes/digital-ocean-container-registry" title="Digital ocean container registry">digital-ocean-container-registry</a>] в этой заметке: [<a href="../posts/2021-09-07-daily-note" title="Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами">2021-09-07-daily-note</a>]</p>
-
-<p>Как добавлять домены и управлять ns описано тут [<a href="../notes/digital-ocean-dns-management" title="Digital ocean dns management">digital-ocean-dns-management</a>]</p>
-
-<p>Как работать по SSH с digital ocean сервисами [<a href="../notes/digital-ocean-ssh" title="Digital ocean SSH">digital-ocean-ssh</a>]</p>
+<ul>
+  <li>Установка [<a href="docker" title="Docker">docker</a>] описана в [<a href="../notes/digital-ocean-docker-install" title="Digital ocean docker install">digital-ocean-docker-install</a>]</li>
+  <li>Работа с базами данных описана в [<a href="../notes/digital-ocean-databases" title="Digital ocean databases">digital-ocean-databases</a>]</li>
+  <li>Проблемы трансфера данных между github и [<a href="../notes/digital-ocean-container-registry" title="Digital ocean container registry">digital-ocean-container-registry</a>] в этой заметке: [<a href="../posts/2021-09-07-daily-note" title="Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами">2021-09-07-daily-note</a>]</li>
+  <li>Как добавлять домены и управлять ns описано тут [<a href="../notes/digital-ocean-dns-management" title="Digital ocean dns management">digital-ocean-dns-management</a>]</li>
+  <li>Как работать по SSH с digital ocean сервисами [<a href="../notes/digital-ocean-ssh" title="Digital ocean SSH">digital-ocean-ssh</a>]</li>
+  <li><a href="https://docs.digitalocean.com/products/monitoring/how-to/install-agent/">How to Install the DigitalOcean Metrics Agent</a></li>
+</ul>
 
 
 

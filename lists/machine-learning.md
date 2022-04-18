@@ -11,6 +11,8 @@ tags: ml
 
 ## [[graphs]]
 
+[Apache JENA](https://jena.apache.org/) - RDF хранилище
+
 ## evolution
 
 - [[deap]]

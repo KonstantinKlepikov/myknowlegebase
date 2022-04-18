@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Jenkins | My knowlege base</title>
+<title>Molotov | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Jenkins" />
+<meta property="og:title" content="Molotov" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/jenkins.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/jenkins.html" />
+<meta name="description" content="Приложение для нагрузочного тестирования http-ресурса" />
+<meta property="og:description" content="Приложение для нагрузочного тестирования http-ресурса" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/molotov.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/molotov.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/jenkins.html","headline":"Jenkins","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/molotov.html","headline":"Molotov","description":"Приложение для нагрузочного тестирования http-ресурса","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,11 +83,35 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="jenkins">Jenkins</h1>
+      <h1 id="molotov">Molotov</h1>
 
-<p><a href="https://pkg.jenkins.io/debian-stable/">Документация</a></p>
+<p>Асинхронный (смотри [<a href="asyncio" title="Asyncio">asyncio</a>]) тестировщик нагрузки для http</p>
 
-<p>[<a href="cl" title="Ci - непрервыная интеграция">cl</a>]</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+This Molotov script has 2 scenario
+"""</span>
+<span class="kn">from</span> <span class="nn">molotov</span> <span class="kn">import</span> <span class="n">scenario</span>
+
+<span class="n">_API</span> <span class="o">=</span> <span class="s">"http://localhost:8080"</span>
+
+<span class="o">@</span><span class="n">scenario</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">scenario_one</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">_API</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">res</span><span class="p">[</span><span class="s">"result"</span><span class="p">]</span> <span class="o">==</span> <span class="s">"OK"</span>
+        <span class="k">assert</span> <span class="n">resp</span><span class="p">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">200</span>
+
+<span class="o">@</span><span class="n">scenario</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">scenario_two</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">_API</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">resp</span><span class="p">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">200</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://molotov.readthedocs.io/en/stable/">Документация</a></li>
+  <li>[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</li>
+  <li>[<a href="../lists/linux" title="Linux">linux</a>]</li>
+</ul>
 
 
 

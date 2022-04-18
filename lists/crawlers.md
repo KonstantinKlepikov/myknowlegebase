@@ -107,8 +107,9 @@ tags: crawlers
 Дополнительно:
 
 - [[2022-01-04-daily-note]] использование proxy в selenium
-- [[parsing-robots-txt-with-scrapy]]
 - [[2022-02-04-daily-note]] про вебдрайверы в [[selenium]]
+- [Web Scraping with Selenium in Python](https://www.zenrows.com/blog/web-scraping-with-selenium-in-python#getting-started)
+- [про обход блокировок при скрапинге](https://www.zenrows.com/blog/stealth-web-scraping-in-python-avoid-blocking-like-a-ninja#behavioral-patterns)
 
 Пакеты и либы:
 
@@ -155,7 +156,6 @@ tags: crawlers
 [BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
 [urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
 [2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"
-[parsing-robots-txt-with-scrapy]: ../notes/parsing-robots-txt-with-scrapy "Parsing robots txt with scrapy"
 [2022-02-04-daily-note]: ../posts/2022-02-04-daily-note "Работа в selenium с firefox"
 [selenium]: ../notes/selenium "Selenium"
 [scrapy]: ../notes/scrapy "Scrapy"
@@ -172,7 +172,6 @@ tags: crawlers
 [BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
 [urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
 [2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"
-[parsing-robots-txt-with-scrapy]: ../notes/parsing-robots-txt-with-scrapy "Parsing robots txt with scrapy"
 [2022-02-04-daily-note]: ../posts/2022-02-04-daily-note "Работа в selenium с firefox"
 [selenium]: ../notes/selenium "Selenium"
 [scrapy]: ../notes/scrapy "Scrapy"

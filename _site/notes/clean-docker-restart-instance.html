@@ -7,17 +7,17 @@
 
     <meta charset="UTF-8">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Jenkins | My knowlege base</title>
+<title>How to do clean docker restsrt instance | My knowlege base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Jenkins" />
+<meta property="og:title" content="How to do clean docker restsrt instance" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
 <meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/jenkins.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/jenkins.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/clean-docker-restart-instance.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/clean-docker-restart-instance.html" />
 <meta property="og:site_name" content="My knowlege base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/jenkins.html","headline":"Jenkins","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/clean-docker-restart-instance.html","headline":"How to do clean docker restsrt instance","description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -83,11 +83,26 @@
 
     <main id="main-content" class="container" role="main">
 
-      <h1 id="jenkins">Jenkins</h1>
+      <h1 id="how-to-do-clean-docker-restsrt-instance">How to do clean docker restsrt instance</h1>
 
-<p><a href="https://pkg.jenkins.io/debian-stable/">Документация</a></p>
+<p>Stop the container(s) using the following command:</p>
 
-<p>[<a href="cl" title="Ci - непрервыная интеграция">cl</a>]</p>
+<p><code class="language-plaintext highlighter-rouge">docker-compose down</code>
+Delete all containers using the following command:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker rm -f $(docker ps -a -q)</code>
+Delete all volumes using the following command:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker volume rm $(docker volume ls -q)</code></p>
+
+<p>Restart the containers using the following command:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose up -d</code></p>
+
+<ul>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="docker-compose" title="Docker compose">docker-compose</a>]</li>
+</ul>
 
 
 
