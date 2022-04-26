@@ -75,7 +75,7 @@
 
     <header role="banner">
     <div class="container">
-        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowledge base</a></h1>
         <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
         <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
     </div>
@@ -253,7 +253,33 @@ poetry init
 </ul>
 
 <p><a href="https://browniebroke.com/blog/migrating-project-to-poetry/">Пример реализации проекта на poetry</a>
-<a href="https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack">Как использовать poetry</a> на [[[heroku]], [<a href="heroku-cli" title="Heroku-cli">heroku-cli</a>]</p>
+<a href="https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack">Как использовать poetry</a> на [<a href="../lists/heroku" title="Heroku">heroku</a>], [<a href="heroku-cli" title="Heroku-cli">heroku-cli</a>]</p>
+
+<h2 id="еще-материалы">Еще материалы</h2>
+
+<h3 id="как-сделать-энтри-поинт-в-проекте-с-poetry">Как сделать энтри-поинт в проекте с poetry</h3>
+
+<p>Пример с [<a href="click" title="Click интерфейс командной строки">click</a>]:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">click</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="s">"""packagename cli"""</span>
+
+<span class="o">@</span><span class="n">main</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">packagefunction</span><span class="p">():</span>
+    <span class="s">"""packagefunction subcommand"""</span>
+</code></pre></div></div>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">[</span><span class="nv">tool.poetry.scripts</span><span class="pi">]</span>
+<span class="c1"># command_name = module_for_handler : function_for_handler</span>
+<span class="s">&lt;packagename&gt; = '&lt;packagename&gt;:&lt;main&gt;'</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/55065934/15966204">Источник на оверфло</a>. <a href="https://stackoverflow.com/questions/59286983/how-to-run-a-script-using-pyproject-toml-settings-and-poetry">Еще примеры</a> и <a href="https://stackoverflow.com/questions/67476156/pass-commandline-arguments-to-a-python-script-installed-with-poetry">еще</a>. Здесь можно <a href="https://stackoverflow.com/a/70656210/15966204">прочитать почему это может не работать.</a>.</p>
+
+<p>Альтернатива: <a href="https://github.com/nat-n/poethepoet">poethepoet</a></p>
 
 
 

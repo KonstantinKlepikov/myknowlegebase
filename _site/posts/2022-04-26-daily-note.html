@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>git remote stop tracking and replace comma to dot by re | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="git remote stop tracking and replace comma to dot by re" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Как избавляться от устревших веток в git и как заменить запятые на точки в сложных строках, содержащих смешанные цифры и другие знаки" />
+<meta property="og:description" content="Как избавляться от устревших веток в git и как заменить запятые на точки в сложных строках, содержащих смешанные цифры и другие знаки" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-04-26-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-04-26-daily-note.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2022-04-26-daily-note.html","headline":"git remote stop tracking and replace comma to dot by re","description":"Как избавляться от устревших веток в git и как заменить запятые на точки в сложных строках, содержащих смешанные цифры и другие знаки","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowledge base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="git-remote-stop-tracking-and-replace-comma-to-dot-by-re">git remote stop tracking and replace comma to dot by re</h1>
+
+<h2 id="how-do-you-stop-tracking-a-remote-branch-in-git">How do you stop tracking a remote branch in Git</h2>
+
+<p><code class="language-plaintext highlighter-rouge">git branch --unset-upstream</code></p>
+
+<p>можно удалить локальную ветку, которая тречит удаленную</p>
+
+<p><code class="language-plaintext highlighter-rouge">git branch -d -r origin/&lt;remote branch name&gt;</code></p>
+
+<p><a href="https://stackoverflow.com/a/3046478/15966204">сорс</a></p>
+
+<p>Избавиться от ссылок на удаленные ветки можно тиак:</p>
+
+<p><code class="language-plaintext highlighter-rouge">git fetch origin --prune</code></p>
+
+<p>Удалить все ветки, которых нет удаленно можно так:</p>
+
+<p><code class="language-plaintext highlighter-rouge">git remote prune origin</code></p>
+
+<p>Правда гит еще 30 дней сохраняет неявные ссылки после удаления, поэтому можно вопспользоваться сборщиком мусора</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git reflog expire <span class="nt">--expire</span><span class="o">=</span>1.minute refs/heads/main
+git fsck –unreachable
+git gc
+</code></pre></div></div>
+
+<h2 id="match-float-with-comma-and-then-replace-comma-with-dot">match float with comma and then replace comma with dot</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'input.txt'</span><span class="p">,</span> <span class="s">'r+'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">newf</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'(\s+[+-]?[0-9]+),([0-9]+\s+)'</span><span class="p">,</span><span class="s">r'\1.\2'</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">newf</span><span class="p">)</span>
+
+<span class="mi">1000101</span> <span class="mi">33434</span><span class="p">,</span><span class="mi">34</span> <span class="mi">1992</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="mi">12</span><span class="p">,</span><span class="mi">43</span> <span class="mi">129012</span> <span class="mi">91</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="mi">1000101</span> <span class="mi">33434</span><span class="p">,</span><span class="mi">34</span> <span class="mi">1992</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="mi">1000101</span> <span class="mf">33434.34</span> <span class="mi">1992</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="mf">12.43</span> <span class="mi">129012</span> <span class="mi">91</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="mi">1000101</span> <span class="mf">33434.34</span> <span class="mi">1992</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/24417751/15966204">source</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/git" title="Git">git</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

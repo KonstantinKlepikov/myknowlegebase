@@ -75,7 +75,7 @@
 
     <header role="banner">
     <div class="container">
-        <h1 id="a-title"><a href="/myknowlegebase/">My knowlege base</a></h1>
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowledge base</a></h1>
         <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
         <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
     </div>
@@ -767,6 +767,21 @@ In <span class="o">[</span>1]:
 
 <h3 id="settings"><a href="https://docs.scrapy.org/en/latest/topics/settings.html">Settings</a></h3>
 
+<p><a href="https://docs.scrapy.org/en/latest/topics/api.html#module-scrapy.settings">Settings API</a></p>
+
+<p>Приоритет настроек:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SETTINGS_PRIORITIES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'default'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">'command'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s">'project'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="s">'spider'</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s">'cmdline'</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/71045333/scrapy-crawlerprocess-does-not-override-settings">Тут объясняется</a> почему нельзя переписать настройки, которые прписаны в самом пауке после создания инстанса паука</p>
+
 <h3 id="exceptions"><a href="https://docs.scrapy.org/en/latest/topics/exceptions.html">Exceptions</a></h3>
 
 <h2 id="в-дополнение-библиотека-поддердживает">В дополнение библиотека поддердживает</h2>
@@ -837,6 +852,17 @@ In <span class="o">[</span>1]:
 </code></pre></div></div>
 
 <p><a href="https://stackoverflow.com/a/14077313/15966204">Ссылка на оверфло</a></p>
+
+<h2 id="запуск-пауков-из-скрипта">Запуск пауков из скрипта</h2>
+
+<p><a href="https://docs.scrapy.org/en/latest/topics/practices.html">Смотри тут</a></p>
+
+<p><a href="https://docs.scrapy.org/en/latest/topics/api.html#crawler-api">Crawler API</a>:</p>
+
+<ul>
+  <li><a href="https://docs.scrapy.org/en/latest/topics/practices.html#running-multiple-spiders-in-the-same-process">CrawlerProcess</a> несколько пауков в одном процессе</li>
+  <li>CrawlerRunner запуск паука в готовом “реакторе” - требует дополнительного конфигурирования самого реактора. Все так-же в одном процессе</li>
+</ul>
 
 <p>Смотри еще:</p>
 

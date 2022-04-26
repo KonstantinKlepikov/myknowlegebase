@@ -975,6 +975,10 @@ pip uninstall pytest-NAME
 - `pytest-flakes`: check source code with pyflakes.
 - `oejskit`: a plugin to run javascript unittests in live browsers.
 
+[pytest-selenium](https://pytest-selenium.readthedocs.io/en/latest/index.html) - плугин для использования [[selenium]] в тестаХ
+
+Узнать какие плагины установлены можно так: `pytest --trace-config`
+
 ## [Writing plugins](https://docs.pytest.org/en/6.2.x/writing_plugins.html)
 
 ## [Writing hook functions](https://docs.pytest.org/en/6.2.x/writing_plugins.html#writing-hook-functions)
@@ -1007,6 +1011,7 @@ pip uninstall pytest-NAME
 [фикстуры]: фикстуры "Фикстуры"
 [doctest]: doctest "Doctest"
 [unittest]: unittest "Unittest"
+[selenium]: selenium "Selenium"
 [Flaky-tests]: flaky-tests "Flaky tests"
 [pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests"
 [unittest]: unittest "Unittest"

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+
+<html>
+
+  <head>
+
+    <meta charset="UTF-8">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Makefile | My knowlege base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Makefile" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Использование make для сборки проектов" />
+<meta property="og:description" content="Использование make для сборки проектов" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/makefile.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/makefile.html" />
+<meta property="og:site_name" content="My knowlege base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/makefile.html","headline":"Makefile","description":"Использование make для сборки проектов","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
+        type="text/css" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/css/style.css">
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header role="banner">
+    <div class="container">
+        <h1 id="a-title"><a href="/myknowlegebase/">My knowledge base</a></h1>
+        <h2 class="project-tagline">Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения</h2>
+        <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href=""></a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
+    </div>
+</header>
+
+    <main id="main-content" class="container" role="main">
+
+      <h1 id="makefile">Makefile</h1>
+
+<p>Формат</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>target <span class="o">[</span>target ...]: <span class="o">[</span>component ...]
+Tab ↹[command 1]
+	   <span class="nb">.</span>
+	   <span class="nb">.</span>
+	   <span class="nb">.</span>
+Tab ↹[command n]
+</code></pre></div></div>
+
+<p>Допускаются макросы, переменные и использование суффиксов и префиксов и других конструкций. При отсутствии аргументов у команды <code class="language-plaintext highlighter-rouge">make</code> обращается к цели <code class="language-plaintext highlighter-rouge">all</code> или к первой встречной из ближайшего Makefile. Пример;</p>
+
+<div class="language-makefile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># target: all - Default target. Does nothing.
+</span><span class="nl">all</span><span class="o">:</span>
+	<span class="nb">echo</span> <span class="s2">"Hello, this is make for my knowledgebase"</span>
+	<span class="nb">echo</span> <span class="s2">"Try 'make help' and search available options"</span>
+
+<span class="c"># target: help - List of options
+</span><span class="nl">help</span><span class="o">:</span>
+	egrep <span class="s2">"^# target:"</span> <span class="o">[</span>Mm]akefile
+
+<span class="c"># terget: serve - build site for production
+</span><span class="nl">serve</span><span class="o">:</span>
+	<span class="nv">JEKYLL_ENV</span><span class="o">=</span>development bundle <span class="nb">exec </span>jekyll serve
+
+<span class="c"># target: build - build site for deployment
+</span><span class="nl">build</span><span class="o">:</span>
+	<span class="nv">JEKYLL_ENV</span><span class="o">=</span>production bundle <span class="nb">exec </span>jekyll build
+</code></pre></div></div>
+
+<p>Пример из вики:</p>
+
+<div class="language-makefile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">PACKAGE</span>	 <span class="o">=</span> package
+<span class="nv">VERSION</span>	 <span class="o">=</span> <span class="sb">`</span> <span class="nb">date</span> <span class="s2">"+%Y.%m%d%"</span> <span class="sb">`</span>
+<span class="nv">RELEASE_DIR</span>  <span class="o">=</span> ..
+<span class="nv">RELEASE_FILE</span> <span class="o">=</span> <span class="nv">$(PACKAGE)</span>-<span class="nv">$(VERSION)</span>
+
+<span class="c"># Notice that the variable LOGNAME comes from the environment in
+# POSIX shells.
+#
+# target: all - Default target. Does nothing.
+</span><span class="nl">all</span><span class="o">:</span>
+	<span class="nb">echo</span> <span class="s2">"Hello </span><span class="nv">$(LOGNAME)</span><span class="s2">, nothing to do by default"</span>
+		<span class="c"># sometimes: echo "Hello </span><span class="nv">${LOGNAME}</span>, nothing to <span class="k">do </span>by default<span class="s2">"</span>
+	<span class="s2">echo "</span>Try <span class="s1">'make help'</span><span class="s2">"</span>
+
+<span class="c"># target: help - Display callable targets.
+</span><span class="nl">help</span><span class="o">:</span>
+	egrep <span class="s2">"^# target:"</span> <span class="o">[</span>Mm]akefile
+
+<span class="c"># target: list - List source files
+</span><span class="nl">list</span><span class="o">:</span>
+	<span class="c"># Won't work. Each command is in separate shell</span>
+	<span class="nb">cd </span>src
+	<span class="nb">ls</span>
+
+	<span class="c"># Correct, continuation of the same shell
+</span>	<span class="err">cd</span> <span class="err">src;</span> <span class="err">\</span>
+	<span class="err">ls</span>
+
+<span class="c"># target: dist - Make a release.
+</span><span class="nl">dist</span><span class="o">:</span>
+	<span class="nb">tar</span> <span class="nt">-cf</span>  <span class="nv">$(RELEASE_DIR)</span>/<span class="nv">$(RELEASE_FILE)</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
+	<span class="nb">gzip</span> <span class="nt">-9</span>  <span class="nv">$(RELEASE_DIR)</span>/<span class="nv">$(RELEASE_FILE)</span>.tar
+</code></pre></div></div>
+
+<p>Смотир еще:</p>
+
+<ul>
+  <li>[<a href="cl" title="Ci - непрервыная интеграция">cl</a>]</li>
+  <li>[<a href="../lists/linux" title="Linux">linux</a>]</li>
+  <li><a href="https://en.wikipedia.org/wiki/Make_(software)">статья на вики</a></li>
+  <li>[<a href="click" title="Click интерфейс командной строки">click</a>]</li>
+</ul>
+
+
+
+<div class="additional-pad">
+  <p><a href="/myknowlegebase/">>>> На главную</a></p>
+</div>
+
+
+    </main>
+
+    <footer role="banner">
+    <div class="container">
+        <h4><a href="/myknowlegebase/">My knowlege base</a> поддерживается <a href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></h4>
+        <h4>Блог автора: <a href="https://konstantinklepikov.github.io/">My deep learning</a></h4>
+    </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
