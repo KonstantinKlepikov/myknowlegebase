@@ -1,6 +1,5 @@
 ---
 description: Оценка быстродействия http в linux
-category: list
 ---
 # Apache-banchmark
 

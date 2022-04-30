@@ -2,9 +2,8 @@
 description: Список заметок о SQLAlchemy
 category: list
 tags: sqlalchemy
+title: Sqlalchemy
 ---
-# Sqlalchemy
-
 ОРМ на python
 
 - [[sqlalchemy-docs]]

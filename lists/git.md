@@ -2,9 +2,8 @@
 description: Список заметок о git
 category: list
 tags: git
+title: Git
 ---
-# Git
-
 - [[gittags]]
 - [[git-rm]]
 - [[workflow-types]]

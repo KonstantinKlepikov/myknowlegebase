@@ -3,7 +3,6 @@ description: Список заметок о компьютерном зрени�
 title: Computer visions
 tags: ml
 ---
-
 ## Библиотеки cv
 
 - [scikit-image.org](https://scikit-image.org/)

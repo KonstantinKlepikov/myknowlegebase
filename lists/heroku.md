@@ -2,9 +2,8 @@
 description: Основаная статья и список заметок о хостинге heroku
 category: list
 tags: heroku
+title: Heroku
 ---
-# Heroku
-
 [Heroku dev center](https://devcenter.heroku.com/categories/heroku-architecture)
 
 ## Dynos
@@ -119,7 +118,7 @@ Example [[docker-compose]]. That python application depends on [[postgres]] and 
 
 - For local development: use official Docker images, such as Postgres and Redis.
 - For staging and production: use Heroku add-ons, such as [heroku-postgres](https://devcenter.heroku.com/articles/heroku-postgresql) and Heroku Redis.
-  
+
 Using official Docker images locally and Heroku add-ons in production provides you with the best of both worlds:
 
 - Parity: You get parity by using the same services on your local machine as you do in production

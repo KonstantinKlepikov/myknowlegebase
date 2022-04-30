@@ -4,7 +4,6 @@ category: list
 title: Алгоритмы машинного обучения
 tags: ml
 ---
-
 [ml_monorepo](https://github.com/timothyyu/ml_monorepo) Super-monorepo for machine learning and algorithmic trading
 
 ## [[computer-visions]]

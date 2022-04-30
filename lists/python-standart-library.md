@@ -2,9 +2,8 @@
 description: Нюансы работы со стандартной библиотекой в python
 tags: python-standart-library
 category: list
+title: Стандартная библиотека python и полезные ресурсы
 ---
-# Стандартная библиотека python и полезные ресурсы
-
 ## Стандартная библиотека
 
 - [[python-glossary]]

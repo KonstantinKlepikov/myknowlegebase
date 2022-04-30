@@ -9,10 +9,11 @@ No plugins required.
 import glob
 import os
 
-post_dir = '_posts/'
 tag_dir = 'tag/'
 
-filenames = glob.glob(post_dir + '*md')
+filenames = []
+for i in ['posts/', 'lists/', 'notes/']:
+    filenames = filenames + glob.glob(i + '*md')
 
 total_tags = []
 for filename in filenames:
@@ -37,7 +38,7 @@ total_tags = set(total_tags)
 old_tags = glob.glob(tag_dir + '*.md')
 for tag in old_tags:
     os.remove(tag)
-    
+
 if not os.path.exists(tag_dir):
     os.makedirs(tag_dir)
 

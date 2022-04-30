@@ -1,97 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "ru-RU" }}">
 
-<html>
-
   {% include head.html %}
 
   <body>
 
-    <div>
+    {% include header_home.html %}
+    {% include allpages_home.html %}
+    {% include footer.html %}
 
-        <header class="header-background">
-
-          <div class="clearfix border-bottom-thick header-border">
-            <ul class="list-reset right small-left py-1 px-1 header-text font-smoothing">
-              {% for my_page in site.pages %}
-                {% if my_page.title and my_page.tag == null %}
-                <li class="inline-block">
-                  <a class="align-middle link-primary header-link mr-2" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
-                </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-
-          <div class="container mx-auto px-2 mb-2 clearfix header-text">
-            <h1 class="h0 inline-block col-9 sm-width-full py-4 mt-3 header-title">{{ site.title }}</h1>
-
-            <div class="clearfix mb-4 py-1">
-              <div class="col-4 sm-width-full left border-top-thin">
-                <p class="h4 lh-condensed font-smoothing mt-2 py-1">{{ site.description }}</p>
-              </div>
-
-              <div class="col-4 sm-width-full left border-top-thin mt-3 mt-lg-0 ml-lg-4 table">
-                  <div class="inline-block mt-3 mr-2">
-                    {% include telegram.html %}
-                  </div>
-                  <div class="inline-block mt-3">
-                    {% include github.html %}
-                  </div>
-              </div>
-            </div>
-
-          </div>
-        </header>
-
-        {% assign pages_list = site.pages | sort: 'title' %}
-        {% assign notes_list = site.pages %}
-        {% assign tag_list = site.site_tags | sort %}
-
-        <div class="container mx-auto px-2 py-1">
-            <div>
-                <h2>Все заметки по тематикам</h2>
-                {% for tag in tag_list %}
-                    {% for page in pages_list %}
-                        {% if page.category == 'list' and page.tags == tag %}
-                            {% include allpages_main.html %}
-                        {% endif %}
-                    {% endfor %}
-                    {% for page in pages_list %}
-                        <ul>
-                            {% if page.tags == tag and page.category == nil %}
-                                {% include allpages_list.html %}
-                            {% endif %}
-                        </ul>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-
-            <div>
-                <h2>Нераспределенные заметки</h2>
-                {% for page in pages_list %}
-                    {% if page.title and page.category == nil and page.tags == nil %}
-                        {% include allpages_block.html %}
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <div>
-                <h2>Daily notes</h2>
-                {% for page in notes_list %}
-                    <ul>
-                        {% if page.category == 'post' and page.title %}
-                            {% include allpages_list.html %}
-                        {% endif %}
-                    </ul>
-                {% endfor %}
-            </div>
-        </div>
-
-      </div>
-      {% include tagcloud.html %}
-      {% include footer.html %}
-
-    </body>
+  </body>
 
 </html>

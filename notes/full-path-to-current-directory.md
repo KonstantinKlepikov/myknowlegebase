@@ -1,9 +1,8 @@
 ---
 description: Как получить полный путь к текущей директории в python
 tags: python-standart-library
+title: Full path to current directory
 ---
-# Full path to current directory
-
 ## Python3
 
 Фолдер, в котором запущен скрипт:

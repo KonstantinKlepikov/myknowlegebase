@@ -2,9 +2,8 @@
 description: Список заметок про работу с linux для devops
 category: list
 tags: linux
+title: Linux
 ---
-# Linux
-
 ## Как перезагрузить сервер
 
 `sudo reboot` или `sudo shutdown -r now`

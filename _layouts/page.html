@@ -4,9 +4,15 @@ layout: default
 
 <article class="container mx-auto px-2 mt2 mb4">
   <header>
-    <h1 class="h0 py-4 mt-3">{{ page.title }}</h1>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">{{ page.title }}</h1>
   </header>
   <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      {% for tag in page.tags %}
+        {% capture tag_name %}{{ tag }}{% endcapture %}
+        <a href="{{ site.baseurl }}/tag/{{ tag_name }}" title="{{ tag_name }}" class="link-tags">{{ tag_name }}&nbsp;</a>
+      {% endfor %}
+      </p>
   </div>
   <div class="prose mb-4 py-4">
     {{ content }}

@@ -3,7 +3,6 @@ description: Сборник заметок про графовые алгори�
 title: Machine learning with graphs
 tags: ml
 ---
-
 [graph-based-deep-learning-literature](https://github.com/naganandy/graph-based-deep-learning-literature)
 
 Библиотеки, работающие с графами:
