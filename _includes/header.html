@@ -1,7 +1,28 @@
-<header role="banner">
+<!-- <header role="banner">
     <div class="container">
-        <h1 id="a-title"><a href="{{ site.baseurl }}/">My knowledge base</a></h1>
+        <h1 id="a-title"><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
         <h2 class="project-tagline">{{ site.description }}</h2>
         <p>Тут собраны заметки по программированию, машинному обучению и алгоритмам, которые автор <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a> делал и продолжает делать в процессе обучения. Тысяча извинений за сумбурность записей, орфографию и изрядную долю копипасты. По сути это конспект. Более толковые статьи можно почитать в блоге <a href="https://konstantinklepikov.github.io/">my deep learning</a></p>
     </div>
-</header>
+</header> -->
+
+<header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="{{ site.baseurl }}/">
+        {{ site.title }}
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        {% for my_page in site.pages %}
+          {% if my_page.title and my_page.tag == null %}
+          <li class="inline-block">
+            <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="{{ my_page.url | prepend: site.baseurl }}">
+              {{ my_page.title }}
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </header>
