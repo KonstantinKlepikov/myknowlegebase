@@ -2,9 +2,8 @@
 description: Логирование в python
 tags: logging
 category: list
+title: Python logging
 ---
-# Python logging
-
 [Документация](https://docs.python.org/dev/library/logging.html#module-logging)
 
 [How to disable logging on the standard error stream?](https://stackoverflow.com/questions/2266646/how-to-disable-logging-on-the-standard-error-stream)

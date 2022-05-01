@@ -1,9 +1,8 @@
 ---
 description: Язык выражений XQuery и Xpath в библиотеке scrapy
 tags: crawlers
+title: XPath в scrapy
 ---
-# XPath в scrapy
-
 XPath — это язык выражений, который позволяет обрабатывать значения, соответствующие модели данных, определенной в XQuery и модели данных Xpath
 
 [Ссылка на спецификацию](https://www.w3.org/TR/xpath/all/)

@@ -1,9 +1,8 @@
 ---
 description: Как удалить или изменить remote для локального git репозитория
 tags: git
+title: How to remove remote origin from a Git repository
 ---
-# How to remove remote origin from a Git repository
-
 Удалить текущий и добавить новый:
 
 ```shell

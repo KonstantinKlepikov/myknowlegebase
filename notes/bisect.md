@@ -1,9 +1,8 @@
 ---
 description: bisect в стандартной библиотеке python
 tags: python-standart-library
+title: Bisect - сортирвоанные списки
 ---
-# Bisect - сортирвоанные списки
-
 Обеспечивает сортировку при вставке в список.
 
 ```python

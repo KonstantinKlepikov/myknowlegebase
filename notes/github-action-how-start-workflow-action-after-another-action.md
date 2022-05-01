@@ -1,9 +1,8 @@
 ---
 description: Github action - как запускать экшены последовательно
-tags: cl
+tags: cl github
+title: How start second github action after success first
 ---
-# How start second github action after success first
-
 ## Тот же workflow, отдельный job с needs ключом
 
 В одном воркфлоу можно определить дополнительный job через need - в этом случае экшен будет выполнен, только если успешно выполнен экшен в need

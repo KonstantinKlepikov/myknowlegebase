@@ -1,9 +1,8 @@
 ---
 description: Создание виртуальных окружений в python
 tags: python-standart-library
+title: Venv
 ---
-# Venv
-
 Предпочтительный способ установки:
 
 `python -m venv version /path/to/new/virtual/environment`

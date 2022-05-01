@@ -1,9 +1,8 @@
 ---
 description: Переменные окружения в fastapi
 tags: fastapi
+title: Fastapi environment variables
 ---
-# Fastapi environment variables
-
 [Основная статья](https://fastapi.tiangolo.com/pt/advanced/settings/)
 
 Прочитать переменные окружения в python можно так

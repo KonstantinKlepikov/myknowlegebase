@@ -1,9 +1,8 @@
 ---
 description: urlib.parse в стандартной библиотеке python
 tags: python-standart-library
+title: Urllib.parse - парсинг урлов в компоненты
 ---
-# Urllib.parse - парсинг урлов в компоненты
-
 Модуль определяет стандартный интерфейс для разбиения строк URL на компоненты, для объединения компонентов обратно в строку URL и для преобразования «относительного URL» в абсолютный URL-адрес, заданный «базовым URL-адресом». Поддерживаются: file, ftp, gopher, hdl, http, https, imap, mailto, mms, news, nntp, prospero, rsync, rtsp, rtspu, sftp, shttp, sip, sips, snews, svn, svn+ssh, telnet, wais.wswss
 
 ## [Парсинг](https://docs.python.org/3/library/urllib.parse.html#url-parsing)

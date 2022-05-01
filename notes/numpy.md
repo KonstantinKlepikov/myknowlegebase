@@ -1,10 +1,9 @@
 ---
 description: Библиотека numpy в python
 category: list
-tags: numpy
+tags: numpy ml pip
+title: Numpy
 ---
-# Numpy
-
 [Как создавать массивы](https://numpy.org/doc/stable/user/basics.creation.html)
 
 Статьи:

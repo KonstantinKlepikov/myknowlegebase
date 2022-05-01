@@ -1,9 +1,8 @@
 ---
 description: Использование нескольких процессоров во фреймворке DEAP
-tags: ml
+tags: ml genetic
+title: Multiproces for deap
 ---
-# Multiproces for deap
-
 ```python
 import multiprocessing
 

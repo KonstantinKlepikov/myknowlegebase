@@ -1,8 +1,8 @@
 ---
 description: Прокси-сервер с открытым исходным кодом traefic
+title: Traefik
+tags: docker servers
 ---
-# Traefik
-
 [Статья на хабре](https://habr.com/ru/post/508636/)
 
 Traefik — это обратный прокси-сервер с открытым исходным кодом, обеспечивающий простую работу с микросервисами и/или просто контейнерами с вашими приложениями.
@@ -42,7 +42,7 @@ services:
       - no-new-privileges:true
     ports:
       - 80:80
-      - 443:443 
+      - 443:443
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -244,7 +244,7 @@ services:
       - no-new-privileges:true
     ports:
       - 80:80
-      - 443:443 
+      - 443:443
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -299,18 +299,18 @@ providers:
 http:
   routers:
     host:
-      entryPoints: 
+      entryPoints:
       - https
       service: service-host
-      rule: Host(`host.example.com`) 
+      rule: Host(`host.example.com`)
       tls:
         certResolver: letsEncrypt
   services:
-    service-host:  
+    service-host:
       loadBalancer:
         servers:
         - url: http://192.168.1.222:8080/
-        passHostHeader: true 
+        passHostHeader: true
 ```
 
 Роутер описывался раньше, тут добавилось только service: service-host — связь с нашим сервисом, и конфигурация для TLS.
@@ -346,7 +346,7 @@ docker-compose.yml:
 ```yml
 ports:
     - 80:80
-    - 443:443 
+    - 443:443
     - 8082:8082
 ```
 

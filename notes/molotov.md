@@ -1,9 +1,8 @@
 ---
 description: Приложение для нагрузочного тестирования http-ресурса
-tags: tests
+tags: tests pip
+title: Molotov
 ---
-# Molotov
-
 Асинхронный (смотри [[asyncio]]) тестировщик нагрузки для http
 
 ```python

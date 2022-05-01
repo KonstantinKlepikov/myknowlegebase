@@ -1,9 +1,8 @@
 ---
 description: Извлечение данных из sitemaps в scrapy
 tags: crawlers
+title: Parsing sitemap with scrapy
 ---
-# Parsing sitemap with scrapy
-
 Для парсинга на основе сайтмапа есть стандартный паук - [смотри тут](https://docs.scrapy.org/en/latest/topics/spiders.html#sitemapspider)
 
 Можно задать следующие параметры:

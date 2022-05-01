@@ -1,9 +1,8 @@
 ---
 description: Создание матриц с помощью вложенных списков в python
 tags: python-standart-library
+title: Creation of list matrix
 ---
-# Creation of list matrix
-
 ```python
 >>> matrix = [[i for i in range(5)] for _ in range(6)]
 >>> matrix

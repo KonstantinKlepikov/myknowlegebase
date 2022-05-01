@@ -1,9 +1,8 @@
 ---
 description: Системное время в стандартной библиотеке python
 tags: python-standart-library
+title: Time
 ---
-# Time
-
 Обеспечивает доступ к нескольким типов часов.
 
 - `time()` возвращает системное время

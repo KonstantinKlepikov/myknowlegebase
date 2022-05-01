@@ -1,9 +1,8 @@
 ---
 description: Ошибка аутентификации на Github
-tags: git
+tags: git github
+title: Github Authentication Failed
 ---
-# Github Authentication Failed
-
 Редкая, но противная ошибка, связанная с потерей связи локальных репозиториев с удаленными
 
 ```shell

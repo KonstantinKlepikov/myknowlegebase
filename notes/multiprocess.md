@@ -1,9 +1,8 @@
 ---
 description: Модули subprocess, signal и multiprocessing в стандартной библиотеке python
 tags: python-standart-library
+title: Управление процессами в python
 ---
-# Управление процессами в python
-
 ## [subprocess](https://docs.python.org/3/library/subprocess.html)
 
 Предоставляет АПИ, позволяющий создавать дополнительные процессы и обмениваться данными с ними. Модуль поддерживает обмен через стандартные каналы ввода-вывода, поэтому удобен для работы с текстом.

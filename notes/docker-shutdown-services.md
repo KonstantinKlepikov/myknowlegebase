@@ -1,9 +1,8 @@
 ---
 description: Как убрать неработающие сервисы в docker
 tags: docker
+title: Docker shutdown services
 ---
-# Docker shutdown services
-
 Используя `docker service ps` можно получить простыню из погашеных сервисов. Как-то вот так:
 
 ```shell

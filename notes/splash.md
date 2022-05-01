@@ -1,9 +1,8 @@
 ---
 description: Javascript-рендеринг се6рвис на python
 tags: crawlers
+title: Splash
 ---
-# Splash
-
 Splash - A javascript rendering service
 
 Splash — это сервис js-рендеринга. Это легкий веб-браузер с HTTP API, реализованный на Python3 с использованием Twisted и QT5. QT используется для того, чтобы сделать службу полностью асинхронной, что позволяет использовать параллелизм webkit через основной цикл QT. Некоторые функции Splash:

@@ -1,9 +1,8 @@
 ---
 description: Calling a function of by using string name
 tags: python-standart-library
+title: Вызов функции по ее строковому имени в python
 ---
-# Вызов функции по ее строковому имени в python
-
 ```python
 import foo
 method_to_call = getattr(foo, 'bar')

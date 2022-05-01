@@ -1,9 +1,8 @@
 ---
 description: Асинхронные сетевые протоколы в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library asincio
+title: Asyncio transports and protocols
 ---
-# Asyncio transports and protocols
-
 [[python-standart-library]]
 
 Смотри еще:

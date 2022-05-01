@@ -1,9 +1,8 @@
 ---
 description: Тестирование с переопределением зависимостей в fastapi
 tags: fastapi
+title: Fastapi testing dependencies with owerride
 ---
-# Fastapi testing dependencies with owerride
-
 [Статья](https://fastapi.tiangolo.com/pt/advanced/testing-dependencies/)
 
 Иногда надо переписать зависимости, к примеру когда используется внешняя аутентикация юзера. Чтобы тест не зависил от реализации, для теста можно переписать зависимости. Для этого используется атрибут `app.dependency_overrides`

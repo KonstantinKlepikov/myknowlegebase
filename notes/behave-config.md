@@ -1,9 +1,8 @@
 ---
 description: Конфигурирование библиотеки behave в python
-tags: tests
+tags: tests behave
+title: Behave config
 ---
-# Behave config
-
 Конфиги для [[behave]]
 
 [Основная статья](https://behave.readthedocs.io/en/stable/behave.html)

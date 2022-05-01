@@ -1,9 +1,8 @@
 ---
 description: Как в github action получить ссылку на определенный вариант экшена в workflow
-tags: cl
+tags: cl github
+title: Ссылка на версию экшена
 ---
-# Ссылка на версию экшена
-
 Не обязательно юзать экшен из магазина для [[github-action]]. Можно написать свой, форкнуть чей-то, внести изменеения и т.д. [Вот статья об этом](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses)
 
 Вот такие ссылки можно использовать:

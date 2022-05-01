@@ -1,9 +1,8 @@
 ---
 description: Сбор метрик о приложении
-tags: cl
+tags: cl logging
+title: Graphite
 ---
-# Graphite
-
 Graphite does two things:
 
 - Store numeric time-series data

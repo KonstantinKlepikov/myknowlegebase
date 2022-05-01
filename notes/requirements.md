@@ -1,8 +1,8 @@
 ---
 description: Управление зависимостями в requirements.txt на python
+title: Requirements.txt
+tags: cl
 ---
-# Requirements.txt
-
 Управлят ьнесколькими рекуйрментами можно [так](https://stackoverflow.com/questions/17803829/how-to-customize-a-requirements-txt-for-multiple-environments/20720019#20720019):
 
 ```bash

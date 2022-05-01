@@ -2,9 +2,8 @@
 description: Список заметок об http-фреймворке fast-api
 category: list
 tags: fastapi
+title: Fastapi
 ---
-# Fastapi
-
 - [Fastapi-login](https://fastapi-login.readthedocs.io/) - fastapi-login provides a convenient, simple to use user authentication for FastAPI
 - [fastapi-users](https://github.com/fastapi-users/fastapi-users) - Add quickly a registration and authentication system to your FastAPI project. FastAPI Users is designed to be as customizable and adaptable as possible.
 - [fastapi-docker-debug](https://github.com/Kludex/fastapi-docker-debug) - This is a very simple demonstration on how to debug your FastAPI application via Docker container

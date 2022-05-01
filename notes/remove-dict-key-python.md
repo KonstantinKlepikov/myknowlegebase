@@ -1,9 +1,8 @@
 ---
 description: How remove a key from a Python dictionary
 tags: python-standart-library
+title: Как удалить ключ словаря в python
 ---
-# Как удалить ключ словаря в python
-
 ```python
 my_dict.pop('key', None)
 ```

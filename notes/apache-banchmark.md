@@ -1,9 +1,8 @@
 ---
 description: Оценка быстродействия http в linux
-category: list
+tags: linux
+title: Apache banchmark
 ---
-# Apache-banchmark
-
 Сетевая утилита для оценки быстродействия [[http]]
 
 Полное описание тут: [дока](https://httpd.apache.org/docs/2.4/programs/ab.html)

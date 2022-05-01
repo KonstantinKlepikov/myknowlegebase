@@ -1,9 +1,8 @@
 ---
 description: Что на самом деле делает git mv
 tags: git
+title: git-rm
 ---
-# git-rm
-
 ```shell
 git mv
 ```

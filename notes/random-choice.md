@@ -1,9 +1,8 @@
 ---
 description: Как выбирать случайные объекты в python
 tags: numpy
+title: Random choice
 ---
-# Random choice
-
 ## Weighted random choice
 
 [A weighted version of random.choice](https://stackoverflow.com/questions/3679694/a-weighted-version-of-random-choice)

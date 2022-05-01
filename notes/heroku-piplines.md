@@ -1,9 +1,8 @@
 ---
 description: Организация pipline на heroku
 tags: heroku
+title: Heroku piplines
 ---
-# Heroku-piplines
-
 [ССылка на статью](https://devcenter.heroku.com/articles/pipelines)
 
 Pipline - это группа [[heroku]] приложений, объединенных общей кодовой базой для реализации воркфлоу:

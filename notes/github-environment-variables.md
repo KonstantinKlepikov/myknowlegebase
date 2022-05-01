@@ -1,9 +1,8 @@
 ---
 description: Переменные окружения в github actions
-tags: cl
+tags: cl github
+title: Github environment variables
 ---
-# Github environment variables
-
 [Как использовать переменные окружения](https://docs.github.com/en/actions/reference/environment-variables) в [[github-action]]
 
 - [[2021-08-27-daily-note]]

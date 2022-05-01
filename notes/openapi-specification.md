@@ -1,6 +1,6 @@
 ---
 description: Openapi спецификация
+title: Open-api v3 спецификация
+tags: http
 ---
-# Open-api v3 спецификация
-
 [ссылка на русский исходник](https://starkovden.github.io/openapi-tutorial-overview.html)

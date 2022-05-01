@@ -1,9 +1,8 @@
 ---
 description: Пример организации приложения fastapi с базой данных и orm
 tags: fastapi
+title: Fatsapi sql orm example
 ---
-# Fatsapi sql orm example
-
 ## Пример построения приложения
 
 ```bash
@@ -39,12 +38,12 @@ class School(Base):
     __tablename__ = "woot"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)  
+    name = Column(String)
 
 
     def __init__(self, name):
 
-        self.name = name    
+        self.name = name
 
 
 Base.metadata.create_all(engine)

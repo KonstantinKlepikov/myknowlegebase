@@ -1,5 +1,8 @@
-# OAuth2
-
+---
+description: OAuth2
+tags: http
+title: OAuth2
+---
 Смотри примененеие в [[fastapi-template-buildin-routes]]
 
 Еще:

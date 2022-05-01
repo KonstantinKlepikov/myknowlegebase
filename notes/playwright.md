@@ -1,9 +1,8 @@
 ---
 description: Пакет для сквозного тестирования web-приложений
-tags: crawlers
+tags: crawlers tests pip
+title: Playwright
 ---
-# Playwright
-
 Playwright enables reliable end-to-end testing for modern web apps
 
 Предоставляет два API - синхронный и асинхронный. Смотри [intro](https://playwright.dev/python/docs/intro)

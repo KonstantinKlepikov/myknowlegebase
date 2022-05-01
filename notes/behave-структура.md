@@ -1,9 +1,8 @@
 ---
 description: Структура тестов в behave
-tags: tests
+tags: tests behave
+title: Behave структура
 ---
-# Behave структура
-
 [Основыная статья в документации](https://behave.readthedocs.io/en/stable/tutorial.html)
 
 Структура проекта [[behave]]

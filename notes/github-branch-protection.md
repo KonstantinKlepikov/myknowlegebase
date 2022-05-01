@@ -1,9 +1,8 @@
 ---
 description: Создание и управление защищенными ветками на github
-tags: cl
+tags: cl github
+title: Githunb branch protection
 ---
-# Githunb branch protection
-
 [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches)
 
 [Managing a branch protection rule](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/managing-a-branch-protection-rule)

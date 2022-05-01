@@ -1,46 +1,14 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "ru-RU" }}">
 
-{% assign pages_list = site.pages | sort: 'title' %}
-{% assign notes_list = site.pages %}
-{% assign tag_list = site.site_tags | sort %}
+  {% include head.html %}
 
-<div>
-    <h2>Все заметки по тематикам</h2>
-    {% for tag in tag_list %}
-        {% for page in pages_list %}
-            {% if page.category == 'list' and page.tags == tag %}
-                {% include allpages_main.html %}
-            {% endif %}
-        {% endfor %}
-        {% for page in pages_list %}
-            <ul>
-                {% if page.tags == tag and page.category == nil %}
-                    {% include allpages_list.html %}
-                {% endif %}
-            </ul>
-        {% endfor %}
-    {% endfor %}
-</div>
+  <body>
 
-<div>
-    <h2>Нераспределенные заметки</h2>
-    {% for page in pages_list %}
-        {% if page.title and page.category == nil and page.tags == nil %}
-            {% include allpages_block.html %}
-        {% endif %}
-    {% endfor %}
-</div>
+    {% include header_home.html %}
+    {% include allpages_home.html %}
+    {% include footer.html %}
 
-<div>
-    <h2>Daily notes</h2>
-    {% for page in notes_list %}
-        <ul>
-            {% if page.category == 'post' and page.title %}
-                {% include allpages_list.html %}
-            {% endif %}
-        </ul>
-    {% endfor %}
-</div>
+  </body>
 
+</html>

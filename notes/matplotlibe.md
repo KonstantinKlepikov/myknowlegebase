@@ -1,8 +1,8 @@
 ---
 description: Matplotlibe - инструмент визуализации графиков в python
+title: Matplotlibe
+tags: ml pip
 ---
-# Matplotlibe
-
 - немного заметок на тему сеток и размеров изображений в matplotlibe тут: [[2021-09-20-daily-note]]
 - про размеры изображений [[matplotlib-size]]
 - [Image tutorial](https://matplotlib.org/stable/tutorials/introductory/images.html)

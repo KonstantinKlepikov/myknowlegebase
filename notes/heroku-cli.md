@@ -1,9 +1,8 @@
 ---
 description: Инструменты командной строки для heroku
-tags: heroku
+tags: heroku cli
+title: Heroku-cl
 ---
-# Heroku-cli
-
 - [Статья](https://devcenter.heroku.com/articles/using-the-cli)
 - [[heroku]]
 
