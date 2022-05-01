@@ -1,9 +1,8 @@
 ---
 description: Пример staging-сервера на digital ocean
 tags: do
+title: Пример промежуточного сервера
 ---
-# Пример промежуточного сервера
-
 Пример для [[digital-ocean]]. Запустить дроплет с чистой убунтой.
 
 Войти по shh: `ssh elspeth@@superlists-staging.ottg.eu`
@@ -72,17 +71,17 @@ elspeth@server:$ sudo rm /etc/nginx/sites-enabled/default
 Description=Gunicorn server for superlists-staging.ottg.eu
 
 [Service]
-Restart=on-failure  
-User=elspeth  
-WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu  
-EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env  
+Restart=on-failure
+User=elspeth
+WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu
+EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env
 
 ExecStart=/home/elspeth/sites/superlists-staging.ottg.eu/virtualenv/bin/gunicorn \
     --bind unix:/tmp/superlists-staging.ottg.eu.socket \
-    superlists.wsgi:application  
+    superlists.wsgi:application
 
 [Install]
-WantedBy=multi-user.target 
+WantedBy=multi-user.target
 ```
 
 Здесь мы рестартим, если сервер прадает. Задаем юзера, от которого выполняется процесс. Задаем текущий рабочий каталог и файл переменных окружения (это можно делать и по другому)

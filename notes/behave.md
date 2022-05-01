@@ -1,9 +1,8 @@
 ---
 description: Тестирование с помощью функциональных тестов behave
-tags: tests
+tags: tests behave pip
+title: Behave
 ---
-# Behave
-
 Питонья обертка над [[gherkin]] для написания [[приемочные-тесты]]. Ссылка на [документацию](https://behave.readthedocs.io/en/stable/index.html). [Статья как с этим работать](https://www.obeythetestinggoat.com/book/appendix_bdd.html).
 
 - [Основные команды оболочки для использования](https://behave.readthedocs.io/en/stable/behave.html)

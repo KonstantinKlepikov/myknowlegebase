@@ -1,8 +1,8 @@
 ---
 description: Список кодов starlette
+title: Starlette список кодов
+tags: fastapi
 ---
-# Starlette список кодов
-
 [Смотри тут](https://github.com/encode/starlette/blob/master/starlette/status.py)
 
 - [[starlette]]

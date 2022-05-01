@@ -1,9 +1,8 @@
 ---
 description: Удаление данных в sqlalchemy
 tags: sqlalchemy
+title: Sqlalchemy deleting
 ---
-# Sqlalchemy deleting
-
 [Основная статья](https://docs.sqlalchemy.org/en/14/orm/tutorial.html#deleting)
 
 Существует нюанс, связанный с удалением данных.

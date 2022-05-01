@@ -1,9 +1,8 @@
 ---
 description: Инструмент анализа html/xml документа на python
-tags: crawlers
+tags: crawlers pip
+title: BeautifulSoup
 ---
-# BeautifulSoup
-
 Смотир еще:
 
 - [[crawlers]]

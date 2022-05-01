@@ -1,5 +1,8 @@
-# How to do clean docker restsrt instance
-
+---
+description: Как перезапустить докер стек без артефактов
+tags: docker
+title: How to do clean docker restsrt instance
+---
 Stop the container(s) using the following command:
 
 `docker-compose down`

@@ -1,17 +1,16 @@
 ---
 description: Вычислительные ресурсы, предоставляемые github под экшены
-tags: cl
+tags: cl github
+title: Github actions resources
 ---
-# Github actions resources
-
-  [Supported runners and hardware resources](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
+[Supported runners and hardware resources](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)
 
 Hardware specification for Windows and Linux virtual machines:
 
 - 2-core CPU
 - 7 GB of RAM memory
 - 14 GB of SSD disk space
-  
+
 Hardware specification for macOS virtual machines:
 
 - 3-core CPU

@@ -1,9 +1,8 @@
 ---
 description: Библиотека упрощающая логирование в python
-tags: logging
+tags: logging pip
+title: Loguru
 ---
-# Loguru
-
 Юиблиотечка написана поверх стандартного python [[logging]] с целью упростить и унифицировать логирование.
 
 - [Сссылка на доку](https://loguru.readthedocs.io/en/stable/index.html)

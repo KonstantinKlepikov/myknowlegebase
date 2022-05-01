@@ -1,9 +1,8 @@
 ---
 description: Ci для heroku
-tags: heroku
+tags: heroku ci
+title: Heroku-CI
 ---
-# Heroku-CI
-
 [основная статья](https://devcenter.heroku.com/articles/heroku-ci)
 
 Each CI-enabled pipeline is $10/month (prorated to the second) except for Enterprise Teams.

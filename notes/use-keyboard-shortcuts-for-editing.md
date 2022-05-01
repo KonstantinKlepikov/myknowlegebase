@@ -1,9 +1,8 @@
 ---
 description: Шорткаты в vscode foam
 tags: vscode
+title: Use Keyboard Shortcuts for Editing
 ---
-# Use Keyboard Shortcuts for Editing
-
 Here are some keyboard shortcuts you'll love when editing your notes.
 
 This works best if you can see the result in the preview panel, run the `Markdown: Open Preview to the Side` command.

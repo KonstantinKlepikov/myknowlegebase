@@ -1,9 +1,8 @@
 ---
 description: Тестирвоание пользовательского пути в браузере с помощью python библиотеки selenium
-tags: crawlers
+tags: crawlers tests
+title: Selenium
 ---
-# Selenium
-
 Используется для [[тестирование]] пользовательского пути в браузере
 
 Лучшие приемы:

@@ -1,9 +1,8 @@
 ---
 description: Что такое linux snap
 tags: linux
+title: Linux-snap
 ---
-# linux-snap
-
 Snap - средство изоляции зависимостей утснавливаемого приложения в linux.
 
 Установка

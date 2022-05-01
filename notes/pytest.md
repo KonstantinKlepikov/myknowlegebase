@@ -1,9 +1,8 @@
 ---
 description: Тестирование с использованием pytest на python
-tags: tests
+tags: tests pip
+title: Pytest
 ---
-# Pytest
-
 Библиотечка для [[модульные-тесты]]
 
 [Документация](https://docs.pytest.org/en/stable/contents.html#toc)

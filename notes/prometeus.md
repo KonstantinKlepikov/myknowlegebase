@@ -1,7 +1,9 @@
 ---
-description: 
+description: Метрики и мониторинг с prometeus
+title: Prometeus
+tags: cl
 ---
-# Prometeus
+[Python client](https://github.com/prometheus/client_python)
 
 - [[celery]]
 - [[flower]]

@@ -1,4 +1,4 @@
 ---
 tags: market-stocks
-title: Arima-alghoritm
+title: Arima alghoritm
 ---

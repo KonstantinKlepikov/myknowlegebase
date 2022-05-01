@@ -1,8 +1,8 @@
 ---
 description: Wsgi сервер Nginx
+title: Nginx веб-сервер (wsgi)
+tags: servers
 ---
-# Nginx веб-сервер (wsgi)
-
 ```shell
 sudo apt-het install nginx
 sudo systemctl start nginx

@@ -1,9 +1,8 @@
 ---
 description: База данных sqlite
-tags: python-standart-library
+tags: python-standart-library databases
+title: Sqlite
 ---
-# Sqlite
-
 - [Документация python](https://docs.python.org/3/library/sqlite3.html)
 - [Работа с in-memory](https://sqlite.org/inmemorydb.html)
 
@@ -139,7 +138,7 @@ sqlite3.register_adapter(type, callable)
 - `total_changes` возвращает общее число измененных строк
 - `iterdump()` используется для сейва дб в памяти для последующего восстановления
 - `backup(target, *, pages=-1, progress=None, name="main", sleep=0.250)`. [Пример](https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.backup)
-  
+
 ```python
 import sqlite3
 

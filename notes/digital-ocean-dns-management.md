@@ -1,9 +1,8 @@
 ---
 description: Управление ns-записями для дроплетов в digital ocean
 tags: do
+title: Digital ocean dns management
 ---
-# Digital ocean dns management
-
 - [How To Point to DigitalOcean Nameservers From Common Domain Registrars](https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars)
 - [How to Create, Edit, and Delete DNS Records](https://docs.digitalocean.com/products/networking/dns/how-to/manage-records/)
 - [How to Add a Subdomain to Your Domain](https://docs.digitalocean.com/products/networking/dns/how-to/add-subdomain/)

@@ -1,9 +1,8 @@
 ---
 description: Шифрование переменных окружения в github actions
-tags: cl
+tags: cl github
+title: Github secrets
 ---
-# Github secrets
-
 [Как использовать encrypted secrets](https://docs.github.com/en/actions/reference/encrypted-secrets) в [[github-action]]
 
 - [[2021-08-27-daily-note]]

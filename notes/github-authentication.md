@@ -1,9 +1,8 @@
 ---
 description: Аутентификация на Github
-tags: cl
+tags: cl github
+title: Github authentication
 ---
-# Github authentication
-
 [Сборник статей на эту тему](https://docs.github.com/en/authentication)
 
 - [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key%5D)

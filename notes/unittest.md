@@ -1,9 +1,8 @@
 ---
 description: Тестирование с помозью unittest в python
 tags: tests
+title: Unittest
 ---
-# Unittest
-
 Поддерживает все концепции тестирующего программного комплекса, описанного в [[тестирование]]
 
 [Опции командной строки](https://docs.python.org/3/library/unittest.html#command-line-options)
@@ -126,10 +125,10 @@ class SubTest(unittest.TestCase):
 class MyUnitTests(unittest.TestCase):
     """Unit tests basic
     """
-    
+
     def setTestingEngine(self, engine):
         """Set temporal base
-        """ 
+        """
         [...]
 
     def setTemporalBase(self):
@@ -151,7 +150,7 @@ class MyUnitTests(unittest.TestCase):
                                 'log_level': 'info'},
                             daemon=True)
         self.proc.start()
-        
+
         with TestClient(app) as self.client:
             [...]
 

@@ -1,9 +1,8 @@
 ---
 description: Организация отправки сообщений в fastapi
 tags: fastapi
+title: Fastapi mail
 ---
-# Fastapi mail
-
 [библиотечка](https://sabuhish.github.io/fastapi-mail/#fastapi-mail)
 
 - [[fastapi]]

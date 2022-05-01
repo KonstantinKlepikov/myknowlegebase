@@ -1,9 +1,8 @@
 ---
 description: Структуры данных в python - Enum
 tags: python-standart-library
+title: Enum
 ---
-# Enum
-
 Enum определяет перечислимый тип данных с возможностями итерации и сравнения элементов. Позволяет создавать символические имена для элементов (альтернатива строковым литералам словарей и индексам списков)
 
 [Сссылка на ст.библиотеку](https://docs.python.org/3/library/enum.html?highlight=enum#module-enum)
@@ -41,7 +40,7 @@ for status in BugStatus:
 Так как элементы неупорядочены, то доступно только сравнение `==` или `is`. При попытке сравнить больше/меньше будет выброшено исключение `TypeError`. Чтобы сравнить элементы или использовать другое поведение, эквивалентное поведению "как числа", надо использовать `IntEnum`
 
 ```python
-class Shape(enum.IntEnum):    
+class Shape(enum.IntEnum):
     circle: int = 1
     squire: int = 2
 
@@ -64,7 +63,7 @@ class Shape(enum.IntEnum):
 Перечисление можно создавать [программным способом](https://docs.python.org/3/library/enum.html?highlight=enum#programmatic-access-to-enumeration-members-and-their-attributes). Доступен также [функциональный апи](https://docs.python.org/3/library/enum.html?highlight=enum#functional-api)
 
 ```python
-Enum(value='NewEnumName', names=<...>, *, module='...', 
+Enum(value='NewEnumName', names=<...>, *, module='...',
     qualname='...', type=<mixed-in class>, start=1)
 
 # names API
@@ -100,7 +99,7 @@ class Perm(enum.IntFlag):
     R = 4
     W = 2
     X = 1
-    
+
 RW = Perm.R | Perm.W
 print(Perm.R in RW)
 >>> True

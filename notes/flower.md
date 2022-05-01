@@ -1,7 +1,8 @@
 ---
 description: Flover инстурмент мониторинга для celery
+title: Flower
+tags: logging queue
 ---
-# Flower
 
 [[celery]] monitoring tool. [Ссылка на документацию](https://flower.readthedocs.io/en/latest/)
 

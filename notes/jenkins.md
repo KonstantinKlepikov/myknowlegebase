@@ -1,9 +1,8 @@
 ---
 description:
 tags: cl
+title: Jenkins
 ---
-# Jenkins
-
 [Документация](https://pkg.jenkins.io/debian-stable/)
 
 [[cl]]

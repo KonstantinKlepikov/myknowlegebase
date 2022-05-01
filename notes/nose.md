@@ -1,9 +1,8 @@
 ---
 description: Тестирование с nose в python
-tags: tests
+tags: tests pip
+title: Nose
 ---
-# Nose
-
 Инструмент для организации [[тестирование]].
 
 [документация](https://nose.readthedocs.io/en/latest/index.html)

@@ -1,9 +1,8 @@
 ---
 description: Как начать работу в foam с vscode
 tags: vscode
+title: Getting started with VsCode
 ---
-# Getting started with VsCode
-
 VsCode is a powerful text editor, hidden behind a simple interface.
 
 ## Keyboard shortcuts

@@ -1,9 +1,8 @@
 ---
 description: Параметризация в pytest
 tags: tests
+title: Pytest parametrizing tests
 ---
-# Pytest parametrizing tests
-
 [Основная статья](https://docs.pytest.org/en/6.2.x/example/parametrize.html)
 
 ```python

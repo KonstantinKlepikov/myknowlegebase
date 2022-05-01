@@ -1,15 +1,14 @@
 ---
 description: Шаблон приложения на fastapi. Backend
 tags: fastapi
+title: Fastapi template backend
 ---
-# Fastapi template backend
-
 Backend Requirements
 
 - [[docker]]
 - [[docker-compose-with-gcloud-authentication]]
 - [[poetry]]
-  
+
 Frontend Requirements: Node.js (with npm).
 
 **Backend local development**
@@ -55,7 +54,7 @@ Then you can start a shell session with the new environment with:
 - `./backend/app/app/models/` SQLAlchemy models
 - `./backend/app/app/schemas/` Pydantic schemas
 - `./backend/app/app/api/` API endpoints
-- `./backend/app/app/crud/` CRUD (Create, Read, Update, Delete). 
+- `./backend/app/app/crud/` CRUD (Create, Read, Update, Delete).
 
 The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
 

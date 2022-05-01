@@ -1,8 +1,8 @@
 ---
 description: Дополнительные утилиты для работы с датой и временем в python
+tags: python-standart-library
+title: Dateutil
 ---
-# Dateutil
-
 [Документация](https://dateutil.readthedocs.io/en/stable/)
 
 [Гитхаб](https://github.com/dateutil/dateutil)

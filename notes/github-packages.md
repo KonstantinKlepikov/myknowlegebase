@@ -1,9 +1,8 @@
 ---
 description: Регистри дял контейнеров и пакетов на github
-tags: cl
+tags: cl github templating
+title: Github packages
 ---
-# Github packages
-
 [Документация](https://docs.github.com/en/packages)
 
 - [[github-action]]

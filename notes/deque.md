@@ -1,9 +1,8 @@
 ---
 description: collection.deque в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library queue
+title: Deque - двухсторонние очереди
 ---
-# Deque - двухсторонние очереди
-
 Возвращает объект, поддерживающий добавление слева и справа. а так-же пролистывание. Потокобезопасное добавление/удаление с обоих концов со сложностью O(1)
 
 ```python

@@ -1,9 +1,8 @@
 ---
 description: Описание python фреймворка DEAP для эволюционной оптимизации
-tags: ml
+tags: ml genetic
+title: Deap документация
 ---
-# Deap документация
-
 Смотри вводную в [[deap]]
 
 ## [Creating Types](https://deap.readthedocs.io/en/master/tutorials/basic/part1.html)
@@ -155,7 +154,7 @@ def initES(icls, scls, size, imin, imax, smin, smax):
 
 IND_SIZE = 10
 MIN_VALUE, MAX_VALUE = -5., 5.
-MIN_STRAT, MAX_STRAT = -1., 1. 
+MIN_STRAT, MAX_STRAT = -1., 1.
 
 toolbox = base.Toolbox()
 toolbox.register("individual", initES, creator.Individual,

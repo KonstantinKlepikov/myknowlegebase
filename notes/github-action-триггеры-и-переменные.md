@@ -1,9 +1,8 @@
 ---
 description: Триггеры и переменные в github action
-tags: cl
+tags: cl github
+title: Github action триггеры и переменные - документация и полезные ссылки
 ---
-# Github action триггеры и переменные - документация и полезные ссылки
-
 - [Events that trigger workflows](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request)
 - [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onevent_nametypes)
 - [Context and expression syntax for GitHub Actions](https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#example-using-an-array)

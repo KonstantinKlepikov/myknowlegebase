@@ -1,9 +1,8 @@
 ---
 description: Как писать mock-тесты на python
 tags: tests
+title: Mock-тесты
 ---
-# Mock-тесты
-
 [unittest.mock](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.MagicMock)
 
 [[unittest]] mock предоставляет базовый `Mock` class. После создания объекта, можно ассертить методы и аттрибуты класса, а так-же возвращать значения и устанавливать атрибуты, если это нужно.

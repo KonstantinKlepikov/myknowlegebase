@@ -1,9 +1,8 @@
 ---
 description: Теги в git
 tags: git
+title: Организация тегов на git
 ---
-# Организация тегов на git
-
 [Статья документации](https://git-scm.com/book/ru/v2/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B-Git-%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BC%D0%B5%D1%82%D0%BA%D0%B0%D0%BC%D0%B8)
 
 Создавать метку надо сразу после коммита.

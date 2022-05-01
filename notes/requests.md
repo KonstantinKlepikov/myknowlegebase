@@ -1,9 +1,8 @@
 ---
 description: Requests - обработка http-запросов в python
-tags: http
+tags: http crawlers pip
+title: Requests
 ---
-# Requests
-
 http-библиотечка на python для запросов/ответов.
 
 Пример

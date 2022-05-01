@@ -1,8 +1,8 @@
 ---
 description: Python библиотека pandas
+title: Pandas
+tags: ml pip
 ---
-# Pandas
-
 - [[pandas-rolling-window]]
 - [[2021-12-26-daily-note]] найти разницу между датафреймами, измененеие порядка колонок
 - [[2022-01-04-daily-note]] ошибка If using all scalar values, you must pass an index, конвертация датафрейма в датафрейм в одну строку и о том как хранить и извлекать списки в датафрейме

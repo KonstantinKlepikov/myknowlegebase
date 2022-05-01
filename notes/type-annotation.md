@@ -1,9 +1,8 @@
 ---
 description: Небольшая заметка про принципы аннотации типов
 tags: python-standart-library
+title: Аннотация типов в python
 ---
-# Анотация типов в python
-
 Зачем надо?
 
 - проверка типов

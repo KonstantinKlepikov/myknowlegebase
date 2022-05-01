@@ -1,8 +1,8 @@
 ---
 description: Автодокументацйя openapi с помощью swagger
+title: Swagger
+tags: http
 ---
-# Swagger
-
 [Документация](https://swagger.io/docs/specification/about/)
 
 - [[fastapi-requests-errors]]

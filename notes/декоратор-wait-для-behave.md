@@ -1,9 +1,8 @@
 ---
 description: Декоратор wait для behave
-tags: tests
+tags: tests behave
+title: Декоратор wait для behave
 ---
-# Декоратор wait для behave
-
 [статья](https://stackoverflow.com/questions/62060041/how-to-add-wait-sleep-decorator-to-steps-functions-behave)
 
 - [[datetime]]

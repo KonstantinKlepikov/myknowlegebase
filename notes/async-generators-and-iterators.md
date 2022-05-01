@@ -1,9 +1,8 @@
 ---
 description: Асинхронные итераторы и генераторы в python
-tags: python-standart-library
+tags: python-standart-library asincio
+title: Async generators and iterators
 ---
-# Async generators and iterators
-
 Асинхронный генератор - это функция, которая возвращает итератор асинхронного генератора. От обучной сопрограммы (выраженной через `async await`) ее отличает то, что в теле функции находится выражение `yield`, что позволяет использовать этот объект в конструкциях `async for` и `async with`.
 
 Асинхронный контекстный менеджер реализует методы `__aenter__()` и `__aexit__()` и доступен через `async with`

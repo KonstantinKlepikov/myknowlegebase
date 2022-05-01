@@ -1,8 +1,8 @@
 ---
 description: Управление procefile-based приложениями через honcho на python
+title: Honcho
+tags: ml
 ---
-# Honcho
-
 Приложение python для управления приложениями на основе `Procfile`. [Документация](https://honcho.readthedocs.io/en/latest/index.html)
 
 [[dot-env]]

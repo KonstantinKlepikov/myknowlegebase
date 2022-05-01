@@ -1,9 +1,8 @@
 ---
 description: Вcnавка изображений из кэша операционки в foam
 tags: vscode
+title: Paste Images from Clipboard
 ---
-# Paste Images from Clipboard
-
 You can paste an image from the clipboard with `cmd+alt+v`.
 
 Images are automatically copied to the `/attachments` folder and a reference is added in the file where you pasted them.
