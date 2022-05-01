@@ -1,8 +1,8 @@
 ---
 description: Парсинг rss и atom потоков в python
+title: Feedparser - rss и atom парсинг
+tags: crawling
 ---
-# Feedparser - rss и atom парсинг
-
 [Документация](https://pythonhosted.org/feedparser/)
 
 [Sphinx-дока](https://www.sphinx-doc.org/en/master/)

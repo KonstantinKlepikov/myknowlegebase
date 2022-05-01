@@ -1,9 +1,8 @@
 ---
 description: Принципы логирования в python
 tags: logging
+title: Logging - основные принципы
 ---
-# Logging - основные принципы
-
 Основной материал - [Logging HOWTO](https://docs.python.org/3/howto/logging.html)
 
 ## Когда и какой способ логировапия использовать

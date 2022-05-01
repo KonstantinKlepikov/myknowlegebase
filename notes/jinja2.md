@@ -1,9 +1,8 @@
 ---
 description: Работа с jinja2 на python
 tags: templating
+title: Jinja2
 ---
-# Jinja2
-
 {% raw %}
 
 [Документация](https://jinja.palletsprojects.com/en/3.0.x/intro/#installation)
@@ -502,7 +501,7 @@ bug_report.txt
 
 {'dict': 'of', 'key': 'and', 'value': 'pairs'}
 
-true / false / none *different with #python - lower letters 
+true / false / none *different with #python - lower letters
 
 ### Математика
 

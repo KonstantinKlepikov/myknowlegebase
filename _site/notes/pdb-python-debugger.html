@@ -14,11 +14,11 @@
 <meta property="og:locale" content="ru_RU" />
 <meta name="description" content="Pdb дебаггер в python" />
 <meta property="og:description" content="Pdb дебаггер в python" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/pdb-python-debugger.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/pdb-python-debugger.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/pdb-python-debugger.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pdb-python-debugger.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/pdb-python-debugger.html","description":"Pdb дебаггер в python","headline":"Pdb python debugger","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pdb-python-debugger.html","headline":"Pdb python debugger","description":"Pdb дебаггер в python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -90,9 +114,7 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h1 id="pdb-python-debugger">Pdb python debugger</h1>
-
-<p>Дебагер python из стандартной библиотеки. Реализует интерактивную среду отладки, поддерживает приостановку выполнения, просмотр переменных и выполнение в пошаговом режиме.</p>
+    <p>Дебагер python из стандартной библиотеки. Реализует интерактивную среду отладки, поддерживает приостановку выполнения, просмотр переменных и выполнение в пошаговом режиме.</p>
 
 <p><a href="https://docs.python.org/3/library/pdb.html">Документация</a></p>
 
@@ -174,7 +196,7 @@
   <li><code class="language-plaintext highlighter-rouge">ignore bpnumber [count]</code> игнорировать точку определенное число проходов (полезно, когда в коде есть рекурсии или циклы)</li>
   <li><code class="language-plaintext highlighter-rouge">commands [bpnumber]</code> запуск простых сценариев по достижению точки. Команды вводятся вручную по одной на строку (это могут быть принты, сравнения и т.п.). Ввод команд завершается через <code class="language-plaintext highlighter-rouge">end</code></li>
   <li><code class="language-plaintext highlighter-rouge">display [expression]</code> выводит значение предоставленного выражения на каждом шаге (полезно для контроля переменных в коде)</li>
-  <li><code class="language-plaintext highlighter-rouge">j(ump) lineno</code> перемещает по потоку выполнения. Переходы вперед перемещают поток вперед без выполнения промежуточных инструкций. Перемещение назад приводит к повторному выполнению. При этом <code class="language-plaintext highlighter-rouge">jump</code> не допускает переход в функцию, аргумент которой не определен, с ним нельзя входить внутрь цикла или в инструкции [<a href="try-except" title="Try-except-raise">try-except</a>]. Выход из <code class="language-plaintext highlighter-rouge">finally</code> также невозможен, так как код в этой инструкции должен быть всегда выполнен</li>
+  <li><code class="language-plaintext highlighter-rouge">j(ump) lineno</code> перемещает по потоку выполнения. Переходы вперед перемещают поток вперед без выполнения промежуточных инструкций. Перемещение назад приводит к повторному выполнению. При этом <code class="language-plaintext highlighter-rouge">jump</code> не допускает переход в функцию, аргумент которой не определен, с ним нельзя входить внутрь цикла или в инструкции [<a href="try-except" title="Try except raise">try-except</a>]. Выход из <code class="language-plaintext highlighter-rouge">finally</code> также невозможен, так как код в этой инструкции должен быть всегда выполнен</li>
   <li>отладчик автоматически перезапускает скрипт в конце программы или явно через <code class="language-plaintext highlighter-rouge">run [args ...]</code> или
 <code class="language-plaintext highlighter-rouge">restart [args ...]</code>. Аргументы передаются следующему запуску в качестве аргументво командной строки (анализируются через shlex - смотри [<a href="argparsing" title="Arguments parsing in python">argparsing</a>])</li>
   <li><code class="language-plaintext highlighter-rouge">alias [name [command]]</code> создает псевдонимы длинным команда. Без аргументов команда выведет список алиасов. <code class="language-plaintext highlighter-rouge">unalias</code> удаляет алиас</li>

@@ -1,9 +1,8 @@
 ---
 description: Docker compose определение и запуск многоконтейнерных приложений
 tags: docker
+title: Docker compose
 ---
-# Docker compose
-
 [Основаня статья](https://docs.docker.com/compose/)
 
 Compose - это инструмент для определения и запуска многоконтейнерных приложений Docker. В Compose вы используете файл YAML для настройки служб вашего приложения. Затем с помощью одной команды вы создаете и запускаете все службы из своей конфигурации. Чтобы узнать больше обо всех функциях Compose, см. [Список функций](https://docs.docker.com/compose/#features).

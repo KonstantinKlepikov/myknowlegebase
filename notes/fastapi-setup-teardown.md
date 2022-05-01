@@ -1,9 +1,8 @@
 ---
 description: Тестовый клиент в fastapi. Использование setup и teardown
 tags: fastapi
+title: Fastapi setup teardown
 ---
-# Fastapi setup teardown
-
 [Testing Events: startup - shutdown](https://fastapi.tiangolo.com/pt/advanced/testing-events/)
 
 Можно запускать тестовый клиент с менеджером контекста `with`

@@ -1,9 +1,8 @@
 ---
 description: Devtools. Человекочитаемый вывод в python для дебага
-tags: tests
+tags: tests pip
+title: Python devtools
 ---
-# Python devtools
-
 Предаставляет тулзы для понятного вывода в python для дебага и разработки.
 
 [ссылка на доку](https://python-devtools.helpmanual.io/)

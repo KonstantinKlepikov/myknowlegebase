@@ -1,9 +1,8 @@
 ---
 description: Запросы в sqlalchemy
 tags: sqlalchemy
+title: Sqlalchgemy querying
 ---
-# Sqlalchgemy querying
-
 - [основная статья](https://docs.sqlalchemy.org/en/14/orm/tutorial.html#querying)
 - [query API](https://docs.sqlalchemy.org/en/14/orm/query.html)
 

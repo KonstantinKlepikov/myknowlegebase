@@ -1,9 +1,8 @@
 ---
 description: Преобразовавние словаря в dataclass или namedtuple
 tags: python-standart-library
+title: Convert dict to dataclass or namedtuple
 ---
-# Convert dict to dataclass or namedtuple
-
 ## Распаковка словаря для создания экземпляра
 
 ```python
@@ -57,7 +56,7 @@ def make_dc(d, name='d_dataclass'):
     @dataclass
     class Wrapped:
         __annotations__ = {k: type(v) for k, v in d.items()}
-        
+
     Wrapped.__qualname__ = Wrapped.__name__ = name
 
     return Wrapped

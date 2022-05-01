@@ -14,11 +14,11 @@
 <meta property="og:locale" content="ru_RU" />
 <meta name="description" content="Датаклассы в python" />
 <meta property="og:description" content="Датаклассы в python" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/python-dataclasses.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/python-dataclasses.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-dataclasses.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-dataclasses.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/python-dataclasses.html","description":"Датаклассы в python","headline":"Python dataclasses","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-dataclasses.html","headline":"Python dataclasses","description":"Датаклассы в python","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -90,9 +114,7 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h1 id="python-dataclasses">Python dataclasses</h1>
-
-<p>Модуль <code class="language-plaintext highlighter-rouge">dataclasses</code> предоставляет [<a href="python-decorator" title="Python decorator">python-decorator</a>] и функции для автоматического добавления сгенерированных специальных методов, таких как <code class="language-plaintext highlighter-rouge">__init__()</code> и <code class="language-plaintext highlighter-rouge">__repr__()</code>, в пользовательские классы.</p>
+    <p>Модуль <code class="language-plaintext highlighter-rouge">dataclasses</code> предоставляет [<a href="python-decorator" title="Python decorator">python-decorator</a>] и функции для автоматического добавления сгенерированных специальных методов, таких как <code class="language-plaintext highlighter-rouge">__init__()</code> и <code class="language-plaintext highlighter-rouge">__repr__()</code>, в пользовательские классы.</p>
 
 <p><code class="language-plaintext highlighter-rouge">@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False</code> - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор <code class="language-plaintext highlighter-rouge">dataclass()</code> проверяет класс, чтобы найти поля. <strong>Поле определяется как переменная класса, имеющая аннотацию типа</strong>. За двумя исключениями, описанными ниже, в <code class="language-plaintext highlighter-rouge">dataclass()</code> ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. <code class="language-plaintext highlighter-rouge">dataclass()</code> так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если <code class="language-plaintext highlighter-rouge">dataclass()</code> используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.</p>
 
@@ -106,7 +128,7 @@
 <span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
     <span class="p">...</span>
 
-<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unsafe_hash</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">unsafe_hash</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
     <span class="n">frozen</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">match_args</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
    <span class="p">...</span>

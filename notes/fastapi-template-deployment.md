@@ -1,9 +1,8 @@
 ---
 description: Шаблон приложения на fastapi. Deployment
 tags: fastapi
+title: Fastapi template deployment
 ---
-# Fastapi template deployment
-
 ## Deployment
 
 You can deploy the stack to a Docker Swarm mode cluster with a main Traefik proxy, set up using the ideas from [[docker-swarm-rocks]], to get automatic HTTPS certificates, etc.

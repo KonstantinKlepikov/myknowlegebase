@@ -1,8 +1,8 @@
 ---
 description: Gunicorn - python wsgi сервер для unix
+title: Gunicorn
+tags: servers
 ---
-# Gunicorn
-
 [python wsgi server fo unix](https://gunicorn.org/). Пашет вместе с [[nginx]]
 
 - [[staging-промежуточная-среда]]

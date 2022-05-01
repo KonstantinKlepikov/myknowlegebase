@@ -1,9 +1,8 @@
 ---
 description: Генерация справки в runtime встроенными средствами python
 tags: python-standart-library
+title: Pydoc
 ---
-# Pydoc
-
 Через командную строку так: `pytdoc <modulename>`
 
 В формате html: `pytdoc -w <modulename>`

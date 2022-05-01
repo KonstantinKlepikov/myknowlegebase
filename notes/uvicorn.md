@@ -1,8 +1,8 @@
 ---
 description: Uvicorn
+title: Uvicorn
+tags: servers
 ---
-# Uvicorn
-
 [докумсентация сервера](https://www.uvicorn.org/#running-programmatically)
 
 [[запуск-uvicorn-на-тесте]]

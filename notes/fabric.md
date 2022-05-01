@@ -1,9 +1,8 @@
 ---
 description:
 tags: cl
+title: Fabric
 ---
-# Fabric
-
 [Документация](https://www.fabfile.org/installing.html)
 
 [[cl]]

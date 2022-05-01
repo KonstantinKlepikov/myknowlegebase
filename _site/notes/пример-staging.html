@@ -14,11 +14,11 @@
 <meta property="og:locale" content="ru_RU" />
 <meta name="description" content="Пример staging-сервера на digital ocean" />
 <meta property="og:description" content="Пример staging-сервера на digital ocean" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging.html","description":"Пример staging-сервера на digital ocean","headline":"Пример промежуточного сервера","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging.html","headline":"Пример промежуточного сервера","description":"Пример staging-сервера на digital ocean","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -90,9 +114,7 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h1 id="пример-промежуточного-сервера">Пример промежуточного сервера</h1>
-
-<p>Пример для [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]. Запустить дроплет с чистой убунтой.</p>
+    <p>Пример для [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]. Запустить дроплет с чистой убунтой.</p>
 
 <p>Войти по shh: <code class="language-plaintext highlighter-rouge">ssh elspeth@@superlists-staging.ottg.eu</code></p>
 
@@ -155,17 +177,17 @@ elspeth@server:<span class="nv">$ </span><span class="nb">sudo rm</span> /etc/ng
 Description=Gunicorn server for superlists-staging.ottg.eu
 
 [Service]
-Restart=on-failure  
-User=elspeth  
-WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu  
-EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env  
+Restart=on-failure
+User=elspeth
+WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu
+EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env
 
 ExecStart=/home/elspeth/sites/superlists-staging.ottg.eu/virtualenv/bin/gunicorn \
     --bind unix:/tmp/superlists-staging.ottg.eu.socket \
-    superlists.wsgi:application  
+    superlists.wsgi:application
 
 [Install]
-WantedBy=multi-user.target 
+WantedBy=multi-user.target
 </code></pre>
 
 <p>Здесь мы рестартим, если сервер прадает. Задаем юзера, от которого выполняется процесс. Задаем текущий рабочий каталог и файл переменных окружения (это можно делать и по другому)</p>

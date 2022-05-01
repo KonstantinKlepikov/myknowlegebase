@@ -1,9 +1,8 @@
 ---
 description: Использование make для сборки проектов
-tags: cl
+tags: cl cli
+title: Makefile
 ---
-# Makefile
-
 Формат
 
 ```shell

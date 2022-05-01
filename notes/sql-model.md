@@ -1,8 +1,8 @@
 ---
 description: Библиотека для валидации и анотации типов для sql-моделей в python
+tags: databases
+title: Sql model
 ---
-# Sql-model
-
 [sql-model](https://github.com/tiangolo/sqlmodel)
 
 SQLModel is a library for interacting with SQL databases from Python code, with Python objects. Используется в [[databases]] и [[fastapi]]. Основана на [[pydantic]]

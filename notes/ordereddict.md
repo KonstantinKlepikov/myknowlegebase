@@ -1,9 +1,8 @@
 ---
 description: collection.OrderedDict в стандартной библиотеке python
 tags: python-standart-library
+title: OrderedDict упорядоченный словарь с опцией сравнения по порядку
 ---
-# OrderedDict упорядоченный словарь с опцией сравнения по порядку
-
 Начиная с 3.6 словари в python упорядочены. OrderedDict позволяет сравниваться не только по эквивалентности вхождения, но и с учетом порядка
 
 ```python

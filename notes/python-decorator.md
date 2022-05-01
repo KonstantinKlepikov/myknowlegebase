@@ -1,9 +1,8 @@
 ---
 description: Декораторы в python. Примеры
 tags: python-standart-library
+title: Python decorator
 ---
-# Python decorator
-
 Декораторм в python является функция, возвращающая другую функцию. Обычно применяется как преобразование функции с использованием синтаксиса `@wrapper`. Распространенными примерами декораторов являются `classmethod()` и `staticmethod()`.
 
 Декоратор - это именованный вызываемый объект (лямбда-функции не допускаются), который принимает один объект при вызове (декорируемый объект) и возвращает другой объект. Вызываемым объектом может быть любой объект, реализующий метод `__call__`
@@ -34,7 +33,7 @@ def f(...):
 >>> @deco
 >>> def main(a, b=2):
 ...     print(f'in main {a} != {b}')
-    
+
 >>> main(1)
 wrap
 in main 1 != 2
@@ -49,11 +48,11 @@ in main 1 != 2
 ...             print('wrap')
 ...             return this(*args, **kwargs)
 ...         return wrapper
-        
+
 >>> @This()
 >>> def main_cls(a, b=2):
 ...     print(f'in main {a} != {b}')
-    
+
 >>> main_cls(1)
 wrap
 in main 1 != 2
@@ -68,13 +67,13 @@ in main 1 != 2
 ...         wrapper.instance = cls(*args, **kwargs)
 ...         return wrapper.instance
 ...     return wrapper
-    
+
 >>> @cls_deco
 >>> class Main:
 ...     def __init__(self, a, b=2):
 ...         self.a = a
 ...         self.b = b
-    
+
 ...     def what(self):
 ...         return f'in Main {self.a} != {self.b}'
 
@@ -94,13 +93,13 @@ in main 1 != 2
 ...             import tempfile
 ...             from cProfile import Profile
 ...             from pstats import Stats
-            
+
 ...             s = tempfile.mktemp()
-            
+
 ...             profiler = Profile()
 ...             profiler.runcall(function, *args, **kwargs)
 ...             profiler.dump_stats(s)
-...             
+...
 ...             p = Stats(s)
 ...             print('-'*5, f'{function.__name__}() profile', '-'*5)
 ...             p.sort_stats(column).print_stats(how)

@@ -14,11 +14,11 @@
 <meta property="og:locale" content="ru_RU" />
 <meta name="description" content="Документация sqlalchemy" />
 <meta property="og:description" content="Документация sqlalchemy" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/sqlalchemy-docs.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/sqlalchemy-docs.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/sqlalchemy-docs.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/sqlalchemy-docs.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/sqlalchemy-docs.html","description":"Документация sqlalchemy","headline":"Sqlalchemy документация","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/sqlalchemy-docs.html","headline":"Sqlalchemy документация","description":"Документация sqlalchemy","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -90,9 +114,7 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h1 id="sqlalchemy-документация">Sqlalchemy документация</h1>
-
-<p>Схема работы</p>
+    <p>Схема работы</p>
 
 <p><img src="/myknowlegebase/attachments/2021-04-15-23-51-38.png" alt="sqlalchemy" /></p>
 
@@ -693,7 +715,7 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">fullname</span>
 <span class="s">'Sandy Cheeks'</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">__dict__</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sandy</span><span class="p">.</span><span class="n">__dict__</span>
 <span class="p">{</span><span class="s">'_sa_instance_state'</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">sqlalchemy</span><span class="p">.</span><span class="n">orm</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="n">InstanceState</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span>
  <span class="s">'id'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'name'</span><span class="p">:</span> <span class="s">'sandy'</span><span class="p">,</span> <span class="s">'fullname'</span><span class="p">:</span> <span class="s">'Sandy Cheeks'</span><span class="p">}</span>
 
@@ -833,7 +855,7 @@
 <span class="p">[</span><span class="n">Address</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s1">'pearl.krabs@gmail.com'</span><span class="p">),</span> <span class="n">Address</span><span class="p">(</span><span class="n">id</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s1">'pearl@aol.com'</span><span class="p">)]</span>
 </code></pre></div></div>
 
-<p>Запросы со связями к БД в ОРМ высокоптимизированы, чтобы не быть затратными. Больше о стратегиях загрузки связанных данных можно <a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies">узнать тут</a>. [<a href="sqlalchemy-loader-strategy" title="Sqlalchemy-loader-strategy">sqlalchemy-loader-strategy</a>]</p>
+<p>Запросы со связями к БД в ОРМ высокоптимизированы, чтобы не быть затратными. Больше о стратегиях загрузки связанных данных можно <a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies">узнать тут</a>. [<a href="sqlalchemy-loader-strategy" title="Sqlalchemy loader strategy">sqlalchemy-loader-strategy</a>]</p>
 
 <h2 id="использование-связанных-данных-в-queries"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#using-relationships-in-queries">Использование связанных данных в queries</a></h2>
 

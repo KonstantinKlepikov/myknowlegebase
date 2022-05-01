@@ -15,11 +15,9 @@
     <div>
         <h2>Daily notes</h2>
         {% for page in notes_list %}
-            <ul>
-                {% if page.category == 'post' and page.title %}
-                    {% include allpages_list.html %}
-                {% endif %}
-            </ul>
+            {% if page.category == 'post' and page.title %}
+                {% include allpages_list.html %}
+            {% endif %}
         {% endfor %}
     </div>
 
@@ -34,7 +32,7 @@
 
 
     <div>
-        <h2>Все остальные заметки</h2>
+        <h2>Все заметки</h2>
         {% for page in pages_list %}
             {% if page.title and page.category == nil and page.tags != nil and page.robots == nil %}
                 {% include allpages_block.html %}

@@ -14,11 +14,11 @@
 <meta property="og:locale" content="ru_RU" />
 <meta name="description" content="Декораторы в python. Примеры" />
 <meta property="og:description" content="Декораторы в python. Примеры" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/python-decorator.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/python-decorator.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-decorator.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-decorator.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/python-decorator.html","description":"Декораторы в python. Примеры","headline":"Python decorator","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-decorator.html","headline":"Python decorator","description":"Декораторы в python. Примеры","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -90,9 +114,7 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h1 id="python-decorator">Python decorator</h1>
-
-<p>Декораторм в python является функция, возвращающая другую функцию. Обычно применяется как преобразование функции с использованием синтаксиса <code class="language-plaintext highlighter-rouge">@wrapper</code>. Распространенными примерами декораторов являются <code class="language-plaintext highlighter-rouge">classmethod()</code> и <code class="language-plaintext highlighter-rouge">staticmethod()</code>.</p>
+    <p>Декораторм в python является функция, возвращающая другую функцию. Обычно применяется как преобразование функции с использованием синтаксиса <code class="language-plaintext highlighter-rouge">@wrapper</code>. Распространенными примерами декораторов являются <code class="language-plaintext highlighter-rouge">classmethod()</code> и <code class="language-plaintext highlighter-rouge">staticmethod()</code>.</p>
 
 <p>Декоратор - это именованный вызываемый объект (лямбда-функции не допускаются), который принимает один объект при вызове (декорируемый объект) и возвращает другой объект. Вызываемым объектом может быть любой объект, реализующий метод <code class="language-plaintext highlighter-rouge">__call__</code></p>
 
@@ -120,7 +142,7 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">deco</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'in main </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> != </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
-    
+
 <span class="o">&gt;&gt;&gt;</span> <span class="n">main</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">wrap</span>
 <span class="ow">in</span> <span class="n">main</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>
@@ -134,11 +156,11 @@
 <span class="p">...</span>             <span class="k">print</span><span class="p">(</span><span class="s">'wrap'</span><span class="p">)</span>
 <span class="p">...</span>             <span class="k">return</span> <span class="n">this</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="p">...</span>         <span class="k">return</span> <span class="n">wrapper</span>
-        
+
 <span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">This</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">main_cls</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">f'in main </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s"> != </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
-    
+
 <span class="o">&gt;&gt;&gt;</span> <span class="n">main_cls</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">wrap</span>
 <span class="ow">in</span> <span class="n">main</span> <span class="mi">1</span> <span class="o">!=</span> <span class="mi">2</span>
@@ -152,13 +174,13 @@
 <span class="p">...</span>         <span class="n">wrapper</span><span class="p">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="p">...</span>         <span class="k">return</span> <span class="n">wrapper</span><span class="p">.</span><span class="n">instance</span>
 <span class="p">...</span>     <span class="k">return</span> <span class="n">wrapper</span>
-    
+
 <span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">cls_deco</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Main</span><span class="p">:</span>
 <span class="p">...</span>     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
 <span class="p">...</span>         <span class="bp">self</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
-    
+
 <span class="p">...</span>     <span class="k">def</span> <span class="nf">what</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="p">...</span>         <span class="k">return</span> <span class="s">f'in Main </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">a</span><span class="si">}</span><span class="s"> != </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">b</span><span class="si">}</span><span class="s">'</span>
 
@@ -177,13 +199,13 @@
 <span class="p">...</span>             <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="p">...</span>             <span class="kn">from</span> <span class="nn">cProfile</span> <span class="kn">import</span> <span class="n">Profile</span>
 <span class="p">...</span>             <span class="kn">from</span> <span class="nn">pstats</span> <span class="kn">import</span> <span class="n">Stats</span>
-            
+
 <span class="p">...</span>             <span class="n">s</span> <span class="o">=</span> <span class="n">tempfile</span><span class="p">.</span><span class="n">mktemp</span><span class="p">()</span>
-            
+
 <span class="p">...</span>             <span class="n">profiler</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">()</span>
 <span class="p">...</span>             <span class="n">profiler</span><span class="p">.</span><span class="n">runcall</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="p">...</span>             <span class="n">profiler</span><span class="p">.</span><span class="n">dump_stats</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="p">...</span>             
+<span class="p">...</span>
 <span class="p">...</span>             <span class="n">p</span> <span class="o">=</span> <span class="n">Stats</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="p">...</span>             <span class="k">print</span><span class="p">(</span><span class="s">'-'</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="s">f'</span><span class="si">{</span><span class="n">function</span><span class="p">.</span><span class="n">__name__</span><span class="si">}</span><span class="s">() profile'</span><span class="p">,</span> <span class="s">'-'</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
 <span class="p">...</span>             <span class="n">p</span><span class="p">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="n">column</span><span class="p">).</span><span class="n">print_stats</span><span class="p">(</span><span class="n">how</span><span class="p">)</span>

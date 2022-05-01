@@ -1,9 +1,8 @@
 ---
 description: Обработка ошибок в запросах fastapi
 tags: fastapi
+title: Fastapi requests errors
 ---
-# Fastapi requests errors
-
 ## Поднимать руками
 
 [Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/)

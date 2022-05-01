@@ -1,9 +1,8 @@
 ---
 description: Датаклассы в python
 tags: python-standart-library
+title: Python dataclasses
 ---
-# Python dataclasses
-
 Модуль `dataclasses` предоставляет [[python-decorator]] и функции для автоматического добавления сгенерированных специальных методов, таких как `__init__()` и `__repr__()`, в пользовательские классы.
 
 `@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False` - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор `dataclass()` проверяет класс, чтобы найти поля. **Поле определяется как переменная класса, имеющая аннотацию типа**. За двумя исключениями, описанными ниже, в `dataclass()` ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. `dataclass()` так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если `dataclass()` используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.
@@ -19,7 +18,7 @@ class C:
 class C:
     ...
 
-@dataclass(init=True, repr=True, eq=True, order=False, unsafe_hash=False, 
+@dataclass(init=True, repr=True, eq=True, order=False, unsafe_hash=False,
     frozen=False, match_args=True, kw_only=False, slots=False)
 class C:
    ...

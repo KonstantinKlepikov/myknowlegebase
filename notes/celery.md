@@ -1,8 +1,8 @@
 ---
-description: Очередь задач в python с помощью celery
+description: Очереди задач в python с celery
+tags: queue
+title: Celery
 ---
-# Celery
-
 ## Intro
 
 [Celery](https://docs.celeryproject.org/en/stable/) это простая, гибкая и надежная распределенная система для обработки большого количества сообщений, предоставляющая операции с инструментами, необходимыми для обслуживания такой системы.
@@ -83,19 +83,19 @@ def add(x, y):
 
 ```shell
  -------------- celery@pop-os v5.2.3 (dawn-chorus)
---- ***** ----- 
+--- ***** -----
 -- ******* ---- Linux-5.8.0-7630-generic-x86_64-with-glibc2.32 2022-01-17 23:32:33
-- *** --- * --- 
+- *** --- * ---
 - ** ---------- [config]
 - ** ---------- .> app:         tasks:0x7fdfe7e14a60
 - ** ---------- .> transport:   redis://localhost:6379/0
 - ** ---------- .> results:     disabled://
 - *** --- * --- .> concurrency: 12 (prefork)
 -- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
---- ***** ----- 
+--- ***** -----
  -------------- [queues]
                 .> celery           exchange=celery(direct) key=celery
-                
+
 
 [tasks]
   . tasks.add
@@ -118,9 +118,9 @@ def add(x, y):
 Теперь задача обработана воркером, назначенным ранее. Вы можете убедиться в этом в консоли. Вызов задачи возвращает экземпляр AsyncResult. Это можно использовать для проверки состояния задачи, ожидания завершения задачи или получения возвращаемого значения (или, если задача не удалась, для получения исключения и обратной трассировки). Результаты не включены по умолчанию. Чтобы выполнять удаленные вызовы процедур или отслеживать результаты задач в базе данных, вам необходимо настроить Celery для использования серверной части результатов.
 
 ```shell
-[2022-01-18 00:02:45,633: INFO/MainProcess] 
+[2022-01-18 00:02:45,633: INFO/MainProcess]
 Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] received
-[2022-01-18 00:02:45,634: INFO/ForkPoolWorker-8] 
+[2022-01-18 00:02:45,634: INFO/ForkPoolWorker-8]
 Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded in 0.00025742400612216443s: 8
 ```
 
@@ -491,7 +491,7 @@ tasks.add
 ... )
 ```
 
-Другие способы (к примеру из ф-ла, переменных окружения или из конфигурационного класса) смотри [в доке](https://docs.celeryproject.org/en/stable/userguide/application.html#config-from-object). 
+Другие способы (к примеру из ф-ла, переменных окружения или из конфигурационного класса) смотри [в доке](https://docs.celeryproject.org/en/stable/userguide/application.html#config-from-object).
 
 Запретить вывод в отладку определененых конфигов [можно так](https://docs.celeryproject.org/en/stable/userguide/application.html#censored-configuration).
 

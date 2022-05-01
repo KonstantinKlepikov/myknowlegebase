@@ -1,9 +1,8 @@
 ---
 description: Docker bind mount способ привязки файлов
 tags: docker
+title: Docker bind mount
 ---
-# Docker bind mount
-
 Способ привязки файлов в докере. [Основная статья](https://docs.docker.com/storage/bind-mounts/)
 
 Смотри как это используется в [[docker-compose]]

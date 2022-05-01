@@ -1,9 +1,8 @@
 ---
 description: Типы данных и колонки в SQLAlchemy
 tags: sqlalchemy
+title: Column and data type
 ---
-# Column and data type
-
 | Object Name | Description |
 |-|-|
 | BigInteger | A type for bigger int integers. |

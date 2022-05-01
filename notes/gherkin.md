@@ -1,9 +1,8 @@
 ---
 description: Человекочитаемый предметный язык DSL для приемочных тестов
-tags: tests
+tags: tests behave
+title: Gherkin
 ---
-# Gherkin
-
 Человекочитаемый предметный язык DSL для написания [[приемочные-тесты]]
 
 Gherkin вышел из ruby, где он связан с исполнителем тестов [[cucumber]]

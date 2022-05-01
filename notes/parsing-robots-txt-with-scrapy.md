@@ -1,9 +1,8 @@
 ---
 description: Извлечение данных из robots.txt в scrapy
 tags: crawlers
+title: Parsing robots txt with scrapy
 ---
-# Parsing robots txt with scrapy
-
 За проверку `robots.txt` в [[scrapy]] отвечает [встреонный middlewire](https://docs.scrapy.org/en/latest/topics/settings.html#std-setting-DOWNLOADER_MIDDLEWARES), с самым высоким приоритетом
 
 ```python

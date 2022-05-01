@@ -1,9 +1,8 @@
 ---
 description: Линтер для python
 tags: tests
+title: Flake8
 ---
-# Flake8
-
 Линтер для python. [Ссылка на документацию](https://flake8.pycqa.org/en/latest/index.html)
 
 ## Using Flake8

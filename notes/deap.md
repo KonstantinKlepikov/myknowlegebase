@@ -1,9 +1,8 @@
 ---
 description: Использование фреймворка DEAP для эволюционной оптимизации
-tags: ml
+tags: ml genetic pip
+title: Deap - генетические алгоритмы на python
 ---
-# Deap - генетические алгоритмы на python
-
 - [deap на гитхаб](https://github.com/DEAP/deap)
 - [документация](https://deap.readthedocs.io/en/master/)
 - [[deap-docs]]
@@ -33,32 +32,32 @@ help(creator.Developer)
 
 ```shell
     Help on class Developer in module deap.creator:
-    
+
     class Developer(__main__.Employee)
      |  Developer(*args, **kargs)
-     |  
+     |
      |  Method resolution order:
      |      Developer
      |      __main__.Employee
      |      builtins.object
-     |  
+     |
      |  Methods defined here:
-     |  
+     |
      |  __init__ = initType(self, *args, **kargs)
      |      Replace the __init__ function of the new type, in order to
      |      add attributes that were defined with **kargs to the instance.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data and other attributes defined here:
-     |  
+     |
      |  position = 'Developer'
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data descriptors inherited from __main__.Employee:
-     |  
+     |
      |  __dict__
      |      dictionary for instance variables (if defined)
-     |  
+     |
      |  __weakref__
      |      list of weak references to the object (if defined)
 ```
@@ -77,16 +76,16 @@ help(creator.FitnessMax)
 
 ```shell
     Help on class FitnessMax in module deap.creator:
-    
+
     class FitnessMax(deap.base.Fitness)
      |  FitnessMax(*args, **kargs)
-     |  
+     |
      |  The fitness is a measure of quality of a solution. If *values* are
      |  provided as a tuple, the fitness is initialized using those values,
      |  otherwise it is empty (or invalid).
-     |  
+     |
      |  :param values: The initial values of the fitness as a tuple, optional.
-     |  
+     |
      |  Fitnesses may be compared using the ``>``, ``<``, ``>=``, ``<=``, ``==``,
      |  ``!=``. The comparison of those operators is made lexicographically.
      |  Maximization and minimization are taken care off by a multiplication
@@ -94,103 +93,103 @@ help(creator.FitnessMax)
      |  can be made between fitnesses of different size, if the fitnesses are
      |  equal until the extra elements, the longer fitness will be superior to the
      |  shorter.
-     |  
+     |
      |  Different types of fitnesses are created in the :ref:`creating-types`
      |  tutorial.
-     |  
+     |
      |  .. note::
      |     When comparing fitness values that are **minimized**, ``a > b`` will
      |     return :data:`True` if *a* is **smaller** than *b*.
-     |  
+     |
      |  Method resolution order:
      |      FitnessMax
      |      deap.base.Fitness
      |      builtins.object
-     |  
+     |
      |  Methods defined here:
-     |  
+     |
      |  __init__ = initType(self, *args, **kargs)
      |      Replace the __init__ function of the new type, in order to
      |      add attributes that were defined with **kargs to the instance.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data and other attributes defined here:
-     |  
+     |
      |  weights = (1.0,)
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Methods inherited from deap.base.Fitness:
-     |  
+     |
      |  __deepcopy__(self, memo)
      |      Replace the basic deepcopy function with a faster one.
-     |      
+     |
      |      It assumes that the elements in the :attr:`values` tuple are
      |      immutable and the fitness does not contain any other object
      |      than :attr:`values` and :attr:`weights`.
-     |  
+     |
      |  __eq__(self, other)
      |      Return self==value.
-     |  
+     |
      |  __ge__(self, other)
      |      Return self>=value.
-     |  
+     |
      |  __gt__(self, other)
      |      Return self>value.
-     |  
+     |
      |  __hash__(self)
      |      Return hash(self).
-     |  
+     |
      |  __le__(self, other)
      |      Return self<=value.
-     |  
+     |
      |  __lt__(self, other)
      |      Return self<value.
-     |  
+     |
      |  __ne__(self, other)
      |      Return self!=value.
-     |  
+     |
      |  __repr__(self)
      |      Return the Python code to build a copy of the object.
-     |  
+     |
      |  __str__(self)
      |      Return the values of the Fitness object.
-     |  
+     |
      |  delValues(self)
-     |  
+     |
      |  dominates(self, other, obj=slice(None, None, None))
      |      Return true if each objective of *self* is not strictly worse than
      |      the corresponding objective of *other* and at least one objective is
      |      strictly better.
-     |      
+     |
      |      :param obj: Slice indicating on which objectives the domination is
      |                  tested. The default value is `slice(None)`, representing
      |                  every objectives.
-     |  
+     |
      |  getValues(self)
-     |  
+     |
      |  setValues(self, values)
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Readonly properties inherited from deap.base.Fitness:
-     |  
+     |
      |  valid
      |      Assess if a fitness is valid or not.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data descriptors inherited from deap.base.Fitness:
-     |  
+     |
      |  __dict__
      |      dictionary for instance variables (if defined)
-     |  
+     |
      |  __weakref__
      |      list of weak references to the object (if defined)
-     |  
+     |
      |  values
      |      Fitness values. Use directly ``individual.fitness.values = values`` in order to set the fitness and ``del individual.fitness.values`` in order to clear (invalidate) the fitness. The (unweighted) fitness can be directly accessed via ``individual.fitness.values``.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data and other attributes inherited from deap.base.Fitness:
-     |  
+     |
      |  wvalues = ()
 ```
 
@@ -224,157 +223,157 @@ help(creator.Individual)
 
 ```text
     Help on class Individual in module deap.creator:
-    
+
     class Individual(builtins.list)
      |  Individual(*args, **kargs)
-     |  
+     |
      |  Built-in mutable sequence.
-     |  
+     |
      |  If no argument is given, the constructor creates a new empty list.
      |  The argument must be an iterable if specified.
-     |  
+     |
      |  Method resolution order:
      |      Individual
      |      builtins.list
      |      builtins.object
-     |  
+     |
      |  Methods defined here:
-     |  
+     |
      |  __init__ = initType(self, *args, **kargs)
      |      Replace the __init__ function of the new type, in order to
      |      add attributes that were defined with **kargs to the instance.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data descriptors defined here:
-     |  
+     |
      |  __dict__
      |      dictionary for instance variables (if defined)
-     |  
+     |
      |  __weakref__
      |      list of weak references to the object (if defined)
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Methods inherited from builtins.list:
-     |  
+     |
      |  __add__(self, value, /)
      |      Return self+value.
-     |  
+     |
      |  __contains__(self, key, /)
      |      Return key in self.
-     |  
+     |
      |  __delitem__(self, key, /)
      |      Delete self[key].
-     |  
+     |
      |  __eq__(self, value, /)
      |      Return self==value.
-     |  
+     |
      |  __ge__(self, value, /)
      |      Return self>=value.
-     |  
+     |
      |  __getattribute__(self, name, /)
      |      Return getattr(self, name).
-     |  
+     |
      |  __getitem__(...)
      |      x.__getitem__(y) <==> x[y]
-     |  
+     |
      |  __gt__(self, value, /)
      |      Return self>value.
-     |  
+     |
      |  __iadd__(self, value, /)
      |      Implement self+=value.
-     |  
+     |
      |  __imul__(self, value, /)
      |      Implement self*=value.
-     |  
+     |
      |  __iter__(self, /)
      |      Implement iter(self).
-     |  
+     |
      |  __le__(self, value, /)
      |      Return self<=value.
-     |  
+     |
      |  __len__(self, /)
      |      Return len(self).
-     |  
+     |
      |  __lt__(self, value, /)
      |      Return self<value.
-     |  
+     |
      |  __mul__(self, value, /)
      |      Return self*value.
-     |  
+     |
      |  __ne__(self, value, /)
      |      Return self!=value.
-     |  
+     |
      |  __repr__(self, /)
      |      Return repr(self).
-     |  
+     |
      |  __reversed__(self, /)
      |      Return a reverse iterator over the list.
-     |  
+     |
      |  __rmul__(self, value, /)
      |      Return value*self.
-     |  
+     |
      |  __setitem__(self, key, value, /)
      |      Set self[key] to value.
-     |  
+     |
      |  __sizeof__(self, /)
      |      Return the size of the list in memory, in bytes.
-     |  
+     |
      |  append(self, object, /)
      |      Append object to the end of the list.
-     |  
+     |
      |  clear(self, /)
      |      Remove all items from list.
-     |  
+     |
      |  copy(self, /)
      |      Return a shallow copy of the list.
-     |  
+     |
      |  count(self, value, /)
      |      Return number of occurrences of value.
-     |  
+     |
      |  extend(self, iterable, /)
      |      Extend list by appending elements from the iterable.
-     |  
+     |
      |  index(self, value, start=0, stop=9223372036854775807, /)
      |      Return first index of value.
-     |      
+     |
      |      Raises ValueError if the value is not present.
-     |  
+     |
      |  insert(self, index, object, /)
      |      Insert object before index.
-     |  
+     |
      |  pop(self, index=-1, /)
      |      Remove and return item at index (default last).
-     |      
+     |
      |      Raises IndexError if list is empty or index is out of range.
-     |  
+     |
      |  remove(self, value, /)
      |      Remove first occurrence of value.
-     |      
+     |
      |      Raises ValueError if the value is not present.
-     |  
+     |
      |  reverse(self, /)
      |      Reverse *IN PLACE*.
-     |  
+     |
      |  sort(self, /, *, key=None, reverse=False)
      |      Sort the list in ascending order and return None.
-     |      
+     |
      |      The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
      |      order of two equal elements is maintained).
-     |      
+     |
      |      If a key function is given, apply it once to each list item and sort them,
      |      ascending or descending, according to their function values.
-     |      
+     |
      |      The reverse flag can be set to sort in descending order.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Static methods inherited from builtins.list:
-     |  
+     |
      |  __new__(*args, **kwargs) from builtins.type
      |      Create and return a new object.  See help(type) for accurate signature.
-     |  
+     |
      |  ----------------------------------------------------------------------
      |  Data and other attributes inherited from builtins.list:
-     |  
+     |
      |  __hash__ = None
 ```
 
@@ -460,7 +459,7 @@ stats.register("avg", np.mean)
 
 ```python
 population, logbook = algorithms.eaSimple(
-    population, 
+    population,
     toolbox,
     cxpb=CONST1,
     mutpb=CONST2,

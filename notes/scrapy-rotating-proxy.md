@@ -1,9 +1,8 @@
 ---
 description: Дополнение scrapy для ротации прокси
 tags: crawlers
+title: Scrapy rotating proxy
 ---
-# Scrapy rotating proxy
-
 [Usage](https://github.com/TeamHG-Memex/scrapy-rotating-proxies#usage)
 
 ```python

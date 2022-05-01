@@ -12,13 +12,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="Celery" />
 <meta property="og:locale" content="ru_RU" />
-<meta name="description" content="Очередь задач в python с помощью celery" />
-<meta property="og:description" content="Очередь задач в python с помощью celery" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/celery.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/celery.html" />
+<meta name="description" content="Очереди задач в python с celery" />
+<meta property="og:description" content="Очереди задач в python с celery" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/celery.html","description":"Очередь задач в python с помощью celery","headline":"Celery","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/celery.html","headline":"Celery","description":"Очереди задач в python с celery","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -84,12 +108,13 @@
   <div class="col-4 sm-width-full border-top-thin">
     <p class="mb-3 h5">Теги:
       
+        
+        <a href="/myknowlegebase/tag/queue" title="queue" class="link-tags">queue&nbsp;</a>
+      
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h1 id="celery">Celery</h1>
-
-<h2 id="intro">Intro</h2>
+    <h2 id="intro">Intro</h2>
 
 <p><a href="https://docs.celeryproject.org/en/stable/">Celery</a> это простая, гибкая и надежная распределенная система для обработки большого количества сообщений, предоставляющая операции с инструментами, необходимыми для обслуживания такой системы.</p>
 
@@ -174,19 +199,19 @@
 <p>Тада:</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">--------------</span> celery@pop-os v5.2.3 <span class="o">(</span>dawn-chorus<span class="o">)</span>
-<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span> 
+<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span>
 <span class="nt">--</span> <span class="k">*******</span> <span class="nt">----</span> Linux-5.8.0-7630-generic-x86_64-with-glibc2.32 2022-01-17 23:32:33
-- <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span> 
+- <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span>
 - <span class="k">**</span> <span class="nt">----------</span> <span class="o">[</span>config]
 - <span class="k">**</span> <span class="nt">----------</span> .&gt; app:         tasks:0x7fdfe7e14a60
 - <span class="k">**</span> <span class="nt">----------</span> .&gt; transport:   redis://localhost:6379/0
 - <span class="k">**</span> <span class="nt">----------</span> .&gt; results:     disabled://
 - <span class="k">***</span> <span class="nt">---</span> <span class="k">*</span> <span class="nt">---</span> .&gt; concurrency: 12 <span class="o">(</span>prefork<span class="o">)</span>
 <span class="nt">--</span> <span class="k">*******</span> <span class="nt">----</span> .&gt; task events: OFF <span class="o">(</span><span class="nb">enable</span> <span class="nt">-E</span> to monitor tasks <span class="k">in </span>this worker<span class="o">)</span>
-<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span> 
+<span class="nt">---</span> <span class="k">*****</span> <span class="nt">-----</span>
  <span class="nt">--------------</span> <span class="o">[</span>queues]
                 .&gt; celery           <span class="nv">exchange</span><span class="o">=</span>celery<span class="o">(</span>direct<span class="o">)</span> <span class="nv">key</span><span class="o">=</span>celery
-                
+
 
 <span class="o">[</span>tasks]
   <span class="nb">.</span> tasks.add
@@ -207,9 +232,9 @@
 
 <p>Теперь задача обработана воркером, назначенным ранее. Вы можете убедиться в этом в консоли. Вызов задачи возвращает экземпляр AsyncResult. Это можно использовать для проверки состояния задачи, ожидания завершения задачи или получения возвращаемого значения (или, если задача не удалась, для получения исключения и обратной трассировки). Результаты не включены по умолчанию. Чтобы выполнять удаленные вызовы процедур или отслеживать результаты задач в базе данных, вам необходимо настроить Celery для использования серверной части результатов.</p>
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>2022-01-18 00:02:45,633: INFO/MainProcess] 
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>2022-01-18 00:02:45,633: INFO/MainProcess]
 Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] received
-<span class="o">[</span>2022-01-18 00:02:45,634: INFO/ForkPoolWorker-8] 
+<span class="o">[</span>2022-01-18 00:02:45,634: INFO/ForkPoolWorker-8]
 Task tasks.add[9e31d371-cb34-4e76-b559-b2e92f612c7d] succeeded <span class="k">in </span>0.00025742400612216443s: 8
 </code></pre></div></div>
 

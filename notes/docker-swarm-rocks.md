@@ -1,10 +1,9 @@
 ---
 description: Docker swarm rock ненативная реализация swarm mode
-tags: docker
+tags: docker fastapi
+title: Docker swarm rocks
 ---
-# Docker swarm rocks
-
-Используется для [[docker]] [swarm mode](https://docs.docker.com/engine/swarm/). 
+Используется для [[docker]] [swarm mode](https://docs.docker.com/engine/swarm/).
 
 [Основной материал](https://dockerswarm.rocks/). [Репозиторий](https://github.com/tiangolo/dockerswarm.rocks)
 

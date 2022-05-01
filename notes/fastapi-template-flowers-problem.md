@@ -1,9 +1,8 @@
 ---
 description: Решение проблемы с flower для шаблона проекта fastapi
 tags: fastapi
+title: Fastapi template flower problem
 ---
-# Fastapi template flower problem
-
 [Flower is not starting](https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/398)
 
 > The problem is that mher/flower in the docker compose file points to latest, and latest is no longer compatible with the docker compose file. If you override the image and point to mher/flower:0.9.7 then everything works fine.

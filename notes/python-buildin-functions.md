@@ -1,9 +1,8 @@
 ---
 description: Встроенные функции в python
 tags: python-standart-library
+title: Python build-in functions
 ---
-# Python build-in functions
-
 ![build-in functions in python](../attachments/2022-02-18-00-04-39.png)
 
 - `abs(x)` абсолютное значение, если объект реализует метод `__abs__()`

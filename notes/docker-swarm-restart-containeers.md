@@ -1,9 +1,8 @@
 ---
 description: Как перезапускать сервисы в docker-swarm mode
 tags: docker
+title: Docker swarm restart services
 ---
-# Docker-swarm restart services
-
 Для [[docker-swarm]] нет понятного способа рестарта множества контейнеров. Используется `docker service update` - [смотри доку](https://docs.docker.com/engine/reference/commandline/service_update/)
 
 Примерно вот так:

@@ -1,9 +1,8 @@
 ---
 description: Переменные окружения в тестировании для python
 tags: tests
+title: Env variables for tests
 ---
-# Env variables for tests
-
 Пример реализации
 
 ```python

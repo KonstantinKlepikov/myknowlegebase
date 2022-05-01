@@ -1,9 +1,8 @@
 ---
 description: Разные интересные сопсобы мокать объекты на python
-tags: tests
+tags: tests pip
+title: Либы для создания моков
 ---
-# Либы для создания моков
-
 - [mock-server](https://github.com/tomashanacek/mock-server)
 - [Mimesis: The Fake Data Generator](https://github.com/lk-geimfari/mimesis)
 - [Faker - generates fake data](https://faker.readthedocs.io/en/master/) - [[faker]]

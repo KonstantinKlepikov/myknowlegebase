@@ -1,8 +1,8 @@
 ---
 description: Matplotlibe - размер изображений
+title: Matplotlibe image size
+tags: ml
 ---
-# Matplotlibe image size
-
 Изменить размер изображения для subplot можно так:
 
 ```python

@@ -1,9 +1,8 @@
 ---
 description: Начало работы с foam в vscode
 tags: vscode
+title: Как работать с foam
 ---
-# Как работать с foam
-
 [Рецепты](https://foambubble.github.io/foam/)
 
 Визуализация графов `Foam: Show Graph`.
