@@ -22,6 +22,7 @@ title: Стандартная библиотека python и полезные р
 - [[python-buildin-functions]]
 - [[python-complexity]]
 - [[python-super-guide]]
+- [os and Path/PurePath equivalent](https://docs.python.org/3/library/pathlib.html#correspondence-to-tools-in-the-os-module)
 
 ### Support
 

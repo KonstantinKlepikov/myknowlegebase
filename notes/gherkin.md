@@ -7,7 +7,7 @@ title: Gherkin
 
 Gherkin вышел из ruby, где он связан с исполнителем тестов [[cucumber]]
 
-В python есть несколько эквивалентных cucumber инструментов - это letuce и [[behave]] (совместим с python3 и имеет плагин behave-django).
+В python есть несколько эквивалентных cucumber инструментов - это letuce и [[behave]] (совместим с python3 и имеет плагин behave-django). Используется в [pytest-bdd](https://github.com/pytest-dev/pytest-bdd).
 
 Используют в [[разработка-на-основе-поведения(BDD)]]
 

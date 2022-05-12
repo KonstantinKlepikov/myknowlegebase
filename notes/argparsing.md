@@ -14,8 +14,9 @@ title: Arguments parsing in python
 
 Сторонние либы для создания cli:
 
-- [typer](https://typer.tiangolo.com/)
+- [typer](https://typer.tiangolo.com/) is a library for building CLI applications
 - [[click]]
+- [Questionary](https://questionary.readthedocs.io/en/stable/index.html#) is a Python library for effortlessly building pretty command line interfaces. It makes it very easy to query your user for input
 
 Смотри еще:
 

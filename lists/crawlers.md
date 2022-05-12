@@ -100,6 +100,7 @@ title: Crawlers
 - [[selenium]]
 - [[xpath]]
 - [[css-selectors]]
+- [[xpath-css-examples]]
 - [[BeautifulSoup]]
 - [[urllibparse]]
 
@@ -138,6 +139,7 @@ title: Crawlers
 - [Splash - A javascript rendering service](https://splash.readthedocs.io/en/stable/)
 - [portia](https://github.com/scrapinghub/portia) crawler with ui interface
 - [requests-html](https://github.com/psf/requests-html) This library intends to make parsing HTML (e.g. scraping the web) as simple and intuitive as possible
+- [Wikipedia](https://github.com/goldsmith/Wikipedia) is a Python library that makes it easy to access and parse data from Wikipedia
 
 - [Robot Framework](https://robotframework.org/) is a generic open source automation framework. It can be used for test automation and robotic process automation (RPA).
 
@@ -152,6 +154,7 @@ title: Crawlers
 [selenium]: ../notes/selenium "Selenium"
 [xpath]: ../notes/xpath "XPath в scrapy"
 [css-selectors]: ../notes/css-selectors "Css-selectors"
+[xpath-css-examples]: ../notes/xpath-css-examples "XPath css examples"
 [BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
 [urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
 [2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"
@@ -168,6 +171,7 @@ title: Crawlers
 [selenium]: ../notes/selenium "Selenium"
 [xpath]: ../notes/xpath "XPath в scrapy"
 [css-selectors]: ../notes/css-selectors "Css-selectors"
+[xpath-css-examples]: ../notes/xpath-css-examples "XPath css examples"
 [BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
 [urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
 [2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"

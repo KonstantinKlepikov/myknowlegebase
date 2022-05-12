@@ -16,13 +16,16 @@ tags: ml
 - [SNAP](https://snap.stanford.edu/snap/)
 - [deep snap](https://snap.stanford.edu/deepsnap/)
 - [GraphGym](https://github.com/snap-stanford/GraphGym)
-- [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
 
+- [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
 - [CSRGraphs](https://github.com/VHRanger/CSRGraph) - Fast and memory efficient library for large read-only graphs
 - [nodevectors](https://github.com/VHRanger/nodevectors) some alghoritms, depends on CSRGraphs
+- [torchpr](https://github.com/mberr/torch-ppr) (Personalized) Page-Rank computation using PyTorch
 - [karateclub](https://github.com/benedekrozemberczki/KarateClub) is an unsupervised machine learning extension library for [NetworkX](https://networkx.org/)
-
+- [GraphWorld](https://github.com/google-research/graphworld) toolbox for graph learning researchers to systematically test new models on synthetic graph datasets. [More info](https://ai.googleblog.com/2022/05/graphworld-advances-in-graph.html)
 - [GraphGalery](https://github.com/EdisonLeeeee/GraphGallery) GraphGallery is a gallery for benchmarking Graph Neural Networks (GNNs)
+
+- [Tools created by the OSoMe team](https://osome.iu.edu/tools)
 
 Смотри еще:
 
