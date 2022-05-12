@@ -873,6 +873,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [databases]: databases "Databases"
 [fastapi]: fastapi "Fastapi"
 [pydantic-validation-custom]: pydantic-validation-custom "Pydantic-validation-custom"
+[mock-libraries]: mock-libraries "Либы для создания моков"
 [devtools]: devtools "Python devtools"
 [fastapi-setting-environment-variables]: fastapi-setting-environment-variables "Fastapi environment variables"
 [fastapi]: fastapi "Fastapi"
