@@ -31,10 +31,6 @@ tags: ml
 
 - [Re-play](https://sberbank-ai-lab.github.io/RePlay/)
 
-## Searching
-
-- [[jina]]
-
 ## Preprocessing
 
 - [scikit-lego](https://scikit-lego.readthedocs.io/en/latest/index.html) custom sxcikit-learn transformers, metrics and models
@@ -51,6 +47,11 @@ tags: ml
 - [MLflow](https://mlflow.org/docs/latest/index.html) is an open source platform for managing the end-to-end machine learning lifecycle
 - [AutoDeploy](https://github.com/kartik4949/AutoDeploy) allows configuration based MLOps
 - [spacy](https://spacy.io/) train, manage, package, deploy nlp-models pipline
+- [MLFlow](https://github.com/mlflow/mlflow/) Machine Learning Lifecycle Platform
+- [KubeFlow](https://github.com/kubeflow/kubeflow) the cloud-native platform for machine learning operations - pipelines, training and deployment
+- [RayWorkflow](https://github.com/ray-project/ray) provides a simple, universal API for building distributed applications, [дока](https://docs.ray.io/en/latest/workflows/concepts.html)
+- [seldon-core](https://github.com/SeldonIO/seldon-core) converts your ML models (Tensorflow, Pytorch, H2o, etc.) or language wrappers (Python, Java, etc.) into production REST/GRPC microservices.
+- [[jina]] Фреймворк для работы с ml-моделями
 
 ## Neural networks
 

@@ -147,6 +147,78 @@
 
 <p><a href="https://docs.jina.ai/get-started/hello-world/?utm_source=jina">more demos</a></p>
 
+<h2 id="docarray">DocArray</h2>
+
+<p><a href="https://docarray.jina.ai/?utm_source=jina">DocArray</a></p>
+
+<p>DocArray — это библиотека для вложенных, неструктурированных данных в пути, включая текст, изображения, аудио, видео и т. д. Он позволяет инженерам глубокого обучения эффективно обрабатывать, внедрять, искать, рекомендовать, хранить и передавать данные с помощью python API.</p>
+
+<ul>
+  <li>сверхвыразительная структура данных для представления сложного/смешанного/вложенного текста, изображений, видео, аудио, данных 3D</li>
+  <li>разработан так, чтобы быть таким же простым, как список Python</li>
+  <li>оптимизирован для сетевой связи, готов к подключению в любое время благодаря быстрой и сжатой сериализации в Protobuf, байтах, base64, JSON, CSV, DataFrame</li>
+  <li>работайте с данными, не занимающими память, с помощью хранилища документов на диске, сохраняя при этом тот же опыт работы с API. Поддержка классических баз данных и векторных баз данных для более быстрого поиска</li>
+  <li>поддержка [<a href="graphql" title="GraphQL">graphql</a>] делает ваш сервер универсальным по запросу и ответу; встроенная проверка данных и схема JSON (OpenAPI) помогают создавать надежные веб-сервисы</li>
+  <li>интеграция с ИДЕ</li>
+</ul>
+
+<h3 id="document">Document</h3>
+
+<p><img src="/myknowlegebase/attachments/2022-05-14-01-11-11.png" alt="Document" /></p>
+
+<p>Объект Document имеет <a href="https://docarray.jina.ai/fundamentals/document">предопределенную схему данных</a>. Как <a href="https://docarray.jina.ai/fundamentals/document/construct/?utm_source=docarray">работать с документом</a>.</p>
+
+<h3 id="documentarray">DocumentArray</h3>
+
+<p>DocumentArray представляет собой контейнер объектов, похожий на список. Это лучший способ при работе с несколькими документами. Он реализует все списковые интерфейсы. Он также мощный, как Numpy ndarray и Pandas DataFrame, позволяя вам эффективно получать доступ к элементам и атрибутам содержащихся документов. Кроме того доступны расширенные функции DocumentArray. Эти функции значительно ускоряют работу специалистов по обработке и анализу данных при доступе к вложенным элементам, оценке, визуализации, параллельных вычислениях, сериализации, сопоставлении и т. д. Если ваши данные слишком велики и не помещаются в память, вы можете просто переключиться на хранилище документов на диске или в удаленном хранилище . Все API и пользовательский интерфейс остаются прежними.</p>
+
+<p><a href="https://docarray.jina.ai/fundamentals/documentarray/construct/?utm_source=docarray">Как работать</a></p>
+
+<h3 id="dataclass">Dataclass</h3>
+
+<p>Предоставляет АПИ для работы с мультимодальными данными. Продолжает идиому python датаклассов. <a href="https://docarray.jina.ai/fundamentals/dataclass/?utm_source=docarray">Подробнее</a>.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-05-14-01-56-21.png" alt="dataclass" /></p>
+
+<p><a href="https://docarray.jina.ai/fundamentals/dataclass/construct">API</a></p>
+
+<h3 id="примеры-и-интеграция">Примеры и интеграция</h3>
+
+<p><a href="https://docarray.jina.ai/datatypes">Примеры</a></p>
+
+<p>Интеграции:</p>
+
+<ul>
+  <li>[<a href="sqlite" title="Sqlite">sqlite</a>] [и другие способы хранения]](https://docarray.jina.ai/advanced/document-store/)</li>
+  <li><a href="https://docarray.jina.ai/fundamentals/notebook-support">jupyter notebook</a></li>
+  <li><a href="https://docarray.jina.ai/advanced/torch-support">pytorch</a></li>
+  <li>[<a href="fastapi" title="Fastapi">fastapi</a>]/[<a href="pydantic" title="Pydantic">pydantic</a>] <a href="https://docarray.jina.ai/fundamentals/fastapi-support">смотри тут</a></li>
+  <li>[<a href="graphql" title="GraphQL">graphql</a>] <a href="https://docarray.jina.ai/advanced/graphql-support">смотри тут</a></li>
+</ul>
+
+<h2 id="flow-и-executor">Flow и Executor</h2>
+
+<p><img src="/myknowlegebase/attachments/2022-05-14-00-52-20.png" alt="flow and executor" /></p>
+
+<p><strong>Gateway</strong>: Шлюз — это служба, запускаемая потоком, который отвечает за предоставление клиенту конечных точек WebSocker или gRPC. Это сервис, с которым будут общаться клиенты приложения. Кроме того, он сохраняет информацию о топологии потока, чтобы гарантировать, что исполнители Documents обрабатывают их в правильном порядке. Он связывается с развертываниями через gRPC</p>
+
+<p><strong>Deployment</strong>: Развертывание — это абстракция вокруг Executor, которая позволяет Gateway взаимодействовать с Executors. Он инкапсулирует и абстрагирует детали внутренней репликации.</p>
+
+<p><strong>Pod</strong>: Pod — это простая абстракция над средой выполнения, которая запускает любой сервис Jina, будь то процесс, контейнер Docker или Kubernetes Pod.</p>
+
+<p><strong>Head</strong>: The Head — это служба, добавленная Jina в сегментированное развертывание. Она управляет связью с различными сегментами на основе настроенной стратегии опроса. Она общается с Executors через gRPC.</p>
+
+<h3 id="executors">Executors</h3>
+
+<ul>
+  <li>позволяют организовать ваши функции на основе <code class="language-plaintext highlighter-rouge">DocumentArray</code> в логические объекты, которые могут совместно использовать состояние конфигурации в соответствии с ООП</li>
+  <li>преобразуют ваши локальные функции в функции, которые можно распределять внутри потока</li>
+  <li>внутри потока могут одновременно обрабатывать несколько массивов <code class="language-plaintext highlighter-rouge">DocumentArray</code> и легко развертываться в облаке как часть вашего приложения нейронного поиска</li>
+  <li>могут быть легко контейнеризированы и разделены с вашими коллегами с помощью <code class="language-plaintext highlighter-rouge">jina hub push/pull</code></li>
+</ul>
+
+<p><a href="https://docs.jina.ai/fundamentals/executor/executor-api/?utm_source=jina">API of executors</a></p>
+
 <h2 id="аналоги">Аналоги</h2>
 
 <ul>
@@ -160,7 +232,8 @@
 
 <ul>
   <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
-  <li><a href="https://docs.jina.ai/">Документация</a></li>
+  <li><a href="https://docs.jina.ai/">Документация jina</a></li>
+  <li><a href="https://docarray.jina.ai/?utm_source=jina">Документация DocArray</a></li>
 </ul>
 
 
