@@ -211,13 +211,70 @@
 <h3 id="executors">Executors</h3>
 
 <ul>
-  <li>позволяют организовать ваши функции на основе <code class="language-plaintext highlighter-rouge">DocumentArray</code> в логические объекты, которые могут совместно использовать состояние конфигурации в соответствии с ООП</li>
-  <li>преобразуют ваши локальные функции в функции, которые можно распределять внутри потока</li>
-  <li>внутри потока могут одновременно обрабатывать несколько массивов <code class="language-plaintext highlighter-rouge">DocumentArray</code> и легко развертываться в облаке как часть вашего приложения нейронного поиска</li>
-  <li>могут быть легко контейнеризированы и разделены с вашими коллегами с помощью <code class="language-plaintext highlighter-rouge">jina hub push/pull</code></li>
+  <li>позволяют организовать функции на основе <code class="language-plaintext highlighter-rouge">DocumentArray</code> в логические объекты, которые могут совместно использовать состояние конфигурации в соответствии с ООП</li>
+  <li>преобразуют локальные функции в функции, которые можно распределять внутри потока</li>
+  <li>внутри потока могут одновременно обрабатывать несколько массивов <code class="language-plaintext highlighter-rouge">DocumentArray</code> и легко развертываться в облаке как часть приложения нейронного поиска</li>
+  <li>могут быть легко контейнеризированы и разделены с коллегами с помощью <code class="language-plaintext highlighter-rouge">jina hub push/pull</code></li>
 </ul>
 
 <p><a href="https://docs.jina.ai/fundamentals/executor/executor-api/?utm_source=jina">API of executors</a></p>
+
+<p>Простейший пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+
+<span class="k">class</span> <span class="nc">RequestExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span><span class="p">(</span>
+        <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s">'/index'</span><span class="p">,</span> <span class="s">'/search'</span><span class="p">]</span>
+    <span class="p">)</span>  <span class="c1"># foo will be bound to `/index` and `/search` endpoints
+</span>    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'Calling foo'</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="n">requests</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/other'</span><span class="p">)</span>  <span class="c1"># bar will be bound to `/other` endpoint
+</span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'Calling bar'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">().</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">RequestExecutor</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/index'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[])</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/other'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[])</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/search'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[])</span>
+</code></pre></div></div>
+
+<h3 id="flow">Flow</h3>
+
+<p>Flow объединяет Exeturos в конвейер обработки для создания приложения нейронного поиска. Документы движутся по созданному конвейеру и обрабатываются Executors. Можно думать о Flow как об интерфейсе для настройки и запуска микросервисной архитектуры, в то время как тяжелая работа выполняется самими сервисами. В частности, каждый поток также запускает службу шлюза, которая может предоставлять доступ ко всем другим службам через определенный API.</p>
+
+<ul>
+  <li>Потоки соединяют микрослужбы (исполнители) для создания службы с надлежащим интерфейсом в стиле клиент/сервер через HTTP, gRPC или Websocket</li>
+  <li>Потоки позволяют независимо масштабировать этих исполнителей в соответствии с вашими требованиями</li>
+  <li>Потоки позволяют легко использовать другие облачные оркестраторы, такие как Kubernetes, для управления вашим сервисом.</li>
+</ul>
+
+<p>Простейший пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">requests</span>
+
+
+<span class="k">class</span> <span class="nc">MyExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/bar'</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">().</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'myexec1'</span><span class="p">,</span> <span class="n">uses</span><span class="o">=</span><span class="n">MyExecutor</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/bar'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">Document</span><span class="p">(),</span> <span class="n">on_done</span><span class="o">=</span><span class="k">print</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.jina.ai/fundamentals/flow">API</a></p>
 
 <h2 id="аналоги">Аналоги</h2>
 
@@ -227,6 +284,12 @@
   <li><a href="https://github.com/ray-project/ray">RayWorkflow</a> provides a simple, universal API for building distributed applications, <a href="https://docs.ray.io/en/latest/workflows/concepts.html">дока</a></li>
   <li><a href="https://github.com/SeldonIO/seldon-core">seldon-core</a> converts your ML models (Tensorflow, Pytorch, H2o, etc.) or language wrappers (Python, Java, etc.) into production REST/GRPC microservices.</li>
 </ul>
+
+<h2 id="деплой-с-docker-compose">Деплой с [<a href="docker-compose" title="Docker compose">docker-compose</a>]</h2>
+
+<p><a href="https://docs.jina.ai/how-to/docker-compose/?utm_source=jina">ссылка</a></p>
+
+<h2 id="cli"><a href="https://docs.jina.ai/cli">cli</a></h2>
 
 <p>Еще ссылки:</p>
 

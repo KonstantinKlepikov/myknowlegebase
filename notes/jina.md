@@ -92,12 +92,69 @@ DocumentArray представляет собой контейнер объек�
 
 ### Executors
 
-- позволяют организовать ваши функции на основе `DocumentArray` в логические объекты, которые могут совместно использовать состояние конфигурации в соответствии с ООП
-- преобразуют ваши локальные функции в функции, которые можно распределять внутри потока
-- внутри потока могут одновременно обрабатывать несколько массивов `DocumentArray` и легко развертываться в облаке как часть вашего приложения нейронного поиска
-- могут быть легко контейнеризированы и разделены с вашими коллегами с помощью `jina hub push/pull`
+- позволяют организовать функции на основе `DocumentArray` в логические объекты, которые могут совместно использовать состояние конфигурации в соответствии с ООП
+- преобразуют локальные функции в функции, которые можно распределять внутри потока
+- внутри потока могут одновременно обрабатывать несколько массивов `DocumentArray` и легко развертываться в облаке как часть приложения нейронного поиска
+- могут быть легко контейнеризированы и разделены с коллегами с помощью `jina hub push/pull`
 
 [API of executors](https://docs.jina.ai/fundamentals/executor/executor-api/?utm_source=jina)
+
+Простейший пример:
+
+```python
+from jina import Executor, requests
+import asyncio
+
+
+class RequestExecutor(Executor):
+    @requests(
+        on=['/index', '/search']
+    )  # foo will be bound to `/index` and `/search` endpoints
+    def foo(self, **kwargs):
+        print(f'Calling foo')
+
+    @requests(on='/other')  # bar will be bound to `/other` endpoint
+    async def bar(self, **kwargs):
+        await asyncio.sleep(1.0)
+        print(f'Calling bar')
+from jina import Flow
+
+f = Flow().add(uses=RequestExecutor)
+
+with f:
+    f.post(on='/index', inputs=[])
+    f.post(on='/other', inputs=[])
+    f.post(on='/search', inputs=[])
+```
+
+### Flow
+
+Flow объединяет Exeturos в конвейер обработки для создания приложения нейронного поиска. Документы движутся по созданному конвейеру и обрабатываются Executors. Можно думать о Flow как об интерфейсе для настройки и запуска микросервисной архитектуры, в то время как тяжелая работа выполняется самими сервисами. В частности, каждый поток также запускает службу шлюза, которая может предоставлять доступ ко всем другим службам через определенный API.
+
+- Потоки соединяют микрослужбы (исполнители) для создания службы с надлежащим интерфейсом в стиле клиент/сервер через HTTP, gRPC или Websocket
+- Потоки позволяют независимо масштабировать этих исполнителей в соответствии с вашими требованиями
+- Потоки позволяют легко использовать другие облачные оркестраторы, такие как Kubernetes, для управления вашим сервисом.
+
+Простейший пример:
+
+```python
+from docarray import Document
+from jina import Flow, Executor, requests
+
+
+class MyExecutor(Executor):
+    @requests(on='/bar')
+    def foo(self, docs, **kwargs):
+        print(docs)
+
+
+f = Flow().add(name='myexec1', uses=MyExecutor)
+
+with f:
+    f.post(on='/bar', inputs=Document(), on_done=print)
+```
+
+[API](https://docs.jina.ai/fundamentals/flow)
 
 ## Аналоги
 
@@ -105,6 +162,12 @@ DocumentArray представляет собой контейнер объек�
 - [KubeFlow](https://github.com/kubeflow/kubeflow) the cloud-native platform for machine learning operations - pipelines, training and deployment
 - [RayWorkflow](https://github.com/ray-project/ray) provides a simple, universal API for building distributed applications, [дока](https://docs.ray.io/en/latest/workflows/concepts.html)
 - [seldon-core](https://github.com/SeldonIO/seldon-core) converts your ML models (Tensorflow, Pytorch, H2o, etc.) or language wrappers (Python, Java, etc.) into production REST/GRPC microservices.
+
+## Деплой с [[docker-compose]]
+
+[ссылка](https://docs.jina.ai/how-to/docker-compose/?utm_source=jina)
+
+## [cli](https://docs.jina.ai/cli)
 
 Еще ссылки:
 
@@ -114,6 +177,9 @@ DocumentArray представляет собой контейнер объек�
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [graphql]: graphql "GraphQL"
+[sqlite]: sqlite "Sqlite"
+[fastapi]: fastapi "Fastapi"
+[pydantic]: pydantic "Pydantic"
 [machine-learning]: ../lists/machine-learning "Алгоритмы машинного обучения"
 [//end]: # "Autogenerated link references"
 [//begin]: # "Autogenerated link references for markdown compatibility"
@@ -122,5 +188,6 @@ DocumentArray представляет собой контейнер объек�
 [fastapi]: fastapi "Fastapi"
 [pydantic]: pydantic "Pydantic"
 [graphql]: graphql "GraphQL"
+[docker-compose]: docker-compose "Docker compose"
 [machine-learning]: ../lists/machine-learning "Алгоритмы машинного обучения"
 [//end]: # "Autogenerated link references"
