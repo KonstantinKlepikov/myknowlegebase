@@ -24,8 +24,11 @@ tags: ml
 - [karateclub](https://github.com/benedekrozemberczki/KarateClub) is an unsupervised machine learning extension library for [NetworkX](https://networkx.org/)
 - [GraphWorld](https://github.com/google-research/graphworld) toolbox for graph learning researchers to systematically test new models on synthetic graph datasets. [More info](https://ai.googleblog.com/2022/05/graphworld-advances-in-graph.html)
 - [GraphGalery](https://github.com/EdisonLeeeee/GraphGallery) GraphGallery is a gallery for benchmarking Graph Neural Networks (GNNs)
+- [Large graphs datasets](https://law.di.unimi.it/datasets.php)
 
 - [Tools created by the OSoMe team](https://osome.iu.edu/tools)
+
+- [Awesome-knowledge-graph-question-answering](https://github.com/BshoterJ/awesome-kgqa) A collection of some materials of knowledge graph question answering
 
 Смотри еще:
 

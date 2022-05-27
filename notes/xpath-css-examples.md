@@ -11,6 +11,21 @@ title: XPath css examples
 
 more [on stack-overflow](https://stackoverflow.com/questions/3881044/how-to-get-html-elements-with-multiple-css-classes)
 
+## XPath expression for selecting all text in a given node, and the text of its chldren
+
+```shell
+string(//div[@id='theNode'])
+
+# or to reduce unwanted whitespace that might appear due
+# to newlines and indenting in the source document
+normalize-space(//div[@id='theNode'])
+
+# if theNode was the context node, you could use this instead
+# normalize-space()
+```
+
+[ссылка](https://stackoverflow.com/a/10424209/15966204)
+
 Еще ссылки:
 
 - [[xpath]]
