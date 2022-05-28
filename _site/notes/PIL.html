@@ -115,7 +115,9 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+    <h2 id="image-class">Image class</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"empire.jpg"</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">im</span><span class="p">.</span><span class="nb">format</span><span class="p">,</span> <span class="n">im</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">im</span><span class="p">.</span><span class="n">mode</span><span class="p">)</span>
@@ -218,8 +220,66 @@
 <p><img src="/myknowlegebase/attachments/2022-05-28-01-35-06.png" alt="Processing individual bands" /></p>
 
 <ul>
-  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/tutorial.html">more basic operations</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/tutorial.html#using-the-image-class">using Image class</a></li>
   <li><a href="https://pillow.readthedocs.io/en/stable/reference/Image.html">more about Image module</a></li>
+</ul>
+
+<h2 id="concepts">Concepts</h2>
+
+<p>Изображение может состоять из одного или нескольких каналов данных. Библиотека pillow позволяет хранить несколько каналов в одном изображении при условии, что все они имеют одинаковые ширину и высоту. Например, изображение PNG может иметь каналы «R», «G», «B» и «A» для значений прозрачности красного, зеленого, синего и альфа-канала. Многие операции воздействуют на каждый канал отдельно, например, гистограммы. Часто полезно думать, что каждый пиксель имеет одно значение для каждго канала. Чтобы получить количество и названия каналов на изображении, используйте метод <code class="language-plaintext highlighter-rouge">getbands()</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">mode</code> — это строка, определяющая тип и глубину пикселя изображения. Каждый пиксель использует полный диапазон битовой глубины. Таким образом, 1-битный пиксель имеет диапазон от 0 до 1, 8-битный пиксель имеет диапазон от 0 до 255 и так далее. Текущая версия поддерживает следующие стандартные режимы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1</code> (1-bit pixels, black and white, stored with one pixel per byte)</li>
+  <li><code class="language-plaintext highlighter-rouge">L</code> (8-bit pixels, black and white)</li>
+  <li><code class="language-plaintext highlighter-rouge">P</code> (8-bit pixels, mapped to any other mode using a color palette)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGB</code> (3x8-bit pixels, true color)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGBA</code> (4x8-bit pixels, true color with transparency mask)</li>
+  <li><code class="language-plaintext highlighter-rouge">CMYK</code> (4x8-bit pixels, color separation)</li>
+  <li><code class="language-plaintext highlighter-rouge">YCbCr</code> (3x8-bit pixels, color video format) Note that this refers to the JPEG, and not the ITU-R BT.2020, standard</li>
+  <li><code class="language-plaintext highlighter-rouge">LAB</code> (3x8-bit pixels, the L<em>a</em>b color space)</li>
+  <li><code class="language-plaintext highlighter-rouge">HSV</code> (3x8-bit pixels, Hue, Saturation, Value color space)</li>
+  <li><code class="language-plaintext highlighter-rouge">I</code> (32-bit signed integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">F</code> (32-bit floating point pixels)</li>
+</ul>
+
+<p>Pillow also provides limited support for a few additional modes, including:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">LA</code> (L with alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">PA</code> (P with alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGBX</code> (true color with padding)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGBa</code> (true color with premultiplied alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">La</code> (L with premultiplied alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16</code> (16-bit unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16L</code> (16-bit little endian unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16B</code> (16-bit big endian unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16N</code> (16-bit native endian unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;15</code> (15-bit reversed true colour)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;16</code> (16-bit reversed true colour)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;24</code> (24-bit reversed true colour)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;32</code> (32-bit reversed true colour)</li>
+</ul>
+
+<p>pillow не поддерживает юзер-дефайнед модели</p>
+
+<p>Атрибут <code class="language-plaintext highlighter-rouge">size</code> позволяет указать размер изображения в виде кортежа из двух целых чисел. Координаты-  в виде кортежа из четырех чисел - левый, верхний, правый и нижний.</p>
+
+<p>Атрибут <code class="language-plaintext highlighter-rouge">info</code> позволяет добавить вспомогательную инфу <a href="https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.info">в виде словаря</a>. Наиболее частый вариант использования - передача информации об ориентации изображения.</p>
+
+<p>Для геометрических операций, которые могут отображать несколько входных пикселей в один выходной пиксель, PIL предоставляет различные <a href="https://pillow.readthedocs.io/en/stable/handbook/concepts.html#filters">фильтры передискретизации</a>.</p>
+
+<p><a href="https://pillow.readthedocs.io/en/stable/handbook/concepts.html#">Подробнее</a></p>
+
+<h2 id="more">More</h2>
+
+<ul>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html">Поддерживаемые форматы</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html">параметр привязки и выравнивания текста</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/writing-your-own-image-plugin.html">создание собственных плагинов</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/writing-your-own-image-plugin.html#decoders">декодеры</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/reference/index.html">список классов и функций</a></li>
 </ul>
 
 <p>Смотри еще:</p>
