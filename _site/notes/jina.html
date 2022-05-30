@@ -246,9 +246,160 @@
     <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/search'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[])</span>
 </code></pre></div></div>
 
+<p>Executor является автономным компонентом и выполняет группу задач с DocumentArray. Он инкапсулирует функции, обрабатывающие DocumentArrays. Внутри Executor эти функции декорируются <code class="language-plaintext highlighter-rouge">@requests</code>. Чтобы создать Executor, вам нужно всего лишь следовать трем принципам:</p>
+
+<ul>
+  <li>Executor должен быть подклассом непосредственно из класса <code class="language-plaintext highlighter-rouge">jina.Executor</code>.</li>
+  <li>Класс Executor — это набор функций с общим состоянием или конфигурацией; он может содержать произвольное количество функций с произвольными именами.</li>
+  <li>Функции, декорированные <code class="language-plaintext highlighter-rouge">@requests</code>, будут вызываться в соответствии с их эндпоинтом <code class="language-plaintext highlighter-rouge">on=</code> - во Flow ээто мапится в сетевые эндпоинты. Эти функции могут быть сопрограммами [<a href="asyncio" title="Asyncio">asyncio</a>] или обычными функциями.</li>
+</ul>
+
+<h4 id="__init__">__init__</h4>
+
+<p>Если экзекьютор не содержит инициализируемого состояния - инт не нужен. Если содержит - необходимо вызвать кварги родителя:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span>
+
+
+<span class="k">class</span> <span class="nc">MyExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bar</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">bar</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">foo</span> <span class="o">=</span> <span class="n">foo</span>
+</code></pre></div></div>
+
+<h4 id="endpoints">Endpoints</h4>
+
+<p>Эндпоитнты указывать не обязательно. Метод класса, декорированный <code class="language-plaintext highlighter-rouge">@requests</code> без on=, является обработчиком по умолчанию для всех конечных точек.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+
+<span class="k">class</span> <span class="nc">MyExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="n">requests</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/index'</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'Calling bar'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Метод без привязки <code class="language-plaintext highlighter-rouge">@requests</code> не играет никакой роли в Flow. Все методы Executor, с <code class="language-plaintext highlighter-rouge">@requests</code>, должны следовать приведенной ниже сигнатуры аргументов, чтобы их можно было использовать во Flow.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">DocumentArray</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">requests</span>
+
+
+<span class="k">class</span> <span class="nc">MyExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+        <span class="n">docs_matrix</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DocumentArray</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DocumentArray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="bp">None</span><span class="p">]:</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<ul>
+  <li>docs: DocumentArray, являющийся частью запроса. Поскольку природа Executor заключается в том, чтобы обернуть функциональность, связанную с DocumentArray, он обычно является основным процессорным блоком внутри методов Executor. Важно отметить, что DocumentArray могут быть изменены на месте, точно так же, как это может произойти с любым другим спископодобным объектом в функции Python.</li>
+  <li>parameters: объект Dict, который можно использовать для передачи дополнительных параметров функциям Executor.</li>
+  <li>docs_matrix: это наименее распространенный параметр, используемый для Executor. Этот аргумент необходим, когда Executor используется внутри потока для объединения или модификации вывода более чем одного другого Executor. Как пользователь, вы редко будете касаться этого параметра.</li>
+</ul>
+
+<p>Кажды экзекьютор может иметь ретурн трех типов:</p>
+
+<ul>
+  <li>Если вы вернете объект DocumentArray, он будет отправлен следующему исполнителю.</li>
+  <li>Если вы возвращаете None, то исходный объект DocumentArray (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.</li>
+  <li>Если вы вернете объект dict, то он будет считаться результатом и будет передан d dblt <code class="language-plaintext highlighter-rouge">parameters['__results__']</code>. Исходный объект документа (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.</li>
+</ul>
+
+<p><a href="https://docs.jina.ai/fundamentals/executor/executor-api/#example">Более подробный пример</a></p>
+
+<p>Дополнительно <a href="https://docs.jina.ai/fundamentals/executor/executor-api/#running-executor-outside-the-flow">о запуске executor вне Flow или удаленно</a></p>
+
+<h4 id="executors-and-flow">Executors and Flow</h4>
+
+<p>Экзекьютор можно добваить во Flow <a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#yaml-and-python-api">через питоний АПИ или через yaml</a>. В этом учлае можно даже не декорировать методы через <code class="language-plaintext highlighter-rouge">@requests</code> - запрсоы можно прописат ьнепосредственно во Flow. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span>
+<span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">DocumentArray</span>
+
+
+<span class="k">class</span> <span class="nc">MyExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_1</span><span class="p">,</span> <span class="n">parameter_2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'parameter_1 = </span><span class="si">{</span><span class="n">parameter_1</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f'parameter_2 = </span><span class="si">{</span><span class="n">parameter_2</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">my_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'in my_index, bound to /index'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">my_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'in my_search, bound to /search'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'in foo, bound to /random'</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">().</span><span class="n">add</span><span class="p">(</span>
+    <span class="n">uses</span><span class="o">=</span><span class="s">'MyExecutor'</span><span class="p">,</span>
+    <span class="n">uses_with</span><span class="o">=</span><span class="p">{</span><span class="s">"parameter_1"</span><span class="p">:</span> <span class="s">"foo"</span><span class="p">,</span> <span class="s">"parameter_2"</span><span class="p">:</span> <span class="s">"bar"</span><span class="p">},</span>
+    <span class="n">uses_metas</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">"name"</span><span class="p">:</span> <span class="s">"MyExecutor"</span><span class="p">,</span>
+        <span class="s">"description"</span><span class="p">:</span> <span class="s">"MyExecutor does a thing to the stuff in your Documents"</span><span class="p">,</span>
+        <span class="s">"py_modules"</span><span class="p">:</span> <span class="p">[</span><span class="s">"executor.py"</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">uses_requests</span><span class="o">=</span><span class="p">{</span><span class="s">"/index"</span><span class="p">:</span> <span class="s">"my_index"</span><span class="p">,</span> <span class="s">"/search"</span><span class="p">:</span> <span class="s">"my_search"</span><span class="p">,</span> <span class="s">"/random"</span><span class="p">:</span> <span class="s">"foo"</span><span class="p">},</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="s">"some_custom_path"</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">use_with</code> — это словарь определяющий аргументы метода __init__ экзекьютора.</li>
+  <li><code class="language-plaintext highlighter-rouge">uses_metas</code> — это словарь определяющий некоторые внутренние атрибуты экзекьютора. Он содержит следующие поля:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">name</code> — строка, определяющая имя исполнителя;</li>
+      <li><code class="language-plaintext highlighter-rouge">description</code> — строка, определяющая описание этого исполнителя. Он будет использоваться в автодоках;</li>
+      <li><code class="language-plaintext highlighter-rouge">py_modules</code> — это список строк, определяющих Python-зависимости исполнителя;</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">use_requests</code> — это словарь определяющий сопоставление эндпоинта с методом класса. Полезно, если нужно переопределить сопоставление эндпоинта и метода по умолчанию, определенное в реализации Executor.</li>
+  <li><code class="language-plaintext highlighter-rouge">workspace</code> — строковое значение, определяющее рабочее пространство.</li>
+  <li><a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#runtime-args">runtime_args</a></li>
+</ul>
+
+<p>Работа экзекютера в потоке завершается методом close(). Его <a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#graceful-shutdown-of-an-executor">можно переопределить</a>.</p>
+
+<p>Когда экзекьюто получает месседжы от нескольких других экзекьюторов в потоке, <a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#multiple-documentarrays-as-input">используется docs_matrix</a></p>
+
+<h4 id="executor-file-structure---лучшие-практики-организации-структуры-executorflow-приложения"><a href="https://docs.jina.ai/fundamentals/executor/repository-structure/">Executor File Structure</a> - лучшие практики организации структуры executor/flow приложения</h4>
+
+<h4 id="share-executors-via-jina-hub"><a href="https://docs.jina.ai/fundamentals/executor/hub/">Share Executors via Jina Hub</a></h4>
+
+<h4 id="dockerize-your-executor"><a href="https://docs.jina.ai/fundamentals/executor/containerize-executor/">Dockerize your Executor</a></h4>
+
+<h4 id="monitor-executor-with-custom-metrics"><a href="https://docs.jina.ai/fundamentals/executor/monitoring-executor/">Monitor Executor with Custom Metrics</a></h4>
+
+<p>Jina позволяет контролировать каждую часть потока, включая Executor, с помощью Grafana/[<a href="prometeus" title="Prometeus">prometeus</a>].</p>
+
+<p>Пользовательские метрики полезны, когда вы хотите отслеживать каждую часть экзекьюторов. Jina предоставляет декоратор <code class="language-plaintext highlighter-rouge">@monitor()</code>, который позволяет легко отслеживать подметоды Executor.</p>
+
+<p>Когда мониторинг включен, каждый исполнитель будет предоставлять свои собственные показатели. Это означает, что на практике каждый из исполнителей будет предоставлять конечную точку Prometheus с помощью клиента Prometheus.</p>
+
+<p>По умолчанию каждый метод, оформленный декоратором <code class="language-plaintext highlighter-rouge">@request</code>, будет отслеживаться, он создаст сводку Prometheus, в которой будет отслеживаться время выполнения метода.</p>
+
+<h4 id="yaml-specification"><a href="https://docs.jina.ai/fundamentals/executor/yaml-spec/">YAML-specification</a></h4>
+
 <h3 id="flow">Flow</h3>
 
-<p>Flow объединяет Exeturos в конвейер обработки для создания приложения нейронного поиска. Документы движутся по созданному конвейеру и обрабатываются Executors. Можно думать о Flow как об интерфейсе для настройки и запуска микросервисной архитектуры, в то время как тяжелая работа выполняется самими сервисами. В частности, каждый поток также запускает службу шлюза, которая может предоставлять доступ ко всем другим службам через определенный API.</p>
+<p>Flow объединяет Exeturos в конвейер обработки для создания приложения. Документы движутся по созданному конвейеру и обрабатываются Executors. Можно думать о Flow как об интерфейсе для настройки и запуска микросервисной архитектуры, в то время как тяжелая работа выполняется самими сервисами. В частности, каждый поток также запускает службу шлюза, которая может предоставлять доступ ко всем другим службам через определенный API.</p>
 
 <ul>
   <li>Потоки соединяют микрослужбы (исполнители) для создания службы с надлежащим интерфейсом в стиле клиент/сервер через HTTP, gRPC или Websocket</li>
@@ -274,7 +425,136 @@
     <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/bar'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">Document</span><span class="p">(),</span> <span class="n">on_done</span><span class="o">=</span><span class="k">print</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><a href="https://docs.jina.ai/fundamentals/flow">API</a></p>
+<p><a href="https://docs.jina.ai/fundamentals/flow">API</a>
+Поток определяет микросервисную архитектуру экзекьюторов. Вначале его необходимо инициализировать. Запуск потока производится с помощью контекстного менеджера. Исполнение потока можно прекратить с помощью метода <code class="language-plaintext highlighter-rouge">block()</code> - это блокирует выполнение текущего процесса или потока, что дает возможность внешним клиентам обращатсья к потоку.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">block</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.jina.ai/fundamentals/flow/create-flow/#start-and-stop-a-flow">Вариант блокировки через эвенты</a></p>
+
+<p>Экзекьюторы <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#add-executors">добавляются в потко через АПИ python или с помощью yaml</a>. В апи используйте метод <code class="language-plaintext highlighter-rouge">add()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">DocumentArray</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">requests</span>
+
+
+<span class="k">class</span> <span class="nc">FooExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">docs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">'foo was here'</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">BarExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">docs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">'bar was here'</span><span class="p">))</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Flow</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">FooExecutor</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'fooExecutor'</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">BarExecutor</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'barExecutor'</span><span class="p">)</span>
+<span class="p">)</span>  <span class="c1"># Create the empty Flow
+</span><span class="k">with</span> <span class="n">f</span><span class="p">:</span>  <span class="c1"># Using it as a Context Manager will start the Flow
+</span>    <span class="n">response</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="n">on</span><span class="o">=</span><span class="s">'/search'</span>
+    <span class="p">)</span>  <span class="c1"># This sends a request to the /search endpoint of the Flow
+</span>    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Можно добавлять экзекьюторы из кода приложения, jina-хаба, докерезированные экзекьюторы и из ямл-спецификаций. <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#add-executors-from-different-sources">Смотри подробнее</a>. Кроме того, <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#external-executors">можно опрашивать сетевые адреса</a></p>
+
+<p>При инициализации потока <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#override-executor-configuration">параметры экзекьютора можно переопределить</a></p>
+
+<p>Можно определять тип данных, в которых нужно сконвертировать аутпут экзекьютора, перед передачей в следующий в потоке. Это <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#convert-array-types-between-executors">делается непосредственно в определении пайпалйна потока</a></p>
+
+<p>Топология потока задается в виде графа и может включать определение обязательных зависимостей, фильтров, репликации экзекьюторов и машин. <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#complex-flow-topologies">Подробнее здесь</a></p>
+
+<p>Визуализировать граф потока <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#visualize-a-flow">можно так</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">().</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'e1'</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="n">needs</span><span class="o">=</span><span class="s">'e1'</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="n">needs</span><span class="o">=</span><span class="s">'e1'</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="s">'flow-2.svg'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-31-00-02-31.png" alt="flow vizualisation" /></p>
+
+<h4 id="конфигурация-потока"><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#configure-flow">Конфигурация потока</a></h4>
+
+<p>Поддерживаемые протоколы:</p>
+
+<ul>
+  <li>gRPC</li>
+  <li>[<a href="../lists/http" title="Http">http</a>]</li>
+  <li>WebSocket</li>
+</ul>
+
+<p><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#serve-flow-with-different-protocols">Как определить протокол для flow</a></p>
+
+<p>Пример с http (здесь использован <a href="https://docs.jina.ai/fundamentals/flow/client/">python client</a>)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">DocumentArray</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">requests</span>
+
+
+<span class="k">class</span> <span class="nc">FooExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">docs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">'foo was called'</span><span class="p">))</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">12345</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">FooExecutor</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">)</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">docs</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Не каждый эндпоинт Executor будет автоматически доступен через внешний HTTP-интерфейс. По умолчанию любой поток предоставляет следующие эндпоинты CRUD и отладки HTTP: <code class="language-plaintext highlighter-rouge">/status</code>, <code class="language-plaintext highlighter-rouge">/post</code>, <code class="language-plaintext highlighter-rouge">/index</code>, <code class="language-plaintext highlighter-rouge">/search</code>, <code class="language-plaintext highlighter-rouge">/update</code> и <code class="language-plaintext highlighter-rouge">/delete</code>. Чтобы добавить кастомный эндпоинт в http-интерфейс, надо использовать <code class="language-plaintext highlighter-rouge">Flow.expose_endpoint</code></p>
+
+<p><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#customize-http-interface">Пример</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">Flow</span>
+
+
+<span class="k">class</span> <span class="nc">MyExec</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/foo'</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">MyExec</span><span class="p">)</span>
+<span class="n">f</span><span class="p">.</span><span class="n">expose_endpoint</span><span class="p">(</span><span class="s">'/foo'</span><span class="p">,</span> <span class="n">summary</span><span class="o">=</span><span class="s">'my endpoint'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">block</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Эндпоинты можно <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#hide-default-endpoints-from-http-interface">скрыть для http</a> или <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#enable-cross-origin-resource-sharing-cors">открыть для CORS</a>. Кроме того, jina работает на [<a href="uvicorn" title="Uvicorn">uvicorn</a>] и <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#advanced-configuration-options">параметры можно передачь во флоу</a>.</p>
+
+<p>Дополнительно:</p>
+
+<ul>
+  <li>[<a href="graphql" title="GraphQL">graphql</a>] эндпоинт тоже <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#add-graphql-endpoint">можно задать</a></li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#enable-tls">TLS</a></li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#limit-outstanding-requests">контроль числа запросов</a></li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#set-timeouts-for-requests">таймауты</a></li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#generate-deployment-configuration">генерация спецификаций для деплоя, к примеру композ или кубернетис</a></li>
+</ul>
+
+<h4 id="access-flow"><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/">Access Flow</a></h4>
+
+<ul>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#http-access">HTTP access</a>. Потоки с открытым корс доступны через [<a href="swagger" title="Swagger">swagger</a>] ui - <a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#use-swagger-ui-to-send-http-request">смотри тут</a></li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#graphql-interface">GraphQL Interface</a></li>
+  <li>gRPC</li>
+  <li>Websocket</li>
+</ul>
 
 <h2 id="аналоги">Аналоги</h2>
 
@@ -287,7 +567,7 @@
 
 <h2 id="деплой-с-docker-compose">Деплой с [<a href="docker-compose" title="Docker compose">docker-compose</a>]</h2>
 
-<p><a href="https://docs.jina.ai/how-to/docker-compose/?utm_source=jina">ссылка</a></p>
+<p><a href="https://docs.jina.ai/how-to/docker-compose/">ссылка</a></p>
 
 <h2 id="cli"><a href="https://docs.jina.ai/cli">cli</a></h2>
 
@@ -297,6 +577,7 @@
   <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
   <li><a href="https://docs.jina.ai/">Документация jina</a></li>
   <li><a href="https://docarray.jina.ai/?utm_source=jina">Документация DocArray</a></li>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
 </ul>
 
 
