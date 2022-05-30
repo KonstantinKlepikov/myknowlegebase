@@ -18,6 +18,7 @@ tags: ml
 - [GraphGym](https://github.com/snap-stanford/GraphGym)
 
 - [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
+- [Community detection for NetworkX](https://python-louvain.readthedocs.io/en/latest/index.html) Louvain Community Detection
 - [CSRGraphs](https://github.com/VHRanger/CSRGraph) - Fast and memory efficient library for large read-only graphs
 - [nodevectors](https://github.com/VHRanger/nodevectors) some alghoritms, depends on CSRGraphs
 - [torchpr](https://github.com/mberr/torch-ppr) (Personalized) Page-Rank computation using PyTorch

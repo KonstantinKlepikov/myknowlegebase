@@ -6,6 +6,7 @@ title: Networkx
 Смотир еще:
 
 - [Документация](https://networkx.org/)
+- [Community detection for NetworkX](https://python-louvain.readthedocs.io/en/latest/index.html) Louvain Community Detection
 - [[graphs]]
 - [Graph traversal with Networkx](https://stackoverflow.com/questions/14259233/graph-traversal-with-networkx-python)
 - [Get node list from random walk in networkX](https://stackoverflow.com/questions/37311651/get-node-list-from-random-walk-in-networkx)
