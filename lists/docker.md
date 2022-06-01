@@ -262,6 +262,7 @@ ip-адреса nameserver-ов можно устанавливать для к�
 - [[traefik]]
 - [[docker-bind-mound]]
 - [[docker-compose]]
+- [[docker-compose-file-reference]]
 - [[dockerfile-learn]]
 - [[docker-compose-with-gcloud-authentication]]
 - [[docker-swarm-rocks]]
@@ -279,6 +280,7 @@ ip-адреса nameserver-ов можно устанавливать для к�
 [traefik]: ../notes/traefik "Traefik"
 [docker-bind-mound]: ../notes/docker-bind-mound "Docker bind mount"
 [docker-compose]: ../notes/docker-compose "Docker compose"
+[docker-compose-file-reference]: ../notes/docker-compose-file-reference "Docker compose file reference"
 [dockerfile-learn]: ../notes/dockerfile-learn "Dockerfile"
 [docker-compose-with-gcloud-authentication]: ../notes/docker-compose-with-gcloud-authentication "Docker compose with gcloud authentication"
 [docker-swarm-rocks]: ../notes/docker-swarm-rocks "Docker swarm rocks"

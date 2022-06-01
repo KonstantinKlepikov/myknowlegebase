@@ -120,6 +120,7 @@ title: Стандартная библиотека python и полезные р
 - [[more-itertools]]
 - [ordered-set](https://github.com/rspeer/ordered-set)
 - [[PIL]]
+- [natsort](https://github.com/SethMMorton/natsort) Simple yet flexible natural sorting in Python
 
 ### REPL and docks
 

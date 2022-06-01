@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Scikit-image | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Scikit-image" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Pythen библиотека алгоритмов обработки изображений" />
+<meta property="og:description" content="Pythen библиотека алгоритмов обработки изображений" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/scikit-image.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/scikit-image.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/scikit-image.html","headline":"Scikit-image","description":"Pythen библиотека алгоритмов обработки изображений","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Scikit-image</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/ml" title="ml" class="link-tags">ml&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Scikit-image работает с [<a href="numpy" title="Numpy">numpy</a>] array</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">camera</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">'numpy.ndarray'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># An image with 512 rows and 512 columns
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span><span class="p">.</span><span class="n">shape</span>
+<span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Модуль data содержить <a href="https://scikit-image.org/docs/stable/api/skimage.data.html#module-skimage.data">несколько тестовых наборов данных</a></p>
+
+<p>Импорт своих изображений</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">skimage</span><span class="p">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="s">'moon.png'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">moon</span> <span class="o">=</span> <span class="n">io</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Отдельный пакет <a href="https://github.com/SethMMorton/natsort">natsort</a> позволяет предварительно отсортировать список натуральным образом (не лексикографически) перед импортом</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span><span class="p">,</span> <span class="n">ns</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_files</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_files</span>
+<span class="p">[</span><span class="s">'01.png'</span><span class="p">,</span> <span class="s">'010.png'</span><span class="p">,</span> <span class="s">'0101.png'</span><span class="p">,</span> <span class="s">'0190.png'</span><span class="p">,</span> <span class="s">'02.png'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_files</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">list_files</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">list_files</span>
+<span class="p">[</span><span class="s">'01.png'</span><span class="p">,</span> <span class="s">'02.png'</span><span class="p">,</span> <span class="s">'010.png'</span><span class="p">,</span> <span class="s">'0101.png'</span><span class="p">,</span> <span class="s">'0190.png'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">image_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">list_files</span><span class="p">:</span>
+<span class="p">...</span>   <span class="n">image_list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">io</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="numpy-for-images">[<a href="numpy" title="Numpy">numpy</a>] for images</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">camera</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">camera</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">'numpy.ndarray'</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span><span class="p">.</span><span class="n">shape</span>
+<span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span><span class="p">.</span><span class="n">size</span>
+<span class="mi">262144</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span><span class="p">.</span><span class="nb">min</span><span class="p">(),</span> <span class="n">camera</span><span class="p">.</span><span class="nb">max</span><span class="p">()</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">camera</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="mf">118.31400299072266</span>
+</code></pre></div></div>
+
+<p>Каналы для цветных изображений</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">cat</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">chelsea</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">'numpy.ndarray'</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cat</span><span class="p">.</span><span class="n">shape</span>
+<span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">451</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cat</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">151</span><span class="p">,</span> <span class="mi">129</span><span class="p">,</span> <span class="mi">115</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">uint8</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Set the pixel at (50th row, 60th column) to "black"
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">cat</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># set the pixel at (50th row, 61st column) to "green"
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">cat</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">61</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># [red, green, blue]
+</span></code></pre></div></div>
+
+<p><a href="https://scikit-image.org/docs/stable/user_guide/numpy_images.html">Больше деталей</a></p>
+
+<h2 id="image-data-types"><a href="https://scikit-image.org/docs/stable/user_guide/data_types.html">Image data types</a></h2>
+
+<p>Изображение - это всего лишь массив numpy с одним из следующих типов:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>typeRange</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint8</td>
+      <td>0 to 255</td>
+    </tr>
+    <tr>
+      <td>uint16</td>
+      <td>0 to 65535</td>
+    </tr>
+    <tr>
+      <td>uint32</td>
+      <td>0 to 232 - 1</td>
+    </tr>
+    <tr>
+      <td>float</td>
+      <td>-1 to 1 or 0 to 1</td>
+    </tr>
+    <tr>
+      <td>int8</td>
+      <td>-128 to 127</td>
+    </tr>
+    <tr>
+      <td>int16</td>
+      <td>-32768 to 32767</td>
+    </tr>
+    <tr>
+      <td>int32</td>
+      <td>-231 to 231 - 1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Функции могут поддерживать только подмножество определенных типов данных. В таком случае ввод будет преобразован в требуемый тип (если это возможно), и в лог будет напечатано предупреждающее сообщение, если потребуется копия в памяти. Доступны следующие служебные функции в основном пакете:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>img_as_float</td>
+      <td>Convert to floating point (integer types become 64-bit floats)</td>
+    </tr>
+    <tr>
+      <td>img_as_ubyte</td>
+      <td>Convert to 8-bit uint.</td>
+    </tr>
+    <tr>
+      <td>img_as_uint</td>
+      <td>Convert to 16-bit uint.</td>
+    </tr>
+    <tr>
+      <td>img_as_int</td>
+      <td>Convert to 16-bit int.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">skimage.util</span> <span class="kn">import</span> <span class="n">img_as_ubyte</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">img_as_ubyte</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">array</span><span class="p">([</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">uint8</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Конвертация может приводить к потере точности! Кроме того, некоторые функции имеют собственные ограничению по ренжу.</p>
+
+<p>Кроме того, можно использовать данные из [<a href="open-cv" title="Open-cv">open-cv</a>] с минимальными затратами на конвертацию. <a href="https://scikit-image.org/docs/stable/user_guide/data_types.html#working-with-opencv">Подробнее</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://scikit-image.org/">scikit-image.org</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/api/api.html">api</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide.html">user guide</a></li>
+  <li>[<a href="../lists/computer-visions" title="Computer visions">computer-visions</a>]</li>
+  <li>[<a href="PIL" title="Pillow - обработка изображений">PIL</a>]</li>
+  <li>[<a href="open-cv" title="Open-cv">open-cv</a>]</li>
+  <li>[<a href="scipy" title="Scipy">scipy</a>]</li>
+  <li>[<a href="numpy" title="Numpy">numpy</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

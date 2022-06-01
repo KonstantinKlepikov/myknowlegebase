@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Docker compose file reference | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Docker compose file reference" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Compose file version 3 reference" />
+<meta property="og:description" content="Compose file version 3 reference" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-compose-file-reference.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/docker-compose-file-reference.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/docker-compose-file-reference.html","headline":"Docker compose file reference","description":"Compose file version 3 reference","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Docker compose file reference</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/docker" title="docker" class="link-tags">docker&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#long-syntax-3">Compose file version 3 reference</a></p>
+
+<p>example</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:alpine</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">6379"</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">frontend</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">replicas</span><span class="pi">:</span> <span class="m">2</span>
+      <span class="na">update_config</span><span class="pi">:</span>
+        <span class="na">parallelism</span><span class="pi">:</span> <span class="m">2</span>
+        <span class="na">delay</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">restart_policy</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">on-failure</span>
+
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:9.4</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db-data:/var/lib/postgresql/data</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">backend</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">placement</span><span class="pi">:</span>
+        <span class="na">max_replicas_per_node</span><span class="pi">:</span> <span class="m">1</span>
+        <span class="na">constraints</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">node.role==manager"</span>
+
+  <span class="na">vote</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">dockersamples/examplevotingapp_vote:before</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:80"</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">frontend</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">replicas</span><span class="pi">:</span> <span class="m">2</span>
+      <span class="na">update_config</span><span class="pi">:</span>
+        <span class="na">parallelism</span><span class="pi">:</span> <span class="m">2</span>
+      <span class="na">restart_policy</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">on-failure</span>
+
+  <span class="na">result</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">dockersamples/examplevotingapp_result:before</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5001:80"</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">backend</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+      <span class="na">update_config</span><span class="pi">:</span>
+        <span class="na">parallelism</span><span class="pi">:</span> <span class="m">2</span>
+        <span class="na">delay</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">restart_policy</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">on-failure</span>
+
+  <span class="na">worker</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">dockersamples/examplevotingapp_worker</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">frontend</span>
+      <span class="pi">-</span> <span class="s">backend</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">mode</span><span class="pi">:</span> <span class="s">replicated</span>
+      <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+      <span class="na">labels</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">APP=VOTING</span><span class="pi">]</span>
+      <span class="na">restart_policy</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">on-failure</span>
+        <span class="na">delay</span><span class="pi">:</span> <span class="s">10s</span>
+        <span class="na">max_attempts</span><span class="pi">:</span> <span class="m">3</span>
+        <span class="na">window</span><span class="pi">:</span> <span class="s">120s</span>
+      <span class="na">placement</span><span class="pi">:</span>
+        <span class="na">constraints</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">node.role==manager"</span>
+
+  <span class="na">visualizer</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">dockersamples/visualizer:stable</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8080:8080"</span>
+    <span class="na">stop_grace_period</span><span class="pi">:</span> <span class="s">1m30s</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">/var/run/docker.sock:/var/run/docker.sock"</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">placement</span><span class="pi">:</span>
+        <span class="na">constraints</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">node.role==manager"</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">frontend</span><span class="pi">:</span>
+  <span class="na">backend</span><span class="pi">:</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">db-data</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h2 id="структура">Структура</h2>
+
+<p>Часть параметров можно записывать с полным синтаксисом, часть - в виде сокращенного.</p>
+
+<ul>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#build">build</a> Параметры конфигурации, которые применяются во время сборки.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">context</code> - либо путь к каталогу, содержащему Dockerfile, либо URL-адрес репозитория git</li>
+      <li><code class="language-plaintext highlighter-rouge">dockerfile</code> - альтернативный докерфайл</li>
+      <li><code class="language-plaintext highlighter-rouge">args</code> - аргументы сборки, которые являются переменными среды, доступными только во время процесса сборки</li>
+      <li><code class="language-plaintext highlighter-rouge">cache_from</code> - список имеджей, которые движок использует для разрешения кеша</li>
+      <li>labels - метадата в виде <a href="https://docs.docker.com/config/labels-custom-metadata/">docker labels</a></li>
+      <li><code class="language-plaintext highlighter-rouge">network</code> - сетевые контейнеры, к которым подключаются инструкции RUN во время сборки</li>
+      <li><code class="language-plaintext highlighter-rouge">shm_size</code> - размер раздела /dev/shm для контейнеров этой сборки</li>
+      <li><code class="language-plaintext highlighter-rouge">target</code> - создает этап для <a href="https://docs.docker.com/develop/develop-images/multistage-build/">многоэтапной сборки</a></li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">cap_add</code>, <code class="language-plaintext highlighter-rouge">cap_drop</code> - опции контейнера (игнорируется в [<a href="docker-swarm" title="Docker swarm">docker-swarm</a>] моде)</li>
+  <li><code class="language-plaintext highlighter-rouge">cgroup_parent</code> контрольная группа контейнеров (игнорируется в сварм-моде)</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#command">command</a> можно переопределить команду по умолчанию</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">command</span><span class="pi">:</span> <span class="s">bundle exec thin -p </span><span class="m">3000</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#configs">configs</a>. Доступ к конфигурациям для каждой службы с помощью конфигурации для каждой службы. Оба варианта синтаксиса</p>
+
+    <p>configs configuration reference</p>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#container_name">container_name</a>. Можно задать уникальное имя контейнера вместо автосгенеренного. игнорируется в сворме.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#credential_spec">credential_spec</a>. Спецификация учетных данных для управляемой учетной записи службы. Этот параметр используется только для служб, использующих контейнеры Windows</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on">depends_on</a> - зависимость от другого контейнера. Контейнеры поднимутся в порядке установленных зависимостей.</p>
+
+    <blockquote>
+      <ul>
+        <li><code class="language-plaintext highlighter-rouge">docker-compose up</code> starts services in dependency order.</li>
+        <li><code class="language-plaintext highlighter-rouge">docker-compose up SERVICE</code> automatically includes SERVICE’s dependencies.</li>
+        <li><code class="language-plaintext highlighter-rouge">docker-compose stop</code> stops services in dependency order.</li>
+      </ul>
+    </blockquote>
+
+    <p>Установление зависимостей не ожидает готовности чего либо внутри контейнера. Опция игнорируется в сорм-моде.</p>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#deploy">deploy</a> - конфигурация, связанная с развертыванием и запуском служб. Подпараметры вступают в силу только при развертывании в swarm через <a href="https://docs.docker.com/engine/reference/commandline/stack_deploy/">docker stack deploy</a> и игнорируются при запуске <code class="language-plaintext highlighter-rouge">docker-compose up</code> и <code class="language-plaintext highlighter-rouge">docker-compose</code>, за исключением <code class="language-plaintext highlighter-rouge">resources</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">endpoint_mode</code> метод обнаружения службы для внешних клиентов, подключающихся к swarm</li>
+      <li><code class="language-plaintext highlighter-rouge">labels</code> эти метки устанавливаются только для службы, а не для каких-либо контейнеров службы</li>
+      <li><code class="language-plaintext highlighter-rouge">mode</code> тип контейнера в сворме</li>
+      <li><code class="language-plaintext highlighter-rouge">placement</code> размещение ограничений и предпочтений</li>
+      <li><code class="language-plaintext highlighter-rouge">max_replicas_per_node</code></li>
+      <li><code class="language-plaintext highlighter-rouge">replicas</code> количество контейнеров, которые должны быть запущены в любой момент времени</li>
+      <li><code class="language-plaintext highlighter-rouge">resources</code> - квоты ресрусов (ЦПУ, память)</li>
+      <li><code class="language-plaintext highlighter-rouge">restart_policy</code> как перезапускать контейнеры при выходе. Заменяет <code class="language-plaintext highlighter-rouge">restsrt</code></li>
+      <li><code class="language-plaintext highlighter-rouge">rollback_config</code> как следует выполнить откат службы в случае неудачного обновления</li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">update_config</code> как сервис должен быть обновлен. Полезно для настройки последовательных обновлений</p>
+
+        <blockquote>
+          <p>Не поддерживается:</p>
+
+          <ul>
+            <li>build</li>
+            <li>cgroup_parent</li>
+            <li>container_name</li>
+            <li>devices</li>
+            <li>tmpfs</li>
+            <li>external_links</li>
+            <li>links</li>
+            <li>network_mode</li>
+            <li>restart</li>
+            <li>security_opt</li>
+            <li>userns_mode</li>
+          </ul>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#devices">devices</a>. Список сопоставлений устройств. Использует тот же формат, что и параметр создания клиента <code class="language-plaintext highlighter-rouge">docker --device</code>.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#dns">dns</a>. Пользовательские DNS-серверы</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#dns_search">dns_search</a>. Пользовательские домены DNS</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#entrypoint">entrypoint</a>. Переопределяет точку входа по умолчанию (если в Dockerfile есть инструкция CMD, она тоже игнорируется).</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">entrypoint</span><span class="pi">:</span> <span class="s">/code/entrypoint.sh</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#env_file">env_file</a>. Переменные окружения из файла. Переменные среды, объявленные в <code class="language-plaintext highlighter-rouge">environment</code>, переопределяют эти значения — это остается истинным, даже если эти значения пусты или не определены. Порядок задания списка файлов имеет значение - файлы в списке обрабатываются сверху вниз</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">env_file</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./common.env</span>
+    <span class="pi">-</span> <span class="s">./apps/web.env</span>
+    <span class="pi">-</span> <span class="s">/opt/runtime_opts.env</span>
+</code></pre></div>    </div>
+
+    <p>Если в службе указан <code class="language-plaintext highlighter-rouge">build</code>, переменные, определенные в <code class="language-plaintext highlighter-rouge">.env</code>, автоматически не отображаются во время сборки. Используйте подпараметр <code class="language-plaintext highlighter-rouge">args</code> в <code class="language-plaintext highlighter-rouge">build</code>, чтобы определить переменные среды времени сборки.</p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#environment">environment</a>. Переменные среды. Вы можете использовать либо массив, либо словарь. Любые логические значения (true, false, yes, no) должны быть заключены в кавычки</p>
+
+    <p>так:</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">RACK_ENV</span><span class="pi">:</span> <span class="s">development</span>
+      <span class="na">SHOW</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+      <span class="na">SESSION_SECRET</span><span class="pi">:</span>
+</code></pre></div>    </div>
+
+    <p>или так:</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">RACK_ENV=development</span>
+    <span class="pi">-</span> <span class="s">SHOW=true</span>
+    <span class="pi">-</span> <span class="s">SESSION_SECRET</span>
+</code></pre></div>    </div>
+
+    <p>Аналогично - эти переменные не видны автоматически в <code class="language-plaintext highlighter-rouge">build</code> - нужно задать <code class="language-plaintext highlighter-rouge">args</code></p>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#expose">expose</a>. Указание портов, не публикуя их на хост-машине — они будут доступны только связанным службам. Можно указать только внутренний порт</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">expose</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">3000"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">8000"</span>
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#external_links">external_links</a>. Ссылка на контейнеры, запущенные за пределами этого docker-compose.yml или даже за пределами Compose, особенно для контейнеров, которые предоставляют общие службы. Контейнеры, созданные извне, должны быть подключены по крайней мере к одной из тех же сетей, что и служба, которая на них ссылается. Игнорируется в сворме.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#extra_hosts">extra_hosts</a>. Сопоставления имен хостов. Используйте те же значения, что и в параметре клиента <code class="language-plaintext highlighter-rouge">docker --add-host</code></li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#healthcheck">healthcheck</a>. Настройка проверки, которая запускается, чтобы определить, являются ли контейнеры для этой службы «работоспособными»</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">curl"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-f"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">http://localhost"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">1m30s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">start_period</span><span class="pi">:</span> <span class="s">40s</span>
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#image">image</a>. Jбраз, с которого будет запускаться контейнер. Может быть либо репозиторием/тегом, либо ID образа</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#init">init</a>. Запускает init внутри контейнера для передачи сигналов и запуска процессов.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#isolation">isolation</a>. Технология изоляции контейнера. В Linux поддерживается только значение по умолчанию. В Windows допустимыми значениями являются значения default, process и hyperv</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#labels-2">labels</a></li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#links">links</a>. Ссылка на контейнеры в другом сервисе. Легаси. Использовать <code class="language-plaintext highlighter-rouge">external_links</code>. Игнорируется в сворм-моде.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#logging">logging</a>. Конфигурации логгирования внутри контейнера</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode">network_mode</a>. Сетевой режим. Используйте те же значения, что и параметр <code class="language-plaintext highlighter-rouge">docker client --network</code>, а также специальную форму <code class="language-plaintext highlighter-rouge">service:[service name]</code>. Игнорируется свормом.</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#networks">networks</a>. Сети, к которым нужно присоединиться, ссылаясь на <a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#network-configuration-reference">записи под ключом сети верхнего уровня</a>.</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">services</span><span class="pi">:</span>
+      <span class="na">some-service</span><span class="pi">:</span>
+          <span class="na">networks</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">some-network</span>
+          <span class="pi">-</span> <span class="s">other-network</span>
+</code></pre></div>    </div>
+
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#network-configuration-reference">Конфигурация для network</a></p>
+
+    <p><a href="https://docs.docker.com/compose/networking/">Руководство по сетиям в compose</a></p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">aliases</code>. Псевдонимы (альтернативные имена хостов) для этой службы в сети. Другие контейнеры в той же сети могут использовать либо имя службы, либо этот псевдоним для подключения к одному из контейнеров службы.</li>
+      <li><code class="language-plaintext highlighter-rouge">ipv4_address</code>, <code class="language-plaintext highlighter-rouge">ipv6_address</code> Статический IP-адрес для контейнеров для этой службы при подключении к сети</li>
+    </ul>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#pid">pid</a>. Устанавливает режим PID в режим PID хоста. Это включает совместное использование контейнером и операционной системой хоста адресного пространства PID.</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#ports">ports</a>. Открывает порты. Поддерживает короткий и длинный синтаксис. Можно задавать диапазоны.</p>
+
+    <p>Короткий:</p>
+
+    <ul>
+      <li>Укажите оба порта (<code class="language-plaintext highlighter-rouge">HOST:CONTAINER</code>)</li>
+      <li>Укажите только порт контейнера (в качестве порта хоста выбирается эфемерный порт хоста).</li>
+      <li>
+        <p>Укажите IP-адрес узла для привязки к обоим портам (по умолчанию <code class="language-plaintext highlighter-rouge">0.0.0.0</code>, что означает все интерфейсы): (<code class="language-plaintext highlighter-rouge">IPADDR:HOSTPORT:CONTAINERPORT</code>). Если <code class="language-plaintext highlighter-rouge">HOSTPORT</code> пуст (например, <code class="language-plaintext highlighter-rouge">127.0.0.1::80</code>), для привязки на хосте выбирается эфемерный порт.</p>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">3000"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">3000-3005"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8000"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">9090-9091:8080-8081"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">49100:22"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:8001:8001"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:5000-5010:5000-5010"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1::5000"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">6060:6060/udp"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">12400-12500:1240"</span>
+</code></pre></div>        </div>
+
+        <p>Длинный:</p>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">target</code>: порт внутри контейнера</li>
+      <li><code class="language-plaintext highlighter-rouge">published</code>: общедоступный порт</li>
+      <li><code class="language-plaintext highlighter-rouge">protocol</code>: протокол порта (tcp или udp)</li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">mode</code>: хост для публикации порта хоста на каждом узле или вход для порта в режиме сворма для балансировки нагрузки.</p>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">target</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">published</span><span class="pi">:</span> <span class="m">8080</span>
+    <span class="na">protocol</span><span class="pi">:</span> <span class="s">tcp</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s">host</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#profiles">profiles</a>. определяет список именованных профилей для включения службы. Если не установлено, служба всегда включена. <a href="https://docs.docker.com/compose/profiles/">Подробнее</a></p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">profiles</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">frontend"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">debug"</span><span class="pi">]</span>
+  <span class="na">profiles</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">frontend</span>
+  <span class="pi">-</span> <span class="s">debug</span>
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#restart">restart</a>. Политика перезапуска. <code class="language-plaintext highlighter-rouge">no</code> — это политика перезапуска по умолчанию, и она не перезапускает контейнер ни при каких обстоятельствах. Если указано <code class="language-plaintext highlighter-rouge">always</code>, контейнер всегда перезапускается. Политика <code class="language-plaintext highlighter-rouge">on-failure</code> перезапускает контейнер, если код выхода указывает на ошибку при отказе. <code class="language-plaintext highlighter-rouge">unless-stopped</code> всегда перезапускает контейнер, за исключением случаев, когда контейнер остановлен (вручную или иным образом). Игнорируется в сворме.</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets">secrets</a>. Доступ к шифрованным переменным для каждой службы с помощью конфигурации секретов для каждой службы. Поддерживаются оба синтаксиса. <a href="https://docs.docker.com/engine/swarm/secrets/">Подробнее</a></p>
+
+    <p>С точки зрения сервисов Docker Swarm секрет — это блок данных, например пароль, закрытый ключ SSH, сертификат SSL или другой фрагмент данных, который не следует передавать по сети или хранить в незашифрованном виде в dockerfile или в папке вашего приложения. Вы можете использовать секреты Docker для централизованного управления этими данными и безопасной передачи их только тем контейнерам, которым необходим доступ к ним. Секреты шифруются во время передачи и далее в докерсварм. Данный секрет доступен только тем службам, которым был предоставлен явный доступ к нему, и только во время выполнения этих служебных задач.</p>
+
+    <p>Короткий. Указывается только секретное имя. Это предоставляет контейнеру доступ к секрету и монтирует его в /run/secrets/<secret_name> внутри контейнера. И исходное имя, и целевая точка монтирования установлены на секретное имя.</secret_name></p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+  <span class="na">services</span><span class="pi">:</span>
+      <span class="na">redis</span><span class="pi">:</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">redis:latest</span>
+          <span class="na">deploy</span><span class="pi">:</span>
+          <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+          <span class="na">secrets</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">my_secret</span>
+          <span class="pi">-</span> <span class="s">my_other_secret</span>
+      <span class="na">secrets</span><span class="pi">:</span>
+      <span class="na">my_secret</span><span class="pi">:</span>
+          <span class="na">file</span><span class="pi">:</span> <span class="s">./my_secret.txt</span>
+      <span class="na">my_other_secret</span><span class="pi">:</span>
+          <span class="na">external</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>    </div>
+
+    <p>Полный синтаксис.</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">source</code>: идентификатор секрета, как он определен в этой конфигурации.</li>
+      <li><code class="language-plaintext highlighter-rouge">target</code>: имя файла, который будет смонтирован в /run/secrets/ в контейнерах задач службы. По умолчанию используется источник, если он не указан.</li>
+      <li><code class="language-plaintext highlighter-rouge">uid</code> и <code class="language-plaintext highlighter-rouge">gid</code>: числовой UID или GID, которому принадлежит файл в /run/secrets/ в контейнерах задач службы. Оба значения по умолчанию равны 0, если не указано иное.</li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">mode</code> разрешения для файла, который будет смонтирован в /run/secrets/ в контейнерах задач службы, в восьмеричном представлении.</p>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">redis</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">redis:latest</span>
+        <span class="na">deploy</span><span class="pi">:</span>
+        <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+        <span class="na">secrets</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">source</span><span class="pi">:</span> <span class="s">my_secret</span>
+            <span class="s">target</span><span class="pi">:</span> <span class="s">redis_secret</span>
+            <span class="s">uid</span><span class="pi">:</span> <span class="s1">'</span><span class="s">103'</span>
+            <span class="na">gid</span><span class="pi">:</span> <span class="s1">'</span><span class="s">103'</span>
+            <span class="na">mode</span><span class="pi">:</span> <span class="m">0440</span>
+    <span class="na">secrets</span><span class="pi">:</span>
+    <span class="na">my_secret</span><span class="pi">:</span>
+        <span class="na">file</span><span class="pi">:</span> <span class="s">./my_secret.txt</span>
+    <span class="na">my_other_secret</span><span class="pi">:</span>
+        <span class="na">external</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>        </div>
+
+        <p>Еще пример</p>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">secrets</span><span class="pi">:</span>
+<span class="na">db_user</span><span class="pi">:</span>
+    <span class="na">external</span><span class="pi">:</span> <span class="no">true</span>
+<span class="na">db_password</span><span class="pi">:</span>
+    <span class="na">external</span><span class="pi">:</span> <span class="no">true</span>
+
+<span class="na">services</span><span class="pi">:</span>
+<span class="na">postgres_db</span><span class="pi">:</span>
+<span class="na">image</span><span class="pi">:</span> <span class="s">postgres</span>
+<span class="na">secrets</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">db_user</span>
+    <span class="pi">-</span> <span class="s">db_password</span>
+<span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">POSTGRES_USER_FILE=/run/secrets/db_user</span>
+    <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD_FILE=/run/secrets/db_password</span>
+</code></pre></div>        </div>
+
+        <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets-configuration-reference">Конфигурация secrets</a></p>
+      </li>
+    </ul>
+  </li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#security_opt">security_opt</a>. Схема маркировки по умолчанию для каждого контейнера. Игнорируется в сворме.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#stop_grace_period">stop_grace_period</a>. Как долго ждать при попытке остановить контейнер, если он не обрабатывает SIGTERM (или любой другой сигнал остановки, указанный с помощью stop_signal), перед отправкой SIGKILL.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#stop_signal">stop_signal</a>. Устанавливает пользовательский сигнал для остановки контейнера.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#sysctls">sysctls</a>. Параметры ядра для установки в контейнере</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#tmpfs">tmpfs</a>. Расположение монитруемых внутри контейнера временных файловых систем.</li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#ulimits">ulimits</a></li>
+  <li><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#userns_mode">userns_mode</a>. Отключает пространство имен пользователей для этой службы, если демон Docker настроен с пространствами имен пользователей. Игнорируется в сворме.</li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes">volumes</a>. Пути хоста или именованные тома, заданные как подопции к службеДоступно оба синтаксиса.</p>
+
+    <p>Тома можно смонтировать на уровне службы. Это полезно так-же чтобы использовать том в нескольких службах.</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+  <span class="na">services</span><span class="pi">:</span>
+      <span class="na">web</span><span class="pi">:</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:alpine</span>
+          <span class="na">volumes</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">volume</span>
+              <span class="s">source</span><span class="pi">:</span> <span class="s">mydata</span>
+              <span class="s">target</span><span class="pi">:</span> <span class="s">/data</span>
+              <span class="s">volume</span><span class="pi">:</span>
+              <span class="na">nocopy</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
+              <span class="s">source</span><span class="pi">:</span> <span class="s">./static</span>
+              <span class="s">target</span><span class="pi">:</span> <span class="s">/opt/app/static</span>
+
+      <span class="na">db</span><span class="pi">:</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:latest</span>
+          <span class="na">volumes</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">dbdata:/var/lib/postgresql/data"</span>
+
+  <span class="na">volumes</span><span class="pi">:</span>
+      <span class="na">mydata</span><span class="pi">:</span>
+      <span class="na">dbdata</span><span class="pi">:</span>
+</code></pre></div>    </div>
+
+    <p>В этом примере показан именованный том (<code class="language-plaintext highlighter-rouge">mydata</code>), используемый веб-службой, и монтирование привязки, определенное для одной службы (первый путь в томах службы БД). Служба db также использует именованный том с именем <code class="language-plaintext highlighter-rouge">dbdata</code> (второй путь в томах службы db), но определяет его, используя старый строковый формат для монтирования именованного тома. <strong>Именованные тома должны быть перечислены под ключом томов верхнего уровня.</strong></p>
+
+    <p><a href="https://docs.docker.com/storage/volumes/">Подробнее о томах</a> и в <a href="https://docs.docker.com/engine/extend/plugins_volume/">docker plugins</a></p>
+
+    <p>Короткий синтаксис. Используется общий формат <code class="language-plaintext highlighter-rouge">[SOURCE:]TARGET[:MODE]</code>, где <code class="language-plaintext highlighter-rouge">SOURCE</code> может быть либо путем к хосту, либо именем тома. <code class="language-plaintext highlighter-rouge">TARGET</code> — это путь к контейнеру, в котором смонтирован том. Стандартные режимы: <code class="language-plaintext highlighter-rouge">ro</code> только для чтения и <code class="language-plaintext highlighter-rouge">rw</code> для чтения и записи (по умолчанию). Вы можете смонтировать относительный путь на хосте, который расширяется относительно каталога используемого файла конфигурации. Относительные пути всегда должны начинаться с <code class="language-plaintext highlighter-rouge">.</code> или же <code class="language-plaintext highlighter-rouge">..</code></p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">volumes</span><span class="pi">:</span>
+      <span class="c1"># Just specify a path and let the Engine create a volume</span>
+      <span class="pi">-</span> <span class="s">/var/lib/mysql</span>
+
+      <span class="c1"># Specify an absolute path mapping</span>
+      <span class="pi">-</span> <span class="s">/opt/data:/var/lib/mysql</span>
+
+      <span class="c1"># Path on the host, relative to the Compose file</span>
+      <span class="pi">-</span> <span class="s">./cache:/tmp/cache</span>
+
+      <span class="c1"># User-relative path</span>
+      <span class="pi">-</span> <span class="s">~/configs:/etc/configs/:ro</span>
+
+      <span class="c1"># Named volume</span>
+      <span class="pi">-</span> <span class="s">datavolume:/var/lib/mysql</span>
+</code></pre></div>    </div>
+
+    <p>Длинный синтаксис.</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">type</code>: тип монтирования <code class="language-plaintext highlighter-rouge">bind</code>, <code class="language-plaintext highlighter-rouge">tmpfs</code> или  <code class="language-plaintext highlighter-rouge">npipe</code></li>
+      <li><code class="language-plaintext highlighter-rouge">source</code>: источник монтирования, путь на хосте для монтирования. Или имя тома, определенное в ключе томов верхнего уровня. Неприменимо для монтирования <code class="language-plaintext highlighter-rouge">tmpfs</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">target</code>: путь в контейнере, куда смонтирован том</li>
+      <li><code class="language-plaintext highlighter-rouge">read_only</code>: флаг, чтобы сделать том доступным только для чтения</li>
+      <li><code class="language-plaintext highlighter-rouge">bind</code>: настроить дополнительные параметры связывания
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">propagation</code>: режим распространения, используемый для привязки</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">volume</code>: настроить дополнительные параметры тома
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">nocopy</code>: флаг для отключения копирования данных из контейнера при создании тома</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">tmpfs</code>: настроить дополнительные параметры tmpfs
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">size</code>: размер монтирования tmpfs в байтах</li>
+        </ul>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">web</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:alpine</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">80:80"</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">volume</span>
+            <span class="s">source</span><span class="pi">:</span> <span class="s">mydata</span>
+            <span class="s">target</span><span class="pi">:</span> <span class="s">/data</span>
+            <span class="s">volume</span><span class="pi">:</span>
+            <span class="na">nocopy</span><span class="pi">:</span> <span class="no">true</span>
+        <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">bind</span>
+            <span class="s">source</span><span class="pi">:</span> <span class="s">./static</span>
+            <span class="s">target</span><span class="pi">:</span> <span class="s">/opt/app/static</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+    <span class="na">webnet</span><span class="pi">:</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+    <span class="na">mydata</span><span class="pi">:</span>
+</code></pre></div>        </div>
+
+        <p>При создании привязанных монтирований использование длинного синтаксиса требует, чтобы папка, на которую делается ссылка, была создана заранее. Использование короткого синтаксиса создает папку на лету, если она не существует.</p>
+
+        <p>При работе с сервисами, докер-свормом и файлами docker-stack.yml помните, что контейнеры, поддерживающие сервис, могут быть развернуты на любом узле, и каждый раз при обновлении сервиса это может быть другой узел.</p>
+
+        <p>При отсутствии именованных томов с указанными источниками Docker создает анонимный том для каждой задачи, поддерживающей службу. Анонимные тома не сохраняются после удаления связанных контейнеров.</p>
+
+        <p>Если вы хотите, чтобы ваши данные сохранялись, используйте именованный том и драйвер тома, поддерживающий работу с несколькими хостами, чтобы данные были доступны с любого узла. Или установите ограничения для службы, чтобы ее задачи развертывались на узле, на котором присутствует том.</p>
+
+        <p>Например, файл docker-stack.yml для примера приложения определяет службу с именем db, которая запускает базу данных postgres. Он настроен как именованный том для сохранения данных сворме и ограничен запуском только на узлах менеджера.</p>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">db</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:9.4</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">db-data:/var/lib/postgresql/data</span>
+        <span class="na">networks</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">backend</span>
+        <span class="na">deploy</span><span class="pi">:</span>
+        <span class="na">placement</span><span class="pi">:</span>
+            <span class="na">constraints</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">node.role == manager</span><span class="pi">]</span>
+</code></pre></div>        </div>
+
+        <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#volume-configuration-reference">Подробнгее о конфигурации томов</a> для создания томо, используемых в нескольких службах. Базовый пример</p>
+
+        <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">db</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">db</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">data-volume:/var/lib/db</span>
+    <span class="na">backup</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">backup-service</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">data-volume:/var/lib/backup/data</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+    <span class="na">data-volume</span><span class="pi">:</span>
+</code></pre></div>        </div>
+
+        <p>Параметры:</p>
+
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">driver</code>. Укажите, какой драйвер тома следует использовать для этого тома. По умолчанию используется любой драйвер, который был настроен для использования Docker Engine, который в большинстве случаев является локальным</li>
+          <li><code class="language-plaintext highlighter-rouge">driver_opts</code>. Список параметров драйвера.</li>
+          <li>
+            <p><code class="language-plaintext highlighter-rouge">external</code>. Если установлено значение true, указывает, что этот том был создан вне Compose. <code class="language-plaintext highlighter-rouge">docker-compose up</code> не пытается его создать и выдает ошибку, если он не существует.</p>
+
+            <p>В приведенном ниже примере вместо попытки создать том с именем [projectname]_data Compose ищет существующий том с простым названием data и монтирует его в контейнеры службы БД.</p>
+
+            <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+
+  <span class="na">services</span><span class="pi">:</span>
+      <span class="na">db</span><span class="pi">:</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">postgres</span>
+          <span class="na">volumes</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">data:/var/lib/postgresql/data</span>
+
+  <span class="na">volumes</span><span class="pi">:</span>
+      <span class="na">data</span><span class="pi">:</span>
+          <span class="na">external</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>            </div>
+          </li>
+          <li><code class="language-plaintext highlighter-rouge">labels</code></li>
+          <li><code class="language-plaintext highlighter-rouge">name</code>. Задайте собственное имя для этого тома. Поле имени можно использовать для ссылки на тома, содержащие специальные символы. Имя используется как есть и не будет ограничиваться именем стека.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#domainname-hostname-ipc-mac_address-privileged-read_only-shm_size-stdin_open-tty-user-working_dir">domainname, hostname, ipc, mac_address, privileged, read_only, shm_size, stdin_open, tty, user, working_dir</a>. Каждое из них представляет собой одно значение, аналогичное его аналогу вщслук кгт. Обратите внимание, что mac_address является устаревшей опцией.</p>
+
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">user</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">working_dir</span><span class="pi">:</span> <span class="s">/code</span>
+
+  <span class="na">domainname</span><span class="pi">:</span> <span class="s">foo.com</span>
+  <span class="na">hostname</span><span class="pi">:</span> <span class="s">foo</span>
+  <span class="na">ipc</span><span class="pi">:</span> <span class="s">host</span>
+  <span class="na">mac_address</span><span class="pi">:</span> <span class="s">02:42:ac:11:65:43</span>
+
+  <span class="na">privileged</span><span class="pi">:</span> <span class="no">true</span>
+
+
+  <span class="na">read_only</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">shm_size</span><span class="pi">:</span> <span class="s">64M</span>
+  <span class="na">stdin_open</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">tty</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="переменные-в-compose"><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution">Переменные в compose</a></h2>
+
+<p>Поддерживается синтаксис <code class="language-plaintext highlighter-rouge">$VARIABLE</code> и <code class="language-plaintext highlighter-rouge">${VARIABLE}</code>. Кроме того, при использовании формата файла 2.1 можно указать встроенные значения по умолчанию, используя типичный синтаксис оболочки:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">${VARIABLE:-default}</code> принимает значение по умолчанию, если <code class="language-plaintext highlighter-rouge">VARIABLE</code> не установлена или пуст в среде</li>
+  <li><code class="language-plaintext highlighter-rouge">${VARIABLE-default}</code> оценивается как значение по умолчанию, только если <code class="language-plaintext highlighter-rouge">VARIABLE</code> не установлен в среде</li>
+</ul>
+
+<p>Точно так же следующий синтаксис позволяет указывать обязательные переменные:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">${VARIABLE:?err}</code> завершается с сообщением об ошибке, содержащим <code class="language-plaintext highlighter-rouge">err</code>, если <code class="language-plaintext highlighter-rouge">VARIABLE</code> не установлена или пуста в среде</li>
+  <li><code class="language-plaintext highlighter-rouge">${VARIABLE?err}</code> завершается с сообщением об ошибке, содержащим ошибку, если <code class="language-plaintext highlighter-rouge">VARIABLE</code> не установлена в среде.</li>
+</ul>
+
+<p>Другие расширенные функции оболочки, такие как <code class="language-plaintext highlighter-rouge">${VARIABLE/foo/bar}</code>, не поддерживаются.</p>
+
+<p>Для использования знака <code class="language-plaintext highlighter-rouge">$</code> или экранирования переменных используйте <code class="language-plaintext highlighter-rouge">$$</code></p>
+
+<h2 id="дополнительные-поля"><a href="https://docs.docker.com/compose/compose-file/compose-file-v3/#extension-fields">Дополнительные поля</a></h2>
+
+<p>Возможно повторное использование фрагментов конфигурации с помощью полей расширения. Эти специальные поля могут иметь любой формат, если они расположены в корне вашего файла Compose и их имена начинаются с последовательности символов x. Содержимое этих полей игнорируется Compose, но их можно вставить в определения ваших ресурсов с помощью привязок YAML. Привязки можно переопределять частично.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">x-volumes</span><span class="pi">:</span>
+  <span class="nl">&amp;default-volume</span>
+  <span class="na">driver</span><span class="pi">:</span> <span class="s">foobar-storage</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">myapp/web:latest</span>
+    <span class="na">volumes</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">vol1"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">vol2"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">vol3"</span><span class="pi">]</span>
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">vol1</span><span class="pi">:</span> <span class="nv">*default-volume</span>
+  <span class="na">vol2</span><span class="pi">:</span>
+    <span class="s">&lt;&lt;</span> <span class="pi">:</span> <span class="nv">*default-volume</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">volume02</span>
+  <span class="na">vol3</span><span class="pi">:</span>
+    <span class="s">&lt;&lt;</span> <span class="pi">:</span> <span class="nv">*default-volume</span>
+    <span class="na">driver</span><span class="pi">:</span> <span class="s">default</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">volume-local</span>
+</code></pre></div></div>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="docker-compose" title="Docker compose">docker-compose</a>]</li>
+  <li>[<a href="docker-swarm" title="Docker swarm">docker-swarm</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
