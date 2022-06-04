@@ -270,12 +270,67 @@
 
 <p>Кроме того, можно использовать данные из [<a href="open-cv" title="Open-cv">open-cv</a>] с минимальными затратами на конвертацию. <a href="https://scikit-image.org/docs/stable/user_guide/data_types.html#working-with-opencv">Подробнее</a></p>
 
+<h2 id="io-plugin-infrastructure"><a href="https://scikit-image.org/docs/stable/user_guide/plugins.html">I/O Plugin Infrastructure</a></h2>
+
+<h2 id="handling-video-files"><a href="https://scikit-image.org/docs/stable/user_guide/video.html">Handling Video Files</a></h2>
+
+<p>В исследовательских целях удобнее преобразовать файлы видео в последовательности изображений или многомерный TIF. Для одноразового решения самый простой и надежный способ — преобразовать видео в набор последовательно пронумерованных файлов изображений, часто называемый последовательностью изображений. Затем это <a href="https://scikit-image.org/docs/stable/api/skimage.io.html#skimage.io.imread_collection">можно читать так</a>. Пример преобразования (из каждого кадра видео делается изображение, которое нумеруется пятью цифрами с добавлением нуля слева):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg <span class="nt">-i</span> <span class="s2">"video.mov"</span> <span class="nt">-f</span> image2 <span class="s2">"video-frame%05d.png"</span>
+</code></pre></div></div>
+
+<p>Создание последовательности изображений имеет недостатки: они могут быть большими и громоздкими, а их создание может занять некоторое время. Как правило, предпочтительнее работать непосредственно с исходным видеофайлом. Для этого подойдет пакет <a href="https://pyav.org/docs/develop/">PyAV</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">av</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">av</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'path/to/video.mov'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">packet</span> <span class="ow">in</span> <span class="n">container</span><span class="p">.</span><span class="n">demux</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">packet</span><span class="p">.</span><span class="n">decode</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">frame</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="s">'video'</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">frame</span><span class="p">.</span><span class="n">to_image</span><span class="p">()</span>  <span class="c1"># PIL/Pillow image
+</span>            <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>  <span class="c1"># numpy array
+</span>            <span class="c1"># Do something!
+</span></code></pre></div></div>
+
+<p>С помощью пакета <a href="https://github.com/soft-matter/pims">pilms</a>, написанного поверх PyAV, можно получяить доп.функциональность и работать с разными форматами, используя общий АПИ.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pims</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">pims</span><span class="p">.</span><span class="n">Video</span><span class="p">(</span><span class="s">'path/to/video.mov'</span><span class="p">)</span>
+<span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># a 2D numpy array representing the last frame
+</span></code></pre></div></div>
+
+<p><a href="https://zulko.github.io/moviepy/">Moviepy</a> позволяет изменять небольшие видео. <a href="https://imageio.readthedocs.io/en/stable/">Imageio</a> поддерживает большее число форматов.</p>
+
+<p>Наконец, можно использовать [<a href="open-cv" title="Open-cv">open-cv</a>]</p>
+
+<h2 id="image-adjustment-transforming-image-content"><a href="https://scikit-image.org/docs/stable/user_guide/transforming_image_data.html">Image adjustment: transforming image content</a></h2>
+
+<ul>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide/transforming_image_data.html#color-manipulation">манипуляции с цветом</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide/transforming_image_data.html#contrast-and-exposure">контраст и выдержка</a></li>
+</ul>
+
+<h2 id="geometrical-transformations-of-images"><a href="https://scikit-image.org/docs/stable/user_guide/geometrical_transform.html">Geometrical transformations of images</a></h2>
+
+<ul>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide/geometrical_transform.html#cropping-resizing-and-rescaling-images">Cropping, resizing and rescaling images</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide/geometrical_transform.html#projective-transforms-homographies">Projective transforms (homographies)</a></li>
+</ul>
+
+<h2 id="полезные-ресурсы">Полезные ресурсы</h2>
+
+<ul>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide/tutorial_segmentation.html">Image Segmentation</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/user_guide/tutorial_parallelization.html">How to parallelize loops</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/auto_examples/index.html#examples-gallery">Examples galery</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/api/api.html">full api</a></li>
+  <li><a href="https://scikit-image.org/docs/stable/genindex.html">api glossary</a></li>
+</ul>
+
 <p>Смотри еще:</p>
 
 <ul>
   <li><a href="https://scikit-image.org/">scikit-image.org</a></li>
-  <li><a href="https://scikit-image.org/docs/stable/api/api.html">api</a></li>
-  <li><a href="https://scikit-image.org/docs/stable/user_guide.html">user guide</a></li>
   <li>[<a href="../lists/computer-visions" title="Computer visions">computer-visions</a>]</li>
   <li>[<a href="PIL" title="Pillow - обработка изображений">PIL</a>]</li>
   <li>[<a href="open-cv" title="Open-cv">open-cv</a>]</li>
