@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Scrapyd | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Scrapyd" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Деплой и запуск приложений scrapy" />
+<meta property="og:description" content="Деплой и запуск приложений scrapy" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/scrapyd.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/scrapyd.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/scrapyd.html","headline":"Scrapyd","description":"Деплой и запуск приложений scrapy","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Scrapyd</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/crawlers" title="crawlers" class="link-tags">crawlers&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Scrapyd is an application for deploying and running Scrapy spiders. It enables you to deploy (upload) your projects and control their spiders using a JSON API</p>
+
+<p>Scrapyd — это приложение (обычно работающее как демон), которое прослушивает запросы на запуск спайдеров и порождает процесс для каждого из них.</p>
+
+<p>Scrapyd также запускает несколько процессов параллельно, размещая их в фиксированном количестве слотов, заданных параметрами <code class="language-plaintext highlighter-rouge">max_proc</code> и <code class="language-plaintext highlighter-rouge">max_proc_per_cpu</code>, запуская как можно больше процессов для обработки нагрузки. Помимо диспетчеризации процессов и управления ими, Scrapyd предоставляет веб-службу JSON для загрузки новых версий проекта и планирования спайдеров. Эта функция не является обязательной и может быть отключена, если вы хотите реализовать свой собственный Scrapyd. Компоненты являются подключаемыми и могут быть изменены, если вы знакомы с [<a href="twisted-application-framework" title="Twisted application framework">twisted-application-framework</a>], в которой реализован Scrapyd.</p>
+
+<p>Инсталл <code class="language-plaintext highlighter-rouge">pip install scrapyd</code></p>
+
+<p>Запуск <code class="language-plaintext highlighter-rouge">scrapyd</code></p>
+
+<p>Запуск по графику</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl http://localhost:6800/schedule.json <span class="nt">-d</span> <span class="nv">project</span><span class="o">=</span>myproject <span class="nt">-d</span> <span class="nv">spider</span><span class="o">=</span>spider2
+<span class="o">{</span><span class="s2">"status"</span>: <span class="s2">"ok"</span>, <span class="s2">"jobid"</span>: <span class="s2">"26d1b1a6d6f111e0be5c001e648c57f8"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Web-интерфейс доступен тут: <a href="http://localhost:6800/">localhost:6800</a></p>
+
+<h2 id="deploy-project">Deploy project</h2>
+
+<p>Использовать <a href="https://github.com/scrapy/scrapyd-client">scrapyd-client</a></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">scrapyd-deploy</code>, to deploy your project to a Scrapyd server</li>
+  <li><code class="language-plaintext highlighter-rouge">scrapyd-client</code>, to interact with your project once deployed</li>
+</ul>
+
+<p>Развертывание вашего проекта на сервере Scrapyd обычно включает в себя два шага:</p>
+
+<ul>
+  <li>Обобщение вашего проекта. Для этого потребуется установить [<a href="setuptools" title="Setuptools">setuptools</a>] и прописать setup.py</li>
+  <li>Загрузка egg на сервер Scrapyd через конечную точку addversion.json</li>
+</ul>
+
+<p>Сетап можно создать и через клиент, например так:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scrapyd-deploy <span class="nt">--build-egg</span><span class="o">=</span>/dev/null
+</code></pre></div></div>
+
+<p>После чего потребуется прописать <code class="language-plaintext highlighter-rouge">package_data</code> и привести файл к такому виду:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span>         <span class="o">=</span> <span class="s">'project'</span><span class="p">,</span>
+    <span class="n">version</span>      <span class="o">=</span> <span class="s">'1.0'</span><span class="p">,</span>
+    <span class="n">packages</span>     <span class="o">=</span> <span class="n">find_packages</span><span class="p">(),</span>
+    <span class="n">entry_points</span> <span class="o">=</span> <span class="p">{</span><span class="s">'scrapy'</span><span class="p">:</span> <span class="p">[</span><span class="s">'settings = projectname.settings'</span><span class="p">]},</span>
+    <span class="n">package_data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'projectname'</span><span class="p">:</span> <span class="p">[</span><span class="s">'path/to/*.json'</span><span class="p">]}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Деплой <a href="https://github.com/scrapy/scrapyd-client#deploying-a-project">делается так:</a></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Deploying myproject-1287453519 to http://localhost:6800/addversion.json
+Server response <span class="o">(</span>200<span class="o">)</span>:
+<span class="o">{</span><span class="s2">"status"</span>: <span class="s2">"ok"</span>, <span class="s2">"spiders"</span>: <span class="o">[</span><span class="s2">"spider1"</span>, <span class="s2">"spider2"</span><span class="o">]}</span>
+</code></pre></div></div>
+
+<p><a href="https://github.com/scrapy/scrapyd-client#deploying-a-project">Подробнее тут</a></p>
+
+<h2 id="json-api"><a href="https://scrapyd.readthedocs.io/en/stable/api.html">JSON-api</a></h2>
+
+<h2 id="config-file"><a href="https://scrapyd.readthedocs.io/en/stable/config.html">Config file</a></h2>
+
+<p>Пример</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[<span class="n">scrapyd</span>]
+<span class="n">eggs_dir</span>    = <span class="n">eggs</span>
+<span class="n">logs_dir</span>    = <span class="n">logs</span>
+<span class="n">items_dir</span>   =
+<span class="n">jobs_to_keep</span> = <span class="m">5</span>
+<span class="n">dbs_dir</span>     = <span class="n">dbs</span>
+<span class="n">max_proc</span>    = <span class="m">0</span>
+<span class="n">max_proc_per_cpu</span> = <span class="m">4</span>
+<span class="n">finished_to_keep</span> = <span class="m">100</span>
+<span class="n">poll_interval</span> = <span class="m">5</span>.<span class="m">0</span>
+<span class="n">bind_address</span> = <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>
+<span class="n">http_port</span>   = <span class="m">6800</span>
+<span class="n">username</span>    =
+<span class="n">password</span>    =
+<span class="n">debug</span>       = <span class="n">off</span>
+<span class="n">runner</span>      = <span class="n">scrapyd</span>.<span class="n">runner</span>
+<span class="n">jobstorage</span>  = <span class="n">scrapyd</span>.<span class="n">jobstorage</span>.<span class="n">MemoryJobStorage</span>
+<span class="n">application</span> = <span class="n">scrapyd</span>.<span class="n">app</span>.<span class="n">application</span>
+<span class="n">launcher</span>    = <span class="n">scrapyd</span>.<span class="n">launcher</span>.<span class="n">Launcher</span>
+<span class="n">webroot</span>     = <span class="n">scrapyd</span>.<span class="n">website</span>.<span class="n">Root</span>
+<span class="n">eggstorage</span>  = <span class="n">scrapyd</span>.<span class="n">eggstorage</span>.<span class="n">FilesystemEggStorage</span>
+
+[<span class="n">services</span>]
+<span class="n">schedule</span>.<span class="n">json</span>     = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">Schedule</span>
+<span class="n">cancel</span>.<span class="n">json</span>       = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">Cancel</span>
+<span class="n">addversion</span>.<span class="n">json</span>   = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">AddVersion</span>
+<span class="n">listprojects</span>.<span class="n">json</span> = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">ListProjects</span>
+<span class="n">listversions</span>.<span class="n">json</span> = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">ListVersions</span>
+<span class="n">listspiders</span>.<span class="n">json</span>  = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">ListSpiders</span>
+<span class="n">delproject</span>.<span class="n">json</span>   = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">DeleteProject</span>
+<span class="n">delversion</span>.<span class="n">json</span>   = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">DeleteVersion</span>
+<span class="n">listjobs</span>.<span class="n">json</span>     = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">ListJobs</span>
+<span class="n">daemonstatus</span>.<span class="n">json</span> = <span class="n">scrapyd</span>.<span class="n">webservice</span>.<span class="n">DaemonStatus</span>
+</code></pre></div></div>
+
+<h2 id="vicualization">Vicualization</h2>
+
+<p><a href="https://github.com/my8100/scrapydweb">scrapydweb</a> Web app for Scrapyd cluster management, with support for Scrapy log analysis &amp; visualization</p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install scrapydweb</code></p>
+
+<ul>
+  <li>Start ScrapydWeb via command <code class="language-plaintext highlighter-rouge">scrapydweb</code>. (a config file would be generated for customizing settings at the first startup.)</li>
+  <li>Visit <a href="http://127.0.0.1:5000">127.0.0.1:5000</a> (It’s recommended to use Google Chrome for a better experience.)</li>
+</ul>
+
+<p><img src="/myknowlegebase/attachments/2022-06-13-17-04-31.png" alt="scrapyd web" /></p>
+
+<h2 id="python-api">Python api</h2>
+
+<p><a href="https://github.com/djm/python-scrapyd-api">python-scrapyd-api</a> A Python wrapper for working with Scrapyd’s API</p>
+
+<p>Еще ссылки:</p>
+
+<ul>
+  <li><a href="https://scrapyd.readthedocs.io/en/stable/">документация</a></li>
+  <li>[<a href="scrapy" title="Scrapy">scrapy</a>]</li>
+  <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
+  <li><a href="https://github.com/my8100/scrapydweb">scrapydweb</a></li>
+  <li><a href="https://github.com/my8100/files">примеры scrapydweb</a></li>
+  <li><a href="https://hub.docker.com/r/vimagick/scrapyd">scrapyd docker container</a></li>
+  <li><a href="https://youtu.be/PZKH5S0C8EI">scrapyd local</a> youtube</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

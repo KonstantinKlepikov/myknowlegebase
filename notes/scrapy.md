@@ -772,6 +772,7 @@ class CustomDownloaderMiddleware(object):
 - [[splash]]
 - [[playwright]]
 - [[xpath]]
+- [[scrapyd]]
 - [[2022-02-12-daily-note]] парсинг sitemap, фильтрацияи и способы обхода в scrapy
 - [[parsing-robots-txt-with-scrapy]]
 - [[scrapy-rotating-proxy]]
@@ -820,6 +821,7 @@ class CustomDownloaderMiddleware(object):
 [splash]: splash "Splash"
 [playwright]: playwright "Playwright"
 [xpath]: xpath "XPath в scrapy"
+[scrapyd]: scrapyd "Scrapyd"
 [2022-02-12-daily-note]: ../posts/2022-02-12-daily-note "Несколько вопросов о реализации пауков в scrapy"
 [parsing-robots-txt-with-scrapy]: parsing-robots-txt-with-scrapy "Parsing robots txt with scrapy"
 [scrapy-rotating-proxy]: scrapy-rotating-proxy "Scrapy rotating proxy"
