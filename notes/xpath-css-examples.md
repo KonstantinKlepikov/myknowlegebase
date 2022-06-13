@@ -26,6 +26,33 @@ normalize-space(//div[@id='theNode'])
 
 [ссылка](https://stackoverflow.com/a/10424209/15966204)
 
+## Using XPATH to select two different attributes
+
+```shell
+//ATHLETES/ATHLETE[RESULTS/RESULT/@resultid = '1673']/@key |
+//ATHLETES/ATHLETE/RESULTS/RESULT[@resultid = '1673']/@time
+```
+
+## How to use not contains() in XPath?
+
+```shell
+//production[not(contains(category,'Business'))]
+```
+
+## XPath with multiple conditions
+
+```shell
+/category[@name='Sport' and author/text()[1]='James Small']
+```
+
+[источник](https://stackoverflow.com/questions/10247978/xpath-with-multiple-conditions)
+
+```shell
+//ul[@class='featureList' and ./li[contains(.,'Model')]]
+```
+
+[источник](https://stackoverflow.com/questions/1064968/how-to-use-xpath-contains-here)
+
 Еще ссылки:
 
 - [[xpath]]

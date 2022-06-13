@@ -19,7 +19,6 @@ title: Стандартная библиотека python и полезные р
 - [[python-patterns]]
 - [[abc]] абстрактные базовые классы
 - [[try-except]] про ошибки в python
-- [[python-buildin-functions]]
 - [[python-complexity]]
 - [[python-super-guide]]
 - [os and Path/PurePath equivalent](https://docs.python.org/3/library/pathlib.html#correspondence-to-tools-in-the-os-module)
@@ -31,6 +30,7 @@ title: Стандартная библиотека python и полезные р
 - [[python-logging]]
 - [[argparsing]]
 - [[atexit-and-sched]]
+- [[regex-examples]]
 
 ### Date and time
 
@@ -238,7 +238,6 @@ title: Стандартная библиотека python и полезные р
 [python-patterns]: ../notes/python-patterns "Python patterns programming"
 [abc]: ../notes/abc "Abc"
 [try-except]: ../notes/try-except "Try except raise"
-[python-buildin-functions]: ../notes/python-buildin-functions "Python build-in functions"
 [python-complexity]: ../notes/python-complexity "Python time complexity"
 [python-super-guide]: ../notes/python-super-guide "Python super guide"
 [type-annotation]: ../notes/type-annotation "Аннотация типов в python"
@@ -246,6 +245,7 @@ title: Стандартная библиотека python и полезные р
 [python-logging]: python-logging "Python logging"
 [argparsing]: ../notes/argparsing "Arguments parsing in python"
 [atexit-and-sched]: ../notes/atexit-and-sched "Atexit и sched"
+[regex-examples]: ../notes/regex-examples "Ghbvths htuekzhys[ dshf;tybq]"
 [date-and-time-in-python]: ../notes/date-and-time-in-python "Date and time in python"
 [datetime]: ../notes/datetime "Datetime"
 [time]: ../notes/time "Time"

@@ -404,6 +404,27 @@
 
 <p>Смотри также <a href="https://docs.sqlalchemy.org/en/14/orm/queryguide.html#orm-execution-options">ORM execution options</a></p>
 
+<h2 id="примеры-sql-запросов">Примеры SQL-запросов</h2>
+
+<h3 id="get-a-list-of-values-of-one-column-from-the-results-of-a-query">Get a list of values of one column from the results of a query</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">emails</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">.</span><span class="n">email</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">db</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="n">my_table</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">email</span><span class="p">).</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">).</span><span class="n">distinct</span><span class="p">()]</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/31842159/get-a-list-of-values-of-one-column-from-the-results-of-a-query">источник</a></p>
+
+<h3 id="raw-queryng-with-parameters">Raw queryng with parameters</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">db</span><span class="p">.</span><span class="n">my_session</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="s">"UPDATE client SET musicVol = :mv, messageVol = :ml"</span><span class="p">,</span>
+    <span class="p">{</span><span class="s">'mv'</span><span class="p">:</span> <span class="n">music_volume</span><span class="p">,</span> <span class="s">'ml'</span><span class="p">:</span> <span class="n">message_volume</span><span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/32333755/15966204">источник</a></p>
+
+<p>Что еще почитать?</p>
+
 <ul>
   <li>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]</li>
   <li>[<a href="sqlalchemy-deleting" title="Sqlalchemy deleting">sqlalchemy-deleting</a>]</li>

@@ -121,6 +121,9 @@ title: Crawlers
 - [scrapy-playwright](https://github.com/scrapy-plugins/scrapy-playwright) Playwright integration for Scrapy
 - [scrapy-rotating-proxies](https://github.com/TeamHG-Memex/scrapy-rotating-proxies) This package provides a Scrapy middleware to use rotating proxies, check that they are alive and adjust crawling speed.
 - [Scrapy Cluster](https://scrapy-cluster.readthedocs.io/en/latest/index.html) Scrapy based distributed crawling project, Scrapy Cluster.
+- [scrapyd](https://scrapyd.readthedocs.io/en/stable/) is an application for deploying and running Scrapy spiders. It enables you to deploy (upload) your projects and control their spiders using a JSON API.
+- [scrapydweb](https://github.com/my8100/scrapydweb) Web app for Scrapyd cluster management, with support for Scrapy log analysis & visualization
+- [python-scrapyd-api](https://github.com/djm/python-scrapyd-api) A Python wrapper for working with Scrapyd's API
 
 - [selenium-wire](https://github.com/wkeeling/selenium-wire) extends Selenium's Python bindings to give you access to the underlying requests made by the browser. You author your code in the same way as you do with Selenium, but you get extra APIs for inspecting requests and responses and making changes to them on the fly
 - [docker-selenium](https://github.com/SeleniumHQ/docker-selenium) Docker images for the Selenium Grid Server

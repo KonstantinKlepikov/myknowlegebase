@@ -319,6 +319,29 @@ AND address.email_address != :email_address_1
 
 Смотри также [ORM execution options](https://docs.sqlalchemy.org/en/14/orm/queryguide.html#orm-execution-options)
 
+## Примеры SQL-запросов
+
+### Get a list of values of one column from the results of a query
+
+```python
+emails = [r.email for r in db.session.query(my_table.c.email).filter_by(name=name).distinct()]
+```
+
+[источник](https://stackoverflow.com/questions/31842159/get-a-list-of-values-of-one-column-from-the-results-of-a-query)
+
+### Raw queryng with parameters
+
+```python
+db.my_session.execute(
+    "UPDATE client SET musicVol = :mv, messageVol = :ml",
+    {'mv': music_volume, 'ml': message_volume}
+)
+```
+
+[источник](https://stackoverflow.com/a/32333755/15966204)
+
+Что еще почитать?
+
 - [[sqlalchemy]]
 - [[sqlalchemy-deleting]]
 - [query API](https://docs.sqlalchemy.org/en/14/orm/query.html)
