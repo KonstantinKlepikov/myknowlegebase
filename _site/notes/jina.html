@@ -145,7 +145,7 @@
   <li><code class="language-plaintext highlighter-rouge">config.yml</code> is the config file for the Executor. It’s where you keep metadata for your Executor, as well as dependencies</li>
 </ul>
 
-<p><a href="https://docs.jina.ai/get-started/hello-world/?utm_source=jina">more demos</a></p>
+<p><a href="https://docs.jina.ai/get-started/create-app/">как создать проект гайд</a></p>
 
 <h2 id="docarray">DocArray</h2>
 
@@ -172,6 +172,8 @@
 
 <p>DocumentArray представляет собой контейнер объектов, похожий на список. Это лучший способ при работе с несколькими документами. Он реализует все списковые интерфейсы. Он также мощный, как Numpy ndarray и Pandas DataFrame, позволяя вам эффективно получать доступ к элементам и атрибутам содержащихся документов. Кроме того доступны расширенные функции DocumentArray. Эти функции значительно ускоряют работу специалистов по обработке и анализу данных при доступе к вложенным элементам, оценке, визуализации, параллельных вычислениях, сериализации, сопоставлении и т. д. Если ваши данные слишком велики и не помещаются в память, вы можете просто переключиться на хранилище документов на диске или в удаленном хранилище . Все API и пользовательский интерфейс остаются прежними.</p>
 
+<p>Смотри [<a href="docarray" title="Docarray">docarray</a>]</p>
+
 <p><a href="https://docarray.jina.ai/fundamentals/documentarray/construct/?utm_source=docarray">Как работать</a></p>
 
 <h3 id="dataclass">Dataclass</h3>
@@ -196,7 +198,7 @@
   <li>[<a href="graphql" title="GraphQL">graphql</a>] <a href="https://docarray.jina.ai/advanced/graphql-support">смотри тут</a></li>
 </ul>
 
-<h2 id="flow-и-executor">Flow и Executor</h2>
+<h2 id="объекты-flow-и-executor">Объекты Flow и Executor</h2>
 
 <p><img src="/myknowlegebase/attachments/2022-05-14-00-52-20.png" alt="flow and executor" /></p>
 
@@ -217,7 +219,7 @@
   <li>могут быть легко контейнеризированы и разделены с коллегами с помощью <code class="language-plaintext highlighter-rouge">jina hub push/pull</code></li>
 </ul>
 
-<p><a href="https://docs.jina.ai/fundamentals/executor/executor-api/?utm_source=jina">API of executors</a></p>
+<p><a href="https://docs.jina.ai/fundamentals/executor/executor-api/">API of executors</a></p>
 
 <p>Простейший пример:</p>
 
@@ -316,16 +318,12 @@
 <ul>
   <li>Если вы вернете объект DocumentArray, он будет отправлен следующему исполнителю.</li>
   <li>Если вы возвращаете None, то исходный объект DocumentArray (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.</li>
-  <li>Если вы вернете объект dict, то он будет считаться результатом и будет передан d dblt <code class="language-plaintext highlighter-rouge">parameters['__results__']</code>. Исходный объект документа (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.</li>
+  <li>Если вы вернете объект dict, то он будет считаться результатом и будет передан в <code class="language-plaintext highlighter-rouge">parameters['__results__']</code>. Исходный объект документа (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.</li>
 </ul>
-
-<p><a href="https://docs.jina.ai/fundamentals/executor/executor-api/#example">Более подробный пример</a></p>
-
-<p>Дополнительно <a href="https://docs.jina.ai/fundamentals/executor/executor-api/#running-executor-outside-the-flow">о запуске executor вне Flow или удаленно</a></p>
 
 <h4 id="executors-and-flow">Executors and Flow</h4>
 
-<p>Экзекьютор можно добваить во Flow <a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#yaml-and-python-api">через питоний АПИ или через yaml</a>. В этом учлае можно даже не декорировать методы через <code class="language-plaintext highlighter-rouge">@requests</code> - запрсоы можно прописат ьнепосредственно во Flow. Пример:</p>
+<p>Экзекьютор можно добваить во Flow <a href="https://docs.jina.ai/fundamentals/executor/yaml-spec/">через питоний АПИ или через yaml</a>. В этом учлае можно даже не декорировать методы через <code class="language-plaintext highlighter-rouge">@requests</code> - запрсоы можно прописат ьнепосредственно во Flow. Пример:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span>
 <span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">DocumentArray</span>
@@ -372,14 +370,13 @@
   </li>
   <li><code class="language-plaintext highlighter-rouge">use_requests</code> — это словарь определяющий сопоставление эндпоинта с методом класса. Полезно, если нужно переопределить сопоставление эндпоинта и метода по умолчанию, определенное в реализации Executor.</li>
   <li><code class="language-plaintext highlighter-rouge">workspace</code> — строковое значение, определяющее рабочее пространство.</li>
-  <li><a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#runtime-args">runtime_args</a></li>
 </ul>
 
-<p>Работа экзекютера в потоке завершается методом close(). Его <a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#graceful-shutdown-of-an-executor">можно переопределить</a>.</p>
+<p>Работа экзекютера в потоке завершается методом close(). Его можно переопределить.</p>
 
-<p>Когда экзекьюто получает месседжы от нескольких других экзекьюторов в потоке, <a href="https://docs.jina.ai/fundamentals/executor/executor-in-flow/#multiple-documentarrays-as-input">используется docs_matrix</a></p>
+<p>Когда экзекьюто получает месседжы от нескольких других экзекьюторов в потоке, используется <code class="language-plaintext highlighter-rouge">docs_matrix</code></p>
 
-<h4 id="executor-file-structure---лучшие-практики-организации-структуры-executorflow-приложения"><a href="https://docs.jina.ai/fundamentals/executor/repository-structure/">Executor File Structure</a> - лучшие практики организации структуры executor/flow приложения</h4>
+<h4 id="executor-file-structure---лучшие-практики-организации-структуры-executorflow-приложения"><a href="https://docs.jina.ai/fundamentals/executor/executor-files/">Executor File Structure</a> - лучшие практики организации структуры executor/flow приложения</h4>
 
 <h4 id="share-executors-via-jina-hub"><a href="https://docs.jina.ai/fundamentals/executor/hub/">Share Executors via Jina Hub</a></h4>
 
@@ -398,6 +395,8 @@
 <h4 id="yaml-specification"><a href="https://docs.jina.ai/fundamentals/executor/yaml-spec/">YAML-specification</a></h4>
 
 <h3 id="flow">Flow</h3>
+
+<p><a href="https://docs.jina.ai/fundamentals/flow">API</a></p>
 
 <p>Flow объединяет Exeturos в конвейер обработки для создания приложения. Документы движутся по созданному конвейеру и обрабатываются Executors. Можно думать о Flow как об интерфейсе для настройки и запуска микросервисной архитектуры, в то время как тяжелая работа выполняется самими сервисами. В частности, каждый поток также запускает службу шлюза, которая может предоставлять доступ ко всем другим службам через определенный API.</p>
 
@@ -425,8 +424,7 @@
     <span class="n">f</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/bar'</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">Document</span><span class="p">(),</span> <span class="n">on_done</span><span class="o">=</span><span class="k">print</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><a href="https://docs.jina.ai/fundamentals/flow">API</a>
-Поток определяет микросервисную архитектуру экзекьюторов. Вначале его необходимо инициализировать. Запуск потока производится с помощью контекстного менеджера. Исполнение потока можно прекратить с помощью метода <code class="language-plaintext highlighter-rouge">block()</code> - это блокирует выполнение текущего процесса или потока, что дает возможность внешним клиентам обращатсья к потоку.</p>
+<p>Поток определяет микросервисную архитектуру экзекьюторов. Вначале его необходимо инициализировать. Запуск потока производится с помощью контекстного менеджера. Исполнение потока можно прекратить с помощью метода <code class="language-plaintext highlighter-rouge">block()</code> - это блокирует выполнение текущего процесса или потока, что дает возможность внешним клиентам обращатсья к потоку. В примере ниже запускается поток, котоырй будет постоянно ожидать запросы.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
 
@@ -437,7 +435,7 @@
 
 <p><a href="https://docs.jina.ai/fundamentals/flow/create-flow/#start-and-stop-a-flow">Вариант блокировки через эвенты</a></p>
 
-<p>Экзекьюторы <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#add-executors">добавляются в потко через АПИ python или с помощью yaml</a>. В апи используйте метод <code class="language-plaintext highlighter-rouge">add()</code></p>
+<p>Экзекьюторы добавляются в потко через АПИ python или <a href="https://docs.jina.ai/fundamentals/flow/yaml-spec/">с помощью yaml</a>. В апи используйте метод <code class="language-plaintext highlighter-rouge">add()</code></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">DocumentArray</span>
 <span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">requests</span>
@@ -467,15 +465,15 @@
 </span>    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Можно добавлять экзекьюторы из кода приложения, jina-хаба, докерезированные экзекьюторы и из ямл-спецификаций. <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#add-executors-from-different-sources">Смотри подробнее</a>. Кроме того, <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#external-executors">можно опрашивать сетевые адреса</a></p>
+<p>Можно добавлять экзекьюторы из кода приложения, jina-хаба, докерезированные экзекьюторы и из ямл-спецификаций. Кроме того, можно опрашивать сетевые адреса.</p>
 
-<p>При инициализации потока <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#override-executor-configuration">параметры экзекьютора можно переопределить</a></p>
+<p>При инициализации потока параметры экзекьютора можно переопределить. <a href="https://docs.jina.ai/fundamentals/flow/add-executors/">Подробнее о добавлении экзекьюторов</a></p>
 
-<p>Можно определять тип данных, в которых нужно сконвертировать аутпут экзекьютора, перед передачей в следующий в потоке. Это <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#convert-array-types-between-executors">делается непосредственно в определении пайпалйна потока</a></p>
+<p>Можно определять тип данных, в которых нужно сконвертировать аутпут экзекьютора, перед передачей в следующий в потоке. Это делается непосредственно в определении пайпалйна потока</p>
 
-<p>Топология потока задается в виде графа и может включать определение обязательных зависимостей, фильтров, репликации экзекьюторов и машин. <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#complex-flow-topologies">Подробнее здесь</a></p>
+<p>Топология потока задается в виде графа и может включать определение обязательных зависимостей, фильтров, репликации экзекьюторов и машин. <a href="https://docs.jina.ai/fundamentals/flow/topologies/">Подробнее здесь</a></p>
 
-<p>Визуализировать граф потока <a href="https://docs.jina.ai/fundamentals/flow/create-flow/#visualize-a-flow">можно так</a></p>
+<p>Визуализировать граф потока можно так:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
 
@@ -485,17 +483,55 @@
 
 <p><img src="/myknowlegebase/attachments/2022-05-31-00-02-31.png" alt="flow vizualisation" /></p>
 
-<h4 id="конфигурация-потока"><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#configure-flow">Конфигурация потока</a></h4>
+<h2 id="gateway-and-client">Gateway and Client</h2>
 
-<p>Поддерживаемые протоколы:</p>
+<p>Сервер предоставляет эндпоинт, к которому можно обращаться клиентам.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-06-15-01-17-59.png" alt="gateway and client" /></p>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Server
+</span><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">requests</span>
+
+
+<span class="k">class</span> <span class="nc">FooExec</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">.</span><span class="n">text</span> <span class="o">+=</span> <span class="s">'hello, world!'</span>
+
+
+<span class="k">class</span> <span class="nc">BarExec</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">DocumentArray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">.</span><span class="n">text</span> <span class="o">+=</span> <span class="s">'goodbye!'</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">12345</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">FooExec</span><span class="p">,</span> <span class="n">replicas</span><span class="o">=</span><span class="mi">3</span><span class="p">).</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">BarExec</span><span class="p">,</span> <span class="n">replicas</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">block</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># client
+</span><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">DocumentArray</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">DocumentArray</span><span class="p">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="gateway"><a href="https://docs.jina.ai/fundamentals/gateway/">Gateway</a></h3>
+
+<p>Каждый поток предоставляет шлюз API для приема запросов по сети. Поддерживаемые протоколы:</p>
 
 <ul>
   <li>gRPC</li>
   <li>[<a href="../lists/http" title="Http">http</a>]</li>
   <li>WebSocket</li>
 </ul>
-
-<p><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#serve-flow-with-different-protocols">Как определить протокол для flow</a></p>
 
 <p>Пример с http (здесь использован <a href="https://docs.jina.ai/fundamentals/flow/client/">python client</a>)</p>
 
@@ -514,11 +550,11 @@
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">12345</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">)</span>
     <span class="n">docs</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">'/'</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">docs</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
+
+<span class="p">[</span><span class="s">'foo was called'</span><span class="p">]</span>
 </code></pre></div></div>
 
 <p>Не каждый эндпоинт Executor будет автоматически доступен через внешний HTTP-интерфейс. По умолчанию любой поток предоставляет следующие эндпоинты CRUD и отладки HTTP: <code class="language-plaintext highlighter-rouge">/status</code>, <code class="language-plaintext highlighter-rouge">/post</code>, <code class="language-plaintext highlighter-rouge">/index</code>, <code class="language-plaintext highlighter-rouge">/search</code>, <code class="language-plaintext highlighter-rouge">/update</code> и <code class="language-plaintext highlighter-rouge">/delete</code>. Чтобы добавить кастомный эндпоинт в http-интерфейс, надо использовать <code class="language-plaintext highlighter-rouge">Flow.expose_endpoint</code></p>
-
-<p><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#customize-http-interface">Пример</a></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">Flow</span>
 
@@ -535,25 +571,208 @@
     <span class="n">f</span><span class="p">.</span><span class="n">block</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Эндпоинты можно <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#hide-default-endpoints-from-http-interface">скрыть для http</a> или <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#enable-cross-origin-resource-sharing-cors">открыть для CORS</a>. Кроме того, jina работает на [<a href="uvicorn" title="Uvicorn">uvicorn</a>] и <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#advanced-configuration-options">параметры можно передачь во флоу</a>.</p>
+<p>Эндпоинты можно скрыть для http или открыть для CORS. Кроме того, jina работает на [<a href="uvicorn" title="Uvicorn">uvicorn</a>] и параметры можно передачь во флоу.</p>
 
-<p>Дополнительно:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
+
+<span class="c1"># hide default endpoints
+</span><span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">,</span> <span class="n">no_debug_endpoints</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">no_crud_endpoints</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># enable cors
+</span><span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">cors</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">)</span>
+
+<span class="c1"># advanced options
+</span><span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span><span class="n">protocol</span><span class="o">=</span><span class="s">'http'</span><span class="p">,</span> <span class="n">uvicorn_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">'loop'</span><span class="p">:</span> <span class="s">'asyncio'</span><span class="p">,</span> <span class="s">'http'</span><span class="p">:</span> <span class="s">'httptools'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Для подключения TLS нужно задать серитфикаты</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">(</span>
+    <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span>
+    <span class="n">ssl_certfile</span><span class="o">=</span><span class="s">'path/to/certfile.crt'</span><span class="p">,</span>
+    <span class="n">ssl_keyfile</span><span class="o">=</span><span class="s">'path/to/keyfile.crt'</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Дополнительно можно реализовать:</p>
 
 <ul>
-  <li>[<a href="graphql" title="GraphQL">graphql</a>] эндпоинт тоже <a href="https://docs.jina.ai/fundamentals/flow/flow-api/#add-graphql-endpoint">можно задать</a></li>
-  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#enable-tls">TLS</a></li>
-  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#limit-outstanding-requests">контроль числа запросов</a></li>
-  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#set-timeouts-for-requests">таймауты</a></li>
-  <li><a href="https://docs.jina.ai/fundamentals/flow/flow-api/#generate-deployment-configuration">генерация спецификаций для деплоя, к примеру композ или кубернетис</a></li>
+  <li>[<a href="graphql" title="GraphQL">graphql</a>]</li>
+  <li>контроль числа запросов</li>
+  <li>таймауты</li>
+  <li>генерация спецификаций для деплоя, к примеру композ или кубернетис</li>
 </ul>
+
+<h3 id="client"><a href="https://docs.jina.ai/fundamentals/flow/client/">Client</a></h3>
+
+<p>Предназначен для доступа к серверу.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span>
+
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">1234</span>
+<span class="n">PROTOCOL</span> <span class="o">=</span> <span class="s">'grpc'</span>  <span class="c1"># one of 'grpc', 'http', 'websocket'
+</span>
+<span class="k">with</span> <span class="n">Flow</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">PROTOCOL</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">block</span><span class="p">()</span>
+
+<span class="p">...</span>
+
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">Client</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'http://my.awesome.flow:1234'</span><span class="p">)</span>
+<span class="n">Client</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'ws://my.awesome.flow:1234'</span><span class="p">)</span>
+<span class="n">Client</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'grpc://my.awesome.flow:1234'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Через <code class="language-plaintext highlighter-rouge">client.post</code> можно отправить данные</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">DocumentArray</span>
+
+<span class="n">d1</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">'hello'</span><span class="p">)</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">'world'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">doc_gen</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">Document</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">f'hello </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">)</span>
+
+<span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/endpoint'</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>  <span class="c1"># Single Document
+</span>
+<span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/endpoint'</span><span class="p">,</span> <span class="p">[</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">])</span>  <span class="c1"># List of Documents
+</span>
+<span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/endpoint'</span><span class="p">,</span> <span class="n">doc_gen</span><span class="p">)</span>  <span class="c1"># Document generator
+</span>
+<span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/endpoint'</span><span class="p">,</span> <span class="n">DocumentArray</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">]))</span>  <span class="c1"># DocumentArray
+</span>
+<span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/endpoint'</span><span class="p">)</span>  <span class="c1"># Empty
+</span></code></pre></div></div>
+
+<p>или параметры</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">Executor</span><span class="p">,</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">requests</span>
+
+<span class="k">class</span> <span class="nc">MyExecutor</span><span class="p">(</span><span class="n">Executor</span><span class="p">):</span>
+
+    <span class="o">@</span><span class="n">requests</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s">'hello'</span><span class="p">])</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Flow</span><span class="p">().</span><span class="n">add</span><span class="p">(</span><span class="n">uses</span><span class="o">=</span><span class="n">MyExecutor</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">f</span><span class="p">.</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">Document</span><span class="p">(),</span> <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s">'hello'</span><span class="p">:</span> <span class="s">'world'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>Можно отправлять асинхронно или бачами (во время индексации Сдшуте может отправить в поток до тысяч или миллионов документов. Эти документы внутренне объединяются в запрос, обеспечивая меньший объем памяти и более быстрое время отклика благодаря функциям обратного вызова. Размер этих пакетов можно контролировать с помощью ключевого слова request_size. Размер запроса по умолчанию — 100 документов. Оптимальный размер будет зависеть от вашего варианта использования.)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># asyncio
+</span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">Flow</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">async_inputs</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">Document</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">run_client</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">asyncio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">resp</span> <span class="ow">in</span> <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">async_inputs</span><span class="p">,</span> <span class="n">request_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>  <span class="c1"># Using it as a Context Manager will start the Flow
+</span>    <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_client</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">port</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># batch
+</span><span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">DocumentArray</span>
+<span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Client</span>
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">f</span><span class="p">.</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">DocumentArray</span><span class="p">(</span><span class="n">Document</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)),</span> <span class="n">request_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, можно отправить запрос отдельному экзекьютору из флоу</p>
+
+<p>После выполнения <code class="language-plaintext highlighter-rouge">post()</code> можно реализовать колбеки. Доступны следующие опции:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">on_done</code> is executed after successful completion of <code class="language-plaintext highlighter-rouge">post()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">on_error</code> is executed whenever an error occurs in <code class="language-plaintext highlighter-rouge">post()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">on_always</code> is always performed, no matter the success or failure of <code class="language-plaintext highlighter-rouge">post()</code></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span>
+
+
+<span class="k">def</span> <span class="nf">beep</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># make a beep sound
+</span>    <span class="kn">import</span> <span class="nn">sys</span>
+
+    <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'</span><span class="se">\a</span><span class="s">'</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">().</span><span class="n">add</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s">'output.txt'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">f</span><span class="p">.</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s">'/'</span><span class="p">,</span>
+        <span class="n">Document</span><span class="p">(),</span>
+        <span class="n">on_done</span><span class="o">=</span><span class="k">print</span><span class="p">,</span>
+        <span class="n">on_error</span><span class="o">=</span><span class="n">beep</span><span class="p">,</span>
+        <span class="n">on_always</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">docs</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">fp</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Можно создавать кастомные колбеки, в иом числе и связанные с определенными ошибками.</p>
+
+<p><code class="language-plaintext highlighter-rouge">client.post()</code> возвращает нормализованный <code class="language-plaintext highlighter-rouge">DocumentArray</code>, содержащий все документы всех запросов. Установив <code class="language-plaintext highlighter-rouge">client.post(return_responses=True)</code> можно сделать так, чтобы вместо этого возвращался список ответов <code class="language-plaintext highlighter-rouge">DataRequests</code>. Если предоставлен колбек, результаты не будут возвращены.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">f</span><span class="p">.</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">Document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">'Hi there!'</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">docs</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="n">DocumentArray</span> <span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="n">at</span> <span class="mi">140619524357664</span><span class="o">&gt;</span>
+<span class="p">[</span><span class="s">'Hi there!'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">jina</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">docarray</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<span class="k">with</span> <span class="n">Flow</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">f</span><span class="p">.</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">on</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">Document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">'Hi there!'</span><span class="p">),</span> <span class="n">return_responses</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">docs</span><span class="p">.</span><span class="n">texts</span><span class="p">)</span>
+
+<span class="p">[</span><span class="o">&lt;</span><span class="n">jina</span><span class="p">.</span><span class="n">types</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">DataRequest</span> <span class="p">(</span><span class="s">'header'</span><span class="p">,</span> <span class="s">'parameters'</span><span class="p">,</span> <span class="s">'routes'</span><span class="p">,</span> <span class="s">'data'</span><span class="p">)</span> <span class="n">at</span> <span class="mi">140619524354592</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'Hi there!'</span><span class="p">]</span>
+</code></pre></div></div>
 
 <h4 id="access-flow"><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/">Access Flow</a></h4>
 
 <ul>
-  <li><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#http-access">HTTP access</a>. Потоки с открытым корс доступны через [<a href="swagger" title="Swagger">swagger</a>] ui - <a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#use-swagger-ui-to-send-http-request">смотри тут</a></li>
-  <li><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#graphql-interface">GraphQL Interface</a></li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#http-access">HTTP access</a>. Потоки с открытым корс доступны через [<a href="swagger" title="Swagger">swagger</a>] ui</li>
+  <li><a href="https://docs.jina.ai/fundamentals/flow/access-flow-api/#graphql">GraphQL Interface</a></li>
   <li>gRPC</li>
   <li>Websocket</li>
+</ul>
+
+<h2 id="clouds">Clouds</h2>
+
+<ul>
+  <li><a href="https://docs.jina.ai/fundamentals/executor/hub/">Hub</a> - jina hub хостинг для экзекьюторов</li>
+  <li><a href="https://docs.jina.ai/fundamentals/jcloud/">JCloud</a> - хостинг для jina projects</li>
 </ul>
 
 <h2 id="аналоги">Аналоги</h2>
@@ -574,10 +793,12 @@
 <p>Еще ссылки:</p>
 
 <ul>
-  <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
   <li><a href="https://docs.jina.ai/">Документация jina</a></li>
-  <li><a href="https://docarray.jina.ai/?utm_source=jina">Документация DocArray</a></li>
+  <li><a href="https://docarray.jina.ai/">Документация DocArray</a> [<a href="docarray" title="Docarray">docarray</a>]</li>
+  <li><a href="https://docs.jina.ai/get-started/install/docker/">jina docker images</a></li>
+  <li><a href="https://docs.jina.ai/how-to/">tutorials</a></li>
   <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
 </ul>
 
 

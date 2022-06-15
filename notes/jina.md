@@ -31,7 +31,7 @@ hello-jina
 - `executor1/` is where we’ll write our Executor code
 - `config.yml` is the config file for the Executor. It’s where you keep metadata for your Executor, as well as dependencies
 
-[more demos](https://docs.jina.ai/get-started/hello-world/?utm_source=jina)
+[как создать проект гайд](https://docs.jina.ai/get-started/create-app/)
 
 ## DocArray
 
@@ -56,6 +56,8 @@ DocArray — это библиотека для вложенных, нестру
 
 DocumentArray представляет собой контейнер объектов, похожий на список. Это лучший способ при работе с несколькими документами. Он реализует все списковые интерфейсы. Он также мощный, как Numpy ndarray и Pandas DataFrame, позволяя вам эффективно получать доступ к элементам и атрибутам содержащихся документов. Кроме того доступны расширенные функции DocumentArray. Эти функции значительно ускоряют работу специалистов по обработке и анализу данных при доступе к вложенным элементам, оценке, визуализации, параллельных вычислениях, сериализации, сопоставлении и т. д. Если ваши данные слишком велики и не помещаются в память, вы можете просто переключиться на хранилище документов на диске или в удаленном хранилище . Все API и пользовательский интерфейс остаются прежними.
 
+Смотри [[docarray]]
+
 [Как работать](https://docarray.jina.ai/fundamentals/documentarray/construct/?utm_source=docarray)
 
 ### Dataclass
@@ -78,7 +80,7 @@ DocumentArray представляет собой контейнер объек�
 - [[fastapi]]/[[pydantic]] [смотри тут](https://docarray.jina.ai/fundamentals/fastapi-support)
 - [[graphql]] [смотри тут](https://docarray.jina.ai/advanced/graphql-support)
 
-## Flow и Executor
+## Объекты Flow и Executor
 
 ![flow and executor](../attachments/2022-05-14-00-52-20.png)
 
@@ -97,7 +99,7 @@ DocumentArray представляет собой контейнер объек�
 - внутри потока могут одновременно обрабатывать несколько массивов `DocumentArray` и легко развертываться в облаке как часть приложения нейронного поиска
 - могут быть легко контейнеризированы и разделены с коллегами с помощью `jina hub push/pull`
 
-[API of executors](https://docs.jina.ai/fundamentals/executor/executor-api/?utm_source=jina)
+[API of executors](https://docs.jina.ai/fundamentals/executor/executor-api/)
 
 Простейший пример:
 
@@ -195,15 +197,11 @@ class MyExecutor(Executor):
 
 - Если вы вернете объект DocumentArray, он будет отправлен следующему исполнителю.
 - Если вы возвращаете None, то исходный объект DocumentArray (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.
-- Если вы вернете объект dict, то он будет считаться результатом и будет передан d dblt `parameters['__results__']`. Исходный объект документа (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.
-
-[Более подробный пример](https://docs.jina.ai/fundamentals/executor/executor-api/#example)
-
-Дополнительно [о запуске executor вне Flow или удаленно](https://docs.jina.ai/fundamentals/executor/executor-api/#running-executor-outside-the-flow)
+- Если вы вернете объект dict, то он будет считаться результатом и будет передан в `parameters['__results__']`. Исходный объект документа (возможно, измененный вашей функцией) будет отправлен следующему исполнителю.
 
 #### Executors and Flow
 
-Экзекьютор можно добваить во Flow [через питоний АПИ или через yaml](https://docs.jina.ai/fundamentals/executor/executor-in-flow/#yaml-and-python-api). В этом учлае можно даже не декорировать методы через `@requests` - запрсоы можно прописат ьнепосредственно во Flow. Пример:
+Экзекьютор можно добваить во Flow [через питоний АПИ или через yaml](https://docs.jina.ai/fundamentals/executor/yaml-spec/). В этом учлае можно даже не декорировать методы через `@requests` - запрсоы можно прописат ьнепосредственно во Flow. Пример:
 
 ```python
 from jina import Executor
@@ -247,13 +245,12 @@ with Flow().add(
   - `py_modules` — это список строк, определяющих Python-зависимости исполнителя;
 - `use_requests` — это словарь определяющий сопоставление эндпоинта с методом класса. Полезно, если нужно переопределить сопоставление эндпоинта и метода по умолчанию, определенное в реализации Executor.
 - `workspace` — строковое значение, определяющее рабочее пространство.
-- [runtime_args](https://docs.jina.ai/fundamentals/executor/executor-in-flow/#runtime-args)
 
-Работа экзекютера в потоке завершается методом close(). Его [можно переопределить](https://docs.jina.ai/fundamentals/executor/executor-in-flow/#graceful-shutdown-of-an-executor).
+Работа экзекютера в потоке завершается методом close(). Его можно переопределить.
 
-Когда экзекьюто получает месседжы от нескольких других экзекьюторов в потоке, [используется docs_matrix](https://docs.jina.ai/fundamentals/executor/executor-in-flow/#multiple-documentarrays-as-input)
+Когда экзекьюто получает месседжы от нескольких других экзекьюторов в потоке, используется `docs_matrix`
 
-#### [Executor File Structure](https://docs.jina.ai/fundamentals/executor/repository-structure/) - лучшие практики организации структуры executor/flow приложения
+#### [Executor File Structure](https://docs.jina.ai/fundamentals/executor/executor-files/) - лучшие практики организации структуры executor/flow приложения
 
 #### [Share Executors via Jina Hub](https://docs.jina.ai/fundamentals/executor/hub/)
 
@@ -272,6 +269,8 @@ Jina позволяет контролировать каждую часть п�
 #### [YAML-specification](https://docs.jina.ai/fundamentals/executor/yaml-spec/)
 
 ### Flow
+
+[API](https://docs.jina.ai/fundamentals/flow)
 
 Flow объединяет Exeturos в конвейер обработки для создания приложения. Документы движутся по созданному конвейеру и обрабатываются Executors. Можно думать о Flow как об интерфейсе для настройки и запуска микросервисной архитектуры, в то время как тяжелая работа выполняется самими сервисами. В частности, каждый поток также запускает службу шлюза, которая может предоставлять доступ ко всем другим службам через определенный API.
 
@@ -298,8 +297,7 @@ with f:
     f.post(on='/bar', inputs=Document(), on_done=print)
 ```
 
-[API](https://docs.jina.ai/fundamentals/flow)
-Поток определяет микросервисную архитектуру экзекьюторов. Вначале его необходимо инициализировать. Запуск потока производится с помощью контекстного менеджера. Исполнение потока можно прекратить с помощью метода `block()` - это блокирует выполнение текущего процесса или потока, что дает возможность внешним клиентам обращатсья к потоку.
+Поток определяет микросервисную архитектуру экзекьюторов. Вначале его необходимо инициализировать. Запуск потока производится с помощью контекстного менеджера. Исполнение потока можно прекратить с помощью метода `block()` - это блокирует выполнение текущего процесса или потока, что дает возможность внешним клиентам обращатсья к потоку. В примере ниже запускается поток, котоырй будет постоянно ожидать запросы.
 
 ```python
 from jina import Flow
@@ -311,7 +309,7 @@ with f:
 
 [Вариант блокировки через эвенты](https://docs.jina.ai/fundamentals/flow/create-flow/#start-and-stop-a-flow)
 
-Экзекьюторы [добавляются в потко через АПИ python или с помощью yaml](https://docs.jina.ai/fundamentals/flow/create-flow/#add-executors). В апи используйте метод `add()`
+Экзекьюторы добавляются в потко через АПИ python или [с помощью yaml](https://docs.jina.ai/fundamentals/flow/yaml-spec/). В апи используйте метод `add()`
 
 ```python
 from docarray import Document, DocumentArray
@@ -342,15 +340,15 @@ with f:  # Using it as a Context Manager will start the Flow
     print(response.texts)
 ```
 
-Можно добавлять экзекьюторы из кода приложения, jina-хаба, докерезированные экзекьюторы и из ямл-спецификаций. [Смотри подробнее](https://docs.jina.ai/fundamentals/flow/create-flow/#add-executors-from-different-sources). Кроме того, [можно опрашивать сетевые адреса](https://docs.jina.ai/fundamentals/flow/create-flow/#external-executors)
+Можно добавлять экзекьюторы из кода приложения, jina-хаба, докерезированные экзекьюторы и из ямл-спецификаций. Кроме того, можно опрашивать сетевые адреса.
 
-При инициализации потока [параметры экзекьютора можно переопределить](https://docs.jina.ai/fundamentals/flow/create-flow/#override-executor-configuration)
+При инициализации потока параметры экзекьютора можно переопределить. [Подробнее о добавлении экзекьюторов](https://docs.jina.ai/fundamentals/flow/add-executors/)
 
-Можно определять тип данных, в которых нужно сконвертировать аутпут экзекьютора, перед передачей в следующий в потоке. Это [делается непосредственно в определении пайпалйна потока](https://docs.jina.ai/fundamentals/flow/create-flow/#convert-array-types-between-executors)
+Можно определять тип данных, в которых нужно сконвертировать аутпут экзекьютора, перед передачей в следующий в потоке. Это делается непосредственно в определении пайпалйна потока
 
-Топология потока задается в виде графа и может включать определение обязательных зависимостей, фильтров, репликации экзекьюторов и машин. [Подробнее здесь](https://docs.jina.ai/fundamentals/flow/create-flow/#complex-flow-topologies)
+Топология потока задается в виде графа и может включать определение обязательных зависимостей, фильтров, репликации экзекьюторов и машин. [Подробнее здесь](https://docs.jina.ai/fundamentals/flow/topologies/)
 
-Визуализировать граф потока [можно так](https://docs.jina.ai/fundamentals/flow/create-flow/#visualize-a-flow)
+Визуализировать граф потока можно так:
 
 ```python
 from jina import Flow
@@ -361,15 +359,55 @@ f.plot('flow-2.svg')
 
 ![flow vizualisation](../attachments/2022-05-31-00-02-31.png)
 
-#### [Конфигурация потока](https://docs.jina.ai/fundamentals/flow/flow-api/#configure-flow)
+## Gateway and Client
 
-Поддерживаемые протоколы:
+Сервер предоставляет эндпоинт, к которому можно обращаться клиентам.
+
+![gateway and client](../attachments/2022-06-15-01-17-59.png)
+
+Пример
+
+```python
+# Server
+from jina import DocumentArray, Executor, Flow, requests
+
+
+class FooExec(Executor):
+    @requests
+    async def add_text(self, docs: DocumentArray, **kwargs):
+        for d in docs:
+            d.text += 'hello, world!'
+
+
+class BarExec(Executor):
+    @requests
+    async def add_text(self, docs: DocumentArray, **kwargs):
+        for d in docs:
+            d.text += 'goodbye!'
+
+
+f = Flow(port=12345).add(uses=FooExec, replicas=3).add(uses=BarExec, replicas=2)
+
+with f:
+    f.block()
+```
+
+```python
+# client
+from jina import Client, DocumentArray
+
+c = Client(port=12345)
+r = c.post('/', DocumentArray.empty(2))
+print(r.texts)
+```
+
+### [Gateway](https://docs.jina.ai/fundamentals/gateway/)
+
+Каждый поток предоставляет шлюз API для приема запросов по сети. Поддерживаемые протоколы:
 
 - gRPC
 - [[http]]
 - WebSocket
-
-[Как определить протокол для flow](https://docs.jina.ai/fundamentals/flow/flow-api/#serve-flow-with-different-protocols)
 
 Пример с http (здесь использован [python client](https://docs.jina.ai/fundamentals/flow/client/))
 
@@ -389,11 +427,11 @@ with f:
     client = Client(port=12345, protocol='http')
     docs = client.post(on='/')
     print(docs.texts)
+
+['foo was called']
 ```
 
 Не каждый эндпоинт Executor будет автоматически доступен через внешний HTTP-интерфейс. По умолчанию любой поток предоставляет следующие эндпоинты CRUD и отладки HTTP: `/status`, `/post`, `/index`, `/search`, `/update` и `/delete`. Чтобы добавить кастомный эндпоинт в http-интерфейс, надо использовать `Flow.expose_endpoint`
-
-[Пример](https://docs.jina.ai/fundamentals/flow/flow-api/#customize-http-interface)
 
 ```python
 from jina import Executor, requests, Flow
@@ -411,22 +449,211 @@ with f:
     f.block()
 ```
 
-Эндпоинты можно [скрыть для http](https://docs.jina.ai/fundamentals/flow/flow-api/#hide-default-endpoints-from-http-interface) или [открыть для CORS](https://docs.jina.ai/fundamentals/flow/flow-api/#enable-cross-origin-resource-sharing-cors). Кроме того, jina работает на [[uvicorn]] и [параметры можно передачь во флоу](https://docs.jina.ai/fundamentals/flow/flow-api/#advanced-configuration-options).
+Эндпоинты можно скрыть для http или открыть для CORS. Кроме того, jina работает на [[uvicorn]] и параметры можно передачь во флоу.
 
-Дополнительно:
+```python
+from jina import Flow
 
-- [[graphql]] эндпоинт тоже [можно задать](https://docs.jina.ai/fundamentals/flow/flow-api/#add-graphql-endpoint)
-- [TLS](https://docs.jina.ai/fundamentals/flow/flow-api/#enable-tls)
-- [контроль числа запросов](https://docs.jina.ai/fundamentals/flow/flow-api/#limit-outstanding-requests)
-- [таймауты](https://docs.jina.ai/fundamentals/flow/flow-api/#set-timeouts-for-requests)
-- [генерация спецификаций для деплоя, к примеру композ или кубернетис](https://docs.jina.ai/fundamentals/flow/flow-api/#generate-deployment-configuration)
+# hide default endpoints
+f = Flow(protocol='http', no_debug_endpoints=True, no_crud_endpoints=True)
+
+# enable cors
+f = Flow(cors=True, protocol='http')
+
+# advanced options
+f = Flow(protocol='http', uvicorn_kwargs={'loop': 'asyncio', 'http': 'httptools'})
+```
+
+Для подключения TLS нужно задать серитфикаты
+
+```python
+f = Flow(
+    port=PORT,
+    ssl_certfile='path/to/certfile.crt',
+    ssl_keyfile='path/to/keyfile.crt',
+)
+```
+
+Дополнительно можно реализовать:
+
+- [[graphql]]
+- контроль числа запросов
+- таймауты
+- генерация спецификаций для деплоя, к примеру композ или кубернетис
+
+### [Client](https://docs.jina.ai/fundamentals/flow/client/)
+
+Предназначен для доступа к серверу.
+
+```python
+from jina import Flow
+
+PORT = 1234
+PROTOCOL = 'grpc'  # one of 'grpc', 'http', 'websocket'
+
+with Flow(port=PORT, protocol=PROTOCOL) as f:
+    f.block()
+
+...
+
+from jina import Client
+
+Client(host='http://my.awesome.flow:1234')
+Client(host='ws://my.awesome.flow:1234')
+Client(host='grpc://my.awesome.flow:1234')
+```
+
+Через `client.post` можно отправить данные
+
+```python
+from docarray import Document, DocumentArray
+
+d1 = Document(content='hello')
+d2 = Document(content='world')
+
+
+def doc_gen():
+    for j in range(10):
+        yield Document(content=f'hello {j}')
+
+client = Client(port=PORT)
+
+client.post('/endpoint', d1)  # Single Document
+
+client.post('/endpoint', [d1, d2])  # List of Documents
+
+client.post('/endpoint', doc_gen)  # Document generator
+
+client.post('/endpoint', DocumentArray([d1, d2]))  # DocumentArray
+
+client.post('/endpoint')  # Empty
+```
+
+или параметры
+
+```python
+from docarray import Document
+from jina import Client, Executor, Flow, requests
+
+class MyExecutor(Executor):
+
+    @requests
+    def foo(self, parameters, **kwargs):
+        print(parameters['hello'])
+
+f = Flow().add(uses=MyExecutor)
+
+with f:
+    client = Client(port=f.port)
+    client.post('/', Document(), parameters={'hello': 'world'})
+```
+
+Можно отправлять асинхронно или бачами (во время индексации Сдшуте может отправить в поток до тысяч или миллионов документов. Эти документы внутренне объединяются в запрос, обеспечивая меньший объем памяти и более быстрое время отклика благодаря функциям обратного вызова. Размер этих пакетов можно контролировать с помощью ключевого слова request_size. Размер запроса по умолчанию — 100 документов. Оптимальный размер будет зависеть от вашего варианта использования.)
+
+```python
+# asyncio
+import asyncio
+from docarray import Document
+from jina import Client, Flow
+
+async def async_inputs():
+    for _ in range(10):
+        yield Document()
+        await asyncio.sleep(0.1)
+
+async def run_client(port):
+    client = Client(port=port, asyncio=True)
+    async for resp in client.post('/', async_inputs, request_size=1):
+        print(resp)
+
+with Flow() as f:  # Using it as a Context Manager will start the Flow
+    asyncio.run(run_client(f.port))
+```
+
+```python
+# batch
+from docarray import Document, DocumentArray
+from jina import Flow, Client
+
+with Flow() as f:
+    client = Client(port=f.port)
+    client.post('/', DocumentArray(Document() for _ in range(100)), request_size=10)
+```
+
+Кроме того, можно отправить запрос отдельному экзекьютору из флоу
+
+После выполнения `post()` можно реализовать колбеки. Доступны следующие опции:
+
+- `on_done` is executed after successful completion of `post()`
+- `on_error` is executed whenever an error occurs in `post()`
+- `on_always` is always performed, no matter the success or failure of `post()`
+
+```python
+from jina import Flow, Client
+from docarray import Document
+
+
+def beep(*args):
+    # make a beep sound
+    import sys
+
+    sys.stdout.write('\a')
+
+
+with Flow().add() as f, open('output.txt', 'w') as fp:
+    client = Client(port=f.port)
+    client.post(
+        '/',
+        Document(),
+        on_done=print,
+        on_error=beep,
+        on_always=lambda x: x.docs.save(fp),
+    )
+```
+
+Можно создавать кастомные колбеки, в иом числе и связанные с определенными ошибками.
+
+`client.post()` возвращает нормализованный `DocumentArray`, содержащий все документы всех запросов. Установив `client.post(return_responses=True)` можно сделать так, чтобы вместо этого возвращался список ответов `DataRequests`. Если предоставлен колбек, результаты не будут возвращены.
+
+```python
+from jina import Flow, Client
+from docarray import Document
+
+with Flow() as f:
+    client = Client(port=f.port)
+    docs = client.post(on='', inputs=Document(text='Hi there!'))
+    print(docs)
+    print(docs.texts)
+
+<DocumentArray (length=1) at 140619524357664>
+['Hi there!']
+```
+
+```python
+from jina import Flow, Client
+from docarray import Document
+
+with Flow() as f:
+    client = Client(port=f.port)
+    resp = client.post(on='', inputs=Document(text='Hi there!'), return_responses=True)
+    print(resp)
+    print(resp[0].docs.texts)
+
+[<jina.types.request.data.DataRequest ('header', 'parameters', 'routes', 'data') at 140619524354592>]
+['Hi there!']
+```
 
 #### [Access Flow](https://docs.jina.ai/fundamentals/flow/access-flow-api/)
 
-- [HTTP access](https://docs.jina.ai/fundamentals/flow/access-flow-api/#http-access). Потоки с открытым корс доступны через [[swagger]] ui - [смотри тут](https://docs.jina.ai/fundamentals/flow/access-flow-api/#use-swagger-ui-to-send-http-request)
-- [GraphQL Interface](https://docs.jina.ai/fundamentals/flow/access-flow-api/#graphql-interface)
+- [HTTP access](https://docs.jina.ai/fundamentals/flow/access-flow-api/#http-access). Потоки с открытым корс доступны через [[swagger]] ui
+- [GraphQL Interface](https://docs.jina.ai/fundamentals/flow/access-flow-api/#graphql)
 - gRPC
 - Websocket
+
+## Clouds
+
+- [Hub](https://docs.jina.ai/fundamentals/executor/hub/) - jina hub хостинг для экзекьюторов
+- [JCloud](https://docs.jina.ai/fundamentals/jcloud/) - хостинг для jina projects
 
 ## Аналоги
 
@@ -443,22 +670,22 @@ with f:
 
 Еще ссылки:
 
-- [[machine-learning]]
 - [Документация jina](https://docs.jina.ai/)
-- [Документация DocArray](https://docarray.jina.ai/?utm_source=jina)
+- [Документация DocArray](https://docarray.jina.ai/) [[docarray]]
+- [jina docker images](https://docs.jina.ai/get-started/install/docker/)
+- [tutorials](https://docs.jina.ai/how-to/)
 - [[docker]]
+- [[machine-learning]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [graphql]: graphql "GraphQL"
 [sqlite]: sqlite "Sqlite"
 [fastapi]: fastapi "Fastapi"
 [pydantic]: pydantic "Pydantic"
-[graphql]: graphql "GraphQL"
 [asyncio]: asyncio "Asyncio"
 [prometeus]: prometeus "Prometeus"
 [http]: ../lists/http "Http"
 [uvicorn]: uvicorn "Uvicorn"
-[graphql]: graphql "GraphQL"
 [swagger]: swagger "Swagger"
 [docker-compose]: docker-compose "Docker compose"
 [machine-learning]: ../lists/machine-learning "Алгоритмы машинного обучения"
@@ -466,6 +693,7 @@ with f:
 [//end]: # "Autogenerated link references"
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [graphql]: graphql "GraphQL"
+[docarray]: docarray "Docarray"
 [sqlite]: sqlite "Sqlite"
 [fastapi]: fastapi "Fastapi"
 [pydantic]: pydantic "Pydantic"
@@ -477,6 +705,7 @@ with f:
 [graphql]: graphql "GraphQL"
 [swagger]: swagger "Swagger"
 [docker-compose]: docker-compose "Docker compose"
-[machine-learning]: ../lists/machine-learning "Алгоритмы машинного обучения"
+[docarray]: docarray "Docarray"
 [docker]: ../lists/docker "Docker"
+[machine-learning]: ../lists/machine-learning "Алгоритмы машинного обучения"
 [//end]: # "Autogenerated link references"
