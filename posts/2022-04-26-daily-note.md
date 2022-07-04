@@ -1,9 +1,8 @@
 ---
+title: git remote stop tracking and replace comma to dot by re
 description: Как избавляться от устревших веток в git и как заменить запятые на точки в сложных строках, содержащих смешанные цифры и другие знаки
 category: post
 ---
-# git remote stop tracking and replace comma to dot by re
-
 ## How do you stop tracking a remote branch in Git
 
 `git branch --unset-upstream`

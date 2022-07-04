@@ -1,9 +1,8 @@
 ---
+title: Проблемы с fastapi postgresql template
 description: Несколько проблем в реализации темплейта fastapi
 category: post
 ---
-# Проблемы с fastapi postgresql template
-
 ## YAMLLoadWarning
 
 Specify the version of PyYaml < 5.1.

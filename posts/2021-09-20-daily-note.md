@@ -1,9 +1,8 @@
 ---
+title: Как получить строковые имена переменных в python и несколько трюков с matplotlibe
 description: Несколько интересных вопросов про python
 category: post
 ---
-# Как получить строковые имена переменных в python и несколько трюков с matplotlibe
-
 ## Как получить строкове имя переменной в python
 
 [ссылка на обсуждение](https://stackoverflow.com/questions/18425225/getting-the-name-of-a-variable-as-a-string)
@@ -37,7 +36,7 @@ print(retrieve_name(y))
 Traceback (most recent call last):
   File "<stdin>", line 1, in ?
 AttributeError: 'builtin_function_or_method' object has no attribute 'func_name'
->>> time.time.__name__ 
+>>> time.time.__name__
 'time'
 ```
 

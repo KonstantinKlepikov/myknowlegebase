@@ -1,9 +1,8 @@
 ---
+title: Работа в selenium с firefox
 description: Несколько заметок о том, как запускать firefox в selenium
 category: post
 ---
-# Работа в selenium с firefox
-
 ## How to make Firefox headless programmatically in [[selenium]] with Python
 
 ```python

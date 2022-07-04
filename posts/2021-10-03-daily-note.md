@@ -1,9 +1,8 @@
 ---
+title: Python dict concatenate and way to convert dict to namedtuple
 description: Как конкатенировать словари? как преобразовать словарь в namedtuple и немного про property в python
 category: post
 ---
-# Python dict concatenate and way to convert dict to namedtuple
-
 ## Python dict concatenate
 
 ```python
@@ -21,14 +20,14 @@ d4 = dict(d1, **d2); d4.update(d3)
 Еще
 
 ```python
-d4 = {} 
-for d in (d1, d2, d3): 
+d4 = {}
+for d in (d1, d2, d3):
     d4.update(d)
 ```
 
 ```python
-d4 = dict(d1) 
-for d in (d2, d3): 
+d4 = dict(d1)
+for d in (d2, d3):
     d4.update(d)
 ```
 

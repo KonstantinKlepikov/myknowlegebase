@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Postgres Initialization scripts and unzip with init | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Postgres Initialization scripts and unzip with init" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Как запускать инициализирующие скрипты при старте контейнера с postgres и немного о pytest" />
+<meta property="og:description" content="Как запускать инициализирующие скрипты при старте контейнера с postgres и немного о pytest" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-07-04-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-07-04-daily-note.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2022-07-04-daily-note.html","headline":"Postgres Initialization scripts and unzip with init","description":"Как запускать инициализирующие скрипты при старте контейнера с postgres и немного о pytest","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Postgres Initialization scripts and unzip with init</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="postgres-initialization-scripts">Postgres Initialization scripts</h2>
+
+<p>Контейнер [<a href="../notes/postgres" title="Postgres">postgres</a>] <a href="https://hub.docker.com/_/postgres?tab=description">имеет</a> встроенный способ инициализации состояния во время запуска. Если вы хотите выполнить дополнительную инициализацию в образе, <a href="https://hub.docker.com/_/postgres">производном от данного</a>, добавьте один или несколько сценариев <code class="language-plaintext highlighter-rouge">*.sql</code>, <code class="language-plaintext highlighter-rouge">*.sql.gz</code> или <code class="language-plaintext highlighter-rouge">*.sh</code> в /<code class="language-plaintext highlighter-rouge">docker-entrypoint-initdb.d</code> (при необходимости создав каталог). После того, как точка входа вызовет <code class="language-plaintext highlighter-rouge">initdb</code> для создания пользователя и базы данных postgres по умолчанию, она запустит любые файлы <code class="language-plaintext highlighter-rouge">*.sql</code>, запустит любые исполняемые сценарии <code class="language-plaintext highlighter-rouge">*.sh</code> и отыщет любые неисполняемые сценарии <code class="language-plaintext highlighter-rouge">*.sh</code>, найденные в этом каталоге, для дальнейшей инициализации перед запуском службы. Cценарии в <code class="language-plaintext highlighter-rouge">/docker-entrypoint-initdb.d</code> запускаются, только если вы запускаете контейнер с пустым каталогом данных; любая ранее существовавшая база данных останется нетронутой при запуске контейнера.</p>
+
+<h2 id="unzip-automatically-with-pg_restore">unzip automatically with pg_restore</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'gz'</span><span class="p">:</span>
+   <span class="n">command</span> <span class="o">=</span> <span class="s">'gunzip -c {} -k | pg_restore -U {} -h {} -p {}'</span> \
+             <span class="s">'-d {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">new_dbname</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'bz2'</span><span class="p">:</span>
+   <span class="n">command</span> <span class="o">=</span> <span class="s">'bunzip2 -c {} -k | pg_restore -U {} -h {} -p {}'</span> \
+             <span class="s">'-d {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">new_dbname</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'zip'</span><span class="p">:</span>
+   <span class="n">command</span> <span class="o">=</span> <span class="s">'unzip -p {} | pg_restore -U {} -h {} -p {} '</span> \
+             <span class="s">'-d {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">new_dbname</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+   <span class="n">command</span> <span class="o">=</span> <span class="s">'pg_restore -U {} -h {} -p {} -d {} {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">user</span><span class="p">,</span>
+                <span class="n">server</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">new_dbname</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/23569855/15966204">source</a></p>
+
+<h2 id="pytest-how-to-get-the-current-tests-name-from-the-setup-method">[<a href="../notes/pytest" title="Pytest">pytest</a>] how to get the current test’s name from the setup method</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TestClass</span><span class="p">:</span>
+
+    <span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s">"arg"</span><span class="p">,</span> <span class="p">[</span><span class="s">"a"</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">test_stuff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"originalname:"</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">originalname</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"name:"</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"nodeid:"</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">node</span><span class="p">.</span><span class="n">nodeid</span><span class="p">)</span>
+
+<span class="n">originalname</span><span class="p">:</span> <span class="n">test_stuff</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">test_stuff</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="n">nodeid</span><span class="p">:</span> <span class="n">relative</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">test_things</span><span class="p">.</span><span class="n">py</span><span class="p">::</span><span class="n">TestClass</span><span class="p">::</span><span class="n">test_stuff</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/68804077/15966204">source</a></p>
+
+<p>or how to find the test ID for parametrized tests during execution of the test</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'PYTEST_CURRENT_TEST'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/67052616/15966204">source</a></p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

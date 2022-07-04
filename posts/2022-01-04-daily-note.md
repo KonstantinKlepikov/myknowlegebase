@@ -1,9 +1,8 @@
 ---
+title: Proxy в selenium, запуск локального smtp и несколько вопросов про pandas
 description: Про proxy в selenium, smtp локально и ошибки в pandas
 category: post
 ---
-# Proxy в selenium, запуск локального smtp и несколько вопросов про pandas
-
 ## Использование proxy вместе с [[selenium]]
 
 [статья](https://medium.com/ml-book/multiple-proxy-servers-in-selenium-web-driver-python-4e856136199d)

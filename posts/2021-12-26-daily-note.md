@@ -1,9 +1,8 @@
 ---
+title: Немного трюков с python - работа с csv, парсинг html и другое
 description: Парсинг csv, html, работа с pandas
 category: post
 ---
-# Немного трюков с python: работа с csv, парсинг html и другое
-
 В этой заметке:
 
 1. Как проверить, что выбранная папка пустая
@@ -23,7 +22,7 @@ category: post
 import os
 if not os.listdir('/your/path'):
     print("Directory is empty")
-else:    
+else:
     print("Directory is not empty")
 ```
 
@@ -180,10 +179,9 @@ if element.name == 'div':
     ...
 ```
 
-[[python-standart-library]]
-
 Смотри так-же:
 
+- [[python-standart-library]]
 - [[python-filesystem]]
 - [[selenium]]
 

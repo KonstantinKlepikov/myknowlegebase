@@ -1,9 +1,8 @@
 ---
+title: Работа с alembic и БД в docker, вопросы с poetry, linux и общие вопросы про python
 description: Заметка про БД в докер, алембик, поэтри и несколько вопросов работы с python
 category: post
 ---
-# Работа с alembic и БД в docker, вопросы с poetry, linux и общие вопросы про python
-
 ## Database and alembic
 
 ### How to autogenerate and apply migrations with alembic when the database runs in a container

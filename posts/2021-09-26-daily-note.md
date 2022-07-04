@@ -1,9 +1,8 @@
 ---
+title: Про переменные инстанса класса и n-мерные массивы в numpy
 description: Как получит ьвсе переменные инстанса класса и про n-мерные массивы в numpy
 category: post
 ---
-# Про переменные инстанса класса и n-мерные массивы в numpy
-
 ## Как получить переменные, созданные при инилицализации класса?
 
 [How to get python class instance variables inside __init__](https://stackoverflow.com/questions/55629400/how-to-get-python-class-instance-variables-inside-init)

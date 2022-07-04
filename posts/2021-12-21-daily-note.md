@@ -1,9 +1,8 @@
 ---
+title: Formatted string literals specificators
 description: Форматирование f-строк в python
 category: post
 ---
-# Formatted string literals specificators
-
 После значения переменной в скобках может быть добвален знак `:` для форматирвоания вывода.
 
 `!s` вызывает `str()`, `!r` - `repr()`, и `!a` вызывает `ascii()`

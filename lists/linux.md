@@ -68,6 +68,16 @@ alias pg='ps aux | grep -v grep | grep $1'
 pg something
 ```
 
+## How To Assign Output of a Linux Command to a Variable
+
+```bash
+variable_name=$(command)
+variable_name=$(command [option ...] arg1 arg2 ...)
+# OR
+variable_name='command'
+variable_name='command [option ...] arg1 arg2 ...'
+```
+
 Другие ресурсы:
 
 - [[linux-scp]]

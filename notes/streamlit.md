@@ -35,6 +35,10 @@ Page labels in the sidebar UI are generated from filenames. They may differ from
 
 [Подробнее](https://docs.streamlit.io/library/get-started/multipage-apps)
 
+## RuntimeError: Data is outside [0.0, 1.0] and clamp is not set
+
+В [st.image](https://docs.streamlit.io/library/api-reference/media/st.image) использовать `clamp=True` - фиксирует значения пикселей изображения в допустимом диапазоне ([0–255] на канал). Это имеет смысл только для изображений байтовых массивов; параметр игнорируется для URL-адресов изображений. Если это не установлено, а изображение имеет значение вне допустимого диапазона, будет выдана ошибка.
+
 Смотри еще:
 
 - [[шаблонизаторы]]
