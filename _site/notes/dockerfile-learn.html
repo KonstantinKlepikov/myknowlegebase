@@ -115,9 +115,483 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <p><a href="https://docs.docker.com/engine/reference/builder/">ссылка на основную статью</a></p>
+    <p>Докер билдит контейнер автоматически с помощью. <code class="language-plaintext highlighter-rouge">docker build</code>, получая инструкции из Dockerfile и используя <code class="language-plaintext highlighter-rouge">context</code>.</p>
 
-<p>Смотри как используется в [<a href="../lists/docker" title="Docker">docker</a>] и [<a href="docker-compose" title="Docker compose">docker-compose</a>]</p>
+<p>Контекст сборки — это набор файлов в указанном месте <code class="language-plaintext highlighter-rouge">PATH</code> или <code class="language-plaintext highlighter-rouge">URL</code>. <code class="language-plaintext highlighter-rouge">PATH</code> — это каталог в вашей локальной файловой системе. <code class="language-plaintext highlighter-rouge">URL</code>-адрес — это расположение репозитория Git. Контекст сборки обрабатывается рекурсивно. Таким образом, PATH включает любые подкаталоги, а URL-адрес включает репозиторий и его подмодули.</p>
+
+<p>Сборка выполняется демоном Docker, а не интерфейсом командной строки. Первое, что делает процесс сборки, это отправляет весь контекст (рекурсивно) демону. В большинстве случаев лучше начать с пустого каталога в качестве контекста и хранить файл Dockerfile в этом каталоге. Добавьте только те файлы, которые необходимы для создания Dockerfile. Не используйте свой корневой каталог <code class="language-plaintext highlighter-rouge">/</code> в качестве PATH для вашего контекста сборки, так как это приводит к тому, что сборка передает все содержимое вашего жесткого диска демону Docker.</p>
+
+<p>Можно использовать флаг <code class="language-plaintext highlighter-rouge">-f</code>, чтобы указать на Dockerfile в любом месте вашей файловой системы.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-f</span> /path/to/a/Dockerfile <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Вы можете указать репозиторий и тег, в котором будет сохранен новый образ, если сборка пройдет успешно.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> shykes/myapp <span class="nb">.</span>
+
+<span class="c"># for multyple repositories</span>
+docker build <span class="nt">-t</span> shykes/myapp:1.0.2 <span class="nt">-t</span> shykes/myapp:latest <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Перед запуском инструкции докер валидирует Dockerfile и поднимает ошибку, если синтаксис некорректен. Инструкции Dockerfile выполняются демоном одна за одной. Каждая инструкция запускается независимо и вызывает создание нового образа, поэтому <code class="language-plaintext highlighter-rouge">RUN cd /tmp</code> не окажет никакого влияния на следующие инструкции.</p>
+
+<p>Когда это возможно, Docker использует кэш сборки, чтобы значительно ускорить процесс сборки Docker. На это указывает сообщение CACHED в выводе консоли. Опция <code class="language-plaintext highlighter-rouge">--cache-from</code> также позволяет вам использовать кеш сборки, который распространяется через реестр образов.</p>
+
+<h2 id="buildkit">Buildkit</h2>
+
+<p>BuildKit может:</p>
+
+<ul>
+  <li>Обнаруживать и пропускать выполнение неиспользуемых этапов сборки</li>
+  <li>Параллелизовать этапы сборки, не зависящие от сборки</li>
+  <li>Поэтапно передавать только измененные файлы в контексте сборки между сборками</li>
+  <li>Обнаруживать и пропускать передачу неиспользуемых файлов в контексте сборки</li>
+  <li>Использовать внешние реализации Dockerfile со многими новыми функциями</li>
+  <li>Избегать побочных эффектов (промежуточные образы и контейнеры)</li>
+  <li>Устанавливать приоритет кэша сборки для автоматической обрезки.</li>
+</ul>
+
+<p>BuildKit включается установкой <code class="language-plaintext highlighter-rouge">DOCKER_BUILDKIT=1</code> через CLI перед выполнением <code class="language-plaintext highlighter-rouge">docker build .</code></p>
+
+<p>С Buildkit можно использовать <a href="https://docs.docker.com/engine/reference/builder/#syntax">syntax</a>. Директива синтаксиса определяет расположение синтаксиса Dockerfile, который используется для создания Dockerfile.</p>
+
+<p>Пользовательские реализации Dockerfile позволяют:</p>
+
+<ul>
+  <li>Автоматически получать исправления ошибок без обновления демона Docker</li>
+  <li>Быть уверенным, что все пользователи используют одну и ту же реализацию для создания вашего Dockerfil</li>
+  <li>Использовать новейшие функции без обновления демона Docker</li>
+  <li>Тестировать новые функции или сторонние функции до их интеграции в демоне Docker.</li>
+  <li>Использовать альтернативные определения сборки или создайте свои собственные.</li>
+</ul>
+
+<h2 id="формат-dockerfile">Формат Dockerfile</h2>
+
+<ul>
+  <li>Инструкции не чувствительна к регистру, при этом есть соглашение писать прописными</li>
+  <li>Dockerfile должен начинаться с инструкции <code class="language-plaintext highlighter-rouge">FROM</code> (это может быть после директив синтаксического анализатора, комментариев и глобальных ARG.)</li>
+  <li>коментарии начинаются с <code class="language-plaintext highlighter-rouge">#</code>, если это не валидные директивы дял парсера</li>
+  <li>
+    <p><a href="https://docs.docker.com/engine/reference/builder/#parser-directives">директивы парсера</a> не обязательны и влияют на то как обрабатываются последующие строки. Пишутся как комментарии специального типа в виде <code class="language-plaintext highlighter-rouge"># directive=value</code>. Директивы не отображаются при сборке и одна директива используется только однажды. После обработки комментария, пустой строки или инструкции по сборщику Docker больше не ищет директивы синтаксического анализатора, поэтому они должны быть как можно выше в Dockerfile. Директивы не чувствительны к регистру.</p>
+
+    <pre><code class="language-Dockerfile">  # directive=value1
+  # directive=value2
+
+  FROM ImageName
+</code></pre>
+  </li>
+  <li><a href="https://docs.docker.com/engine/reference/builder/#escape">escape директива</a> устанавливает символ, используемый для экранирования символов в Dockerfile. Если он не указан, управляющим символом по умолчанию является .</li>
+</ul>
+
+<h2 id="использование-переменных-окружения">Использование переменных окружения</h2>
+
+<p>Переменные, заданные в инструкции <code class="language-plaintext highlighter-rouge">ENV</code> могут использоваться в некоторых инструкциях Dockerfile. Синтаксис: <code class="language-plaintext highlighter-rouge">$variable_name</code> или <code class="language-plaintext highlighter-rouge">${variable_name}</code>. Кроме того, поддерживается некоторое количество модификаторов bash:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">${variable:-word}</code> указывает, что если переменная установлена, результатом будет это значение. Если переменная не установлена, результатом будет word.</li>
+  <li><code class="language-plaintext highlighter-rouge">${variable:+word}</code> указывает, что если переменная установлена, результатом будет word, в противном случае результатом будет пустая строка.</li>
+</ul>
+
+<p>Word может быть любой строкой, включающей в т.ч. переменные. Эскейпинг реализуется через <code class="language-plaintext highlighter-rouge">\</code></p>
+
+<pre><code class="language-Dockerfile">FROM busybox
+ENV FOO=/bar
+WORKDIR ${FOO}   # WORKDIR /bar
+ADD . $FOO       # ADD . /bar
+COPY \$FOO /quux # COPY $FOO /quux
+</code></pre>
+
+<p>Переменные поддерживаются в след.инструкциях:</p>
+
+<ul>
+  <li>ADD</li>
+  <li>COPY</li>
+  <li>ENV</li>
+  <li>EXPOSE</li>
+  <li>FROM</li>
+  <li>LABEL</li>
+  <li>STOPSIGNAL</li>
+  <li>USER</li>
+  <li>VOLUME</li>
+  <li>WORKDIR</li>
+  <li>ONBUILD</li>
+</ul>
+
+<h2 id="dockerignore-file">.dockerignore file</h2>
+
+<p>.dockerignore просматривается перед отправкой контекста дкмону. Влияет на инструкции ADD и COPY</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rule</th>
+      <th>Behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td># comment</td>
+      <td>Ignored</td>
+    </tr>
+    <tr>
+      <td><em>/temp</em></td>
+      <td>Exclude files and directories whose names start with temp in any immediate subdirectory of the root. For example, the plain file /somedir/temporary.txt is excluded, as is the directory /somedir/temp.</td>
+    </tr>
+    <tr>
+      <td><em>/</em>/temp*</td>
+      <td>Exclude files and directories starting with temp from any subdirectory that is two levels below the root. For example, /somedir/subdir/temporary.txt is excluded.</td>
+    </tr>
+    <tr>
+      <td>temp?</td>
+      <td>Exclude files and directories in the root directory whose names are a one-character extension of temp. For example, /tempa and /tempb are excluded.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="https://docs.docker.com/engine/reference/builder/#dockerignore-file">Больше подробностей</a></p>
+
+<h2 id="инеструкции">Инеструкции</h2>
+
+<h3 id="from"><a href="https://docs.docker.com/engine/reference/builder/#from">FROM</a></h3>
+
+<pre><code class="language-Dockerfile">FROM [--platform=&lt;platform&gt;] &lt;image&gt; [AS &lt;name&gt;]
+
+# or
+FROM [--platform=&lt;platform&gt;] &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]
+
+# or
+FROM [--platform=&lt;platform&gt;] &lt;image&gt;[@&lt;digest&gt;] [AS &lt;name&gt;]
+</code></pre>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">FROM</code> инициализирует новую стадию сборки и устанавливает базовый образ для последующих инструкций. Таким образом, действительный файл Dockerfile должен начинаться с инструкции <code class="language-plaintext highlighter-rouge">FROM</code>.</p>
+
+<ul>
+  <li>Перед <code class="language-plaintext highlighter-rouge">FROM</code> можно использовать только инструкцию <code class="language-plaintext highlighter-rouge">ARG</code></li>
+  <li><code class="language-plaintext highlighter-rouge">FROM</code> может появляться несколько раз в одном Dockerfile для создания нескольких образов или использования одного этапа сборки в качестве зависимости для другого. Просто запишите идентификатор последнего изображения, выведенный фиксацией, перед каждой новой инструкцией <code class="language-plaintext highlighter-rouge">FROM</code>. Каждая инструкция <code class="language-plaintext highlighter-rouge">FROM</code> очищает любое состояние, созданное предыдущими инструкциями.</li>
+  <li>При желании можно дать имя новому этапу сборки, добавив имя <code class="language-plaintext highlighter-rouge">AS</code> в инструкцию <code class="language-plaintext highlighter-rouge">FROM</code>. Это имя можно использовать в последующих инструкциях <code class="language-plaintext highlighter-rouge">FROM</code> и <code class="language-plaintext highlighter-rouge">COPY</code> <code class="language-plaintext highlighter-rouge">--from=&lt;name&gt;</code> для ссылки на образ, созданный на этом этапе.</li>
+  <li>Значения тега или дайджеста являются необязательными. Если вы опустите любой из них, построитель по умолчанию примет последний тег. Билдер возвращает ошибку, если не может найти значение тега.</li>
+  <li>Необязательный флаг <code class="language-plaintext highlighter-rouge">--platform</code> можно использовать для указания платформы образа в случае, если <code class="language-plaintext highlighter-rouge">FROM</code> ссылается на многоплатформенный образ</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">ARG</code>, объявленная перед <code class="language-plaintext highlighter-rouge">FROM</code>, находится вне этапа сборки, поэтому ее нельзя использовать ни в одной инструкции после FROM. Чтобы использовать значение по умолчанию <code class="language-plaintext highlighter-rouge">ARG</code>, объявленное перед первым <code class="language-plaintext highlighter-rouge">FROM</code>, используйте инструкцию ARG без значения внутри этапа сборки</p>
+
+<pre><code class="language-Dockerfile">ARG VERSION=latest
+FROM busybox:$VERSION
+ARG VERSION
+RUN echo $VERSION &gt; image_version
+</code></pre>
+
+<h3 id="run"><a href="https://docs.docker.com/engine/reference/builder/#run">RUN</a></h3>
+
+<p>Два формата:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">RUN &lt;command&gt;</code> (форма оболочки, команда запускается в оболочке, которая по умолчанию /bin/sh -c в Linux или cmd /S /C в Windows)</li>
+  <li><code class="language-plaintext highlighter-rouge">RUN ["executable", "param1", "param2"]</code> (exec form)</li>
+</ul>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">RUN</code> выполнит любые команды в новом слое поверх текущего изображения и зафиксирует результаты. Полученный зафиксированный образ будет использоваться для следующего шага в Dockerfile.</p>
+
+<p>Форма exec позволяет выполнять команды с использованием базового образа, который не содержит указанный исполняемый файл оболочки. Дефолтный shell можно задать через команду <code class="language-plaintext highlighter-rouge">SHELL</code></p>
+
+<pre><code class="language-Dockerfile">RUN /bin/bash -c 'source $HOME/.bashrc; \
+echo $HOME'
+
+# or
+RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'
+</code></pre>
+
+<p>Через exec можно задать другую оболочку</p>
+
+<pre><code class="language-Dockerfile">RUN ["/bin/bash", "-c", "echo hello"]
+</code></pre>
+
+<p>Форма exec анализируется как массив JSON, что означает, что вы должны использовать двойные кавычки (“) вокруг слов, а не одинарные кавычки (‘).</p>
+
+<p>В отличие от shell формы, форма exec не вызывает командную оболочку. Это означает, что нормальной обработки оболочки не происходит. Например, <code class="language-plaintext highlighter-rouge">RUN [ "echo", "$HOME" ]</code> не будет выполнять подстановку переменных в <code class="language-plaintext highlighter-rouge">$HOME</code>. Если вам нужна обработка оболочки, то либо используйте форму оболочки, либо запустите оболочку напрямую, например: <code class="language-plaintext highlighter-rouge">RUN [ "sh", "-c", "echo $HOME" ]</code>. При использовании формы exec и непосредственном выполнении оболочки, как и в случае с формой оболочки, расширение переменной среды выполняет оболочка, а не docker.</p>
+
+<p>Кэш для инструкций <code class="language-plaintext highlighter-rouge">RUN</code> не становится недействительным автоматически во время следующей сборки. Кэш для такой инструкции, как <code class="language-plaintext highlighter-rouge">RUN apt-get dist-upgrade -y</code>, будет повторно использован во время следующей сборки. Кэш для инструкций RUN можно сделать недействительным с помощью флага <code class="language-plaintext highlighter-rouge">--no-cache</code>, например, <code class="language-plaintext highlighter-rouge">docker build --no-cache</code>.</p>
+
+<h3 id="cmd"><a href="https://docs.docker.com/engine/reference/builder/#cmd">CMD</a></h3>
+
+<p>Три формы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CMD ["executable","param1","param2"]</code> (exec form, this is the preferred form)</li>
+  <li><code class="language-plaintext highlighter-rouge">CMD ["param1","param2"]</code> (as default parameters to ENTRYPOINT)</li>
+  <li><code class="language-plaintext highlighter-rouge">CMD command param1 param2</code> (shell form)</li>
+</ul>
+
+<p>В Dockerfile может быть только одна инструкция <code class="language-plaintext highlighter-rouge">CMD</code>. Если вы укажете более одного <code class="language-plaintext highlighter-rouge">CMD</code>, вступит в силу только последний <code class="language-plaintext highlighter-rouge">CMD</code>.</p>
+
+<p>Основная цель <code class="language-plaintext highlighter-rouge">CMD</code> — предоставить значения по умолчанию для исполнения контейнера. Эти значения по умолчанию могут включать исполняемый файл или исключать исполняемый файл, и в этом случае вы также должны указать инструкцию <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>. Обе инструкции длолжны быть заданы с учетом формата json.</p>
+
+<p>В отличие от shell формы, форма exec не вызывает командную оболочку. Это означает, что нормальной обработки оболочки не происходит.</p>
+
+<p>Не путайте <code class="language-plaintext highlighter-rouge">RUN</code> с <code class="language-plaintext highlighter-rouge">CMD</code>. <code class="language-plaintext highlighter-rouge">RUN</code> фактически запускает команду и фиксирует результат; <code class="language-plaintext highlighter-rouge">CMD</code> ничего не выполняет во время сборки, но указывает запланированную команду для образа.</p>
+
+<h3 id="label"><a href="https://docs.docker.com/engine/reference/builder/#label">LABEL</a></h3>
+
+<pre><code class="language-Dockerfile">LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...
+</code></pre>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">LABEL</code> добавляет к образу метаданные. <code class="language-plaintext highlighter-rouge">LABEL</code> — это пара ключ-значение. Чтобы включить пробелы в значение <code class="language-plaintext highlighter-rouge">LABEL</code>, используйте кавычки и обратную косую черту, как при синтаксическом анализе командной строки. Можно задать любое количество меток для образа.</p>
+
+<pre><code class="language-Dockerfile">LABEL "com.example.vendor"="ACME Incorporated"
+LABEL com.example.label-with-value="foo"
+LABEL version="1.0"
+LABEL description="This text illustrates \
+that label-values can span multiple lines."
+
+LABEL multi.label1="value1" \
+      multi.label2="value2" \
+      other="value3"
+</code></pre>
+
+<p>Метки родителей наследуются. Если метка уже есть - используется последняя.</p>
+
+<h3 id="maintainer-deprecated"><a href="https://docs.docker.com/engine/reference/builder/#maintainer-deprecated">MAINTAINER (deprecated)</a></h3>
+
+<h3 id="expose"><a href="https://docs.docker.com/engine/reference/builder/#expose">EXPOSE</a></h3>
+
+<pre><code class="language-Dockerfile">EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;...]
+</code></pre>
+
+<p>Открывает порты между контейнерами в сети в рантайм. Можно задать TCP или UDP.</p>
+
+<p>Инструкция EXPOSE фактически не публикует порт. Он функционирует как тип документации между человеком, который создает образ, и человеком, который запускает контейнер, о том, какие порты предназначены для публикации. Чтобы фактически опубликовать порт при запуске контейнера, используйте флаг <code class="language-plaintext highlighter-rouge">-p</code> при запуске docker, чтобы опубликовать и сопоставить один или несколько портов, или флаг <code class="language-plaintext highlighter-rouge">-P</code>, чтобы опубликовать все открытые порты и сопоставить их с внешними портами.</p>
+
+<h3 id="env"><a href="https://docs.docker.com/engine/reference/builder/#env">ENV</a></h3>
+
+<pre><code class="language-Dockerfile">ENV &lt;key&gt;=&lt;value&gt; ...
+</code></pre>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">ENV</code> устанавливает для переменной среды <code class="language-plaintext highlighter-rouge">&lt;key&gt;</code> значение <code class="language-plaintext highlighter-rouge">&lt;value&gt;</code>. Это значение будет в среде исполнения для всех последующих инструкций на этапе сборки и во многих случаях может быть заменено. Значение будет интерпретировано, поэтому символы кавычек будут удалены, если они не экранированы. Как и при синтаксическом анализе командной строки, для включения пробелов в значения можно использовать кавычки и обратную косую черту.</p>
+
+<pre><code class="language-Dockerfile">ENV MY_NAME="John Doe"
+ENV MY_DOG=Rex\ The\ Dog
+ENV MY_CAT=fluffy
+
+ENV MY_NAME="John Doe" MY_DOG=Rex\ The\ Dog \
+    MY_CAT=fluffy
+</code></pre>
+
+<p>Переменные среды, установленные с помощью <code class="language-plaintext highlighter-rouge">ENV</code>, будут сохраняться при запуске контейнера из полученного образа.</p>
+
+<p>Если переменные нужны только при сборке - рассмотирте вариант установления их только для исполняемой команды</p>
+
+<pre><code class="language-Dockerfile">RUN DEBIAN_FRONTEND=noninteractive apt-get update &amp;&amp; apt-get install -y ...
+
+# or
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update &amp;&amp; apt-get install -y ...
+</code></pre>
+
+<h3 id="add"><a href="https://docs.docker.com/engine/reference/builder/#add">ADD</a></h3>
+
+<p>Две формы:</p>
+
+<pre><code class="language-Dockerfile">ADD [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;
+ADD [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]
+</code></pre>
+
+<p>Последняя форма требуется для путей, содержащих пробелы.</p>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">ADD</code> копирует новые файлы, каталоги или URL-адреса удаленных файлов из <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> и добавляет их в файловую систему образа по пути <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code>. Можно указать несколько ресурсов <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code>, но если они являются файлами или каталогами, их пути интерпретируются как относительные к источнику контекста сборки. Каждый <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> может содержать подстановочные знаки, и сопоставление будет выполняться с использованием правил Go’s filepath.Match.</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> — это абсолютный путь или путь относительно <code class="language-plaintext highlighter-rouge">WORKDIR</code>, в который будет скопирован источник внутри целевого контейнера.</p>
+
+<p>Пример для <code class="language-plaintext highlighter-rouge">&lt;WORKDIR&gt;/relativeDir/</code>:</p>
+
+<pre><code class="language-Dockerfile">ADD test.txt relativeDir/
+</code></pre>
+
+<p>Пример для <code class="language-plaintext highlighter-rouge">/absoluteDir/</code>:</p>
+
+<pre><code class="language-Dockerfile">ADD test.txt /absoluteDir/
+</code></pre>
+
+<p>Все новые файлы и каталоги создаются с UID и GID, равными 0, если только необязательный флаг <code class="language-plaintext highlighter-rouge">--chown</code> не указывает данное имя пользователя, имя группы или комбинацию UID/GID для запроса конкретного владельца добавленного контента.</p>
+
+<pre><code class="language-Dockerfile">ADD --chown=55:mygroup files* /somedir/
+ADD --chown=bin files* /somedir/
+ADD --chown=1 files* /somedir/
+ADD --chown=10:11 files* /somedir/
+</code></pre>
+
+<p>Правила для <code class="language-plaintext highlighter-rouge">ADD</code>:</p>
+
+<ul>
+  <li>Путь <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> должен находиться внутри контекста сборки; вы не можете ДОБАВИТЬ <code class="language-plaintext highlighter-rouge">../something/something</code>, потому что первым шагом сборки docker является отправка каталога контекста (и подкаталогов) демону docker.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является URL-адресом, а <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> не заканчивается косой чертой, то файл загружается с URL-адреса и копируется в <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является URL-адресом, а <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> заканчивается косой чертой, то имя файла выводится из URL-адреса, и файл загружается в <code class="language-plaintext highlighter-rouge">&lt;dest&gt;/&lt;filename&gt;</code>. Например, <code class="language-plaintext highlighter-rouge">ADD http://example.com/foobar/</code> создаст файл <code class="language-plaintext highlighter-rouge">/foobar</code>. URL-адрес должен иметь нетривиальный путь, чтобы в этом случае можно было обнаружить подходящее имя файла (<code class="language-plaintext highlighter-rouge">http://example.com</code> не будет работать).</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является каталогом, копируется все содержимое каталога, включая метаданные файловой системы. Сам каталог не копируется.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является локальным tar-архивом в распознаваемом формате сжатия (identity, gzip, bzip2 или xz), то он распаковывается как каталог. Ресурсы с удаленных URL-адресов не распаковываются. Когда каталог копируется или распаковывается, он ведет себя так же, как tar -x.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является файлом любого другого типа, он копируется отдельно вместе со своими метаданными. В этом случае, если <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> заканчивается косой чертой <code class="language-plaintext highlighter-rouge">/</code>, он будет считаться каталогом, а содержимое <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> будет записано в <code class="language-plaintext highlighter-rouge">&lt;dest&gt;/base(&lt;src&gt;)</code>.</li>
+  <li>Если указано несколько ресурсов <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code>, либо напрямую, либо из-за использования подстановочного знака, то <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> должен быть каталогом, и он должен заканчиваться косой чертой <code class="language-plaintext highlighter-rouge">/</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> не заканчивается косой чертой, он будет считаться обычным файлом, а содержимое <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> будет записано в <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> не существует, он создается вместе со всеми отсутствующими каталогами на его пути.</li>
+</ul>
+
+<h3 id="copy"><a href="https://docs.docker.com/engine/reference/builder/#copy">COPY</a></h3>
+
+<p>Две формы</p>
+
+<pre><code class="language-Dockerfile">COPY [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;
+COPY [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]
+</code></pre>
+
+<p>Последняя форма требуется для путей, содержащих пробелы. <code class="language-plaintext highlighter-rouge">--chown</code> поддерживается только для Linux.</p>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">COPY</code> копирует новые файлы или каталоги из <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> и добавляет их в файловую систему контейнера по пути <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code>.</p>
+
+<p>При желании <code class="language-plaintext highlighter-rouge">COPY</code> принимает флаг <code class="language-plaintext highlighter-rouge">--from=&lt;name&gt;</code>, который можно использовать для установки исходного местоположения на предыдущую стадию сборки (созданную с помощью <code class="language-plaintext highlighter-rouge">FROM .. AS &lt;name&gt;</code>), которая будет использоваться вместо контекста сборки, отправленного пользователем. В случае, если этап сборки с указанным именем не может быть найден, вместо него делается попытка использовать образ с таким же именем.</p>
+
+<p>Правила:</p>
+
+<ul>
+  <li>Путь <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> должен находиться внутри контекста сборки; вы не можете Ккопировать <code class="language-plaintext highlighter-rouge">../something/something</code>, потому что первым шагом сборки docker является отправка каталога контекста (и подкаталогов) демону docker.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является каталогом, копируется все содержимое каталога, включая метаданные файловой системы. Сам каталог не копируется, только его содержимое.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> является файлом любого другого типа, он копируется отдельно вместе со своими метаданными. В этом случае, если <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> заканчивается косой чертой <code class="language-plaintext highlighter-rouge">/</code>, он будет считаться каталогом, а содержимое <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> будет записано в <code class="language-plaintext highlighter-rouge">&lt;dest&gt;/base(&lt;src&gt;)</code>.</li>
+  <li>Если указано несколько ресурсов <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code>, либо напрямую, либо из-за использования подстановочного знака, то <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> должен быть каталогом, и он должен заканчиваться косой чертой <code class="language-plaintext highlighter-rouge">/</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> не заканчивается косой чертой, он будет считаться обычным файлом, а содержимое <code class="language-plaintext highlighter-rouge">&lt;src&gt;</code> будет записано в <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">&lt;dest&gt;</code> не существует, он создается вместе со всеми отсутствующими каталогами на его пути.</li>
+</ul>
+
+<p>Разница между <code class="language-plaintext highlighter-rouge">ADD</code> и <code class="language-plaintext highlighter-rouge">COPY</code> в том, что <code class="language-plaintext highlighter-rouge">ADD</code> умеет скачивать удаленные файлы и умеет разворачимвать архивы.</p>
+
+<h3 id="entrypoint"><a href="https://docs.docker.com/engine/reference/builder/#entrypoint">ENTRYPOINT</a></h3>
+
+<p>Две формы:</p>
+
+<pre><code class="language-Dockerfile"># exec
+ENTRYPOINT ["executable", "param1", "param2"]
+
+# shell
+ENTRYPOINT command param1 param2
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> позволяет настроить контейнер, который будет работать как исполняемый файл. Например, следующий код запускает nginx с содержимым по умолчанию, прослушивая порт 80:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-i</span> <span class="nt">-t</span> <span class="nt">--rm</span> <span class="nt">-p</span> 80:80 nginx
+</code></pre></div></div>
+
+<p>Аргументы командной строки для запуска <code class="language-plaintext highlighter-rouge">docker run &lt;image&gt;</code> будут добавлены после всех элементов в форме exec <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> и переопределят все элементы, указанные с помощью <code class="language-plaintext highlighter-rouge">CMD</code>. Это позволяет передавать аргументы в точку входа, т.е. <code class="language-plaintext highlighter-rouge">docker run &lt;image&gt; -d</code> передаст аргумент <code class="language-plaintext highlighter-rouge">-d</code> в точку входа. Вы можете переопределить инструкцию <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, используя флаг <code class="language-plaintext highlighter-rouge">docker run --entrypoint</code>.</p>
+
+<p>Shell форма предотвращает использование любых аргументов командной строки <code class="language-plaintext highlighter-rouge">CMD</code> или команд запуска, но имеет тот недостаток, что ваша <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> будет запущена как подкоманда <code class="language-plaintext highlighter-rouge">/bin/sh -c</code>, которая не передает сигналы. Это означает, что исполняемый файл не будет иметь <code class="language-plaintext highlighter-rouge">PID 1</code> контейнера и не будет получать сигналы Unix, поэтому ваш исполняемый файл не получит <code class="language-plaintext highlighter-rouge">SIGTERM</code> от <code class="language-plaintext highlighter-rouge">docker stop &lt;container&gt;</code>.</p>
+
+<p>Всегда применяется только последняя инструкция <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code></p>
+
+<p>Вы можете использовать форму exec <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, чтобы установить довольно стабильные команды и аргументы по умолчанию, а затем использовать любую форму <code class="language-plaintext highlighter-rouge">CMD</code>, чтобы установить дополнительные значения по умолчанию, которые, скорее всего, будут изменены. <a href="https://docs.docker.com/engine/reference/builder/#exec-form-entrypoint-example">Подробнее</a></p>
+
+<p>Вы можете указать простую строку для <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, и она будет выполняться в <code class="language-plaintext highlighter-rouge">/bin/sh -c</code>. Эта форма будет использовать обработку оболочки для замены переменных среды оболочки и игнорировать любые аргументы командной строки <code class="language-plaintext highlighter-rouge">CMD</code> или <code class="language-plaintext highlighter-rouge">docker run</code>. Чтобы гарантировать, что <code class="language-plaintext highlighter-rouge">docker stop</code> будет правильно сигнализировать о любом длительно работающем исполняемом файле <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, вам нужно не забыть запустить его с помощью <code class="language-plaintext highlighter-rouge">exec</code>. <a href="https://docs.docker.com/engine/reference/builder/#shell-form-entrypoint-example">Пример</a></p>
+
+<p>И инструкции <code class="language-plaintext highlighter-rouge">CMD</code>, и <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> определяют, какая команда будет выполняться при запуске контейнера. Есть несколько правил, описывающих их взаимодействие:</p>
+
+<ul>
+  <li>Dockerfile должен указывать хотя бы одну из команд <code class="language-plaintext highlighter-rouge">CMD</code> или <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> должен быть определен при использовании контейнера в качестве исполняемого файла.</li>
+  <li><code class="language-plaintext highlighter-rouge">CMD</code> следует использовать как способ определения аргументов по умолчанию для команды <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> или для выполнения специальной команды в контейнере.</li>
+  <li><code class="language-plaintext highlighter-rouge">CMD</code> будет переопределен при запуске контейнера с альтернативными аргументами.</li>
+</ul>
+
+<p>В таблице ниже показано, какая команда выполняется для разных комбинаций <code class="language-plaintext highlighter-rouge">ENTRYPOINT/CMD</code>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>No ENTRYPOINT</th>
+      <th>ENTRYPOINT exec_entry p1_entry</th>
+      <th>ENTRYPOINT [“exec_entry”, “p1_entry”]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No CMD</td>
+      <td>error, not allowed</td>
+      <td>/bin/sh -c exec_entry p1_entry</td>
+      <td>exec_entry p1_entry</td>
+    </tr>
+    <tr>
+      <td>CMD [“exec_cmd”, “p1_cmd”]</td>
+      <td>exec_cmd p1_cmd</td>
+      <td>/bin/sh -c exec_entry p1_entry</td>
+      <td>exec_entry p1_entry exec_cmd p1_cmd</td>
+    </tr>
+    <tr>
+      <td>CMD [“p1_cmd”, “p2_cmd”]</td>
+      <td>p1_cmd p2_cmd</td>
+      <td>/bin/sh -c exec_entry p1_entry</td>
+      <td>exec_entry p1_entry p1_cmd p2_cmd</td>
+    </tr>
+    <tr>
+      <td>CMD exec_cmd p1_cmd</td>
+      <td>/bin/sh -c exec_cmd p1_cmd</td>
+      <td>/bin/sh -c exec_entry p1_entry</td>
+      <td>exec_entry p1_entry /bin/sh -c exec_cmd p1_cmd</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="volume"><a href="https://docs.docker.com/engine/reference/builder/#volume">VOLUME</a></h3>
+
+<pre><code class="language-Dockerfile">VOLUME ["/data"]
+</code></pre>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">VOLUME</code> создает точку монтирования с указанным именем и помечает ее как содержащую внешне смонтированные тома из собственного хоста или других контейнеров. Значение может быть массивом <code class="language-plaintext highlighter-rouge">JSON</code>, <code class="language-plaintext highlighter-rouge">VOLUME ["/var/log/"]</code> или простой строкой с несколькими аргументами, например <code class="language-plaintext highlighter-rouge">VOLUME /var/log</code> или <code class="language-plaintext highlighter-rouge">VOLUME /var/log /var/db</code>. <a href="https://docs.docker.com/storage/volumes/">Use volumes</a></p>
+
+<p>Команда <code class="language-plaintext highlighter-rouge">docker run</code> инициализирует только что созданный том любыми данными, которые существуют в указанном месте в базовом образе.</p>
+
+<ul>
+  <li>Тома в контейнерах на базе Windows: при использовании контейнеров на базе Windows место назначения тома внутри контейнера должно быть одним из: несуществующий или пустой каталог или диск, отличный от C:</li>
+  <li>Изменение тома из Dockerfile: если какие-либо шаги сборки изменят данные внутри тома после его объявления, эти изменения будут отменены.</li>
+  <li>Форматирование JSON: список анализируется как массив JSON. Вы должны заключать слова в двойные кавычки (“”), а не в одинарные кавычки (‘).</li>
+  <li>Каталог хоста объявляется во время выполнения контейнера: каталог хоста (точка монтирования) по своей природе зависит от хоста. Это делается для сохранения переносимости образа, поскольку нельзя гарантировать, что данный каталог хоста будет доступен на всех хостах. По этой причине вы не можете смонтировать каталог хоста из Dockerfile. Инструкция <code class="language-plaintext highlighter-rouge">VOLUME</code> не поддерживает указание параметра host-dir. Вы должны указать точку монтирования при создании или запуске контейнера.</li>
+</ul>
+
+<h3 id="user"><a href="https://docs.docker.com/engine/reference/builder/#user">USER</a></h3>
+
+<pre><code class="language-Dockerfile">USER &lt;user&gt;[:&lt;group&gt;]
+
+# or
+USER &lt;UID&gt;[:&lt;GID&gt;]
+</code></pre>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">USER</code> устанавливает имя пользователя (или UID) и, при необходимости, группу пользователей (или GID) для использования при запуске образа и для любых инструкций <code class="language-plaintext highlighter-rouge">RUN</code>, <code class="language-plaintext highlighter-rouge">CMD</code> и <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, которые следуют за ней в Dockerfile.</p>
+
+<h3 id="workdir"><a href="https://docs.docker.com/engine/reference/builder/#workdir">WORKDIR</a></h3>
+
+<pre><code class="language-Dockerfile">WORKDIR /path/to/workdir
+</code></pre>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">WORKDIR</code> устанавливает рабочий каталог для любых инструкций <code class="language-plaintext highlighter-rouge">RUN</code>, <code class="language-plaintext highlighter-rouge">CMD</code>, <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, <code class="language-plaintext highlighter-rouge">COPY</code> и <code class="language-plaintext highlighter-rouge">ADD</code>, которые следуют за ней в Dockerfile. Если <code class="language-plaintext highlighter-rouge">WORKDIR</code> не существует, он будет создан, даже если он не используется ни в одной последующей инструкции Dockerfile.</p>
+
+<p>Инструкцию <code class="language-plaintext highlighter-rouge">WORKDIR</code> можно использовать несколько раз в Dockerfile. Если указан относительный путь, он будет относиться к пути предыдущей инструкции <code class="language-plaintext highlighter-rouge">WORKDIR</code>.</p>
+
+<pre><code class="language-Dockerfile">WORKDIR /a
+WORKDIR b
+WORKDIR c
+RUN pwd
+</code></pre>
+
+<p><code class="language-plaintext highlighter-rouge">WORKDIR</code> поддерживает переменные</p>
+
+<pre><code class="language-Dockerfile">ENV DIRPATH=/path
+WORKDIR $DIRPATH/$DIRNAME
+RUN pwd
+</code></pre>
+
+<p>Дефолтный <code class="language-plaintext highlighter-rouge">WORKDIR</code> - <code class="language-plaintext highlighter-rouge">/</code>. Поэтому, чтобы избежать непреднамеренных операций в неизвестных каталогах, лучше всего указать свой <code class="language-plaintext highlighter-rouge">WORKDIR</code> явно.</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.docker.com/engine/reference/builder/">dockerfile references</a></li>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="docker-compose" title="Docker compose">docker-compose</a>]</li>
+</ul>
 
 
   </div>
