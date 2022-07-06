@@ -175,11 +175,11 @@ docker build <span class="nt">-t</span> shykes/myapp:1.0.2 <span class="nt">-t</
   <li>
     <p><a href="https://docs.docker.com/engine/reference/builder/#parser-directives">директивы парсера</a> не обязательны и влияют на то как обрабатываются последующие строки. Пишутся как комментарии специального типа в виде <code class="language-plaintext highlighter-rouge"># directive=value</code>. Директивы не отображаются при сборке и одна директива используется только однажды. После обработки комментария, пустой строки или инструкции по сборщику Docker больше не ищет директивы синтаксического анализатора, поэтому они должны быть как можно выше в Dockerfile. Директивы не чувствительны к регистру.</p>
 
-    <pre><code class="language-Dockerfile">  # directive=value1
-  # directive=value2
+    <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># directive=value1</span>
+  <span class="c1"># directive=value2</span>
 
-  FROM ImageName
-</code></pre>
+  <span class="s">FROM ImageName</span>
+</code></pre></div>    </div>
   </li>
   <li><a href="https://docs.docker.com/engine/reference/builder/#escape">escape директива</a> устанавливает символ, используемый для экранирования символов в Dockerfile. Если он не указан, управляющим символом по умолчанию является .</li>
 </ul>
@@ -195,12 +195,12 @@ docker build <span class="nt">-t</span> shykes/myapp:1.0.2 <span class="nt">-t</
 
 <p>Word может быть любой строкой, включающей в т.ч. переменные. Эскейпинг реализуется через <code class="language-plaintext highlighter-rouge">\</code></p>
 
-<pre><code class="language-Dockerfile">FROM busybox
-ENV FOO=/bar
-WORKDIR ${FOO}   # WORKDIR /bar
-ADD . $FOO       # ADD . /bar
-COPY \$FOO /quux # COPY $FOO /quux
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM busybox</span>
+<span class="s">ENV FOO=/bar</span>
+<span class="s">WORKDIR ${FOO}</span>   <span class="c1"># WORKDIR /bar</span>
+<span class="s">ADD . $FOO</span>       <span class="c1"># ADD . /bar</span>
+<span class="s">COPY \$FOO /quux</span> <span class="c1"># COPY $FOO /quux</span>
+</code></pre></div></div>
 
 <p>Переменные поддерживаются в след.инструкциях:</p>
 
@@ -255,14 +255,14 @@ COPY \$FOO /quux # COPY $FOO /quux
 
 <h3 id="from"><a href="https://docs.docker.com/engine/reference/builder/#from">FROM</a></h3>
 
-<pre><code class="language-Dockerfile">FROM [--platform=&lt;platform&gt;] &lt;image&gt; [AS &lt;name&gt;]
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM [--platform=&lt;platform&gt;] &lt;image&gt; [AS &lt;name&gt;]</span>
 
-# or
-FROM [--platform=&lt;platform&gt;] &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]
+<span class="c1"># or</span>
+<span class="s">FROM [--platform=&lt;platform&gt;] &lt;image&gt;[:&lt;tag&gt;] [AS &lt;name&gt;]</span>
 
-# or
-FROM [--platform=&lt;platform&gt;] &lt;image&gt;[@&lt;digest&gt;] [AS &lt;name&gt;]
-</code></pre>
+<span class="c1"># or</span>
+<span class="s">FROM [--platform=&lt;platform&gt;] &lt;image&gt;[@&lt;digest&gt;] [AS &lt;name&gt;]</span>
+</code></pre></div></div>
 
 <p>Инструкция <code class="language-plaintext highlighter-rouge">FROM</code> инициализирует новую стадию сборки и устанавливает базовый образ для последующих инструкций. Таким образом, действительный файл Dockerfile должен начинаться с инструкции <code class="language-plaintext highlighter-rouge">FROM</code>.</p>
 
@@ -276,11 +276,11 @@ FROM [--platform=&lt;platform&gt;] &lt;image&gt;[@&lt;digest&gt;] [AS &lt;name&g
 
 <p><code class="language-plaintext highlighter-rouge">ARG</code>, объявленная перед <code class="language-plaintext highlighter-rouge">FROM</code>, находится вне этапа сборки, поэтому ее нельзя использовать ни в одной инструкции после FROM. Чтобы использовать значение по умолчанию <code class="language-plaintext highlighter-rouge">ARG</code>, объявленное перед первым <code class="language-plaintext highlighter-rouge">FROM</code>, используйте инструкцию ARG без значения внутри этапа сборки</p>
 
-<pre><code class="language-Dockerfile">ARG VERSION=latest
-FROM busybox:$VERSION
-ARG VERSION
-RUN echo $VERSION &gt; image_version
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ARG VERSION=latest</span>
+<span class="s">FROM busybox:$VERSION</span>
+<span class="s">ARG VERSION</span>
+<span class="s">RUN echo $VERSION &gt; image_version</span>
+</code></pre></div></div>
 
 <h3 id="run"><a href="https://docs.docker.com/engine/reference/builder/#run">RUN</a></h3>
 
@@ -295,17 +295,17 @@ RUN echo $VERSION &gt; image_version
 
 <p>Форма exec позволяет выполнять команды с использованием базового образа, который не содержит указанный исполняемый файл оболочки. Дефолтный shell можно задать через команду <code class="language-plaintext highlighter-rouge">SHELL</code></p>
 
-<pre><code class="language-Dockerfile">RUN /bin/bash -c 'source $HOME/.bashrc; \
-echo $HOME'
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">RUN /bin/bash -c 'source $HOME/.bashrc; \</span>
+<span class="s">echo $HOME'</span>
 
-# or
-RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'
-</code></pre>
+<span class="c1"># or</span>
+<span class="s">RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'</span>
+</code></pre></div></div>
 
 <p>Через exec можно задать другую оболочку</p>
 
-<pre><code class="language-Dockerfile">RUN ["/bin/bash", "-c", "echo hello"]
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">RUN ["/bin/bash", "-c", "echo hello"]</span>
+</code></pre></div></div>
 
 <p>Форма exec анализируется как массив JSON, что означает, что вы должны использовать двойные кавычки (“) вокруг слов, а не одинарные кавычки (‘).</p>
 
@@ -333,21 +333,21 @@ RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'
 
 <h3 id="label"><a href="https://docs.docker.com/engine/reference/builder/#label">LABEL</a></h3>
 
-<pre><code class="language-Dockerfile">LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">LABEL &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; &lt;key&gt;=&lt;value&gt; ...</span>
+</code></pre></div></div>
 
 <p>Инструкция <code class="language-plaintext highlighter-rouge">LABEL</code> добавляет к образу метаданные. <code class="language-plaintext highlighter-rouge">LABEL</code> — это пара ключ-значение. Чтобы включить пробелы в значение <code class="language-plaintext highlighter-rouge">LABEL</code>, используйте кавычки и обратную косую черту, как при синтаксическом анализе командной строки. Можно задать любое количество меток для образа.</p>
 
-<pre><code class="language-Dockerfile">LABEL "com.example.vendor"="ACME Incorporated"
-LABEL com.example.label-with-value="foo"
-LABEL version="1.0"
-LABEL description="This text illustrates \
-that label-values can span multiple lines."
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">LABEL "com.example.vendor"="ACME Incorporated"</span>
+<span class="s">LABEL com.example.label-with-value="foo"</span>
+<span class="s">LABEL version="1.0"</span>
+<span class="s">LABEL description="This text illustrates \</span>
+<span class="s">that label-values can span multiple lines."</span>
 
-LABEL multi.label1="value1" \
-      multi.label2="value2" \
-      other="value3"
-</code></pre>
+<span class="s">LABEL multi.label1="value1" \</span>
+      <span class="s">multi.label2="value2" \</span>
+      <span class="s">other="value3"</span>
+</code></pre></div></div>
 
 <p>Метки родителей наследуются. Если метка уже есть - используется последняя.</p>
 
@@ -355,8 +355,8 @@ LABEL multi.label1="value1" \
 
 <h3 id="expose"><a href="https://docs.docker.com/engine/reference/builder/#expose">EXPOSE</a></h3>
 
-<pre><code class="language-Dockerfile">EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;...]
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">EXPOSE &lt;port&gt; [&lt;port&gt;/&lt;protocol&gt;...]</span>
+</code></pre></div></div>
 
 <p>Открывает порты между контейнерами в сети в рантайм. Можно задать TCP или UDP.</p>
 
@@ -364,37 +364,37 @@ LABEL multi.label1="value1" \
 
 <h3 id="env"><a href="https://docs.docker.com/engine/reference/builder/#env">ENV</a></h3>
 
-<pre><code class="language-Dockerfile">ENV &lt;key&gt;=&lt;value&gt; ...
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ENV &lt;key&gt;=&lt;value&gt; ...</span>
+</code></pre></div></div>
 
 <p>Инструкция <code class="language-plaintext highlighter-rouge">ENV</code> устанавливает для переменной среды <code class="language-plaintext highlighter-rouge">&lt;key&gt;</code> значение <code class="language-plaintext highlighter-rouge">&lt;value&gt;</code>. Это значение будет в среде исполнения для всех последующих инструкций на этапе сборки и во многих случаях может быть заменено. Значение будет интерпретировано, поэтому символы кавычек будут удалены, если они не экранированы. Как и при синтаксическом анализе командной строки, для включения пробелов в значения можно использовать кавычки и обратную косую черту.</p>
 
-<pre><code class="language-Dockerfile">ENV MY_NAME="John Doe"
-ENV MY_DOG=Rex\ The\ Dog
-ENV MY_CAT=fluffy
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ENV MY_NAME="John Doe"</span>
+<span class="s">ENV MY_DOG=Rex\ The\ Dog</span>
+<span class="s">ENV MY_CAT=fluffy</span>
 
-ENV MY_NAME="John Doe" MY_DOG=Rex\ The\ Dog \
-    MY_CAT=fluffy
-</code></pre>
+<span class="s">ENV MY_NAME="John Doe" MY_DOG=Rex\ The\ Dog \</span>
+    <span class="s">MY_CAT=fluffy</span>
+</code></pre></div></div>
 
 <p>Переменные среды, установленные с помощью <code class="language-plaintext highlighter-rouge">ENV</code>, будут сохраняться при запуске контейнера из полученного образа.</p>
 
 <p>Если переменные нужны только при сборке - рассмотирте вариант установления их только для исполняемой команды</p>
 
-<pre><code class="language-Dockerfile">RUN DEBIAN_FRONTEND=noninteractive apt-get update &amp;&amp; apt-get install -y ...
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">RUN DEBIAN_FRONTEND=noninteractive apt-get update &amp;&amp; apt-get install -y ...</span>
 
-# or
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update &amp;&amp; apt-get install -y ...
-</code></pre>
+<span class="c1"># or</span>
+<span class="s">ARG DEBIAN_FRONTEND=noninteractive</span>
+<span class="s">RUN apt-get update &amp;&amp; apt-get install -y ...</span>
+</code></pre></div></div>
 
 <h3 id="add"><a href="https://docs.docker.com/engine/reference/builder/#add">ADD</a></h3>
 
 <p>Две формы:</p>
 
-<pre><code class="language-Dockerfile">ADD [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;
-ADD [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ADD [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;</span>
+<span class="s">ADD [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]</span>
+</code></pre></div></div>
 
 <p>Последняя форма требуется для путей, содержащих пробелы.</p>
 
@@ -404,21 +404,21 @@ ADD [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]
 
 <p>Пример для <code class="language-plaintext highlighter-rouge">&lt;WORKDIR&gt;/relativeDir/</code>:</p>
 
-<pre><code class="language-Dockerfile">ADD test.txt relativeDir/
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ADD test.txt relativeDir/</span>
+</code></pre></div></div>
 
 <p>Пример для <code class="language-plaintext highlighter-rouge">/absoluteDir/</code>:</p>
 
-<pre><code class="language-Dockerfile">ADD test.txt /absoluteDir/
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ADD test.txt /absoluteDir/</span>
+</code></pre></div></div>
 
 <p>Все новые файлы и каталоги создаются с UID и GID, равными 0, если только необязательный флаг <code class="language-plaintext highlighter-rouge">--chown</code> не указывает данное имя пользователя, имя группы или комбинацию UID/GID для запроса конкретного владельца добавленного контента.</p>
 
-<pre><code class="language-Dockerfile">ADD --chown=55:mygroup files* /somedir/
-ADD --chown=bin files* /somedir/
-ADD --chown=1 files* /somedir/
-ADD --chown=10:11 files* /somedir/
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ADD --chown=55:mygroup files* /somedir/</span>
+<span class="s">ADD --chown=bin files* /somedir/</span>
+<span class="s">ADD --chown=1 files* /somedir/</span>
+<span class="s">ADD --chown=10:11 files* /somedir/</span>
+</code></pre></div></div>
 
 <p>Правила для <code class="language-plaintext highlighter-rouge">ADD</code>:</p>
 
@@ -438,9 +438,9 @@ ADD --chown=10:11 files* /somedir/
 
 <p>Две формы</p>
 
-<pre><code class="language-Dockerfile">COPY [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;
-COPY [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">COPY [--chown=&lt;user&gt;:&lt;group&gt;] &lt;src&gt;... &lt;dest&gt;</span>
+<span class="s">COPY [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]</span>
+</code></pre></div></div>
 
 <p>Последняя форма требуется для путей, содержащих пробелы. <code class="language-plaintext highlighter-rouge">--chown</code> поддерживается только для Linux.</p>
 
@@ -465,12 +465,12 @@ COPY [--chown=&lt;user&gt;:&lt;group&gt;] ["&lt;src&gt;",... "&lt;dest&gt;"]
 
 <p>Две формы:</p>
 
-<pre><code class="language-Dockerfile"># exec
-ENTRYPOINT ["executable", "param1", "param2"]
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># exec</span>
+<span class="s">ENTRYPOINT ["executable", "param1", "param2"]</span>
 
-# shell
-ENTRYPOINT command param1 param2
-</code></pre>
+<span class="c1"># shell</span>
+<span class="s">ENTRYPOINT command param1 param2</span>
+</code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> позволяет настроить контейнер, который будет работать как исполняемый файл. Например, следующий код запускает nginx с содержимым по умолчанию, прослушивая порт 80:</p>
 
@@ -537,8 +537,8 @@ ENTRYPOINT command param1 param2
 
 <h3 id="volume"><a href="https://docs.docker.com/engine/reference/builder/#volume">VOLUME</a></h3>
 
-<pre><code class="language-Dockerfile">VOLUME ["/data"]
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">VOLUME ["/data"]</span>
+</code></pre></div></div>
 
 <p>Инструкция <code class="language-plaintext highlighter-rouge">VOLUME</code> создает точку монтирования с указанным именем и помечает ее как содержащую внешне смонтированные тома из собственного хоста или других контейнеров. Значение может быть массивом <code class="language-plaintext highlighter-rouge">JSON</code>, <code class="language-plaintext highlighter-rouge">VOLUME ["/var/log/"]</code> или простой строкой с несколькими аргументами, например <code class="language-plaintext highlighter-rouge">VOLUME /var/log</code> или <code class="language-plaintext highlighter-rouge">VOLUME /var/log /var/db</code>. <a href="https://docs.docker.com/storage/volumes/">Use volumes</a></p>
 
@@ -553,42 +553,536 @@ ENTRYPOINT command param1 param2
 
 <h3 id="user"><a href="https://docs.docker.com/engine/reference/builder/#user">USER</a></h3>
 
-<pre><code class="language-Dockerfile">USER &lt;user&gt;[:&lt;group&gt;]
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">USER &lt;user&gt;[:&lt;group&gt;]</span>
 
-# or
-USER &lt;UID&gt;[:&lt;GID&gt;]
-</code></pre>
+<span class="c1"># or</span>
+<span class="s">USER &lt;UID&gt;[:&lt;GID&gt;]</span>
+</code></pre></div></div>
 
 <p>Инструкция <code class="language-plaintext highlighter-rouge">USER</code> устанавливает имя пользователя (или UID) и, при необходимости, группу пользователей (или GID) для использования при запуске образа и для любых инструкций <code class="language-plaintext highlighter-rouge">RUN</code>, <code class="language-plaintext highlighter-rouge">CMD</code> и <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, которые следуют за ней в Dockerfile.</p>
 
 <h3 id="workdir"><a href="https://docs.docker.com/engine/reference/builder/#workdir">WORKDIR</a></h3>
 
-<pre><code class="language-Dockerfile">WORKDIR /path/to/workdir
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">WORKDIR /path/to/workdir</span>
+</code></pre></div></div>
 
 <p>Инструкция <code class="language-plaintext highlighter-rouge">WORKDIR</code> устанавливает рабочий каталог для любых инструкций <code class="language-plaintext highlighter-rouge">RUN</code>, <code class="language-plaintext highlighter-rouge">CMD</code>, <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, <code class="language-plaintext highlighter-rouge">COPY</code> и <code class="language-plaintext highlighter-rouge">ADD</code>, которые следуют за ней в Dockerfile. Если <code class="language-plaintext highlighter-rouge">WORKDIR</code> не существует, он будет создан, даже если он не используется ни в одной последующей инструкции Dockerfile.</p>
 
 <p>Инструкцию <code class="language-plaintext highlighter-rouge">WORKDIR</code> можно использовать несколько раз в Dockerfile. Если указан относительный путь, он будет относиться к пути предыдущей инструкции <code class="language-plaintext highlighter-rouge">WORKDIR</code>.</p>
 
-<pre><code class="language-Dockerfile">WORKDIR /a
-WORKDIR b
-WORKDIR c
-RUN pwd
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">WORKDIR /a</span>
+<span class="s">WORKDIR b</span>
+<span class="s">WORKDIR c</span>
+<span class="s">RUN pwd</span>
+</code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">WORKDIR</code> поддерживает переменные</p>
 
-<pre><code class="language-Dockerfile">ENV DIRPATH=/path
-WORKDIR $DIRPATH/$DIRNAME
-RUN pwd
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ENV DIRPATH=/path</span>
+<span class="s">WORKDIR $DIRPATH/$DIRNAME</span>
+<span class="s">RUN pwd</span>
+</code></pre></div></div>
 
 <p>Дефолтный <code class="language-plaintext highlighter-rouge">WORKDIR</code> - <code class="language-plaintext highlighter-rouge">/</code>. Поэтому, чтобы избежать непреднамеренных операций в неизвестных каталогах, лучше всего указать свой <code class="language-plaintext highlighter-rouge">WORKDIR</code> явно.</p>
+
+<h3 id="arg"><a href="https://docs.docker.com/engine/reference/builder/#arg">ARG</a></h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ARG &lt;name&gt;[=&lt;default value&gt;]</span>
+</code></pre></div></div>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">ARG</code> определяет переменную, которую пользователи могут передать во время сборки сборщику с помощью команды сборки docker, используя флаг <code class="language-plaintext highlighter-rouge">--build-arg &lt;имя_переменной&gt;=&lt;значение&gt;</code>. Если пользователь указывает аргумент сборки, который не был определен в Dockerfile, сборка выводит предупреждение. Не рекомендуется передавать секретные даныне через аргументы.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM busybox</span>
+<span class="s">ARG user1</span>
+<span class="s">ARG buildno</span>
+<span class="c1"># ...</span>
+</code></pre></div></div>
+
+<p>Можно присваивать дефолтные значения</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM busybox</span>
+<span class="s">ARG user1=someuser</span>
+<span class="s">ARG buildno=1</span>
+<span class="c1"># ...</span>
+</code></pre></div></div>
+
+<p>Определение переменной <code class="language-plaintext highlighter-rouge">ARG</code> вступает в силу из строки, в которой оно определено в Dockerfile, а не из-за использования аргумента в командной строке или где-либо еще. Инструкция <code class="language-plaintext highlighter-rouge">ARG</code> выходит из области видимости в конце этапа сборки, на котором она была определена. Чтобы использовать аргумент на нескольких этапах, каждый этап должен включать инструкцию <code class="language-plaintext highlighter-rouge">ARG</code>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM busybox</span>
+<span class="s">ARG SETTINGS</span>
+<span class="s">RUN ./run/setup $SETTINGS</span>
+
+<span class="s">FROM busybox</span>
+<span class="s">ARG SETTINGS</span>
+<span class="s">RUN ./run/other $SETTINGS</span>
+</code></pre></div></div>
+
+<p>Вы можете использовать инструкцию <code class="language-plaintext highlighter-rouge">ARG</code> или <code class="language-plaintext highlighter-rouge">ENV</code> для указания переменных, доступных для инструкции <code class="language-plaintext highlighter-rouge">RUN</code>. Переменные среды, определенные с помощью инструкции <code class="language-plaintext highlighter-rouge">ENV</code>, всегда переопределяют инструкцию <code class="language-plaintext highlighter-rouge">ARG</code> с тем же именем.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM ubuntu</span>
+<span class="s">ARG CONT_IMG_VER</span>
+<span class="s">ENV CONT_IMG_VER=v1.0.0</span> <span class="c1"># this used</span>
+<span class="s">RUN echo $CONT_IMG_VER</span>
+
+<span class="c1"># solution</span>
+<span class="s">FROM ubuntu</span>
+<span class="s">ARG CONT_IMG_VER</span>
+<span class="s">ENV CONT_IMG_VER=${CONT_IMG_VER:-v1.0.0}</span>
+<span class="s">RUN echo $CONT_IMG_VER</span>
+</code></pre></div></div>
+
+<p>В отличие от инструкции <code class="language-plaintext highlighter-rouge">ARG</code> значения <code class="language-plaintext highlighter-rouge">ENV</code> всегда сохраняются в собраном образе.</p>
+
+<p>В Docker есть набор предопределенных переменных <code class="language-plaintext highlighter-rouge">ARG</code>, которые можно использовать без соответствующей инструкции <code class="language-plaintext highlighter-rouge">ARG</code> в файле Dockerfile</p>
+
+<p><a href="https://docs.docker.com/engine/reference/builder/#predefined-args">Predefined ARGs</a>:</p>
+
+<ul>
+  <li>HTTP_PROXY</li>
+  <li>http_proxy</li>
+  <li>HTTPS_PROXY</li>
+  <li>https_proxy</li>
+  <li>FTP_PROXY</li>
+  <li>ftp_proxy</li>
+  <li>NO_PROXY</li>
+  <li>no_proxy</li>
+</ul>
+
+<p>Для buildkit бекенда доступны <a href="https://docs.docker.com/engine/reference/builder/#automatic-platform-args-in-the-global-scope">Automatic platform ARGs in the global scope</a></p>
+
+<p>Переменные <code class="language-plaintext highlighter-rouge">ARG</code> не сохраняются в собранном образе, как переменные <code class="language-plaintext highlighter-rouge">ENV</code>. Однако переменные <code class="language-plaintext highlighter-rouge">ARG</code> аналогичным образом влияют на кеш сборки. Если Dockerfile определяет переменную <code class="language-plaintext highlighter-rouge">ARG</code>, значение которой отличается от предыдущей сборки, то «промах кеша» происходит при ее первом использовании, а не при ее определении. В частности, все инструкции <code class="language-plaintext highlighter-rouge">RUN</code>, следующие за инструкцией <code class="language-plaintext highlighter-rouge">ARG</code>, неявно используют переменную A<code class="language-plaintext highlighter-rouge">RG</code> (как переменную среды), что может привести к промаху кэша. Все предопределенные переменные <code class="language-plaintext highlighter-rouge">ARG</code> освобождаются от кэширования, если в Dockerfile нет соответствующего оператора <code class="language-plaintext highlighter-rouge">ARG</code>. <a href="https://docs.docker.com/engine/reference/builder/#impact-on-build-caching">Подробнее</a></p>
+
+<h3 id="onbuild"><a href="https://docs.docker.com/engine/reference/builder/#onbuild">ONBUILD</a></h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ONBUILD &lt;INSTRUCTION&gt;</span>
+</code></pre></div></div>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">ONBUILD</code> добавляет к образу триггерную инструкцию, которая будет выполняться, когда образ будет использоваться в качестве основы для другой сборки. Триггер будет выполняться в контексте нижестоящей сборки, как если бы он был вставлен сразу после инструкции <code class="language-plaintext highlighter-rouge">FROM</code> в нижестоящем Dockerfile. Это полезно, если вы создаете образ, который будет использоваться в качестве основы для создания других образов, например, среды сборки приложения или демона, который можно настроить с помощью пользовательской конфигурации.</p>
+
+<h3 id="stopsignal"><a href="https://docs.docker.com/engine/reference/builder/#stopsignal">STOPSIGNAL</a></h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">STOPSIGNAL signal</span>
+</code></pre></div></div>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">STOPSIGNAL</code> устанавливает сигнал системного вызова, который будет отправлен контейнеру для выхода. Этот сигнал может быть именем сигнала в формате <code class="language-plaintext highlighter-rouge">SIG&lt;NAME&gt;</code>, например, <code class="language-plaintext highlighter-rouge">SIGKILL</code>, или числом без знака, которое соответствует положению в таблице системных вызовов ядра, например 9. По умолчанию используется значение <code class="language-plaintext highlighter-rouge">SIGTERM</code>, если оно не определено.</p>
+
+<p>Сигнал остановки образа по умолчанию может быть переопределен для каждого контейнера с помощью флага <code class="language-plaintext highlighter-rouge">--stop-signal</code> при запуске и создании докера.</p>
+
+<h3 id="healthcheck"><a href="https://docs.docker.com/engine/reference/builder/#healthcheck">HEALTHCHECK</a></h3>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">HEALTHCHECK</code> сообщает Docker, как протестировать контейнер, чтобы убедиться, что он все еще работает. Это может обнаружить такие случаи, как веб-сервер, который застрял в бесконечном цикле и не может обрабатывать новые подключения, даже если серверный процесс все еще работает.</p>
+
+<p>Два формата:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">HEALTHCHECK [OPTIONS] CMD command</code> (проверить работоспособность контейнера, выполнив команду внутри контейнера)</li>
+  <li><code class="language-plaintext highlighter-rouge">HEALTHCHECK NONE</code> (отключить любую проверку работоспособности, унаследованную от базового образа)</li>
+</ul>
+
+<h3 id="shell"><a href="https://docs.docker.com/engine/reference/builder/#shell">SHELL</a></h3>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">SHELL</code> позволяет переопределить оболочку по умолчанию, используемую для формы оболочки команд.</p>
+
+<h2 id="dockerfile-best-practices"><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile best practices</a></h2>
+
+<h3 id="create-ephemeral-containers">Create ephemeral containers</h3>
+
+<p>Образ, определенный вашим Dockerfile, должен генерировать как можно более эфемерные контейнеры. Под «эфемерным» мы подразумеваем, что контейнер можно остановить и уничтожить, а затем перестроить и заменить с абсолютно минимальной настройкой и конфигурацией. См. раздел «<a href="https://12factor.net/processes">Процессы</a>»</p>
+
+<h3 id="understand-build-context">Understand build context</h3>
+
+<p>Когда вы запускаете команду сборки docker, текущий рабочий каталог становится контекстом сборки. По умолчанию предполагается, что Dockerfile находится здесь, но вы можете указать другое местоположение с помощью флага файла (-f). Независимо от того, где на самом деле находится Dockerfile, все рекурсивное содержимое файлов и каталогов в текущем каталоге отправляется демону Docker в качестве контекста сборки.</p>
+
+<p>Непреднамеренное включение файлов, которые не нужны для построения образа, приводит к большему контексту сборки и большему размеру образа. Это может увеличить время создания образа, время его извлечения и отправки, а также размер среды выполнения контейнера.</p>
+
+<h3 id="pipe-dockerfile-through-stdin">Pipe Dockerfile through stdin</h3>
+
+<p>Docker может создавать образы, передавая Dockerfile через стандартный ввод с локальным или удаленным контекстом сборки. Передача файла Dockerfile через стандартный ввод может быть полезна для выполнения одноразовых сборок без записи файла Dockerfile на диск или в ситуациях, когда файл Dockerfile создается и не должен сохраняться впоследствии.</p>
+
+<h3 id="build-an-image-using-a-dockerfile-from-stdin-without-sending-build-context">Build an image using a Dockerfile from stdin, without sending build context</h3>
+
+<h3 id="build-from-a-local-build-context-using-a-dockerfile-from-stdin">Build from a local build context, using a Dockerfile from stdin</h3>
+
+<h3 id="build-from-a-remote-build-context-using-a-dockerfile-from-stdin">Build from a remote build context, using a Dockerfile from stdin</h3>
+
+<h3 id="exclude-with-dockerignore">Exclude with .dockerignore</h3>
+
+<p>Чтобы исключить файлы, не относящиеся к сборке (без реструктуризации исходного репозитория), используйте файл <code class="language-plaintext highlighter-rouge">.dockerignore</code>. Этот файл поддерживает шаблоны исключения, аналогичные файлам <code class="language-plaintext highlighter-rouge">.gitignore</code>.</p>
+
+<h3 id="use-multi-stage-builds"><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#use-multi-stage-builds">Use multi-stage builds</a></h3>
+
+<p><a href="https://docs.docker.com/develop/develop-images/multistage-build/">Многоэтапные сборки</a> позволяют значительно уменьшить размер конечного изображения, не пытаясь уменьшить количество промежуточных слоев и файлов.</p>
+
+<p>Поскольку образ создается на заключительном этапе процесса сборки, вы можете свести к минимуму количество слоев изображения, используя кэш сборки.</p>
+
+<p>Например, если ваша сборка содержит несколько слоев, вы можете упорядочить их от менее часто изменяемых (чтобы обеспечить возможность повторного использования кэша сборки) к более часто изменяемым:</p>
+
+<ul>
+  <li>Установите инструменты, необходимые для создания вашего приложения</li>
+  <li>Установите или обновите зависимости библиотеки</li>
+  <li>Создайте свое приложение</li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># syntax=docker/dockerfile:1</span>
+<span class="s">FROM golang:1.16-alpine AS build</span>
+
+<span class="c1"># Install tools required for project</span>
+<span class="c1"># Run `docker build --no-cache .` to update dependencies</span>
+<span class="s">RUN apk add --no-cache git</span>
+<span class="s">RUN go get github.com/golang/dep/cmd/dep</span>
+
+<span class="c1"># List project dependencies with Gopkg.toml and Gopkg.lock</span>
+<span class="c1"># These layers are only re-built when Gopkg files are updated</span>
+<span class="s">COPY Gopkg.lock Gopkg.toml /go/src/project/</span>
+<span class="s">WORKDIR /go/src/project/</span>
+<span class="c1"># Install library dependencies</span>
+<span class="s">RUN dep ensure -vendor-only</span>
+
+<span class="c1"># Copy the entire project and build it</span>
+<span class="c1"># This layer is rebuilt when a file changes in the project directory</span>
+<span class="s">COPY . /go/src/project/</span>
+<span class="s">RUN go build -o /bin/project</span>
+
+<span class="c1"># This results in a single layer image</span>
+<span class="s">FROM scratch</span>
+<span class="s">COPY --from=build /bin/project /bin/project</span>
+<span class="s">ENTRYPOINT ["/bin/project"]</span>
+<span class="s">CMD ["--help"]</span>
+</code></pre></div></div>
+
+<p>Одна из самых сложных вещей при создании образов — это уменьшение их размера. Каждая инструкция в Dockerfile добавляет слой к образу, и вам нужно не забыть убрать все ненужные артефакты, прежде чем переходить к следующему слою. Чтобы написать действительно эффективный файл Dockerfile, вам традиционно приходилось использовать приемы оболочки и другую логику, чтобы сделать слои как можно меньше и гарантировать, что каждый слой имеет нужные ему артефакты из предыдущего слоя и ничего больше.</p>
+
+<p>На самом деле было очень распространено иметь один файл Dockerfile для разработки (который содержал все необходимое для создания вашего приложения) и урезанный файл для использования в производстве, который содержал только ваше приложение и именно то, что было необходимо для его запуска. Это называется «шаблон строителя». Поддерживать два файла Dockerfile не идеально.</p>
+
+<p>Такой искусственный подход показан тут - команда <code class="language-plaintext highlighter-rouge">RUN</code> сжата с помощью <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> что делает ее подверженной ошибкам</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># syntax=docker/dockerfile:1</span>
+<span class="s">FROM golang:1.16</span>
+<span class="s">WORKDIR /go/src/github.com/alexellis/href-counter/</span>
+<span class="s">COPY app.go ./</span>
+<span class="s">RUN go get -d -v golang.org/x/net/html \</span>
+  <span class="s">&amp;&amp; CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span>
+</code></pre></div></div>
+
+<p>При многоэтапных сборках используйте несколько операторов <code class="language-plaintext highlighter-rouge">FROM</code> в файле Dockerfile. Каждая инструкция <code class="language-plaintext highlighter-rouge">FROM</code> может использовать разные базы, и каждая из них начинает новый этап сборки. Вы можете выборочно копировать артефакты с одного этапа на другой, убирая из финального изображении все, что вам не нужно.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># syntax=docker/dockerfile:1</span>
+<span class="s">FROM golang:1.16</span>
+<span class="s">WORKDIR /go/src/github.com/alexellis/href-counter/</span>
+<span class="s">RUN go get -d -v golang.org/x/net/html</span>
+<span class="s">COPY app.go ./</span>
+<span class="s">RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span>
+
+<span class="s">FROM alpine:latest</span>
+<span class="s">RUN apk --no-cache add ca-certificates</span>
+<span class="s">WORKDIR /root/</span>
+<span class="s">COPY --from=0 /go/src/github.com/alexellis/href-counter/app ./</span>
+<span class="s">CMD ["./app"]</span>
+</code></pre></div></div>
+
+<p>Теперь нужен только один Dockerfile, не нужно разделять build-скрипты.</p>
+
+<p>Конечным результатом является то же крошечное производственное изображение, что и раньше, со значительным снижением сложности. Вам не нужно создавать какие-либо промежуточные образы и вообще не нужно извлекать какие-либо артефакты в вашу локальную систему.</p>
+
+<p>Как это работает? Вторая инструкция FROM запускает новую стадию сборки с образцом <code class="language-plaintext highlighter-rouge">alpine:latest</code> в качестве основы. Строка <code class="language-plaintext highlighter-rouge">COPY --from=0</code> копирует только созданный артефакт из предыдущего этапа в этот новый этап. Go SDK и любые промежуточные артефакты остаются позади и не сохраняются в конечном образе.</p>
+
+<p>Хорошей практикой является создание именванных build-этапов</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># syntax=docker/dockerfile:1</span>
+<span class="s">FROM golang:1.16 AS builder</span>
+<span class="s">WORKDIR /go/src/github.com/alexellis/href-counter/</span>
+<span class="s">RUN go get -d -v golang.org/x/net/html</span>
+<span class="s">COPY app.go    ./</span>
+<span class="s">RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .</span>
+
+<span class="s">FROM alpine:latest</span>
+<span class="s">RUN apk --no-cache add ca-certificates</span>
+<span class="s">WORKDIR /root/</span>
+<span class="s">COPY --from=builder /go/src/github.com/alexellis/href-counter/app ./</span>
+<span class="s">CMD ["./app"]</span>
+</code></pre></div></div>
+
+<p>Кроме того, можно останавливаться на специфическом этапе сборки</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">--target</span> builder <span class="nt">-t</span> alexellis2/href-counter:latest <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Это открывает путь к следующим опциям:</p>
+
+<ul>
+  <li>Отладка определенного этапа сборки</li>
+  <li>Использование этапа отладки со всеми включенными символами или инструментами отладки, а также этапа “бережливой” стадии сборки.</li>
+  <li>Использование этапа тестирования, на котором ваше приложение заполняется тестовыми данными, но сборка для производства производится с использованием другого этапа, который использует реальные данные.</li>
+</ul>
+
+<p>Использование внешнего образа в качесвте stage. При использовании многоэтапных сборок вы не ограничены копированием стадий, созданных ранее в вашем Dockerfile. Вы можете использовать инструкцию <code class="language-plaintext highlighter-rouge">COPY --from</code> для копирования из отдельного образа, используя имя локального образа, тег, доступный локально или в реестре Docker, или идентификатор тега. Клиент Docker при необходимости извлекает образ и копирует оттуда артефакт.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf</span>
+</code></pre></div></div>
+
+<p>Наконец, предыдущзий этап можно использовать в качестве следующего</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># syntax=docker/dockerfile:1</span>
+<span class="s">FROM alpine:latest AS builder</span>
+<span class="s">RUN apk --no-cache add build-base</span>
+
+<span class="s">FROM builder AS build1</span>
+<span class="s">COPY source1.cpp source.cpp</span>
+<span class="s">RUN g++ -o /binary source.cpp</span>
+
+<span class="s">FROM builder AS build2</span>
+<span class="s">COPY source2.cpp source.cpp</span>
+<span class="s">RUN g++ -o /binary source.cpp</span>
+</code></pre></div></div>
+
+<h3 id="dont-install-unnecessary-packages">Don’t install unnecessary packages</h3>
+
+<p>Чтобы уменьшить сложность, количество зависимостей, размеры файлов и время сборки, избегайте установки дополнительных или ненужных пакетов только потому, что они могут быть «приятными». Например, вам не нужно включать текстовый редактор в образ базы данных.</p>
+
+<h3 id="decouple-applications">Decouple applications</h3>
+
+<p>В каждом контейнере должна выполняться только одна задача. Разделение приложений на несколько контейнеров упрощает горизонтальное масштабирование и повторное использование контейнеров. Например, стек веб-приложений может состоять из трех отдельных контейнеров, каждый со своим уникальным изображением, для управления веб-приложением, базой данных и кэшем в памяти несвязанным образом.</p>
+
+<p>Ограничение каждого контейнера одним процессом — хорошее эмпирическое правило, но это не жесткое правило. Например, не только контейнеры могут быть порождены процессом инициализации, некоторые программы могут порождать дополнительные процессы по собственному желанию. Например, Celery может порождать несколько рабочих процессов, а Apache может создавать по одному процессу на каждый запрос.</p>
+
+<p>Применяйте здравый смысл, чтобы контейнеры были как можно более чистыми и модульными. Если контейнеры зависят друг от друга, вы можете использовать сети контейнеров Docker, чтобы убедиться, что эти контейнеры могут взаимодействовать.</p>
+
+<h3 id="minimize-the-number-of-layers">Minimize the number of layers</h3>
+
+<p>В более старых версиях Docker было важно свести к минимуму количество слоев в ваших образах, чтобы обеспечить их производительность. Следующие функции были добавлены, чтобы уменьшить это ограничение:</p>
+
+<ul>
+  <li>Только инструкции <code class="language-plaintext highlighter-rouge">RUN</code>, <code class="language-plaintext highlighter-rouge">COPY</code>, <code class="language-plaintext highlighter-rouge">ADD</code> создают слои. Другие инструкции создают временные промежуточные образы и не увеличивают размер сборки.</li>
+  <li>По возможности используйте многоэтапные сборки и копируйте в окончательный образ только те артефакты, которые вам нужны. Это позволяет включать инструменты и информацию об отладке на промежуточных этапах сборки без увеличения размера конечного образа.</li>
+</ul>
+
+<h3 id="sort-multi-line-arguments">Sort multi-line arguments</h3>
+
+<p>По возможности упрощайте последующие изменения, сортируя многострочные аргументы в алфавитно-цифровом порядке. Это помогает избежать дублирования пакетов и упрощает обновление списка. Также помогает добавление пробела перед обратной косой чертой <code class="language-plaintext highlighter-rouge">\</code>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">RUN</span>
+<span class="s">apt-get update &amp;&amp; apt-get install -y \</span>
+  <span class="s">bzr \</span>
+  <span class="s">cvs \</span>
+  <span class="s">git \</span>
+  <span class="s">mercurial \</span>
+  <span class="s">subversion \</span>
+  <span class="s">&amp;&amp; rm -rf /var/lib/apt/lists/*</span>
+</code></pre></div></div>
+
+<h3 id="leverage-build-cache">Leverage build cache</h3>
+
+<p>При создании образа Docker выполняет инструкции в вашем Dockerfile, выполняя каждую в указанном порядке. По мере проверки каждой инструкции Docker ищет существующий образ в своем кеше, который он может повторно использовать, а не создает новый (дубликат) образ.</p>
+
+<p>Если вы вообще не хотите использовать кеш, вы можете использовать параметр -<code class="language-plaintext highlighter-rouge">-no-cache=true</code> в команде сборки docker. Однако, если вы разрешаете Docker использовать свой кеш, важно понимать, когда он может и не может найти подходящее изображение. Основные правила, которым следует Docker, изложены ниже:</p>
+
+<ul>
+  <li>Начиная с родительского образа, который уже находится в кэше, следующая инструкция сравнивается со всеми дочерними образами, полученными из этого базового образа, чтобы определить, был ли один из них создан с использованием той же самой инструкции. В противном случае кеш становится недействительным.</li>
+  <li>В большинстве случаев достаточно просто сравнить инструкцию в Dockerfile с одним из дочерних образов. Однако некоторые инструкции требуют дополнительного изучения и пояснений.</li>
+  <li>Для инструкций <code class="language-plaintext highlighter-rouge">ADD</code> и <code class="language-plaintext highlighter-rouge">COPY</code> проверяется содержимое файла(ов) в образе и для каждого файла вычисляется контрольная сумма. В этих контрольных суммах время последнего изменения и последнего доступа к файлу (файлам) не учитывается. Во время поиска в кэше контрольная сумма сравнивается с контрольной суммой в существующих образах. Если что-то изменилось в файле (файлах), например, содержимое и метаданные, кэш становится недействительным.</li>
+  <li>Помимо команд <code class="language-plaintext highlighter-rouge">ADD</code> и <code class="language-plaintext highlighter-rouge">COPY</code>, проверка кеша не просматривает файлы в контейнере, чтобы определить совпадение с кешем. Например, при обработке команды <code class="language-plaintext highlighter-rouge">RUN apt-get -y update</code> файлы, обновленные в контейнере, не проверяются на наличие попадания в кэш. В этом случае для поиска соответствия используется только сама командная строка.</li>
+  <li><strong>Как только кеш становится недействительным, все последующие команды Dockerfile генерируют новые изображения, а кеш не используется</strong>.</li>
+</ul>
+
+<h3 id="dockerfile-instructions">Dockerfile instructions</h3>
+
+<h4 id="from-1">FROM</h4>
+
+<p>По возможности используйте текущие официальные изображения в качестве основы для ваших изображений. Мы рекомендуем образ Alpine, так как он строго контролируется и имеет небольшой размер (в настоящее время менее 6 МБ), но при этом является полноценным дистрибутивом Linux.</p>
+
+<h4 id="label-1">LABEL</h4>
+
+<p><a href="https://docs.docker.com/config/labels-custom-metadata/">Docker object labels</a></p>
+
+<p>Вы можете добавить метки к своему изображению, чтобы упорядочить изображения по проектам, записать информацию о лицензии, упростить автоматизацию или по другим причинам. Для каждой метки добавьте строку, начинающуюся с <code class="language-plaintext highlighter-rouge">LABEL</code> и с одной или несколькими парами ключ-значение.</p>
+
+<p>Начиная с Docker 1.10 рекомендуется комбинировать всю информацию в одну метку</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Set multiple labels on one line</span>
+<span class="s">LABEL com.example.version="0.0.1-beta" com.example.release-date="2015-02-12"</span>
+
+<span class="c1"># or</span>
+<span class="c1"># Set multiple labels at once, using line-continuation characters to break long lines</span>
+<span class="s">LABEL vendor=ACME\ Incorporated \</span>
+      <span class="s">com.example.is-beta= \</span>
+      <span class="s">com.example.is-production="" \</span>
+      <span class="s">com.example.version="0.0.1-beta" \</span>
+      <span class="s">com.example.release-date="2015-02-12"</span>
+</code></pre></div></div>
+
+<h4 id="run-1">RUN</h4>
+
+<p>Разделите длинные или сложные операторы <code class="language-plaintext highlighter-rouge">RUN</code> на несколько строк, разделенных обратными косыми чертами, чтобы сделать ваш файл Dockerfile более читабельным, понятным и удобным в сопровождении.</p>
+
+<h4 id="apt-get">apt-get</h4>
+
+<p>Вероятно, наиболее распространенным вариантом использования <code class="language-plaintext highlighter-rouge">RUN</code> является <code class="language-plaintext highlighter-rouge">apt-get</code>. Поскольку он устанавливает пакеты, у команды <code class="language-plaintext highlighter-rouge">RUN apt-get</code> есть несколько ошибок, на которые следует обратить внимание.</p>
+
+<p>Всегда комбинируйте <code class="language-plaintext highlighter-rouge">RUN apt-get update</code> с <code class="language-plaintext highlighter-rouge">apt-get install</code> в одном операторе <code class="language-plaintext highlighter-rouge">RUN</code>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">RUN apt-get update &amp;&amp; apt-get install -y \</span>
+    <span class="s">package-bar \</span>
+    <span class="s">package-baz \</span>
+    <span class="s">package-foo  \</span>
+    <span class="s">&amp;&amp; rm -rf /var/lib/apt/lists/*</span>
+</code></pre></div></div>
+
+<p>Использование только <code class="language-plaintext highlighter-rouge">apt-get update</code> в операторе RUN вызывает проблемы с кэшированием, и последующие инструкции по установке <code class="language-plaintext highlighter-rouge">apt-get</code> не выполняются. Использование <code class="language-plaintext highlighter-rouge">RUN apt-get update &amp;&amp; apt-get install -y</code> гарантирует, что ваш файл Dockerfile установит последние версии пакетов без дальнейшего кодирования или ручного вмешательства.</p>
+
+<p>Закрепление версии заставляет сборку извлекать конкретную версию независимо от того, что находится в кеше. Этот метод также может уменьшить количество сбоев из-за непредвиденных изменений в необходимых пакетах.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">RUN apt-get update &amp;&amp; apt-get install -y \</span>
+    <span class="s">aufs-tools \</span>
+    <span class="s">automake \</span>
+    <span class="s">build-essential \</span>
+    <span class="s">curl \</span>
+    <span class="s">dpkg-sig \</span>
+    <span class="s">libcap-dev \</span>
+    <span class="s">libsqlite3-dev \</span>
+    <span class="s">mercurial \</span>
+    <span class="s">reprepro \</span>
+    <span class="s">ruby1.9.1 \</span>
+    <span class="s">ruby1.9.1-dev \</span>
+    <span class="s">s3cmd=1.1.* \</span>
+ <span class="s">&amp;&amp; rm -rf /var/lib/apt/lists/*</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">rm -rf /var/lib/apt/lists/*</code> это уменьшает размер изображения, поскольку кеш <code class="language-plaintext highlighter-rouge">apt</code> не хранится в слое. Поскольку инструкция <code class="language-plaintext highlighter-rouge">RUN</code> начинается с обновления <code class="language-plaintext highlighter-rouge">apt-get</code>, кэш пакетов всегда обновляется перед установкой <code class="language-plaintext highlighter-rouge">apt-get</code>. Официальные образы Debian и Ubuntu автоматически запускают <code class="language-plaintext highlighter-rouge">apt-get clean</code>, поэтому явный вызов не требуется.</p>
+
+<h4 id="using-pipes">Using pipes</h4>
+
+<p>Некоторые команды <code class="language-plaintext highlighter-rouge">RUN</code> зависят от возможности передавать вывод одной команды в другую с помощью символа вертикальной черты <code class="language-plaintext highlighter-rouge">|</code></p>
+
+<p>Docker выполняет эти команды с помощью интерпретатора <code class="language-plaintext highlighter-rouge">/bin/sh -c</code>, который оценивает только код выхода последней операции в канале, чтобы определить успех.</p>
+
+<p>Если вы хотите, чтобы команда завершилась ошибкой из-за ошибки на любом этапе конвейера, добавьте <code class="language-plaintext highlighter-rouge">set -o pipefail &amp;&amp;</code>, чтобы гарантировать, что непредвиденная ошибка предотвратит непреднамеренное успешное выполнение сборки.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># no pipe</span>
+<span class="s">RUN wget -O - https://some.site | wc -l &gt; /number</span>
+
+<span class="c1"># pipe</span>
+<span class="s">RUN set -o pipefail &amp;&amp; wget -O - https://some.site | wc -l &gt; /number</span>
+</code></pre></div></div>
+
+<h4 id="cmd-1">CMD</h4>
+
+<p>Инструкцию <code class="language-plaintext highlighter-rouge">CMD</code> следует использовать для запуска программного обеспечения, содержащегося в вашем образе, вместе с любыми аргументами. <code class="language-plaintext highlighter-rouge">CMD</code> почти всегда следует использовать в форме <code class="language-plaintext highlighter-rouge">CMD ["исполняемый", "param1", "param2"…]</code>. Таким образом, если образ предназначен для службы, такой как Apache и Rails, вы должны запустить что-то вроде <code class="language-plaintext highlighter-rouge">CMD ["apache2","-DFOREGROUND"]</code>. Действительно, такая форма инструкции рекомендуется для любого сервисного образа.</p>
+
+<p>В большинстве других случаев CMD должна иметь интерактивную оболочку, такую как bash, python и perl. Например, <code class="language-plaintext highlighter-rouge">CMD ["perl", "-de0"]</code>, <code class="language-plaintext highlighter-rouge">CMD ["python"]</code> или <code class="language-plaintext highlighter-rouge">CMD ["php", "-a"]</code>. Использование этой формы означает, что когда вы выполняете что-то вроде docker <code class="language-plaintext highlighter-rouge">run -it python</code>, вы попадаете в пригодную для использования оболочку, готовую к работе. CMD редко следует использовать в манере <code class="language-plaintext highlighter-rouge">CMD ["param", "param"]</code> в сочетании с <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>, если только вы и ваши предполагаемые пользователи уже не знакомы с тем, как работает <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code>.</p>
+
+<h4 id="expose-1">EXPOSE</h4>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">EXPOSE</code> указывает порты, на которых контейнер прослушивает соединения. Следовательно, вы должны использовать общий, традиционный порт для вашего приложения. Например, изображение, содержащее веб-сервер Apache, будет использовать <code class="language-plaintext highlighter-rouge">EXPOSE 80</code>, а изображение, содержащее MongoDB, будет использовать <code class="language-plaintext highlighter-rouge">EXPOSE 27017</code> и так далее.</p>
+
+<p>Для внешнего доступа ваши пользователи могут выполнить <code class="language-plaintext highlighter-rouge">docker run</code> с флагом, указывающим, как сопоставить указанный порт с портом по своему выбору. Для связывания контейнеров Docker предоставляет переменные среды для пути от контейнера-получателя обратно к источнику.</p>
+
+<h4 id="env-1">ENV</h4>
+
+<p>Чтобы упростить запуск нового программного обеспечения, вы можете использовать <code class="language-plaintext highlighter-rouge">ENV</code> для обновления переменной среды <code class="language-plaintext highlighter-rouge">PATH</code> для программного обеспечения, которое устанавливает ваш контейнер. Например, <code class="language-plaintext highlighter-rouge">ENV PATH=/usr/local/nginx/bin:$PATH</code> гарантирует, что <code class="language-plaintext highlighter-rouge">CMD ["nginx"]</code> просто работает.</p>
+
+<p>Инструкция <code class="language-plaintext highlighter-rouge">ENV</code> также полезна для предоставления необходимых переменных среды, специфичных для служб, которые вы хотите контейнеризовать, таких как <code class="language-plaintext highlighter-rouge">PGDATA Postgres</code>.</p>
+
+<p>Наконец, <code class="language-plaintext highlighter-rouge">ENV</code> также можно использовать для установки часто используемых номеров версий, чтобы упростить поддержку обновлений версий, как показано в следующем примере:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ENV PG_MAJOR=9.3</span>
+<span class="s">ENV PG_VERSION=9.3.4</span>
+<span class="s">RUN curl -SL https://example.com/postgres-$PG_VERSION.tar.xz | tar -xJC /usr/src/postgres &amp;&amp; …</span>
+<span class="s">ENV PATH=/usr/local/postgres-$PG_MAJOR/bin:$PATH</span>
+</code></pre></div></div>
+
+<p>Подобно постоянным переменным в программе (в отличие от жестко заданных значений), этот подход позволяет вам изменить одну инструкцию <code class="language-plaintext highlighter-rouge">ENV</code> для автоматического повышения версии программного обеспечения в вашем контейнере.</p>
+
+<p>Каждая строка <code class="language-plaintext highlighter-rouge">ENV</code> создает новый промежуточный уровень, как команды <code class="language-plaintext highlighter-rouge">RUN</code>. Это означает, что даже если вы сбросите переменную среды в будущем слое, она все равно сохранится в этом слое, и ее значение может быть сброшено. Чтобы предотвратить это и действительно сбросить переменную среды, используйте команду <code class="language-plaintext highlighter-rouge">RUN</code> с командами оболочки, чтобы устанавливать, использовать и сбрасывать переменную на одном уровне</p>
+
+<h4 id="add-or-copy">ADD or COPY</h4>
+
+<p>Хотя <code class="language-plaintext highlighter-rouge">ADD</code> и <code class="language-plaintext highlighter-rouge">COPY</code> функционально схожи, обычно предпочтение отдается <code class="language-plaintext highlighter-rouge">COPY</code>. Это потому, что он более прозрачен, чем <code class="language-plaintext highlighter-rouge">ADD</code>. <code class="language-plaintext highlighter-rouge">COPY</code> поддерживает только базовое копирование локальных файлов в контейнер, в то время как <code class="language-plaintext highlighter-rouge">ADD</code> имеет некоторые функции (например, локальное извлечение tar и удаленную поддержку URL), которые не сразу очевидны. Следовательно, лучшим применением для <code class="language-plaintext highlighter-rouge">ADD</code> является автоматическое извлечение локального tar-файла в образ.</p>
+
+<p>Если у вас есть несколько шагов Dockerfile, которые используют разные файлы из вашего контекста, копируйте их по отдельности, а не все сразу. Это гарантирует, что кеш сборки каждого шага становится недействительным (вынуждая повторный запуск шага) только в случае изменения специально необходимых файлов.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">COPY requirements.txt /tmp/</span>
+<span class="s">RUN pip install --requirement /tmp/requirements.txt</span>
+<span class="s">COPY . /tmp/</span>
+</code></pre></div></div>
+
+<p>В примере выше это приводит к меньшему количеству инвалидаций кеша для шага <code class="language-plaintext highlighter-rouge">RUN</code>, чем если бы вы поместили  COPY . /tmp/` перед ним.</p>
+
+<p>Поскольку размер изображения имеет значение, использование <code class="language-plaintext highlighter-rouge">ADD</code> для получения пакетов с удаленных URL-адресов настоятельно не рекомендуется; вместо этого вы должны использовать <code class="language-plaintext highlighter-rouge">curl</code> или <code class="language-plaintext highlighter-rouge">wget</code>. Таким образом, вы можете удалить файлы, которые вам больше не нужны, после того, как они были извлечены, и вам не нужно добавлять еще один слой в ваше изображение. Например, вам следует избегать таких действий, как:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># wrong</span>
+<span class="s">ADD https://example.com/big.tar.xz /usr/src/things/</span>
+<span class="s">RUN tar -xJf /usr/src/things/big.tar.xz -C /usr/src/things</span>
+<span class="s">RUN make -C /usr/src/things all</span>
+
+<span class="c1"># right</span>
+<span class="s">RUN mkdir -p /usr/src/things \</span>
+    <span class="s">&amp;&amp; curl -SL https://example.com/big.tar.xz \</span>
+    <span class="s">| tar -xJC /usr/src/things \</span>
+    <span class="s">&amp;&amp; make -C /usr/src/things all</span>
+</code></pre></div></div>
+
+<h4 id="entrypoint-1">ENTRYPOINT</h4>
+
+<p>Лучшее использование для <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> — установить основную команду образа, позволяя этому образу запускаться, как если бы это была эта команда (и затем использовать <code class="language-plaintext highlighter-rouge">CMD</code> в качестве флагов по умолчанию).</p>
+
+<p>Инструкцию <code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> также можно использовать в сочетании со вспомогательным сценарием, что позволяет ей работать даже если для запуска инструмента может потребоваться более одного шага.</p>
+
+<p>Пример:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">=</span> <span class="s1">'postgres'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">chown</span> <span class="nt">-R</span> postgres <span class="s2">"</span><span class="nv">$PGDATA</span><span class="s2">"</span>
+
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-z</span> <span class="s2">"</span><span class="si">$(</span><span class="nb">ls</span> <span class="nt">-A</span> <span class="s2">"</span><span class="nv">$PGDATA</span><span class="s2">"</span><span class="si">)</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span>gosu postgres initdb
+    <span class="k">fi
+
+    </span><span class="nb">exec </span>gosu postgres <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+<span class="k">fi
+
+</span><span class="nb">exec</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">COPY ./docker-entrypoint.sh /</span>
+<span class="s">ENTRYPOINT ["/docker-entrypoint.sh"]</span>
+<span class="s">CMD ["postgres"]</span>
+</code></pre></div></div>
+
+<h4 id="volume-1">VOLUME</h4>
+
+<p>Инструкцию <code class="language-plaintext highlighter-rouge">VOLUME</code> следует использовать для предоставления доступа к любой области хранения базы данных, хранилищу конфигурации или файлам/папкам, созданным вашим док-контейнером. Настоятельно рекомендуется использовать <code class="language-plaintext highlighter-rouge">VOLUME</code> для любых изменяемых и/или обслуживаемых пользователем частей образа.</p>
+
+<h4 id="user-1">USER</h4>
+
+<p>Если служба может работать без привилегий, используйте <code class="language-plaintext highlighter-rouge">USER</code>, чтобы изменить пользователя без полномочий root. Избегайте установки или использования <code class="language-plaintext highlighter-rouge">sudo</code>, так как он имеет непредсказуемое поведение TTY и переадресации сигналов, что может вызвать проблемы. Если вам абсолютно необходима функциональность, аналогичная <code class="language-plaintext highlighter-rouge">sudo</code>, например инициализация демона с правами root, но запуск его без полномочий root, рассмотрите возможность использования «gosu».</p>
+
+<p>Наконец, чтобы уменьшить уровни и сложность, избегайте частого переключения <code class="language-plaintext highlighter-rouge">USER</code> туда и обратно.</p>
+
+<h4 id="workdir-1">WORKDIR</h4>
+
+<p>Для ясности и надежности вы всегда должны использовать абсолютные пути для вашего <code class="language-plaintext highlighter-rouge">WORKDIR</code>. Кроме того, вы должны использовать <code class="language-plaintext highlighter-rouge">WORKDIR</code> вместо множащихся инструкций, таких как <code class="language-plaintext highlighter-rouge">RUN cd … &amp;&amp; do-something</code>, которые трудно читать, устранять неполадки и поддерживать.</p>
+
+<h4 id="onbuild-1">ONBUILD</h4>
+
+<p>Команда <code class="language-plaintext highlighter-rouge">ONBUILD</code> выполняется после завершения текущей сборки Dockerfile. <code class="language-plaintext highlighter-rouge">ONBUILD</code> выполняется в любом дочернем образе, производном от текущего образа. Воспринимайте команду <code class="language-plaintext highlighter-rouge">ONBUILD</code> как инструкцию, которую родительский файл Dockerfile дает дочернему файлу Dockerfile.</p>
+
+<p>Сборка Docker выполняет команды <code class="language-plaintext highlighter-rouge">ONBUILD</code> перед любой командой в дочернем файле Docker.</p>
+
+<p><code class="language-plaintext highlighter-rouge">ONBUILD</code> полезен для образов, которые собираются ИЗ заданного образа. Например, вы могли бы использовать <code class="language-plaintext highlighter-rouge">ONBUILD</code> для образа языкового стека, который создает произвольное пользовательское программное обеспечение, написанное на этом языке.</p>
+
+<p>Образы, созданные с помощью <code class="language-plaintext highlighter-rouge">ONBUILD</code>, должны иметь отдельный тег, например: <code class="language-plaintext highlighter-rouge">ruby:1.9-onbuild</code> или <code class="language-plaintext highlighter-rouge">ruby:2.0-onbuild</code>.</p>
+
+<p>Будьте осторожны, добавляя <code class="language-plaintext highlighter-rouge">ADD</code> или <code class="language-plaintext highlighter-rouge">COPY</code> в <code class="language-plaintext highlighter-rouge">ONBUILD</code>. Образ «onbuild» приводит к катастрофическому сбою, если в контексте новой сборки отсутствует добавляемый ресурс. Добавление отдельного тега, как рекомендовано выше, помогает смягчить это, позволяя автору Dockerfile сделать выбор.</p>
 
 <p>Смотри еще:</p>
 
 <ul>
   <li><a href="https://docs.docker.com/engine/reference/builder/">dockerfile references</a></li>
+  <li><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Best practices for writing Dockerfiles</a></li>
   <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
   <li>[<a href="docker-compose" title="Docker compose">docker-compose</a>]</li>
 </ul>
