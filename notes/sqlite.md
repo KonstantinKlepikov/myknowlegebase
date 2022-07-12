@@ -1,7 +1,7 @@
 ---
 description: База данных sqlite
 tags: python-standart-library databases
-title: Sqlite
+title: Sqlite bd
 ---
 - [Документация python](https://docs.python.org/3/library/sqlite3.html)
 - [Работа с in-memory](https://sqlite.org/inmemorydb.html)

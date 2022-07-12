@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>MongoDB | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="MongoDB" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="База данных mongodb" />
+<meta property="og:description" content="База данных mongodb" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/mongodb.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/mongodb.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/mongodb.html","headline":"MongoDB","description":"База данных mongodb","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">MongoDB</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/bd" title="bd" class="link-tags">bd&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="mongodb-basics">MongoDB basics</h2>
+
+<p>MongoDB вышла в 2009 году. Будучи ориентированной на документы базой данных, обычно относящейся к категории NoSQL, она выделяется среди распределенных хранилищ ключей и значений, клонов Amazon Dynamo и повторных реализаций Google BigTable. Ориентируясь на расширенную поддержку операторов и высокопроизводительную онлайн-обработку транзакций (OLTP), MongoDB во многих отношениях ближе к MySQL, чем к пакетно-ориентированным базам данных, таким как HBase.</p>
+
+<p>Ключевые различия между документо-ориентированным подходом MongoDB и традиционной реляционной базой данных заключаются в следующем:</p>
+
+<ol>
+  <li>MongoDB не поддерживает соединения (joins).</li>
+  <li>MongoDB не поддерживает транзакции. Однако у него есть некоторая поддержка атомарных операций.</li>
+  <li>Схемы MongoDB гибкие. Не все документы в коллекции должны соответствовать одной и той же схеме.</li>
+</ol>
+
+<p>1 и 2 являются прямым результатом огромных трудностей, связанных с масштабированием этих функций в большой распределенной системе при сохранении приемлемой производительности. Хотя в MongoDB отсутствуют соединения, в нем представлены некоторые альтернативные возможности, например. внедрение, которое можно использовать для решения многих из тех же проблем моделирования данных, что и соединения.</p>
+
+<p>Иногда отсутствие транзакций может быть болезненным, но, к счастью, MongoDB поддерживает довольно приличный набор атомарных операций. От простых атомарных операторов увеличения и уменьшения до более функционального «findAndModify», который по существу является атомарным оператором чтения-изменения-записи.</p>
+
+<p>Несмотря на то, что предварительное проектирование схемы, используемое в реляционной модели, весьма продуктивно при планирвоании, обслуживание часто сопряжено с большими затратами. Обработка обновлений схемы в реляционном мире, конечно, выполнима, но имеет свою цену. В MongoDB вы можете динамически добавлять новые свойства в любое время, не беспокоясь об операторах ALTER TABLE, выполнение которых может занять несколько часов, и о сложных сценариях переноса данных. Тем не менее, этот подход имеет свои собственные компромиссы. Например, принудительное применение типов должно тщательно обрабатываться кодом приложения. Пользовательское управление версиями документов может быть желательным, чтобы избежать больших условных блоков для обработки разнородных документов в одной коллекции. Динамический характер MongoDB вполне естественно подходит для работы с динамическим языком, таким как Python. Компромиссы между динамически типизированным языком, таким как Python, и статически типизированным языком, таким как Java, во многих отношениях отражают компромиссы между гибкой, ориентированной на документы моделью MongoDB и предварительным и статически типизированным определением схемы баз данных SQL.</p>
+
+<p>Python позволяет выражать документы и запросы MongoDB естественным образом, используя существующие функции языка, такие как вложенные словари и списки. Если вы работали с JSON в Python, вы сразу же освоитесь с документами и запросами MongoDB. По этим причинам MongoDB и Python представляют собой мощную комбинацию для быстрой итеративной разработки горизонтально масштабируемых серверных приложений.</p>
+
+<p><a href="http://www.mongodb.org/display/DOCS/Manual">MongoDB manual</a></p>
+
+<p>MongoDB — это документно-ориентированная база данных. Есть два важных отличия от реляционной БД. Во-первых, не все записи должны соответствовать одной и той же схеме. Во-вторых, вы можете вставлять записи друг в друга. Несмотря на эти существенные различия, в MongoDB есть аналоги концепций SQL. Логическая группа записей в базе данных SQL называется таблицей. В MongoDB аналогичным термином является коллекция. Одна запись в базе данных SQL называется строкой. В MongoDB аналогом является документ.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-07-12-19-57-57.png" alt="mongodb vs sql/rdbms" /></p>
+
+<p>Вместо того, чтобы группировать элементы внутри таблиц, как в SQL, MongoDB группирует их в коллекции. Подобно таблицам SQL, коллекции MongoDB могут иметь индексы для определенных свойств документа для более быстрого поиска, и вы можете читать и записывать их, используя сложные предикаты запросов. В отличие от таблиц SQL, документы в коллекции MongoDB не обязательно должны соответствовать одной и той же схеме.</p>
+
+<h2 id="connecting-to-mongodb-with-python">Connecting to MongoDB with Python</h2>
+
+<p>По умолчанию драйвер PyMongo выполняет асинхронную запись. Операции записи включают вставку, обновление, удаление и findAndModify.</p>
+
+<p>Асинхронная запись небезопасна в том смысле, что она не проверяется на наличие ошибок, поэтому выполнение вашей программы может продолжаться без каких-либо гарантий успешного завершения записи. Хотя асинхронная запись повышает производительность, не блокируя выполнение, она может легко привести к неприятным условиям гонки и другим ошибкам целостности данных. По этой причине можно использовать безопасную, синхронную, блокирующую запись. При этом один из распространенных примеров, когда асинхронная запись может иметь смысл, — это когда вы записываете некритические журналы или аналитические данные в MongoDB из своего приложения.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">pprint</span><span class="p">,</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<span class="kn">from</span> <span class="nn">pymongo.errors</span> <span class="kn">import</span> <span class="n">ConnectionFailure</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+<span class="n">ADMINUSERNAME</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'ADMINUSERNAME'</span><span class="p">)</span>
+<span class="n">ADMINPASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'ADMINPASSWORD'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="s">"""
+    Connect to MongoDB
+    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">MongoClient</span><span class="p">(</span>
+            <span class="s">f'mongodb://</span><span class="si">{</span><span class="n">ADMINUSERNAME</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">ADMINPASSWORD</span><span class="si">}</span><span class="s">@localhost:8082/'</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span> <span class="c1"># uses localhost db
+</span>            <span class="n">dbh</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="s">"mydb"</span><span class="p">]</span>
+            <span class="n">collection</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">[</span><span class="s">'mycollection'</span><span class="p">]</span> <span class="c1"># get collection
+</span>            <span class="k">print</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+
+            <span class="n">post</span> <span class="o">=</span> <span class="p">{</span> <span class="c1"># create document
+</span>                <span class="s">"author"</span><span class="p">:</span> <span class="s">"Mike"</span><span class="p">,</span>
+                <span class="s">"text"</span><span class="p">:</span> <span class="s">"My first blog post!"</span><span class="p">,</span>
+                <span class="s">"tags"</span><span class="p">:</span> <span class="p">[</span><span class="s">"mongodb"</span><span class="p">,</span> <span class="s">"python"</span><span class="p">,</span> <span class="s">"pymongo"</span><span class="p">],</span>
+                <span class="s">"date"</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">utcnow</span><span class="p">()</span>
+                <span class="p">}</span>
+            <span class="n">posts</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">posts</span>
+            <span class="n">post_id</span> <span class="o">=</span> <span class="n">posts</span><span class="p">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">post</span><span class="p">).</span><span class="n">inserted_id</span> <span class="c1"># insert
+</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f'</span><span class="si">{</span><span class="n">post_id</span><span class="o">=</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">posts</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"_id"</span><span class="p">:</span> <span class="n">post_id</span><span class="p">}))</span> <span class="c1"># get inserted
+</span>
+    <span class="k">except</span> <span class="n">ConnectionFailure</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">sys</span><span class="p">.</span><span class="n">stderr</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Could not connect to MongoDB: %s"</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+        <span class="n">sys</span><span class="p">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://pymongo.readthedocs.io/en/stable/tutorial.html#getting-a-database">Подробнее о простейших операциях с БД</a></p>
+
+<p>Термин «узел» относится к одному экземпляру процесса демона MongoDB. Обычно на машину приходится один узел MongoDB, но для тестирования или разработки вы можете запустить несколько узлов на одном компьютере. Replica Set — это термин MongoDB для расширенной конфигурации репликации master-slave базы данных. Это похоже на традиционную репликацию master-slave, которую вы найдете в СУБД, таких как MySQL и PostgreSQL, в том смысле, что один узел обрабатывает записи в данный момент времени. В MongoDB выбор ведущего определяется протоколом голосования, и во время аварийного переключения ведомое устройство автоматически повышается до ведущего без вмешательства оператора. Кроме того, драйвер PyMongo поддерживает Replica Set-aware и выполняет автоматическое повторное подключение в случае сбоя к новому мастеру. Таким образом, наборы реплик MongoDB представляют собой конфигурацию репликации «ведущий-ведомый» с отличной обработкой сбоев «из коробки». Для тех, кому приходилось вручную восстанавливаться после сбоя мастера MySQL в производственной среде, эта функция является долгожданным облегчением.</p>
+
+<p>По умолчанию MongoDB вернет успех для вашей операции записи, как только она будет записана на один узел в наборе реплик. Однако для дополнительной безопасности в случае сбоя вы можете захотеть, чтобы ваша запись была зафиксирована в двух или более репликах перед возвратом успеха. Это может помочь гарантировать, что в случае катастрофического сбоя по крайней мере один из узлов в наборе реплик будет иметь вашу запись. PyMongo позволяет легко указать, на скольких узлах вы хотите реплицировать свою запись, прежде чем вернуть успех. Вы просто устанавливаете параметр с именем «w» на количество серверов в каждом вызове метода записи.</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="http://www.mongodb.org/display/DOCS/Manual">MongoDB manual</a></li>
+  <li><a href="https://www.mongodb.com/docs/drivers/python/">python mongodb API’s</a></li>
+  <li><a href="https://hub.docker.com/_/mongo">docker mongodb</a></li>
+  <li><a href="https://gist.github.com/KonstantinKlepikov/b45792fe49a3ceb401377de727f6d652">mongodb minimal docker compose</a></li>
+  <li><a href="https://pymongo.readthedocs.io/en/stable/">pymongo</a></li>
+  <li>[<a href="postgres" title="Postgres">postgres</a>]</li>
+  <li>[<a href="../lists/bd" title="Data Bases">bd</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

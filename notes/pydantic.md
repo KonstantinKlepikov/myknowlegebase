@@ -1,7 +1,7 @@
 ---
 description: Pydantic - библиотека для валидации типов в python
 title: Pydantic
-tags: pydantic pip
+tags: pydantic pip bd
 ---
 Типизация для python [Документация](https://pydantic-docs.helpmanual.io/). Использует [[type-annotation]] на базе [[mypy]]
 
@@ -869,7 +869,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [type-annotation]: type-annotation "Аннотация типов в python"
 [mypy]: mypy "Mypy"
 [openapi-specification]: openapi-specification "Open-api v3 спецификация"
-[sql-model]: sql-model "Sql model"
+[sql-model]: sql-model "Sql model bd"
 [databases]: databases "Databases"
 [fastapi]: fastapi "Fastapi"
 [pydantic-validation-custom]: pydantic-validation-custom "Pydantic-validation-custom"
@@ -882,7 +882,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [type-annotation]: type-annotation "Аннотация типов в python"
 [mypy]: mypy "Mypy"
 [openapi-specification]: openapi-specification "Open-api v3 спецификация"
-[sql-model]: sql-model "Sql model"
+[sql-model]: sql-model "Sql model bd"
 [databases]: databases "Databases"
 [fastapi]: fastapi "Fastapi"
 [pydantic-validation-custom]: pydantic-validation-custom "Pydantic-validation-custom"

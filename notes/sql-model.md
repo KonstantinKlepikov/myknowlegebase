@@ -1,7 +1,7 @@
 ---
 description: Библиотека для валидации и анотации типов для sql-моделей в python
 tags: databases
-title: Sql model
+title: Sql model bd
 ---
 [sql-model](https://github.com/tiangolo/sqlmodel)
 
