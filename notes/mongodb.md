@@ -436,6 +436,7 @@ new_account_balance = ret["account_balance"]
 - [mongodb minimal docker compose](https://gist.github.com/KonstantinKlepikov/b45792fe49a3ceb401377de727f6d652)
 - [pymongo](https://pymongo.readthedocs.io/en/stable/)
 - [pymongo API](https://pymongo.readthedocs.io/en/stable/api/index.html)
+- [mongoengine](https://github.com/MongoEngine/mongoengine) mongodb orm
 - [[postgres]]
 - [[bd]]
 
