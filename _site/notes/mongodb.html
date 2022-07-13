@@ -199,6 +199,330 @@
 
 <p>По умолчанию MongoDB вернет успех для вашей операции записи, как только она будет записана на один узел в наборе реплик. Однако для дополнительной безопасности в случае сбоя вы можете захотеть, чтобы ваша запись была зафиксирована в двух или более репликах перед возвратом успеха. Это может помочь гарантировать, что в случае катастрофического сбоя по крайней мере один из узлов в наборе реплик будет иметь вашу запись. PyMongo позволяет легко указать, на скольких узлах вы хотите реплицировать свою запись, прежде чем вернуть успех. Вы просто устанавливаете параметр с именем «w» на количество серверов в каждом вызове метода записи.</p>
 
+<h2 id="mongodb-query-language">MongoDB Query Language</h2>
+
+<p>Запросы MongoDB представлены в виде JSON-подобной структуры, как и документы. Чтобы построить запрос, вы указываете документ со свойствами, которым должны соответствовать результаты. MongoDB рассматривает каждое свойство как имеющее неявное логическое И. Он изначально поддерживает логические запросы ИЛИ, но для этого необходимо использовать специальный оператор ($or). Помимо точных совпадений, в MongoDB есть операторы больше, меньше и т. д.</p>
+
+<h3 id="запрос-одного-документа">Запрос одного документа</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pprint</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">posts</span><span class="p">.</span><span class="n">find_one</span><span class="p">())</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'tags'</span><span class="p">:</span> <span class="p">[</span><span class="s">'mongodb'</span><span class="p">,</span> <span class="s">'python'</span><span class="p">,</span> <span class="s">'pymongo'</span><span class="p">],</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'My first blog post!'</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># or
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">posts</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"author"</span><span class="p">:</span> <span class="s">"Mike"</span><span class="p">}))</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'tags'</span><span class="p">:</span> <span class="p">[</span><span class="s">'mongodb'</span><span class="p">,</span> <span class="s">'python'</span><span class="p">,</span> <span class="s">'pymongo'</span><span class="p">],</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'My first blog post!'</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># or
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">post_id</span>
+<span class="n">ObjectId</span><span class="p">(...)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">posts</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"_id"</span><span class="p">:</span> <span class="n">post_id</span><span class="p">}))</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'tags'</span><span class="p">:</span> <span class="p">[</span><span class="s">'mongodb'</span><span class="p">,</span> <span class="s">'python'</span><span class="p">,</span> <span class="s">'pymongo'</span><span class="p">],</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'My first blog post!'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>post_id - это не строка, необходимо сформировать специальный объект для получения точного ответа на запрос:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="kn">import</span> <span class="n">ObjectId</span>
+
+<span class="c1"># The web framework gets post_id from the URL and passes it as a string
+</span><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">post_id</span><span class="p">):</span>
+    <span class="c1"># Convert from string to ObjectId:
+</span>    <span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">post_id</span><span class="p">)})</span>
+</code></pre></div></div>
+
+<h3 id="bulk-inserts">bulk inserts</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_posts</span> <span class="o">=</span> <span class="p">[{</span><span class="s">"author"</span><span class="p">:</span> <span class="s">"Mike"</span><span class="p">,</span>
+              <span class="s">"text"</span><span class="p">:</span> <span class="s">"Another post!"</span><span class="p">,</span>
+              <span class="s">"tags"</span><span class="p">:</span> <span class="p">[</span><span class="s">"bulk"</span><span class="p">,</span> <span class="s">"insert"</span><span class="p">],</span>
+              <span class="s">"date"</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">14</span><span class="p">)},</span>
+             <span class="p">{</span><span class="s">"author"</span><span class="p">:</span> <span class="s">"Eliot"</span><span class="p">,</span>
+              <span class="s">"title"</span><span class="p">:</span> <span class="s">"MongoDB is fun"</span><span class="p">,</span>
+              <span class="s">"text"</span><span class="p">:</span> <span class="s">"and pretty easy too!"</span><span class="p">,</span>
+              <span class="s">"date"</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">)}]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">posts</span><span class="p">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">new_posts</span><span class="p">)</span>
+<span class="n">result</span><span class="p">.</span><span class="n">inserted_ids</span>
+<span class="p">[</span><span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h3 id="запрос-нескольких-документов">Запрос нескольких документов</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">posts</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">"author"</span><span class="p">:</span> <span class="s">"Mike"</span><span class="p">}):</span>
+    <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'tags'</span><span class="p">:</span> <span class="p">[</span><span class="s">'mongodb'</span><span class="p">,</span> <span class="s">'python'</span><span class="p">,</span> <span class="s">'pymongo'</span><span class="p">],</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'My first blog post!'</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'tags'</span><span class="p">:</span> <span class="p">[</span><span class="s">'bulk'</span><span class="p">,</span> <span class="s">'insert'</span><span class="p">],</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'Another post!'</span><span class="p">}</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">posts</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">"date"</span><span class="p">:</span> <span class="p">{</span><span class="s">"$lt"</span><span class="p">:</span> <span class="n">d</span><span class="p">}}).</span><span class="n">sort</span><span class="p">(</span><span class="s">"author"</span><span class="p">):</span>
+    <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Eliot'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'and pretty easy too!'</span><span class="p">,</span>
+ <span class="s">'title'</span><span class="p">:</span> <span class="s">'MongoDB is fun'</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span>
+ <span class="s">'author'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+ <span class="s">'date'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(...),</span>
+ <span class="s">'tags'</span><span class="p">:</span> <span class="p">[</span><span class="s">'bulk'</span><span class="p">,</span> <span class="s">'insert'</span><span class="p">],</span>
+ <span class="s">'text'</span><span class="p">:</span> <span class="s">'Another post!'</span><span class="p">}</span>
+
+<span class="c1"># or
+</span><span class="n">users</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">"firstname"</span><span class="p">:</span><span class="s">"jane"</span><span class="p">},</span> <span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s">"dateofbirth"</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">DESCENDING</span><span class="p">)])</span>
+
+<span class="c1"># or add limit for large results
+</span><span class="n">users</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">((</span><span class="s">"score"</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">DESCENDING</span><span class="p">)).</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">users</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">((</span><span class="s">"surname"</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">)).</span><span class="n">limit</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="n">skip</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://www.mongodb.com/docs/manual/reference/operator/">Больше операторов тут</a></p>
+
+<p>При просмотре очень больших наборов результатов, когда базовые документы могут быть изменены другими программами одновременно, вы можете захотеть использовать режим моментальных снимков MongoDB. Режим моментальных снимков MongoDB гарантирует, что документы, которые были изменены в течение времени существования запроса, возвращаются в результирующем наборе только один раз. Другими словами, дубликаты устраняются, и вам не нужно о них беспокоиться.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">snapshot</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"username"</span><span class="p">),</span> <span class="n">user</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"score"</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="подсчет">Подсчет</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">posts</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s">"author"</span><span class="p">:</span> <span class="s">"Mike"</span><span class="p">})</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<h3 id="создание-индексов">Создание индексов</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">profiles</span><span class="p">.</span><span class="n">create_index</span><span class="p">([(</span><span class="s">'user_id'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">)],</span>
+                                  <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="p">.</span><span class="n">profiles</span><span class="p">.</span><span class="n">index_information</span><span class="p">()))</span>
+<span class="p">[</span><span class="s">'_id_'</span><span class="p">,</span> <span class="s">'user_id_1'</span><span class="p">]</span>
+
+<span class="n">user_profiles</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">'user_id'</span><span class="p">:</span> <span class="mi">211</span><span class="p">,</span> <span class="s">'name'</span><span class="p">:</span> <span class="s">'Luke'</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">'user_id'</span><span class="p">:</span> <span class="mi">212</span><span class="p">,</span> <span class="s">'name'</span><span class="p">:</span> <span class="s">'Ziltoid'</span><span class="p">}]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">profiles</span><span class="p">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">user_profiles</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="updating-documents-in-a-collection">Updating Documents in a Collection</h2>
+
+<p>Запросы на обновление в MongoDB состоят из двух частей: спецификации документа, которая информирует базу данных о наборе документов, подлежащих обновлению, и самого документа обновления.</p>
+
+<p>Первая часть, спецификация документа, аналогична документу запроса, который вы используете с <code class="language-plaintext highlighter-rouge">find()</code> или <code class="language-plaintext highlighter-rouge">find_one()</code>.</p>
+
+<p>Вторую часть, документ обновления, можно использовать двумя способами. Самый простой способ — предоставить полный документ, который заменит соответствующий документ в коллекции.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># first query to get a copy of the current document import copy
+</span><span class="n">old_user_doc</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"username"</span><span class="p">:</span><span class="s">"janedoe"</span><span class="p">})</span>
+<span class="n">new_user_doc</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">old_user_doc</span><span class="p">)</span>
+<span class="c1"># modify the copy to change the email address
+</span><span class="n">new_user_doc</span><span class="p">[</span><span class="s">"email"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"janedoe74@example2.com"</span>
+<span class="c1"># run the update query
+# replace the matched document with the contents of new_user_doc
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="s">"username"</span><span class="p">:</span><span class="s">"janedoe"</span><span class="p">},</span> <span class="n">new_user_doc</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Создание всего заменяющего документа может быть обременительным и, что еще хуже, может привести к возникновению условий гонки. Чтобы решить эту проблему, документ обновления поддерживает дополнительный набор операторов MongoDB, называемых «модификаторами обновления». Эти модификаторы обновления включают в себя такие операторы, как атомарное приращение/уменьшение, атомарное включение/выталкивание списка и так далее. Очень полезно знать, какие модификаторы обновления доступны и что они могут делать при разработке приложения.</p>
+
+<p>Мы можем использовать модификатор обновления <code class="language-plaintext highlighter-rouge">$set</code> в нашем документе обновления, чтобы избежать запроса перед обновлением. <code class="language-plaintext highlighter-rouge">$set</code> изменяет значение отдельного свойства или группы свойств на то, что вы укажете</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="s">"username"</span><span class="p">:</span><span class="s">"janedoe"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$set"</span><span class="p">:{</span><span class="s">"email"</span><span class="p">:</span><span class="s">"janedoe74@example2.com"</span><span class="p">,</span> <span class="s">"score"</span><span class="p">:</span><span class="mi">1</span><span class="p">}},</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>При этом измененеия применяются только к одномуц документу, даже если выбрано несколько. Чтобы применить кор всем - необходима опция <code class="language-plaintext highlighter-rouge">multi=True</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="s">"score"</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="s">"$set"</span><span class="p">:{</span><span class="s">"flagged"</span><span class="p">:</span><span class="bp">True</span><span class="p">}},</span> <span class="n">multi</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="deleting-documents-from-a-collection">Deleting Documents from a Collection</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">remove</span><span class="p">({</span><span class="s">"score"</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># delete all documents
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="references">References</h2>
+
+<p><img src="/myknowlegebase/attachments/2022-07-13-15-42-43.png" alt="mongodb query operators" /></p>
+
+<p><img src="/myknowlegebase/attachments/2022-07-13-15-43-17.png" alt="mongodb update modifiers" /></p>
+
+<p><a href="https://pymongo.readthedocs.io/en/stable/examples/index.html">source</a></p>
+
+<h2 id="типичные-кейсы">Типичные кейсы</h2>
+
+<h3 id="вложенные-документы">Вложенные документы</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user_doc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"username"</span><span class="p">:</span><span class="s">"foouser"</span><span class="p">,</span>
+    <span class="s">"twitter"</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="s">"username"</span><span class="p">:</span><span class="s">"footwitter"</span><span class="p">,</span>
+            <span class="s">"password"</span><span class="p">:</span><span class="s">"secret"</span><span class="p">,</span>
+            <span class="s">"email"</span><span class="p">:</span><span class="s">"twitter@example.com"</span>
+        <span class="p">},</span>
+    <span class="s">"facebook"</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="s">"username"</span><span class="p">:</span><span class="s">"foofacebook"</span><span class="p">,</span>
+            <span class="s">"password"</span><span class="p">:</span><span class="s">"secret"</span><span class="p">,</span>
+            <span class="s">"email"</span><span class="p">:</span><span class="s">"facebook@example.com"</span>
+        <span class="p">},</span>
+    <span class="s">"irc"</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="s">"username"</span><span class="p">:</span><span class="s">"fooirc"</span><span class="p">,</span>
+            <span class="s">"password"</span><span class="p">:</span><span class="s">"secret"</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="n">user_doc</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"facebook.username"</span><span class="p">:</span><span class="s">"foofacebook"</span><span class="p">})</span>
+<span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"facebook.username"</span><span class="p">:</span><span class="s">"foofacebook"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$set"</span><span class="p">:{</span><span class="s">"facebook.username"</span><span class="p">:</span><span class="s">"bar"</span><span class="p">}},</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Другой вариант - встраивание нескольких документов под одним ключом, что позволяет более компактно управлять всей структурой.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">user_doc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"username"</span><span class="p">:</span><span class="s">"foouser"</span><span class="p">,</span>
+    <span class="s">"emails"</span><span class="p">:</span>
+        <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s">"email"</span><span class="p">:</span><span class="s">"foouser1@example.com"</span><span class="p">,</span>
+                <span class="s">"primary"</span><span class="p">:</span><span class="bp">True</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s">"email"</span><span class="p">:</span><span class="s">"foouser2@example2.com"</span><span class="p">,</span>
+                <span class="s">"primary"</span><span class="p">:</span><span class="bp">False</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s">"email"</span><span class="p">:</span><span class="s">"foouser3@example3.com"</span><span class="p">,</span>
+                <span class="s">"primary"</span><span class="p">:</span><span class="bp">False</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+
+<span class="c1"># Insert the user document
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">user_doc</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># Retrieve the just-inserted document via one of its many email addresses
+</span><span class="n">user_doc_result</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"emails.email"</span><span class="p">:</span><span class="s">"foouser1@example.com"</span><span class="p">})</span>
+<span class="c1"># Assert that the original user document and the query result are the same
+</span><span class="k">assert</span> <span class="n">user_doc</span> <span class="o">==</span> <span class="n">user_doc_result</span>
+</code></pre></div></div>
+
+<p>Три наиболее распространенные операции над вложенными документами, встроенными в свойство списка: удаление, вставка и изменение. Каждый из них может быть выполнен атомарно с предоставленными модификаторами обновления.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use $pull to atomically remove the "foouser2@example2.com" email sub-document
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"username"</span><span class="p">:</span><span class="s">"foouser"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$pull"</span><span class="p">:{</span><span class="s">"emails"</span><span class="p">:{</span><span class="s">"email"</span><span class="p">:</span><span class="s">"foouser2@example2.com"</span><span class="p">}}},</span>
+    <span class="n">safe</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+
+<span class="c1"># Use $pull to atomically remove all email sub-documents with primary not equal to True
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"username"</span><span class="p">:</span><span class="s">"foouser"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$pull"</span><span class="p">:{</span><span class="s">"emails"</span><span class="p">:{</span><span class="s">"primary"</span><span class="p">:{</span><span class="s">"$ne"</span><span class="p">:</span><span class="bp">True</span><span class="p">}}}},</span>
+    <span class="n">safe</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+
+<span class="c1"># Use $push to atomically append a new email sub-document to the user document
+</span><span class="n">new_email</span> <span class="o">=</span> <span class="p">{</span><span class="s">"email"</span><span class="p">:</span><span class="s">"fooemail4@exmaple4.com"</span><span class="p">,</span> <span class="s">"primary"</span><span class="p">:</span><span class="bp">False</span><span class="p">}</span>
+<span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"username"</span><span class="p">:</span><span class="s">"foouser"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$push"</span><span class="p">:{</span><span class="s">"emails"</span><span class="p">:</span><span class="n">new_email</span><span class="p">}},</span>
+    <span class="n">safe</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+
+<span class="c1"># Now make the "foouser2@example2.com" email address primrary
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"emails.email"</span><span class="p">:</span><span class="s">"foouser2@example2.com"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$set"</span><span class="p">:{</span><span class="s">"emails.$.primary"</span><span class="p">:</span><span class="bp">True</span><span class="p">}},</span>
+    <span class="n">safe</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">$</code> заменяется индексом элемента, соответствующим спецификации документа.</p>
+
+<h3 id="indexes">Indexes</h3>
+
+<p>Роль индексов в MongoDB очень похожа на их роль в традиционных СУБД, таких как MySQL, PostgreSQL и т. д. MongoDB предлагает два типа готовых индексов: индексы Btree и геопространственные индексы. Индексы btree в MongoDB во многом аналогичны их эквивалентам в MySQL или PostgreSQL.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># If we place an index on property "emails.email"
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">create_index</span><span class="p">(</span><span class="s">"emails.email"</span><span class="p">)</span>
+<span class="c1"># this find_one query can use a btree index
+</span><span class="n">user</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">"emails.email"</span><span class="p">:</span><span class="s">"foouser2@example2.com"</span><span class="p">})</span>
+
+<span class="c1"># Create a compound index on first_name and last_name properties
+# with ascending index direction
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">create_index</span><span class="p">([(</span>
+    <span class="s">"first_name"</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">"last_name"</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<p>Название индекса можно задать через <code class="language-plaintext highlighter-rouge">name</code>. Создание индекса по умолчанию блокирует базу данных. Для больших коллекций создание индекса может занять много времени. Чтобы смягчить влияние этих операций на работающие рабочие базы данных, MongoDB может создавать индексы в фоновом режиме, не блокируя доступ к базе данных. Построение индекса в фоновом режиме может занять немного больше времени и по-прежнему будет вызывать дополнительную нагрузку на систему, но в остальном база данных должна оставаться доступной.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Create index in the background
+# Database remains usable
+</span><span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">create_index</span><span class="p">(</span><span class="s">"username"</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Можно создавать индексы с уникальными значениями и задавать определенные правила добавления. индексы довольно легко удалить из базы данных.</p>
+
+<p>MongoDB является одной из немногих баз данных с готовой поддержкой геопространственного индексирования. MongoDB использует геохэширование, общедоступный алгоритм, разработанный Густаво Нимейером, который преобразует географическую близость в лексическую близость. Следовательно, базу данных, поддерживающую запросы диапазона (например, MongoDB), можно эффективно использовать для запроса точек вблизи и в пределах границ.</p>
+
+<h3 id="more">More</h3>
+
+<p>Один из компромиссов документно-ориентированной базы данных по сравнению с реляционной базой данных заключается в том, что база данных не навязывает вам схему. По этой причине при работе с MongoDB вы должны проявлять бдительность при обработке результатов базы данных. Не полагайте слепо, что результаты всегда будут обладать ожидаемыми свойствами. Прежде чем обращаться к ним, проверьте их наличие. Хотя Python обычно вызывает KeyError и останавливает выполнение, в зависимости от вашего приложения это может привести к потере целостности данных.</p>
+
+<p>Относительно распространенной задачей в приложениях, работающих с базами данных, является обновление существующей записи или, если она не найдена, вставка ее как новой записи. MongoDB удобно поддерживает это как единую операцию, избавляя вас от необходимости реализовывать собственную логику «если-существует-обновить-иначе-вставить». Этот тип операции записи «upsert» в MongoDB реализован в <code class="language-plaintext highlighter-rouge">Collection.save()</code>, <code class="language-plaintext highlighter-rouge">Collection.update()</code> и <code class="language-plaintext highlighter-rouge">Collection.find_and_modify()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Good implementation using upsert=True
+</span><span class="k">def</span> <span class="nf">edit_or_add_session</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">session_id</span><span class="p">):</span>
+    <span class="n">dbh</span><span class="p">.</span><span class="n">sessions</span><span class="p">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span><span class="s">"session_id"</span><span class="p">:</span><span class="n">session_id</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"$set"</span><span class="p">:{</span><span class="s">"session_description"</span><span class="p">:</span><span class="n">description</span><span class="p">}},</span>
+        <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">upsert</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Часто необходимо иметь возможность изменять документ атомарно, а также возвращать результат атомарной операции — за один шаг. Это реализовано через <code class="language-plaintext highlighter-rouge">Collection.find_and_modify()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># User X adds $20 to his/her account, so we atomically increment
+# account_balance and return the resulting document
+</span><span class="n">ret</span> <span class="o">=</span> <span class="n">dbh</span><span class="p">.</span><span class="n">users</span><span class="p">.</span><span class="n">find_and_modify</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"username"</span><span class="p">:</span><span class="n">username</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"$inc"</span><span class="p">:{</span><span class="s">"account_balance"</span><span class="p">:</span><span class="mi">20</span><span class="p">}},</span>
+    <span class="n">safe</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">new</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+<span class="n">new_account_balance</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">"account_balance"</span><span class="p">]</span>
+</code></pre></div></div>
+
 <p>Смотри еще:</p>
 
 <ul>
@@ -207,6 +531,7 @@
   <li><a href="https://hub.docker.com/_/mongo">docker mongodb</a></li>
   <li><a href="https://gist.github.com/KonstantinKlepikov/b45792fe49a3ceb401377de727f6d652">mongodb minimal docker compose</a></li>
   <li><a href="https://pymongo.readthedocs.io/en/stable/">pymongo</a></li>
+  <li><a href="https://pymongo.readthedocs.io/en/stable/api/index.html">pymongo API</a></li>
   <li>[<a href="postgres" title="Postgres">postgres</a>]</li>
   <li>[<a href="../lists/bd" title="Data Bases">bd</a>]</li>
 </ul>
