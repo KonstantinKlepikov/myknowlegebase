@@ -856,7 +856,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 
 Смотри еще:
 
-- [pydantic-factories](https://github.com/Goldziher/pydantic-factories) This library offers powerful mock data generation capabilities for pydantic based models and dataclasses. It can also be used with other libraries that use pydantic as a foundation, for example SQLModel and Beanie.
+- [[pydantic-factories]] This library offers powerful mock data generation capabilities for pydantic based models and dataclasses. It can also be used with other libraries that use pydantic as a foundation, for example SQLModel and Beanie.
 - [[sql-model]]. SQLModel is a library for interacting with SQL databases from Python code, with Python objects. Используется в [[databases]] и [[fastapi]]
 - [[pydantic-validation-custom]]
 - [[mock-libraries]]
@@ -882,6 +882,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [type-annotation]: type-annotation "Аннотация типов в python"
 [mypy]: mypy "Mypy"
 [openapi-specification]: openapi-specification "Open-api v3 спецификация"
+[pydantic-factories]: pydantic-factories "Pydantic-factories"
 [sql-model]: sql-model "Sql model bd"
 [databases]: databases "Databases"
 [fastapi]: fastapi "Fastapi"

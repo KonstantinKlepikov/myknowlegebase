@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pydantic-factories | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pydantic-factories" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Pydantic-factories - создание фиктивных данных для pydantic_models" />
+<meta property="og:description" content="Pydantic-factories - создание фиктивных данных для pydantic_models" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/pydantic-factories.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pydantic-factories.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pydantic-factories.html","headline":"Pydantic-factories","description":"Pydantic-factories - создание фиктивных данных для pydantic_models","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Pydantic-factories</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/pydantic" title="pydantic" class="link-tags">pydantic&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/pip" title="pip" class="link-tags">pip&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/tests" title="tests" class="link-tags">tests&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Эта библиотека предлагает мощные возможности создания фиктивных данных для моделей и классов данных на основе pydantic. Можно использовать с другими библиотеками, использующими pydantic в качестве основы, например SQLModel и Beanie.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hobbies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">age</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">birthday</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Мы можем создать фиктивный объект данных, соответствующий определению модели класса Person. Это возможно из-за информации о типизации, доступной в модели pydantic и полях модели, которые используются в качестве источника истины для генерации данных. Фабрика анализирует информацию, хранящуюся в модели pydantic, и создает словарь kwargs, который передается методу init класса Person.</p>
+
+<p>Возможности:</p>
+
+<ul>
+  <li>поддерживает как встроенные, так и [<a href="pydantic" title="Pydantic">pydantic</a>] типы.</li>
+  <li>поддерживает ограничения поля pydantic</li>
+  <li>поддерживает сложные типы полей</li>
+  <li>поддерживает настраиваемые поля модели</li>
+</ul>
+
+<h2 id="методы">Методы</h2>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">ModelFactory</code> предоставляет два метода сборки:</p>
+
+<p><code class="language-plaintext highlighter-rouge">.build(**kwargs)</code> — строит один экземпляр модели фабрики
+<code class="language-plaintext highlighter-rouge">.batch(size: int, **kwargs)</code> — построить список размером n экземпляров</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>  <span class="c1"># a single Person instance
+</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">batch</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># list[Person, Person, Person, Person, Person]
+</span></code></pre></div></div>
+
+<p>Любые kwargs, которые вы передаете в <code class="language-plaintext highlighter-rouge">.build</code>, <code class="language-plaintext highlighter-rouge">.batch</code> или любой из методов, будут иметь приоритет над любыми значениями по умолчанию, определенными в самом фабричном классе.</p>
+
+<p>По умолчанию при создании класса pydantic проверяются kwargs. Чтобы избежать проверки ввода, вы можете использовать параметр <code class="language-plaintext highlighter-rouge">factory_use_construct</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">build</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># Raises a validation error
+</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">build</span><span class="p">(</span>
+    <span class="n">factory_use_construct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">5</span>
+<span class="p">)</span>  <span class="c1"># Build a Person with invalid id
+</span></code></pre></div></div>
+
+<h2 id="поддерживаются-встроенные-и-сконструированные-типы">Поддерживаются встроенные и сконструированные типы</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+
+<span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CAT</span> <span class="o">=</span> <span class="s">"Cat"</span>
+    <span class="n">DOG</span> <span class="o">=</span> <span class="s">"Dog"</span>
+    <span class="n">PIG</span> <span class="o">=</span> <span class="s">"Pig"</span>
+    <span class="n">MONKEY</span> <span class="o">=</span> <span class="s">"Monkey"</span>
+
+
+<span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">sound</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">Species</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hobbies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">age</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">birthday</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">]</span>
+    <span class="n">pets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Pet</span><span class="p">]</span>
+    <span class="n">assets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Этот пример также будет работать, хотя для класса Pet не была определена фабрика, это не проблема — фабрика будет динамически сгенерирована для него на лету.</p>
+
+<p>Сложная типизация под атрибутом assets немного сложнее, но фабрика сгенерирует объект python, соответствующий этой сигнатуре, поэтому пройдет проверку.</p>
+
+<p>Обратите внимание: единственное, что фабрики не могут обработать, — это модели, ссылающиеся на самих себя, потому что это может привести к ошибкам рекурсии. В этом случае вам нужно будет обработать конкретное поле, установив для него значения по умолчанию.</p>
+
+<h2 id="датаклассы">Датаклассы</h2>
+
+<p>Эта библиотека работает с любым классом, который наследует класс pydantic BaseModel, включая GenericModel и классы из сторонних библиотек, а также с классами данных — как из стандартной библиотеки python, так и из классов данных pydantic. Фактически, вы можете использовать их взаимозаменяемо.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">pydantic</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+
+<span class="o">@</span><span class="n">pydantic</span><span class="p">.</span><span class="n">dataclasses</span><span class="p">.</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">MyPydanticDataClass</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">MyFirstModel</span><span class="p">(</span><span class="n">pydantic</span><span class="p">.</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">dataclass</span><span class="p">:</span> <span class="n">MyPydanticDataClass</span>
+
+
+<span class="o">@</span><span class="n">dataclasses</span><span class="p">.</span><span class="n">dataclass</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">MyPythonDataClass</span><span class="p">:</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">complex_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">MyFirstModel</span><span class="p">]]]</span>
+
+
+<span class="k">class</span> <span class="nc">MySecondModel</span><span class="p">(</span><span class="n">pydantic</span><span class="p">.</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">dataclasses</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">MyPythonDataClass</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">MyFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">MySecondModel</span>
+
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">MyFactory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>При создании фиктивных значений для полей с типом optional, если фабрика определена с <code class="language-plaintext highlighter-rouge">__allow_none_Options__ = True</code>, значение поля будет либо значением, либо <code class="language-plaintext highlighter-rouge">None</code> — в зависимости от случайного решения. Это работает, даже если необязательное типирование глубоко вложено, за исключением классов данных — типизация только поверхностно оценивается для классов данных, и поэтому всегда предполагается, что они требуют значения. Если вы хотите иметь значение <code class="language-plaintext highlighter-rouge">None</code>, в данном конкретном случае вы должны сделать это вручную, настроив обратный вызов Use для конкретного поля.</p>
+
+<h2 id="конфигурирование-фабрики">Конфигурирование фабрики</h2>
+
+<p>Конфигурация <code class="language-plaintext highlighter-rouge">ModelFactory</code> выполняется с использованием переменных класса:</p>
+
+<p><code class="language-plaintext highlighter-rouge">__model__</code>: обязательная переменная, определяющая модель фабрики. Он принимает любой класс, который расширяет <code class="language-plaintext highlighter-rouge">BaseModel</code> pydantic, включая классы из других библиотек. Если эта переменная не установлена, будет возбуждено исключение <code class="language-plaintext highlighter-rouge">ConfigurationException.</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">__faker__</code>: необязательная переменная, указывающая настроенный пользователем экземпляр фиктивных данных. Если эта переменная не установлена, фабрика по умолчанию будет использовать ванильный фейкер.</p>
+
+<p><code class="language-plaintext highlighter-rouge">__sync_persistence__</code>: необязательная переменная, указывающая обработчик для синхронно сохраняемых данных. Если эта переменная не установлена, методы фабрики <code class="language-plaintext highlighter-rouge">.create_sync</code> и <code class="language-plaintext highlighter-rouge">.create_batch_sync</code> использовать нельзя.</p>
+
+<p><code class="language-plaintext highlighter-rouge">__async_persistence__</code>: необязательная переменная, определяющая обработчик асинхронно сохраняемых данных. Если эта переменная не задана, методы фабрики <code class="language-plaintext highlighter-rouge">.create_async</code> и <code class="language-plaintext highlighter-rouge">.create_batch_async</code> использовать нельзя.</p>
+
+<p><code class="language-plaintext highlighter-rouge">__allow_none_optionals__</code>: необязательная переменная, определяющая, должна ли фабрика случайным образом устанавливать значения <code class="language-plaintext highlighter-rouge">None</code> для необязательных полей или всегда устанавливать для них значения. Это <code class="language-plaintext highlighter-rouge">True</code> по умолчанию.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+<span class="kn">from</span> <span class="nn">app.models</span> <span class="kn">import</span> <span class="n">Person</span>
+<span class="kn">from</span> <span class="nn">.persistence</span> <span class="kn">import</span> <span class="n">AsyncPersistenceHandler</span><span class="p">,</span> <span class="n">SyncPersistenceHandler</span>
+
+<span class="n">Faker</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">my_faker</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">(</span><span class="s">"en-EN"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+    <span class="n">__faker__</span> <span class="o">=</span> <span class="n">my_faker</span>
+    <span class="n">__sync_persistence__</span> <span class="o">=</span> <span class="n">SyncPersistenceHandler</span>
+    <span class="n">__async_persistence__</span> <span class="o">=</span> <span class="n">AsyncPersistenceHandler</span>
+    <span class="n">__allow_none_optionals__</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Для генерации детерменистических данных используйте метод <code class="language-plaintext highlighter-rouge">ModelFactory.seed_random</code>. Это передаст начальное значение как <code class="language-plaintext highlighter-rouge">Faker</code>, так и вызову случайного метода, гарантируя, что данные будут одинаковыми между вызовами. Особенно полезно для тестирования.</p>
+
+<h2 id="определение-атрибутов">Определение атрибутов</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+
+<span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CAT</span> <span class="o">=</span> <span class="s">"Cat"</span>
+    <span class="n">DOG</span> <span class="o">=</span> <span class="s">"Dog"</span>
+
+
+<span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">Species</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hobbies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">age</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">birthday</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">]</span>
+    <span class="n">pets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Pet</span><span class="p">]</span>
+    <span class="n">assets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
+</code></pre></div></div>
+
+<p>Первый способ - непосредственно при создании</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pet</span> <span class="o">=</span> <span class="n">Pet</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Roxy"</span><span class="p">,</span> <span class="n">sound</span><span class="o">=</span><span class="s">"woof woof"</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">Species</span><span class="p">.</span><span class="n">DOG</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+
+    <span class="n">pets</span> <span class="o">=</span> <span class="p">[</span><span class="n">pet</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>В этом случае, когда мы вызываем <code class="language-plaintext highlighter-rouge">PersonFactory.build()</code>, результат будет сгенерирован случайным образом, за исключением списка питомцев, который будет жестко запрограммированным значением по умолчанию, которое мы определили.</p>
+
+<h3 id="поле-use">Поле Use</h3>
+
+<p>Другой вариант - определить фабрику для Pet, где мы ограничиваем выбор диапазоном, который нам нравится.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span><span class="p">,</span> <span class="n">Use</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Pet</span><span class="p">,</span> <span class="n">Person</span>
+
+
+<span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CAT</span> <span class="o">=</span> <span class="s">"Cat"</span>
+    <span class="n">DOG</span> <span class="o">=</span> <span class="s">"Dog"</span>
+
+
+<span class="k">class</span> <span class="nc">PetFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Pet</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Use</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="p">[</span><span class="s">"Ralph"</span><span class="p">,</span> <span class="s">"Roxy"</span><span class="p">])</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="n">Use</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">Species</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+
+    <span class="n">pets</span> <span class="o">=</span> <span class="n">Use</span><span class="p">(</span><span class="n">PetFactory</span><span class="p">.</span><span class="n">batch</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>или так (не используя Use):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">PetFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Pet</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span><span class="s">"Ralph"</span><span class="p">,</span> <span class="s">"Roxy"</span><span class="p">])</span>
+    <span class="n">species</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Species</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="поле-postgenerated">Поле PostGenerated</h3>
+
+<p>Позволяет создавать поля на основе уже сгенерированных значений других (не созданных таким способом) полей. В большинстве случаев этого шаблона лучше избегать.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span><span class="p">,</span> <span class="n">PostGenerated</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+
+<span class="k">def</span> <span class="nf">add_timedelta</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">seconds</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">13000</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="s">"from_dt"</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span>
+
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">from_dt</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">to_dt</span><span class="p">:</span> <span class="n">datetime</span>
+
+
+<span class="k">class</span> <span class="nc">MyFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">MyModel</span>
+
+    <span class="n">to_dt</span> <span class="o">=</span> <span class="n">PostGenerated</span><span class="p">(</span><span class="n">add_timedelta</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="поле-ignore">Поле Ignore</h3>
+
+<p>Используется для обозначения данного атрибута как игнорируемого.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span> <span class="nn">odmantic</span> <span class="kn">import</span> <span class="n">EmbeddedModel</span><span class="p">,</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span><span class="p">,</span> <span class="n">Ignore</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">"T"</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">EmbeddedModel</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">OdmanticModelFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Ignore</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="поле-require">Поле Require</h3>
+
+<p>Указывает, что конкретный атрибут является обязательным kwarg. То есть, если kwarg со значением для этого конкретного атрибута не передается при вызове <code class="language-plaintext highlighter-rouge">factory.build()</code>, будет поднята ошибка <code class="language-plaintext highlighter-rouge">MissingBuildKwargError</code>.</p>
+
+<p>Каков вариант использования для этого? Например, предположим, что у нас есть документ под названием Article, который мы храним в какой-либо БД и который представлен с использованием не-pydantic модели, скажем, документа с эластичной DSL. Затем нам нужно сохранить в нашем объекте pydantic ссылку на идентификатор этой статьи. Это значение не должно быть каким-то фиктивным значением, а должно быть фактическим идентификатором, переданным на фабрику. Таким образом, мы можем определить этот атрибут по мере необходимости:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span><span class="p">,</span> <span class="n">Require</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">UUID</span>
+
+
+<span class="k">class</span> <span class="nc">ArticleProxy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">article_id</span><span class="p">:</span> <span class="n">UUID</span>
+    <span class="p">...</span>
+
+
+<span class="k">class</span> <span class="nc">ArticleProxyFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">ArticleProxy</span>
+
+    <span class="n">article_id</span> <span class="o">=</span> <span class="n">Require</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="persistence">Persistence</h3>
+
+<p>ModelFactory имеет четыре метода сохранения:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">.create_sync(**kwargs)</code> — синхронно создает и сохраняет один экземпляр модели фабрики.</li>
+  <li><code class="language-plaintext highlighter-rouge">.create_batch_sync(size: int, **kwargs)</code> — синхронно создает и сохраняет список размером n экземпляров.</li>
+  <li><code class="language-plaintext highlighter-rouge">.create_async(**kwargs)</code> — асинхронно создает и сохраняет один экземпляр модели фабрики.</li>
+  <li><code class="language-plaintext highlighter-rouge">.create_batch_async(size: int, **kwargs)</code> — асинхронно создает и сохраняет список размером n экземпляров.</li>
+</ul>
+
+<p>Чтобы использовать эти методы, вы должны сначала указать синнные и/или асинхронные обработчики для фабрики:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># persistence.py
+</span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">SyncPersistenceProtocol</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">"T"</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">BaseModel</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">SyncPersistenceHandler</span><span class="p">(</span><span class="n">SyncPersistenceProtocol</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+        <span class="p">...</span>  <span class="c1"># do stuff
+</span>
+    <span class="k">def</span> <span class="nf">save_many</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+        <span class="p">...</span>  <span class="c1"># do stuff
+</span>
+
+<span class="k">class</span> <span class="nc">AsyncPersistenceHandler</span><span class="p">(</span><span class="n">AsyncPersistenceProtocol</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+        <span class="p">...</span>  <span class="c1"># do stuff
+</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">save_many</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+        <span class="p">...</span>  <span class="c1"># do stuff
+</span></code></pre></div></div>
+
+<p>Затем вы можете указать один или оба этих обработчика в вашей фабрике:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+<span class="kn">from</span> <span class="nn">app.models</span> <span class="kn">import</span> <span class="n">Person</span>
+<span class="kn">from</span> <span class="nn">.persistence</span> <span class="kn">import</span> <span class="n">AsyncPersistenceHandler</span><span class="p">,</span> <span class="n">SyncPersistenceHandler</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+    <span class="n">__sync_persistence__</span> <span class="o">=</span> <span class="n">SyncPersistenceHandler</span>
+    <span class="n">__async_persistence__</span> <span class="o">=</span> <span class="n">AsyncPersistenceHandler</span>
+</code></pre></div></div>
+
+<p>Или создайте свою собственную базовую фабрику и повторно используйте ее в различных фабриках:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+<span class="kn">from</span> <span class="nn">app.models</span> <span class="kn">import</span> <span class="n">Person</span>
+<span class="kn">from</span> <span class="nn">.persistence</span> <span class="kn">import</span> <span class="n">AsyncPersistenceHandler</span><span class="p">,</span> <span class="n">SyncPersistenceHandler</span>
+
+
+<span class="k">class</span> <span class="nc">BaseModelFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+    <span class="n">__sync_persistence__</span> <span class="o">=</span> <span class="n">SyncPersistenceHandler</span>
+    <span class="n">__async_persistence__</span> <span class="o">=</span> <span class="n">AsyncPersistenceHandler</span>
+
+
+<span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">BaseModelFactory</span><span class="p">):</span>
+    <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+</code></pre></div></div>
+
+<p>Обратите внимание: вам не нужно определять какой-либо или оба обработчика сохранения. Если вы будете использовать только синхронное или асинхронное сохранение, вам нужно только определить соответствующий обработчик для использования этих методов.</p>
+
+<h2 id="дополнительно---создание-фабричных-методов">Дополнительно - <a href="https://github.com/Goldziher/pydantic-factories#create-factory-method">создание фабричных методов</a></h2>
+
+<p>Если вы предпочитаете императивное создание фабрики, вы можете сделать это с помощью метода <code class="language-plaintext highlighter-rouge">ModelFactory.create_factory</code>. Этот метод получает следующие аргументы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">model</code> - модель для фабрики.</li>
+  <li><code class="language-plaintext highlighter-rouge">base</code> - необязательный базовый класс фабрики. По умолчанию используется фабричный класс, для которого вызывается метод.</li>
+  <li><code class="language-plaintext highlighter-rouge">kwargs</code> - словарь аргументов, соответствующих переменным класса, принятым <code class="language-plaintext highlighter-rouge">ModelFactory</code>.
+Вы также можете переопределить атрибут <code class="language-plaintext highlighter-rouge">__model__</code> дочерней фабрики, чтобы указать используемую модель и <code class="language-plaintext highlighter-rouge">kwargs</code></li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pydantic_factories</span> <span class="kn">import</span> <span class="n">ModelFactory</span>
+
+
+<span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CAT</span> <span class="o">=</span> <span class="s">"Cat"</span>
+    <span class="n">DOG</span> <span class="o">=</span> <span class="s">"Dog"</span>
+
+
+<span class="k">class</span> <span class="nc">PetBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">Species</span>
+
+
+<span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">PetBase</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+
+
+<span class="k">class</span> <span class="nc">PetCreate</span><span class="p">(</span><span class="n">PetBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">PetUpdate</span><span class="p">(</span><span class="n">PetBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">PersonBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hobbies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">age</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">birthday</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">]</span>
+    <span class="n">pets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Pet</span><span class="p">]</span>
+    <span class="n">assets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span>
+
+
+<span class="k">class</span> <span class="nc">PersonCreate</span><span class="p">(</span><span class="n">PersonBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">PersonBase</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+
+
+<span class="k">class</span> <span class="nc">PersonUpdate</span><span class="p">(</span><span class="n">PersonBase</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">test_factory</span><span class="p">():</span>
+    <span class="k">class</span> <span class="nc">PersonFactory</span><span class="p">(</span><span class="n">ModelFactory</span><span class="p">):</span>
+        <span class="n">__model__</span> <span class="o">=</span> <span class="n">Person</span>
+
+    <span class="n">person</span> <span class="o">=</span> <span class="n">PersonFactory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="n">person</span><span class="p">.</span><span class="n">pets</span> <span class="o">!=</span> <span class="p">[]</span>
+
+
+<span class="n">ModelType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">"ModelType"</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="n">CreateSchemaType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">"CreateSchemaType"</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="n">UpdateSchemaType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s">"UpdateSchemaType"</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">BaseModel</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BUILDBase</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">ModelType</span><span class="p">,</span> <span class="n">CreateSchemaType</span><span class="p">,</span> <span class="n">UpdateSchemaType</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">ModelType</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">create_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CreateSchemaType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">update_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">UpdateSchemaType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">create_model</span> <span class="o">=</span> <span class="n">create_schema</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">update_model</span> <span class="o">=</span> <span class="n">update_schema</span>
+
+    <span class="k">def</span> <span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelType</span><span class="p">:</span>
+        <span class="n">object_Factory</span> <span class="o">=</span> <span class="n">ModelFactory</span><span class="p">.</span><span class="n">create_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">object_Factory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">build_create_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateSchemaType</span><span class="p">:</span>
+        <span class="n">object_Factory</span> <span class="o">=</span> <span class="n">ModelFactory</span><span class="p">.</span><span class="n">create_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">create_model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">object_Factory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">build_update_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UpdateSchemaType</span><span class="p">:</span>
+        <span class="n">object_Factory</span> <span class="o">=</span> <span class="n">ModelFactory</span><span class="p">.</span><span class="n">create_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">update_model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">object_Factory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">BUILDPet</span><span class="p">(</span><span class="n">BUILDBase</span><span class="p">[</span><span class="n">Pet</span><span class="p">,</span> <span class="n">PetCreate</span><span class="p">,</span> <span class="n">PetUpdate</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">build_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pet</span><span class="p">:</span>
+        <span class="n">object_Factory</span> <span class="o">=</span> <span class="n">ModelFactory</span><span class="p">.</span><span class="n">create_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Fido"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">object_Factory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">build_create_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PetCreate</span><span class="p">:</span>
+        <span class="n">object_Factory</span> <span class="o">=</span> <span class="n">ModelFactory</span><span class="p">.</span><span class="n">create_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">create_model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Rover"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">object_Factory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">build_update_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PetUpdate</span><span class="p">:</span>
+        <span class="n">object_Factory</span> <span class="o">=</span> <span class="n">ModelFactory</span><span class="p">.</span><span class="n">create_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">update_model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Spot"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">object_Factory</span><span class="p">.</span><span class="n">build</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">test_factory_create</span><span class="p">():</span>
+
+    <span class="n">person_factory</span> <span class="o">=</span> <span class="n">BUILDBase</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="n">PersonCreate</span><span class="p">,</span> <span class="n">PersonUpdate</span><span class="p">)</span>
+
+    <span class="n">pet_factory</span> <span class="o">=</span> <span class="n">BUILDPet</span><span class="p">(</span><span class="n">Pet</span><span class="p">,</span> <span class="n">PetCreate</span><span class="p">,</span> <span class="n">PetUpdate</span><span class="p">)</span>
+
+    <span class="n">create_person</span> <span class="o">=</span> <span class="n">person_factory</span><span class="p">.</span><span class="n">build_create_object</span><span class="p">()</span>
+    <span class="n">update_person</span> <span class="o">=</span> <span class="n">person_factory</span><span class="p">.</span><span class="n">build_update_object</span><span class="p">()</span>
+
+    <span class="n">pet</span> <span class="o">=</span> <span class="n">pet_factory</span><span class="p">.</span><span class="n">build_object</span><span class="p">()</span>
+    <span class="n">create_pet</span> <span class="o">=</span> <span class="n">pet_factory</span><span class="p">.</span><span class="n">build_create_object</span><span class="p">()</span>
+    <span class="n">update_pet</span> <span class="o">=</span> <span class="n">pet_factory</span><span class="p">.</span><span class="n">build_update_object</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="n">create_person</span> <span class="o">!=</span> <span class="bp">None</span>
+    <span class="k">assert</span> <span class="n">update_person</span> <span class="o">!=</span> <span class="bp">None</span>
+
+    <span class="k">assert</span> <span class="n">pet</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"Fido"</span>
+    <span class="k">assert</span> <span class="n">create_pet</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"Rover"</span>
+    <span class="k">assert</span> <span class="n">update_pet</span><span class="p">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"Spot"</span>
+</code></pre></div></div>
+
+<h2 id="дополнительно">Дополнительно</h2>
+
+<p>Любой класс, производный от <code class="language-plaintext highlighter-rouge">BaseModel</code> pydantic, может использоваться как <code class="language-plaintext highlighter-rouge">__model__</code> фабрики. Для большинства сторонних библиотек, например. <code class="language-plaintext highlighter-rouge">SQLModel</code>, эта библиотека будет работать как есть из коробки.</p>
+
+<p>Есть API для [<a href="ormar" title="Ormar">ormar</a>]</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://github.com/Goldziher/pydantic-factories">гитхаб</a></li>
+  <li>[<a href="pydantic" title="Pydantic">pydantic</a>]</li>
+  <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
+  <li>[<a href="mock-libraries" title="Либы для создания моков">mock-libraries</a>]</li>
+  <li>[<a href="mock" title="Mock-тесты">mock</a>]</li>
+  <li>[<a href="faker" title="Faker - пакет для создания фейковых данных для тестов">faker</a>]</li>
+  <li>[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
