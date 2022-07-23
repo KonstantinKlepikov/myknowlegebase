@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Some pandas trick 2 | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Some pandas trick 2" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Some tricks for creation, get values, set new columns and groupby" />
+<meta property="og:description" content="Some tricks for creation, get values, set new columns and groupby" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-07-23-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2022-07-23-daily-note.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2022-07-23-daily-note.html","headline":"Some pandas trick 2","description":"Some tricks for creation, get values, set new columns and groupby","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Some pandas trick 2</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="create-a-pandas-dataframe-from-multiple-dicts">Create a pandas DataFrame from multiple dicts</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">person1</span> <span class="o">=</span> <span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="mi">01</span><span class="p">,</span> <span class="s">'name'</span><span class="p">:</span> <span class="s">'Jhon'</span><span class="p">,</span> <span class="s">'surname'</span><span class="p">:</span> <span class="s">'Smith'</span><span class="p">,</span> <span class="s">'phone'</span><span class="p">:</span> <span class="s">'555-1234'</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">person2</span> <span class="o">=</span> <span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="mi">01</span><span class="p">,</span> <span class="s">'name'</span><span class="p">:</span> <span class="s">'Jannette'</span><span class="p">,</span> <span class="s">'surname'</span><span class="p">:</span> <span class="s">'Jhonson'</span><span class="p">,</span> <span class="s">'credit'</span><span class="p">:</span> <span class="mf">1000000.00</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">animal1</span> <span class="o">=</span> <span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="mi">03</span><span class="p">,</span> <span class="s">'cname'</span><span class="p">:</span> <span class="s">'cow'</span><span class="p">,</span> <span class="s">'sciname'</span><span class="p">:</span> <span class="s">'Bos....'</span><span class="p">,</span> <span class="s">'legs'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'tails'</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">person1</span><span class="p">])</span>
+   <span class="n">name</span>     <span class="n">phone</span> <span class="n">surname</span>  <span class="nb">type</span>
+<span class="mi">0</span>  <span class="n">Jhon</span>  <span class="mi">555</span><span class="o">-</span><span class="mi">1234</span>   <span class="n">Smith</span>     <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">person1</span><span class="p">,</span> <span class="n">person2</span><span class="p">])</span>
+    <span class="n">credit</span>      <span class="n">name</span>     <span class="n">phone</span>  <span class="n">surname</span>  <span class="nb">type</span>
+<span class="mi">0</span>      <span class="n">NaN</span>      <span class="n">Jhon</span>  <span class="mi">555</span><span class="o">-</span><span class="mi">1234</span>    <span class="n">Smith</span>     <span class="mi">1</span>
+<span class="mi">1</span>  <span class="mi">1000000</span>  <span class="n">Jannette</span>       <span class="n">NaN</span>  <span class="n">Jhonson</span>     <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">.</span><span class="n">from_dict</span><span class="p">([</span><span class="n">person1</span><span class="p">,</span> <span class="n">person2</span><span class="p">])</span>
+    <span class="n">credit</span>      <span class="n">name</span>     <span class="n">phone</span>  <span class="n">surname</span>  <span class="nb">type</span>
+<span class="mi">0</span>      <span class="n">NaN</span>      <span class="n">Jhon</span>  <span class="mi">555</span><span class="o">-</span><span class="mi">1234</span>    <span class="n">Smith</span>     <span class="mi">1</span>
+<span class="mi">1</span>  <span class="mi">1000000</span>  <span class="n">Jannette</span>       <span class="n">NaN</span>  <span class="n">Jhonson</span>     <span class="mi">1</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/17752232/15966204">source</a></p>
+
+<h2 id="how-to-convert-index-of-a-pandas-dataframe-into-a-column">How to convert index of a pandas dataframe into a column</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">[</span><span class="s">'index1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">index</span>
+
+<span class="c1"># or
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/20461206/15966204">source</a>, <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.reset_index.html">reset_index</a></p>
+
+<h2 id="how-to-get-a-value-from-a-cell-of-a-dataframe">How to get a value from a cell of a dataframe</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">sub_df</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+          <span class="n">A</span>         <span class="n">B</span>
+<span class="mi">2</span> <span class="o">-</span><span class="mf">0.133653</span> <span class="o">-</span><span class="mf">0.030854</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">sub_df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
+<span class="n">A</span>   <span class="o">-</span><span class="mf">0.133653</span>
+<span class="n">B</span>   <span class="o">-</span><span class="mf">0.030854</span>
+<span class="n">Name</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">sub_df</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">'A'</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="o">-</span><span class="mf">0.13365288513107493</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/16729808/15966204">source</a></p>
+
+<h2 id="assign-new-columns-to-a-dataframe">Assign new columns to a DataFrame</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">'temp_c'</span><span class="p">:</span> <span class="p">[</span><span class="mf">17.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">]},</span>
+                  <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s">'Portland'</span><span class="p">,</span> <span class="s">'Berkeley'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+          <span class="n">temp_c</span>
+<span class="n">Portland</span>    <span class="mf">17.0</span>
+<span class="n">Berkeley</span>    <span class="mf">25.0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">temp_f</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">temp_c</span> <span class="o">*</span> <span class="mi">9</span> <span class="o">/</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">32</span><span class="p">)</span>
+          <span class="n">temp_c</span>  <span class="n">temp_f</span>
+<span class="n">Portland</span>    <span class="mf">17.0</span>    <span class="mf">62.6</span>
+<span class="n">Berkeley</span>    <span class="mf">25.0</span>    <span class="mf">77.0</span>
+</code></pre></div></div>
+
+<p><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.assign.html">source</a></p>
+
+<h2 id="chart-visualization-in-pandas"><a href="https://pandas.pydata.org/docs/user_guide/visualization.html">Chart Visualization in pandas</a></h2>
+
+<h2 id="pandas-dataframe-groupby-two-columns-and-get-counts">Pandas DataFrame Groupby two columns and get counts</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">,</span><span class="mf">2.6</span><span class="p">,</span><span class="mf">2.6</span><span class="p">,</span><span class="mf">3.4</span><span class="p">,</span><span class="mf">3.4</span><span class="p">,</span><span class="mf">2.6</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">3.3</span><span class="p">],</span> <span class="nb">list</span><span class="p">(</span><span class="s">'AAABBBBABCBDDD'</span><span class="p">),</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">4.2</span><span class="p">,</span><span class="mf">4.3</span><span class="p">,</span><span class="mf">4.5</span><span class="p">,</span><span class="mf">4.6</span><span class="p">,</span><span class="mf">4.7</span><span class="p">,</span><span class="mf">4.7</span><span class="p">,</span><span class="mf">4.8</span><span class="p">],</span> <span class="p">[</span><span class="s">'x/y/z'</span><span class="p">,</span><span class="s">'x/y'</span><span class="p">,</span><span class="s">'x/y/z/n'</span><span class="p">,</span><span class="s">'x/u'</span><span class="p">,</span><span class="s">'x'</span><span class="p">,</span><span class="s">'x/u/v'</span><span class="p">,</span><span class="s">'x/y/z'</span><span class="p">,</span><span class="s">'x'</span><span class="p">,</span><span class="s">'x/u/v/b'</span><span class="p">,</span><span class="s">'-'</span><span class="p">,</span><span class="s">'x/y'</span><span class="p">,</span><span class="s">'x/y/z'</span><span class="p">,</span><span class="s">'x'</span><span class="p">,</span><span class="s">'x/u/v/w'</span><span class="p">],[</span><span class="s">'1'</span><span class="p">,</span><span class="s">'3'</span><span class="p">,</span><span class="s">'3'</span><span class="p">,</span><span class="s">'2'</span><span class="p">,</span><span class="s">'4'</span><span class="p">,</span><span class="s">'2'</span><span class="p">,</span><span class="s">'5'</span><span class="p">,</span><span class="s">'3'</span><span class="p">,</span><span class="s">'6'</span><span class="p">,</span><span class="s">'3'</span><span class="p">,</span><span class="s">'5'</span><span class="p">,</span><span class="s">'1'</span><span class="p">,</span><span class="s">'1'</span><span class="p">,</span><span class="s">'1'</span><span class="p">]]).</span><span class="n">T</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">'col1'</span><span class="p">,</span><span class="s">'col2'</span><span class="p">,</span><span class="s">'col3'</span><span class="p">,</span><span class="s">'col4'</span><span class="p">,</span><span class="s">'col5'</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span>
+   <span class="n">col1</span> <span class="n">col2</span> <span class="n">col3</span>     <span class="n">col4</span> <span class="n">col5</span>
+<span class="mi">0</span>   <span class="mf">1.1</span>    <span class="n">A</span>  <span class="mf">1.1</span>    <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">/</span><span class="n">z</span>    <span class="mi">1</span>
+<span class="mi">1</span>   <span class="mf">1.1</span>    <span class="n">A</span>  <span class="mf">1.7</span>      <span class="n">x</span><span class="o">/</span><span class="n">y</span>    <span class="mi">3</span>
+<span class="mi">2</span>   <span class="mf">1.1</span>    <span class="n">A</span>  <span class="mf">2.5</span>  <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">/</span><span class="n">z</span><span class="o">/</span><span class="n">n</span>    <span class="mi">3</span>
+<span class="mi">3</span>   <span class="mf">2.6</span>    <span class="n">B</span>  <span class="mf">2.6</span>      <span class="n">x</span><span class="o">/</span><span class="n">u</span>    <span class="mi">2</span>
+<span class="mi">4</span>   <span class="mf">2.5</span>    <span class="n">B</span>  <span class="mf">3.3</span>        <span class="n">x</span>    <span class="mi">4</span>
+<span class="mi">5</span>   <span class="mf">3.4</span>    <span class="n">B</span>  <span class="mf">3.8</span>    <span class="n">x</span><span class="o">/</span><span class="n">u</span><span class="o">/</span><span class="n">v</span>    <span class="mi">2</span>
+<span class="mi">6</span>   <span class="mf">2.6</span>    <span class="n">B</span>    <span class="mi">4</span>    <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">/</span><span class="n">z</span>    <span class="mi">5</span>
+<span class="mi">7</span>   <span class="mf">2.6</span>    <span class="n">A</span>  <span class="mf">4.2</span>        <span class="n">x</span>    <span class="mi">3</span>
+<span class="mi">8</span>   <span class="mf">3.4</span>    <span class="n">B</span>  <span class="mf">4.3</span>  <span class="n">x</span><span class="o">/</span><span class="n">u</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="n">b</span>    <span class="mi">6</span>
+<span class="mi">9</span>   <span class="mf">3.4</span>    <span class="n">C</span>  <span class="mf">4.5</span>        <span class="o">-</span>    <span class="mi">3</span>
+<span class="mi">10</span>  <span class="mf">2.6</span>    <span class="n">B</span>  <span class="mf">4.6</span>      <span class="n">x</span><span class="o">/</span><span class="n">y</span>    <span class="mi">5</span>
+<span class="mi">11</span>  <span class="mf">1.1</span>    <span class="n">D</span>  <span class="mf">4.7</span>    <span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">/</span><span class="n">z</span>    <span class="mi">1</span>
+<span class="mi">12</span>  <span class="mf">1.1</span>    <span class="n">D</span>  <span class="mf">4.7</span>        <span class="n">x</span>    <span class="mi">1</span>
+<span class="mi">13</span>  <span class="mf">3.3</span>    <span class="n">D</span>  <span class="mf">4.8</span>  <span class="n">x</span><span class="o">/</span><span class="n">u</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="n">w</span>    <span class="mi">1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'col5'</span><span class="p">,</span> <span class="s">'col2'</span><span class="p">]).</span><span class="n">size</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span>
+<span class="n">col5</span>  <span class="n">col2</span>
+<span class="mi">1</span>     <span class="n">A</span>       <span class="mi">1</span>
+      <span class="n">D</span>       <span class="mi">3</span>
+<span class="mi">2</span>     <span class="n">B</span>       <span class="mi">2</span>
+<span class="mi">3</span>     <span class="n">A</span>       <span class="mi">3</span>
+      <span class="n">C</span>       <span class="mi">1</span>
+<span class="mi">4</span>     <span class="n">B</span>       <span class="mi">1</span>
+<span class="mi">5</span>     <span class="n">B</span>       <span class="mi">2</span>
+<span class="mi">6</span>     <span class="n">B</span>       <span class="mi">1</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">df</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'col5'</span><span class="p">,</span> <span class="s">'col2'</span><span class="p">]).</span><span class="n">size</span><span class="p">().</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nb">max</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span>
+<span class="n">col2</span>
+<span class="n">A</span>       <span class="mi">3</span>
+<span class="n">B</span>       <span class="mi">2</span>
+<span class="n">C</span>       <span class="mi">1</span>
+<span class="n">D</span>       <span class="mi">3</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/17679517/15966204">source</a>, <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html">groupby</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../notes/pandas" title="Pandas">pandas</a>]</li>
+  <li>[<a href="2022-07-10-daily-note" title="Some pandas trick">2022-07-10-daily-note</a>] Sqlalchemy to pandas, statistics, select rows, set and delet values, iterating. And some about IPython</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

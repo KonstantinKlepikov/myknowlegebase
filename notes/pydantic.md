@@ -869,6 +869,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [type-annotation]: type-annotation "Аннотация типов в python"
 [mypy]: mypy "Mypy"
 [openapi-specification]: openapi-specification "Open-api v3 спецификация"
+[pydantic-factories]: pydantic-factories "Pydantic-factories"
 [sql-model]: sql-model "Sql model bd"
 [databases]: databases "Databases"
 [fastapi]: fastapi "Fastapi"

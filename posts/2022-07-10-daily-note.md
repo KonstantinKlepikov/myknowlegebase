@@ -240,6 +240,7 @@ This can be used as context. [Source](https://stackoverflow.com/questions/233888
 
 - [Pandas Getting started tutorials](https://pandas.pydata.org/docs/getting_started/intro_tutorials/index.html)
 - [[pandas]]
+- [[2022-07-23-daily-note]] Some tricks for creation, get values, set new columns and groupby
 - [[lists/sqlalchemy]]
 - [[tqdm]]
 - [[PIL]]
@@ -250,6 +251,7 @@ This can be used as context. [Source](https://stackoverflow.com/questions/233888
 [tqdm]: ../notes/tqdm "Tqdm"
 [pandas]: ../notes/pandas "Pandas"
 [pandas]: ../notes/pandas "Pandas"
+[2022-07-23-daily-note]: 2022-07-23-daily-note "Some pandas trick 2"
 [lists/sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [tqdm]: ../notes/tqdm "Tqdm"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
@@ -260,6 +262,7 @@ This can be used as context. [Source](https://stackoverflow.com/questions/233888
 [tqdm]: ../notes/tqdm "Tqdm"
 [pandas]: ../notes/pandas "Pandas"
 [pandas]: ../notes/pandas "Pandas"
+[2022-07-23-daily-note]: 2022-07-23-daily-note "Some pandas trick 2"
 [lists/sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [tqdm]: ../notes/tqdm "Tqdm"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
