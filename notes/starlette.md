@@ -792,7 +792,7 @@ environ['TESTING'] = 'TRUE'
 [databases]: databases "Databases"
 [sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [alembic]: alembic "Alembic"
-[graphQL]: graphql "GraphQL"
+[graphQL]: graphql "Язфк и система организации АПИ GraphQL"
 [starlette-testclient]: starlette-testclient "Starlette test client"
 [http-requests-errors]: http-requests-errors "Http requests"
 [starlete-список-кодов]: starlete-список-кодов "Starlette список кодов"

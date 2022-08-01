@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Neo4j graph data base | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Neo4j graph data base" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Графовая база данных neo4j" />
+<meta property="og:description" content="Графовая база данных neo4j" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j.html","headline":"Neo4j graph data base","description":"Графовая база данных neo4j","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Neo4j graph data base</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/bd" title="bd" class="link-tags">bd&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/graphs" title="graphs" class="link-tags">graphs&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Графовая база neo4j реализует эффективные алгоритмы запросов к графу. Особенности:</p>
+
+<ul>
+  <li>реализует модель направленного графа со свойствами - узлы и связи содержат свзяи, связи реализуют направление.</li>
+  <li>в neo4j свойства хранятся ввиде пар ключ-значение отдельно от графа, где ключ это строка, а значение - java строка в определенном для этого динамическое хранилище</li>
+  <li>сам граф хранится в виде смежности без индексом (index-free adjacencee) - каждый узел содержит ссылки на смежные с ним узлы. Время исполнения запроса зависит не от общего размера графа, а от размера подграфа, задействованногно в поиске, что наиболее эффективно для запросов, исследующих окрестность начального узла</li>
+  <li>бд поддерживает встраивание значений свойств непосредственно в файл хранения свойств, что для определенных задач (к примеру для коротких значений типа индексов почты) снижает число операций ввод/вывод. кроме того, оптимизируется и хранение имен свойств.</li>
+  <li>узлы могут размечаться метками, что позволяет их группировать</li>
+  <li>связи имеют только один исходящий узел и один входящий (модель не предусматривает мультисвязей)</li>
+  <li>поддержка транзакций. Блокируются операции записи узлов, участвующих в транзакции. Используется журнал предварительной регшистрации записи для гарантий завершения транзакции.</li>
+  <li>реализует репликацию на базе схемы ведущий сервер - подчиненные</li>
+  <li>производится разделение трафика чтения и записи - в основной реализации запись ведется только на ведущий сервер, а чтение только с ведомых</li>
+  <li>доступен распределенный кэш для ускорения процедуры запросов</li>
+  <li>реализован очень быстрый первоначальный импорт данных (инициализация) и пакетный импорт из csv</li>
+  <li>язык запросов - [<a href="cypher" title="Cypher query language">cypher</a>]</li>
+  <li>есть <a href="https://neo4j.com/developer/neo4j-browser/">gui endpoint</a> для визуализации запросов</li>
+  <li>продукт разделен на комьюнити и энтерпрайз версию. Первый вариант ограничен по мощности</li>
+  <li>собственная <a href="https://neo4j.com/developer/graph-data-science/graph-algorithms/">библиотека графовых алгоритмов</a></li>
+</ul>
+
+<p>neo4j реализует два типа поддержки - встроенную и серверную.</p>
+
+<p>Встроенный режим - бд запускается в одном процессе с приложением. Преимущество:</p>
+
+<ul>
+  <li>быстрый отклик</li>
+  <li>большой выбор интерфейсов</li>
+  <li>управление транзакциями</li>
+</ul>
+
+<p>Недостатки:</p>
+
+<ul>
+  <li>только виртуальная машина java</li>
+  <li>звыисимость от сборки мусора, как следствие - длинные паузы между сборками, приводящие к увеличению времени выполнения запросов</li>
+  <li>жизненный цикл БД целиком и полностью связан с приложением</li>
+</ul>
+
+<p>В серверном режиме экземпляры бд запускаются на собственных серверах и доступны через интерфейсы. Преимущества:</p>
+
+<ul>
+  <li>доступ по Rest api</li>
+  <li>не зависит от использующего приложения</li>
+  <li>легко масштабируется</li>
+  <li>не зависит от сборщиков мусора</li>
+</ul>
+
+<p>Недостатки:</p>
+
+<ul>
+  <li>накладные расходы сети</li>
+  <li>проблемы с транзакциями, собирающими большое число запросов</li>
+  <li>сложности с шардитрованием очень больших графов (большие расходы на переходы из одного сегмента графа в другой по сети)</li>
+</ul>
+
+<p>Смотир еще:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/developer/graph-platform/">документация</a></li>
+  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+  <li>[<a href="python-api-neo4j" title="Python api for neo4j">python-api-neo4j</a>]</li>
+  <li><a href="https://hub.docker.com/_/neo4j/?tab=description">container</a></li>
+  <li><a href="https://neo4j.com/developer/docker-run-neo4j/">docker how-to</a></li>
+  <li><a href="https://neo4j.com/labs/kafka/4.0/docker/">docker-compose how to</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

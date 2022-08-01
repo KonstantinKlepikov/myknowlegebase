@@ -770,7 +770,7 @@ a = WPArticle(
 [fastapi]: fastapi "Fastapi"
 [uvicorn]: uvicorn "Uvicorn"
 [scipy]: scipy "Scipy"
-[graphql]: graphql "GraphQL"
+[graphql]: graphql "Язфк и система организации АПИ GraphQL"
 [pydantic]: pydantic "Pydantic"
 [jina]: jina "Jina"
 [machine-learning]: ../lists/machine-learning "Алгоритмы машинного обучения"
