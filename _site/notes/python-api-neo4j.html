@@ -121,14 +121,525 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <p>Смотир еще:</p>
+    <p><a href="https://neo4j.com/developer/python/">Документация</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install neo4j</code></p>
+
+<p>Минимальный пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
+
+<span class="k">class</span> <span class="nc">HelloWorldExample</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="p">.</span><span class="n">driver</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">print_greeting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="n">greeting</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_create_and_return_greeting</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_and_return_greeting</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"CREATE (a:Greeting) "</span>
+                        <span class="s">"SET a.message = $message "</span>
+                        <span class="s">"RETURN a.message + ', from node ' + id(a)"</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">greeter</span> <span class="o">=</span> <span class="n">HelloWorldExample</span><span class="p">(</span><span class="s">"bolt://localhost:7687"</span><span class="p">,</span> <span class="s">"neo4j"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">)</span>
+    <span class="n">greeter</span><span class="p">.</span><span class="n">print_greeting</span><span class="p">(</span><span class="s">"hello, world"</span><span class="p">)</span>
+    <span class="n">greeter</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Более реалистичный пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="p">.</span><span class="n">driver</span><span class="p">(</span><span class="s">"neo4j://localhost:7687"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="s">"neo4j"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">add_friend</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">friend_name</span><span class="p">):</span>
+    <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MERGE (a:Person {name: $name}) "</span>
+           <span class="s">"MERGE (a)-[:KNOWS]-&gt;(friend:Person {name: $friend_name})"</span><span class="p">,</span>
+           <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">friend_name</span><span class="o">=</span><span class="n">friend_name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">print_friends</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person)-[:KNOWS]-&gt;(friend) WHERE a.name = $name "</span>
+                         <span class="s">"RETURN friend.name ORDER BY friend.name"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">"friend.name"</span><span class="p">])</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">add_friend</span><span class="p">,</span> <span class="s">"Arthur"</span><span class="p">,</span> <span class="s">"Guinevere"</span><span class="p">)</span>
+    <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">add_friend</span><span class="p">,</span> <span class="s">"Arthur"</span><span class="p">,</span> <span class="s">"Lancelot"</span><span class="p">)</span>
+    <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">add_friend</span><span class="p">,</span> <span class="s">"Arthur"</span><span class="p">,</span> <span class="s">"Merlin"</span><span class="p">)</span>
+    <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="n">print_friends</span><span class="p">,</span> <span class="s">"Arthur"</span><span class="p">)</span>
+
+<span class="n">driver</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://neo4j.com/docs/api/python-driver/current/">Больше примеров тут</a></p>
+
+<p><a href="https://neo4j.com/developer/example-project/">Пример проекта</a></p>
+
+<h2 id="manual"><a href="https://neo4j.com/docs/python-manual/current/get-started/">Manual</a></h2>
+
+<p>Hello world пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
+<span class="kn">from</span> <span class="nn">neo4j.exceptions</span> <span class="kn">import</span> <span class="n">ServiceUnavailable</span>
+
+<span class="k">class</span> <span class="nc">App</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="p">.</span><span class="n">driver</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Don't forget to close the driver connection when you are finished with it
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">enable_log</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">output_stream</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">output_stream</span><span class="p">)</span>
+        <span class="n">handler</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">"neo4j"</span><span class="p">).</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">"neo4j"</span><span class="p">).</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">create_friendship</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person1_name</span><span class="p">,</span> <span class="n">person2_name</span><span class="p">,</span> <span class="n">knows_from</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="c1"># Write transactions allow the driver to handle retries and transient errors
+</span>            <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">_create_and_return_friendship</span><span class="p">,</span> <span class="n">person1_name</span><span class="p">,</span> <span class="n">person2_name</span><span class="p">,</span> <span class="n">knows_from</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"Created friendship between: {p1}, {p2} from {knows_from}"</span>
+                      <span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+                          <span class="n">p1</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s">'p1'</span><span class="p">],</span>
+                          <span class="n">p2</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s">'p2'</span><span class="p">],</span>
+                          <span class="n">knows_from</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s">"knows_from"</span><span class="p">]))</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_and_return_friendship</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">person1_name</span><span class="p">,</span> <span class="n">person2_name</span><span class="p">,</span> <span class="n">knows_from</span><span class="p">):</span>
+        <span class="c1"># To learn more about the Cypher syntax, see https://neo4j.com/docs/cypher-manual/current/
+</span>        <span class="c1"># The Reference Card is also a good resource for keywords https://neo4j.com/docs/cypher-refcard/current/
+</span>        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">"CREATE (p1:Person { name: $person1_name }) "</span>
+            <span class="s">"CREATE (p2:Person { name: $person2_name }) "</span>
+            <span class="s">"CREATE (p1)-[k:KNOWS { from: $knows_from }]-&gt;(p2) "</span>
+            <span class="s">"RETURN p1, p2, k"</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">person1_name</span><span class="o">=</span><span class="n">person1_name</span><span class="p">,</span>
+                        <span class="n">person2_name</span><span class="o">=</span><span class="n">person2_name</span><span class="p">,</span> <span class="n">knows_from</span><span class="o">=</span><span class="n">knows_from</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[{</span>
+                        <span class="s">"p1"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s">"p1"</span><span class="p">][</span><span class="s">"name"</span><span class="p">],</span>
+                        <span class="s">"p2"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s">"p2"</span><span class="p">][</span><span class="s">"name"</span><span class="p">],</span>
+                        <span class="s">"knows_from"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s">"k"</span><span class="p">][</span><span class="s">"from"</span><span class="p">]</span>
+                    <span class="p">}</span>
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+        <span class="c1"># Capture any errors along with the query and data for traceability
+</span>        <span class="k">except</span> <span class="n">ServiceUnavailable</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+            <span class="n">logging</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s">"{query} raised an error: </span><span class="se">\n</span><span class="s"> {exception}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="n">exception</span><span class="p">))</span>
+            <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">find_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person_name</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_find_and_return_person</span><span class="p">,</span> <span class="n">person_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"Found person: {row}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">row</span><span class="p">))</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">_find_and_return_person</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">person_name</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">"MATCH (p:Person) "</span>
+            <span class="s">"WHERE p.name = $person_name "</span>
+            <span class="s">"RETURN p.name AS name"</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">person_name</span><span class="o">=</span><span class="n">person_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">bolt_url</span> <span class="o">=</span> <span class="s">"%%BOLT_URL_PLACEHOLDER%%"</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="s">"&lt;Username for database&gt;"</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="s">"&lt;Password for database&gt;"</span>
+    <span class="n">App</span><span class="p">.</span><span class="n">enable_log</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">bolt_url</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">create_friendship</span><span class="p">(</span><span class="s">"Alice"</span><span class="p">,</span> <span class="s">"David"</span><span class="p">,</span> <span class="s">"School"</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">find_person</span><span class="p">(</span><span class="s">"Alice"</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="driver-object">Driver object</h3>
+
+<p>В языках, где безопасность потоков является проблемой, объект драйвера можно считать потокобезопасным.</p>
+
+<p>При создании драйверо обязвтельно необходимо предсотавить connection URI и аутентификационную информацию. При необходимости могут быть предоставлены дополнительные сведения о конфигурации. Детали конфигурации неизменяемы в течение всего времени существования объекта Driver. Следовательно, если требуется несколько конфигураций (например, при работе с несколькими пользователями базы данных), необходимо использовать несколько объектов-драйверов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
+
+<span class="k">class</span> <span class="nc">DriverLifecycleExample</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">auth</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="p">.</span><span class="n">driver</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-connection-uris">Подробнее о connection URI’s</a>. <a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-authentication">Там же об аутентификации</a>, <a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-configuration">про конфиги</a> и <a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-logging">логгинг</a></p>
+
+<h3 id="cypher-flow">[<a href="cypher" title="Cypher query language">cypher</a>] flow</h3>
+
+<p>Работа в канале cypher организована в сессии, транзакции и запросы следующим образом:</p>
+
+<p><img src="/myknowlegebase/attachments/2022-08-02-23-33-43.png" alt="cypher flow" /></p>
+
+<h4 id="сессии">Сессии</h4>
+
+<p>Сессии всегда связаны с одним контекстом транзакции , которым обычно является отдельная база данных. Используется механизм закладок, сессии также гарантируют правильную последовательность транзакций, даже если транзакции происходят на нескольких членах кластера (принцип причинно-следственной связи). Сессии, по сути, обеспечивают контекст для хранения информации о последовательности транзакций в виде закладок.</p>
+
+<p>Когда транзакция начинается, сессия, в котором она содержится, получает соединение из пула соединений драйвера. При фиксации (или откате) транзакции сессия снова разрывает это соединение. Это означает, что только когда сессия выполняет работу, он занимает ресурс соединения. В состоянии простоя такой ресурс не используется.</p>
+
+<p>Из-за последовательности, гарантированной сессией, сессии могут одновременно содержать только одну транзакцию. Для параллельного выполнения следует использовать несколько сесиий. В языках, где важна безопасность потоков, сессии не следует считать потокобезопасными.</p>
+
+<p>Закрытие сессии вызывает откат любой открытой транзакции, а связанное с ней соединение, следовательно, возвращается в пул.</p>
+
+<p>Сессии привязаны к одному транзакционному контексту, указанному при построении. Neo4j предоставляет каждую базу данных в своем собственном контексте, тем самым запрещая транзакции между базами данных (или сессии) по дизайну. Точно так же сессии, привязанные к разным базам данных, не могут быть связаны причинно-следственной связью путем распространения закладок между ними.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(...)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="o">//</span> <span class="n">transactions</span> <span class="n">go</span> <span class="n">here</span>
+</code></pre></div></div>
+
+<p><strong>Конфигурация сеанса:</strong></p>
+
+<p><strong>Bookmarks</strong>. Механизм, обеспечивающий причинно-следственную согласованность между транзакциями в сеансе. Закладки неявно передаются между транзакциями в рамках одного сеанса для удовлетворения требований причинно-следственной согласованности. Могут быть сценарии, в которых вы захотите использовать закладку из одного сеанса в другом новом сеансе. По умолчанию сеансы изначально будут создаваться без закладок</p>
+
+<p><strong>Default Access Mode</strong>. Резервный вариант настройки режима доступа, когда функции транзакций не используются. Как правило, режим доступа устанавливается для каждой транзакции путем вызова соответствующего метода функции транзакции. В других случаях этот параметр наследуется. Обратите внимание, что функции транзакций будут игнорировать/переопределять этот параметр. По умолчанию: Запись</p>
+
+<p><strong>Database</strong>. База данных, с которой будет взаимодействовать сессия. При работе с базой данных, которая не является базой данных по умолчанию (например, с system базой данных или другой базой данных в Neo4j 4.0 Enterprise Edition), вы можете явно настроить базу данных, для которой драйвер выполняет транзакции. Разрешение псевдонимов базы данных происходит во время создания соединения, которое не находится под контролем сеанса. Поэтому не рекомендуется изменять псевдонимы базы данных во время активных сеансов.</p>
+
+<p><strong>Fetch Size</strong>. Количество записей, извлекаемых в каждом пакете с сервера. В Neo4j 4.0 появилась возможность извлекать записи пакетами, что позволяет клиентскому приложению контролировать заполнение данных. По умолчанию: 1000 записей</p>
+
+<p>Impersonated User. Пользователи могут запускать транзакции в базе данных как разные пользователи, если им было предоставлено явное разрешение на это. При персонификации пользователя запрос выполняется в полном контексте безопасности данного пользователя пользователя, а не аутентифицированного пользователя (т. е. домашней базы данных, разрешений и т. д.).</p>
+
+<h4 id="транзакции">Транзакции</h4>
+
+<p>Транзакции могут включать операции чтения или записи и, как правило, направляются на соответствующий сервер для выполнения, где они будут выполняться полностью. В случае сбоя транзакции необходимо повторить транзакцию с самого начала.</p>
+
+<p>Драйверы Neo4j обеспечивают управление транзакциями через механизм функции транзакций. Этот механизм раскрывается через методы объекта Session, которые принимают функциональный объект, который может воспроизводиться несколько раз на разных серверах до тех пор, пока он не завершится успешно или не истечет время ожидания. Этот подход рекомендуется для большинства клиентских приложений.</p>
+
+<p>Удобная краткая альтернатива — механизм автоматической фиксации транзакции. Это обеспечивает ограниченную форму управления транзакциями для транзакций с одним запросом в качестве компромисса за несколько меньшие накладные расходы кода. Эта форма транзакции полезна для быстрых сценариев и сред, где не требуются гарантии высокой доступности. Это также необходимая форма транзакции для выполнения PERIODIC COMMIT запросов, которые являются единственным типом Cypher Query для управления своими собственными транзакциями.</p>
+
+<p>API неуправляемых транзакций более низкого уровня также доступен для расширенных вариантов использования. Это полезно, когда клиент применяет альтернативный уровень управления транзакциями, в котором обработка ошибок и повторные попытки должны управляться особым образом.</p>
+
+<p><a href="https://neo4j.com/docs/python-manual/current/session-api/#python-driver-simple-transaction-fn">Функции транзакций</a> используются для содержания транзакционных единиц работы. Эта форма транзакции требует минимального шаблонного кода и позволяет четко разделить запросы к базе данных и логику приложения.</p>
+
+<p>Функции транзакций также желательны, поскольку они инкапсулируют логику повторных попыток и обеспечивают максимальную гибкость при замене одного экземпляра сервера на кластер.</p>
+
+<p>Функции транзакций могут вызываться как операции чтения или записи. Этот выбор направит транзакцию на соответствующий сервер в кластерной среде. Если вы работаете в среде с одним экземпляром, эта маршрутизация не имеет значения. Это дает вам гибкость, если вы решите позже использовать кластерную среду.</p>
+
+<p>Прежде чем писать функцию транзакции, важно убедиться, что она спроектирована как идемпотентная. Это связано с тем, что функция может выполняться несколько раз, если первоначальные запуски завершаются неудачно.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">unit_of_work</span>
+
+<span class="o">@</span><span class="n">unit_of_work</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"CREATE (a:Person {name: $name}) RETURN id(a)"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">).</span><span class="n">single</span><span class="p">().</span><span class="n">value</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">add_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_person</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://neo4j.com/docs/python-manual/current/session-api/#python-driver-simple-autocommit-transactions">Транзакция с автоматической фиксацией</a> — это базовая, но ограниченная форма транзакции. Такая транзакция состоит только из одного запроса Cypher и не повторяется автоматически в случае сбоя. Следовательно, любые сценарии ошибок должны обрабатываться самим клиентским приложением.</p>
+
+<p>Транзакции с автоматической фиксацией служат следующим целям:</p>
 
 <ul>
-  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
-  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+  <li>простые варианты использования, например, при изучении Cypher или написании одноразовых сценариев.</li>
+  <li>такие операции, как пакетные операции загрузки данных, когда драйвер не может знать о зафиксированном состоянии и, следовательно, не может безопасно запросить повторную попытку. В этих обстоятельствах оператору придется выполнить повторную попытку или отменить операцию.</li>
+</ul>
+
+<p>Драйвер не повторяет запросы автоматической фиксации в случае сбоя, поскольку он не знает, какое состояние было зафиксировано в момент сбоя.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">Query</span>
+
+<span class="k">def</span> <span class="nf">add_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"CREATE (a:Person {name: $name})"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Alternative implementation, with a one second timeout
+</span><span class="k">def</span> <span class="nf">add_person_within_a_second</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">Query</span><span class="p">(</span><span class="s">"CREATE (a:Person {name: $name})"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Конфигурация транзакции:</strong></p>
+
+<p><strong>Transaction Timeout</strong>. Можно указать значение тайм-аута, и транзакции, выполнение которых на сервере занимает больше времени, чем это значение, будут прекращены. Это значение переопределит значение, установленное <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code>. Если значение не указано, значение по умолчанию принимается настройкой сервера. При использовании с Neo4j 4.1 и более ранними версиями драйвер может переопределить любое значение, установленное с помощью <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code>. В 4.2 и более поздних версиях <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code> также действует как максимум, который драйвер не может переопределить. Например, при настройке сервера <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout=10s</code> драйвер может указать более короткое время ожидания (например, 5 секунд), но не более 10 секунд. Если указано большее значение, транзакция все равно прервется через 10 секунд.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">unit_of_work</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="s">"CREATE (a:Person {name: $name}) RETURN id(a)"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">).</span><span class="n">single</span><span class="p">().</span><span class="n">value</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">add_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_person</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Metadata</strong>. Транзакции могут быть помечены метаданными, которые будут прикреплены к выполняемой транзакции и видны в различных выходных данных при перечислении транзакций и запросов, а также в журнале запросов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">unit_of_work</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s">"applicationId"</span><span class="p">:</span> <span class="s">"123"</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="s">"CREATE (a:Person {name: $name}) RETURN id(a)"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">).</span><span class="n">single</span><span class="p">().</span><span class="n">value</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">add_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_person</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="запросы-и-результаты">Запросы и результаты</h3>
+
+<p>Запросы состоят из запроса серверу на выполнение оператора Cypher, за которым следует ответ клиенту с результатом. Результаты передаются в виде потока записей вместе с метаданными и могут постепенно использоваться клиентским приложением.</p>
+
+<p>Для выполнения Cypher Query требуется текст запроса вместе с необязательным набором именованных параметров. Текст может содержать заполнители параметров  которые заменяются соответствующими значениями во время выполнения. Несмотря на то, что можно запускать непараметризованные запросы Cypher, <strong>хорошей практикой программирования является использование параметров в запросах Cypher, когда это возможно</strong>. Это позволяет кэшировать запросы внутри Cypher Engine, что положительно сказывается на производительности. Значения параметров должны соответствовать значениям Cypher.</p>
+
+<p>Результаты запроса обычно используются в виде потока записей. Драйверы предоставляют способ итерации через этот поток.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">match_person_nodes</span><span class="p">(</span><span class="n">tx</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person) RETURN a.name ORDER BY a.name"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">record</span><span class="p">[</span><span class="s">"a.name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">people</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="n">match_person_nodes</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В рамках сеанса одновременно может быть активен только один поток результатов . Таким образом, если результат одного запроса не используется полностью до выполнения другого запроса, оставшаяся часть первого результата будет автоматически помещена в буфер в объекте результата. Этот буфер обеспечивает промежуточную точку для результатов и разделяет обработку результатов на выборку (перемещение из сети в буфер) и потребление (перемещение из буфера в приложение).</p>
+
+<p><img src="/myknowlegebase/attachments/2022-08-03-00-11-27.png" alt="neo4j buffer" /></p>
+
+<p>Для больших результатов буфер результатов может потребовать значительного объема памяти. По этой причине рекомендуется потреблять результаты по возможности по порядку/</p>
+
+<p>Клиентские приложения могут управлять более сложными шаблонами запросов, явно сохраняя результаты. Такое явное сохранение может также быть полезным, когда результат необходимо сохранить для будущей обработки. Драйвер ет поддержку этого процесса.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_employee_to_company</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">company_name</span><span class="p">):</span>
+    <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (emp:Person {name: $person_name}) "</span>
+           <span class="s">"MERGE (com:Company {name: $company_name}) "</span>
+           <span class="s">"MERGE (emp)-[:WORKS_FOR]-&gt;(com)"</span><span class="p">,</span>
+           <span class="n">person_name</span><span class="o">=</span><span class="n">person</span><span class="p">[</span><span class="s">"name"</span><span class="p">],</span> <span class="n">company_name</span><span class="o">=</span><span class="n">company_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">match_person_nodes</span><span class="p">(</span><span class="n">tx</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person) RETURN a.name AS name"</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">add_employees</span><span class="p">(</span><span class="n">company_name</span><span class="p">):</span>
+    <span class="n">employees</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">persons</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="n">match_person_nodes</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">persons</span><span class="p">:</span>
+            <span class="n">employees</span> <span class="o">+=</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">add_employee_to_company</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">company_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">employees</span>
+</code></pre></div></div>
+
+<h4 id="причинная-цепочка-и-закладки">Причинная цепочка и закладки</h4>
+
+<p>При работе с причинно-следственным кластером транзакции могут быть объединены в цепочку через сеанс для обеспечения причинно-следственной согласованности. Это означает, что для любых двух транзакций гарантируется, что вторая транзакция начнется только после того, как первая будет успешно зафиксирована. Это справедливо даже в том случае, если транзакции выполняются на разных физических элементах кластера.</p>
+
+<p>Внутри причинно-следственная цепочка осуществляется путем передачи закладок между транзакциями. Каждая закладка записывает одну или несколько точек в истории транзакций для конкретной базы данных и может использоваться для информирования членов кластера о необходимости выполнения единиц работы в определенной последовательности. При получении закладки сервер будет блокироваться до тех пор, пока не достигнет соответствующего момента времени транзакции.</p>
+
+<p>Начальная закладка отправляется от клиента к серверу при начале новой транзакции, а окончательная закладка возвращается при успешном завершении. Обратите внимание, что это относится как к транзакциям чтения, так и к транзакциям записи.</p>
+
+<p>Распространение закладок выполняется автоматически в рамках сеансов и не требует каких-либо явных сигналов или настроек от приложения. Чтобы отказаться от этого механизма, для несвязанных единиц работы приложения могут использовать несколько сеансов. Это позволяет избежать накладных расходов на небольшую задержку в причинно-следственной цепочке.</p>
+
+<p>Закладки можно передавать между сеансами, извлекая последнюю закладку из сеанса и передавая ее в построение другого. Несколько закладок также можно комбинировать, если транзакция имеет более одного логического предшественника. Обратите внимание, что только при цепочке между сеансами приложение должно работать с закладками напрямую.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-08-02-23-45-36.png" alt="neo4j session" /></p>
+
+<p>Пример реализации закладки:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
+
+<span class="k">class</span> <span class="nc">BookmarksExample</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">auth</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">GraphDatabase</span><span class="p">.</span><span class="n">driver</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Create a person node.
+</span>    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"CREATE (:Person {name: $name})"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Create an employment relationship to a pre-existing company node.
+</span>    <span class="c1"># This relies on the person first having been created.
+</span>    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">employ</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">person_name</span><span class="p">,</span> <span class="n">company_name</span><span class="p">):</span>
+        <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (person:Person {name: $person_name}) "</span>
+               <span class="s">"MATCH (company:Company {name: $company_name}) "</span>
+               <span class="s">"CREATE (person)-[:WORKS_FOR]-&gt;(company)"</span><span class="p">,</span>
+               <span class="n">person_name</span><span class="o">=</span><span class="n">person_name</span><span class="p">,</span> <span class="n">company_name</span><span class="o">=</span><span class="n">company_name</span><span class="p">)</span>
+
+    <span class="c1"># Create a friendship between two people.
+</span>    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">create_friendship</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">name_a</span><span class="p">,</span> <span class="n">name_b</span><span class="p">):</span>
+        <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person {name: $name_a}) "</span>
+               <span class="s">"MATCH (b:Person {name: $name_b}) "</span>
+               <span class="s">"MERGE (a)-[:KNOWS]-&gt;(b)"</span><span class="p">,</span>
+               <span class="n">name_a</span><span class="o">=</span><span class="n">name_a</span><span class="p">,</span> <span class="n">name_b</span><span class="o">=</span><span class="n">name_b</span><span class="p">)</span>
+
+    <span class="c1"># Match and display all friendships.
+</span>    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">print_friendships</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">tx</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a)-[:KNOWS]-&gt;(b) RETURN a.name, b.name"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"{} knows {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">"a.name"</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s">"b.name"</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">saved_bookmarks</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># To collect the session bookmarks
+</span>
+        <span class="c1"># Create the first person and employment relationship.
+</span>        <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session_a</span><span class="p">:</span>
+            <span class="n">session_a</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">create_person</span><span class="p">,</span> <span class="s">"Alice"</span><span class="p">)</span>
+            <span class="n">session_a</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">employ</span><span class="p">,</span> <span class="s">"Alice"</span><span class="p">,</span> <span class="s">"Wayne Enterprises"</span><span class="p">)</span>
+            <span class="n">saved_bookmarks</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">session_a</span><span class="p">.</span><span class="n">last_bookmark</span><span class="p">())</span>
+
+        <span class="c1"># Create the second person and employment relationship.
+</span>        <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session_b</span><span class="p">:</span>
+            <span class="n">session_b</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">create_person</span><span class="p">,</span> <span class="s">"Bob"</span><span class="p">)</span>
+            <span class="n">session_b</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">employ</span><span class="p">,</span> <span class="s">"Bob"</span><span class="p">,</span> <span class="s">"LexCorp"</span><span class="p">)</span>
+            <span class="n">saved_bookmarks</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">session_b</span><span class="p">.</span><span class="n">last_bookmark</span><span class="p">())</span>
+
+        <span class="c1"># Create a friendship between the two people created above.
+</span>        <span class="k">with</span> <span class="bp">self</span><span class="p">.</span><span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(</span><span class="n">bookmarks</span><span class="o">=</span><span class="n">saved_bookmarks</span><span class="p">)</span> <span class="k">as</span> <span class="n">session_c</span><span class="p">:</span>
+            <span class="n">session_c</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">create_friendship</span><span class="p">,</span> <span class="s">"Alice"</span><span class="p">,</span> <span class="s">"Bob"</span><span class="p">)</span>
+            <span class="n">session_c</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">print_friendships</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="маршрутизация-транзакций-с-использованием-режимов-доступа">Маршрутизация транзакций с использованием режимов доступа</h4>
+
+<p>Транзакции могут выполняться как в режиме чтения, так и в режиме записи В причинно-следственном кластере каждая транзакция будет направляться на соответствующий сервер в зависимости от режима. При использовании одного экземпляра все транзакции будут передаваться на этот сервер.</p>
+
+<p>Маршрутизация Cypher путем идентификации операций чтения и записи может улучшить использование доступных ресурсов кластера. Поскольку серверов чтения обычно больше, чем серверов записи, выгодно направлять трафик чтения на серверы чтения, а не на сервер записи. Это помогает поддерживать доступность серверов записи для транзакций записи.</p>
+
+<p>Режим доступа обычно определяется методом, используемым для вызова функции транзакции. Сеансовые классы предоставляют метод для вызова операций чтения и другой метод для записи.</p>
+
+<p>В качестве запасного варианта для автоматической фиксации и неуправляемых транзакций на уровне сеанса также может быть предоставлен режим доступа по умолчанию. Это используется только в тех случаях, когда режим доступа не может быть указан иначе. Если в этом сеансе используется функция транзакции, режим доступа по умолчанию будет переопределен.</p>
+
+<p>Драйвер не анализирует Cypher и поэтому не может автоматически определить, предназначена ли транзакция для выполнения операций чтения или записи. В результате транзакция записи, помеченная как чтение, все равно будет отправлена ​​на сервер чтения, но при выполнении произойдет сбой.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_person_node</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"CREATE (a:Person {name: $name})"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">match_person_node</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person {name: $name}) RETURN count(a)"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">add_person</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_person_node</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">persons</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="n">match_person_node</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">persons</span>
+</code></pre></div></div>
+
+<h4 id="базы-данных-и-контекст-выполнения"><a href="https://neo4j.com/docs/python-manual/current/cypher-workflow/#python-driver-databases">Базы данных и контекст выполнения</a></h4>
+
+<p>Neo4j предлагает возможность работы с несколькими базами данных в рамках одной СУБД.</p>
+
+<p><strong>Для Community Edition это ограничено одной пользовательской базой данных плюс system база данных.</strong></p>
+
+<p>С точки зрения драйвера API сеансы имеют область действия СУБД, и базу данных по умолчанию для сеанса можно выбрать при построении сеанса. База данных по умолчанию используется в качестве цели для запросов, которые явно не указывают базу данных с USE.</p>
+
+<p>В среде с несколькими базами данных сервер помечает одну базу данных как базу данных по умолчанию. Это выбирается всякий раз, когда сеанс создается без указания конкретной базы данных по умолчанию. В среде с одной базой данных эта база данных всегда используется по умолчанию.</p>
+
+<p>Вы передаете имя базы данных драйверу во время создания сеанса. Если вы не укажете имя, будет использоваться база данных по умолчанию. Имя базы данных не должно быть null ни, ни пустой строкой.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">READ_ACCESS</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s">"example"</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"CREATE (a:Greeting {message: 'Hello, Example-Database'}) RETURN a"</span><span class="p">).</span><span class="n">consume</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s">"example"</span><span class="p">,</span> <span class="n">default_access_mode</span><span class="o">=</span><span class="n">READ_ACCESS</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Greeting) RETURN a.message as msg"</span><span class="p">).</span><span class="n">single</span><span class="p">().</span><span class="n">get</span><span class="p">(</span><span class="s">"msg"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="сопоставление-типов">Сопоставление типов</h4>
+
+<p>Для передачи параметров и обработки результатов важно знать основы работы Cypher с типами и понимать, как типы Cypher отображаются в драйвере.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-08-02-23-55-50.png" alt="types in neo4j" /></p>
+
+<p>Подробнее о сопоставлении типов <a href="https://neo4j.com/docs/python-manual/current/cypher-workflow/#python-driver-type-mapping">читай тут</a></p>
+
+<h4 id="исключения-и-обработка-ошибок"><a href="https://neo4j.com/docs/python-manual/current/cypher-workflow/#python-driver-exceptions-errors">Исключения и обработка ошибок</a></h4>
+
+<h2 id="py2neo"><a href="https://neo4j.com/developer/python/#py2neo-lib">Py2neo</a></h2>
+
+<p>Py2neo is a client library and comprehensive toolkit for working with Neo4j from within Python applications and from the command line.</p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install py2neo</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+
+<span class="n">tx</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">"Alice"</span><span class="p">,</span> <span class="s">"Bob"</span><span class="p">,</span> <span class="s">"Carol"</span><span class="p">]:</span>
+    <span class="n">tx</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"CREATE (person:Person name: $name) RETURN person"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+<span class="n">alice</span><span class="p">,</span> <span class="n">bob</span><span class="p">,</span> <span class="n">carol</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="p">.</span><span class="n">one</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">tx</span><span class="p">.</span><span class="n">commit</span><span class="p">()]</span>
+</code></pre></div></div>
+
+<h2 id="neomodel"><a href="https://neo4j.com/developer/python/#neomodel-lib">Neomodel</a></h2>
+
+<p>An Object Graph Mapper (OGM) for the neo4j graph database, built on the awesome neo4j_driver</p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install neomodel</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neomodel</span> <span class="kn">import</span> <span class="n">StructuredNode</span><span class="p">,</span> <span class="n">StringProperty</span><span class="p">,</span> <span class="n">RelationshipTo</span><span class="p">,</span> <span class="n">RelationshipFrom</span><span class="p">,</span> <span class="n">config</span>
+
+<span class="n">config</span><span class="p">.</span><span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="s">'bolt://neo4j:test@localhost:7687'</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">StructuredNode</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringProperty</span><span class="p">(</span><span class="n">unique_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">RelationshipTo</span><span class="p">(</span><span class="s">'Author'</span><span class="p">,</span> <span class="s">'AUTHOR'</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Author</span><span class="p">(</span><span class="n">StructuredNode</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringProperty</span><span class="p">(</span><span class="n">unique_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">books</span> <span class="o">=</span> <span class="n">RelationshipFrom</span><span class="p">(</span><span class="s">'Book'</span><span class="p">,</span> <span class="s">'AUTHOR'</span><span class="p">)</span>
+
+<span class="n">harry_potter</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Harry potter and the..'</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+<span class="n">rowling</span> <span class="o">=</span>  <span class="n">Author</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'J. K. Rowling'</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+<span class="n">harry_potter</span><span class="p">.</span><span class="n">author</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">rowling</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Смотир еще:</p>
+
+<ul>
   <li><a href="https://github.com/neo4j/neo4j-python-driver">neo4j-python-driver</a> Neo4j Bolt driver for Python. <a href="https://neo4j.com/developer/python/">docs</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/">Driver API docs</a></li>
+  <li><a href="https://neo4j.com/docs/python-manual/current/">The Neo4j Python Driver Manual v4.4</a></li>
+  <li><a href="https://py2neo.org/2021.1/">pytoneo</a></li>
   <li><a href="https://github.com/neo4j-contrib/neomodel">neomodel</a> An Object Graph Mapper (OGM) for the Neo4j graph database.</li>
   <li><a href="https://github.com/emehrkay/Pypher">pypher</a> Python Cypher Querybuilder</li>
+  <li><a href="https://neo4j.com/developer/example-project/">Пример проекта</a></li>
+  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
 </ul>
 
 
