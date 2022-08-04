@@ -128,25 +128,25 @@
 
 <p>Узлы в cypher могут быть анонимными (результат будет отброшен в конце вычисленийц) или поименованными меткой. Результат можно присваивать переменной.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">()</span>                  <span class="o">//</span><span class="n">anonymous</span> <span class="n">node</span> <span class="p">(</span><span class="k">no</span> <span class="n">label</span> <span class="k">or</span> <span class="k">variable</span><span class="p">)</span>
-                    <span class="o">//</span><span class="n">can</span> <span class="n">refer</span> <span class="k">to</span> <span class="k">any</span> <span class="n">node</span> <span class="k">in</span> <span class="n">the</span> <span class="k">database</span>
-<span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span><span class="p">)</span>          <span class="o">//</span><span class="k">using</span> <span class="k">variable</span> <span class="n">p</span> <span class="k">and</span> <span class="n">label</span> <span class="n">Person</span>
-<span class="p">(:</span><span class="n">Technology</span><span class="p">)</span>       <span class="o">//</span><span class="k">no</span> <span class="k">variable</span><span class="p">,</span> <span class="n">label</span> <span class="n">Technology</span>
-<span class="p">(</span><span class="k">work</span><span class="p">:</span><span class="n">Company</span><span class="p">)</span>      <span class="o">//</span><span class="k">using</span> <span class="k">variable</span> <span class="k">work</span> <span class="k">and</span> <span class="n">label</span> <span class="n">Company</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">()</span>                  <span class="c1">//anonymous node (no label or variable)</span>
+                    <span class="c1">//can refer to any node in the database</span>
+<span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>          <span class="c1">//using variable p and label Person</span>
+<span class="ss">(</span><span class="nc">:Technology</span><span class="ss">)</span>       <span class="c1">//no variable, label Technology</span>
+<span class="ss">(</span><span class="py">work:</span><span class="n">Company</span><span class="ss">)</span>      <span class="c1">//using variable work and label Company</span>
 </code></pre></div></div>
 
-<p>Отношения представлены в Cypher с помощью стрелки –&gt; или &lt;– между двумя узлами. Ненаправленные отношения представлены без стрелки и только с двумя тире –. Это означает, что связь может быть пройдена в любом направлении. Хотя направление должно быть указано для связи в бд, его можно сопоставить с ненаправленным отношением, когда Cypher игнорирует любое конкретное направление и извлекает отношение и подключенные узлы, независимо от физического направления. Это позволяет запросам быть гибкими и не заставлять пользователя знать физическое направление отношений, хранящихся в базе данных.</p>
+<p>Отношения представлены в Cypher с помощью стрелки <code class="language-plaintext highlighter-rouge">--&gt;</code> или <code class="language-plaintext highlighter-rouge">&lt;--</code> между двумя узлами. Ненаправленные отношения представлены без стрелки и только с двумя тире <code class="language-plaintext highlighter-rouge">--</code>. Это означает, что связь может быть пройдена в любом направлении. Хотя направление должно быть указано для связи в бд, его можно сопоставить с ненаправленным отношением, когда Cypher игнорирует любое конкретное направление и извлекает отношение и подключенные узлы, независимо от физического направления. Это позволяет запросам быть гибкими и не заставлять пользователя знать физическое направление отношений, хранящихся в базе данных.</p>
 
 <p>Если данные хранятся с одним направлением связи, а в запросе указано неправильное направление, Cypher не вернет никаких результатов. В тех случаях, когда вы не уверены в направлении, лучше использовать ненаправленную связь и получить некоторые результаты.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">//</span><span class="k">data</span> <span class="n">stored</span> <span class="k">with</span> <span class="n">this</span> <span class="n">direction</span>
-<span class="k">CREATE</span> <span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">LIKES</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">:</span><span class="n">Technology</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//data stored with this direction</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span>
 
-<span class="o">//</span><span class="n">query</span> <span class="n">relationship</span> <span class="n">backwards</span> <span class="n">will</span> <span class="k">not</span> <span class="k">return</span> <span class="n">results</span>
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[:</span><span class="n">LIKES</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">t</span><span class="p">:</span><span class="n">Technology</span><span class="p">)</span>
+<span class="c1">//query relationship backwards will not return results</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">&lt;-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span>
 
-<span class="o">//</span><span class="n">better</span> <span class="k">to</span> <span class="n">query</span> <span class="k">with</span> <span class="n">undirected</span> <span class="n">relationship</span> <span class="n">unless</span> <span class="n">sure</span> <span class="k">of</span> <span class="n">direction</span>
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">LIKES</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">t</span><span class="p">:</span><span class="n">Technology</span><span class="p">)</span>
+<span class="c1">//better to query with undirected relationship unless sure of direction</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span>
 </code></pre></div></div>
 
 <p>Типы отношений классифицируют отношения и придают им значение, аналогично тому, как метки группируют узлы. Обычно вы можете идентифицировать отношения в своей модели данных, найдя действия или глаголы. Вы можете указать любой тип отношений между узлами, который вы хотите, но мы рекомендуем использовать хорошие соглашения об именах, используя глаголы и действия. Плохие имена типов отношений затрудняют чтение и запись Cypher (помните, это должно звучать как английский!).</p>
@@ -167,118 +167,779 @@
 
 <p>Основой всех запросов в cypher являются паттерны. Пример:</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="nv">"Jennifer"</span><span class="err">}</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">rel</span><span class="p">:</span><span class="n">LIKES</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="k">g</span><span class="p">:</span><span class="n">Technology</span> <span class="err">{</span><span class="k">type</span><span class="p">:</span> <span class="nv">"Graphs"</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s2">"Jennifer"</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">g:</span><span class="n">Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="s2">"Graphs"</span><span class="ss">})</span>
 </code></pre></div></div>
 
-<h2 id="cypher-keywords"><a href="https://neo4j.com/developer/cypher/querying/">cypher keywords</a></h2>
+<h2 id="querues"><a href="https://neo4j.com/developer/cypher/querying/">querues</a></h2>
 
 <p>Как и в большинстве языков программирования, в Cypher есть несколько слов, зарезервированных для определенных действий в частях запроса. Нам нужна возможность создавать, читать, обновлять или удалять данные в Neo4j, и ключевые слова помогают нам выполнять эту функцию.</p>
 
-<p><strong>MATCH</strong>. Ключевое слово MATCH в Cypher — это то, что ищет существующий узел, отношение, метку, свойство или шаблон в базе данных. Если вы знакомы с SQL, MATCH работает почти так же, как SELECT в SQL.</p>
+<p><strong>MATCH</strong>. Ключевое слово <code class="language-plaintext highlighter-rouge">MATCH</code> в Cypher — это то, что ищет существующий узел, отношение, метку, свойство или шаблон в базе данных. Если вы знакомы с SQL, <code class="language-plaintext highlighter-rouge">MATCH</code> работает почти так же, как SELECT в SQL.</p>
 
-<p>Вы можете найти все метки узлов в базе данных, выполнить поиск определенного узла, найти все узлы с определенной взаимосвязью, найти закономерности узлов и взаимосвязей и многое другое с помощью MATCH.</p>
+<p>Вы можете найти все метки узлов в базе данных, выполнить поиск определенного узла, найти все узлы с определенной взаимосвязью, найти закономерности узлов и взаимосвязей и многое другое с помощью <code class="language-plaintext highlighter-rouge">MATCH</code>.</p>
 
-<p><strong>RETURN</strong>. Ключевое слово RETURN в Cypher указывает, какие значения или результаты вы хотите вернуть из запроса Cypher. Вы можете указать Cypher возвращать узлы, отношения, свойства узлов и отношений или шаблоны в результатах вашего запроса. RETURN не требуется при выполнении процедур записи, но необходим для чтения.</p>
+<p><strong>RETURN</strong>. Ключевое слово <code class="language-plaintext highlighter-rouge">RETURN</code> в Cypher указывает, какие значения или результаты вы хотите вернуть из запроса Cypher. Вы можете указать Cypher возвращать узлы, отношения, свойства узлов и отношений или шаблоны в результатах вашего запроса. <code class="language-plaintext highlighter-rouge">RETURN</code> не требуется при выполнении процедур записи, но необходим для чтения.</p>
 
-<p>Переменные узла и отношения, которые мы обсуждали ранее, становятся важными при использовании RETURN. Чтобы вернуть узлы, отношения, свойства или шаблоны, вам необходимо указать переменные в вашем MATCH предложении для данных, которые вы хотите вернуть.</p>
+<p>Переменные узла и отношения, которые мы обсуждали ранее, становятся важными при использовании <code class="language-plaintext highlighter-rouge">RETURN</code>. Чтобы вернуть узлы, отношения, свойства или шаблоны, вам необходимо указать переменные в вашем <code class="language-plaintext highlighter-rouge">MATCH</code> предложении для данных, которые вы хотите вернуть.</p>
 
 <p>Все узлы с меткой Person</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
 <span class="k">RETURN</span> <span class="n">p</span>
 <span class="k">LIMIT</span> <span class="mi">1</span>
 </code></pre></div></div>
 
 <p>С определенным значением свойства на узле (имя режисера)</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(</span><span class="n">tom</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Tom Hanks'</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">tom:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Tom Hanks'</span><span class="ss">})</span>
 <span class="k">RETURN</span> <span class="n">tom</span>
 </code></pre></div></div>
 
 <p>Фильмы данного режиссера</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Tom Hanks'</span><span class="err">}</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">DIRECTED</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">movie</span><span class="p">:</span><span class="n">Movie</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Tom Hanks'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="nc">:DIRECTED</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">movie:</span><span class="n">Movie</span><span class="ss">)</span>
 <span class="k">RETURN</span> <span class="n">movie</span>
 </code></pre></div></div>
 
-<p>Как и в случае с SQL, вы можете переименовать возвращаемые результаты, используя AS и псевдоним свойства с более понятным именем.</p>
+<p>Как и в случае с cypher, вы можете переименовать возвращаемые результаты, используя AS и псевдоним свойства с более понятным именем.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">//</span><span class="n">cleaner</span> <span class="n">printed</span> <span class="n">results</span> <span class="k">with</span> <span class="n">aliasing</span>
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">tom</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="s1">'Tom Hanks'</span><span class="err">}</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">rel</span><span class="p">:</span><span class="n">DIRECTED</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">movie</span><span class="p">:</span><span class="n">Movie</span><span class="p">)</span>
-<span class="k">RETURN</span> <span class="n">tom</span><span class="p">.</span><span class="n">name</span>
-<span class="k">AS</span> <span class="n">name</span><span class="p">,</span> <span class="n">tom</span><span class="p">.</span><span class="n">born</span>
-<span class="k">AS</span> <span class="nv">`Year Born`</span><span class="p">,</span> <span class="n">movie</span><span class="p">.</span><span class="n">title</span>
-<span class="k">AS</span> <span class="n">title</span><span class="p">,</span> <span class="n">movie</span><span class="p">.</span><span class="n">released</span>
-<span class="k">AS</span> <span class="nv">`Year Released`</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//cleaner printed results with aliasing</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">tom:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span><span class="s1">'Tom Hanks'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">DIRECTED</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">movie:</span><span class="n">Movie</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">tom.name</span> <span class="k">AS</span> <span class="n">name</span><span class="ss">,</span>
+<span class="n">tom.born</span> <span class="k">AS</span> <span class="sb">`Year Born`</span><span class="ss">,</span>
+<span class="n">movie.title</span> <span class="k">AS</span> <span class="n">title</span><span class="ss">,</span>
+<span class="n">movie.released</span> <span class="k">AS</span> <span class="sb">`Year Released`</span>
 </code></pre></div></div>
 
-<h3 id="create-update-and-delete-operations"><a href="https://neo4j.com/developer/cypher/updating/">Create, Update, and Delete Operations</a></h3>
+<h2 id="create-update-and-delete-operations"><a href="https://neo4j.com/developer/cypher/updating/">Create, Update, and Delete Operations</a></h2>
 
 <p>CRUD в графе работаtт немного иначе, чем в других типах баз данных.</p>
 
-<p>Добавление данных в Cypher работает очень похоже на оператор вставки любого другого языка доступа к данным. Однако вместо INSERT, как в SQL, Cypher использует CREATE. Вы можете использовать CREATE для вставки узлов, отношений и шаблонов в Neo4j.</p>
+<p>Добавление данных в Cypher работает очень похоже на оператор вставки любого другого языка доступа к данным. Однако вместо INSERT, как в SQL, Cypher использует <code class="language-plaintext highlighter-rouge">CREATE</code>. Вы можете использовать <code class="language-plaintext highlighter-rouge">CREATE</code> для вставки узлов, отношений и шаблонов в Neo4j.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="p">(</span><span class="n">friend</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Mark'</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span><span class="w"> </span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
 <span class="k">RETURN</span> <span class="n">friend</span>
 
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">jennifer</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span>
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">mark</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Mark'</span><span class="err">}</span><span class="p">)</span>
-<span class="k">CREATE</span> <span class="p">(</span><span class="n">jennifer</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">rel</span><span class="p">:</span><span class="n">IS_FRIENDS_WITH</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">mark</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">jennifer:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">mark:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="ss">(</span><span class="n">jennifer</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="n">mark</span><span class="ss">)</span>
 </code></pre></div></div>
 
-<p>Обратите внимание, что мы запускаем два MATCH запроса, прежде чем создать связь между узлами. Почему это? Причина, по которой мы сначала выполняем сопоставление для узла Дженнифер и сопоставления для узла Марка, заключается в том, что CREATE ключевое слово выполняет слепую вставку и создает весь шаблон, независимо от того, существует ли он уже в базе данных. Это означает, что при выполнении приведенного ниже оператора Cypher будут вставлены дубликаты узлов Jennifer и Mark. Чтобы этого избежать, наш предыдущий запрос сначала нашел существующие узлы, а затем создал между ними новую связь.</p>
+<p>Обратите внимание, что мы запускаем два <code class="language-plaintext highlighter-rouge">MATCH</code> запроса, прежде чем создать связь между узлами. Почему это? Причина, по которой мы сначала выполняем сопоставление для узла Дженнифер и сопоставления для узла Марка, заключается в том, что <code class="language-plaintext highlighter-rouge">CREATE</code> ключевое слово выполняет слепую вставку и создает весь шаблон, независимо от того, существует ли он уже в базе данных. Это означает, что при выполнении приведенного ниже оператора Cypher будут вставлены дубликаты узлов Jennifer и Mark. Чтобы этого избежать, наш предыдущий запрос сначала нашел существующие узлы, а затем создал между ними новую связь.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">//</span><span class="n">this</span> <span class="n">query</span> <span class="n">will</span> <span class="k">create</span> <span class="n">duplicate</span> <span class="n">nodes</span> <span class="k">for</span> <span class="n">Mark</span> <span class="k">and</span> <span class="n">Jennifer</span>
-<span class="k">CREATE</span> <span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">rel</span><span class="p">:</span><span class="n">IS_FRIENDS_WITH</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Mark'</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//this query will create duplicate nodes for Mark and Jennifer</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
 </code></pre></div></div>
 
-<p>Возможно, у вас уже есть узел или связь в данных, но вы хотите изменить их свойства. Это можно сделать, сопоставив шаблон, который вы хотите найти, и используя SET для добавления, удаления или обновления свойств.</p>
+<p>Возможно, у вас уже есть узел или связь в данных, но вы хотите изменить их свойства. Это можно сделать, сопоставив шаблон, который вы хотите найти, и используя <code class="language-plaintext highlighter-rouge">SET</code> для добавления, удаления или обновления свойств.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span>
-<span class="k">SET</span> <span class="n">p</span><span class="p">.</span><span class="n">birthdate</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'1980-01-01'</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">SET</span> <span class="n">p.birthdate</span> <span class="o">=</span> <span class="nf">date</span><span class="ss">(</span><span class="s1">'1980-01-01'</span><span class="ss">)</span>
 <span class="k">RETURN</span> <span class="n">p</span>
 </code></pre></div></div>
 
-<p>Если бы мы теперь хотели изменить ее день рождения, мы могли бы использовать тот же запрос выше, чтобы снова найти узел Дженнифер и указать другую дату в SET.</p>
+<p>Если бы мы теперь хотели изменить ее день рождения, мы могли бы использовать тот же запрос выше, чтобы снова найти узел Дженнифер и указать другую дату в <code class="language-plaintext highlighter-rouge">SET</code>.</p>
 
 <p>Мы также можем обновить информацию об WORKS_FOR отношениях Дженнифер с ее компанией, указав год, когда она начала там работать. Для этого вы можете использовать синтаксис, аналогичный приведенному выше, для обновления узлов.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">rel</span><span class="p">:</span><span class="n">WORKS_FOR</span><span class="p">]</span><span class="o">-</span><span class="p">(:</span><span class="n">Company</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Neo4j'</span><span class="err">}</span><span class="p">)</span>
-<span class="k">SET</span> <span class="n">rel</span><span class="p">.</span><span class="n">startYear</span> <span class="o">=</span> <span class="nb">date</span><span class="p">(</span><span class="err">{</span><span class="nb">year</span><span class="p">:</span> <span class="mi">2018</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">WORKS_FOR</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="nc">:Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">})</span>
+<span class="k">SET</span> <span class="n">rel.startYear</span> <span class="o">=</span> <span class="nf">date</span><span class="ss">({</span><span class="nl">year</span><span class="dl">:</span><span class="w"> </span><span class="m">2018</span><span class="ss">})</span>
 <span class="k">RETURN</span> <span class="n">rel</span>
 </code></pre></div></div>
 
-<p>Еще одна операция, которую мы рассмотрим, — это удаление данных в Cypher. Для этой операции Cypher использует DELETE - ключевое слово для удаления узлов и связей. Это очень похоже на удаление данных в других языках, таких как SQL, за одним исключением. Поскольку Neo4j совместим с ACID, вы не можете удалить узел, если он все еще имеет связи. Если бы вы могли это сделать, вы могли бы получить связь, не указывающую на узел, и неполный граф. Мы рассмотрим, как удалить отключенный узел, связь, а также узел, у которого все еще есть связи.</p>
+<p>Еще одна операция, которую мы рассмотрим, — это удаление данных в Cypher. Для этой операции Cypher использует <code class="language-plaintext highlighter-rouge">DELETE</code> - ключевое слово для удаления узлов и связей. Это очень похоже на удаление данных в других языках, таких как SQL, за одним исключением. Поскольку Neo4j совместим с ACID, вы не можете удалить узел, если он все еще имеет связи. Если бы вы могли это сделать, вы могли бы получить связь, не указывающую на узел, и неполный граф. Мы рассмотрим, как удалить отключенный узел, связь, а также узел, у которого все еще есть связи.</p>
 
-<p>Чтобы удалить связь, нужно найти начальный и конечный узлы для связи, которое вы хотите удалить, а затем использовать DELETE.</p>
+<p>Чтобы удалить связь, нужно найти начальный и конечный узлы для связи, которое вы хотите удалить, а затем использовать <code class="language-plaintext highlighter-rouge">DELETE</code>.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(</span><span class="n">j</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">r</span><span class="p">:</span><span class="n">IS_FRIENDS_WITH</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Mark'</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
 <span class="k">DELETE</span> <span class="n">r</span>
 </code></pre></div></div>
 
-<p>Чтобы удалить узел, который не имеет никаких связей, нужно найти узел, который вы хотите удалить, а затем использовать DELETE.</p>
+<p>Чтобы удалить узел, который не имеет никаких связей, нужно найти узел, который вы хотите удалить, а затем использовать <code class="language-plaintext highlighter-rouge">DELETE</code>.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(</span><span class="n">m</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Mark'</span><span class="err">}</span><span class="p">)</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
 <span class="k">DELETE</span> <span class="n">m</span>
 </code></pre></div></div>
 
-<p>Вместо выполнения двух последних запросов для удаления IS_FRIENDS_WITH маязи и Person узла для Марка мы можем выполнить один оператор для одновременного удаления узла и связи. Как мы упоминали выше, Neo4j совместим с ACID, поэтому он не позволяет нам удалять узел, если он все еще имеет связи. Использование DETACH DELETE синтаксиса говорит Cypher удалить любые связи, которые есть у узла, а также удалить сам узел.</p>
+<p>Вместо выполнения двух последних запросов для удаления IS_FRIENDS_WITH связи и Person узла для Марка мы можем выполнить один оператор для одновременного удаления узла и связи. Как мы упоминали выше, Neo4j совместим с ACID, поэтому он не позволяет нам удалять узел, если он все еще имеет связи. Использование <code class="language-plaintext highlighter-rouge">DETACH DELETE</code> синтаксиса говорит Cypher удалить любые связи, которые есть у узла, а также удалить сам узел.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span> <span class="p">(</span><span class="n">m</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Mark'</span><span class="err">}</span><span class="p">)</span>
-<span class="n">DETACH</span> <span class="k">DELETE</span> <span class="n">m</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
+<span class="k">DETACH</span> <span class="k">DELETE</span> <span class="n">m</span>
 </code></pre></div></div>
 
-<p>Вы также можете удалить свойства, но вместо использования DELETE мы можем использовать несколько других подходов. Первый вариант заключается в использовании REMOVE. Это сообщает Neo4j, что вы хотите полностью удалить свойство из узла и больше не хранить его.</p>
+<p>Вы также можете удалить свойства, но вместо использования <code class="language-plaintext highlighter-rouge">DELETE</code> мы можем использовать несколько других подходов. Первый вариант заключается в использовании REMOVE. Это сообщает Neo4j, что вы хотите полностью удалить свойство из узла и больше не хранить его.</p>
 
-<p>Второй вариант — использовать SET, чтобы установить значение свойства в null. В отличие от других моделей баз данных, Neo4j не хранит нулевые значения. Вместо этого он хранит только те свойства и значения, которые имеют смысл для ваших данных. Это означает, что у вас могут быть разные типы и количество свойств на различных узлах и отношениях в вашем графе.</p>
+<p>Второй вариант — использовать <code class="language-plaintext highlighter-rouge">SET</code>, чтобы установить значение свойства в <code class="language-plaintext highlighter-rouge">null</code>. В отличие от других моделей баз данных, Neo4j не хранит нулевые значения. Вместо этого он хранит только те свойства и значения, которые имеют смысл для ваших данных. Это означает, что у вас могут быть разные типы и количество свойств на различных узлах и отношениях в вашем графе.</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">//</span><span class="k">delete</span> <span class="n">property</span> <span class="k">using</span> <span class="n">REMOVE</span> <span class="n">keyword</span>
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span>
-<span class="n">REMOVE</span> <span class="n">n</span><span class="p">.</span><span class="n">birthdate</span>
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//delete property using REMOVE keyword</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">n:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">REMOVE</span> <span class="n">n.birthdate</span>
 
-<span class="o">//</span><span class="k">delete</span> <span class="n">property</span> <span class="k">with</span> <span class="k">SET</span> <span class="k">to</span> <span class="k">null</span> <span class="n">value</span>
-<span class="k">MATCH</span> <span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span> <span class="s1">'Jennifer'</span><span class="err">}</span><span class="p">)</span>
-<span class="k">SET</span> <span class="n">n</span><span class="p">.</span><span class="n">birthdate</span> <span class="o">=</span> <span class="k">null</span>
+<span class="c1">//delete property with SET to null value</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">n:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">SET</span> <span class="n">n.birthdate</span> <span class="o">=</span> <span class="k">null</span>
+</code></pre></div></div>
+
+<h3 id="как-избежать-дублирования-данных-с-помощью-merge">Как избежать дублирования данных с помощью MERGE</h3>
+
+<p><code class="language-plaintext highlighter-rouge">MERGE</code> выполняет операцию «выбрать или вставить», которая сначала проверяет, существуют ли данные в базе данных. Если он существует, то Cypher возвращает его как есть или делает любые обновления, которые вы укажете для существующего узла или отношения. Если данных не существует, то Cypher создаст их с указанной вами информацией.</p>
+
+<p><strong>Использование слияния на узле:</strong></p>
+
+<p>Мы используем <code class="language-plaintext highlighter-rouge">MERGE</code>, чтобы убедиться, что Cypher проверяет базу данных на наличие существующего узла для Mark. Поскольку мы удалили узел Марка в предыдущих примерах, Cypher не найдет существующее совпадение и создаст новый узел со войством name.</p>
+
+<p>Если мы снова запустим тот же оператор, Cypher на этот раз найдет существующий узел с именем Mark, поэтому он вернет соответствующий узел без каких-либо изменений.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MERGE</span><span class="w"> </span><span class="ss">(</span><span class="py">mark:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">mark</span>
+</code></pre></div></div>
+
+<p><strong>Использование слияния в связи:</strong></p>
+
+<p>Точно так же, как мы использовали <code class="language-plaintext highlighter-rouge">MERGE</code> для поиска или создания узла в Cypher, мы можем сделать то же самое, чтобы найти или создать связь.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="ss">(</span><span class="n">j</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="n">m</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">j</span><span class="ss">,</span> <span class="n">r</span><span class="ss">,</span> <span class="n">m</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что мы использовали <code class="language-plaintext highlighter-rouge">MATCH</code> здесь, чтобы найти узел Марка и узел Дженнифер, прежде чем мы использовали <code class="language-plaintext highlighter-rouge">MERGE</code> для поиска или создания мвязи. Почему мы не использовали ни одного утверждения? <code class="language-plaintext highlighter-rouge">MERGE</code> ищет весь шаблон, указанный вами, чтобы увидеть, следует ли вернуть существующий или создать новый. Если шаблон целиком (узлы, связи и любые заданные свойства) не существует, Cypher создаст его.</p>
+
+<p><strong>Cypher никогда не производит частичное сочетание сопоставления и создания в шаблоне. Чтобы избежать сочетания сопоставления и создания, вам необходимо сначала сопоставить любые существующие элементы вашего шаблона, прежде чем выполнять слияние любых элементов, которые вы, возможно, захотите создать, как мы сделали в инструкции выше.</strong> Оператор ниже приведет к дублированию</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//this statement will create duplicate nodes for Mark and Jennifer</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">j</span><span class="ss">,</span> <span class="n">r</span><span class="ss">,</span> <span class="n">m</span>
+</code></pre></div></div>
+
+<p><strong>Обработка критериев MERGE:</strong></p>
+
+<p>Возможно, вы хотите использовать <code class="language-plaintext highlighter-rouge">MERGE</code>, чтобы гарантировать, что вы не создаете дубликаты, но вы хотите инициализировать определенные свойства, если шаблон создан, и обновить другие свойства, если он только соответствует. В этом случае вы можете использовать <code class="language-plaintext highlighter-rouge">ON CREATE</code> или <code class="language-plaintext highlighter-rouge">ON MATCH</code> с <code class="language-plaintext highlighter-rouge">SET</code> для обработки таких ситуаций.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MERGE</span><span class="w"> </span><span class="ss">(</span><span class="py">m:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Mark'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span><span class="s1">'Jennifer'</span><span class="ss">})</span>
+  <span class="k">ON</span> <span class="k">CREATE</span> <span class="k">SET</span> <span class="n">r.since</span> <span class="o">=</span> <span class="nf">date</span><span class="ss">(</span><span class="s1">'2018-03-01'</span><span class="ss">)</span>
+  <span class="k">ON</span> <span class="k">MATCH</span> <span class="k">SET</span> <span class="n">r.updated</span> <span class="o">=</span> <span class="nf">date</span><span class="ss">()</span>
+<span class="k">RETURN</span> <span class="n">m</span><span class="ss">,</span> <span class="n">r</span><span class="ss">,</span> <span class="n">j</span>
+</code></pre></div></div>
+
+<h2 id="filtering-query-results"><a href="https://neo4j.com/developer/cypher/filtering-query-results/">Filtering Query Results</a></h2>
+
+<p>В большинстве случаев разработчики не запрашивают точное значение и нуждаются в большей гибкости при получении данных для диапазонов, частичных значений или других критериев. Cypher предоставляет эту возможность через WHERE. Далее на данном примере:</p>
+
+<p><img src="/myknowlegebase/attachments/2022-08-04-00-29-45.png" alt="cypher where" /></p>
+
+<p>Cypher спроектирован так, чтобы быть гибким и простым в освоении, поэтому часто существует более одного способа написания синтаксиса. Это относится и к WHERE. Вы можете написать запрос, который ищет определенные значения, как мы это делали в последних нескольких руководствах, но вы также можете использовать WHERE таким же образом. Оба запроса выполняются с одинаковой производительностью, поэтому способ их написания полностью зависит от ваших предпочтений и удобства.</p>
+
+<p>Ниже приведено сравнение синтаксиса на нашем примере из предыдущих руководств. Оба запроса будут делать одно и то же и возвращать одинаковые результаты.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//query using equality check in the MATCH clause</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">j</span><span class="ss">;</span>
+
+<span class="c1">//query using equality check in the WHERE clause</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">j.name</span> <span class="o">=</span> <span class="s1">'Jennifer'</span>
+<span class="k">RETURN</span> <span class="n">j</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Иногда вам может понадобиться вернуть результаты, которые не соответствуют значению свойства. В этом случае вам нужно искать, где значение не является чем-то, используя <code class="language-plaintext highlighter-rouge">WHERE NOT</code>. Есть несколько типов таких сравнений, которые вы можете запустить в Cypher со стандартными булевыми операторами <code class="language-plaintext highlighter-rouge">AND</code>, <code class="language-plaintext highlighter-rouge">OR</code>, <code class="language-plaintext highlighter-rouge">XOR</code> и <code class="language-plaintext highlighter-rouge">NOT</code>.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//query using inequality check in the WHERE clause</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="ow">NOT</span> <span class="n">j.name</span> <span class="o">=</span> <span class="s1">'Jennifer'</span>
+<span class="k">RETURN</span> <span class="n">j</span>
+</code></pre></div></div>
+
+<p>Часто возникают запросы, в которых вы хотите искать данные в определенном диапазоне. Диапазоны дат или чисел можно использовать для проверки событий в пределах определенной временной шкалы, возрастных значений или других целей. Синтаксис этого критерия очень похож на логические структуры SQL и других языков программирования для проверки диапазонов значений.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="mi">3</span> <span class="o">&lt;=</span> <span class="n">p.yearsExp</span> <span class="o">&lt;=</span> <span class="mi">7</span>
+<span class="k">RETURN</span> <span class="n">p</span>
+</code></pre></div></div>
+
+<p>Вас может заинтересовать, только если свойство существует в узле или связи. Помните: в Neo4j свойство существует (сохраняется), только если оно имеет значение. Нулевое свойство не будет сохранено. Это гарантирует, что для ваших узлов и отношений будет сохранена только ценная и необходимая информация. Чтобы написать этот тип проверки существования, вам просто нужно использовать WHEREп и <code class="language-plaintext highlighter-rouge">exists()</code> метод для этого свойства.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query1: find all users who have a birthdate property</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">exists</span><span class="ss">(</span><span class="n">p.birthdate</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+
+<span class="c1">//Query2: find all WORKS_FOR relationships that have a startYear property</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">WORKS_FOR</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">exists</span><span class="ss">(</span><span class="n">rel.startYear</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p</span><span class="ss">,</span> <span class="n">rel</span><span class="ss">,</span> <span class="n">c</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>В некоторых сценариях требуется синтаксис запроса, который соответствует частичным значениям или широким категориям в строке. Чтобы выполнить такой запрос, вам потребуется некоторая гибкость и опции для сопоставления строк и поиска. Независимо от того, ищете ли вы строку, которая начинается, заканчивается или включает определенное значение, Cypher предлагает возможность быстро и легко обрабатывать ее.</p>
+
+<p>В Cypher есть несколько ключевых слов, используемых с WHERE для проверки значений строковых свойств. <code class="language-plaintext highlighter-rouge">STARTS WITH</code> позволяет вам проверить значение свойства, которое начинается с указанной вами строки. С помощью <code class="language-plaintext highlighter-rouge">CONTAINS</code> вы можете проверить, является ли указанная строка частью значения свойства. Ключевое <code class="language-plaintext highlighter-rouge">ENDS WITH</code> проверяет конец строки свойства на наличие указанного вами значения.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//check if a property starts with 'M'</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="k">STARTS</span> <span class="k">WITH</span> <span class="s1">'M'</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+
+<span class="c1">//check if a property contains 'a'</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="ow">CONTAINS</span> <span class="s1">'a'</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+
+<span class="c1">//check if a property ends with 'n'</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="k">ENDS</span> <span class="k">WITH</span> <span class="s1">'n'</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Вы также можете использовать регулярные выражения для проверки значения строк.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="o">=~</span> <span class="s1">'Jo.*'</span>
+<span class="k">RETURN</span> <span class="n">p.name</span>
+</code></pre></div></div>
+
+<p>Как и в SQL и других языках, вы можете проверить, является ли значение свойства значением в списке. <code class="language-plaintext highlighter-rouge">IN</code> позволяет указать массив значений и проверить содержимое свойства по каждому из них в списке.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.yearsExp</span> <span class="ow">IN</span> <span class="ss">[</span><span class="mi">1</span><span class="ss">,</span> <span class="mi">5</span><span class="ss">,</span> <span class="mi">6</span><span class="ss">]</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="n">p.yearsExp</span>
+</code></pre></div></div>
+
+<p>Уникальность графа заключается в том, что он фокусируется на связях. Точно так же, как вы можете фильтровать запросы на основе меток или свойств узлов, вы также можете фильтровать результаты на основе связей или шаблонов. Это позволяет вам проверить, имеет ли шаблон определенную связь или нет, или существует ли другой шаблон.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query1: find which people are friends of someone who works for Neo4j</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">exists</span><span class="ss">((</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:WORKS_FOR</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">}))</span>
+<span class="k">RETURN</span> <span class="n">p</span><span class="ss">,</span> <span class="n">r</span><span class="ss">,</span> <span class="n">friend</span><span class="ss">;</span>
+
+<span class="c1">//Query2: find Jennifers friends who do not work for a company</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="o">=</span> <span class="s1">'Jennifer'</span>
+<span class="ow">AND</span> <span class="ow">NOT</span> <span class="n">exists</span><span class="ss">((</span><span class="n">friend</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:WORKS_FOR</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Company</span><span class="ss">))</span>
+<span class="k">RETURN</span> <span class="n">friend.name</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>В некоторых случаях вам может потребоваться получить результаты из шаблонов, даже если они не соответствуют шаблону целиком или всем критериям. Это как работает внешнее соединение в SQL. В Cypher вы можете использовать OPTIONAL <code class="language-plaintext highlighter-rouge">MATCH</code> шаблон, чтобы попытаться сопоставить его, но если он не найдет результатов, эти строки вернутся <code class="language-plaintext highlighter-rouge">null</code> для этих значений.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//find all people whose name starts with J and who may work for a company.</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="k">STARTS</span> <span class="k">WITH</span> <span class="s1">'J'</span>
+<span class="k">OPTIONAL</span> <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:WORKS_FOR</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">other:</span><span class="n">Company</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="n">other.name</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Мы можем обрабатывать множество простых графовых запросов даже на этом этапе, но что происходит, когда мы хотим расширить наши шаблоны за пределы одного отношения? Что, если бы мы захотели узнать, кому еще нравятся графы, кроме Дженнифер? Мы реализуем эту и многие другие функции, просто добавляя это к нашему первому шаблону или сопоставляя дополнительные шаблоны.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query1: find who likes graphs besides Jennifer</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">graph:</span><span class="n">Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="s1">'Graphs'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="py">r2:</span><span class="n">LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+
+<span class="c1">//Query2: find who likes graphs besides Jennifer that she is also friends with</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">j:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="s1">'Graphs'</span><span class="ss">})</span><span class="o">&lt;-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">),</span>
+      <span class="ss">(</span><span class="n">j</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что во втором запросе мы поставили запятую после первого <code class="language-plaintext highlighter-rouge">MATCH</code> и добавили еще один шаблон для соответствия на следующей строке. Это позволяет нам объединять шаблоны в цепочку, подобно тому, как мы использовали <code class="language-plaintext highlighter-rouge">WHERE exists(&lt;pattern&gt;)</code> синтаксис выше. Однако с помощью этой структуры мы можем добавлять несколько разных шаблонов и связывать их вместе, что позволяет нам проходить различные части графа с определенными шаблонами.</p>
+
+<h3 id="controlling-query-processing"><a href="https://neo4j.com/developer/cypher/controlling-query-processing/">Controlling Query Processing</a></h3>
+
+<h4 id="агрегация">Агрегация</h4>
+
+<p>В Cypher доступны полезные операции агрегирования, такие как вычисление средних значений, сумм, процентилей, минимума/максимума и подсчета. В Cypher не нужно указывать ключ группировки. Он неявно группируется по неагрегированному полю в <code class="language-plaintext highlighter-rouge">RETURN</code>.</p>
+
+<p>Иногда вам нужно только вернуть количество результатов, найденных в базе данных, а не возвращать сами объекты. Функция <code class="language-plaintext highlighter-rouge">count()</code> в Cypher позволяет подсчитывать количество возвращенных сущностей, отношений или результатов.</p>
+
+<p>Существует два разных способа подсчета возвращаемых результатов вашего запроса. Первый <code class="language-plaintext highlighter-rouge">count(n)</code> для подсчета количества вхождений n и не включает <code class="language-plaintext highlighter-rouge">null</code> значения. Вы можете указать узлы, связи или свойства в круглых скобках для подсчета Cypher. Второй способ подсчета результатов — с помощью <code class="language-plaintext highlighter-rouge">count(*)</code>, который подсчитывает количество возвращенных строк результатов (включая строки с <code class="language-plaintext highlighter-rouge">null</code> значениями).</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query1: see the list of Twitter handle values for Person nodes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.twitter</span><span class="ss">;</span>
+
+<span class="c1">//Query2: count of the non-null `twitter` property of the Person nodes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">count</span><span class="ss">(</span><span class="n">p.twitter</span><span class="ss">);</span>
+
+<span class="c1">//Query3: count on the Person nodes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">count</span><span class="ss">(</span><span class="o">*</span><span class="ss">);</span>
+</code></pre></div></div>
+
+<p>Функция <code class="language-plaintext highlighter-rouge">collect()</code> в Cypher дает вам возможность объединять значения в список. Вы можете использовать это, чтобы сгруппировать набор значений на основе определенного начального узла, связи, свойства.</p>
+
+<p>Чтобы объединить всех друзей человека по начальному человеку, вы можете использовать <code class="language-plaintext highlighter-rouge">collect()</code>. Это сгруппирует значения друзей по неагрегированному полю (в нашем случае p.name).</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">friend.name</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">friend</span>
+</code></pre></div></div>
+
+<p>Если у вас есть список значений, вы также можете найти количество элементов в этом списке или вычислить размер выражения с помощью <code class="language-plaintext highlighter-rouge">size()</code> функции.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query5: find number of items in collected list</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="nf">size</span><span class="ss">(</span><span class="nf">collect</span><span class="ss">(</span><span class="n">friend.name</span><span class="ss">))</span> <span class="k">AS</span> <span class="n">numberOfFriends</span><span class="ss">;</span>
+
+<span class="c1">//Query6: find number of friends who have other friends</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="nf">size</span><span class="ss">((</span><span class="n">friend</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">))</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">friend.name</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">friends</span><span class="ss">,</span>
+  <span class="nf">size</span><span class="ss">((</span><span class="n">friend</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">))</span> <span class="k">AS</span> <span class="n">numberOfFoFs</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<h4 id="управление-результатами-и-выводом">Управление результатами и выводом</h4>
+
+<p>Результаты запроса могут отображать только часть ответа, который вы искали в данных, или могут быть не в лучшем формате для удобного просмотра и понимания. Именно здесь возможности связывания нескольких запросов или сортировки или ограничения вывода могут помочь вам избежать фильтрации результатов вручную.</p>
+
+<p><strong>Объединение запросов вместе:</strong></p>
+
+<p>Синтаксис приведенных выше запросов может показаться немного пугающим, но есть и лучшие способы его написания. Один из таких способов — использовать <code class="language-plaintext highlighter-rouge">WITH</code> для передачи значений из одного раздела запроса в другой. Это позволяет вам выполнять некоторые промежуточные вычисления или операции в вашем запросе, чтобы использовать их позже.</p>
+
+<p>Вы должны указать переменные в <code class="language-plaintext highlighter-rouge">WITH</code>, которые вы хотите использовать позже. Только эти переменные будут переданы в следующую часть запроса. Существует множество способов использования этой функции (например, подсчет, сбор, фильтрация, ограничение результатов).</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query7: find and list the technologies people like</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">a:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span>
+<span class="k">WITH</span> <span class="n">a.name</span> <span class="k">AS</span> <span class="n">name</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">t.type</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">technologies</span>
+<span class="k">RETURN</span> <span class="n">name</span><span class="ss">,</span> <span class="n">technologies</span><span class="ss">;</span>
+
+<span class="c1">//Query8: find number of friends who have other friends - cleaner Query6</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WITH</span> <span class="n">p</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">friend.name</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">friendsList</span><span class="ss">,</span>
+  <span class="nf">size</span><span class="ss">((</span><span class="n">friend</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">))</span> <span class="k">AS</span> <span class="n">numberOfFoFs</span>
+<span class="k">WHERE</span> <span class="n">numberOfFoFs</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="n">friendsList</span><span class="ss">,</span> <span class="n">numberOfFoFs</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>В первом запросе мы передаем Person и собранный список Technologyтипов. Только эти элементы могут быть указаны в RETURN предложении. Мы не можем использовать связь (r) или даже дату рождения, потому что мы не передали эти значения.</p>
+
+<p>Во втором запросе мы можем указать только p и любое его свойство (имя, дата рождения, yrsExperience, twitter), коллекцию друзей (в целом, а не каждое значение) и количество друзей-из-друзей. Поскольку мы передали эти значения в <code class="language-plaintext highlighter-rouge">WITH</code>, мы можем использовать их в наших <code class="language-plaintext highlighter-rouge">WHERE</code> или <code class="language-plaintext highlighter-rouge">RETURN</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">WITH</code> требует, чтобы все переданные значения имели переменную (если у них ее еще нет). Нашим Person узлам была дана переменная (p) в <code class="language-plaintext highlighter-rouge">MATCH</code>, поэтому нам не нужно назначать переменную.</p>
+
+<p><code class="language-plaintext highlighter-rouge">WITH</code> также очень полезен для настройки параметров перед запросом. Часто полезно для ключей параметров, строк URL и других переменных запроса при импорте данных.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//find people with 2-6 years of experience</span>
+<span class="k">WITH</span> <span class="mi">2</span> <span class="k">AS</span> <span class="n">experienceMin</span><span class="ss">,</span> <span class="mi">6</span> <span class="k">AS</span> <span class="n">experienceMax</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">experienceMin</span> <span class="o">&lt;=</span> <span class="n">p.yrsExperience</span> <span class="o">&lt;=</span> <span class="n">experienceMax</span>
+<span class="k">RETURN</span> <span class="n">p</span>
+</code></pre></div></div>
+
+<p>Если у вас есть список, который вы хотите проверить или разделить значения, Cypher предлагает <code class="language-plaintext highlighter-rouge">UNWIND</code>, который делает противоположное <code class="language-plaintext highlighter-rouge">collect()</code> и разделяет список на отдельные значения в отдельных строках. <code class="language-plaintext highlighter-rouge">UNWIND</code> часто используется для циклического просмотра объектов JSON и XML при импорте данных, а также массивов и других типов списков.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query9: for a list of techRequirements, look for people who have each skill</span>
+<span class="k">WITH</span> <span class="ss">[</span><span class="s1">'Graphs'</span><span class="ss">,</span><span class="s1">'Query Languages'</span><span class="ss">]</span> <span class="k">AS</span> <span class="n">techRequirements</span>
+<span class="k">UNWIND</span> <span class="n">techRequirements</span> <span class="k">AS</span> <span class="n">technology</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="n">technology</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">t.type</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">p.name</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">potentialCandidates</span><span class="ss">;</span>
+
+<span class="c1">//Query10: for numbers in a list, find candidates who have that many years of experience</span>
+<span class="k">WITH</span> <span class="ss">[</span><span class="mi">4</span><span class="ss">,</span> <span class="mi">5</span><span class="ss">,</span> <span class="mi">6</span><span class="ss">,</span> <span class="mi">7</span><span class="ss">]</span> <span class="k">AS</span> <span class="n">experienceRange</span>
+<span class="k">UNWIND</span> <span class="n">experienceRange</span> <span class="k">AS</span> <span class="n">number</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.yearsExp</span> <span class="o">=</span> <span class="n">number</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="n">p.yearsExp</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Наш список потенциальных кандидатов для найма из нашего последнего примера мог бы быть более полезным, если бы мы могли расположить кандидатов по наибольшему или наименьшему опыту. Или, возможно, мы хотим ранжировать всех наших людей по возрасту.</p>
+
+<p>Ключевое <code class="language-plaintext highlighter-rouge">ORDER BY</code> будет сортировать результаты на основе указанного вами значения и в порядке возрастания или убывания (по умолчанию используется восходящий порядок).</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query11: for a list of techRequirements, look</span>
+<span class="c1">//for people who have each skill - ordered Query9</span>
+<span class="k">WITH</span> <span class="ss">[</span><span class="s1">'Graphs'</span><span class="ss">,</span><span class="s1">'Query Languages'</span><span class="ss">]</span> <span class="k">AS</span> <span class="n">techRequirements</span>
+<span class="k">UNWIND</span> <span class="n">techRequirements</span> <span class="k">AS</span> <span class="n">technology</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="n">technology</span><span class="ss">})</span>
+<span class="k">WITH</span> <span class="n">t.type</span> <span class="k">AS</span> <span class="n">technology</span><span class="ss">,</span> <span class="n">p.name</span> <span class="k">AS</span> <span class="n">personName</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">technology</span><span class="ss">,</span> <span class="n">personName</span>
+<span class="k">RETURN</span> <span class="n">technology</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">personName</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">potentialCandidates</span><span class="ss">;</span>
+
+<span class="c1">//Query12: for numbers in a list, find candidates who have</span>
+<span class="c1">//that many years of experience - ordered Query10</span>
+<span class="k">WITH</span> <span class="ss">[</span><span class="mi">4</span><span class="ss">,</span> <span class="mi">5</span><span class="ss">,</span> <span class="mi">6</span><span class="ss">,</span> <span class="mi">7</span><span class="ss">]</span> <span class="k">AS</span> <span class="n">experienceRange</span>
+<span class="k">UNWIND</span> <span class="n">experienceRange</span> <span class="k">AS</span> <span class="n">number</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.yearsExp</span> <span class="o">=</span> <span class="n">number</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="n">p.yearsExp</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">p.yearsExp</span> <span class="k">DESC</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что наш первый запрос должен упорядочиваться по PersonName, прежде чем собирать значения в список. Если вы не сортируете сначала (поставьте ORDER BY после RETURN), вы будете сортировать по размеру списка, а не по первой букве значений в списке. Так же сортируем по двум значениям - технология, потом человек. Это позволяет нам сортировать наши технологии так, чтобы все люди, которым нравится технология, были перечислены вместе.</p>
+
+<p>Запросы возвращают повторяющиеся результаты из-за нескольких путей к узлу или узла, отвечающего нескольким критериям. Эта избыточность может загромождать результаты и затруднять просмотр длинного списка, чтобы найти то, что вам нужно. Чтобы удалить повторяющиеся объекты, мы можем использовать <code class="language-plaintext highlighter-rouge">DISTINCT</code>.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query13: find people who have a twitter or like graphs or query languages</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">user:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">user.twitter</span> <span class="k">IS</span> <span class="ow">NOT</span> <span class="k">null</span>
+<span class="k">WITH</span> <span class="n">user</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="n">user</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">t.type</span> <span class="ow">IN</span> <span class="ss">[</span><span class="s1">'Graphs'</span><span class="ss">,</span><span class="s1">'Query Languages'</span><span class="ss">]</span>
+<span class="k">RETURN</span> <span class="k">DISTINCT</span> <span class="n">user.name</span>
+</code></pre></div></div>
+
+<p>Бывают случаи, когда вам нужен ограниченынй набор данных или мы получаем очень много результатов для обновления или обработки за раз. <code class="language-plaintext highlighter-rouge">LIMIT</code> берет выходные данные запроса и ограничивает возвращаемый объем на основе указанного вами числа. Например, мы можем найти количество друзей каждого человека на нашем графике. Если бы наш граф состоял из тысяч или миллионов узлов и взаимосвязей, количество возвращаемых результатов было бы огромным.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Query14: find the top 3 people who have the most friends</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">other:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">,</span> <span class="nf">count</span><span class="ss">(</span><span class="n">other.name</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">numberOfFriends</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">numberOfFriends</span> <span class="k">DESC</span>
+<span class="k">LIMIT</span> <span class="mi">3</span>
+</code></pre></div></div>
+
+<p>Наш запрос извлекает людей и друзей, с которыми они связаны, и возвращает имя человека и количество его друзей. Мы могли бы выполнить только эту большую часть запроса и вернуть беспорядочный список имен и количества друзей, но мы, вероятно, хотим упорядочить список на основе количества друзей, которые есть у каждого человека, начиная с самого большого числа вверху (<code class="language-plaintext highlighter-rouge">DESC</code>). Вы также можете выполнить большую часть запроса, чтобы увидеть друзей и подсчитать всех по порядку, но мы хотим выбрать только трех лучших людей с наибольшим количеством друзей.</p>
+
+<h4 id="date-processing"><a href="https://neo4j.com/developer/cypher/dates-datetimes-durations/">Date processing</a></h4>
+
+<h4 id="subqueries"><a href="https://neo4j.com/developer/cypher/subqueries/">Subqueries</a></h4>
+
+<p><img src="/myknowlegebase/attachments/2022-08-04-02-08-39.png" alt="neo4j subqueries" /></p>
+
+<p>В Neo4j 4.0 появилась поддержка двух разных типов подзапросов:</p>
+
+<ul>
+  <li>“экзистенциальные подзапросы” в WHERE</li>
+  <li>подзапросы с использованием <code class="language-plaintext highlighter-rouge">CALL {}</code> синтаксиса (с возвратом результата)</li>
+</ul>
+
+<p>Вместо использования exists функции в нашем WHERE мы используем EXISTS {} - это будет “подзапрос с проверкой существования”</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="ow">EXISTS</span> <span class="ss">{</span>
+  <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:WORKS_FOR</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">})</span>
+<span class="ss">}</span>
+<span class="k">RETURN</span> <span class="n">p</span><span class="ss">,</span> <span class="n">r</span><span class="ss">,</span> <span class="n">friend</span>
+
+<span class="c1">//version with exist()</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">r:</span><span class="n">IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">friend:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">exists</span><span class="ss">((</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:WORKS_FOR</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">}))</span>
+<span class="k">RETURN</span> <span class="n">p</span><span class="ss">,</span> <span class="n">r</span><span class="ss">,</span> <span class="n">friend</span>
+</code></pre></div></div>
+
+<p>Это позволяет реализовывать значительно более сложные конструкции подзапросов</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">person:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:WORKS_FOR</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="n">company</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">company.name</span> <span class="k">STARTS</span> <span class="k">WITH</span> <span class="s2">"Company"</span>
+<span class="ow">AND</span> <span class="ow">EXISTS</span> <span class="ss">{</span>
+  <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="n">person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span>
+  <span class="k">WHERE</span> <span class="nf">size</span><span class="ss">((</span><span class="n">t</span><span class="ss">)</span><span class="o">&lt;-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">())</span> <span class="o">&gt;=</span> <span class="mi">3</span>
+<span class="ss">}</span>
+<span class="k">RETURN</span> <span class="n">person.name</span> <span class="k">as</span> <span class="n">person</span><span class="ss">,</span> <span class="n">company.name</span> <span class="k">AS</span> <span class="n">company</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p><strong>Подзапросы с возвратом результата:</strong></p>
+
+<p>Допустим, мы хотим написать запрос, который находит людей, которым нравится Java или у которых больше одного друга. И мы хотим вернуть результаты, упорядоченные по дате рождения в порядке убывания. Мы можем получить часть пути, используя <code class="language-plaintext highlighter-rouge">UNION</code></p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="s2">"Java"</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">p.name</span> <span class="k">AS</span> <span class="n">person</span><span class="ss">,</span> <span class="n">p.birthdate</span> <span class="k">AS</span> <span class="n">dob</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">dob</span> <span class="k">DESC</span>
+
+<span class="k">UNION</span>
+
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="nf">size</span><span class="ss">((</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">())</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="k">RETURN</span> <span class="n">p.name</span> <span class="k">AS</span> <span class="n">person</span><span class="ss">,</span> <span class="n">p.birthdate</span> <span class="k">AS</span> <span class="n">dob</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">dob</span> <span class="k">DESC</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">UNION</code> подход позволяет нам сортировать результаты только для каждого <code class="language-plaintext highlighter-rouge">UNION</code>, а не для всех строк. Мы можем попробовать другой подход, когда мы выполняем каждый из наших подзапросов отдельно и собираем людей из каждой части с помощью <code class="language-plaintext highlighter-rouge">COLLECT</code> функции.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Find people who like Java</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="s2">"Java"</span><span class="ss">})</span>
+<span class="k">WITH</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">peopleWhoLikeJava</span>
+
+<span class="c1">// Find people with more than one friend</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="nf">size</span><span class="ss">((</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">())</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="k">WITH</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">popularPeople</span><span class="ss">,</span> <span class="n">peopleWhoLikeJava</span>
+
+<span class="c1">// Filter duplicate people</span>
+<span class="k">WITH</span> <span class="n">apoc.coll.toSet</span><span class="ss">(</span><span class="n">popularPeople</span> <span class="o">+</span> <span class="n">peopleWhoLikeJava</span><span class="ss">)</span> <span class="k">AS</span> <span class="n">people</span>
+
+<span class="c1">// Unpack the collection of people and order by birthdate</span>
+<span class="k">UNWIND</span> <span class="n">people</span> <span class="k">AS</span> <span class="n">p</span>
+<span class="k">RETURN</span> <span class="n">p.name</span> <span class="k">AS</span> <span class="n">person</span><span class="ss">,</span> <span class="n">p.birthdate</span> <span class="k">AS</span> <span class="n">dob</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">dob</span> <span class="k">DESC</span>
+</code></pre></div></div>
+
+<p>Этот подход работает, но его сложнее написать, и мы должны продолжать передавать части состояния к следующей части запроса.</p>
+
+<p>Предложение <code class="language-plaintext highlighter-rouge">CALL {}</code> дает нам лучшее из обоих миров:</p>
+
+<ul>
+  <li>Мы можем использовать подход <code class="language-plaintext highlighter-rouge">UNION</code> для запуска отдельных запросов и удаления дубликатов</li>
+  <li>Мы можем отсортировать результаты позже</li>
+</ul>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CALL</span> <span class="ss">{</span>
+    <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="nc">:Technology</span> <span class="ss">{</span><span class="py">type:</span> <span class="s2">"Java"</span><span class="ss">})</span>
+    <span class="k">RETURN</span> <span class="n">p</span>
+
+    <span class="k">UNION</span>
+
+    <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+    <span class="k">WHERE</span> <span class="nf">size</span><span class="ss">((</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_FRIENDS_WITH</span><span class="ss">]</span><span class="o">-&gt;</span><span class="ss">())</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="k">RETURN</span> <span class="n">p</span>
+<span class="ss">}</span>
+<span class="k">RETURN</span> <span class="n">p.name</span> <span class="k">AS</span> <span class="n">person</span><span class="ss">,</span> <span class="n">p.birthdate</span> <span class="k">AS</span> <span class="n">dob</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">dob</span> <span class="k">DESC</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<h2 id="comparing-sql-with-cypher"><a href="https://neo4j.com/developer/cypher/guide-sql-to-cypher/">Comparing SQL with Cypher</a></h2>
+
+<h2 id="user-defined-procedures-and-functions"><a href="https://neo4j.com/developer/cypher/procedures-functions/">User Defined Procedures and Functions</a></h2>
+
+<p>Что такое процедуры и функции?</p>
+
+<ul>
+  <li>Функции представляют собой простые вычисления/преобразования и возвращают одно значение.</li>
+  <li>Функции могут использоваться в любом выражении или предикате.</li>
+  <li>Процедуры являются более сложными операциями и генерируют потоки результатов.</li>
+  <li>Процедуры должны использоваться в <code class="language-plaintext highlighter-rouge">CALL</code> и возвращать столбцы результатов.</li>
+  <li>Они могут генерировать, извлекать или вычислять данные, чтобы сделать их доступными для последующих этапов обработки вашего запроса Cypher.</li>
+</ul>
+
+<p><img src="/myknowlegebase/attachments/2022-08-04-02-21-58.png" alt="User Defined Procedures and Functions" /></p>
+
+<p><a href="https://neo4j.com/docs/operations-manual/current/reference/procedures/">Built-in procedures</a></p>
+
+<h2 id="filtering-show-results"><a href="https://neo4j.com/developer/cypher/filtering-show/">Filtering SHOW results</a></h2>
+
+<h2 id="cypher-style-guide"><a href="https://neo4j.com/developer/cypher/style-guide/">Cypher Style Guide</a></h2>
+
+<p>Форматирование узлов, отношений, меток и свойств помогает сделать запросы более понятными. Если каждый из этих компонентов имеет разный стиль, то легко выделить эти элементы в запросе и визуально разделить каждый из них, чтобы лучше понять синтаксис.</p>
+
+<p>Метки узлов имеют стиль <code class="language-plaintext highlighter-rouge">CamelCase</code>, где первая буква каждого слова начинается с заглавной буквы. Они также чувствительны к регистру. Это означает, что, как бы вы ни создавали их в графе, они должны соответствовать запросам, которые вы планируете выполнять позже.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">(</span><span class="nc">:Person</span><span class="ss">)</span>
+<span class="ss">(</span><span class="nc">:NetworkAddress</span><span class="ss">)</span>
+<span class="ss">(</span><span class="nc">:VeryDescriptiveLabel</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>Типы связей оформляются в верхнем регистре и используют подчеркивание между словами. Они чувствительны к регистру, поэтому синтаксис запросов должен соответствовать формату, в котором они были созданы в базе данных.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">[</span><span class="nc">:FOLLOWS</span><span class="ss">]</span>
+<span class="ss">[</span><span class="nc">:ACTED_IN</span><span class="ss">]</span>
+<span class="ss">[</span><span class="nc">:IS_IN_LOVE_WITH</span><span class="ss">]</span>
+</code></pre></div></div>
+
+<p>Ключи свойств, переменные, параметры, псевдонимы и функции оформлены в стиле <code class="language-plaintext highlighter-rouge">camelCase</code>, где первая буква компонента начинается со строчной буквы, а первая буква каждого последующего слова — с заглавной. Все они также чувствительны к регистру, поэтому использование заглавных букв должно соответствовать тому, что находится в базе данных (свойства), тому, что уже определено в запросе (переменные, параметры, псевдонимы), или определениям Cypher (функциям).</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">title</span>
+<span class="nf">size</span><span class="ss">()</span>
+<span class="n">businessAddress</span>
+<span class="n">firstName</span>
+<span class="n">customerAccountNumber</span>
+<span class="nf">allShortestPaths</span><span class="ss">()</span>
+</code></pre></div></div>
+
+<p>Выражения оформляются заглавными буквами, помещаются в начале новой строки и не чувствительны к регистру. Можно изменить регистр (<code class="language-plaintext highlighter-rouge">mAtCh</code>), поместить несколько ключевых слов в строку или ошибиться в типах. Cypher все равно выполнит запрос. Тем не менее, для удобочитаемости и удобства запросов мы рекомендуем все предложения писать заглавными буквами и размещать в начале новой строки.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">n:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">n.name</span> <span class="o">=</span> <span class="s1">'Bob'</span>
+<span class="k">RETURN</span> <span class="n">n</span><span class="ss">;</span>
+
+<span class="k">WITH</span> <span class="s2">"1980-01-01"</span> <span class="k">AS</span> <span class="n">birthdate</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">person:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">person.birthdate</span> <span class="o">&gt;</span> <span class="n">birthdate</span>
+<span class="k">RETURN</span> <span class="n">person.name</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Ключевые слова, как и выражения, должны быть написаны заглавными буквами и не чувствительны к регистру, но их не нужно размещать на отдельной строке. Сюда входят такие слова, как <code class="language-plaintext highlighter-rouge">DISTINCT</code>, <code class="language-plaintext highlighter-rouge">IN</code>, <code class="language-plaintext highlighter-rouge">STARTS WITH</code>, <code class="language-plaintext highlighter-rouge">CONTAINS</code>, <code class="language-plaintext highlighter-rouge">NOT</code>, <code class="language-plaintext highlighter-rouge">AS</code>, <code class="language-plaintext highlighter-rouge">AND</code>, и другие.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:VISITED</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">place:</span><span class="n">City</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">collect</span><span class="ss">(</span><span class="k">DISTINCT</span> <span class="n">place.name</span><span class="ss">);</span>
+
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">a:</span><span class="n">Airport</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">a.airportIdentifier</span> <span class="k">AS</span> <span class="n">AirportCode</span><span class="ss">;</span>
+
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">c.name</span> <span class="ow">CONTAINS</span> <span class="s1">'Inc.'</span> <span class="ow">AND</span> <span class="n">c.startYear</span> <span class="ow">IN</span> <span class="ss">[</span><span class="mi">1990</span><span class="ss">,</span> <span class="mi">1998</span><span class="ss">,</span> <span class="mi">2007</span><span class="ss">,</span> <span class="mi">2010</span><span class="ss">]</span>
+<span class="k">RETURN</span> <span class="n">c</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Разделение предложений на новые строки помогает улучшить читаемость запросов и разбить логику на визуальные блоки. Мы также можем сделать запросы более удобными для чтения, добавив отступы <code class="language-plaintext highlighter-rouge">ON CREATE</code> или <code class="language-plaintext highlighter-rouge">ON MATCH</code> и любые подзапросы. Каждый из этих блоков имеет отступ в 2 пробела на новой строке.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//indent 2 spaces on lines with ON CREATE or ON MATCH</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Alice'</span><span class="ss">})</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Wayne Enterprises'</span><span class="ss">})</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="py">rel:</span><span class="n">WORKS_FOR</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="n">c</span><span class="ss">)</span>
+  <span class="k">ON</span> <span class="k">CREATE</span> <span class="k">SET</span> <span class="n">rel.startYear</span> <span class="o">=</span> <span class="nf">date</span><span class="ss">({</span><span class="nl">year</span><span class="dl">:</span><span class="w"> </span><span class="m">2018</span><span class="ss">})</span>
+  <span class="k">ON</span> <span class="k">MATCH</span> <span class="k">SET</span> <span class="n">rel.updated</span> <span class="o">=</span> <span class="nf">date</span><span class="ss">()</span>
+<span class="k">RETURN</span> <span class="n">p</span><span class="ss">,</span> <span class="n">rel</span><span class="ss">,</span> <span class="n">c</span><span class="ss">;</span>
+
+<span class="c1">//indent 2 spaces with braces for subqueries</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="ow">EXISTS</span> <span class="ss">{</span>
+  <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span><span class="ss">)</span>
+  <span class="k">WHERE</span> <span class="n">c.name</span> <span class="o">=</span> <span class="s1">'Neo4j'</span>
+<span class="ss">}</span>
+<span class="k">RETURN</span> <span class="n">p.name</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что в запросе с подзапросом мы используем фигурные скобки для группировки блока подзапроса (аналогично методам или функциям в других языках программирования). Начальная фигурная скобка находится на той же строке, что и начало подзапроса (<code class="language-plaintext highlighter-rouge">WHERE EXISTS</code>). Две строки подзапроса (<code class="language-plaintext highlighter-rouge">MATCH</code>…<code class="language-plaintext highlighter-rouge">​WHERE</code>) имеют отступ в 2 пробела, а затем закрывающая фигурная скобка находится на следующей строке без отступа.</p>
+
+<p>Если подзапрос состоит только из одной строки, вам не нужно размещать его на отдельной строке или делать отступ.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//indent 2 spaces without braces for 1-line subqueries</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="ow">EXISTS</span> <span class="ss">{</span> <span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span><span class="ss">)</span> <span class="ss">}</span>
+<span class="k">RETURN</span> <span class="n">p.name</span>
+</code></pre></div></div>
+
+<p>Метасимволы включают в себя такие вещи, как одинарные или двойные кавычки, обратные кавычки и точки с запятой. В Cypher есть особые случаи использования и рекомендуемые случаи использования этих символов. Ими легко злоупотреблять, поэтому мы покажем, чего следует избегать, а также правильно их использовать.</p>
+
+<p>Рекомендуется использовать одинарные кавычки для литеральных строковых значений. Однако из этого правила есть исключения, когда одинарные кавычки являются частью строки. Если в строке есть как двойные, так и одинарные кавычки, используйте форму, которая создает наименьшее количество экранированных символов.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">RETURN</span> <span class="s1">'Cypher\'s a nice language'</span><span class="ss">,</span> <span class="s2">"Mats\' quote: "</span><span class="n">statement</span><span class="s2">"'
+
+RETURN "</span><span class="k">Cypher</span><span class="s1">'s a nice language", '</span><span class="n">Mats</span><span class="err">\</span><span class="s1">' quote: "statement"'</span>
+</code></pre></div></div>
+
+<p>Следует избегать использования обратных кавычек для экранирования символов и ключевых слов. В приведенных ниже примерах обратные кавычки используются для игнорирования специальных символов и пробелов в свойствах и метках.</p>
+
+<p>Если мы будем следовать рекомендуемым рекомендациям по стилю для тех компонентов, которые мы обсуждали выше с верблюжьим регистром и присоединенными словами, то мы никогда не увидим необходимости в этих типах обратных кавычек. Обратите внимание, что в некоторых случаях с определенными строковыми значениями или другим необычным синтаксисом уместны обратные кавычки.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//wrong</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="sb">`odd-ch@racter$`</span><span class="err">:</span><span class="sb">`Spaced Label`</span> <span class="ss">{</span><span class="sb">`&amp;property`</span><span class="err">:</span> <span class="mi">42</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="nf">labels</span><span class="ss">(</span><span class="sb">`odd-ch@racter$`</span><span class="ss">)</span>
+
+<span class="c1">//nice</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">node:</span><span class="n">NonSpacedLabel</span> <span class="ss">{</span><span class="nl">property</span><span class="dl">:</span><span class="w"> </span><span class="m">42</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="nf">labels</span><span class="ss">(</span><span class="n">node</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>В большинстве случаев нет необходимости использовать точку с запятой в конце запроса Cypher. Добавление точки с запятой в конец запроса Cypher является избыточным символом, поскольку Cypher выполняет блок как единое целое.</p>
+
+<p>Исключением является случай, когда у вас есть скрипт Cypher или блок с несколькими отдельными операторами Cypher. В этом случае вам понадобится точка с запятой, чтобы указать Cypher, где находится конец одного запроса и начало следующего запроса. Это позволяет Cypher выполнять каждую инструкцию отдельно.</p>
+
+<p>Если вы не поставите точку с запятой между блоком с несколькими операторами, Cypher попытается выполнить их как один оператор, что приведет к ошибке.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//wrong</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">c</span><span class="ss">;</span>
+
+<span class="c1">//nise</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">c</span>
+
+<span class="c1">//for block</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">c:</span><span class="n">Company</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Neo4j'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">c</span><span class="ss">;</span>
+
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="o">=</span> <span class="s1">'Jennifer'</span>
+<span class="k">RETURN</span> <span class="n">p</span><span class="ss">;</span>
+
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">t:</span><span class="n">Technology</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">a:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Jennifer'</span><span class="ss">})</span>
+<span class="k">RETURN</span> <span class="n">t.type</span><span class="ss">;</span>
+</code></pre></div></div>
+
+<p>Значение <code class="language-plaintext highlighter-rouge">null</code> и логические литералы в запросе должны быть написаны строчными буквами.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//null and boolean values are lower case</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.birthdate</span> <span class="o">=</span> <span class="k">null</span>
+  <span class="k">SET</span> <span class="n">missingBirthdate</span> <span class="o">=</span> <span class="k">true</span>
+<span class="k">RETURN</span> <span class="n">p</span>
+</code></pre></div></div>
+
+<p>Существует несколько рекомендуемых методов стилизации для различных сценариев с использованием шаблонов.</p>
+
+<p>Если у вас есть шаблоны, которые оборачивают линии, рекомендуется разрывать их после стрелок, а не перед ними.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">vehicle:</span><span class="n">Car</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="nc">:Company</span><span class="ss">)</span><span class="o">&lt;--</span>
+      <span class="ss">(</span><span class="nc">:Country</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">count</span><span class="ss">(</span><span class="n">vehicle</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>Используйте анонимные узлы и связи, если переменная не будет использоваться в дальнейшем в запросе.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Kate'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="nc">:LIKES</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="py">c:</span><span class="n">Car</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">c.type</span>
+</code></pre></div></div>
+
+<p>Сцепляйте шаблоны вместе, чтобы избежать повторения переменных.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//wrong</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">vehicle:</span><span class="n">Car</span><span class="ss">),</span> <span class="ss">(</span><span class="py">vehicle:</span><span class="n">Car</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="nc">:Company</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">count</span><span class="ss">(</span><span class="n">vehicle</span><span class="ss">)</span>
+
+<span class="c1">//nice</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">vehicle:</span><span class="n">Car</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="nc">:Company</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">count</span><span class="ss">(</span><span class="n">vehicle</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>По возможности размещайте именованные узлы (которые используют переменные) перед анонимными узлами и отношениями и ставьте узловую привязку (начальную точку или центральный фокус) в начале <code class="language-plaintext highlighter-rouge">MATCH</code>.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">manufacturer:</span><span class="n">Company</span><span class="ss">)</span><span class="o">&lt;--</span><span class="ss">(</span><span class="py">vehicle:</span><span class="n">Car</span><span class="ss">)</span><span class="o">&lt;--</span><span class="ss">()</span>
+<span class="k">WHERE</span> <span class="n">manufacturer.foundedYear</span> <span class="o">&lt;</span> <span class="mi">2000</span>
+<span class="k">RETURN</span> <span class="n">vehicle.mileage</span>
+</code></pre></div></div>
+
+<p>Отдавайте предпочтение исходящим (слева направо) связям шаблонов входящим связям шаблонов.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">vehicle:</span><span class="n">Car</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="nc">:Company</span><span class="ss">)</span><span class="o">&lt;--</span><span class="ss">(</span><span class="nc">:Country</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">vehicle.mileage</span>
+</code></pre></div></div>
+
+<p>При постановке пробелов следует следовать этим правыилам:</p>
+
+<p>Один пробел между предикатами метки или типа и предикатами свойств в шаблонах</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span> <span class="ss">{</span><span class="py">name:</span> <span class="s1">'Bob'</span><span class="ss">})</span><span class="o">-</span><span class="ss">[</span><span class="nc">:KNOWS</span> <span class="ss">{</span><span class="nl">since</span><span class="dl">:</span><span class="w"> </span><span class="m">2016</span><span class="ss">}]</span><span class="o">-&gt;</span><span class="ss">(</span><span class="py">other:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">other.name</span>
+</code></pre></div></div>
+
+<p>Нет пробела в предикатах меток</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">person:Person:</span><span class="n">Owner</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">person.name</span>
+</code></pre></div></div>
+
+<p>Нет пробела в шаблонах</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nc">:Person</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="nc">:Vehicle</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="nf">count</span><span class="ss">(</span><span class="o">*</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>Один пробел по обе стороны от операторов</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">p:</span><span class="n">Person</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">other:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">p.name</span> <span class="o">&lt;&gt;</span> <span class="n">other.name</span>
+<span class="k">RETURN</span> <span class="nf">length</span><span class="ss">(</span><span class="n">p</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>Один пробел после каждой запятой в списках и перечислениях</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">WITH</span> <span class="ss">[</span><span class="s1">'Sally'</span><span class="ss">,</span> <span class="s1">'Mark'</span><span class="ss">,</span> <span class="s1">'Alice'</span><span class="ss">]</span> <span class="k">as</span> <span class="n">list</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">c:</span><span class="n">Customer</span><span class="ss">),</span> <span class="ss">(</span><span class="py">e:</span><span class="n">Employee</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="n">c.name</span> <span class="ow">IN</span> <span class="n">list</span>
+<span class="n">AND</span><span class="w"> </span><span class="ss">(</span><span class="n">c</span><span class="ss">)</span><span class="o">-</span><span class="ss">[</span><span class="nc">:IS_ASSIGNED_TO</span><span class="ss">]</span><span class="o">-</span><span class="ss">(</span><span class="n">e</span><span class="ss">)</span>
+<span class="k">RETURN</span> <span class="n">c.name</span><span class="ss">,</span> <span class="n">e.name</span> <span class="k">as</span> <span class="n">customerContact</span>
+</code></pre></div></div>
+
+<p>Нет пробела в круглых скобках вызова функции.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">RETURN</span> <span class="nf">split</span><span class="ss">(</span><span class="s1">'test'</span><span class="ss">,</span> <span class="s1">'e'</span><span class="ss">)</span>
+</code></pre></div></div>
+
+<p>Используйте пробел в простых выражениях подзапроса.</p>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="py">a:</span><span class="n">Person</span><span class="ss">)</span>
+<span class="k">WHERE</span> <span class="ow">EXISTS</span> <span class="ss">{</span> <span class="ss">(</span><span class="n">a</span><span class="ss">)</span><span class="o">--&gt;</span><span class="ss">(</span><span class="py">b:</span><span class="n">Person</span><span class="ss">)</span> <span class="ss">}</span>
+<span class="k">RETURN</span> <span class="n">a.name</span><span class="ss">,</span> <span class="nf">collect</span><span class="ss">(</span><span class="n">b.name</span><span class="ss">)</span> <span class="k">as</span> <span class="n">friends</span>
+</code></pre></div></div>
+
+<p>Для маппингов:</p>
+
+<ul>
+  <li>Нет пробела между открывающей фигурной скобкой и первым ключом или между ключом и двоеточием</li>
+  <li>Один пробел между двоеточием и значением</li>
+  <li>Нет пробела между значением и запятой, но один пробел между запятой и следующей клавишей</li>
+  <li>Нет пробела между последним значением и закрывающей скобкой</li>
+</ul>
+
+<div class="language-cypher highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">WITH</span> <span class="ss">{</span><span class="py">key1:</span> <span class="s1">'value'</span><span class="ss">,</span> <span class="nl">key2</span><span class="dl">:</span><span class="w"> </span><span class="m">10</span><span class="ss">}</span> <span class="k">AS</span> <span class="n">map</span>
+<span class="k">RETURN</span> <span class="n">map</span>
 </code></pre></div></div>
 
 <p>Смотир еще:</p>
