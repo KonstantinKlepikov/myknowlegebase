@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>pytoneo client library and toolkit for working with neo4j | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="pytoneo client library and toolkit for working with neo4j" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="python приложение для neo4j" />
+<meta property="og:description" content="python приложение для neo4j" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/pytoneo.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pytoneo.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pytoneo.html","headline":"pytoneo client library and toolkit for working with neo4j","description":"python приложение для neo4j","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">pytoneo client library and toolkit for working with neo4j</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/bd" title="bd" class="link-tags">bd&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/graphs" title="graphs" class="link-tags">graphs&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Py2neo is a client library and toolkit for working with Neo4j from within Python applications and from the command line</p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install --upgrade py2neo</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s">"bolt://localhost:7687"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="s">"neo4j"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graph</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"UNWIND range(1, 3) AS n RETURN n, n * n as n_sq"</span><span class="p">)</span>
+   <span class="n">n</span> <span class="o">|</span> <span class="n">n_sq</span>
+<span class="o">-----|------</span>
+   <span class="mi">1</span> <span class="o">|</span>    <span class="mi">1</span>
+   <span class="mi">2</span> <span class="o">|</span>    <span class="mi">4</span>
+   <span class="mi">3</span> <span class="o">|</span>    <span class="mi">9</span>
+</code></pre></div></div>
+
+<h2 id="connection-profiles"><a href="https://py2neo.org/2021.1/profiles.html">Connection profiles</a></h2>
+
+<h2 id="workflow"><a href="https://py2neo.org/2021.1/workflow.html">Workflow</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">class py2neo.GraphService(profile=None, **settings)[source]</code> является средством доступа верхнего уровня для всей системы управления графовой базой данных [<a href="neo4j" title="Neo4j graph data base">neo4j</a>]. В иерархии объектов py2neo GraphService содержит один или несколько объектов Graph, в которых в основном происходит хранение и извлечение данных.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">GraphService</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gs</span> <span class="o">=</span> <span class="n">GraphService</span><span class="p">(</span><span class="s">"bolt://camelot.example.com:7687"</span><span class="p">)</span>
+
+<span class="c1"># Alternatively, the default value of bolt://localhost:7687 is used:
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">default_gs</span> <span class="o">=</span> <span class="n">GraphService</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_gs</span>
+<span class="o">&lt;</span><span class="n">GraphService</span> <span class="n">uri</span><span class="o">=</span><span class="s">'bolt://localhost:7687'</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">class py2neo.Graph(profile=None, name=None, **settings)</code> предоставляет дескриптор отдельной базы данных именованных графов, предоставляемой службой базы данных графов [<a href="neo4j" title="Neo4j graph data base">neo4j</a>]. Сведения о подключении предоставляются с использованием либо URI, либо ConnectionProfile, а также индивидуальных настроек, если это необходимо. Аргумент имени позволяет выбрать базу данных графа по имени. При работе с Neo4j 4.0 и выше это может быть любое имя, указанное в системном каталоге, полный список которого можно получить с помощью команды [<a href="cypher" title="Cypher query language">cypher</a>] <code class="language-plaintext highlighter-rouge">SHOW DATABASES</code>. Если здесь указать <code class="language-plaintext highlighter-rouge">None</code>, будет выбрана база данных по умолчанию, определенная на сервере. Для более ранних версий Neo4j имя должно быть установлено на <code class="language-plaintext highlighter-rouge">None</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sales</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s">"bolt+s://g.example.com:7687"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"sales"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sales</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (c:Customer) RETURN c.name"</span><span class="p">)</span>
+ <span class="n">c</span><span class="p">.</span><span class="n">name</span>
+<span class="o">---------------</span>
+ <span class="n">John</span> <span class="n">Smith</span>
+ <span class="n">Amy</span> <span class="n">Pond</span>
+ <span class="n">Rory</span> <span class="n">Williams</span>
+</code></pre></div></div>
+
+<p>Доступ к системному графу, доступному во всех выпусках продукта 4.x+, также можно получить через класс SystemGraph.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">SystemGraph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sg</span> <span class="o">=</span> <span class="n">SystemGraph</span><span class="p">(</span><span class="s">"bolt+s://g.example.com:7687"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sg</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="s">"dbms.security.listUsers"</span><span class="p">)</span>
+ <span class="n">username</span> <span class="o">|</span> <span class="n">roles</span> <span class="o">|</span> <span class="n">flags</span>
+<span class="o">----------|-------|-------</span>
+ <span class="n">neo4j</span>    <span class="o">|</span>  <span class="n">null</span> <span class="o">|</span> <span class="p">[]</span>
+</code></pre></div></div>
+
+<p>Экземпляр Graph обеспечивает прямой или косвенный доступ к большей части функций, доступных в py2neo.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">auto</code> новый автокоммит транзакции</li>
+  <li><code class="language-plaintext highlighter-rouge">begin</code> открыть новую транзакцию</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">call</code> Средство доступа для перечисления и вызова процедур. Это свойство содержит объект <code class="language-plaintext highlighter-rouge">procedureLibrary</code>, привязанный к этому графу, который предоставляет ссылки на процедуры Cypher в базовой реализации. Для вызова процедуры требуется только обычный синтаксис вызова функции Python</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="p">.</span><span class="n">call</span><span class="p">.</span><span class="n">dbms</span><span class="p">.</span><span class="n">components</span><span class="p">()</span>
+  <span class="n">name</span>         <span class="o">|</span> <span class="n">versions</span>   <span class="o">|</span> <span class="n">edition</span>
+  <span class="o">--------------|------------|-----------</span>
+  <span class="n">Neo4j</span> <span class="n">Kernel</span> <span class="o">|</span> <span class="p">[</span><span class="s">'3.5.12'</span><span class="p">]</span> <span class="o">|</span> <span class="n">community</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">commit</code> коммит транзакции</li>
+  <li><code class="language-plaintext highlighter-rouge">create(subgraph)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">delete(subgraph)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">delete_all</code> удаляет все ноды и связи</li>
+  <li><code class="language-plaintext highlighter-rouge">evaluate</code> выполняет один запрос Cypher и возвращает значение из первого столбца первой записи.</li>
+  <li><code class="language-plaintext highlighter-rouge">exist</code></li>
+  <li><code class="language-plaintext highlighter-rouge">match</code></li>
+  <li><code class="language-plaintext highlighter-rouge">match_one</code> Сопоставить и вернуть одну связь с определенными критериями.</li>
+  <li><code class="language-plaintext highlighter-rouge">merge</code></li>
+  <li><code class="language-plaintext highlighter-rouge">name</code> имя графа</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">nodes</code> поиск нод по свойствам</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+  <span class="n">graph</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1234</span><span class="p">]</span>
+  <span class="p">(</span><span class="n">_1234</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="s">'Alice'</span><span class="p">})</span>
+  <span class="n">graph</span><span class="p">.</span><span class="n">nodes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">_1234</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="s">'Alice'</span><span class="p">})</span>
+  <span class="n">graph</span><span class="p">.</span><span class="n">nodes</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Alice"</span><span class="p">).</span><span class="n">first</span><span class="p">()</span>
+  <span class="p">(</span><span class="n">_1234</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="s">'Alice'</span><span class="p">})</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">pull(subgraph)</code> получение данных сч реплик</li>
+  <li><code class="language-plaintext highlighter-rouge">push(subgraph)[source]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">query</code> один ридонли запрос с автокоммитом</li>
+  <li><code class="language-plaintext highlighter-rouge">relationships</code> Это можно использовать для поиска отношений, соответствующих заданным критериям, а также для эффективного подсчета отношений.</li>
+  <li><code class="language-plaintext highlighter-rouge">rollback</code></li>
+  <li><code class="language-plaintext highlighter-rouge">run</code> один ри/райт запрос с автокоммитом</li>
+  <li><code class="language-plaintext highlighter-rouge">schema</code> схема графа</li>
+  <li><code class="language-plaintext highlighter-rouge">separate(subgraph)</code> удаление отношенийсоответствующих подграфу</li>
+  <li><code class="language-plaintext highlighter-rouge">service</code> сервис, в который входит объект Graph</li>
+  <li><code class="language-plaintext highlighter-rouge">update</code></li>
+</ul>
+
+<h2 id="node-and-relationship-matching"><a href="https://py2neo.org/2021.1/matching.html">Node and relationship matching</a></h2>
+
+<p>Модуль py2neo.matching предоставляет функциональные возможности для сопоставления узлов и отношений в соответствии с определенными критериями. Для каждого типа сущности предусмотрены класс Matcher и класс Match. Сопоставитель можно использовать для выполнения базового выбора, возвращая совпадение, которое само может быть оценено или уточнено.</p>
+
+<ul>
+  <li>
+    <p><a href="https://py2neo.org/2021.1/matching.html#nodematcher-objects">NodeMatcher</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Graph</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo.matching</span> <span class="kn">import</span> <span class="o">*</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes</span> <span class="o">=</span> <span class="n">NodeMatcher</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">keanu</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Keanu Reeves"</span><span class="p">).</span><span class="n">first</span><span class="p">()</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">keanu</span>
+  <span class="n">Node</span><span class="p">(</span><span class="s">'Person'</span><span class="p">,</span> <span class="n">born</span><span class="o">=</span><span class="mi">1964</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'Keanu Reeves'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://py2neo.org/2021.1/matching.html#nodematch-objects">NodeMatch</a>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">iter(match)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">len(match)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">all()</code></li>
+      <li><code class="language-plaintext highlighter-rouge">count()</code></li>
+      <li><code class="language-plaintext highlighter-rouge">exist()</code></li>
+      <li><code class="language-plaintext highlighter-rouge">fiest()</code></li>
+      <li><code class="language-plaintext highlighter-rouge">limit(amount)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">order_by(fields)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">skip(amount)</code></li>
+      <li><code class="language-plaintext highlighter-rouge">where(*predicates, **properties)</code></li>
+    </ul>
+  </li>
+  <li><a href="https://py2neo.org/2021.1/matching.html#relationshipmatcher-objects">RelationshipMatcher</a></li>
+  <li><a href="https://py2neo.org/2021.1/matching.html#relationshipmatch-objects">RelationshipMatch</a></li>
+  <li>
+    <p><a href="https://py2neo.org/2021.1/matching.html#applying-predicates">Applying predicates</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">STARTS_WITH</span><span class="p">(</span><span class="s">"John"</span><span class="p">)).</span><span class="nb">all</span><span class="p">()</span>
+  <span class="p">[</span><span class="n">Node</span><span class="p">(</span><span class="s">'Person'</span><span class="p">,</span> <span class="n">born</span><span class="o">=</span><span class="mi">1966</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'John Cusack'</span><span class="p">),</span>
+  <span class="n">Node</span><span class="p">(</span><span class="s">'Person'</span><span class="p">,</span> <span class="n">born</span><span class="o">=</span><span class="mi">1950</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'John Patrick Stanley'</span><span class="p">),</span>
+  <span class="n">Node</span><span class="p">(</span><span class="s">'Person'</span><span class="p">,</span> <span class="n">born</span><span class="o">=</span><span class="mi">1940</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'John Hurt'</span><span class="p">),</span>
+  <span class="n">Node</span><span class="p">(</span><span class="s">'Person'</span><span class="p">,</span> <span class="n">born</span><span class="o">=</span><span class="mi">1960</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'John Goodman'</span><span class="p">),</span>
+  <span class="n">Node</span><span class="p">(</span><span class="s">'Person'</span><span class="p">,</span> <span class="n">born</span><span class="o">=</span><span class="mi">1965</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'John C. Reilly'</span><span class="p">)]</span>
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://py2neo.org/2021.1/matching.html#ordering-and-limiting">Ordering and limiting</a></li>
+</ul>
+
+<h2 id="errors"><a href="https://py2neo.org/2021.1/errors.html">Errors</a></h2>
+
+<h2 id="graph-data-types"><a href="https://py2neo.org/2021.1/data/index.html">Graph data types</a></h2>
+
+<ul>
+  <li>
+    <p><a href="https://py2neo.org/2021.1/data/index.html#node-objects">Node objects</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Node</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Alice"</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><a href="https://py2neo.org/2021.1/data/index.html#relationship-objects">Relationship objects</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"Carol"</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">WorksWith</span><span class="p">(</span><span class="n">Relationship</span><span class="p">):</span> <span class="k">pass</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">ac</span> <span class="o">=</span> <span class="n">WorksWith</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
+  <span class="s">'WORKS_WITH
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p><a href="https://py2neo.org/2021.1/data/index.html#path-objects">Path objects</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Path</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">alice</span><span class="p">,</span> <span class="n">bob</span><span class="p">,</span> <span class="n">carol</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Alice"</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Bob"</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Carol"</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">abc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">alice</span><span class="p">,</span> <span class="s">"KNOWS"</span><span class="p">,</span> <span class="n">bob</span><span class="p">,</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">carol</span><span class="p">,</span> <span class="s">"KNOWS"</span><span class="p">,</span> <span class="n">bob</span><span class="p">),</span> <span class="n">carol</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">abc</span>
+  <span class="o">&lt;</span><span class="n">Path</span> <span class="n">order</span><span class="o">=</span><span class="mi">3</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="o">&gt;</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">abc</span><span class="p">.</span><span class="n">nodes</span>
+  <span class="p">(</span><span class="o">&lt;</span><span class="n">Node</span> <span class="n">labels</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span> <span class="n">properties</span><span class="o">=</span><span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Alice'</span><span class="p">}</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="o">&lt;</span><span class="n">Node</span> <span class="n">labels</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span> <span class="n">properties</span><span class="o">=</span><span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Bob'</span><span class="p">}</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="o">&lt;</span><span class="n">Node</span> <span class="n">labels</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span> <span class="n">properties</span><span class="o">=</span><span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Carol'</span><span class="p">}</span><span class="o">&gt;</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">abc</span><span class="p">.</span><span class="n">relationships</span>
+  <span class="p">(</span><span class="o">&lt;</span><span class="n">Relationship</span> <span class="nb">type</span><span class="o">=</span><span class="s">'KNOWS'</span> <span class="n">properties</span><span class="o">=</span><span class="p">{}</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="o">&lt;</span><span class="n">Relationship</span> <span class="nb">type</span><span class="o">=</span><span class="s">'KNOWS'</span> <span class="n">properties</span><span class="o">=</span><span class="p">{}</span><span class="o">&gt;</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">dave</span><span class="p">,</span> <span class="n">eve</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Dave"</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Eve"</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">de</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dave</span><span class="p">,</span> <span class="s">"KNOWS"</span><span class="p">,</span> <span class="n">eve</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">de</span>
+  <span class="o">&lt;</span><span class="n">Path</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="o">&gt;</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">abcde</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span> <span class="s">"KNOWS"</span><span class="p">,</span> <span class="n">de</span><span class="p">)</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">abcde</span>
+  <span class="o">&lt;</span><span class="n">Path</span> <span class="n">order</span><span class="o">=</span><span class="mi">5</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="o">&gt;</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">relationship</span> <span class="ow">in</span> <span class="n">abcde</span><span class="p">.</span><span class="n">relationships</span><span class="p">:</span>
+  <span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">relationship</span><span class="p">)</span>
+  <span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Alice"</span><span class="p">})</span><span class="o">-</span><span class="p">[:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Bob"</span><span class="p">})</span>
+  <span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Carol"</span><span class="p">})</span><span class="o">-</span><span class="p">[:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Bob"</span><span class="p">})</span>
+  <span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Carol"</span><span class="p">})</span><span class="o">-</span><span class="p">[:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Dave"</span><span class="p">})</span>
+  <span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Dave"</span><span class="p">})</span><span class="o">-</span><span class="p">[:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">({</span><span class="n">name</span><span class="p">:</span><span class="s">"Eve"</span><span class="p">})</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><a href="https://py2neo.org/2021.1/data/index.html#subgraph-objects">Subgraph objects</a></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">ab</span> <span class="o">|</span> <span class="n">ac</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+  <span class="p">{(</span><span class="n">alice</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="s">"Alice"</span><span class="p">}),</span>
+  <span class="p">(</span><span class="n">bob</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="s">"Bob"</span><span class="p">}),</span>
+  <span class="p">(</span><span class="n">carol</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="s">"Carol"</span><span class="p">}),</span>
+  <span class="p">(</span><span class="n">Alice</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">Bob</span><span class="p">),</span>
+  <span class="p">(</span><span class="n">Alice</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">WORKS_WITH</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">Carol</span><span class="p">)}</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">nodes</span><span class="p">()</span>
+  <span class="nb">frozenset</span><span class="p">({(</span><span class="n">alice</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="s">"Alice"</span><span class="p">}),</span>
+          <span class="p">(</span><span class="n">bob</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="s">"Bob"</span><span class="p">}),</span>
+          <span class="p">(</span><span class="n">carol</span><span class="p">:</span><span class="n">Person</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="s">"Carol"</span><span class="p">})})</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">.</span><span class="n">relationships</span><span class="p">()</span>
+  <span class="nb">frozenset</span><span class="p">({(</span><span class="n">Alice</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">Bob</span><span class="p">),</span>
+          <span class="p">(</span><span class="n">Alice</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">WORKS_WITH</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">Carol</span><span class="p">)})</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="geo-spatial-data-types"><a href="https://py2neo.org/2021.1/data/spatial.html">Geo-spatial data types</a></h2>
+
+<p>Читай еще:</p>
+
+<ul>
+  <li><a href="https://py2neo.org/2021.1/">документация</a></li>
+  <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
+  <li>[<a href="python-api-neo4j" title="Python api for neo4j">python-api-neo4j</a>]</li>
+  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
