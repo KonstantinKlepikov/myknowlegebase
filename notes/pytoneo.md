@@ -219,9 +219,197 @@ Py2neo is a client library and toolkit for working with Neo4j from within Python
 
 ## [Geo-spatial data types](https://py2neo.org/2021.1/data/spatial.html)
 
+## [Cypher](https://py2neo.org/2021.1/cypher/index.html)
+
+### [Cursor objects](https://py2neo.org/2021.1/cypher/index.html#cursor-objects)
+
+Курсор можно рассматривать как окно в базовый поток данных. Все курсоры в py2neo «только вперед», что означает, что навигация начинается до первой записи и может продолжаться только в прямом направлении.
+
+Обычно коду приложения не требуется создавать экземпляр курсора напрямую, поскольку он будет возвращен любым методом выполнения Cypher. Для создания курсора требуется только объект `DataSource`, который содержит логику доступа к исходным данным, по которым перемещается курсор.
+
+Для многих простых случаев использования курсора требуется только метод `forward()` и текущий атрибут.
+
+```python
+# navigate over all available records
+while cursor.forward():
+    print(cursor.current["name"])
+
+# get first record
+if cursor.forward():
+    print(cursor.current["name"])
+
+# or
+print(next(cursor)["name"])
+
+# use in a loop (ass iterable)
+for record in cursor:
+    print(record["name"])
+
+# return first value for queries that return a value
+print(cursor.evaluate())
+```
+
+`data`  возвращает весь результат как список словарей
+
+```python
+>>> from py2neo import Graph
+>>> graph = Graph()
+>>> graph.run("MATCH (a:Person) RETURN a.name, a.born LIMIT 4").data()
+[{'a.born': 1964, 'a.name': 'Keanu Reeves'},
+ {'a.born': 1967, 'a.name': 'Carrie-Anne Moss'},
+ {'a.born': 1961, 'a.name': 'Laurence Fishburne'},
+ {'a.born': 1960, 'a.name': 'Hugo Weaving'}]
+```
+
+[Больше rerurn опции смотри тут](https://py2neo.org/2021.1/cypher/index.html#cursor-objects)
+
+### [Record objects](https://py2neo.org/2021.1/cypher/index.html#record-objects)
+
+Объект `Record` содержит упорядоченную коллекцию значений с ключами. Он во многом похож на namedtuple, но разрешает доступ к полям только с помощью синтаксиса, заключенного в квадратные скобки, и предоставляет больше функциональных возможностей. Запись расширяет как кортеж, так и отображение.
+
+### [Running procedures](https://py2neo.org/2021.1/cypher/index.html#running-procedures)
+
+### [Utilities](https://py2neo.org/2021.1/cypher/index.html#utilities)
+
+### [Cypher Lexer](https://py2neo.org/2021.1/cypher/lexer.html)
+
+Этот модуль содержит лексер языка Cypher, основанный на платформе лексера Pygments. Это можно использовать для анализа операторов и выражений для варианта Cypher, доступного в Neo4j 3.4.
+
+### [Cypher Query Generation Functions](https://py2neo.org/2021.1/cypher/queries.html)
+
+## [Bulk data operations](https://py2neo.org/2021.1/bulk/index.html)
+
+Этот модуль содержит средства для выполнения операций с большими объемами данных, таких как создание или слияние узлов и связей.
+
+## [Exporting data](https://py2neo.org/2021.1/bulk/export.html)
+
+Этот модуль позволяет экспортировать данные во внешние форматы.
+
+```python
+>>> from py2neo import Graph
+>>> from py2neo.export import to_pandas_data_frame
+>>> graph = Graph()
+>>> to_pandas_data_frame(graph.run("MATCH (a:Person) RETURN a.name, a.born LIMIT 4"))
+   a.born              a.name
+0    1964        Keanu Reeves
+1    1967    Carrie-Anne Moss
+2    1961  Laurence Fishburne
+3    1960        Hugo Weaving
+```
+
+## [Object-Graph Mapping](https://py2neo.org/2021.1/ogm/index.html)
+
+Пакет py2neo.ogm содержит набор средств для сваинга объектов Python к основному набору даных графа. Определения классов расширяют модель и включают определения свойств и меток, а также сведения о связанных объектах.
+
+```python
+class Movie(Model):
+    __primarykey__ = "title"
+
+    title = Property()
+    tag_line = Property("tagline")
+    released = Property()
+
+    actors = RelatedFrom("Person", "ACTED_IN")
+    directors = RelatedFrom("Person", "DIRECTED")
+    producers = RelatedFrom("Person", "PRODUCED")
+
+
+class Person(Model):
+    __primarykey__ = "name"
+
+    name = Property()
+    born = Property()
+
+    acted_in = RelatedTo(Movie)
+    directed = RelatedTo(Movie)
+    produced = RelatedTo(Movie)
+```
+
+### [Repositories](https://py2neo.org/2021.1/ogm/index.html#repositories)
+
+Конструктор этого класса имеет такую ​​же сигнатуру, что и конструктор класса Graph.
+
+```python
+>>> from py2neo.ogm import Repository
+>>> from py2neo.ogm.models.movies import Movie
+>>> repo = Repository("bolt://neo4j@localhost:7687", password="password")
+>>> repo.match(Movie, "The Matrix").first()
+<Movie title='The Matrix'>
+```
+
+### [Models](https://py2neo.org/2021.1/ogm/index.html#models)
+
+В основе структуры py2neo OGM лежит Model. Это базовый класс для всех классов, которые должны отображаться в базе данных графа. Каждая Model содержит узел, а также набор указателей на RelatedObjects и сведения об отношениях, которые их соединяют.
+
+Экземпляр Model может быть создан так же, как и любой другой объект Python, но также может быть сопоставлен с базой данных. Каждый экземпляр может содержать атрибуты, представляющие метки, узлы или связанные объекты.
+
+### [Properties](https://py2neo.org/2021.1/ogm/index.html#properties)
+
+Свойство, определенное в модели, предоставляет доступ к свойству определенного моделью узла.
+
+```python
+>>> class Person(Model):
+...     name = Property()
+...
+>>> alice = Person()
+>>> alice.name = "Alice Smith"
+>>> alice.name
+"Alice Smith"
+```
+
+### [Labels](https://py2neo.org/2021.1/ogm/index.html#labels)
+
+Метка, определенная в модели, предоставляет средство доступа к метке узла. Она отображается как логическое значение, настройка которого позволяет включать или выключать метку.
+
+Метки отображаются в API так же, как логические свойства. Разница между ними заключается в том, как значение преобразуется в базу данных графа. Обычно метку следует использовать, если для этого значения регулярно выполняются сопоставления. Вторичная или вспомогательная информация может храниться в логическом свойстве (bolean propertie).
+
+```python
+>>> class Food(Model):
+...     hot = Label()
+...
+>>> pizza = Food()
+>>> pizza.hot
+False
+>>> pizza.hot = True
+>>> pizza.hot
+True
+```
+
+### [Related Objects](https://py2neo.org/2021.1/ogm/index.html#related-objects)
+
+Связанные объекты — это экземпляры Model, определенным образом связанные с данной Model.
+
+```python
+# for (:Person)-[:LIKES]->(:Person)
+class Person(Model):
+    __primarykey__ = "name"
+
+    name = Property()
+
+    likes = RelatedTo("Person")
+```
+
+### [Object Matching](https://py2neo.org/2021.1/ogm/index.html#object-matching)
+
+Один или несколько экземпляров модели могут быть выбраны из базы данных с помощью метода match соответствующего подкласса.
+
+```python
+>>> Person.match(graph, "Keanu Reeves").first()
+<Person name='Keanu Reeves'>
+
+>>> list(Person.match(graph).where("_.name =~ 'K.*'"))
+[<Person name='Keanu Reeves'>,
+ <Person name='Kevin Bacon'>,
+ <Person name='Kiefer Sutherland'>,
+ <Person name='Kevin Pollak'>,
+ <Person name='Kelly McGillis'>,
+ <Person name='Kelly Preston'>]
+```
+
 Читай еще:
 
 - [документация](https://py2neo.org/2021.1/)
+- [simple example](https://github.com/elena/py2neo-quickstart)
 - [[neo4j]]
 - [[python-api-neo4j]]
 - [[cypher]]
@@ -231,5 +419,14 @@ Py2neo is a client library and toolkit for working with Neo4j from within Python
 [neo4j]: neo4j "Neo4j graph data base"
 [cypher]: cypher "Cypher query language"
 [python-api-neo4j]: python-api-neo4j "Python api for neo4j"
+[graphs]: ../lists/graphs "Machine learning with graphs"
+[//end]: # "Autogenerated link references"
+[//begin]: # "Autogenerated link references for markdown compatibility"
+[neo4j]: neo4j "Neo4j graph data base"
+[neo4j]: neo4j "Neo4j graph data base"
+[cypher]: cypher "Cypher query language"
+[neo4j]: neo4j "Neo4j graph data base"
+[python-api-neo4j]: python-api-neo4j "Python api for neo4j"
+[cypher]: cypher "Cypher query language"
 [graphs]: ../lists/graphs "Machine learning with graphs"
 [//end]: # "Autogenerated link references"

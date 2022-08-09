@@ -343,10 +343,189 @@
 
 <h2 id="geo-spatial-data-types"><a href="https://py2neo.org/2021.1/data/spatial.html">Geo-spatial data types</a></h2>
 
+<h2 id="cypher"><a href="https://py2neo.org/2021.1/cypher/index.html">Cypher</a></h2>
+
+<h3 id="cursor-objects"><a href="https://py2neo.org/2021.1/cypher/index.html#cursor-objects">Cursor objects</a></h3>
+
+<p>Курсор можно рассматривать как окно в базовый поток данных. Все курсоры в py2neo «только вперед», что означает, что навигация начинается до первой записи и может продолжаться только в прямом направлении.</p>
+
+<p>Обычно коду приложения не требуется создавать экземпляр курсора напрямую, поскольку он будет возвращен любым методом выполнения Cypher. Для создания курсора требуется только объект <code class="language-plaintext highlighter-rouge">DataSource</code>, который содержит логику доступа к исходным данным, по которым перемещается курсор.</p>
+
+<p>Для многих простых случаев использования курсора требуется только метод <code class="language-plaintext highlighter-rouge">forward()</code> и текущий атрибут.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># navigate over all available records
+</span><span class="k">while</span> <span class="n">cursor</span><span class="p">.</span><span class="n">forward</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">cursor</span><span class="p">.</span><span class="n">current</span><span class="p">[</span><span class="s">"name"</span><span class="p">])</span>
+
+<span class="c1"># get first record
+</span><span class="k">if</span> <span class="n">cursor</span><span class="p">.</span><span class="n">forward</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">cursor</span><span class="p">.</span><span class="n">current</span><span class="p">[</span><span class="s">"name"</span><span class="p">])</span>
+
+<span class="c1"># or
+</span><span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">cursor</span><span class="p">)[</span><span class="s">"name"</span><span class="p">])</span>
+
+<span class="c1"># use in a loop (ass iterable)
+</span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">"name"</span><span class="p">])</span>
+
+<span class="c1"># return first value for queries that return a value
+</span><span class="k">print</span><span class="p">(</span><span class="n">cursor</span><span class="p">.</span><span class="n">evaluate</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">data</code>  возвращает весь результат как список словарей</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graph</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person) RETURN a.name, a.born LIMIT 4"</span><span class="p">).</span><span class="n">data</span><span class="p">()</span>
+<span class="p">[{</span><span class="s">'a.born'</span><span class="p">:</span> <span class="mi">1964</span><span class="p">,</span> <span class="s">'a.name'</span><span class="p">:</span> <span class="s">'Keanu Reeves'</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">'a.born'</span><span class="p">:</span> <span class="mi">1967</span><span class="p">,</span> <span class="s">'a.name'</span><span class="p">:</span> <span class="s">'Carrie-Anne Moss'</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">'a.born'</span><span class="p">:</span> <span class="mi">1961</span><span class="p">,</span> <span class="s">'a.name'</span><span class="p">:</span> <span class="s">'Laurence Fishburne'</span><span class="p">},</span>
+ <span class="p">{</span><span class="s">'a.born'</span><span class="p">:</span> <span class="mi">1960</span><span class="p">,</span> <span class="s">'a.name'</span><span class="p">:</span> <span class="s">'Hugo Weaving'</span><span class="p">}]</span>
+</code></pre></div></div>
+
+<p><a href="https://py2neo.org/2021.1/cypher/index.html#cursor-objects">Больше rerurn опции смотри тут</a></p>
+
+<h3 id="record-objects"><a href="https://py2neo.org/2021.1/cypher/index.html#record-objects">Record objects</a></h3>
+
+<p>Объект <code class="language-plaintext highlighter-rouge">Record</code> содержит упорядоченную коллекцию значений с ключами. Он во многом похож на namedtuple, но разрешает доступ к полям только с помощью синтаксиса, заключенного в квадратные скобки, и предоставляет больше функциональных возможностей. Запись расширяет как кортеж, так и отображение.</p>
+
+<h3 id="running-procedures"><a href="https://py2neo.org/2021.1/cypher/index.html#running-procedures">Running procedures</a></h3>
+
+<h3 id="utilities"><a href="https://py2neo.org/2021.1/cypher/index.html#utilities">Utilities</a></h3>
+
+<h3 id="cypher-lexer"><a href="https://py2neo.org/2021.1/cypher/lexer.html">Cypher Lexer</a></h3>
+
+<p>Этот модуль содержит лексер языка Cypher, основанный на платформе лексера Pygments. Это можно использовать для анализа операторов и выражений для варианта Cypher, доступного в Neo4j 3.4.</p>
+
+<h3 id="cypher-query-generation-functions"><a href="https://py2neo.org/2021.1/cypher/queries.html">Cypher Query Generation Functions</a></h3>
+
+<h2 id="bulk-data-operations"><a href="https://py2neo.org/2021.1/bulk/index.html">Bulk data operations</a></h2>
+
+<p>Этот модуль содержит средства для выполнения операций с большими объемами данных, таких как создание или слияние узлов и связей.</p>
+
+<h2 id="exporting-data"><a href="https://py2neo.org/2021.1/bulk/export.html">Exporting data</a></h2>
+
+<p>Этот модуль позволяет экспортировать данные во внешние форматы.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo</span> <span class="kn">import</span> <span class="n">Graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo.export</span> <span class="kn">import</span> <span class="n">to_pandas_data_frame</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">to_pandas_data_frame</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person) RETURN a.name, a.born LIMIT 4"</span><span class="p">))</span>
+   <span class="n">a</span><span class="p">.</span><span class="n">born</span>              <span class="n">a</span><span class="p">.</span><span class="n">name</span>
+<span class="mi">0</span>    <span class="mi">1964</span>        <span class="n">Keanu</span> <span class="n">Reeves</span>
+<span class="mi">1</span>    <span class="mi">1967</span>    <span class="n">Carrie</span><span class="o">-</span><span class="n">Anne</span> <span class="n">Moss</span>
+<span class="mi">2</span>    <span class="mi">1961</span>  <span class="n">Laurence</span> <span class="n">Fishburne</span>
+<span class="mi">3</span>    <span class="mi">1960</span>        <span class="n">Hugo</span> <span class="n">Weaving</span>
+</code></pre></div></div>
+
+<h2 id="object-graph-mapping"><a href="https://py2neo.org/2021.1/ogm/index.html">Object-Graph Mapping</a></h2>
+
+<p>Пакет py2neo.ogm содержит набор средств для сваинга объектов Python к основному набору даных графа. Определения классов расширяют модель и включают определения свойств и меток, а также сведения о связанных объектах.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Movie</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">__primarykey__</span> <span class="o">=</span> <span class="s">"title"</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="n">Property</span><span class="p">()</span>
+    <span class="n">tag_line</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="s">"tagline"</span><span class="p">)</span>
+    <span class="n">released</span> <span class="o">=</span> <span class="n">Property</span><span class="p">()</span>
+
+    <span class="n">actors</span> <span class="o">=</span> <span class="n">RelatedFrom</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="s">"ACTED_IN"</span><span class="p">)</span>
+    <span class="n">directors</span> <span class="o">=</span> <span class="n">RelatedFrom</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="s">"DIRECTED"</span><span class="p">)</span>
+    <span class="n">producers</span> <span class="o">=</span> <span class="n">RelatedFrom</span><span class="p">(</span><span class="s">"Person"</span><span class="p">,</span> <span class="s">"PRODUCED"</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">__primarykey__</span> <span class="o">=</span> <span class="s">"name"</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Property</span><span class="p">()</span>
+    <span class="n">born</span> <span class="o">=</span> <span class="n">Property</span><span class="p">()</span>
+
+    <span class="n">acted_in</span> <span class="o">=</span> <span class="n">RelatedTo</span><span class="p">(</span><span class="n">Movie</span><span class="p">)</span>
+    <span class="n">directed</span> <span class="o">=</span> <span class="n">RelatedTo</span><span class="p">(</span><span class="n">Movie</span><span class="p">)</span>
+    <span class="n">produced</span> <span class="o">=</span> <span class="n">RelatedTo</span><span class="p">(</span><span class="n">Movie</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="repositories"><a href="https://py2neo.org/2021.1/ogm/index.html#repositories">Repositories</a></h3>
+
+<p>Конструктор этого класса имеет такую ​​же сигнатуру, что и конструктор класса Graph.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo.ogm</span> <span class="kn">import</span> <span class="n">Repository</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">py2neo.ogm.models.movies</span> <span class="kn">import</span> <span class="n">Movie</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">repo</span> <span class="o">=</span> <span class="n">Repository</span><span class="p">(</span><span class="s">"bolt://neo4j@localhost:7687"</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">"password"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">repo</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">Movie</span><span class="p">,</span> <span class="s">"The Matrix"</span><span class="p">).</span><span class="n">first</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">Movie</span> <span class="n">title</span><span class="o">=</span><span class="s">'The Matrix'</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="models"><a href="https://py2neo.org/2021.1/ogm/index.html#models">Models</a></h3>
+
+<p>В основе структуры py2neo OGM лежит Model. Это базовый класс для всех классов, которые должны отображаться в базе данных графа. Каждая Model содержит узел, а также набор указателей на RelatedObjects и сведения об отношениях, которые их соединяют.</p>
+
+<p>Экземпляр Model может быть создан так же, как и любой другой объект Python, но также может быть сопоставлен с базой данных. Каждый экземпляр может содержать атрибуты, представляющие метки, узлы или связанные объекты.</p>
+
+<h3 id="properties"><a href="https://py2neo.org/2021.1/ogm/index.html#properties">Properties</a></h3>
+
+<p>Свойство, определенное в модели, предоставляет доступ к свойству определенного моделью узла.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">Property</span><span class="p">()</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice</span> <span class="o">=</span> <span class="n">Person</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">"Alice Smith"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">alice</span><span class="p">.</span><span class="n">name</span>
+<span class="s">"Alice Smith"</span>
+</code></pre></div></div>
+
+<h3 id="labels"><a href="https://py2neo.org/2021.1/ogm/index.html#labels">Labels</a></h3>
+
+<p>Метка, определенная в модели, предоставляет средство доступа к метке узла. Она отображается как логическое значение, настройка которого позволяет включать или выключать метку.</p>
+
+<p>Метки отображаются в API так же, как логические свойства. Разница между ними заключается в том, как значение преобразуется в базу данных графа. Обычно метку следует использовать, если для этого значения регулярно выполняются сопоставления. Вторичная или вспомогательная информация может храниться в логическом свойстве (bolean propertie).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Food</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">hot</span> <span class="o">=</span> <span class="n">Label</span><span class="p">()</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">Food</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pizza</span><span class="p">.</span><span class="n">hot</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pizza</span><span class="p">.</span><span class="n">hot</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pizza</span><span class="p">.</span><span class="n">hot</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<h3 id="related-objects"><a href="https://py2neo.org/2021.1/ogm/index.html#related-objects">Related Objects</a></h3>
+
+<p>Связанные объекты — это экземпляры Model, определенным образом связанные с данной Model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># for (:Person)-[:LIKES]-&gt;(:Person)
+</span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">__primarykey__</span> <span class="o">=</span> <span class="s">"name"</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Property</span><span class="p">()</span>
+
+    <span class="n">likes</span> <span class="o">=</span> <span class="n">RelatedTo</span><span class="p">(</span><span class="s">"Person"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="object-matching"><a href="https://py2neo.org/2021.1/ogm/index.html#object-matching">Object Matching</a></h3>
+
+<p>Один или несколько экземпляров модели могут быть выбраны из базы данных с помощью метода match соответствующего подкласса.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">Person</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s">"Keanu Reeves"</span><span class="p">).</span><span class="n">first</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Keanu Reeves'</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="n">Person</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="n">graph</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="s">"_.name =~ 'K.*'"</span><span class="p">))</span>
+<span class="p">[</span><span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Keanu Reeves'</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Kevin Bacon'</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Kiefer Sutherland'</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Kevin Pollak'</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Kelly McGillis'</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Person</span> <span class="n">name</span><span class="o">=</span><span class="s">'Kelly Preston'</span><span class="o">&gt;</span><span class="p">]</span>
+</code></pre></div></div>
+
 <p>Читай еще:</p>
 
 <ul>
   <li><a href="https://py2neo.org/2021.1/">документация</a></li>
+  <li><a href="https://github.com/elena/py2neo-quickstart">simple example</a></li>
   <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
   <li>[<a href="python-api-neo4j" title="Python api for neo4j">python-api-neo4j</a>]</li>
   <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
