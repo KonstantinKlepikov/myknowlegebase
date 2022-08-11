@@ -120,6 +120,686 @@
   <div class="prose mb-4 py-4">
     <p>Starlite is a light, opinionated and flexible ASGI API framework built on top of [<a href="pydantic" title="Pydantic">pydantic</a>] and [<a href="starlette" title="Starlette">starlette</a>].</p>
 
+<p>Минимальный пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># datamodel
+# my_app/models/user.py
+</span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+
+<span class="c1"># controller
+# my_app/controllers/user.py
+</span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">UUID4</span>
+<span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">Partial</span><span class="p">,</span> <span class="n">get</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">put</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">delete</span>
+
+<span class="kn">from</span> <span class="nn">my_app.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/users"</span>
+
+    <span class="o">@</span><span class="n">post</span><span class="p">()</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_users</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">User</span><span class="p">]:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{user_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">partial_update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Partial</span><span class="p">[</span><span class="n">User</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">put</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{user_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{user_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">delete</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{user_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="p">...</span>
+
+<span class="c1"># entrypoint
+# my_app/main.py
+</span>
+<span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span>
+
+<span class="kn">from</span> <span class="nn">my_app.controllers.user</span> <span class="kn">import</span> <span class="n">UserController</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">UserController</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>ASQI-server  run: <code class="language-plaintext highlighter-rouge">uvicorn my_app.main:app --reload</code></p>
+
+<p>Этот проект основан на наборе инструментов [<a href="starlette" title="Starlette">starlette</a>] и моделировании [<a href="pydantic" title="Pydantic">pydantic</a>] для создания высокоуровневой концептуальной структуры. Идея взять за основу эти две библиотеки конечно не нова — это было впервые сделано в [<a href="fastapi" title="Fastapi">fastapi</a>], который в этом плане (и некоторых других) послужил источником вдохновения для этого фреймворка.</p>
+
+<p>Тем не менее, Starlite — это не FastAPI — у него другой дизайн, другие цели проекта и совершенно другая кодовая база. Цель этого проекта — стать общественным проектом. То есть иметь не одного «владельца», а основную команду сопровождающих, которая ведет проект, а также участников сообщества.</p>
+
+<p>Starlite черпает вдохновение из NestJS — современного фреймворка TypeScript, в основе которого лежит ядро и шаблоны. Таким образом, дизайн API отличается от дизайна Starlette. Наконец, Python OOP чрезвычайно мощен и универсален. По-прежнему допуская эндпоинты на основе функций, Starlite стремится опираться на это, помещая контроллеры на основе классов в свое ядро.</p>
+
+<h2 id="app"><a href="https://starlite-api.github.io/starlite/usage/0-the-starlite-app/0-the-starlite-app/">App</a></h2>
+
+<p>В основе каждого приложения Starlite лежит экземпляр класса <code class="language-plaintext highlighter-rouge">Starlite</code> или его подкласса. Обычно этот код помещается в файл с именем <code class="language-plaintext highlighter-rouge">main.py</code> в корневом каталоге проекта.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">health_check</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">"healthy"</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">health_check</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Экземпляр приложения является корневым уровнем приложения — он имеет базовый путь «/», и все контроллеры корневого уровня, маршрутизаторы и обработчики маршрутов должны быть зарегистрированы на нем</p>
+
+<p>Конструктор Starlite принимает следующие дополнительные аргументы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">after_request</code>: обработчик жизненного цикла после запроса</li>
+  <li><code class="language-plaintext highlighter-rouge">after_response</code>: обработчик жизненного цикла после ответа</li>
+  <li><code class="language-plaintext highlighter-rouge">allowed_hosts</code>: Список разрешенных хостов</li>
+  <li><code class="language-plaintext highlighter-rouge">before_request</code>: обработчик жизненного цикла перед запросом</li>
+  <li><code class="language-plaintext highlighter-rouge">cache_config</code>: Позволяет указывать параметры кэша, такие как серверная часть, срок действия и т.д.</li>
+  <li><code class="language-plaintext highlighter-rouge">compression_config</code>: строенная поддержка сжатия Gzip и Brotli</li>
+  <li><code class="language-plaintext highlighter-rouge">cors_config</code>: Если установлено, это включает CORSMiddleware</li>
+  <li><code class="language-plaintext highlighter-rouge">debug</code>: Логический флаг, включающий и выключающий режим отладки. Если значение равно True, ошибки 404 будут отображаться как HTML с трассировкой стека. Этот параметр не следует использовать в производстве. По умолчанию False.</li>
+  <li><code class="language-plaintext highlighter-rouge">dependencies</code>: зависимости</li>
+  <li><code class="language-plaintext highlighter-rouge">exception_handlers</code>: словарь, отображающий исключения или коды исключений в функции обработчика</li>
+  <li><code class="language-plaintext highlighter-rouge">guards</code>: Список вызываемых гуардсов</li>
+  <li><code class="language-plaintext highlighter-rouge">middleware</code>: список промежуточного программного обеспечения</li>
+  <li><code class="language-plaintext highlighter-rouge">on_shutdown</code>: список вызываемых объектов, которые вызываются во время закрытия приложения</li>
+  <li><code class="language-plaintext highlighter-rouge">on_startup</code>: список вызываемых объектов, которые вызываются при запуске приложения</li>
+  <li><code class="language-plaintext highlighter-rouge">openapi_config</code>: По умолчанию используется базовая конфигурация</li>
+  <li><code class="language-plaintext highlighter-rouge">parameters</code>: сопоставление определения параметров, которое будет доступно во всех путях приложения</li>
+  <li><code class="language-plaintext highlighter-rouge">response_class</code>: пользовательский класс ответа, который будет использоваться приложением по умолчанию</li>
+  <li><code class="language-plaintext highlighter-rouge">response_cookies</code>: список Cookie</li>
+  <li><code class="language-plaintext highlighter-rouge">response_headers</code>: заголовки ответов</li>
+  <li><code class="language-plaintext highlighter-rouge">static_files_config</code>: статические файлы</li>
+  <li><code class="language-plaintext highlighter-rouge">tags</code>: список тегов для добавления к определениям путей openapi для всех путей приложений</li>
+</ul>
+
+<p>Классический вариант использования <code class="language-plaintext highlighter-rouge">on_startup</code> / <code class="language-plaintext highlighter-rouge">on_shutdown</code> — подключение к базе данных. Часто мы хотим установить соединение с базой данных один раз при запуске приложения, а затем корректно закрыть его после завершения работы.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.asyncio</span> <span class="kn">import</span> <span class="n">AsyncEngine</span><span class="p">,</span> <span class="n">create_async_engine</span>
+<span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseSettings</span>
+
+<span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="n">POSTGRES_CONNECTION_STRING</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">AppSettings</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">get_postgres_connection</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncEngine</span><span class="p">:</span>
+    <span class="s">"""Returns the Postgres connection. If it doesn't exist,
+    creates it and saves it in on the application state object"""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="p">.</span><span class="n">postgres_connection</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">.</span><span class="n">postgres_connection</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span>
+            <span class="n">settings</span><span class="p">.</span><span class="n">POSTGRES_CONNECTION_STRING</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s">"AsyncEngine"</span><span class="p">,</span> <span class="n">state</span><span class="p">.</span><span class="n">postgres_connection</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">close_postgres_connection</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""Closes the postgres connection stored in the application State object"""</span>
+    <span class="k">if</span> <span class="n">state</span><span class="p">.</span><span class="n">postgres_connection</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">cast</span><span class="p">(</span><span class="s">"AsyncEngine"</span><span class="p">,</span> <span class="n">state</span><span class="p">.</span><span class="n">postgres_connection</span><span class="p">).</span><span class="n">engine</span><span class="p">.</span><span class="n">dispose</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span>
+    <span class="n">on_startup</span><span class="o">=</span><span class="p">[</span><span class="n">get_postgres_connection</span><span class="p">],</span> <span class="n">on_shutdown</span><span class="o">=</span><span class="p">[</span><span class="n">close_postgres_connection</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Как тут видно, вызываемые объекты могут получить необязательный аргумент с именем <code class="language-plaintext highlighter-rouge">state</code>, который является объектом состояния приложения. Это тот же объект, который доступен в экземпляре <code class="language-plaintext highlighter-rouge">Starlite</code>, <code class="language-plaintext highlighter-rouge">.state</code>. Преимущество использования application state заключается в том, что к нему можно получить доступ на нескольких этапах соединения, а также его можно внедрить в зависимости и обработчики маршрутов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="k">def</span> <span class="nf">my_dependency</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="c1"># application state is injected
+</span>    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="s">"/some-path"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_handler</span><span class="p">(</span><span class="n">dep</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">my_dependency</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Статические файлы обслуживаются приложением из предопределенных мест. Чтобы настроить раздачу статических файлов, передайте экземпляр <code class="language-plaintext highlighter-rouge">starlite.config.StaticFilesConfig</code> или их список конструктору Starlite с помощью параметра <code class="language-plaintext highlighter-rouge">static_files_config</code>.</p>
+
+<p>Например, предположим, что наше приложение Starlite будет обслуживать обычные файлы из папки «my_app/static» и html-документы из папки «my_app/html», и мы хотели бы обслуживать статические файлы по пути «/files». и html-файлы по пути «/html»:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">StaticFilesConfig</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span>
+    <span class="n">route_handlers</span><span class="o">=</span><span class="p">[...],</span>
+    <span class="n">static_files_config</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">StaticFilesConfig</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">"static"</span><span class="p">],</span> <span class="n">path</span><span class="o">=</span><span class="s">"/files"</span><span class="p">),</span>
+        <span class="n">StaticFilesConfig</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="s">"html"</span><span class="p">],</span> <span class="n">path</span><span class="o">=</span><span class="s">"/html"</span><span class="p">,</span> <span class="n">html_mode</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Логгирование (можно использовать и любое другое решение, например [<a href="loguru" title="Loguru">loguru</a>])</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">LoggingConfig</span>
+
+<span class="n">my_app_logging_config</span> <span class="o">=</span> <span class="n">LoggingConfig</span><span class="p">(</span>
+    <span class="n">loggers</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">"my_app"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"level"</span><span class="p">:</span> <span class="s">"INFO"</span><span class="p">,</span>
+            <span class="s">"handlers"</span><span class="p">:</span> <span class="p">[</span><span class="s">"queue_listener"</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">on_startup</span><span class="o">=</span><span class="p">[</span><span class="n">my_app_logging_config</span><span class="p">.</span><span class="n">configure</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="routes"><a href="https://starlite-api.github.io/starlite/usage/1-routing/0-routing/">Routes</a></h2>
+
+<p>Хотя он Starlite основан на Starlette наборе инструментов ASGI в качестве основы, он не использует систему Starletteмаршрутизации, которая использует сопоставление регулярных выражений, а вместо этого реализует собственное решение, основанное на концепции radix-дерева или trie.</p>
+
+<p>Сопоставление регулярных выражений, используемое Starlette (и FastAPI), Очень хорошо подходит для быстрого разрешения параметров пути, что дает ему преимущество, когда URL-адрес имеет много параметров пути - то, что мы можем рассматривать как вертикальное масштабирование. С другой стороны, он плохо масштабируется по горизонтали — чем больше маршрутов, тем менее производительным он становится. Таким образом, существует обратная зависимость между производительностью и размером приложения при таком подходе, который явно поддерживает очень маленькие микросервисы. Используемый подход на основе дерева Starlite не зависит от количества маршрутов приложения, что дает ему лучшие характеристики горизонтального масштабирования за счет несколько более медленного разрешения параметров пути.</p>
+
+<p>В корне каждого Starlite приложения есть экземпляр класса <code class="language-plaintext highlighter-rouge">starlite.app.Starlite</code>, на котором контроллеры корневого уровня, маршрутизаторы и функции обработчика маршрутов зарегистрированы с помощью <code class="language-plaintext highlighter-rouge">route_handlerskwarg</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">get</span>
+
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="s">"/sub-path"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sub_path_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">root_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">root_handler</span><span class="p">,</span> <span class="n">sub_path_handler</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Компоненты, зарегистрированные в приложении, добавляются к корневому пути. Таким образом, root_handler функция будет вызываться для пути “/”, тогда как функция будет вызываться sub_path_handlerдля “/подпути”. Вы также можете объявить функцию для обработки нескольких путей, например:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">Starlite</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">([</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"/sub-path"</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">handler</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Иногда возникает необходимость динамической регистрации маршрута. Starlite поддерживает это с помощью <code class="language-plaintext highlighter-rouge">.register</code> метода, предоставляемого экземпляром приложения Starlite:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">get</span>
+
+
+<span class="o">@</span><span class="n">get</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">root_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">root_handler</span><span class="p">])</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="s">"/sub-path"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sub_path_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="n">sub_path_handler</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Для обработки сложных схем используются маршрутизаторы и контроллеры.</p>
+
+<p>Маршрутизаторы — это экземпляры класса <code class="language-plaintext highlighter-rouge">starlite.router.Router</code>, который является базовым классом для самого Starlite приложения. Маршрутизатор может регистрировать контроллеры, функции обработчика маршрутов и другие маршрутизаторы, аналогично конструктору Starlite:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">Router</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="s">"/{order_id:int}"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">order_handler</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">order_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/orders"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">order_handler</span><span class="p">])</span>
+<span class="n">base_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/base"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">order_router</span><span class="p">])</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">base_router</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>После <code class="language-plaintext highlighter-rouge">order_router</code> регистрации в <code class="language-plaintext highlighter-rouge">base_router</code>, функция обработчика, зарегистрированная в <code class="language-plaintext highlighter-rouge">order_router</code>, станет доступной в <code class="language-plaintext highlighter-rouge">/base/orders/{order_id}</code>.</p>
+
+<p>Контроллеры являются подклассами класса <code class="language-plaintext highlighter-rouge">starlite.controller.Controller</code>. Они используются для организации конечных точек по определенному подпути, которое является путем контроллера. Их цель — позволить пользователям использовать ООП Python для лучшей организации кода и организации кода по логическим соображениям.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+<span class="kn">from</span> <span class="nn">starlite.controller</span> <span class="kn">import</span> <span class="n">Controller</span>
+<span class="kn">from</span> <span class="nn">starlite.handlers</span> <span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="n">patch</span><span class="p">,</span> <span class="n">delete</span>
+<span class="kn">from</span> <span class="nn">starlite.types</span> <span class="kn">import</span> <span class="n">Partial</span>
+
+<span class="k">class</span> <span class="nc">UserOrder</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">order</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="k">class</span> <span class="nc">UserOrderController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/user-order"</span>
+
+    <span class="o">@</span><span class="n">post</span><span class="p">()</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_user_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">UserOrder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserOrder</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{order_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">retrieve_user_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserOrder</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{order_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_user_order</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Partial</span><span class="p">[</span><span class="n">UserOrder</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserOrder</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="o">@</span><span class="n">delete</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{order_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_user_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserOrder</span><span class="p">:</span>
+        <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Выше приведен простой пример контроллера «CRUD» для модели с именем <code class="language-plaintext highlighter-rouge">UserOrder</code>. Вы можете разместить столько методов обработчика маршрута на контроллере, сколько есть уникальных path+http.</p>
+
+<p>Тот path, который определен в контроллере, добавляется перед путем, который определен для объявленных на нем обработчиков маршрутов. Таким образом, в приведенном выше примере <code class="language-plaintext highlighter-rouge">create_user_order</code> имеет путь к контроллеру - <code class="language-plaintext highlighter-rouge">/user-order/</code>, а <code class="language-plaintext highlighter-rouge">retrieve_user_order</code> имеет путь <code class="language-plaintext highlighter-rouge">/user-order/{order_id:uuid}</code>.</p>
+
+<p>Вы можете многократно регистрировать как автономные функции обработчика маршрутов, так и контроллеры.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Router</span><span class="p">,</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/controller"</span>
+
+    <span class="o">@</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="p">...</span>
+
+<span class="n">internal_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/internal"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">MyController</span><span class="p">])</span>
+<span class="n">partner_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/partner"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">MyController</span><span class="p">])</span>
+<span class="n">consumer_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/consumer"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">MyController</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>В приведенном выше примере один и тот же <code class="language-plaintext highlighter-rouge">MyController</code> класс был зарегистрирован на трех разных маршрутизаторах. Это возможно, потому что маршрутизатору передается не экземпляр класса, а сам класс. Маршрутизатор создает собственный экземпляр контроллера, что обеспечивает инкапсуляцию.</p>
+
+<p>Следовательно, в приведенном выше примере <code class="language-plaintext highlighter-rouge">MyController</code> будут созданы три разных экземпляра, каждый из которых будет смонтирован на своем подпути, например <code class="language-plaintext highlighter-rouge">/internal/controller</code>, <code class="language-plaintext highlighter-rouge">/partner/controller</code> и <code class="language-plaintext highlighter-rouge">/consumer/controller</code>.</p>
+
+<p>Вы также можете зарегистрировать автономные обработчики маршрутов несколько раз:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">Router</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/handler"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_route_handler</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="n">internal_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/internal"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">my_route_handler</span><span class="p">])</span>
+<span class="n">partner_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/partner"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">my_route_handler</span><span class="p">])</span>
+<span class="n">consumer_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/consumer"</span><span class="p">,</span> <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">my_route_handler</span><span class="p">])</span>
+
+<span class="n">Starlite</span><span class="p">(</span><span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">internal_router</span><span class="p">,</span> <span class="n">partner_router</span><span class="p">,</span> <span class="n">consumer_router</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Когда функция-обработчик зарегистрирована, она фактически копируется. Таким образом, у каждого маршрутизатора есть свой уникальный экземпляр обработчика маршрута. Поведение пути идентично поведению контроллеров выше, а именно функция обработчика маршрута будет доступна по следующим путям: <code class="language-plaintext highlighter-rouge">/internal/handler</code>, <code class="language-plaintext highlighter-rouge">/partner/handler</code> и <code class="language-plaintext highlighter-rouge">/consumer/handler</code>.</p>
+
+<h2 id="route-handlers"><a href="https://starlite-api.github.io/starlite/usage/2-route-handlers/0_route_handlers_concept/">Route Handlers</a></h2>
+
+<p>Обработчики маршрутов являются ядром Starlite. Они создаются путем декорирования функции или метода класса одним из декораторов-обработчиков, экспортированных из Starlite. Все декораторы обработчиков маршрутов принимают необязательный аргумент пути.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">MediaType</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="n">media_type</span><span class="o">=</span><span class="n">MediaType</span><span class="p">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">"hello world"</span>
+</code></pre></div></div>
+
+<p>Функции или методы обработчика маршрутов получают доступ к различным данным, объявляя их как аннотированные функции. Аннотированные аргументы проверяются Starlite, а затем вводятся в обработчик запросов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">get</span>
+<span class="kn">from</span> <span class="nn">starlette.datastructures</span> <span class="kn">import</span> <span class="n">Headers</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_request_handler</span><span class="p">(</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">,</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="n">Headers</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">cookies</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Наиболее часто используемые обработчики маршрутов — это те, которые обрабатывают HTTP-запросы и ответы. Все эти обработчики маршрутов наследуются от класса <code class="language-plaintext highlighter-rouge">starlite.handlers.http.HTTPRouteHandler</code>, псевдоним которого вызывается декоратором <code class="language-plaintext highlighter-rouge">route</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">HttpMethod</span><span class="p">,</span> <span class="n">route</span>
+
+<span class="o">@</span><span class="n">route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/some-path"</span><span class="p">,</span> <span class="n">http_method</span><span class="o">=</span><span class="p">[</span><span class="n">HttpMethod</span><span class="p">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">HttpMethod</span><span class="p">.</span><span class="n">POST</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">my_endpoint</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Starlite также включает в себя «семантические» декораторы, то есть декораторы, предварительно устанавливающие <code class="language-plaintext highlighter-rouge">http_method</code> на конкретный HTTP-глагол, который соотносится с их именем:</p>
+
+<ul>
+  <li>delete</li>
+  <li>get</li>
+  <li>patch</li>
+  <li>post</li>
+  <li>put</li>
+</ul>
+
+<p>Они используются точно так же, <code class="language-plaintext highlighter-rouge">route</code> за исключением того, что вы не можете настроить <code class="language-plaintext highlighter-rouge">http_method</code></p>
+
+<p>Вы можете использовать как синхронные, так и асинхронные функции в качестве основы для функций обработчика маршрутов, но что следует использовать и когда?</p>
+
+<p>Если вашему обработчику маршрута необходимо выполнить операцию ввода-вывода (чтение или запись данных из или в службу/базу данных и т.д.), наиболее эффективным решением в рамках приложения ASGI, включая Starlite, будет использование асинхронное решение для этой цели.</p>
+
+<p>Причина этого в том, что асинхронный код, если он написан правильно, является неблокирующим. То есть асинхронный код можно приостанавливать и возобновлять, и поэтому он не прерывает выполнение основного цикла событий (если он написан правильно). С другой стороны, синхронный ввод-вывод часто блокирует, и если вы используете такой код в своей функции, это может вызвать проблемы с производительностью.</p>
+
+<p>В этом случае следует воспользоваться <code class="language-plaintext highlighter-rouge">sync_to_thread</code> опцией. Это означает, что Starlite запускает синхронную функцию в отдельном асинхронном потоке, где она может блокироваться, но не прерывать выполнение основного цикла событий.</p>
+
+<p>Однако проблема заключается в том, что это значительно замедлит выполнение вашего синхронного кода — на 40-60%. Таким образом, вы должны использовать эту опцию только тогда, когда ваш синхронный код выполняет блокирующие операции ввода-вывода. Для остальных операций это использовать не следует.</p>
+
+<p>Starlite поддерживает веб-сокеты через <code class="language-plaintext highlighter-rouge">websocket</code> декоратор</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">WebSocket</span><span class="p">,</span> <span class="n">websocket</span>
+
+<span class="o">@</span><span class="n">websocket</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/socket"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">my_websocket_handler</span><span class="p">(</span><span class="n">socket</span><span class="p">:</span> <span class="n">WebSocket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">socket</span><span class="p">.</span><span class="n">accept</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">socket</span><span class="p">.</span><span class="n">send_json</span><span class="p">({...})</span>
+    <span class="k">await</span> <span class="n">socket</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>В отличие от обработчиков HTTP-маршрутов, к обработчикам веб-сокетов предъявляются следующие требования:</p>
+
+<ul>
+  <li>они должны объявить socket-аргументы</li>
+  <li>они должны иметь аннотацию для return <code class="language-plaintext highlighter-rouge">None</code></li>
+  <li>они должны быть асинхронными функциями</li>
+</ul>
+
+<p>Наконец, если вам нужно написать собственное приложение ASGI, вы можете сделать это с помощью <code class="language-plaintext highlighter-rouge">asgi</code> декоратора.</p>
+
+<h2 id="parameters"><a href="https://starlite-api.github.io/starlite/usage/3-parameters/0-path-parameters/">Parameters</a></h2>
+
+<p>Поддерживается типизация и проверка:</p>
+
+<ul>
+  <li>параметры пути</li>
+  <li>параметры запрсоа</li>
+  <li>заголовки</li>
+  <li>файлы куки</li>
+  <li>функции параметров</li>
+  <li>многоуровневые параметры</li>
+</ul>
+
+<h2 id="запрос-данных"><a href="https://starlite-api.github.io/starlite/usage/4-request-data/0-request-data/">Запрос данных</a></h2>
+
+<p>Для всех типов запроса кроме <code class="language-plaintext highlighter-rouge">GET</code> можно получить доступ к телу, указав соответствующий пайдантик тип в <code class="language-plaintext highlighter-rouge">data</code> аргументе</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">post</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="o">@</span><span class="n">post</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/user"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<h2 id="ответы"><a href="https://starlite-api.github.io/starlite/usage/5-responses/0-responses-intro/">Ответы</a></h2>
+
+<h2 id="ingection-dependencies"><a href="https://starlite-api.github.io/starlite/usage/6-dependency-injection/0-dependency-injection-intro/">Ingection dependencies</a></h2>
+
+<p>Starlite имеет простую, но мощную систему внедрения зависимостей, которая позволяет объявлять зависимости на всех уровнях приложения:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">Router</span><span class="p">,</span> <span class="n">Starlite</span><span class="p">,</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">get</span>
+
+
+<span class="k">def</span> <span class="nf">bool_fn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">def</span> <span class="nf">dict_fn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">def</span> <span class="nf">list_fn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">def</span> <span class="nf">int_fn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/controller"</span>
+    <span class="c1"># on the controller
+</span>    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span><span class="s">"controller_dependency"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">list_fn</span><span class="p">)}</span>
+
+    <span class="c1"># on the route handler
+</span>    <span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/handler"</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span><span class="s">"local_dependency"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">int_fn</span><span class="p">)})</span>
+    <span class="k">def</span> <span class="nf">my_route_handler</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">app_dependency</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">router_dependency</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">controller_dependency</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">local_dependency</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="p">...</span>
+
+    <span class="c1"># on the router
+</span>
+<span class="n">my_router</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s">"/router"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span><span class="s">"router_dependency"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">dict_fn</span><span class="p">)},</span>
+    <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">MyController</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># on the app
+</span><span class="n">app</span> <span class="o">=</span> <span class="n">Starlite</span><span class="p">(</span>
+    <span class="n">route_handlers</span><span class="o">=</span><span class="p">[</span><span class="n">my_router</span><span class="p">],</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span><span class="s">"app_dependency"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">bool_fn</span><span class="p">)}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Предпосылки для внедрения зависимостей:</p>
+
+<ul>
+  <li>зависимости должны быть вызываемыми</li>
+  <li>зависимости могут получать kwargs и аргумент, self но не позиционные аргументы</li>
+  <li>имя kwarg и ключ зависимости должны совпадать</li>
+  <li>зависимость должна быть объявлена ​​с помощью Provide класса</li>
+  <li>зависимость должна находиться в области действия функции-обработчика</li>
+</ul>
+
+<p>Зависимости изолированы от контекста, в котором они объявлены. Таким образом, в приведенном выше примере к local_dependency объекту можно получить доступ только в рамках конкретного обработчика маршрута, для которого он был объявлен; controller_dependency доступен только для обработчиков маршрутов на этом конкретном контроллере; зависимости маршрутизатора доступны только для обработчиков маршрутов, зарегистрированных на этом конкретном маршрутизаторе. Только app_dependencies доступны для всех обработчиков маршрутов.</p>
+
+<p>Как указано выше, зависимости могут получать kwargs, но не args. Причина этого в том, что зависимости анализируются с использованием того же механизма, который анализирует функции обработчика маршрутов, и они тоже, как и функции обработчика маршрутов, могут вводить в себя данные. По сути, вы можете внедрить те же данные, что и в обработчики маршрутов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">Partial</span><span class="p">,</span> <span class="n">patch</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">UUID4</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">UUID4</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">retrieve_db_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="n">UUID4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/user"</span>
+    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span><span class="s">"user"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">retrieve_db_user</span><span class="p">)}</span>
+
+    <span class="o">@</span><span class="n">patch</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/{user_id:uuid}"</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Partial</span><span class="p">[</span><span class="n">User</span><span class="p">],</span> <span class="n">user</span><span class="p">:</span> <span class="n">User</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">User</span><span class="p">:</span>
+        <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Поскольку зависимости объявляются на каждом уровне приложения с помощью словаря со строковым ключом, переопределить зависимости очень просто</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">get</span>
+
+<span class="k">def</span> <span class="nf">bool_fn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">def</span> <span class="nf">dict_fn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="p">...</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">"/controller"</span>
+    <span class="c1"># on the controller
+</span>    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span><span class="s">"some_dependency"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">dict_fn</span><span class="p">)}</span>
+
+    <span class="c1"># on the route handler
+</span>    <span class="o">@</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">"/handler"</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span><span class="s">"some_dependency"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span><span class="n">bool_fn</span><span class="p">)})</span>
+    <span class="k">def</span> <span class="nf">my_route_handler</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">some_dependency</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">starlite.provide.Provide</code> представляет собой оболочку, используемую для внедрения зависимостей. Чтобы внедрить вызываемый объект, вы должны обернуть его <code class="language-plaintext highlighter-rouge">Provide</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">get</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="k">def</span> <span class="nf">my_dependency</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">get</span><span class="p">(</span>
+    <span class="s">"/some-path"</span><span class="p">,</span>
+    <span class="n">dependencies</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">"my_dep"</span><span class="p">:</span> <span class="n">Provide</span><span class="p">(</span>
+            <span class="n">my_dependency</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_handler</span><span class="p">(</span><span class="n">my_dep</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Вы можете внедрять зависимости в другие зависимости точно так же, как и в обычные функции.</p>
+
+<h2 id="middlewire"><a href="https://starlite-api.github.io/starlite/usage/7-middleware/#pre-requisites-and-scope">Middlewire</a></h2>
+
+<p>Промежуточные программы — это мини-приложения ASGI, которые получают необработанный объект запроса и каким-либо образом проверяют или преобразовывают его. Starlite позволяет пользователям использовать промежуточное программное обеспечение Starlette и любое стороннее промежуточное программное обеспечение, созданное для него, а также предлагает собственный протокол промежуточного программного обеспечения. Пример собственнокго:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">starlette.types</span> <span class="kn">import</span> <span class="n">ASGIApp</span><span class="p">,</span> <span class="n">Receive</span><span class="p">,</span> <span class="n">Scope</span><span class="p">,</span> <span class="n">Send</span>
+<span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">MiddlewareProtocol</span><span class="p">,</span> <span class="n">Request</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">MyRequestLoggingMiddleware</span><span class="p">(</span><span class="n">MiddlewareProtocol</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="n">ASGIApp</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">Scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">:</span> <span class="n">Receive</span><span class="p">,</span> <span class="n">send</span><span class="p">:</span> <span class="n">Send</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">scope</span><span class="p">[</span><span class="s">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s">"http"</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+            <span class="n">logger</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"%s - %s"</span> <span class="o">%</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span><span class="p">,</span> <span class="n">request</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">app</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">receive</span><span class="p">,</span> <span class="n">send</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">__init__</code> получает и устанавливает «приложение» — приложение не является экземпляром Starlite, а является следующим промежуточным программным обеспечением в стеке, которое также является приложением ASGI.</p>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">__call__</code> превращает этот класс в callable, т.е. после создания экземпляра этот класс действует как функция, имеющая сигнатуру приложения ASGI: три параметра <code class="language-plaintext highlighter-rouge">scope</code>, <code class="language-plaintext highlighter-rouge">receive</code>, <code class="language-plaintext highlighter-rouge">send</code> задаются спецификацией ASGI, а их значения исходят от сервера ASGI (например, uvicorn) используется для запуска Starlite.</p>
+
+<p>Здесь важно отметить две вещи:</p>
+
+<ul>
+  <li>Хотя <code class="language-plaintext highlighter-rouge">scope</code> используется для создания экземпляра запроса путем передачи его <code class="language-plaintext highlighter-rouge">Request</code> конструктору, что упрощает доступ к нему, поскольку он уже выполняет некоторый синтаксический анализ для вас, фактический источник истины остается <code class="language-plaintext highlighter-rouge">scope</code>, а не запрос. Если вам нужно изменить данные запроса, вы должны изменить словарь области действия, а не какие-либо эфемерные объекты запроса, созданные, как описано выше.</li>
+  <li>Как только промежуточное ПО заканчивает делать то, что делает, оно должно передать <code class="language-plaintext highlighter-rouge">scope</code>, <code class="language-plaintext highlighter-rouge">receive</code> и <code class="language-plaintext highlighter-rouge">send</code> либо экземпляру, либо <code class="language-plaintext highlighter-rouge">self.app</code> экземпляру <code class="language-plaintext highlighter-rouge">Response</code> — в других архитектурах промежуточного ПО это эквивалентно вызову <code class="language-plaintext highlighter-rouge">next</code>, что и происходит в последней строке примера.</li>
+</ul>
+
+<p>Доступны встроенные миддлвейры:</p>
+
+<ul>
+  <li>CORS</li>
+  <li>CSRF</li>
+  <li>удостоверенные хосты</li>
+  <li>сжатие</li>
+</ul>
+
+<h2 id="authentication"><a href="https://starlite-api.github.io/starlite/usage/8-authentication/#pre-requisites-and-scope">Authentication</a></h2>
+
+<p>Starlite не зависит от того, какой механизм аутентификации должно использовать приложение — вы можете использовать файлы cookie, токены JWT, подключение OpenID в зависимости от вашего варианта использования. Он также не реализует для вас ни один из этих механизмов. Что он делает, так это предлагает мнение о том, где должна происходить аутентификация, а именно - как часть вашего стека промежуточного программного обеспечения. Это соответствует Starlette и многим другим фреймворкам (например, Django, NestJS и т.д.).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">starlite</span> <span class="kn">import</span> <span class="n">AuthenticationResult</span><span class="p">,</span> <span class="n">Request</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">authenticate_request</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthenticationResult</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<h2 id="guards"><a href="https://starlite-api.github.io/starlite/usage/9-guards/#csrf">Guards</a></h2>
+
+<p>Guards — это вызываемые объекты, которые получают два аргумента — <code class="language-plaintext highlighter-rouge">request</code>, который является экземпляром запроса, и <code class="language-plaintext highlighter-rouge">route_handler</code>, который является копией <code class="language-plaintext highlighter-rouge">BaseRouteHandler</code> модели. Их роль заключается обработке запроса путем проверки того, что запросу разрешено достигать рассматриваемого обработчика конечной точки. Если проверка не удалась, guard должен вызвать <code class="language-plaintext highlighter-rouge">HTTPException</code>, обычно N<code class="language-plaintext highlighter-rouge">otAuthorizedException</code> со значением <code class="language-plaintext highlighter-rouge">status_code401</code>.</p>
+
+<h2 id="plugins"><a href="https://starlite-api.github.io/starlite/usage/10-plugins/0-plugins-intro/#example-create-a-jwt-authentication-middleware">Plugins</a></h2>
+
+<p>Starlite поддерживает расширение через плагины, которые позволяют:</p>
+
+<ul>
+  <li>Сериализация и десериализация сторонних классов, не основанных на pydantic</li>
+  <li>Автоматическое создание схемы OpenAPI для сторонних классов.</li>
+</ul>
+
+<p>Другими словами, плагины позволяют анализировать и проверять входящие данные с использованием не-pydantic классов, сохраняя при этом безопасность типов, анализ и проверку pydantic. Кроме того, они обеспечивают бесшовную сериализацию и создание схемы.</p>
+
+<h2 id="openapi"><a href="https://starlite-api.github.io/starlite/usage/12-openapi/">OpenAPI</a></h2>
+
+<p>Поддерживается документация АПИ на Redox</p>
+
+<h2 id="tests"><a href="https://starlite-api.github.io/starlite/usage/14-testing/#example-create-a-jwt-authentication-middleware">Tests</a></h2>
+
+<h2 id="templates"><a href="https://starlite-api.github.io/starlite/usage/15-templating/#after-response">Templates</a></h2>
+
+<p>Встроенная поддержка [<a href="jinja2" title="Jinja2">jinja2</a>] и mako</p>
+
+<h2 id="response-caching"><a href="https://starlite-api.github.io/starlite/usage/16-caching/">Response caching</a></h2>
+
+<h2 id="exceptions-handling"><a href="https://starlite-api.github.io/starlite/usage/17-exceptions/">Exceptions handling</a></h2>
+
+<h2 id="переход-на-старлайт">Переход на Старлайт</h2>
+
+<p>Миграция со Starlette или FastAPI на Starlite довольно несложна, потому что фреймворки по большей части совместимы друг с другом</p>
+
+<h3 id="декораторы-маршрутизации">Декораторы маршрутизации</h3>
+
+<p>Starlite не включает декоратор как часть экземпляров <code class="language-plaintext highlighter-rouge">Router</code>. Все маршруты должны быть объявлены с использованием обработчиков маршрутов — в автономных функциях или методах контроллера. Затем вам необходимо зарегистрировать их в приложении, либо сначала зарегистрировав их на маршрутизаторе, а затем зарегистрировав маршрутизатор в приложении, либо зарегистрировав их непосредственно в приложении.</p>
+
+<h3 id="классы-маршрутизации">Классы маршрутизации</h3>
+
+<p>Starlite не расширяет классы маршрутизации Starlette, а вместо этого реализует их собственные версии. Вам нужно будет использовать <code class="language-plaintext highlighter-rouge">Router</code> классы Starlite вместо их эквивалентов из других фреймворков. Есть некоторые отличия класса Starlite от других фреймворков:</p>
+
+<ul>
+  <li>Версия Starlite не является приложением ASGI, единственным приложением ASGI является приложение Starlite и любые промежуточные программы, которые вы ему передаете.</li>
+  <li>Версия Starlite не включает декораторы, вместо этого вы должны использовать обработчики маршрутов.</li>
+  <li>Версия Starlite не поддерживает хуки жизненного цикла, вместо этого вы должны управлять всем своим жизненным циклом на уровне приложения.</li>
+</ul>
+
+<p>Если вы используете экземпляры Starlette <code class="language-plaintext highlighter-rouge">Route</code> напрямую, вам нужно будет заменить их обработчиками маршрутов.</p>
+
+<p>Класс Starlette <code class="language-plaintext highlighter-rouge">Mount</code> заменен на Starlite <code class="language-plaintext highlighter-rouge">Router</code>. Класс <code class="language-plaintext highlighter-rouge">Host</code> намеренно не поддерживается. Если ваше приложение зависит от <code class="language-plaintext highlighter-rouge">Host</code>, вам придется разделить логику на разные микросервисы, а не использовать этот тип маршрутизации.</p>
+
+<h3 id="внедрение-зависимости">Внедрение зависимости</h3>
+
+<p>Система внедрения зависимостей Starlite отличается от той, что используется [<a href="fastapi" title="Fastapi">fastapi</a>]. В FastAPI вы объявляете зависимости либо как список функций, передаваемых экземплярам <code class="language-plaintext highlighter-rouge">Router</code> или FastAPI, либо как значение аргумента функции по умолчанию, заключенное в экземпляр <code class="language-plaintext highlighter-rouge">Depend</code> класса.</p>
+
+<p>В Starlite зависимости всегда объявляются с помощью словаря со строковым ключом и значением, обернутым в экземпляр <code class="language-plaintext highlighter-rouge">Provide</code> класса.</p>
+
+<h3 id="аутентификация">Аутентификация</h3>
+
+<p>FastAPI продвигает шаблон использования внедрения зависимостей для аутентификации. Вы можете сделать то же самое в Starlite, но предпочтительный способ справиться с этим — расширить класс <code class="language-plaintext highlighter-rouge">Starlite AbstractAuthenticationMiddleware</code>.</p>
+
+<h3 id="сторонние-пакеты">Сторонние пакеты</h3>
+
+<p>Сторонние пакеты, созданные для Starlette и FastAPI , должны быть в целом совместимы со Starlite. Единственными исключениями являются пакеты, использующие в качестве основы систему внедрения зависимостей FastAPI — они не будут работать как таковые.</p>
+
 <p>Смотри еще:</p>
 
 <ul>
