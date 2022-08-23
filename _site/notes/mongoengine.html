@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Object Object-Document Mapper for MongoDB | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Object Object-Document Mapper for MongoDB" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="MongoEngine - ОРМ для mongodb" />
+<meta property="og:description" content="MongoEngine - ОРМ для mongodb" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/mongoengine.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/mongoengine.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/mongoengine.html","headline":"Object Object-Document Mapper for MongoDB","description":"MongoEngine - ОРМ для mongodb","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Object Object-Document Mapper for MongoDB</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/bd" title="bd" class="link-tags">bd&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>MongoEngine — это средство сопоставления объектов и документов, написанное на Python для работы с MongoDB.</p>
+
+<p><code class="language-plaintext highlighter-rouge">python -m pip install -U mongoengine</code></p>
+
+<h2 id="minimal-example">Minimal example</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">connect</span><span class="p">(</span><span class="s">'mydb'</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">BlogPost</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">posted</span> <span class="o">=</span> <span class="n">DateTimeField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">utcnow</span><span class="p">)</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s">'allow_inheritance'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">TextPost</span><span class="p">(</span><span class="n">BlogPost</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">LinkPost</span><span class="p">(</span><span class="n">BlogPost</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Create a text-based post
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">post1</span> <span class="o">=</span> <span class="n">TextPost</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Using MongoEngine'</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s">'See the tutorial'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post1</span><span class="p">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s">'mongodb'</span><span class="p">,</span> <span class="s">'mongoengine'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post1</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="c1"># Create a link-based post
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">post2</span> <span class="o">=</span> <span class="n">LinkPost</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'MongoEngine Docs'</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s">'hmarr.com/mongoengine'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post2</span><span class="p">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s">'mongoengine'</span><span class="p">,</span> <span class="s">'documentation'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post2</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="c1"># Iterate over all posts using the BlogPost superclass
+</span><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'==='</span><span class="p">,</span> <span class="n">post</span><span class="p">.</span><span class="n">title</span><span class="p">,</span> <span class="s">'==='</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">TextPost</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="n">post</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">LinkPost</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">'Link:'</span><span class="p">,</span> <span class="n">post</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+<span class="p">...</span>
+
+<span class="c1"># Count all blog posts and its subtypes
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">TextPost</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">LinkPost</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">1</span>
+
+<span class="c1"># Count tagged posts
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="s">'mongoengine'</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="s">'mongodb'</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="mi">1</span>
+</code></pre></div></div>
+
+<h2 id="connection-to-db">Connection to db</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="n">connact</span>
+
+<span class="n">connect</span><span class="p">(</span>
+    <span class="n">db</span><span class="o">=</span><span class="s">'test'</span><span class="p">,</span>
+    <span class="n">username</span><span class="o">=</span><span class="s">'user'</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s">'12345'</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="s">'mongodb://admin:qwerty@localhost/production'</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="http://docs.mongoengine.org/guide/connecting.html#guide-connecting">Более подробно о подключении</a></li>
+  <li><a href="http://docs.mongoengine.org/apireference.html#connecting">АПИ connect</a></li>
+</ul>
+
+<h2 id="collections-and-fields">Collections and <a href="http://docs.mongoengine.org/guide/defining-documents.html#fields">Fields</a></h2>
+
+<p>MongoDB не имеет схемы, что означает, что база данных не применяет никакую схему — мы можем добавлять и удалять поля, как захотим, и MongoDB не будет жаловаться. Это значительно упрощает жизнь во многих отношениях, особенно при изменении модели данных. Однако определение схем для наших документов может помочь сгладить ошибки, связанные с неправильными типами или отсутствующими полями, а также позволит нам определить служебные методы для наших документов так же, как это делают традиционные ORM.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Document</code> - <a href="http://docs.mongoengine.org/apireference.html#documents">базовый класс</a>, используемый для определения структуры и свойств коллекций документов, хранящихся в MongoDB. Наследуйтесь от этого класса и добавляйте поля в качестве атрибутов класса, чтобы определить структуру документа. Затем могут быть созданы отдельные документы путем создания экземпляров Documentподкласса.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Это похоже на то, как структура таблицы определяется в обычном ORM. Ключевое отличие состоит в том, что эта схема никогда не будет передана в MongoDB — она будет применяться только на уровне приложения, что упрощает управление будущими изменениями. Кроме того, документы пользователя будут храниться в коллекции MongoDB, а не в таблице.</p>
+
+<p>Мы будем хранить все документы в одной коллекции, а разные типы документов будут хранить разные типы данных. Нам не надо организовывать иерархию таблиц, как в реляционной БД.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s">'allow_inheritance'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">TextPost</span><span class="p">(</span><span class="n">Post</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ImagePost</span><span class="p">(</span><span class="n">Post</span><span class="p">):</span>
+    <span class="n">image_path</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">LinkPost</span><span class="p">(</span><span class="n">Post</span><span class="p">):</span>
+    <span class="n">link_url</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Мы можем думать о <code class="language-plaintext highlighter-rouge">Post</code> как о базовом классе, <code class="language-plaintext highlighter-rouge">TextPost</code> и <code class="language-plaintext highlighter-rouge">ImagePost</code> и <code class="language-plaintext highlighter-rouge">LinkPost</code> как о подклассах <code class="language-plaintext highlighter-rouge">Post</code>. На самом деле, MongoEngine поддерживает такое моделирование «из коробки» — все, что вам нужно сделать, это включить наследование, установив <code class="language-plaintext highlighter-rouge">allow_inheritance</code> значение <code class="language-plaintext highlighter-rouge">True</code> в <code class="language-plaintext highlighter-rouge">meta</code>. Мы храним ссылку на автора сообщений с помощью <code class="language-plaintext highlighter-rouge">ReferenceField</code>. Они аналогичны полям внешнего ключа в традиционных ORM и автоматически преобразуются в ссылки при сохранении и разыменовываются при загрузке.</p>
+
+<p>MongoDB позволяет нам изначально хранить списки элементов, поэтому вместо таблицы ссылок мы можем просто хранить список тегов в каждом сообщении. Таким образом, ради эффективности и простоты мы будем хранить теги в виде строк непосредственно в сообщении, а не хранить ссылки на теги в отдельной коллекции.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Объект <code class="language-plaintext highlighter-rouge">ListField</code>, который используется для определения тегов сообщения, принимает объект поля в качестве первого аргумента — это означает, что вы можете иметь списки полей любого типа (включая списки).</p>
+
+<p>Комментарий обычно связан с одним постом. В реляционной базе данных, чтобы отобразить сообщение с его комментариями, нам пришлось бы получить сообщение из базы данных, а затем снова запросить базу данных для комментариев, связанных с сообщением. Это работает, но нет реальной причины хранить комментарии отдельно от связанных с ними сообщений, кроме как для обхода реляционной модели. Используя MongoDB, мы можем хранить комментарии в виде списка встроенных документов непосредственно в документе. Используя MongoEngine, мы можем определить структуру встроенных документов вместе с служебными методами точно так же, как мы это делаем с обычными документами:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">EmbeddedDocument</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">reverse_delete_rule</span><span class="o">=</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">))</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">EmbeddedDocumentField</span><span class="p">(</span><span class="n">Comment</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Кроме того, в поле author мы определили <code class="language-plaintext highlighter-rouge">reverse_delete_rule</code> для удаления всех <code class="language-plaintext highlighter-rouge">Post</code> в случае удаления связанного с ними <code class="language-plaintext highlighter-rouge">User</code>. MapFields и DictFields в настоящее время не поддерживают автоматическую обработку удаленных ссылок.</p>
+
+<p>Подробнее об <a href="http://docs.mongoengine.org/apireference.html#mongoengine.EmbeddedDocument">embeded document</a>. Другие встроеныне типы документов:</p>
+
+<ul>
+  <li><a href="http://docs.mongoengine.org/apireference.html#mongoengine.DynamicDocument">dynamic document</a></li>
+  <li><a href="http://docs.mongoengine.org/apireference.html#mongoengine.DynamicEmbeddedDocument">dynamic embeded document</a></li>
+  <li><a href="http://docs.mongoengine.org/apireference.html#mongoengine.document.MapReduceDocument">MapReduceDocument</a></li>
+  <li><a href="http://docs.mongoengine.org/apireference.html#mongoengine.ValidationError">ValidationError</a></li>
+  <li><a href="http://docs.mongoengine.org/apireference.html#mongoengine.FieldDoesNotExist">FieldDoesNotExist</a></li>
+</ul>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">DynamicDocument</code>, позволяющий использовать гибкие, расширяемые и неконтролируемые схемы. Действует так же, как обычный документ, но имеет расширенные свойства стиля. Любые данные, переданные или заданные <code class="language-plaintext highlighter-rouge">DynamicDocument</code> для поля, которое не является полем, автоматически преобразуются в поле, DynamicFieldи данные могут быть отнесены к этому полю.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">DynamicDocument</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Create a new page and add tags
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Using MongoEngine'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s">'mongodb'</span><span class="p">,</span> <span class="s">'mongoengine'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="s">'mongoengine'</span><span class="p">).</span><span class="n">count</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h3 id="fields">Fields</h3>
+
+<p>По умолчанию поля необязательны. Чтобы сделать поле обязательным, задайте для аргумента <code class="language-plaintext highlighter-rouge">required</code> значение <code class="language-plaintext highlighter-rouge">True</code>. Поля также могут иметь ограничения (например, <code class="language-plaintext highlighter-rouge">max_length</code> в приведенном выше примере). Поля также могут принимать значения по умолчанию, которые будут использоваться, если значение не указано. Значения по умолчанию могут быть опционально вызываемыми, которые будут вызываться для извлечения значения. Доступны следующие типы полей:</p>
+
+<ul>
+  <li>BinaryField</li>
+  <li>BooleanField</li>
+  <li>ComplexDateTimeField</li>
+  <li>DateTimeField</li>
+  <li>DecimalField</li>
+  <li>DictField</li>
+  <li>DynamicField</li>
+  <li>EmailField</li>
+  <li>EmbeddedDocumentField</li>
+  <li>EmbeddedDocumentListField</li>
+  <li>EnumField</li>
+  <li>FileField</li>
+  <li>FloatField</li>
+  <li>GenericEmbeddedDocumentField</li>
+  <li>GenericReferenceField</li>
+  <li>GenericLazyReferenceField</li>
+  <li>GeoPointField</li>
+  <li>ImageField</li>
+  <li>IntField</li>
+  <li>ListField</li>
+  <li>LongField</li>
+  <li>MapField</li>
+  <li>ObjectIdField</li>
+  <li>ReferenceField</li>
+  <li>LazyReferenceField</li>
+  <li>SequenceField</li>
+  <li>SortedListField</li>
+  <li>StringField</li>
+  <li>URLField</li>
+  <li>UUIDField</li>
+  <li>PointField</li>
+  <li>LineStringField</li>
+  <li>PolygonField</li>
+  <li>MultiPointField</li>
+  <li>MultiLineStringField</li>
+  <li>MultiPolygonField</li>
+</ul>
+
+<p>Подробнее в <a href="http://docs.mongoengine.org/apireference.html#fields">описании АПИ</a>.</p>
+
+<p>Дополнительно у полей доступны <a href="http://docs.mongoengine.org/guide/defining-documents.html#field-arguments">аргументы</a></p>
+
+<ul>
+  <li>
+    <p>Если установлено <code class="language-plaintext highlighter-rouge">db_fiekd</code>, операции в MongoDB будут выполняться с этим значением вместо атрибута класса.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="o">*</span>
+
+  <span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">page_number</span> <span class="o">=</span> <span class="n">IntField</span><span class="p">(</span><span class="n">db_field</span><span class="o">=</span><span class="s">"pageNumber"</span><span class="p">)</span>
+
+  <span class="c1"># Create a Page and save it
+</span>  <span class="n">Page</span><span class="p">(</span><span class="n">page_number</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+
+  <span class="c1"># How 'pageNumber' is stored in MongoDB
+</span>  <span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">as_pymongo</span><span class="p">()</span> <span class="c1"># [{'_id': ObjectId('629dfc45ee4cc407b1586b1f'), 'pageNumber': 1}]
+</span>
+  <span class="c1"># Retrieve the object
+</span>  <span class="n">page</span><span class="p">:</span> <span class="n">Page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">first</span><span class="p">()</span>
+
+  <span class="k">print</span><span class="p">(</span><span class="n">page</span><span class="p">.</span><span class="n">page_number</span><span class="p">)</span>  <span class="c1"># prints 1
+</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">page</span><span class="p">.</span><span class="n">pageNumber</span><span class="p">)</span> <span class="c1"># raises AttributeError
+</span></code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">required</code></li>
+  <li><code class="language-plaintext highlighter-rouge">default</code></li>
+  <li><code class="language-plaintext highlighter-rouge">unique</code> при значении True никакие документы в коллекции не будут иметь одинаковое значение для этого поля.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">unique with</code> имя поля (или список имен полей), которое взято вместе с этим полем не будет иметь в коллекции двух документов с одинаковым значением.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">username</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+      <span class="n">first_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+      <span class="n">last_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">unique_with</span><span class="o">=</span><span class="s">'first_name'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">primary_key</code> при значении True используйте это поле в качестве первичного ключа для коллекции. DictField и EmbeddedDocuments поддерживают первичный ключ для документа.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">choices</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">SIZE</span> <span class="o">=</span> <span class="p">((</span><span class="s">'S'</span><span class="p">,</span> <span class="s">'Small'</span><span class="p">),</span>
+          <span class="p">(</span><span class="s">'M'</span><span class="p">,</span> <span class="s">'Medium'</span><span class="p">),</span>
+          <span class="p">(</span><span class="s">'L'</span><span class="p">,</span> <span class="s">'Large'</span><span class="p">),</span>
+          <span class="p">(</span><span class="s">'XL'</span><span class="p">,</span> <span class="s">'Extra Large'</span><span class="p">),</span>
+          <span class="p">(</span><span class="s">'XXL'</span><span class="p">,</span> <span class="s">'Extra Extra Large'</span><span class="p">))</span>
+
+
+  <span class="k">class</span> <span class="nc">Shirt</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">size</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">SIZE</span><span class="p">)</span>
+
+  <span class="c1"># or
+</span>  <span class="n">SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="s">'S'</span><span class="p">,</span> <span class="s">'M'</span><span class="p">,</span> <span class="s">'L'</span><span class="p">,</span> <span class="s">'XL'</span><span class="p">,</span> <span class="s">'XXL'</span><span class="p">)</span>
+
+  <span class="k">class</span> <span class="nc">Shirt</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">size</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">SIZE</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">validation</code> вызываемый объект для проверки значения поля. Вызываемый объект принимает значение в качестве параметра и должен вызвать <code class="language-plaintext highlighter-rouge">ValidationError</code>, если проверка не пройдена.</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nf">_not_empty</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">'value can not be empty'</span><span class="p">)</span>
+
+  <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">validation</span><span class="o">=</span><span class="n">_not_empty</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">**kwargs</code></li>
+</ul>
+
+<p>Кроме того доступны последовательности и встроеныне документы:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ListField</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">tags</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">EmbeddedDocument</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">EmbeddedDocument</span><span class="p">):</span>
+      <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+  <span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">comments</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">EmbeddedDocumentField</span><span class="p">(</span><span class="n">Comment</span><span class="p">))</span>
+
+  <span class="n">comment1</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">'Good work!'</span><span class="p">)</span>
+  <span class="n">comment2</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">'Nice article!'</span><span class="p">)</span>
+  <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">comments</span><span class="o">=</span><span class="p">[</span><span class="n">comment1</span><span class="p">,</span> <span class="n">comment2</span><span class="p">])</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">DictField</code> Часто вместо словаря можно использовать встроенный документ — обычно рекомендуются встроенные документы, поскольку словари не поддерживают проверку или настраиваемые типы полей. Однако иногда вы не будете знать структуру того, что хотите сохранить; в этой ситуации подходит <code class="language-plaintext highlighter-rouge">DictField</code></p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">SurveyResponse</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">date</span> <span class="o">=</span> <span class="n">DateTimeField</span><span class="p">()</span>
+      <span class="n">user</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+      <span class="n">answers</span> <span class="o">=</span> <span class="n">DictField</span><span class="p">()</span>
+
+  <span class="n">survey_response</span> <span class="o">=</span> <span class="n">SurveyResponse</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">utcnow</span><span class="p">(),</span> <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="p">.</span><span class="n">user</span><span class="p">)</span>
+  <span class="n">response_form</span> <span class="o">=</span> <span class="n">ResponseForm</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">POST</span><span class="p">)</span>
+  <span class="n">survey_response</span><span class="p">.</span><span class="n">answers</span> <span class="o">=</span> <span class="n">response_form</span><span class="p">.</span><span class="n">cleaned_data</span><span class="p">()</span>
+  <span class="n">survey_response</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ReferenceField</code> Ссылки указывают на другие документы в базе данных. Чтобы добавить ReferenceField, который ссылается на определяемый документ, используйте строку «self» вместо класса документа в качестве аргумента для конструктора ReferenceField. Чтобы сослаться на документ, который еще не определен, используйте имя неопределенного документа в качестве аргумента конструктора</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+  <span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+      <span class="n">author</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+
+  <span class="n">john</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"John Smith"</span><span class="p">)</span>
+  <span class="n">john</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+  <span class="n">post</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">"Test Page"</span><span class="p">)</span>
+  <span class="n">post</span><span class="p">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">john</span>
+  <span class="n">post</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+  <span class="c1"># or
+</span>  <span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+      <span class="n">boss</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s">'self'</span><span class="p">)</span>
+      <span class="n">profile_page</span> <span class="o">=</span> <span class="n">ReferenceField</span><span class="p">(</span><span class="s">'ProfilePage'</span><span class="p">)</span>
+
+  <span class="k">class</span> <span class="nc">ProfilePage</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+      <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="many-to-many-with-listfields">Many to Many with ListFields.</h3>
+
+<p>Если вы реализуете отношения «многие ко многим» через список ссылок, то ссылки хранятся как DBRefs, и для запроса вам необходимо передать экземпляр объекта в запрос.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">(</span><span class="n">ReferenceField</span><span class="p">(</span><span class="n">User</span><span class="p">))</span>
+
+<span class="n">bob</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Bob Jones"</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+<span class="n">john</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"John Smith"</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+
+<span class="n">Page</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">"Test Page"</span><span class="p">,</span> <span class="n">authors</span><span class="o">=</span><span class="p">[</span><span class="n">bob</span><span class="p">,</span> <span class="n">john</span><span class="p">]).</span><span class="n">save</span><span class="p">()</span>
+<span class="n">Page</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s">"Another Page"</span><span class="p">,</span> <span class="n">authors</span><span class="o">=</span><span class="p">[</span><span class="n">john</span><span class="p">]).</span><span class="n">save</span><span class="p">()</span>
+
+<span class="c1"># Find all pages Bob authored
+</span><span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">authors__in</span><span class="o">=</span><span class="p">[</span><span class="n">bob</span><span class="p">])</span>
+
+<span class="c1"># Find all pages that both Bob and John have authored
+</span><span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">authors__all</span><span class="o">=</span><span class="p">[</span><span class="n">bob</span><span class="p">,</span> <span class="n">john</span><span class="p">])</span>
+
+<span class="c1"># Remove Bob from the authors for a page.
+</span><span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">'...'</span><span class="p">).</span><span class="n">update_one</span><span class="p">(</span><span class="n">pull__authors</span><span class="o">=</span><span class="n">bob</span><span class="p">)</span>
+
+<span class="c1"># Add John to the authors for a page.
+</span><span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">'...'</span><span class="p">).</span><span class="n">update_one</span><span class="p">(</span><span class="n">push__authors</span><span class="o">=</span><span class="n">john</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>По умолчанию MongoDB не проверяет целостность ваших данных, поэтому удаление документов, ссылки на которые есть в других документах, приведет к проблемам согласованности. ReferenceField Mongoengine добавляет некоторые функции для защиты от таких проблем с целостностью базы данных, предоставляя каждой ссылке спецификацию правила удаления. Подробнее <a href="http://docs.mongoengine.org/guide/defining-documents.html#dealing-with-deletion-of-referred-documents">тут</a></p>
+
+<h3 id="another-solution-for-reference">Another solution for reference</h3>
+
+<p>Другой вариант добавления рефернсов - это <a href="http://docs.mongoengine.org/guide/defining-documents.html#generic-reference-fields">женерики</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Bookmark</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">bookmark_object</span> <span class="o">=</span> <span class="n">GenericReferenceField</span><span class="p">()</span>
+
+<span class="n">link</span> <span class="o">=</span> <span class="n">Link</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">'http://hmarr.com/mongoengine/'</span><span class="p">)</span>
+<span class="n">link</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Using MongoEngine'</span><span class="p">)</span>
+<span class="n">post</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="n">Bookmark</span><span class="p">(</span><span class="n">bookmark_object</span><span class="o">=</span><span class="n">link</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+<span class="n">Bookmark</span><span class="p">(</span><span class="n">bookmark_object</span><span class="o">=</span><span class="n">post</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="collection-names-and-capped-collection">Collection names and capped collection</h3>
+
+<p>Классы документов, которые наследуются непосредственно от <code class="language-plaintext highlighter-rouge">Document</code>, будут иметь собственную коллекцию в базе данных. Имя коллекции по умолчанию является именем класса, преобразованного в снейк кейс. Если вам нужно изменить имя коллекции (например, чтобы использовать MongoEngine с существующей базой данных), создайте атрибут словаря класса с именем meta в своем документе и установите для коллекции имя коллекции, которое вы хотите, чтобы использовал ваш класс документа.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s">'collection'</span><span class="p">:</span> <span class="s">'cmsPage'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Документ может использовать ограниченную коллекцию, указав <code class="language-plaintext highlighter-rouge">max_documents</code> и <code class="language-plaintext highlighter-rouge">max_size</code> в метасловаре. <code class="language-plaintext highlighter-rouge">max_documents</code> — это максимальное количество документов, которое разрешено хранить в коллекции, а <code class="language-plaintext highlighter-rouge">max_size</code> — это максимальный размер коллекции в байтах</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Log</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">ip_address</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s">'max_documents'</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s">'max_size'</span><span class="p">:</span> <span class="mi">2000000</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="indexes">Indexes</h3>
+
+<p>Вы можете указать индексы для коллекций, чтобы ускорить запросы. Это делается путем создания списка спецификаций индексов, называемых indexes, в метасловаре, где спецификацией индекса может быть либо одно имя поля, кортеж, содержащий несколько имен полей, либо словарь, содержащий полное определение индекса.</p>
+
+<p>Направление может быть указано в полях путем добавления к имени поля префикса (для возрастания) или знака - (для убывания). Обратите внимание, что направление имеет значение только для составных индексов. Текстовые индексы могут быть указаны путем добавления к имени поля префикса $. Хешированные индексы могут быть указаны путем добавления префикса # к имени поля:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">IntField</span><span class="p">()</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">rating</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTimeField</span><span class="p">()</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'indexes'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">'title'</span><span class="p">,</span>   <span class="c1"># single-field index
+</span>            <span class="s">'$title'</span><span class="p">,</span>  <span class="c1"># text index
+</span>            <span class="s">'#title'</span><span class="p">,</span>  <span class="c1"># hashed index
+</span>            <span class="p">(</span><span class="s">'title'</span><span class="p">,</span> <span class="s">'-rating'</span><span class="p">),</span>  <span class="c1"># compound index
+</span>            <span class="p">(</span><span class="s">'category'</span><span class="p">,</span> <span class="s">'_cls'</span><span class="p">),</span>  <span class="c1"># compound index
+</span>            <span class="p">{</span>
+                <span class="s">'fields'</span><span class="p">:</span> <span class="p">[</span><span class="s">'created'</span><span class="p">],</span>
+                <span class="s">'expireAfterSeconds'</span><span class="p">:</span> <span class="mi">3600</span>  <span class="c1"># ttl index
+</span>            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Дополнительные опции, глобальные и кеоспасиал индексы <a href="http://docs.mongoengine.org/guide/defining-documents.html#indexes">смотри тут</a></p>
+
+<p>TTL index - специальный тип индекса, который позволяет автоматически удалять данные из коллекции по истечении заданного периода.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTimeField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">utcnow</span><span class="p">)</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'indexes'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s">'fields'</span><span class="p">:</span> <span class="p">[</span><span class="s">'created'</span><span class="p">],</span> <span class="s">'expireAfterSeconds'</span><span class="p">:</span> <span class="mi">3600</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Индексы TTL происходят на сервере MongoDB, а не в коде приложения, поэтому при удалении документа не будет генерироваться никаких сигналов. Если вам нужно, чтобы сигналы запускались при удалении, вы должны обрабатывать удаление документов в коде своего приложения.</p>
+
+<h3 id="ordering">Ordering</h3>
+
+<p>Порядок по умолчанию может быть указан для вашего <code class="language-plaintext highlighter-rouge">QuerySet</code> с помощью атрибута <code class="language-plaintext highlighter-rouge">ordering</code> в <code class="language-plaintext highlighter-rouge">meta</code>. Упорядочивание будет применено при создании <code class="language-plaintext highlighter-rouge">QuerySet</code> и может быть переопределено последующими вызовами <code class="language-plaintext highlighter-rouge">order_by()</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span> <span class="nc">BlogPost</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">published_date</span> <span class="o">=</span> <span class="n">DateTimeField</span><span class="p">()</span>
+
+    <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'ordering'</span><span class="p">:</span> <span class="p">[</span><span class="s">'-published_date'</span><span class="p">]</span>
+    <span class="p">}</span>
+
+<span class="n">blog_post_1</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Blog Post #1"</span><span class="p">)</span>
+<span class="n">blog_post_1</span><span class="p">.</span><span class="n">published_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">blog_post_2</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Blog Post #2"</span><span class="p">)</span>
+<span class="n">blog_post_2</span><span class="p">.</span><span class="n">published_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">blog_post_3</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Blog Post #3"</span><span class="p">)</span>
+<span class="n">blog_post_3</span><span class="p">.</span><span class="n">published_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">blog_post_1</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">blog_post_2</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">blog_post_3</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="c1"># get the "first" BlogPost using default ordering
+# from BlogPost.meta.ordering
+</span><span class="n">latest_post</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">first</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">latest_post</span><span class="p">.</span><span class="n">title</span> <span class="o">==</span> <span class="s">"Blog Post #3"</span>
+
+<span class="c1"># override default ordering, order BlogPosts by "published_date"
+</span><span class="n">first_post</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">"+published_date"</span><span class="p">).</span><span class="n">first</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">first_post</span><span class="p">.</span><span class="n">title</span> <span class="o">==</span> <span class="s">"Blog Post #1"</span>
+</code></pre></div></div>
+
+<h2 id="добавление-данных"><a href="http://docs.mongoengine.org/guide/document-instances.html">Добавление данных</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Test Page"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">title</span>
+<span class="s">'Test Page'</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Example Page"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">title</span>
+<span class="s">'Example Page'</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># Performs an insert
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">'Example Page'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># Performs an atomic set on the title field.
+</span></code></pre></div></div>
+
+<p>Чтобы удалить документ, вызовите метод <code class="language-plaintext highlighter-rouge">delete()</code>. Обратите внимание, что это будет работать только в том случае, если документ существует в базе данных и имеет действительный идентификатор. Каждый документ в базе данных имеет уникальный идентификатор. Доступ к этому можно получить через атрибут id объектов Document. Обычно идентификатор автоматически генерируется сервером базы данных при сохранении объекта, а это означает, что вы можете получить доступ к полю идентификатора только после сохранения документа</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Test Page"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="nb">id</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="nb">id</span>
+<span class="n">ObjectId</span><span class="p">(</span><span class="s">'123456789abcdef000000000'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В качестве альтернативы вы можете определить одно из своих собственных полей в качестве «первичного ключа» документа, указав <code class="language-plaintext highlighter-rouge">primary_key=True</code> в качестве аргумента ключевого слова конструктору поля.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">email</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s">'bob@example.com'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'Bob'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bob</span><span class="p">.</span><span class="nb">id</span> <span class="o">==</span> <span class="n">bob</span><span class="p">.</span><span class="n">email</span> <span class="o">==</span> <span class="s">'bob@example.com'</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Вы также можете получить доступ к «первичному ключу» документа, используя поле <code class="language-plaintext highlighter-rouge">pk</code>, это псевдоним для <code class="language-plaintext highlighter-rouge">id</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">"Another Test Page"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span><span class="p">.</span><span class="nb">id</span> <span class="o">==</span> <span class="n">page</span><span class="p">.</span><span class="n">pk</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<h2 id="querying-the-database"><a href="http://docs.mongoengine.org/guide/querying.html">Querying the database</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">Post</span><span class="p">.</span><span class="n">objects</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">post</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+
+<span class="c1"># or
+</span><span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">TextPost</span><span class="p">.</span><span class="n">objects</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">post</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Использование атрибута <code class="language-plaintext highlighter-rouge">objects</code> для <code class="language-plaintext highlighter-rouge">TextPost</code> возвращает только документы, созданные с использованием <code class="language-plaintext highlighter-rouge">TextPost</code>. На самом деле здесь действует более общее правило: <code class="language-plaintext highlighter-rouge">objects</code> любого подкласса <code class="language-plaintext highlighter-rouge">Document</code> ищет только те документы, которые были созданы с использованием этого подкласса или одного из его подклассов.</p>
+
+<p>Атрибут <code class="language-plaintext highlighter-rouge">objects</code>  <code class="language-plaintext highlighter-rouge">Document</code>а на самом деле является <code class="language-plaintext highlighter-rouge">QuerySet</code> объектом. Это лениво запрашивает базу данных только тогда, когда вам нужны данные. Он также может быть отфильтрован, чтобы сузить ваш запрос</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">Post</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="s">'mongodb'</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">post</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="filtering">Filtering</h3>
+
+<p>Ключи в аргументах ключевого слова соответствуют полям запрашиваемого документа.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This will return a QuerySet that will only iterate over users whose
+# 'country' field is set to 'uk'
+</span><span class="n">uk_users</span> <span class="o">=</span> <span class="n">User</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s">'uk'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>На поля встроенных документов также можно ссылаться с помощью синтаксиса поиска полей, используя двойное подчеркивание вместо точки в синтаксисе доступа к атрибутам объекта</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># This will return a QuerySet that will only iterate over pages that have
+# been written by a user whose 'country' field is set to 'uk'
+</span><span class="n">uk_pages</span> <span class="o">=</span> <span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">author__country</span><span class="o">=</span><span class="s">'uk'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="query-operators"><a href="http://docs.mongoengine.org/guide/querying.html#query-operators">Query operators</a></h3>
+
+<p>Доступно все, что используется в стандарте реляционных БД, а так-же строковые запросы, гео-запросы, списочные запросы, а так-же raw-запросы.</p>
+
+<p>Пирмер “нативного” raw-запроса.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Page</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">__raw__</span><span class="o">=</span><span class="p">{</span><span class="s">'tags'</span><span class="p">:</span> <span class="s">'coding'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="sortingordering">Sorting/Ordering</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Order by ascending date
+</span><span class="n">blogs</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">().</span><span class="n">order_by</span><span class="p">(</span><span class="s">'date'</span><span class="p">)</span>    <span class="c1"># equivalent to .order_by('+date')
+</span>
+<span class="c1"># Order by ascending date first, then descending title
+</span><span class="n">blogs</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">().</span><span class="n">order_by</span><span class="p">(</span><span class="s">'+date'</span><span class="p">,</span> <span class="s">'-title'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="limiting-and-skipping">Limiting and skipping</h3>
+
+<p>Можно через методы <code class="language-plaintext highlighter-rouge">limit()</code> и <code class="language-plaintext highlighter-rouge">skip()</code>, а можно через слайс.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Only the first 5 people
+</span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="p">.</span><span class="n">objects</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="c1"># All except for the first 5 people
+</span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="p">.</span><span class="n">objects</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+
+<span class="c1"># 5 users, starting from the 11th user found
+</span><span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="p">.</span><span class="n">objects</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">get()</code> позволяет получить уникальный результат</p>
+
+<h3 id="default-document-query"><a href="http://docs.mongoengine.org/guide/querying.html#default-document-queries">Default document query</a></h3>
+
+<p>По умолчанию атрибут объектов в документе возвращает QuerySet, который не фильтрует коллекцию — он возвращает все объекты. Это можно изменить, определив в документе метод, который изменяет набор запросов. Метод должен принимать два аргумента — doc_cls и queryset. Первый аргумент — это класс Document, для которого определен метод (в этом смысле метод больше похож на classmethod(), чем на обычный метод), а второй аргумент — это исходный набор запросов. Метод должен быть дополнен queryset_manager(), чтобы его можно было распознать.</p>
+
+<h3 id="custom-querysets"><a href="http://docs.mongoengine.org/guide/querying.html#custom-querysets">Custom QuerySets</a></h3>
+
+<h3 id="aggregation"><a href="http://docs.mongoengine.org/guide/querying.html#aggregation">Aggregation</a></h3>
+
+<h3 id="эффективность-запросов-и-производительность"><a href="http://docs.mongoengine.org/guide/querying.html#query-efficiency-and-performance">Эффективность запросов и производительность</a></h3>
+
+<h3 id="расширенные-запросы"><a href="http://docs.mongoengine.org/guide/querying.html#advanced-queries">Расширенные запросы</a></h3>
+
+<p>Иногда вызов объекта <code class="language-plaintext highlighter-rouge">QuerySet</code> с аргументами ключевого слова не может полностью выразить запрос, который вы хотите использовать — например, если вам нужно объединить ряд ограничений. Это стало возможным в MongoEngine благодаря классу <code class="language-plaintext highlighter-rouge">Q</code>. Объект Q представляет собой часть запроса и может быть инициализирован с использованием того же синтаксиса ключевого слова-аргумента, который вы используете для запроса документов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mongoengine.queryset.visitor</span> <span class="kn">import</span> <span class="n">Q</span>
+
+<span class="c1"># Get published posts
+</span><span class="n">Post</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="n">published</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">publish_date__lte</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">()))</span>
+
+<span class="c1"># Get top posts
+</span><span class="n">Post</span><span class="p">.</span><span class="n">objects</span><span class="p">((</span><span class="n">Q</span><span class="p">(</span><span class="n">featured</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">hits__gte</span><span class="o">=</span><span class="mi">1000</span><span class="p">))</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">hits__gte</span><span class="o">=</span><span class="mi">5000</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="atomic-updates"><a href="http://docs.mongoengine.org/guide/querying.html#atomic-updates">Atomic updates</a></h3>
+
+<p>Документы могут быть обновлены атомарно с помощью методов <code class="language-plaintext highlighter-rouge">update_one()</code>, <code class="language-plaintext highlighter-rouge">update()</code> и <code class="language-plaintext highlighter-rouge">modify()</code> в <code class="language-plaintext highlighter-rouge">QuerySet</code> или с помощью методов <code class="language-plaintext highlighter-rouge">modify()</code> и <code class="language-plaintext highlighter-rouge">save()</code> (с аргументом <code class="language-plaintext highlighter-rouge">save_condition</code>) в документе. Есть несколько различных «модификаторов», которые вы можете использовать с этими методами:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">set</code> – set a particular value</li>
+  <li><code class="language-plaintext highlighter-rouge">set_on_insert</code> – set only if this is new document</li>
+  <li><code class="language-plaintext highlighter-rouge">unset</code> – delete a particular value</li>
+  <li><code class="language-plaintext highlighter-rouge">max</code> – update only if value is bigger</li>
+  <li><code class="language-plaintext highlighter-rouge">min</code> – update only if value is smaller</li>
+  <li><code class="language-plaintext highlighter-rouge">inc</code> – increment a value by a given amount</li>
+  <li><code class="language-plaintext highlighter-rouge">dec</code> – decrement a value by a given amount</li>
+  <li><code class="language-plaintext highlighter-rouge">push</code> – append a value to a list</li>
+  <li><code class="language-plaintext highlighter-rouge">push_all</code> – append several values to a list</li>
+  <li><code class="language-plaintext highlighter-rouge">pop</code> – remove the first or last element of a list depending on the value</li>
+  <li><code class="language-plaintext highlighter-rouge">pull</code> – remove a value from a list</li>
+  <li><code class="language-plaintext highlighter-rouge">pull_all</code> – remove several values from a list</li>
+  <li><code class="language-plaintext highlighter-rouge">add_to_set</code> – add value to a list only if its not in the list already</li>
+  <li><code class="language-plaintext highlighter-rouge">rename</code> – rename the key name</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">post</span> <span class="o">=</span> <span class="n">BlogPost</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">'Test'</span><span class="p">,</span> <span class="n">page_views</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s">'database'</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="p">.</span><span class="nb">id</span><span class="p">).</span><span class="n">update_one</span><span class="p">(</span><span class="n">inc__page_views</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="nb">reload</span><span class="p">()</span>  <span class="c1"># the document has been changed, so we need to reload it
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="n">page_views</span>
+<span class="mi">1</span>
+<span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="p">.</span><span class="nb">id</span><span class="p">).</span><span class="n">update_one</span><span class="p">(</span><span class="n">set__title</span><span class="o">=</span><span class="s">'Example Post'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="nb">reload</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="n">title</span>
+<span class="s">'Example Post'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BlogPost</span><span class="p">.</span><span class="n">objects</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="p">.</span><span class="nb">id</span><span class="p">).</span><span class="n">update_one</span><span class="p">(</span><span class="n">push__tags</span><span class="o">=</span><span class="s">'nosql'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="nb">reload</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">post</span><span class="p">.</span><span class="n">tags</span>
+<span class="p">[</span><span class="s">'database'</span><span class="p">,</span> <span class="s">'nosql'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="document-validation"><a href="http://docs.mongoengine.org/guide/validation.html">Document Validation</a></h2>
+
+<p>Build-in</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">EmailField</span>
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">EmailField</span><span class="p">()</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">IntField</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s">'invalid@'</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="n">validate</span><span class="p">()</span>     <span class="c1"># raises ValidationError (Invalid email address: ['email'])
+</span><span class="n">user</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>         <span class="c1"># raises ValidationError (Invalid email address: ['email'])
+</span>
+<span class="n">user2</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s">'john.doe@garbage.com'</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">user2</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>        <span class="c1"># raises ValidationError (Integer value is too large: ['age'])
+</span></code></pre></div></div>
+
+<p>Custom</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">not_john_doe</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">'John Doe'</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s">"John Doe is not a valid name"</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">full_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">validation</span><span class="o">=</span><span class="n">not_john_doe</span><span class="p">)</span>
+
+<span class="n">Person</span><span class="p">(</span><span class="n">full_name</span><span class="o">=</span><span class="s">'Billy Doe'</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+<span class="n">Person</span><span class="p">(</span><span class="n">full_name</span><span class="o">=</span><span class="s">'John Doe'</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># raises ValidationError (John Doe is not a valid name)
+</span></code></pre></div></div>
+
+<h2 id="gridfs">G<a href="http://docs.mongoengine.org/guide/gridfs.html">ridFS</a></h2>
+
+<p>Поддержка GridFS осуществляется в виде объекта поля <code class="language-plaintext highlighter-rouge">FileField</code>. Это поле действует как файлоподобный объект и предоставляет несколько различных способов вставки и извлечения данных. Произвольные метаданные, такие как тип содержимого, также могут храниться вместе с файлами. Объект, возвращаемый при доступе к <code class="language-plaintext highlighter-rouge">FileField</code>, является прокси для GridFS Pymongo.</p>
+
+<h2 id="signals"><a href="http://docs.mongoengine.org/guide/signals.html#signals">Signals</a></h2>
+
+<h2 id="text-search"><a href="http://docs.mongoengine.org/guide/text-indexes.html">Text Search</a></h2>
+
+<h2 id="documents-migration"><a href="http://docs.mongoengine.org/guide/migration.html">Documents migration</a></h2>
+
+<h2 id="loggingmonitoring"><a href="http://docs.mongoengine.org/guide/logging-monitoring.html">Logging/Monitoring</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">monitoring</span>
+<span class="kn">from</span> <span class="nn">mongoengine</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">log</span><span class="p">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">CommandLogger</span><span class="p">(</span><span class="n">monitoring</span><span class="p">.</span><span class="n">CommandListener</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">started</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">log</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"Command {0.command_name} with request id "</span>
+                 <span class="s">"{0.request_id} started on server "</span>
+                 <span class="s">"{0.connection_id}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">succeeded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">log</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"Command {0.command_name} with request id "</span>
+                 <span class="s">"{0.request_id} on server {0.connection_id} "</span>
+                 <span class="s">"succeeded in {0.duration_micros} "</span>
+                 <span class="s">"microseconds"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">log</span><span class="p">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"Command {0.command_name} with request id "</span>
+                 <span class="s">"{0.request_id} on server {0.connection_id} "</span>
+                 <span class="s">"failed in {0.duration_micros} "</span>
+                 <span class="s">"microseconds"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
+
+<span class="n">monitoring</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="n">CommandLogger</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">Jedi</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+
+<span class="n">connect</span><span class="p">()</span>
+
+
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'GO!'</span><span class="p">)</span>
+
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Saving an item through MongoEngine...'</span><span class="p">)</span>
+<span class="n">Jedi</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'Obi-Wan Kenobii'</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Querying through MongoEngine...'</span><span class="p">)</span>
+<span class="n">obiwan</span> <span class="o">=</span> <span class="n">Jedi</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">first</span><span class="p">()</span>
+
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Updating through MongoEngine...'</span><span class="p">)</span>
+<span class="n">obiwan</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">'Obi-Wan Kenobi'</span>
+<span class="n">obiwan</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>в результате:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO:root:GO!
+INFO:root:Saving an item through MongoEngine...
+DEBUG:root:Command insert with request <span class="nb">id </span>1681692777 started on server <span class="o">(</span><span class="s1">'localhost'</span>, 27017<span class="o">)</span>
+DEBUG:root:Command insert with request <span class="nb">id </span>1681692777 on server <span class="o">(</span><span class="s1">'localhost'</span>, 27017<span class="o">)</span> succeeded <span class="k">in </span>562 microseconds
+INFO:root:Querying through MongoEngine...
+DEBUG:root:Command find with request <span class="nb">id </span>1714636915 started on server <span class="o">(</span><span class="s1">'localhost'</span>, 27017<span class="o">)</span>
+DEBUG:root:Command find with request <span class="nb">id </span>1714636915 on server <span class="o">(</span><span class="s1">'localhost'</span>, 27017<span class="o">)</span> succeeded <span class="k">in </span>341 microseconds
+INFO:root:Updating through MongoEngine...
+DEBUG:root:Command update with request <span class="nb">id </span>1957747793 started on server <span class="o">(</span><span class="s1">'localhost'</span>, 27017<span class="o">)</span>
+DEBUG:root:Command update with request <span class="nb">id </span>1957747793 on server <span class="o">(</span><span class="s1">'localhost'</span>, 27017<span class="o">)</span> succeeded <span class="k">in </span>455 microseconds
+</code></pre></div></div>
+
+<h2 id="mongomock-for-testing"><a href="http://docs.mongoengine.org/guide/mongomock.html">Mongomock for testing</a></h2>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://github.com/MongoEngine/mongoengine">документация</a></li>
+  <li><a href="http://docs.mongoengine.org/guide/index.html">User guide</a></li>
+  <li><a href="http://docs.mongoengine.org/apireference.html#">api reference</a></li>
+  <li><a href="https://github.com/MongoEngine/mongoengine">гитхаб</a></li>
+  <li>[<a href="mongodb" title="MongoDB">mongodb</a>]</li>
+  <li><a href="https://github.com/mongomock/mongomock">mongomock</a> Small library for mocking pymongo collection objects for testing purposes</li>
+  <li>odmantic (async orm)
+    <ul>
+      <li><a href="https://art049.github.io/odmantic/">docs</a></li>
+      <li><a href="https://github.com/art049/odmantic">git</a></li>
+    </ul>
+  </li>
+  <li>μMongo: sync/async ODM
+    <ul>
+      <li><a href="https://umongo.readthedocs.io/en/latest/">docs</a></li>
+      <li><a href="https://github.com/Scille/umongo">github</a></li>
+    </ul>
+  </li>
+  <li>Ming (orm)
+    <ul>
+      <li><a href="https://ming.readthedocs.io/en/latest/">docs</a></li>
+    </ul>
+  </li>
+  <li><a href="https://pythonhosted.org/micromongo/">micromongo</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
