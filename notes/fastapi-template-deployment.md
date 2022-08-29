@@ -279,7 +279,7 @@ One way to do it could be to add each environment variable to your CI/CD system,
 [docker-swarm-rocks]: docker-swarm-rocks "Docker swarm rocks"
 [traefik]: traefik "Traefik"
 [docker-swarm-rocks]: docker-swarm-rocks "Docker swarm rocks"
-[cl]: cl "Ci - непрервыная интеграция"
+[cl]: cl "ci/cd - непрервыная интеграция"
 [docker-compose]: docker-compose "Docker compose"
 [dot-env]: dot-env "Dot-env"
 [dot-env]: dot-env "Dot-env"

@@ -9,6 +9,7 @@ RDF — это ориентированный формат данных для �
 
 - [Документация](https://www.w3.org/TR/sparql11-query/)
 - [sparqlwrapper](https://github.com/RDFLib/sparqlwrapper) A wrapper for a remote SPARQL endpoint
+- [sparql-client](https://github.com/eea/sparql-client) Python API to query a SPARQL endpoint
 - [[graphs]]
 - [[bd]]
 

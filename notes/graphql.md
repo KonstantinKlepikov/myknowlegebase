@@ -6,6 +6,7 @@ tags: http graphs
 
 Смотир еще:
 
+- [swapi-graphql](https://graphql.org/swapi-graphql) graphwl endpoint
 - [[fastapi]]
 - [[starlette]]
 - [[http]]

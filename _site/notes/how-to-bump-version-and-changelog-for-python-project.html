@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Graphite | My knowledge base</title>
+<title>How to bump vershion and changelog for python project | My knowledge base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Graphite" />
+<meta property="og:title" content="How to bump vershion and changelog for python project" />
 <meta property="og:locale" content="ru_RU" />
-<meta name="description" content="Сбор метрик о приложении" />
-<meta property="og:description" content="Сбор метрик о приложении" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/graphite.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/graphite.html" />
+<meta name="description" content="Автоматизация версионирвоания и сбора информации об измененеиях" />
+<meta property="og:description" content="Автоматизация версионирвоания и сбора информации об измененеиях" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/how-to-bump-version-and-changelog-for-python-project.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/how-to-bump-version-and-changelog-for-python-project.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/graphite.html","headline":"Graphite","description":"Сбор метрик о приложении","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/how-to-bump-version-and-changelog-for-python-project.html","headline":"How to bump vershion and changelog for python project","description":"Автоматизация версионирвоания и сбора информации об измененеиях","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -104,7 +104,7 @@
       
 <article class="container mx-auto px-2 mt2 mb4">
   <header>
-    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Graphite</h1>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">How to bump vershion and changelog for python project</h1>
   </header>
   <div class="col-4 sm-width-full border-top-thin">
     <p class="mb-3 h5">Теги:
@@ -113,24 +113,48 @@
         <a href="/myknowlegebase/tag/cicd" title="cicd" class="link-tags">cicd&nbsp;</a>
       
         
-        <a href="/myknowlegebase/tag/logging" title="logging" class="link-tags">logging&nbsp;</a>
+        <a href="/myknowlegebase/tag/git" title="git" class="link-tags">git&nbsp;</a>
       
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <p>Graphite does two things:</p>
+    <h2 id="bump-version">Bump version</h2>
 
 <ul>
-  <li>Store numeric time-series data</li>
-  <li>Render graphs of this data on demand
-What Graphite does not do is collect data for you, however there are some tools out there that know how to send data to graphite.</li>
+  <li><a href="https://github.com/c4urself/bump2version">bump2version</a> Version-bump your software with a single command</li>
+  <li><a href="https://pypi.org/project/bumpversion/">bumpversion</a> is the original project off of which <code class="language-plaintext highlighter-rouge">bump2version</code> was forked.</li>
+  <li><a href="https://github.com/tankerhq/tbump">tbump</a> is a complete rewrite, with a nicer UX and additional features, like running commands (aka hooks) before or after the bump. It only works for Git repos right now.</li>
+  <li><a href="https://github.com/andrivet/advbumpversion">ADVbumpversion</a> is another fork. It offered some features that are now incorporated by its author into <code class="language-plaintext highlighter-rouge">bump2version</code>.   This fork is thus now deprecated, and it recommends to use <code class="language-plaintext highlighter-rouge">bump2version</code></li>
+  <li><a href="https://pypi.org/project/zest.releaser/">zest.releaser</a> manages your Python package releases and keeps the version number in one location.</li>
+  <li><a href="https://pypi.org/project/setuptools-scm/">setuptools-scm</a> relies on version control tags and the state of your working copy to determine the version number.</li>
+  <li><a href="https://pypi.org/project/incremental/">incremental</a> integrates into setuptools and maintains the version number in <code class="language-plaintext highlighter-rouge">_version.py</code>.</li>
+  <li>Invocations <a href="https://invocations.readthedocs.io/en/latest/">packaging.release</a> are a set of tasks for <a href="https://www.pyinvoke.org/">invoke</a>. These assume your version is in <code class="language-plaintext highlighter-rouge">_version.py</code> and you’re using semantic versioning.</li>
+  <li><a href="https://github.com/relekang/python-semantic-release">python-semantic.release</a> automatically bumps your (semantic) version number based on the  types of commits (breaking/new/bugfix) in your source control.</li>
+  <li><a href="https://gitlab.com/mbarkhau/pycalver">PyCalVer</a> is very similar to bump2version, but with support for <a href="https://calver.org/">calendar based versioning</a>.</li>
 </ul>
 
-<p><a href="https://graphite.readthedocs.io/en/stable/index.html">Документация</a>. <a href="https://habr.com/ru/post/260753/">Статья на баше</a></p>
+<h2 id="change-log-building">Change log building</h2>
+
+<ul>
+  <li><a href="https://pypi.org/project/towncrier/">towncrier</a> assembles a changelog file from multiple snippets found in individual (merge) commits.</li>
+  <li><a href="https://pypi.org/project/releases/">releases</a> helps build a Sphinx ReStructuredText changelog.</li>
+  <li><a href="https://pypi.org/project/gitchangelog/">gitchangelog</a> searches the git commit history to make a configurable changelog file.</li>
+</ul>
+
+<h2 id="pypa">Pypa</h2>
+
+<ul>
+  <li><a href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a></li>
+  <li><a href="https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/">Packaging and distributing projects</a></li>
+  <li><a href="https://packaging.python.org/en/latest/specifications/pypirc/#pypirc">The .pypirc file</a></li>
+  <li><a href="https://github.com/pypa/sampleproject">A sample Python project by pypa</a></li>
+</ul>
 
 <p>Смотри еще:</p>
 
 <ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="../lists/git" title="Git">git</a>]</li>
   <li>[<a href="cl" title="ci/cd - непрервыная интеграция">cl</a>]</li>
 </ul>
 

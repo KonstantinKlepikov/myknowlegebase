@@ -1,6 +1,6 @@
 ---
 description: Аутентификация на Github
-tags: cl github
+tags: cicd github
 title: Github authentication
 ---
 [Сборник статей на эту тему](https://docs.github.com/en/authentication)
