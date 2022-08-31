@@ -117,7 +117,7 @@
   <div class="prose mb-4 py-4">
     <p>Модуль <code class="language-plaintext highlighter-rouge">dataclasses</code> предоставляет [<a href="python-decorator" title="Python decorator">python-decorator</a>] и функции для автоматического добавления сгенерированных специальных методов, таких как <code class="language-plaintext highlighter-rouge">__init__()</code> и <code class="language-plaintext highlighter-rouge">__repr__()</code>, в пользовательские классы.</p>
 
-<p><code class="language-plaintext highlighter-rouge">@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False</code> - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор <code class="language-plaintext highlighter-rouge">dataclass()</code> проверяет класс, чтобы найти поля. <strong>Поле определяется как переменная класса, имеющая аннотацию типа</strong>. За двумя исключениями, описанными ниже, в <code class="language-plaintext highlighter-rouge">dataclass()</code> ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. <code class="language-plaintext highlighter-rouge">dataclass()</code> так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если <code class="language-plaintext highlighter-rouge">dataclass()</code> используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.</p>
+<p><code class="language-plaintext highlighter-rouge">@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False)</code> - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор <code class="language-plaintext highlighter-rouge">dataclass()</code> проверяет класс, чтобы найти поля. <strong>Поле определяется как переменная класса, имеющая аннотацию типа</strong>. За двумя исключениями, описанными ниже, в <code class="language-plaintext highlighter-rouge">dataclass()</code> ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. <code class="language-plaintext highlighter-rouge">dataclass()</code> так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если <code class="language-plaintext highlighter-rouge">dataclass()</code> используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.</p>
 
 <p>Три эквивалентных варианта использования <code class="language-plaintext highlighter-rouge">dataclass()</code></p>
 
@@ -201,7 +201,9 @@
 
 <p>Сабклассы не вызывают унаследованный <code class="language-plaintext highlighter-rouge">__init__()</code>, поэтому хорошим кейсом будет вызывать <code class="language-plaintext highlighter-rouge">__init__()</code> из родителя через постинит дочернего класса</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="o">@</span><span class="n">dataclass</span>
 <span class="k">class</span> <span class="nc">Rectangle</span><span class="p">:</span>
     <span class="n">height</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">width</span><span class="p">:</span> <span class="nb">float</span>
@@ -212,7 +214,24 @@
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">side</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">side</span><span class="p">)</span>
-</code></pre></div></div>
+
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">SquareNoInit</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">):</span>
+    <span class="n">side</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="n">one</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">one</span><span class="p">)</span>
+<span class="c1"># Rectangle(height=3.0, width=5.0)
+</span>
+<span class="n">two</span> <span class="o">=</span> <span class="n">Square</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">two</span><span class="p">)</span>
+<span class="c1"># Square(height=4.0, width=4.0, side=4.0)
+</span>
+<span class="n">thre</span> <span class="o">=</span> <span class="n">SquareNoInit</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">thre</span><span class="p">)</span>
+<span class="c1"># SquareNoInit(height=1.0, width=3.0, side=4.0)
+</span></code></pre></div></div>
 
 <p>Одним из двух мест, где <code class="language-plaintext highlighter-rouge">dataclass()</code> фактически проверяет тип поля, является определение того, является ли поле переменной класса. Он делает это, проверяя, является ли тип поля <code class="language-plaintext highlighter-rouge">typing.ClassVar</code>. Если поле является <code class="language-plaintext highlighter-rouge">ClassVar</code>, оно исключается из рассмотрения как поле и игнорируется механизмами класса данных. Такие псевдополя <code class="language-plaintext highlighter-rouge">ClassVar</code> не возвращаются функцией <code class="language-plaintext highlighter-rouge">fields()</code> уровня модуля.</p>
 
@@ -222,6 +241,157 @@
 
 <p>Стандартная схема наследования python полностью реализована для dataclass</p>
 
+<h2 id="dataclasses-json"><a href="https://github.com/lidatong/dataclasses-json">dataclasses-json</a></h2>
+
+<p>Эта библиотека предоставляет простой API для кодирования и декодирования классов данных в JSON и обратно. <a href="https://lidatong.github.io/dataclasses-json/">Docs</a></p>
+
+<p>Простой пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">dataclasses_json</span> <span class="kn">import</span> <span class="n">dataclass_json</span>
+
+
+<span class="o">@</span><span class="n">dataclass_json</span>
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'lidatong'</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="n">to_json</span><span class="p">()</span>  <span class="c1"># '{"name": "lidatong"}' &lt;- this is a string
+</span><span class="n">person</span><span class="p">.</span><span class="n">to_dict</span><span class="p">()</span>  <span class="c1"># {'name': 'lidatong'} &lt;- this is a dict
+</span><span class="n">Person</span><span class="p">.</span><span class="n">from_json</span><span class="p">(</span><span class="s">'{"name": "lidatong"}'</span><span class="p">)</span>  <span class="c1"># Person(1)
+</span><span class="n">Person</span><span class="p">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'lidatong'</span><span class="p">})</span>  <span class="c1"># Person(1)
+</span>
+<span class="c1"># You can also apply _schema validation_ using an alternative API
+# This can be useful for "typed" Python code
+</span>
+<span class="n">Person</span><span class="p">.</span><span class="n">from_json</span><span class="p">(</span><span class="s">'{"name": 42}'</span><span class="p">)</span>  <span class="c1"># This is ok. 42 is not a `str`, but
+</span>                                  <span class="c1"># dataclass creation does not validate types
+</span><span class="n">Person</span><span class="p">.</span><span class="n">schema</span><span class="p">().</span><span class="n">loads</span><span class="p">(</span><span class="s">'{"name": 42}'</span><span class="p">)</span>  <span class="c1"># Error! Raises `ValidationError`
+</span>
+<span class="c1"># Another example
+</span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+
+<span class="o">@</span><span class="n">dataclass_json</span>
+<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Minion</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="o">@</span><span class="n">dataclass_json</span>
+<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Boss</span><span class="p">:</span>
+    <span class="n">minions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Minion</span><span class="p">]</span>
+
+
+<span class="n">boss</span> <span class="o">=</span> <span class="n">Boss</span><span class="p">([</span><span class="n">Minion</span><span class="p">(</span><span class="s">'evil minion'</span><span class="p">),</span> <span class="n">Minion</span><span class="p">(</span><span class="s">'very evil minion'</span><span class="p">)])</span>
+<span class="n">boss_json</span> <span class="o">=</span> <span class="s">"""
+{
+    "minions": [
+        {
+            "name": "evil minion"
+        },
+        {
+            "name": "very evil minion"
+        }
+    ]
+}
+"""</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">boss</span><span class="p">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="n">boss_json</span>
+<span class="k">assert</span> <span class="n">Boss</span><span class="p">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">boss_json</span><span class="p">)</span> <span class="o">==</span> <span class="n">boss</span>
+</code></pre></div></div>
+
+<h3 id="что-может-пакет">Что может пакет</h3>
+
+<p>Supported types:</p>
+
+<ul>
+  <li>any arbitrary Collection type is supported. Mapping types are encoded as JSON objects and str types as JSON strings. Any other Collection types are encoded into JSON arrays, but decoded into the original collection types.</li>
+  <li>datetime objects. datetime objects are encoded to float (JSON number) using timestamp. As specified in the datetime docs, if your datetime object is naive, it will assume your system local timezone when calling .timestamp(). JSON numbers corresponding to a datetime field in your dataclass are decoded into a datetime-aware object, with tzinfo set to your system local timezone. Thus, if you encode a datetime-naive object, you will decode into a datetime-aware object. This is important, because encoding and decoding won’t strictly be inverses. See this section if you want to override this default behavior (for example, if you want to use ISO).</li>
+  <li>UUID objects. They are encoded as str (JSON string).</li>
+  <li>Decimal objects. They are also encoded as str</li>
+</ul>
+
+<p>Два вида использования:</p>
+
+<ul>
+  <li>декоратор класса</li>
+  <li>наследования от миксина</li>
+</ul>
+
+<p>Пример с вложенными датаклассами:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">dataclasses_json</span> <span class="kn">import</span> <span class="n">dataclass_json</span>
+
+
+<span class="o">@</span><span class="n">dataclass_json</span>
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">Student</span><span class="p">:</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">""</span>
+
+
+<span class="o">@</span><span class="n">dataclass_json</span>
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">Professor</span><span class="p">:</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="o">@</span><span class="n">dataclass_json</span>
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">Course</span><span class="p">:</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">professor</span><span class="p">:</span> <span class="n">Professor</span>
+    <span class="n">students</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Student</span><span class="p">]</span>
+
+
+<span class="n">c_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"course"</span><span class="p">,</span>
+    <span class="s">"professor"</span><span class="p">:</span> <span class="p">{</span><span class="s">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"professor"</span><span class="p">},</span>
+    <span class="s">"students"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"student"</span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="c1"># Using **kwargs to unpack arguments in the constructor
+</span><span class="n">c_unpacked</span> <span class="o">=</span> <span class="n">Course</span><span class="p">(</span><span class="o">**</span><span class="n">c_dict</span><span class="p">)</span>
+<span class="c1"># Non-keyword arguments that are already unpacked.
+</span><span class="n">c_construct</span> <span class="o">=</span> <span class="n">Course</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'course'</span><span class="p">,</span> <span class="n">Professor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'professor'</span><span class="p">),</span> <span class="p">{</span><span class="n">Student</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">'student'</span><span class="p">)})</span>
+<span class="c1"># Problem does not occur when loading from JSON
+</span><span class="n">c_json</span> <span class="o">=</span> <span class="n">Course</span><span class="p">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">c_dict</span><span class="p">))</span>
+
+
+<span class="k">assert</span> <span class="n">c_unpacked</span><span class="p">.</span><span class="n">to_json</span><span class="p">()</span> <span class="o">==</span> <span class="n">c_construct</span><span class="p">.</span><span class="n">to_json</span><span class="p">()</span>  <span class="c1"># Pass
+</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c_unpacked</span><span class="p">.</span><span class="n">professor</span><span class="p">,</span> <span class="n">Professor</span><span class="p">)</span>  <span class="c1"># Fail, type(c1.professor) is dict
+</span><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c_construct</span><span class="p">.</span><span class="n">professor</span><span class="p">,</span> <span class="n">Professor</span><span class="p">)</span>  <span class="c1"># Pass
+</span><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c_json</span><span class="p">.</span><span class="n">professor</span><span class="p">,</span> <span class="n">Professor</span><span class="p">)</span>  <span class="c1"># Pass
+</span>
+<span class="k">assert</span> <span class="n">c_json</span> <span class="o">==</span> <span class="n">c_construct</span>  <span class="c1"># Pass
+</span><span class="k">assert</span> <span class="n">c_unpacked</span> <span class="o">==</span> <span class="n">c_construct</span>  <span class="c1"># Fail
+</span></code></pre></div></div>
+
+<p><a href="https://github.com/lidatong/dataclasses-json/issues/39#issuecomment-446046164">Источник</a></p>
+
+<p>Еще:</p>
+
+<ul>
+  <li>Encode or decode from camelCase (or kebab-case)</li>
+  <li>Encode or decode using a different name</li>
+  <li>Handle missing or optional field values when decoding</li>
+  <li>Handle unknown / extraneous fields in JSON</li>
+  <li>Handle recursive dataclasses</li>
+  <li>Using the dataclass_json decorator or mixing in DataClassJsonMixin will provide you with an additional method .schema()</li>
+  <li>Overriding / Extending</li>
+</ul>
+
 <p>Смотри еще:</p>
 
 <ul>
@@ -230,6 +400,7 @@
   <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
   <li>[<a href="convert-dcit-to-dataclass" title="Convert dict to dataclass or namedtuple">convert-dcit-to-dataclass</a>]</li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li><a href="https://github.com/lidatong/dataclasses-json">dataclasses-json</a></li>
 </ul>
 
 

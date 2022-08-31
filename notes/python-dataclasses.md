@@ -5,7 +5,7 @@ title: Python dataclasses
 ---
 Модуль `dataclasses` предоставляет [[python-decorator]] и функции для автоматического добавления сгенерированных специальных методов, таких как `__init__()` и `__repr__()`, в пользовательские классы.
 
-`@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False` - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор `dataclass()` проверяет класс, чтобы найти поля. **Поле определяется как переменная класса, имеющая аннотацию типа**. За двумя исключениями, описанными ниже, в `dataclass()` ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. `dataclass()` так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если `dataclass()` используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.
+`@dataclasses.dataclass(*, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False)` - декоратор, который используется для добавления сгенерированных специальных методов к классам. Декоратор `dataclass()` проверяет класс, чтобы найти поля. **Поле определяется как переменная класса, имеющая аннотацию типа**. За двумя исключениями, описанными ниже, в `dataclass()` ничто не проверяет тип, указанный в аннотации переменной. Порядок полей во всех сгенерированных методах соответствует порядку, в котором они появляются в определении класса. `dataclass()` так-же добавит в класс дандер-методы. Если какой-либо из добавленных методов уже существует в классе, поведение зависит от параметра декоратора. Декоратор возвращает тот же класс, для которого он был вызван - новый класс не создается. Если `dataclass()` используется просто как простой декоратор без параметров, он действует так, как если бы у него были значения по умолчанию, задокументированные в этой сигнатуре.
 
 Три эквивалентных варианта использования `dataclass()`
 
@@ -90,6 +90,8 @@ class C:
 Сабклассы не вызывают унаследованный `__init__()`, поэтому хорошим кейсом будет вызывать `__init__()` из родителя через постинит дочернего класса
 
 ```python
+from dataclasses import dataclass
+
 @dataclass
 class Rectangle:
     height: float
@@ -101,6 +103,23 @@ class Square(Rectangle):
 
     def __post_init__(self):
         super().__init__(self.side, self.side)
+
+
+@dataclass
+class SquareNoInit(Rectangle):
+    side: float
+
+one = Rectangle(3.0, 5.0)
+print(one)
+# Rectangle(height=3.0, width=5.0)
+
+two = Square(1.0, 3.0, 4.0)
+print(two)
+# Square(height=4.0, width=4.0, side=4.0)
+
+thre = SquareNoInit(1.0, 3.0, 4.0)
+print(thre)
+# SquareNoInit(height=1.0, width=3.0, side=4.0)
 ```
 
 Одним из двух мест, где `dataclass()` фактически проверяет тип поля, является определение того, является ли поле переменной класса. Он делает это, проверяя, является ли тип поля `typing.ClassVar`. Если поле является `ClassVar`, оно исключается из рассмотрения как поле и игнорируется механизмами класса данных. Такие псевдополя `ClassVar` не возвращаются функцией `fields()` уровня модуля.
@@ -111,6 +130,153 @@ class Square(Rectangle):
 
 Стандартная схема наследования python полностью реализована для dataclass
 
+## [dataclasses-json](https://github.com/lidatong/dataclasses-json)
+
+Эта библиотека предоставляет простой API для кодирования и декодирования классов данных в JSON и обратно. [Docs](https://lidatong.github.io/dataclasses-json/)
+
+Простой пример:
+
+```python
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
+
+
+@dataclass_json
+@dataclass
+class Person:
+    name: str
+
+
+person = Person(name='lidatong')
+person.to_json()  # '{"name": "lidatong"}' <- this is a string
+person.to_dict()  # {'name': 'lidatong'} <- this is a dict
+Person.from_json('{"name": "lidatong"}')  # Person(1)
+Person.from_dict({'name': 'lidatong'})  # Person(1)
+
+# You can also apply _schema validation_ using an alternative API
+# This can be useful for "typed" Python code
+
+Person.from_json('{"name": 42}')  # This is ok. 42 is not a `str`, but
+                                  # dataclass creation does not validate types
+Person.schema().loads('{"name": 42}')  # Error! Raises `ValidationError`
+
+# Another example
+from typing import List
+
+
+@dataclass_json
+@dataclass(frozen=True)
+class Minion:
+    name: str
+
+
+@dataclass_json
+@dataclass(frozen=True)
+class Boss:
+    minions: List[Minion]
+
+
+boss = Boss([Minion('evil minion'), Minion('very evil minion')])
+boss_json = """
+{
+    "minions": [
+        {
+            "name": "evil minion"
+        },
+        {
+            "name": "very evil minion"
+        }
+    ]
+}
+""".strip()
+
+assert boss.to_json(indent=4) == boss_json
+assert Boss.from_json(boss_json) == boss
+```
+
+### Что может пакет
+
+Supported types:
+
+- any arbitrary Collection type is supported. Mapping types are encoded as JSON objects and str types as JSON strings. Any other Collection types are encoded into JSON arrays, but decoded into the original collection types.
+- datetime objects. datetime objects are encoded to float (JSON number) using timestamp. As specified in the datetime docs, if your datetime object is naive, it will assume your system local timezone when calling .timestamp(). JSON numbers corresponding to a datetime field in your dataclass are decoded into a datetime-aware object, with tzinfo set to your system local timezone. Thus, if you encode a datetime-naive object, you will decode into a datetime-aware object. This is important, because encoding and decoding won't strictly be inverses. See this section if you want to override this default behavior (for example, if you want to use ISO).
+- UUID objects. They are encoded as str (JSON string).
+- Decimal objects. They are also encoded as str
+
+Два вида использования:
+
+- декоратор класса
+- наследования от миксина
+
+Пример с вложенными датаклассами:
+
+```python
+import json
+from typing import Set
+
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
+
+
+@dataclass_json
+@dataclass
+class Student:
+    id: int = 0
+    name: str = ""
+
+
+@dataclass_json
+@dataclass
+class Professor:
+    id: int
+    name: str
+
+
+@dataclass_json
+@dataclass
+class Course:
+    id: int
+    name: str
+    professor: Professor
+    students: Set[Student]
+
+
+c_dict = {
+    "id": 1, "name": "course",
+    "professor": {"id": 1, "name": "professor"},
+    "students": [{"id": 1, "name": "student"}]
+}
+
+# Using **kwargs to unpack arguments in the constructor
+c_unpacked = Course(**c_dict)
+# Non-keyword arguments that are already unpacked.
+c_construct = Course(1, 'course', Professor(1, 'professor'), {Student(1, 'student')})
+# Problem does not occur when loading from JSON
+c_json = Course.from_json(json.dumps(c_dict))
+
+
+assert c_unpacked.to_json() == c_construct.to_json()  # Pass
+
+assert isinstance(c_unpacked.professor, Professor)  # Fail, type(c1.professor) is dict
+assert isinstance(c_construct.professor, Professor)  # Pass
+assert isinstance(c_json.professor, Professor)  # Pass
+
+assert c_json == c_construct  # Pass
+assert c_unpacked == c_construct  # Fail
+```
+
+[Источник](https://github.com/lidatong/dataclasses-json/issues/39#issuecomment-446046164)
+
+Еще:
+
+- Encode or decode from camelCase (or kebab-case)
+- Encode or decode using a different name
+- Handle missing or optional field values when decoding
+- Handle unknown / extraneous fields in JSON
+- Handle recursive dataclasses
+- Using the dataclass_json decorator or mixing in DataClassJsonMixin will provide you with an additional method .schema()
+- Overriding / Extending
+
 Смотри еще:
 
 - [документация](https://docs.python.org/3/library/dataclasses.html#frozen-instances)
@@ -118,9 +284,9 @@ class Square(Rectangle):
 - [[python-datamodel]]
 - [[convert-dcit-to-dataclass]]
 - [[python-standart-library]]
+- [dataclasses-json](https://github.com/lidatong/dataclasses-json)
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
-[python-decorator]: python-decorator "Python decorator"
 [python-decorator]: python-decorator "Python decorator"
 [python-datamodel]: ../lists/python-datamodel "Python datamodel"
 [convert-dcit-to-dataclass]: convert-dcit-to-dataclass "Convert dict to dataclass or namedtuple"
