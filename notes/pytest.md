@@ -1,6 +1,6 @@
 ---
 description: Тестирование с использованием pytest на python
-tags: tests pip
+tags: tests pip python
 title: Pytest
 ---
 Библиотечка для [[модульные-тесты]]
@@ -1017,7 +1017,7 @@ pip uninstall pytest-NAME
 [unittest]: unittest "Unittest"
 [selenium]: selenium "Selenium"
 [Flaky-tests]: flaky-tests "Flaky tests"
-[pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests"
+[pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests python"
 [unittest]: unittest "Unittest"
 [doctest]: doctest "Doctest"
 [env-for-test]: env-for-test "Env variables for tests"
@@ -1036,7 +1036,7 @@ pip uninstall pytest-NAME
 [unittest]: unittest "Unittest"
 [selenium]: selenium "Selenium"
 [Flaky-tests]: flaky-tests "Flaky tests"
-[pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests"
+[pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests python"
 [unittest]: unittest "Unittest"
 [doctest]: doctest "Doctest"
 [env-for-test]: env-for-test "Env variables for tests"

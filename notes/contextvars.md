@@ -1,6 +1,6 @@
 ---
 description: Контекстные переменные в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Contextvars
 ---
 Позволяет создавать, сохранять, изменять и передавать контекстные переменные между контекстами. Контекстные менеджеры, у которых есть состояния, должны использовать `contexztvars` вместо класса `local` из [[threading]]. Чаще всего можно встретить в асинхронных операциях [[asyncio]]. Появилось в python3.7

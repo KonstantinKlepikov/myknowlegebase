@@ -1,6 +1,6 @@
 ---
 description: Запросы в sqlalchemy
-tags: sqlalchemy
+tags: sqlalchemy python bd
 title: Sqlalchgemy querying bd
 ---
 - [основная статья](https://docs.sqlalchemy.org/en/14/orm/tutorial.html#querying)

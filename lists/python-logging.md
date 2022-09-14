@@ -1,6 +1,6 @@
 ---
 description: Логирование в python
-tags: logging
+tags: logging python
 category: list
 title: Python logging
 ---

@@ -1,6 +1,6 @@
 ---
 description: Разные интересные сопсобы мокать объекты на python
-tags: tests pip
+tags: tests pip python
 title: Либы для создания моков
 ---
 - [mock-server](https://github.com/tomashanacek/mock-server)

@@ -1,6 +1,6 @@
 ---
 description: Типы данных и колонки в SQLAlchemy
-tags: sqlalchemy
+tags: sqlalchemy python
 title: Column and data type
 ---
 | Object Name | Description |

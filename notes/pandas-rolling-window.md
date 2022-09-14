@@ -1,7 +1,7 @@
 ---
 description: Pandas rolling window and ewm
 title: Pandas rolling window - скользящие средние в pandas
-tags: market-stocks
+tags: market-stocks python
 ---
 Простые [[скользящие-средние]] в pandas реализованы в многочисленном семействе функций [window](https://pandas.pydata.org/docs/reference/window.html) функций. Кроме того, есть:
 

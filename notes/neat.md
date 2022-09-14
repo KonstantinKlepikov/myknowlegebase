@@ -1,6 +1,6 @@
 ---
 description: Алгоритм NEAT
-tags: ml genetic pip
+tags: ml genetic pip python
 title: NEAT - нейроэволюционный алгоритм
 ---
 Оригинальный алгоритм описан [тут](http://www.cs.ucf.edu/~kstanley/neat.html)

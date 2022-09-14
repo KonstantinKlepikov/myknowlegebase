@@ -1,6 +1,6 @@
 ---
 description: Шаблон приложения на fastapi. Frontend
-tags: fastapi
+tags: fastapi python
 title: Fastapi frontend development
 ---
 * Enter the `frontend` directory, install the npm packages and start the live server using the `npm` scripts:

@@ -1,6 +1,6 @@
 ---
 description: Инструмент визуализации выполняемых процессов для python
-tags: logging
+tags: logging python
 title: Tqdm
 ---
 

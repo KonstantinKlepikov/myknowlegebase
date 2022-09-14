@@ -1,6 +1,6 @@
 ---
 description: Запись истории в библиотеке DEAP
-tags: ml genetic
+tags: ml genetic python
 title: Deap history
 ---
 Иногда бывает полезно писать историю обучения, для получения более расширенной статистики. Пример такой реализации [тут](https://deap.readthedocs.io/en/master/api/tools.html#history)

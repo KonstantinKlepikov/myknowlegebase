@@ -1,7 +1,7 @@
 ---
 description: Приложение для управления очередями в python с помощью redis
 title: Python-rq
-tags: queue
+tags: queue python
 ---
 Простое управление очередями и задачами на базе [[redis]]
 

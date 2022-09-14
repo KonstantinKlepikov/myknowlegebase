@@ -1,6 +1,6 @@
 ---
 description: Определение метаданных в fast api
-tags: fastapi
+tags: fastapi python
 title: Fastapi Metadata and Docs URLs
 ---
 ```python

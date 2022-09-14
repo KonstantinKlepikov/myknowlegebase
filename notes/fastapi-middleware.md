@@ -1,5 +1,5 @@
 ---
 description:
-tags: fastapi
+tags: fastapi python
 title: Fastapi middleware
 ---

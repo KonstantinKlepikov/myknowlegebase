@@ -1,6 +1,6 @@
 ---
 description: Cбор и анализ потребления процессорного времени в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Profile
 ---
 - cProfile рекомендуется большинству пользователей; это расширение C

@@ -1,6 +1,6 @@
 ---
 description: How remove a key from a Python dictionary
-tags: python-standart-library
+tags: python-standart-library python
 title: Как удалить ключ словаря в python
 ---
 ```python

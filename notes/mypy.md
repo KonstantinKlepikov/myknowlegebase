@@ -1,7 +1,7 @@
 ---
 description: Анотация типов в mypy на python
 title: Mypy
-tags: python-standart-library pip
+tags: python-standart-library pip python
 ---
 [[type-annotation]] в python3.x и python 2.7. Используется в [[pydantic]] и, как следствие в [[fastapi]]
 

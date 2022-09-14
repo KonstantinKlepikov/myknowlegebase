@@ -1,7 +1,7 @@
 ---
 description: Список заметок об http-фреймворке fast-api
 category: list
-tags: fastapi
+tags: fastapi python
 title: Fastapi
 ---
 - [Fastapi-login](https://fastapi-login.readthedocs.io/) - fastapi-login provides a convenient, simple to use user authentication for FastAPI

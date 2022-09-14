@@ -1,6 +1,6 @@
 ---
 description: Переопределение текста ошибок в fastapi
-tags: fastapi
+tags: fastapi python
 title: Fastapi change error measage
 ---
 В фастапи сообщение ошибки выглядит примерно так

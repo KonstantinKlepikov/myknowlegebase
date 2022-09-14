@@ -1,6 +1,6 @@
 ---
 description: Стратегии загрузки в sqlalchemy
-tags: sqlalchemy
+tags: sqlalchemy python bd
 title: Sqlalchemy loader strategy bd
 ---
 [Ссылка на статью](https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies)

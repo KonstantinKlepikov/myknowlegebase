@@ -1,7 +1,7 @@
 ---
 description: MongoEngine - ОРМ для mongodb
 title: Object Object-Document Mapper for MongoDB
-tags: bd
+tags: bd python
 ---
 MongoEngine — это средство сопоставления объектов и документов, написанное на Python для работы с MongoDB.
 

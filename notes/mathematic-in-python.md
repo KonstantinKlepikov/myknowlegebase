@@ -1,6 +1,6 @@
 ---
 description: Математические операции в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Mathematic in python
 ---
 Помимо встроенных типов чисел предоставляется дополнительные классы для вычислений с повышеннйо точностью или специальных вычислений.

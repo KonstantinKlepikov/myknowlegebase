@@ -1,6 +1,6 @@
 ---
 description: ООП-ориентированный http-фреймворк Starlit
-tags: starlit http
+tags: starlit http python
 title: Starlit
 ---
 Starlite is a light, opinionated and flexible ASGI API framework built on top of [[pydantic]] and [[starlette]].
@@ -706,7 +706,7 @@ FastAPI продвигает шаблон использования внедр�
 [pydantic]: pydantic "Pydantic"
 [fastapi]: fastapi "Fastapi"
 [loguru]: loguru "Loguru"
-[jinja2]: jinja2 "Jinja2"
+[jinja2]: jinja2 "Jinja2 python"
 [fastapi]: fastapi "Fastapi"
 [fastapi]: fastapi "Fastapi"
 [http]: ../lists/http "Http"
@@ -719,7 +719,7 @@ FastAPI продвигает шаблон использования внедр�
 [pydantic]: pydantic "Pydantic"
 [fastapi]: fastapi "Fastapi"
 [loguru]: loguru "Loguru"
-[jinja2]: jinja2 "Jinja2"
+[jinja2]: jinja2 "Jinja2 python"
 [fastapi]: fastapi "Fastapi"
 [fastapi]: fastapi "Fastapi"
 [http]: ../lists/http "Http"

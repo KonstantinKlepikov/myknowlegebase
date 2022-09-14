@@ -1,6 +1,6 @@
 ---
 description: Криптография в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Криптография в python
 ---
 Щифрование данных позволяет проверять целостность при передаче и скрывать содержимое от несанкционированного доступа.

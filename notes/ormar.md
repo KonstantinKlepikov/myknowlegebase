@@ -1,7 +1,7 @@
 ---
 description: Ormar - асинхронный миниОРМ для sql баз данных в python
 title: Ormar
-tags: bd pip
+tags: bd pip python
 ---
 The ormar package is an async mini ORM for Python, with support for [[postgres]], MySQL, and SQLite.
 

@@ -1,6 +1,6 @@
 ---
 description: Тестирование с переопределением зависимостей в fastapi
-tags: fastapi
+tags: fastapi python
 title: Fastapi testing dependencies with owerride
 ---
 [Статья](https://fastapi.tiangolo.com/pt/advanced/testing-dependencies/)

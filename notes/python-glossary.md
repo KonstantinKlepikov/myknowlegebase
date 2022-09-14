@@ -1,6 +1,6 @@
 ---
 description: Некоторые сложные термины и понятия в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python glossary
 ---
 В этой заметке небольшая подборка терминов, которые мне кажутся сложными и которые легче запомнить, описав своими словами со ссылками на источники.

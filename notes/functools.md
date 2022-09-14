@@ -1,6 +1,6 @@
 ---
 description: Высокоуровневые функции и операции над объектами в стандартной библиотке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Functools
 ---
 Модуль [functools](https://docs.python.org/3/library/functools.html) предоставляют АПИ для адаптации и расширения функций и вызываемых объектов без их измененеия. Включает в себя функции декораторы, реализующие аспектно-ориентирвоанное программирование и повторное использование кода.

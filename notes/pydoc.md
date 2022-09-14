@@ -1,6 +1,6 @@
 ---
 description: Генерация справки в runtime встроенными средствами python
-tags: python-standart-library
+tags: python-standart-library python
 title: Pydoc
 ---
 Через командную строку так: `pytdoc <modulename>`

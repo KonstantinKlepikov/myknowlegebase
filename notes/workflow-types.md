@@ -1,6 +1,6 @@
 ---
 description: Декоратор wait для behave
-tags: cicd
+tags: cicd python
 title:  Про варианты git workflow
 ---
 В сущности вариантов версионирования кода для [[cl]] огромное множество. Вкратце про те, котоыре основыаны на [[git]]

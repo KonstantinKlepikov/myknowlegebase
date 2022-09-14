@@ -1,6 +1,6 @@
 ---
 description: Методы и практики ссортировки в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python sorting
 ---
 [Статья в документации](https://docs.python.org/3/howto/sorting.html#sortinghowto)

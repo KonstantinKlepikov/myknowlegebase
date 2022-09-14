@@ -1,7 +1,7 @@
 ---
 description: Дополнительные утилиты для работы с временными зонами в python
 title: Pytz
-tags: python-standart-library pip
+tags: python-standart-library pip python
 ---
 [Документация](https://pythonhosted.org/pytz/)
 

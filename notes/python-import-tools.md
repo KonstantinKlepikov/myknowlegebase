@@ -1,6 +1,6 @@
 ---
 description: Инструменты импорта в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python import tools
 ---
 [importlib](https://docs.python.org/3/library/importlib.html) базовая реализация механизма импорта стандарптной библиотеки. Можно использовать для динамического импорта модулей в процессе выполнения кода (для случаев, когда заранее не известно имя импортируемого модуля), в отличие от `import`, который импортирует модуль при загрузке приложения

@@ -1,6 +1,6 @@
 ---
 description: Структура тестов в behave
-tags: tests behave
+tags: tests behave python
 title: Behave структура
 ---
 [Основыная статья в документации](https://behave.readthedocs.io/en/stable/tutorial.html)

@@ -1,6 +1,6 @@
 ---
 description: Управление переменными окружения в python с помощью dot-env
-tags: python-standart-library pip
+tags: python-standart-library pip python
 title: Dot-env
 ---
 Тулза python для управления переменными окружения. [Ссылка на доку](https://saurabh-kumar.com/python-dotenv/)

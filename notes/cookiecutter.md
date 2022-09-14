@@ -1,6 +1,6 @@
 ---
 description: Генератор python проектов
-title: Cookiecutter
+title: Cookiecutter python
 tags: templating
 ---
 

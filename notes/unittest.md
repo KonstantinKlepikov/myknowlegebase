@@ -1,6 +1,6 @@
 ---
 description: Тестирование с помозью unittest в python
-tags: tests
+tags: tests python
 title: Unittest
 ---
 Поддерживает все концепции тестирующего программного комплекса, описанного в [[тестирование]]

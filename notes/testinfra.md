@@ -1,6 +1,6 @@
 ---
 description: Тестирование инфраструктуры с использованием pytest на python
-tags: tests pip
+tags: tests pip python
 title: Testinfra
 ---
 

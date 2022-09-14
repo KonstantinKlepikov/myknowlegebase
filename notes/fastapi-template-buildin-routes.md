@@ -1,6 +1,6 @@
 ---
 description: Шаблон приложения на fastapi. Что есть готового к использованию
-tags: fastapi
+tags: fastapi python
 title: Fastapi template buildin routes
 ---
 В postgresql-шаблоне [[fastapi]] четыре метки для [[http-methods]]:

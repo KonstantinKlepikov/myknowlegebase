@@ -1,6 +1,6 @@
 ---
 description: Декораторы в python. Примеры
-tags: python-standart-library
+tags: python-standart-library python
 title: Python decorator
 ---
 Декораторм в python является функция, возвращающая другую функцию. Обычно применяется как преобразование функции с использованием синтаксиса `@wrapper`. Распространенными примерами декораторов являются `classmethod()` и `staticmethod()`.

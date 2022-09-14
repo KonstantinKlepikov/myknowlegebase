@@ -1,6 +1,6 @@
 ---
 description: Использование super() в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python super guide
 ---
 Базовый вариант использования

@@ -1,6 +1,6 @@
 ---
 description: Очереди задач в python с celery
-tags: queue
+tags: queue python
 title: Celery
 ---
 ## Intro
@@ -887,12 +887,12 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 [docker]: ../lists/docker "Docker"
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"
-[flower]: flower "Flower"
+[flower]: flower "Flower pip python"
 [python-logging]: ../lists/python-logging "Python logging"
-[flower]: flower "Flower"
+[flower]: flower "Flower pip python"
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"
-[flower]: flower "Flower"
+[flower]: flower "Flower pip python"
 [asyncio]: asyncio "Asyncio"
 [fastapi]: fastapi "Fastapi"
 [python-rq]: python-rq "Python-rq"

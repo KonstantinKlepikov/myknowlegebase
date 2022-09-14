@@ -1,6 +1,6 @@
 ---
 description: Высокоуровневый фреймворк для web-скрапинга и краулинга на python
-tags: crawlers
+tags: crawlers python
 title: Scrapy
 ---
 Scrapy - это dысокоуровневый fcby[hjyysq фреймворк для web-скрапинга и краулинга на python

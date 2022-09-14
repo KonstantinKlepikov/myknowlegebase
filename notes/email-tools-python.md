@@ -1,6 +1,6 @@
 ---
 description: Инструменты для работы с почтой в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Email tools in python
 ---
 [smtplib](https://docs.python.org/3/library/smtplib.html) - это клиент smtp-протокола, взаимодействующий с почтовым сервером. Он реализует соединение, отправку/получение сообщений, аутентификацию и шифрование.

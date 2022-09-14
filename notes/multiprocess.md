@@ -1,6 +1,6 @@
 ---
 description: Модули subprocess, signal и multiprocessing в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Управление процессами в python
 ---
 ## [subprocess](https://docs.python.org/3/library/subprocess.html)

@@ -1,7 +1,7 @@
 ---
 description: Pydantic-factories - создание фиктивных данных для pydantic_models
 title: Pydantic-factories
-tags: pydantic pip tests
+tags: pydantic pip tests python
 ---
 Эта библиотека предлагает мощные возможности создания фиктивных данных для моделей и классов данных на основе pydantic. Можно использовать с другими библиотеками, использующими pydantic в качестве основы, например SQLModel и Beanie.
 

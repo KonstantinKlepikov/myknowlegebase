@@ -1,6 +1,6 @@
 ---
 description: Как получить полный путь к текущей директории в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Full path to current directory
 ---
 ## Python3

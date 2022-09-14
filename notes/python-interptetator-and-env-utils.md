@@ -1,6 +1,6 @@
 ---
 description: Что предоставляет стандартная библиотека python для взаимодействия с интерпретатором и окружением
-tags: python-standart-library
+tags: python-standart-library python
 title: Утилиты взаимодействия с интерпретатором и окружением в python
 ---
 [В документации](https://docs.python.org/3/library/python.html)

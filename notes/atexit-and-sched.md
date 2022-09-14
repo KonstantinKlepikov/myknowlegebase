@@ -1,6 +1,6 @@
 ---
 description: Колбеки по завершению программ и шедалеры в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Atexit и sched
 ---
 Модуль [atexit](https://docs.python.org/3/library/atexit.html?highlight=atexit#module-atexit) реализует интерфейс, позволяющий регистрировать или отменять регистрации функций, которые должны быть вызваны по зваершении программы.

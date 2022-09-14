@@ -1,6 +1,6 @@
 ---
 description: Ошибки миграции sqlite в alembic
-tags: sqlalchemy
+tags: sqlalchemy python bd
 title: Sqlalchemy sqlite problems bd
 ---
 ## При миграции с [[alembic]] выпадает ошибка "No support for ALTER of constraints in SQLite dialect"

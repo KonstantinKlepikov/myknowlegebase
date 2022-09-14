@@ -1,6 +1,6 @@
 ---
 description: Описание python фреймворка DEAP для эволюционной оптимизации
-tags: ml genetic
+tags: ml genetic python
 title: Deap документация
 ---
 Смотри вводную в [[deap]]

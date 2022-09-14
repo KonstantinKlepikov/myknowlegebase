@@ -1,6 +1,6 @@
 ---
 description: Деплой и запуск приложений scrapy
-tags: crawlers
+tags: crawlers python
 title: Scrapyd
 ---
 Scrapyd is an application for deploying and running Scrapy spiders. It enables you to deploy (upload) your projects and control their spiders using a JSON API

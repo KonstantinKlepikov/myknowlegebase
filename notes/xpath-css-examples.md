@@ -1,6 +1,6 @@
 ---
 description: Примеры Xpath и CSS выражений для извлечения данных из html
-tags: crawlers
+tags: crawlers python
 title: XPath css examples
 ---
 ## How to get html elements with multiple css classes

@@ -1,6 +1,6 @@
 ---
 description: Тестовый клиент starlette
-tags: fastapi
+tags: fastapi python
 title: Starlette test client
 ---
 Используется в [[тестирование]] для создания [[тесты-с-имитацией]] для [[fastapi]]. Работает на основе [[requests]] [ссылка на библиотеку](https://docs.python-requests.org/en/master/)

@@ -1,6 +1,6 @@
 ---
 description: queue в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python queue
 title: queue
 ---
 Модуль `queue` поставляет `Queue()` (FIFO или очередь) и `LifoQueue()` (LIFO или стек). Обе конструкции потокобезопасны и их можно использовать в многопоточных процессах.

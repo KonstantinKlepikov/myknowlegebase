@@ -1,6 +1,6 @@
 ---
 description: Flover инстурмент мониторинга для celery
-title: Flower
+title: Flower pip python
 tags: logging queue
 ---
 

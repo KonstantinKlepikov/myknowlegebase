@@ -1,6 +1,6 @@
 ---
 description: Удаление данных в sqlalchemy
-tags: sqlalchemy
+tags: sqlalchemy python bd
 title: Sqlalchemy deleting bd
 ---
 [Основная статья](https://docs.sqlalchemy.org/en/14/orm/tutorial.html#deleting)

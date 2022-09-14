@@ -1,6 +1,6 @@
 ---
 description: Шаблон приложения на fastapi. Backend
-tags: fastapi
+tags: fastapi python
 title: Fastapi template backend
 ---
 Backend Requirements

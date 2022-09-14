@@ -1,6 +1,6 @@
 ---
 description: Обработка ошибок в запросах fastapi
-tags: fastapi
+tags: fastapi python
 title: Fastapi requests errors
 ---
 ## Поднимать руками

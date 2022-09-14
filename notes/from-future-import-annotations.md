@@ -1,6 +1,6 @@
 ---
 description: Отложенная аннотация python
-tags: python-standart-library
+tags: python-standart-library python
 title: From future import annotations
 ---
 Объясняю значение `from __future__ import annotations`

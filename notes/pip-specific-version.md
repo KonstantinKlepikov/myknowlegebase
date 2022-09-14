@@ -1,7 +1,7 @@
 ---
 description: Как поставит ьспецифическую версию пакета в pip
 title: Installing specific package versions with pip
-tags: python-standart-library pip
+tags: python-standart-library pip python
 ---
 Например, используя указатель версии ниже, чем
 

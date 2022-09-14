@@ -1,6 +1,6 @@
 ---
 description: Временная сложность стандартных контейнеров в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python time complexity
 ---
 ## List

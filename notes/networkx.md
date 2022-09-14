@@ -1,6 +1,6 @@
 ---
 description: Python библиотека для анализа графов Networkx
-tags: ml graphs pip
+tags: ml graphs pip python
 title: Networkx
 ---
 Смотир еще:

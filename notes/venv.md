@@ -1,6 +1,6 @@
 ---
 description: Создание виртуальных окружений в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Venv
 ---
 Предпочтительный способ установки:

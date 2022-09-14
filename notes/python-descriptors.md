@@ -1,6 +1,6 @@
 ---
 description: Дескрипторы в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python descriptors
 ---
 В python существует три варианта доступа к атрибуту:

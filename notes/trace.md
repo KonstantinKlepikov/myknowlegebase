@@ -1,6 +1,6 @@
 ---
 description: Трассировка выполнения программ в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Trace
 ---
 Используется для трассировки выполнения программ. Можно вызывать непосредственно из командной строки с [различными опциями](https://docs.python.org/3/library/trace.html#main-options)

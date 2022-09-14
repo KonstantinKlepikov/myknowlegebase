@@ -1,6 +1,6 @@
 ---
 description: Typing - анотация типов в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Typing
 ---
 Компонент стандартной библиотеки, используемый для [[type-annotation]] сложных объектов. Используется в [[mypy]]

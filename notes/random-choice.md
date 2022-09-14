@@ -1,6 +1,6 @@
 ---
 description: Как выбирать случайные объекты в python
-tags: numpy
+tags: numpy python
 title: Random choice
 ---
 ## Weighted random choice

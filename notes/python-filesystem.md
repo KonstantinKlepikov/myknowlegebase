@@ -1,6 +1,6 @@
 ---
 description: Работа с файлами в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Работа с файлами в python
 ---
 Это короткая заметка об инструментах работы с файловой системой, предоставляемыми стандартной библиотекой python

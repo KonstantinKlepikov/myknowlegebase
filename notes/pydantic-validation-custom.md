@@ -1,7 +1,7 @@
 ---
 description: Кастомная валидация типов в pydantic
 title: Pydantic-validation-custom
-tags: pydantic
+tags: pydantic python
 ---
 Кастомная валиддация для python в [[pydantic]] делается с помощью специального декоратора
 

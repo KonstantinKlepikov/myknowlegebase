@@ -1,6 +1,6 @@
 ---
-description: Нюансы работы со стандартной библиотекой в python
-tags: python-standart-library
+description: Нюансы работы со стандартной библиотекой python и связанными пакетами
+tags: python-standart-library python
 category: list
 title: Стандартная библиотека python и полезные ресурсы
 ---
@@ -95,6 +95,7 @@ title: Стандартная библиотека python и полезные р
 - [[warnings]]
 - [[dis]]
 - [[python-import-tools]]
+- [[setuptools]]
 
 Смотри так-же [python packaging user guide](https://packaging.python.org/en/latest/)
 
@@ -144,6 +145,11 @@ title: Стандартная библиотека python и полезные р
 - [python-qrcode](https://github.com/lincolnloop/python-qrcode) Pure python QR Code generator
 - [WTForms](https://wtforms.readthedocs.io/en/3.0.x/) is a flexible forms validation and rendering library for Python web development
 - [Pipelines](https://returns.readthedocs.io/en/latest/pages/pipeline.html) several tools to make functional programming composition easy, readable, pythonic, and useful
+- [dotmap](https://github.com/drgrib/dotmap) Dot access dictionary with dynamic hierarchy creation and ordered iteration
+- [[PIL]]
+- [[imagehash]]
+
+### [[python-public-api]]
 
 ## Смотри еще
 
@@ -218,9 +224,13 @@ title: Стандартная библиотека python и полезные р
 [warnings]: ../notes/warnings "Warnings"
 [dis]: ../notes/dis "Dis"
 [python-import-tools]: ../notes/python-import-tools "Python import tools"
+[setuptools]: ../notes/setuptools "Setuptools"
 [more-itertools]: ../notes/more-itertools "More itertools"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
 [click]: ../notes/click "Click интерфейс командной строки"
+[PIL]: ../notes/PIL "Pillow - обработка изображений"
+[imagehash]: ../notes/imagehash "imagehash - хеширование изображений"
+[python-public-api]: ../notes/python-public-api "Публичные АПИ к сервисам на python"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [2022-04-26-daily-note]: ../posts/2022-04-26-daily-note "git remote stop tracking and replace comma to dot by re"
@@ -292,9 +302,13 @@ title: Стандартная библиотека python и полезные р
 [warnings]: ../notes/warnings "Warnings"
 [dis]: ../notes/dis "Dis"
 [python-import-tools]: ../notes/python-import-tools "Python import tools"
+[setuptools]: ../notes/setuptools "Setuptools"
 [more-itertools]: ../notes/more-itertools "More itertools"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
 [click]: ../notes/click "Click интерфейс командной строки"
+[PIL]: ../notes/PIL "Pillow - обработка изображений"
+[imagehash]: ../notes/imagehash "imagehash - хеширование изображений"
+[python-public-api]: ../notes/python-public-api "Публичные АПИ к сервисам на python"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
 [2022-04-26-daily-note]: ../posts/2022-04-26-daily-note "git remote stop tracking and replace comma to dot by re"

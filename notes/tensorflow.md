@@ -1,5 +1,5 @@
 ---
 description: Машинное обучение с Tensorflow
-tags: ml
+tags: ml python
 title: Tensorflow
 ---

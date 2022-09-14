@@ -1,6 +1,6 @@
 ---
 description: Модель данных в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python datamodel
 ---
 ## Объекты, значения и типы

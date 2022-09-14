@@ -1,6 +1,6 @@
 ---
 description: Regex в стандартной библиотекой python
-tags: python-standart-library
+tags: python-standart-library python
 title: Ghbvths htuekzhys[ dshf;tybq]
 ---
 ## Python regular Expression to get text between two strings

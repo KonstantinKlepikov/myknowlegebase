@@ -30,6 +30,7 @@ title: Githunb action
 - [gh-action-pypi-publish](https://github.com/pypa/gh-action-pypi-publish) GitHub Action, for publishing distribution files to PyPI
 - [heroku-deploy](https://github.com/AkhileshNS/heroku-deploy) A simple github action that dynamically deploys an app to heroku
 - [action-github-changelog-generator](https://github.com/heinrichreimer/action-github-changelog-generator) Automatically generate change log from your tags, issues, labels and pull requests on GitHub.
+- [actions-gh-pages](https://github.com/peaceiris/actions-gh-pages). GitHub Actions for GitHub Pages
 
 [[cl]]
 

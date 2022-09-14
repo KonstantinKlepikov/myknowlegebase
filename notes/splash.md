@@ -1,6 +1,6 @@
 ---
 description: Javascript-рендеринг се6рвис на python
-tags: crawlers
+tags: crawlers python
 title: Splash
 ---
 Splash - A javascript rendering service

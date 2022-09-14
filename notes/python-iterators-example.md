@@ -1,6 +1,6 @@
 ---
 description: Как сделать итератор в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python iterators
 ---
 Итераторы в python реализуют метод `__iter__` и могут реализовать метод `__next__`. `__iter__` должен всегда возвращать `self`, а `__next__` может возвращать некое значение.

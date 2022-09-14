@@ -1,6 +1,6 @@
 ---
 description: Отладка кода в python с помощью cgitb
-tags: python-standart-library
+tags: python-standart-library python
 title: Cgitb
 ---
 Расширяент доступ к отладочной информации, предоставляемой модулем [[traceback]]

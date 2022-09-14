@@ -1,6 +1,6 @@
 ---
 description: Работа с сетями и интернет в стандартной библиотеке python
-tags: python-standart-library servers
+tags: python-standart-library servers python
 title: Nets and internet with python
 ---
 ## Работа с сетями

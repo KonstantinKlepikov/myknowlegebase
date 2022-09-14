@@ -1,6 +1,6 @@
 ---
 description: Дата и время в стандартной библиотеке python и прикладные инструменты
-tags: python-standart-library
+tags: python-standart-library python
 title: Date and time in python
 ---
 Работа с датой и временем построена на трех пакетах:

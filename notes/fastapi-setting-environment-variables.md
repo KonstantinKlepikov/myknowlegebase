@@ -1,6 +1,6 @@
 ---
 description: Переменные окружения в fastapi
-tags: fastapi
+tags: fastapi python
 title: Fastapi environment variables
 ---
 [Основная статья](https://fastapi.tiangolo.com/pt/advanced/settings/)

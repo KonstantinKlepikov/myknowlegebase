@@ -1,6 +1,6 @@
 ---
 description: Чтение и запись файлов в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Режимы чтения и записи файлов
 ---
 Режимы чтения и записи определены [[python-buildin-functions]] `open(file, mode='r', buffering=- 1, encoding=None, errors=None, newline=None, closefd=True, opener=None)` ([смотри докумсентацию](https://docs.python.org/3/library/functions.html#open))

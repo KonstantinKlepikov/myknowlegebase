@@ -1,7 +1,7 @@
 ---
 description: Pythen библиотека алгоритмов обработки изображений
 title: Scikit-image
-tags: ml
+tags: ml python
 ---
 Scikit-image работает с [[numpy]] array
 

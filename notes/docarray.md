@@ -1,6 +1,6 @@
 ---
 description: Контейнер данных для Jina
-title: Docarray
+title: Docarray python
 tags: ml
 ---
 

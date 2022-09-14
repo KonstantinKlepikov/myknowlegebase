@@ -1,7 +1,7 @@
 ---
 description: ASGI асинхронный фреймворк starlette в python
 title: Starlette
-tags: asyncio fastapi
+tags: asyncio fastapi python
 ---
 ASGI асинхронный фреймворк на python. Используется в [[fastapi]]
 
@@ -795,7 +795,7 @@ environ['TESTING'] = 'TRUE'
 [type-annotation]: type-annotation "Аннотация типов в python"
 [sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [gino]: gino "Gino"
-[databases]: databases "Databases"
+[databases]: databases "Databases python"
 [sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [alembic]: alembic "Alembic"
 [graphQL]: graphql "Язфк и система организации АПИ GraphQL"
@@ -813,7 +813,7 @@ environ['TESTING'] = 'TRUE'
 [type-annotation]: type-annotation "Аннотация типов в python"
 [sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [gino]: gino "Gino"
-[databases]: databases "Databases"
+[databases]: databases "Databases python"
 [sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [alembic]: alembic "Alembic"
 [graphQL]: graphql "Язфк и система организации АПИ GraphQL"

@@ -1,6 +1,6 @@
 ---
 description: База данных sqlite
-tags: python-standart-library databases
+tags: python-standart-library databases python bd
 title: Sqlite bd
 ---
 - [Документация python](https://docs.python.org/3/library/sqlite3.html)

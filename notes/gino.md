@@ -1,7 +1,7 @@
 ---
 description: Асинхронные запросы к базе данных с gino
 title: Gino
-tags: pip asyncio
+tags: pip asyncio python
 ---
 Асинхронные запросы к базе данных.
 

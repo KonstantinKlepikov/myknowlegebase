@@ -1,6 +1,6 @@
 ---
 description: Сериализация данных в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Pickle, shelve, dbm
 ---
 Данная заметка вкратце о сериализации данных в стандартной библиотеке python с помощью модуля `pickle`, `shelve` и `dbm`

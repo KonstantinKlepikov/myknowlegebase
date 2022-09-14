@@ -1,7 +1,7 @@
 ---
 description: Репозиторий пакетов python
 title: Pypy
-tags: python-standart-library pip
+tags: python-standart-library pip python
 ---
 Репозиторий пакетов python
 

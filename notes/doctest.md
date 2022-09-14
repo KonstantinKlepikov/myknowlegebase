@@ -1,6 +1,6 @@
 ---
 description: Тестирование в python с помощью doctest
-tags: tests python-standart-library
+tags: tests python-standart-library python
 title: Doctest
 ---
 Обеспеичвает тестирование на оснвое документиации.

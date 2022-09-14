@@ -1,6 +1,6 @@
 ---
 description: Создание матриц с помощью вложенных списков в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Creation of list matrix
 ---
 ```python

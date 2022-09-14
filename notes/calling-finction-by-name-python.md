@@ -1,6 +1,6 @@
 ---
 description: Calling a function of by using string name
-tags: python-standart-library
+tags: python-standart-library python
 title: Вызов функции по ее строковому имени в python
 ---
 ```python

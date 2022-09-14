@@ -1,6 +1,6 @@
 ---
 description: Моки данных на python
-tags: tests pip
+tags: tests pip python
 title: Faker - пакет для создания фейковых данных для тестов
 ---
 `pip install Faker`

@@ -1,6 +1,6 @@
 ---
 description: Встроенные функции в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python build-in functions
 ---
 ![build-in functions in python](../attachments/2022-02-18-00-04-39.png)

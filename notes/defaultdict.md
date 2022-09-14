@@ -1,6 +1,6 @@
 ---
 description: collection.defaultdict в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Defaultdict словарь с возвратом значения по умолчанию
 ---
 Разница с методом `defaultdict()` обычного словаря - позволяет заполнить словарь при инициализации. Возвращает dict-like объект

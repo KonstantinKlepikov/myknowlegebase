@@ -112,6 +112,9 @@
         
         <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
       
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
       </p>
   </div>
   <div class="prose mb-4 py-4">
@@ -240,6 +243,52 @@
 <p>Можно инициализировать looks like неизменяемый инстанс датакласса - при попытке доступа через <code class="language-plaintext highlighter-rouge">__setattr__()</code> и <code class="language-plaintext highlighter-rouge">__delattr__()</code> будут подняты ошибки. <a href="https://docs.python.org/3/library/dataclasses.html#frozen-instances">Подробнее</a></p>
 
 <p>Стандартная схема наследования python полностью реализована для dataclass</p>
+
+<h3 id="известные-проблемы">Известные проблемы</h3>
+
+<p>Существует проблема с наследованием от датаклоссов, в которых определены атрибуты с дефолтными значениями.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">aa</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">'b'</span>  <span class="c1"># &lt;-- default value
+</span>
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+    <span class="n">d</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div></div>
+
+<p>В данном случае будет поднята ошибка: <code class="language-plaintext highlighter-rouge">Non-default argument(s) follows default argument(s) defined in B</code></p>
+
+<p>Проблема разрешена только в python 3.10 введением <code class="language-plaintext highlighter-rouge">kw_only</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">aa</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">'b'</span>  <span class="c1"># &lt;-- default value
+</span>
+<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">D</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+    <span class="n">d</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div></div>
+
+<p><a href="https://medium.com/@aniscampos/python-dataclass-inheritance-finally-686eaf60fbb5">Подробнее</a></p>
 
 <h2 id="dataclasses-json"><a href="https://github.com/lidatong/dataclasses-json">dataclasses-json</a></h2>
 
@@ -401,6 +450,7 @@
   <li>[<a href="convert-dcit-to-dataclass" title="Convert dict to dataclass or namedtuple">convert-dcit-to-dataclass</a>]</li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
   <li><a href="https://github.com/lidatong/dataclasses-json">dataclasses-json</a></li>
+  <li><a href="https://marshmallow.readthedocs.io/en/stable/api_reference.html#schema">marshmallow</a> A lightweight library for converting complex objects to and from simple Python datatypes. <a href="https://github.com/marshmallow-code/marshmallow">on github</a></li>
 </ul>
 
 

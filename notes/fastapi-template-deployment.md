@@ -1,6 +1,6 @@
 ---
 description: Шаблон приложения на fastapi. Deployment
-tags: fastapi
+tags: fastapi python
 title: Fastapi template deployment
 ---
 ## Deployment

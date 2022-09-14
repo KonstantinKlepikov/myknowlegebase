@@ -1,6 +1,6 @@
 ---
 description: collection.Counter в стандартной библиотеке python
-tags: python-standart-library
+tags: python-standart-library python
 title: Counter - счетчик хешируемых объектов
 ---
 Начиная с 3.7 - сабкласс `dict` упорядоченый и поддерживает операции. связанные с порядком.

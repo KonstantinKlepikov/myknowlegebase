@@ -1,6 +1,6 @@
 ---
 description: Объектные паттерны в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Python patterns programming
 ---
 Примеры кода и тесты, демонстрирующие работу паттернов, можно найти [в этом репозитории](https://github.com/faif/python-patterns)

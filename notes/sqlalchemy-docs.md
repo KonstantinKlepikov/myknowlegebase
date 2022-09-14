@@ -1,6 +1,6 @@
 ---
 description: Документация sqlalchemy
-tags: sqlalchemy
+tags: sqlalchemy python bd
 title: Sqlalchemy документация bd
 ---
 Схема работы

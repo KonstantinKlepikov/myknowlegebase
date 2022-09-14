@@ -1,7 +1,7 @@
 ---
 description: Адгоритмы обработки и трансформации изображений
 title: Open-cv
-tags: ml
+tags: ml python
 ---
 
 Смотир еще:

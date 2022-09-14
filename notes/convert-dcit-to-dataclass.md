@@ -1,6 +1,6 @@
 ---
 description: Преобразовавние словаря в dataclass или namedtuple
-tags: python-standart-library
+tags: python-standart-library python
 title: Convert dict to dataclass or namedtuple
 ---
 ## Распаковка словаря для создания экземпляра

@@ -1,6 +1,6 @@
 ---
 description: Модуль acyncio в python
-tags: python-standart-library asincio
+tags: python-standart-library asincio python
 title: Asyncio
 ---
 Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма ([coroutine](https://docs.python.org/3/glossary.html#term-coroutine)) передает управление вызвавшему ее коду без потери своего состояния. В отличии от обычных программ, в которые входят в одной точке, а выходят в другой, в сопрограммы можно входить и выходить из них в разных точках, кроме того, их можно продолжать используя сохраненное состояние. Первоначально апи асинхронных функций был реализован на [генераторах с декораторами](https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro). В python3.8 такой подход уже депрекейтед. Пример такого кода:

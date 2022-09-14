@@ -1,6 +1,6 @@
 ---
 description: Тестирование баз данных в fastapi
-tags: fastapi bd
+tags: fastapi bd python
 title: Fastapi тестирование базы данных
 ---
 ```python

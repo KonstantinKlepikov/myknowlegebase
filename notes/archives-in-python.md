@@ -1,6 +1,6 @@
 ---
 description: Архивация в стандартной библиотеке
-tags: python-standart-library
+tags: python-standart-library python
 title: Архивация в python
 ---
 Реализовано несколько встроенных модулей для сжатия и архивации файлов.

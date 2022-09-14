@@ -1,7 +1,7 @@
 ---
 description: Работа с jinja2 на python
 tags: templating
-title: Jinja2
+title: Jinja2 python
 ---
 {% raw %}
 

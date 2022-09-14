@@ -1,6 +1,6 @@
 ---
 description: Коллекция фикстур Testfixtures
-tags: tests pip
+tags: tests pip python
 title: Testfixtures
 ---
 

@@ -1,6 +1,6 @@
 ---
 description: Использование фреймворка DEAP для эволюционной оптимизации
-tags: ml genetic pip
+tags: ml genetic pip python
 title: Deap - генетические алгоритмы на python
 ---
 - [deap на гитхаб](https://github.com/DEAP/deap)

@@ -1,6 +1,6 @@
 ---
 description: Управление зависимостями и изоляция среды разработки в python с poetry
-tags: cl cli pip
+tags: cl cli pip python
 title: Poetry
 ---
 **Poetry is a tool for dependency management and packaging in python**. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Замена [[requirements]]
@@ -168,6 +168,10 @@ Poetry работает всегда изолированно от глобал�
 [Как использовать poetry](https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack) на [[heroku]], [[heroku-cli]]
 
 ## Еще материалы
+
+### How to update Poetry's lock file without upgrading dependencies?
+
+`poetry lock --no-update`
 
 ### Как сделать энтри-поинт в проекте с poetry
 

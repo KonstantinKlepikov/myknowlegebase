@@ -1,6 +1,6 @@
 ---
 description: Зависимости с yield в fastapi
-tags: fastapi
+tags: fastapi python
 title: Fastapi зависимости с yield
 ---
 Yield позволяет реализовать зависимости, которые делают некоторые действия после того, как завершили действие

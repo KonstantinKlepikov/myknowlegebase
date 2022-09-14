@@ -1,6 +1,6 @@
 ---
 description: Вывод сообщений об ошибках в python
-tags: python-standart-library
+tags: python-standart-library python
 title: Traceback
 ---
 traceback обрабатывает стек вызовов для получения трассировочной информации. Эта информация содержит данные о стеке начиная с точки вызова обработчика исключения и до точки возникновения исключения.

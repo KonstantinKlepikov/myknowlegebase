@@ -1,6 +1,6 @@
 ---
 description: Пример организации приложения fastapi с базой данных и orm
-tags: fastapi
+tags: fastapi python
 title: Fatsapi sql orm example
 ---
 ## Пример построения приложения
