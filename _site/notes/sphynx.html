@@ -120,10 +120,210 @@
   <div class="prose mb-4 py-4">
     <p>Sphynx - генератор документации для python проектов.</p>
 
+<h2 id="restructuredtext"><a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a></h2>
+
+<ul>
+  <li>one asterisk: *text* for emphasis (italics),</li>
+  <li>two asterisks: **text** for strong emphasis (boldface),</li>
+  <li>backquotes: ``text`` for code samples.</li>
+</ul>
+
+<h3 id="lists-and-quote-like-blocks">Lists and Quote-like blocks</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span> This is a bulleted list.
+<span class="k">*</span> It has two items, the second
+  item uses two lines.
+
+1. This is a numbered list.
+2. It has two items too.
+
+<span class="c">#. This is a numbered list.</span>
+<span class="c">#. It has two items too.</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span> this is
+<span class="k">*</span> a list
+
+  <span class="k">*</span> with a nested list
+  <span class="k">*</span> and some subitems
+
+<span class="k">*</span> and here the parent list continues
+
+term <span class="o">(</span>up to a line of text<span class="o">)</span>
+   Definition of the term, which must be indented
+
+   and can even consist of multiple paragraphs
+
+next term
+   Description.
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| These lines are
+| broken exactly like <span class="k">in</span>
+| the <span class="nb">source </span>file.
+</code></pre></div></div>
+
+<h3 id="literal-code-blocks">Literal code blocks</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This is a normal text paragraph. The next paragraph is a code sample::
+
+   It is not processed <span class="k">in </span>any way, except
+   that the indentation is removed.
+
+   It can span multiple lines.
+
+This is a normal text paragraph again.
+</code></pre></div></div>
+
+<h3 id="doctest-blocks">Doctest blocks</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> 1 + 1
+2
+</code></pre></div></div>
+
+<p>Tables</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+------------------------+------------+----------+----------+
+| Header row, column 1   | Header 2   | Header 3 | Header 4 |
+| <span class="o">(</span>header rows optional<span class="o">)</span> |            |          |          |
++<span class="o">========================</span>+<span class="o">============</span>+<span class="o">==========</span>+<span class="o">==========</span>+
+| body row 1, column 1   | column 2   | column 3 | column 4 |
++------------------------+------------+----------+----------+
+| body row 2             | ...        | ...      |          |
++------------------------+------------+----------+----------+
+</code></pre></div></div>
+
+<p>or</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=====</span>  <span class="o">=====</span>  <span class="o">=======</span>
+A      B      A and B
+<span class="o">=====</span>  <span class="o">=====</span>  <span class="o">=======</span>
+False  False  False
+True   False  False
+False  True   False
+True   True   True
+<span class="o">=====</span>  <span class="o">=====</span>  <span class="o">=======</span>
+</code></pre></div></div>
+
+<h3 id="hyperlinks">Hyperlinks</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="sb">`</span>Link text &lt;https://domain.invalid/&gt;<span class="sb">`</span>
+</code></pre></div></div>
+
+<p>or</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This is a paragraph that contains <span class="sb">`</span>a <span class="nb">link</span><span class="sb">`</span>_.
+
+.. _a <span class="nb">link</span>: https://domain.invalid/
+</code></pre></div></div>
+
+<h3 id="sections">Sections</h3>
+
+<ul>
+  <li># with overline, for parts</li>
+  <li>* with overline, for chapters</li>
+  <li>= for sections</li>
+  <li>- for subsections</li>
+  <li>^ for subsubsections</li>
+  <li>” for paragraphs</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=================</span>
+This is a heading
+<span class="o">=================</span>
+</code></pre></div></div>
+
+<h3 id="field-lists">Field Lists</h3>
+
+<p>Списки полей представляют собой последовательности полей, размеченных следующим образом: <code class="language-plaintext highlighter-rouge">:fieldname: Field content</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def my_function<span class="o">(</span>my_arg, my_other_arg<span class="o">)</span>:
+    <span class="s2">"""A function just for me.
+
+    :param my_arg: The first of my arguments.
+    :param my_other_arg: The second of my arguments.
+
+    :returns: A message (just for me, of course).
+    """</span>
+</code></pre></div></div>
+
+<p><a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html">Подробнее</a></p>
+
+<h3 id="roles"><a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html">Roles</a></h3>
+
+<p>Роль или «пользовательская интерпретируемая текстовая роль» — это встроенный фрагмент явной разметки. Это означает, что вложенный текст следует интерпретировать определенным образом. Sphinx использует это для обеспечения семантической разметки и перекрестных ссылок идентификаторов. Общий синтаксис: :rolename:<code class="language-plaintext highlighter-rouge">content</code>. Поддерживаются, к примеру:</p>
+
+<ul>
+  <li>emphasis – equivalent of *emphasis*</li>
+  <li>strong – equivalent of **strong**</li>
+  <li>literal – equivalent of ``literal``</li>
+  <li>subscript – subscript text</li>
+  <li>superscript – superscript text</li>
+  <li>title-reference – for titles of books, periodicals, and other materials</li>
+</ul>
+
+<p>Пример: Since Pythagoras, we know that :math:<code class="language-plaintext highlighter-rouge">a^2 + b^2 = c^2</code>.</p>
+
+<h3 id="explicit-markup">Explicit Markup</h3>
+
+<p>«Явная разметка» используется в reST для большинства конструкций, требующих специальной обработки, таких как сноски, специально выделенные абзацы, комментарии и общие директивы.</p>
+
+<p>Блок явной разметки начинается со строки, начинающейся с <code class="language-plaintext highlighter-rouge">..</code>, за которой следует пробел, и заканчивается следующим абзацем с тем же уровнем отступа. (Между явной разметкой и обычными абзацами должна быть пустая строка.</p>
+
+<h3 id="dicrectives"><a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html">Dicrectives</a></h3>
+
+<p>Директива — это общий блок явной разметки. Наряду с ролями это один из механизмов расширения reST.</p>
+
+<p><a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#directives">Подробнее тут</a></p>
+
+<h3 id="others">Others</h3>
+
+<p>Изображения, сноски, комментарии - <a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#images">смотри ниже</a></p>
+
+<p>Подробнее обо всем этом тут: <a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a></p>
+
+<h2 id="markdown"><a href="https://www.sphinx-doc.org/en/master/usage/markdown.html">Markdown</a></h2>
+
+<h2 id="configuration"><a href="https://www.sphinx-doc.org/en/master/usage/configuration.html">Configuration</a></h2>
+
+<h2 id="extentions"><a href="https://www.sphinx-doc.org/en/master/usage/extensions/index.html">Extentions</a></h2>
+
+<ul>
+  <li>sphinx.ext.autodoc – Include documentation from docstrings</li>
+  <li>sphinx.ext.autosectionlabel – Allow reference sections using its title</li>
+  <li>sphinx.ext.autosummary – Generate autodoc summaries</li>
+  <li>sphinx-autogen – generate autodoc stub pages</li>
+  <li>sphinx.ext.coverage – Collect doc coverage stats</li>
+  <li>sphinx.ext.doctest – Test snippets in the documentation</li>
+  <li>sphinx.ext.duration – Measure durations of Sphinx processing</li>
+  <li>sphinx.ext.extlinks – Markup to shorten external links</li>
+  <li>sphinx.ext.githubpages – Publish HTML docs in GitHub Pages</li>
+  <li>sphinx.ext.graphviz – Add Graphviz graphs</li>
+  <li>sphinx.ext.ifconfig – Include content based on configuration</li>
+  <li>sphinx.ext.imgconverter – A reference image converter using Imagemagick</li>
+  <li>sphinx.ext.inheritance_diagram – Include inheritance diagrams</li>
+  <li>sphinx.ext.intersphinx – Link to other projects’ documentation</li>
+  <li>sphinx.ext.linkcode – Add external links to source code</li>
+  <li>sphinx.ext.imgmath – Render math as images</li>
+  <li>sphinx.ext.mathjax – Render math via JavaScript</li>
+  <li>sphinx.ext.jsmath – Render math via JavaScript</li>
+  <li>sphinx.ext.napoleon – Support for NumPy and Google style docstrings</li>
+  <li>sphinx.ext.todo – Support for todo items</li>
+  <li>sphinx.ext.viewcode – Add links to highlighted source code</li>
+</ul>
+
+<h2 id="setuptools-integrations">[<a href="setuptools" title="Setuptools">setuptools</a>] integrations</h2>
+
+<p><a href="https://www.sphinx-doc.org/en/master/usage/advanced/setuptools.html">link</a></p>
+
+<h2 id="extending"><a href="https://www.sphinx-doc.org/en/master/development/index.html">Extending</a></h2>
+
 <p>Смотри еще:</p>
 
 <ul>
+  <li><a href="https://www.sphinx-doc.org/en/master/usage/index.html">Using Sphinx</a></li>
   <li><a href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">reStructuredText Primer docs</a></li>
+  <li><a href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#paragraphs">reStructuredText Markup Specification</a></li>
   <li><a href="https://sphinx-themes.org/#themes">sphynx themes galery</a></li>
   <li><a href="https://stackoverflow.com/questions/51198270/how-do-i-create-a-new-line-with-restructuredtext">How do I create a new line with reStructuredText</a></li>
   <li>[<a href="../lists/шаблонизаторы" title="Шаблонизаторы">шаблонизаторы</a>]</li>
