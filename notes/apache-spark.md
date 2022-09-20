@@ -1,7 +1,7 @@
 ---
 description: Apach spark - унифицированный двжок для анализа больших данных
 title: Unified engine for large-scale data analytics
-tags: ml graphs
+tags: machine-learning graphs
 ---
 
 Смотир еще:

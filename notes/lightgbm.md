@@ -1,7 +1,7 @@
 ---
 description: Градиент бустинг фреймворк LightGBM
 title: Lightgbm
-tags: ml pip
+tags: machine-learning pip
 ---
 Градиент бустинг фреймворк LightGBM для ml
 

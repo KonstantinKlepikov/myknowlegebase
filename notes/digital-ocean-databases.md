@@ -1,6 +1,6 @@
 ---
 description: Управление базами данных в digital ocean
-tags: do
+tags: digital-ocean
 title: Digital ocean databases
 ---
 Управление и конфигурирование базы данных на [[digital-ocean]] для App Platform [в этой статье](https://docs.digitalocean.com/products/app-platform/how-to/manage-databases/)

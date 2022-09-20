@@ -1,5 +1,5 @@
 ---
 description: Библиотека для научных вычислений
-tags: ml python
+tags: machine-learning python
 title: Scipy
 ---

@@ -1,6 +1,6 @@
 ---
 description: Doctl интерфейс командной строк=и digital ocean
-tags: do cli
+tags: digital-ocean cli
 title: Digital ocean doctl
 ---
 doctl Command Line Interface [[cl]]. Доступ через командную строку к сервисам [[digital-ocean]]

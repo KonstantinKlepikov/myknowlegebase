@@ -1,6 +1,6 @@
 ---
 description: Создание чекпоинтов в эволюционном обучении в DEAP
-tags: ml genetic python
+tags: machine-learning genetic python
 title: Deap чекпоинты
 ---
 [Статья](https://deap.readthedocs.io/en/master/tutorials/advanced/checkpoint.html)

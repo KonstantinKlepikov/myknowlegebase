@@ -20,13 +20,13 @@ Foam: Create New Note from Template
 
 `alt+d` создает заметку с текущей датой в папке journal.
 
-Создание ссылок:
+## Создание ссылок
 
 1. copy the following text: [https://google.com](https://google.com)
 2. select me and paste
 3. [select me and paste](https://google.com)
 
-Другое
+## Tables
 
 `alt+shift+f` formats a table. Place the cursor in the table below and format the table.
 
@@ -37,4 +37,13 @@ Foam: Create New Note from Template
 
 ---
 
+## Search
+
 Search in your repo with `cmd+shift+f`: type "search" (go back to the file explorer with `cmd+shift+e`)
+
+## Templates
+
+`Foam: Create New Note From Template`
+
+- `list`
+- `note`

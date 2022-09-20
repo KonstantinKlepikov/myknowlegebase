@@ -1,6 +1,6 @@
 ---
 description: Регистри дял контейнеров на Digital Ocean
-tags: do
+tags: digital-ocean
 title: Digital ocean container registry
 ---
 - [[digital-ocean]]

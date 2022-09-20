@@ -1,6 +1,6 @@
 ---
 description: Terraform - менеджер docker swarm на digital ocean
-tags: docker
+tags: digital-ocean
 title: Terraform
 ---
 [[digital-ocean]] [[docker-swarm]] менеджер. [Документация](https://registry.terraform.io/modules/thojkooi/docker-swarm-mode/digitalocean/latest/submodules/managers)

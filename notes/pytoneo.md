@@ -1,7 +1,7 @@
 ---
 description: python приложение для neo4j
 title: pytoneo client library and toolkit for working with neo4j
-tags: bd graphs python
+tags: data-bases graphs python
 ---
 Py2neo is a client library and toolkit for working with Neo4j from within Python applications and from the command line
 

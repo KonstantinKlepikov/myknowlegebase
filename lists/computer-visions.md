@@ -1,7 +1,7 @@
 ---
 description: Список заметок о компьютерном зрении
 title: Computer visions
-tags: ml
+tags: machine-learning
 ---
 ## Библиотеки cv
 

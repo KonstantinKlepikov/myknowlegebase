@@ -1,7 +1,7 @@
 ---
 description: Библиотека для обработки изображений в python
 title: Pillow - обработка изображений
-tags: ml python
+tags: machine-learning python
 ---
 ## Image class
 

@@ -1,7 +1,7 @@
 ---
 description: Графовая база данных neo4j
 title: Neo4j graph data base
-tags: bd graphs
+tags: data-bases graphs
 ---
 Графовая база neo4j реализует эффективные алгоритмы запросов к графу. Особенности:
 

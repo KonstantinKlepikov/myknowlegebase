@@ -1,7 +1,7 @@
 ---
 description: Хеширование изображений в python
 title: imagehash - хеширование изображений
-tags: ml pip python
+tags: pip python
 ---
 [imagehash](https://github.com/JohannesBuchner/imagehash)
 

@@ -1,7 +1,7 @@
 ---
 description: База данных mongodb
 title: MongoDB
-tags: bd
+tags: data-bases
 ---
 ## MongoDB basics
 

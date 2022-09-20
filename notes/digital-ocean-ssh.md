@@ -1,6 +1,6 @@
 ---
 description: Как работать по ssh на Digital Ocean
-tags: do
+tags: digital-ocean
 title: Digital ocean SSH
 ---
 - [Настройка ключей SSH в Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-20-04-ru) - большая статья на русском о настройке ключей

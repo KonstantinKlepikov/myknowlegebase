@@ -1,6 +1,6 @@
 ---
 description: Установка docker в digital ocean
-tags: do
+tags: digital-ocean
 title: Digital ocean docker install
 ---
 [One clock docker install](https://marketplace.digitalocean.com/apps/docker)

@@ -1,7 +1,7 @@
 ---
 description: Статистические модели для python
 title: Statmodels
-tags: ml pip python
+tags: machine-learning pip python
 ---
 [Документация](https://www.statsmodels.org/stable/index.html)
 

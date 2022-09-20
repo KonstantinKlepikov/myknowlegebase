@@ -1,7 +1,7 @@
 ---
 description: Фреймворк для работы с ml-моделями
 title: Jina
-tags: ml python
+tags: machine-learning python
 ---
 
 Jina — это платформа нейронного поиска, которая позволяет любому создавать SOTA и масштабируемые приложения нейронного поиска за считанные минуты.
@@ -660,7 +660,7 @@ with Flow() as f:
 - [MLFlow](https://github.com/mlflow/mlflow/) Machine Learning Lifecycle Platform
 - [KubeFlow](https://github.com/kubeflow/kubeflow) the cloud-native platform for machine learning operations - pipelines, training and deployment
 - [RayWorkflow](https://github.com/ray-project/ray) provides a simple, universal API for building distributed applications, [дока](https://docs.ray.io/en/latest/workflows/concepts.html)
-- [seldon-core](https://github.com/SeldonIO/seldon-core) converts your ML models (Tensorflow, Pytorch, H2o, etc.) or language wrappers (Python, Java, etc.) into production REST/GRPC microservices.
+- [seldon-core](https://github.com/SeldonIO/seldon-core) converts your machine-learning models (Tensorflow, Pytorch, H2o, etc.) or language wrappers (Python, Java, etc.) into production REST/GRPC microservices.
 
 ## Деплой с [[docker-compose]]
 

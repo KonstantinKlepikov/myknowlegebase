@@ -1,7 +1,7 @@
 ---
 description: Список заметок о базах данных
 title: Data Bases
-tags: bd
+tags: data-bases
 category: list
 ---
 - [[postgres]]

@@ -1,7 +1,7 @@
 ---
 description: Сборник заметок про графовые алгоритмы машинного обучения
 title: Machine learning with graphs
-tags: ml graphs
+tags: machine-learning graphs
 category: list
 ---
 [graph-based-deep-learning-literature](https://github.com/naganandy/graph-based-deep-learning-literature)

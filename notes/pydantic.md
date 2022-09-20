@@ -1,7 +1,7 @@
 ---
 description: Pydantic - библиотека для валидации типов в python
 title: Pydantic
-tags: pydantic pip bd python
+tags: pydantic pip data-bases python
 ---
 Типизация для python [Документация](https://pydantic-docs.helpmanual.io/). Использует [[type-annotation]] на базе [[mypy]]
 

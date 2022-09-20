@@ -1,6 +1,6 @@
 ---
 description: Пример staging-сервера на digital ocean
-tags: do
+tags: digital-ocean
 title: Пример промежуточного сервера
 ---
 Пример для [[digital-ocean]]. Запустить дроплет с чистой убунтой.

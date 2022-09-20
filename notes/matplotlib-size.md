@@ -1,7 +1,7 @@
 ---
 description: Matplotlibe - размер изображений
 title: Matplotlibe image size
-tags: ml python
+tags: machine-learning python
 ---
 Изменить размер изображения для subplot можно так:
 

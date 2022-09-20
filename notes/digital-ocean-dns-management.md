@@ -1,6 +1,6 @@
 ---
 description: Управление ns-записями для дроплетов в digital ocean
-tags: do
+tags: digital-ocean
 title: Digital ocean dns management
 ---
 - [How To Point to DigitalOcean Nameservers From Common Domain Registrars](https://www.digitalocean.com/community/tutorials/how-to-point-to-digitalocean-nameservers-from-common-domain-registrars)

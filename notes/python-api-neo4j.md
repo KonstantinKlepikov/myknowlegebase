@@ -1,7 +1,7 @@
 ---
 description: python апи для neo4j
 title: Python api for neo4j
-tags: bd graphs python
+tags: data-bases graphs python
 ---
 [Документация](https://neo4j.com/developer/python/)
 

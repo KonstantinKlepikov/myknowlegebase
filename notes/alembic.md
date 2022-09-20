@@ -1,6 +1,6 @@
 ---
 description: Миграции баз данных с alembic на python
-tags: sqlalchemy alembic bd python
+tags: sqlalchemy alembic data-bases python
 title: Alembic
 ---
 Тулза для миграции ДБ в [[sqlalchemy]] на python
