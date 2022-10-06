@@ -133,7 +133,7 @@
 
 <script type="math/tex; mode=display">V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]</script>
 
-<p>где <script type="math/tex">\alpha</script> - небольшой положительный коэффициент, называемый параметром размера шага, который влияет на скорость обучения. Это правило обучения - пример обучения на оснвое [<a href="../notes/temporal-difference" title="Temporal difference methods">temporal-difference</a>].</p>
+<p>где <script type="math/tex">\alpha</script> - небольшой положительный коэффициент, называемый параметром размера шага, который влияет на скорость обучения. Это правило обучения - пример обучения на оснвое [<a href="../notes/temporal-difference" title="Temporal difference methods and n-steps methods">temporal-difference</a>].</p>
 
 <p>Применение [<a href="evolution-methods" title="Evolution methods">evolution-methods</a>] к данной задаче означало бы, что мы должны провести прямой поиск в пространстве стратегий, чтобы найти стратегию с высокой вероятностью выигрыша. Для каждой стратегии необходимо было бы получить оценку вероятности выигрыша, сыграв несколько партий с противником, что указывало на то, какую стратегию использовать в следующем шаге. Типичный эволюционный метод - “восхождение на гору” в пространстве стратегий, последовательно генерируя и оценивая стратегии, пытаясь добиться улучшения. Если бы мы использовали генетический алгоритм, то хранили бы и оценивали популяцию стратегий.</p>
 
@@ -150,7 +150,30 @@
   <li>[<a href="../notes/mppr" title="MPPR">mppr</a>] конечные марковские процессы принятия решения</li>
   <li>[<a href="../notes/dynamic-programming" title="Dynamic programming for reinforcement-learning">notes/dynamic-programming</a>] динамическое программирование</li>
   <li>[<a href="../notes/monte-carlo" title="Monte-Carlo methods">monte-carlo</a>] методы Монте-Карло</li>
-  <li>[<a href="../notes/temporal-difference" title="Temporal difference methods">temporal-difference</a>] методы, основанные на временных различиях</li>
+  <li>[<a href="../notes/temporal-difference" title="Temporal difference methods and n-steps methods">temporal-difference</a>] методы, основанные на временных различиях</li>
+</ul>
+
+<p>В общем случае методы распределены так:</p>
+
+<p><img src="/myknowlegebase/attachments/2022-10-06-04-41-58.png" alt="methods" /></p>
+
+<p>Кроме того, методы делятся на методы с единой и разделенной стратегией. Кроме того имеют значение следующие аспекты обучения:</p>
+
+<ul>
+  <li>определение дохода - эпизодическая задача непрерывная, с обесцениванием или без</li>
+  <li>ценность действий, ценность состояний и ценность послесостояний - какие именно ценности следует оценивать</li>
+  <li>выбор действия или исследование - требуется соблюсти компромисс между исследованием и использованием</li>
+  <li>синхронность/асинхронность</li>
+  <li>обучение на реальном опыте, имитации или их соотношении</li>
+  <li>обновление пар состояние-действие. В безмодельных возможно обновить только те, которые встречались, в обучении на оснвое модели - произвольные</li>
+  <li>обновлять в процессе выбора действий или после выбора</li>
+  <li>как долго следует хранить обновленные ценности</li>
+</ul>
+
+<p>Читай еще:</p>
+
+<ul>
+  <li><a href="https://towardsdatascience.com/introduction-to-reinforcement-learning-rl-part-1-introduction-c0d55c1240a3">The four main subelements of a reinforcement learning system</a></li>
 </ul>
 
 
