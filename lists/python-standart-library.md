@@ -257,7 +257,7 @@ title: Стандартная библиотека python и полезные р
 [python-logging]: python-logging "Python logging"
 [argparsing]: ../notes/argparsing "Arguments parsing in python"
 [atexit-and-sched]: ../notes/atexit-and-sched "Atexit и sched"
-[regex-examples]: ../notes/regex-examples "Ghbvths htuekzhys[ dshf;tybq]"
+[regex-examples]: ../notes/regex-examples "Примеры использования модуля re в python"
 [date-and-time-in-python]: ../notes/date-and-time-in-python "Date and time in python"
 [datetime]: ../notes/datetime "Datetime"
 [time]: ../notes/time "Time"
