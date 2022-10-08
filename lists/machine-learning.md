@@ -13,17 +13,7 @@ tags: machine-learning
 
 ## [[graphs]]
 
-- [[wikidata]]
-- [Apache JENA](https://jena.apache.org/) - RDF хранилище
-  - [apache jena github](https://github.com/apache/jena) Java framework for writing Semantic Web applications.
-  - [stain/jena-fuseki](https://hub.docker.com/r/stain/jena-fuseki) This is a Docker image for running Apache Jena Fuseki, which is a SPARQL 1.1 server with a web interface, backed by the Apache Jena TDB RDF triple store.
-  - [stain/jena](https://hub.docker.com/r/stain/jena) This docker image exposes the Apache Jena command line tool riot and its variants (e.g. turtle, rdfxml), in addition to the other Jena command line tools
-- [RDFLIB](https://rdflib.readthedocs.io/en/stable/) is a pure Python package for working with RDF. RDFLib contains most things you need to work with RDF
-  - [rdflib github](https://github.com/RDFLib/rdflib)
-  - [sparql-wraper](https://sparqlwrapper.readthedocs.io/en/stable/)
-  - [pyshacl](https://github.com/RDFLib/pySHACL)
-- [pyfuseki](https://yubincloud.github.io/pyfuseki/) An easy way to mix together OWL and Jena Fuseki
-  - [pyfuseki github](https://github.com/yubinCloud/pyfuseki)
+## [[knowledge-graphs]]
 
 ## [[evolution-methods]]
 
@@ -78,7 +68,7 @@ tags: machine-learning
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
 [imagehash]: ../notes/imagehash "imagehash - хеширование изображений"
 [graphs]: graphs "Machine learning with graphs"
-[wikidata]: wikidata "Wikidata"
+[knowledge-graphs]: knowledge-graphs "Knowledge graphs"
 [evolution-methods]: evolution-methods "Evolution methods"
 [reinforcement-learning]: reinforcement-learning "Reinforcement learning"
 [lightgbm]: ../notes/lightgbm "Lightgbm"
