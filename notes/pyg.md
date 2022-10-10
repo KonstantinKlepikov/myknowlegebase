@@ -313,9 +313,163 @@ print(f'Accuracy: {acc:.4f}')
 
 Подробнее о компонентах сеток: [TORCH_GEOMETRIC.NN](https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#)
 
+## Message passing networks
+
+[source](https://pytorch-geometric.readthedocs.io/en/latest/notes/create_gnn.html)
+
+### Message passing
+
+PyG предоставляет базовый класс [MessagePassing](https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#torch_geometric.nn.conv.MessagePassing), который помогает в создании месседж-пассинг нейронных сетей, автоматически заботясь о распространении сообщений. Пользователю нужно только определить функции $$\phi$$, т. е. `message()`, и $$\gamma$$, т. е. `update()`, а также используемую схему агрегации, т. е. `aggr="add"`, `aggr="mean"` `или aggr="max"`.
+
+![message passing](../attachments/2022-10-11-00-13-30.png)
+
+### GCN layer
+
+![GCN layer](../attachments/2022-10-11-00-14-55.png)
+
+где признаки соседних узлов сначала преобразуются матрицей весов, нормализуются по их степени и, наконец, суммируются. Наконец, мы применяем вектор смещения к агрегированному результату. Эту формулу можно разделить на следующие шаги:
+
+1. Добавить петли в матрицу смежности.
+2. Матрица признаков узла линейного преобразования.
+3. Вычислить коэффициенты нормализации.
+4. Нормализация узловых элементов в $$\phi$$.
+5. Суммирование признаков соседних узлов (агрегация `add`).
+6. Добавить вектор смещения.
+
+Шаги 1-3 обычно вычисляются до передачи сообщения. Шаги 4-5 можно легко выполнить с помощью базового класса MessagePassing.
+
+```python
+import torch
+from torch.nn import Linear, Parameter
+from torch_geometric.nn import MessagePassing
+from torch_geometric.utils import add_self_loops, degree
+
+class GCNConv(MessagePassing):
+    def __init__(self, in_channels, out_channels):
+        super().__init__(aggr='add')  # "Add" aggregation (Step 5).
+        self.lin = Linear(in_channels, out_channels, bias=False)
+        self.bias = Parameter(torch.Tensor(out_channels))
+
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        self.lin.reset_parameters()
+        self.bias.data.zero_()
+
+    def forward(self, x, edge_index):
+        # x has shape [N, in_channels]
+        # edge_index has shape [2, E]
+
+        # Step 1: Add self-loops to the adjacency matrix.
+        edge_index, _ = add_self_loops(edge_index, num_nodes=x.size(0))
+
+        # Step 2: Linearly transform node feature matrix.
+        x = self.lin(x)
+
+        # Step 3: Compute normalization.
+        row, col = edge_index
+        deg = degree(col, x.size(0), dtype=x.dtype)
+        deg_inv_sqrt = deg.pow(-0.5)
+        deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
+        norm = deg_inv_sqrt[row] * deg_inv_sqrt[col]
+
+        # Step 4-5: Start propagating messages.
+        out = self.propagate(edge_index, x=x, norm=norm)
+
+        # Step 6: Apply a final bias vector.
+        out += self.bias
+
+        return out
+
+    def message(self, x_j, norm):
+        # x_j has shape [E, out_channels]
+
+        # Step 4: Normalize node features.
+        return norm.view(-1, 1) * x_j
+```
+
+### Edge convolution
+
+![Edge convolution layer](../attachments/2022-10-11-00-26-46.png)
+
+```python
+import torch
+from torch.nn import Sequential as Seq, Linear, ReLU
+from torch_geometric.nn import MessagePassing
+
+class EdgeConv(MessagePassing):
+    def __init__(self, in_channels, out_channels):
+        super().__init__(aggr='max') #  "Max" aggregation.
+        self.mlp = Seq(Linear(2 * in_channels, out_channels),
+                       ReLU(),
+                       Linear(out_channels, out_channels))
+
+    def forward(self, x, edge_index):
+        # x has shape [N, in_channels]
+        # edge_index has shape [2, E]
+
+        return self.propagate(edge_index, x=x)
+
+    def message(self, x_i, x_j):
+        # x_i has shape [E, in_channels]
+        # x_j has shape [E, in_channels]
+
+        tmp = torch.cat([x_i, x_j - x_i], dim=1)  # tmp has shape [E, 2 * in_channels]
+        return self.mlp(tmp)
+```
+
+Свертка ребер на самом деле является динамической сверткой, которая пересчитывает граф для каждого слоя, используя ближайших соседей в пространстве признаков. К счастью, PyG поставляется с ускоренным графическим процессором методом пакетной генерации knn-графа `torch_geometric.nn.pool.knn_graph()`:
+
+```python
+from torch_geometric.nn import knn_graph
+
+class DynamicEdgeConv(EdgeConv):
+    def __init__(self, in_channels, out_channels, k=6):
+        super().__init__(in_channels, out_channels)
+        self.k = k
+
+    def forward(self, x, batch=None):
+        edge_index = knn_graph(x, self.k, batch, loop=False, flow=self.flow)
+        return super().forward(x, edge_index)
+
+conv = DynamicEdgeConv(3, 128, k=6)
+x = conv(x, batch)
+```
+
+## Datasets
+
+Предоставляется два абстрактных класса для наборов данных: `torch_geometric.data.Dataset` и `torch_geometric.data.InMemoryDataset`. Последний используется для данных, целиком содержащихся в памяти. Согласно torchvision соглашению, каждому набору данных передается корневая папка, которая указывает, где должен храниться набор данных. Корневая папка разделена на две папки: `raw_dir`, куда загружается набор данных, и `processed_dir`, где сохраняется обработанный набор данных.
+
+Кроме того, каждому набору данных можно передать `transform`, a `pre_transform` и `pre_filter` функцию, которые заданы `None` по умолчанию. Функция `transform` динамически преобразует объект данных перед доступом (поэтому ее лучше всего использовать для аугментации данных). Функция `pre_transform` применяет преобразование перед сохранением объектов данных на диск (поэтому ее лучше всего использовать для тяжелых предварительных вычислений, которые необходимо выполнить только один раз). Функция `pre_filter` может вручную отфильтровывать объекты данных перед сохранением. Варианты использования могут включать ограничение объектов данных, принадлежащих к определенному классу.
+
+[Пример создания данных тут](https://pytorch-geometric.readthedocs.io/en/latest/notes/create_dataset.html)
+
+## Heterogeneous graphs
+
+Большой набор реальных наборов данных хранится в виде разнородных графов, что мотивирует введение для них специализированных функций в pyg. Например, большинство графов в области рекомендаций, таких как социальные графы, неоднородны, поскольку они хранят информацию о разных типах сущностей и их разных типах отношений. Гетерогенные графы содержат различные типы информации, связанные с узлами и ребрами. Таким образом, один тензор признаков узлов или ребер не может содержать все признаки узлов или ребер всего графа из-за различий в типах и размерностях. Вместо этого необходимо указать набор типов для узлов и ребер, соответственно, каждый из которых имеет свои собственные тензоры данных. Как следствие другой структуры данных, передача сообщений в графе изменяется соответствующим образом, что позволяет вычислять сообщение и функцию обновления в зависимости от типа узла или ребра.
+
+![Heterogeneous example](../attachments/2022-10-11-00-39-18.png)
+
+[Как работать с такими графами в pyg](https://pytorch-geometric.readthedocs.io/en/latest/notes/heterogeneous.html)
+
+## [Loading data from CSV](https://pytorch-geometric.readthedocs.io/en/latest/notes/load_csv.html)
+
+## [Управление экспериментами в GraphGym](https://pytorch-geometric.readthedocs.io/en/latest/notes/graphgym.html)
+
+## [Advanced mini-batching](https://pytorch-geometric.readthedocs.io/en/latest/notes/batching.html)
+
+## [Эффективная по памяти агрегация](https://pytorch-geometric.readthedocs.io/en/latest/notes/sparse_tensor.html)
+
+## [TorchScript support](https://pytorch-geometric.readthedocs.io/en/latest/notes/jit.html)
+
+[TorchScript](https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html) — это способ создания сериализуемых и оптимизируемых моделей из кода PyTorch. Любую программу TorchScript можно сохранить из процесса Python и загрузить в процесс, не зависящий от Python.
+
 Смотри еще:
 
 - [документация](https://pytorch-geometric.readthedocs.io/en/latest/)
+- [GNN cheatsheet](https://pytorch-geometric.readthedocs.io/en/latest/notes/cheatsheet.html)
+- [dataset cheatsheet](https://pytorch-geometric.readthedocs.io/en/latest/notes/data_cheatsheet.html)
+- [more tutorials](https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html)
 - [[graphs]]
 - [[knowledge-graphs]]
 - [[machine-learning]]

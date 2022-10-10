@@ -421,10 +421,163 @@
 
 <p>Подробнее о компонентах сеток: <a href="https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#">TORCH_GEOMETRIC.NN</a></p>
 
+<h2 id="message-passing-networks">Message passing networks</h2>
+
+<p><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/create_gnn.html">source</a></p>
+
+<h3 id="message-passing">Message passing</h3>
+
+<p>PyG предоставляет базовый класс <a href="https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#torch_geometric.nn.conv.MessagePassing">MessagePassing</a>, который помогает в создании месседж-пассинг нейронных сетей, автоматически заботясь о распространении сообщений. Пользователю нужно только определить функции <script type="math/tex">\phi</script>, т. е. <code class="language-plaintext highlighter-rouge">message()</code>, и <script type="math/tex">\gamma</script>, т. е. <code class="language-plaintext highlighter-rouge">update()</code>, а также используемую схему агрегации, т. е. <code class="language-plaintext highlighter-rouge">aggr="add"</code>, <code class="language-plaintext highlighter-rouge">aggr="mean"</code> <code class="language-plaintext highlighter-rouge">или aggr="max"</code>.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-10-11-00-13-30.png" alt="message passing" /></p>
+
+<h3 id="gcn-layer">GCN layer</h3>
+
+<p><img src="/myknowlegebase/attachments/2022-10-11-00-14-55.png" alt="GCN layer" /></p>
+
+<p>где признаки соседних узлов сначала преобразуются матрицей весов, нормализуются по их степени и, наконец, суммируются. Наконец, мы применяем вектор смещения к агрегированному результату. Эту формулу можно разделить на следующие шаги:</p>
+
+<ol>
+  <li>Добавить петли в матрицу смежности.</li>
+  <li>Матрица признаков узла линейного преобразования.</li>
+  <li>Вычислить коэффициенты нормализации.</li>
+  <li>Нормализация узловых элементов в <script type="math/tex">\phi</script>.</li>
+  <li>Суммирование признаков соседних узлов (агрегация <code class="language-plaintext highlighter-rouge">add</code>).</li>
+  <li>Добавить вектор смещения.</li>
+</ol>
+
+<p>Шаги 1-3 обычно вычисляются до передачи сообщения. Шаги 4-5 можно легко выполнить с помощью базового класса MessagePassing.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Linear</span><span class="p">,</span> <span class="n">Parameter</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">MessagePassing</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.utils</span> <span class="kn">import</span> <span class="n">add_self_loops</span><span class="p">,</span> <span class="n">degree</span>
+
+<span class="k">class</span> <span class="nc">GCNConv</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">aggr</span><span class="o">=</span><span class="s">'add'</span><span class="p">)</span>  <span class="c1"># "Add" aggregation (Step 5).
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">lin</span> <span class="o">=</span> <span class="n">Linear</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">out_channels</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reset_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">lin</span><span class="p">.</span><span class="n">reset_parameters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">bias</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">zero_</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">):</span>
+        <span class="c1"># x has shape [N, in_channels]
+</span>        <span class="c1"># edge_index has shape [2, E]
+</span>
+        <span class="c1"># Step 1: Add self-loops to the adjacency matrix.
+</span>        <span class="n">edge_index</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">add_self_loops</span><span class="p">(</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">num_nodes</span><span class="o">=</span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Step 2: Linearly transform node feature matrix.
+</span>        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">lin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Step 3: Compute normalization.
+</span>        <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">edge_index</span>
+        <span class="n">deg</span> <span class="o">=</span> <span class="n">degree</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="p">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">deg_inv_sqrt</span> <span class="o">=</span> <span class="n">deg</span><span class="p">.</span><span class="nb">pow</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">deg_inv_sqrt</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s">'inf'</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">*</span> <span class="n">deg_inv_sqrt</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+
+        <span class="c1"># Step 4-5: Start propagating messages.
+</span>        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
+
+        <span class="c1"># Step 6: Apply a final bias vector.
+</span>        <span class="n">out</span> <span class="o">+=</span> <span class="bp">self</span><span class="p">.</span><span class="n">bias</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_j</span><span class="p">,</span> <span class="n">norm</span><span class="p">):</span>
+        <span class="c1"># x_j has shape [E, out_channels]
+</span>
+        <span class="c1"># Step 4: Normalize node features.
+</span>        <span class="k">return</span> <span class="n">norm</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">x_j</span>
+</code></pre></div></div>
+
+<h3 id="edge-convolution">Edge convolution</h3>
+
+<p><img src="/myknowlegebase/attachments/2022-10-11-00-26-46.png" alt="Edge convolution layer" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">Sequential</span> <span class="k">as</span> <span class="n">Seq</span><span class="p">,</span> <span class="n">Linear</span><span class="p">,</span> <span class="n">ReLU</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">MessagePassing</span>
+
+<span class="k">class</span> <span class="nc">EdgeConv</span><span class="p">(</span><span class="n">MessagePassing</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">aggr</span><span class="o">=</span><span class="s">'max'</span><span class="p">)</span> <span class="c1">#  "Max" aggregation.
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">),</span>
+                       <span class="n">ReLU</span><span class="p">(),</span>
+                       <span class="n">Linear</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">):</span>
+        <span class="c1"># x has shape [N, in_channels]
+</span>        <span class="c1"># edge_index has shape [2, E]
+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_i</span><span class="p">,</span> <span class="n">x_j</span><span class="p">):</span>
+        <span class="c1"># x_i has shape [E, in_channels]
+</span>        <span class="c1"># x_j has shape [E, in_channels]
+</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x_i</span><span class="p">,</span> <span class="n">x_j</span> <span class="o">-</span> <span class="n">x_i</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># tmp has shape [E, 2 * in_channels]
+</span>        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Свертка ребер на самом деле является динамической сверткой, которая пересчитывает граф для каждого слоя, используя ближайших соседей в пространстве признаков. К счастью, PyG поставляется с ускоренным графическим процессором методом пакетной генерации knn-графа <code class="language-plaintext highlighter-rouge">torch_geometric.nn.pool.knn_graph()</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torch_geometric.nn</span> <span class="kn">import</span> <span class="n">knn_graph</span>
+
+<span class="k">class</span> <span class="nc">DynamicEdgeConv</span><span class="p">(</span><span class="n">EdgeConv</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="n">out_channels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">batch</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">edge_index</span> <span class="o">=</span> <span class="n">knn_graph</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">k</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">flow</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">flow</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">().</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+
+<span class="n">conv</span> <span class="o">=</span> <span class="n">DynamicEdgeConv</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="datasets">Datasets</h2>
+
+<p>Предоставляется два абстрактных класса для наборов данных: <code class="language-plaintext highlighter-rouge">torch_geometric.data.Dataset</code> и <code class="language-plaintext highlighter-rouge">torch_geometric.data.InMemoryDataset</code>. Последний используется для данных, целиком содержащихся в памяти. Согласно torchvision соглашению, каждому набору данных передается корневая папка, которая указывает, где должен храниться набор данных. Корневая папка разделена на две папки: <code class="language-plaintext highlighter-rouge">raw_dir</code>, куда загружается набор данных, и <code class="language-plaintext highlighter-rouge">processed_dir</code>, где сохраняется обработанный набор данных.</p>
+
+<p>Кроме того, каждому набору данных можно передать <code class="language-plaintext highlighter-rouge">transform</code>, a <code class="language-plaintext highlighter-rouge">pre_transform</code> и <code class="language-plaintext highlighter-rouge">pre_filter</code> функцию, которые заданы <code class="language-plaintext highlighter-rouge">None</code> по умолчанию. Функция <code class="language-plaintext highlighter-rouge">transform</code> динамически преобразует объект данных перед доступом (поэтому ее лучше всего использовать для аугментации данных). Функция <code class="language-plaintext highlighter-rouge">pre_transform</code> применяет преобразование перед сохранением объектов данных на диск (поэтому ее лучше всего использовать для тяжелых предварительных вычислений, которые необходимо выполнить только один раз). Функция <code class="language-plaintext highlighter-rouge">pre_filter</code> может вручную отфильтровывать объекты данных перед сохранением. Варианты использования могут включать ограничение объектов данных, принадлежащих к определенному классу.</p>
+
+<p><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/create_dataset.html">Пример создания данных тут</a></p>
+
+<h2 id="heterogeneous-graphs">Heterogeneous graphs</h2>
+
+<p>Большой набор реальных наборов данных хранится в виде разнородных графов, что мотивирует введение для них специализированных функций в pyg. Например, большинство графов в области рекомендаций, таких как социальные графы, неоднородны, поскольку они хранят информацию о разных типах сущностей и их разных типах отношений. Гетерогенные графы содержат различные типы информации, связанные с узлами и ребрами. Таким образом, один тензор признаков узлов или ребер не может содержать все признаки узлов или ребер всего графа из-за различий в типах и размерностях. Вместо этого необходимо указать набор типов для узлов и ребер, соответственно, каждый из которых имеет свои собственные тензоры данных. Как следствие другой структуры данных, передача сообщений в графе изменяется соответствующим образом, что позволяет вычислять сообщение и функцию обновления в зависимости от типа узла или ребра.</p>
+
+<p><img src="/myknowlegebase/attachments/2022-10-11-00-39-18.png" alt="Heterogeneous example" /></p>
+
+<p><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/heterogeneous.html">Как работать с такими графами в pyg</a></p>
+
+<h2 id="loading-data-from-csv"><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/load_csv.html">Loading data from CSV</a></h2>
+
+<h2 id="управление-экспериментами-в-graphgym"><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/graphgym.html">Управление экспериментами в GraphGym</a></h2>
+
+<h2 id="advanced-mini-batching"><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/batching.html">Advanced mini-batching</a></h2>
+
+<h2 id="эффективная-по-памяти-агрегация"><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/sparse_tensor.html">Эффективная по памяти агрегация</a></h2>
+
+<h2 id="torchscript-support"><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/jit.html">TorchScript support</a></h2>
+
+<p><a href="https://pytorch.org/tutorials/beginner/Intro_to_TorchScript_tutorial.html">TorchScript</a> — это способ создания сериализуемых и оптимизируемых моделей из кода PyTorch. Любую программу TorchScript можно сохранить из процесса Python и загрузить в процесс, не зависящий от Python.</p>
+
 <p>Смотри еще:</p>
 
 <ul>
   <li><a href="https://pytorch-geometric.readthedocs.io/en/latest/">документация</a></li>
+  <li><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/cheatsheet.html">GNN cheatsheet</a></li>
+  <li><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/data_cheatsheet.html">dataset cheatsheet</a></li>
+  <li><a href="https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html">more tutorials</a></li>
   <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
   <li>[<a href="../lists/knowledge-graphs" title="Knowledge graphs">knowledge-graphs</a>]</li>
   <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
