@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Machine learning in Neo4j | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Machine learning in Neo4j" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Машинное обучение в графовой БД Neo4j" />
+<meta property="og:description" content="Машинное обучение в графовой БД Neo4j" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-ml.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-ml.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-ml.html","headline":"Machine learning in Neo4j","description":"Машинное обучение в графовой БД Neo4j","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Machine learning in Neo4j</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/data-bases" title="data-bases" class="link-tags">data-bases&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/graphs" title="graphs" class="link-tags">graphs&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="neo4j-graph-data-science-library-gdsl">Neo4j Graph Data Science Library (GDSL)</h2>
+
+<p>Neo4j Graph Data Science Community Edition is open source for small projects, learning, experimentation, and prototyping.</p>
+
+<p>Бесплатно для:</p>
+
+<ul>
+  <li>Maximum of 4 CPU cores</li>
+  <li>Open source</li>
+</ul>
+
+<p>Alghorytms:</p>
+
+<ul>
+  <li>Path Finding - these algorithms help find the shortest path or evaluate the availability and quality of routes
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>Delta-Stepping Single-Source Shortest Path</li>
+          <li>Dijkstra Source-Target Shortest Path</li>
+          <li>Dijkstra Single-Source Shortest Path</li>
+          <li>A* Shortest Path</li>
+          <li>Yen’s Shortest Path</li>
+          <li>Breadth First Search</li>
+          <li>Depth First Search</li>
+          <li>Random Walk</li>
+        </ul>
+      </li>
+      <li>Alpha
+        <ul>
+          <li>Minimum Weight Spanning Tree</li>
+          <li>All Pairs Shortest Path</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Centrality - these algorithms determine the importance of distinct nodes in a network
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>Page Rank</li>
+          <li>Article Rank</li>
+          <li>Eigenvector Centrality</li>
+          <li>Betweenness Centrality</li>
+          <li>Degree Centrality</li>
+        </ul>
+      </li>
+      <li>Beta
+        <ul>
+          <li>Closeness Centrality</li>
+        </ul>
+      </li>
+      <li>Alpha
+        <ul>
+          <li>Harmonic Centrality</li>
+          <li>HITS</li>
+          <li>Influence Maximization</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Community Detection - these algorithms evaluate how a group is clustered or partitioned, as well as its tendency to strengthen or break apart
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>Louvain</li>
+          <li>Label Propagation</li>
+          <li>Weakly Connected Components</li>
+          <li>Triangle Count</li>
+          <li>Local Clustering Coefficient</li>
+        </ul>
+      </li>
+      <li>Beta
+        <ul>
+          <li>K-1 Coloring</li>
+          <li>Modularity Optimization</li>
+        </ul>
+      </li>
+      <li>Alpha
+        <ul>
+          <li>Strongly Connected Components</li>
+          <li>Speaker-Listener Label Propagation</li>
+          <li>Approximate Maximum k-cut</li>
+          <li>Conductance metric</li>
+          <li>Modularity metric</li>
+          <li>K-Means Clustering</li>
+          <li>Leiden</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Similarity - these algorithms help calculate the similarity of nodes
+    <ul>
+      <li>Filtered Node Similarity</li>
+      <li>Filtered K-Nearest Neighbors</li>
+    </ul>
+  </li>
+  <li>Topological link prediction - these algorithms determine the closeness of pairs of nodes
+    <ul>
+      <li>Alpha
+        <ul>
+          <li>Adamic Adar</li>
+          <li>Common Neighbors</li>
+          <li>Preferential Attachment</li>
+          <li>Resource Allocation</li>
+          <li>Same Community</li>
+          <li>Total Neighbors</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Node Embeddings - these algorithms compute vector representations of nodes in a graph.
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>FastRP</li>
+        </ul>
+      </li>
+      <li>Beta
+        <ul>
+          <li>GraphSAGE</li>
+          <li>Node2Vec</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Node Classification - this algorithm uses machine learning to predict the classification of nodes.</li>
+  <li>Link prediction - these algorithms use machine learning to predict new links between pairs of nodes</li>
+</ul>
+
+<p><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">Machine learning</a>:</p>
+
+<ul>
+  <li>Beta
+    <ul>
+      <li>Node Classification Pipelines</li>
+      <li>Link Prediction Pipelines</li>
+    </ul>
+  </li>
+  <li>Alpha
+    <ul>
+      <li>Node Regression Pipelines</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Смотир еще:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/developer/graph-data-science/graph-algorithms/">graph algorithms</a></li>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">ml</a></li>
+  <li><a href="https://neo4j.com/developer/cypher/procedures-functions/">User Defined Procedures and Functions</a></li>
+  <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
+  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

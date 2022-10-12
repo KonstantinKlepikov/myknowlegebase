@@ -42,6 +42,7 @@ category: list
 - [[networkx]]
 - [[pyg]]
 - [[neo4j]]
+- [[neo4j-ml]]
 - [[cypher]]
 - [[python-api-neo4j]]
 - [[pytoneo]] python package for neo4j and cypher
@@ -76,6 +77,7 @@ category: list
 [networkx]: ../notes/networkx "Networkx"
 [pyg]: ../notes/pyg "Pytorch geometric"
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
+[neo4j-ml]: ../notes/neo4j-ml "Machine learning in Neo4j"
 [cypher]: ../notes/cypher "Cypher query language"
 [python-api-neo4j]: ../notes/python-api-neo4j "Python api for neo4j"
 [pytoneo]: ../notes/pytoneo "pytoneo client library and toolkit for working with neo4j"
