@@ -799,8 +799,9 @@ DEBUG:root:Command update with request id 1957747793 on server ('localhost', 270
 - [User guide](http://docs.mongoengine.org/guide/index.html)
 - [api reference](http://docs.mongoengine.org/apireference.html#)
 - [гитхаб](https://github.com/MongoEngine/mongoengine)
+- [Dropping all collections in Mongoengine](https://stackoverflow.com/a/15886728/15966204)
 - [[mongodb]]
-- [mongomock](https://github.com/mongomock/mongomock) Small library for mocking pymongo collection objects for testing purposes
+- [mongomock](https://github.com/mongomock/mongomock) Small library for mocking pymongo collection objects for testing purposes. [Use mongomock for testing](http://docs.mongoengine.org/guide/mongomock.html)
 - odmantic (async orm)
   - [docs](https://art049.github.io/odmantic/)
   - [git](https://github.com/art049/odmantic)

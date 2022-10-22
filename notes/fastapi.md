@@ -28,6 +28,7 @@ title: Fastapi
 - [[fastapi-template-buildin-routes]]
 - [[2021-10-18-daily-note]] - problems with postgresql template
 - [[python-cryptography]]
+- [NoSQL (Distributed / Big Data) Databases](https://fastapi.tiangolo.com/advanced/nosql-databases/) - example with couchdb, can be used for [[mongodb]]
 
 Смотри еще:
 
@@ -56,6 +57,7 @@ title: Fastapi
 [fastapi-template-buildin-routes]: fastapi-template-buildin-routes "Fastapi template buildin routes"
 [2021-10-18-daily-note]: ../posts/2021-10-18-daily-note "Проблемы с fastapi postgresql template"
 [python-cryptography]: python-cryptography "Криптография в python"
+[mongodb]: mongodb "MongoDB"
 [celery]: celery "Celery"
 [starlit]: starlit "Starlit"
 [pydantic]: pydantic "Pydantic"
@@ -83,6 +85,7 @@ title: Fastapi
 [fastapi-template-buildin-routes]: fastapi-template-buildin-routes "Fastapi template buildin routes"
 [2021-10-18-daily-note]: ../posts/2021-10-18-daily-note "Проблемы с fastapi postgresql template"
 [python-cryptography]: python-cryptography "Криптография в python"
+[mongodb]: mongodb "MongoDB"
 [celery]: celery "Celery"
 [starlit]: starlit "Starlit"
 [pydantic]: pydantic "Pydantic"

@@ -121,7 +121,46 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h2 id="neo4j-graph-data-science-library-gdsl">Neo4j Graph Data Science Library (GDSL)</h2>
+    <ul>
+  <li><a href="https://neo4j.com/docs/operations-manual/current/docker/">docker instalation algorythm plugins</a></li>
+  <li><a href="https://neo4j.com/labs/kafka/4.0/docker/">run with docker</a></li>
+</ul>
+
+<p>example:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">neo4j</span><span class="pi">:</span>
+
+    <span class="na">image</span><span class="pi">:</span> <span class="s">neo4j:4.4.9-community</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">neo4j</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">neo4j</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./volume/plugins:/plugins</span>
+      <span class="pi">-</span> <span class="s">./volume/data:/data</span>
+      <span class="pi">-</span> <span class="s">./volume/import:/import</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.env</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">7474:7474"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">7687:7687"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">NEO4J_AUTH</span><span class="pi">:</span> <span class="s">neo4j/${PASS?Variable not set}</span>
+      <span class="na">NEO4J_dbms_security_procedures_unrestricted</span><span class="pi">:</span> <span class="s">apoc.*, algo.*, gds.*</span>
+      <span class="na">NEO4J_dbms_security_procedures_whitelist</span><span class="pi">:</span> <span class="s">apoc.*, algo.*, gds.*</span>
+      <span class="na">NEO4J_apoc_import_file_enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">NEO4J_dbms_shell_enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">NEO4JLABS_PLUGINS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">["apoc",</span><span class="nv"> </span><span class="s">"graph-data-science"]'</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">neo4j-learn</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">neo4j-learn</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h2 id="neo4j-graph-data-science-library-gdsl">Neo4j Graph Data Science Library (GDSL)</h2>
 
 <p>Neo4j Graph Data Science Community Edition is open source for small projects, learning, experimentation, and prototyping.</p>
 
@@ -132,7 +171,7 @@
   <li>Open source</li>
 </ul>
 
-<p>Alghorytms:</p>
+<p><a href="https://neo4j.com/developer/graph-data-science/graph-algorithms/">Alghorytms</a> (<code class="language-plaintext highlighter-rouge">graph-algorythms</code> deprecated, use <code class="language-plaintext highlighter-rouge">graph-data-science</code>):</p>
 
 <ul>
   <li>Path Finding - these algorithms help find the shortest path or evaluate the availability and quality of routes
@@ -267,12 +306,21 @@
   </li>
 </ul>
 
+<p>Примеры:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/developer/graph-data-science/applied-graph-embeddings/">graph embeddings</a></li>
+  <li><a href="https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/">Knowledge Graph using NLP and Ontologies</a></li>
+  <li><a href="https://neo4j.com/developer/graph-data-science/link-prediction/scikit-learn/">Link Prediction with GDSL and scikit-learn</a></li>
+</ul>
+
 <p>Смотир еще:</p>
 
 <ul>
   <li><a href="https://neo4j.com/developer/graph-data-science/graph-algorithms/">graph algorithms</a></li>
   <li><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">ml</a></li>
   <li><a href="https://neo4j.com/developer/cypher/procedures-functions/">User Defined Procedures and Functions</a></li>
+  <li><a href="https://github.com/neo4j/graph-data-science-client">graph-data-science-client</a> A Python client for the Neo4j Graph Data Science (GDS) library.</li>
   <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
   <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
   <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>

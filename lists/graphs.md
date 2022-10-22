@@ -18,6 +18,7 @@ category: list
 - [SNAP](https://snap.stanford.edu/snap/)
 - [deep snap](https://snap.stanford.edu/deepsnap/)
 - [GraphGym](https://github.com/snap-stanford/GraphGym)
+- [Stellar Graph](https://stellargraph.readthedocs.io/en/stable/index.html#) Machine Learning on Graphs
 - [Neo4j Graph Algorithms](https://neo4j.com/developer/graph-data-science/graph-algorithms/)
 - [[apache-spark]] Unified engine for large-scale data analytics
 - [[apache-tinkertop-and-gremlin]] Apache TinkerPop™ is a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP)
@@ -60,6 +61,7 @@ category: list
 [networkx]: ../notes/networkx "Networkx"
 [pyg]: ../notes/pyg "Pytorch geometric"
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
+[neo4j-ml]: ../notes/neo4j-ml "Machine learning in Neo4j"
 [cypher]: ../notes/cypher "Cypher query language"
 [python-api-neo4j]: ../notes/python-api-neo4j "Python api for neo4j"
 [pytoneo]: ../notes/pytoneo "pytoneo client library and toolkit for working with neo4j"

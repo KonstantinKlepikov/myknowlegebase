@@ -3,6 +3,44 @@ description: Машинное обучение в графовой БД Neo4j
 title: Machine learning in Neo4j
 tags: data-bases graphs machine-learning
 ---
+- [docker instalation algorythm plugins](https://neo4j.com/docs/operations-manual/current/docker/)
+- [run with docker](https://neo4j.com/labs/kafka/4.0/docker/)
+
+example:
+
+```yml
+version: '3.8'
+
+services:
+
+  neo4j:
+
+    image: neo4j:4.4.9-community
+    hostname: neo4j
+    container_name: neo4j
+    volumes:
+      - ./volume/plugins:/plugins
+      - ./volume/data:/data
+      - ./volume/import:/import
+    env_file:
+      - .env
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${PASS?Variable not set}
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*, algo.*, gds.*
+      NEO4J_dbms_security_procedures_whitelist: apoc.*, algo.*, gds.*
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_dbms_shell_enabled: "true"
+      NEO4JLABS_PLUGINS: '["apoc", "graph-data-science"]'
+    networks:
+      - neo4j-learn
+
+networks:
+  neo4j-learn:
+```
+
 ## Neo4j Graph Data Science Library (GDSL)
 
 Neo4j Graph Data Science Community Edition is open source for small projects, learning, experimentation, and prototyping.
@@ -12,7 +50,7 @@ Neo4j Graph Data Science Community Edition is open source for small projects, le
 - Maximum of 4 CPU cores
 - Open source
 
-Alghorytms:
+[Alghorytms](https://neo4j.com/developer/graph-data-science/graph-algorithms/) (`graph-algorythms` deprecated, use `graph-data-science`):
 
 - Path Finding - these algorithms help find the shortest path or evaluate the availability and quality of routes
   - Production-quality
@@ -86,11 +124,18 @@ Alghorytms:
 - Alpha
   - Node Regression Pipelines
 
+Примеры:
+
+- [graph embeddings](https://neo4j.com/developer/graph-data-science/applied-graph-embeddings/)
+- [Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/)
+- [Link Prediction with GDSL and scikit-learn](https://neo4j.com/developer/graph-data-science/link-prediction/scikit-learn/)
+
 Смотир еще:
 
 - [graph algorithms](https://neo4j.com/developer/graph-data-science/graph-algorithms/)
 - [ml](https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/)
 - [User Defined Procedures and Functions](https://neo4j.com/developer/cypher/procedures-functions/)
+- [graph-data-science-client](https://github.com/neo4j/graph-data-science-client) A Python client for the Neo4j Graph Data Science (GDS) library.
 - [[neo4j]]
 - [[graphs]]
 - [[cypher]]

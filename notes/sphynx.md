@@ -212,6 +212,7 @@ def my_function(my_arg, my_other_arg):
 - [reStructuredText Primer docs](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html)
 - [reStructuredText Markup Specification](https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#paragraphs)
 - [sphynx themes galery](https://sphinx-themes.org/#themes)
+- [Napoleon - Marching toward legible docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/index.html)
 - [How do I create a new line with reStructuredText](https://stackoverflow.com/questions/51198270/how-do-i-create-a-new-line-with-restructuredtext)
 - [[шаблонизаторы]]
 

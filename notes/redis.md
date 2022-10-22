@@ -55,6 +55,7 @@ PONG
 
 Смотри еще:
 
+- [документация](https://redis.io/)
 - [[celery]]
 - [[python-rq]]
 - [[rabbitmq]]

@@ -470,6 +470,7 @@ x = conv(x, batch)
 - [GNN cheatsheet](https://pytorch-geometric.readthedocs.io/en/latest/notes/cheatsheet.html)
 - [dataset cheatsheet](https://pytorch-geometric.readthedocs.io/en/latest/notes/data_cheatsheet.html)
 - [more tutorials](https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html)
+- [graphs classification example](https://colab.research.google.com/drive/1I8a0DfQ3fI7Njc62__mVXUlcAleUclnb?usp=sharing)
 - [[graphs]]
 - [[knowledge-graphs]]
 - [[machine-learning]]
