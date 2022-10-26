@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Язык и система организации АПИ GraphQL | My knowledge base</title>
+<title>Dgraph | My knowledge base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Язык и система организации АПИ GraphQL" />
+<meta property="og:title" content="Dgraph" />
 <meta property="og:locale" content="ru_RU" />
-<meta name="description" content="API lenguage GraphQL" />
-<meta property="og:description" content="API lenguage GraphQL" />
-<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/graphql.html" />
-<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/graphql.html" />
+<meta name="description" content="Dgraph - native GraphQL Database With A Graph Backend" />
+<meta property="og:description" content="Dgraph - native GraphQL Database With A Graph Backend" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/dgraph.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/dgraph.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/graphql.html","headline":"Язык и система организации АПИ GraphQL","description":"API lenguage GraphQL","@context":"https://schema.org"}</script>
+{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/dgraph.html","headline":"Dgraph","description":"Dgraph - native GraphQL Database With A Graph Backend","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -104,13 +104,13 @@
       
 <article class="container mx-auto px-2 mt2 mb4">
   <header>
-    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Язык и система организации АПИ GraphQL</h1>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Dgraph</h1>
   </header>
   <div class="col-4 sm-width-full border-top-thin">
     <p class="mb-3 h5">Теги:
       
         
-        <a href="/myknowlegebase/tag/http" title="http" class="link-tags">http&nbsp;</a>
+        <a href="/myknowlegebase/tag/data-bases" title="data-bases" class="link-tags">data-bases&nbsp;</a>
       
         
         <a href="/myknowlegebase/tag/graphs" title="graphs" class="link-tags">graphs&nbsp;</a>
@@ -118,16 +118,98 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <p>Смотир еще:</p>
+    <ul>
+  <li><a href="https://dgraph.io/">dgraph</a> The Only Native GraphQL Database With A Graph Backend.</li>
+  <li><a href="https://github.com/dgraph-io/dgraph">github repo</a></li>
+  <li><a href="https://dgraph.io/docs/">docs</a></li>
+  <li><a href="https://github.com/dgraph-io/pydgraph">pydgraph</a> dgraph python client</li>
+</ul>
+
+<h2 id="dgraph-compared-to-other-graph-dbs">Dgraph compared to other graph DBs</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Features</th>
+      <th>Dgraph</th>
+      <th>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</th>
+      <th>[<a href="janus-graph" title="Janus Graph">janus-graph</a>]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Architecture</td>
+      <td>Sharded and Distributed</td>
+      <td>Single server (+ replicas in enterprise)</td>
+      <td>Layer on top of other distributed DBs</td>
+    </tr>
+    <tr>
+      <td>Replication</td>
+      <td>Consistent</td>
+      <td>None in community edition (only available in enterprise)</td>
+      <td>Via underlying DB</td>
+    </tr>
+    <tr>
+      <td>Data movement for shard rebalancing</td>
+      <td>Automatic</td>
+      <td>Not applicable (all data lies on each server)</td>
+      <td>Via underlying DB</td>
+    </tr>
+    <tr>
+      <td>Language</td>
+      <td>[<a href="graphql" title="Язык и система организации АПИ GraphQL">graphql</a>] inspired</td>
+      <td>[<a href="cypher" title="Cypher query language">cypher</a>], [<a href="apache-tinkertop-and-gremlin" title="Apache TinkerPop and Gremlin">apache-tinkertop-and-gremlin</a>]</td>
+      <td>[<a href="apache-tinkertop-and-gremlin" title="Apache TinkerPop and Gremlin">apache-tinkertop-and-gremlin</a>]</td>
+    </tr>
+    <tr>
+      <td>Protocols</td>
+      <td>Grpc / HTTP + JSON / RDF</td>
+      <td>Bolt + Cypher</td>
+      <td>Websocket / HTTP</td>
+    </tr>
+    <tr>
+      <td>Transactions</td>
+      <td>Distributed ACID transactions</td>
+      <td>Single server ACID transactions</td>
+      <td><del>Not typically ACID</del></td>
+    </tr>
+    <tr>
+      <td>Full-Text Search</td>
+      <td>Native support</td>
+      <td>Native support</td>
+      <td>Via External Indexing System</td>
+    </tr>
+    <tr>
+      <td>Regular Expressions</td>
+      <td>Native support</td>
+      <td>Native support</td>
+      <td>Via External Indexing System</td>
+    </tr>
+    <tr>
+      <td>Geo Search</td>
+      <td>Native support</td>
+      <td>External support only</td>
+      <td>Via External Indexing System</td>
+    </tr>
+    <tr>
+      <td>License</td>
+      <td>Apache 2.0</td>
+      <td>GPL v3</td>
+      <td>Apache 2.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="https://dgraph.io/comparison/">Comparison with oteher db and services</a> (Dgraph vs [<a href="graphql" title="Язык и система организации АПИ GraphQL">graphql</a>] platforms, <a href="https://www.tigergraph.com/tigergraph-db/">TigerGraphDB</a>, [<a href="neo4j" title="Neo4j graph data base">neo4j</a>], <a href="https://fauna.com/">FaunaDB</a>, [<a href="mongodb" title="MongoDB">mongodb</a>])</p>
+
+<p>Смотри еще:</p>
 
 <ul>
-  <li><a href="https://graphql.org/swapi-graphql">swapi-graphql</a> graphwl endpoint</li>
-  <li>[<a href="dgraph" title="Dgraph">dgraph</a>]</li>
-  <li>[<a href="fastapi" title="Fastapi">fastapi</a>]</li>
-  <li>[<a href="starlette" title="Starlette">starlette</a>]</li>
-  <li>[<a href="../lists/http" title="Http">http</a>]</li>
-  <li>[<a href="jina" title="Jina">jina</a>]</li>
   <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+  <li>[<a href="graphql" title="Язык и система организации АПИ GraphQL">graphql</a>]</li>
+  <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
+  <li>[<a href="mongodb" title="MongoDB">mongodb</a>]</li>
+  <li>[<a href="../lists/bd" title="Data Bases">bd</a>]</li>
 </ul>
 
 
