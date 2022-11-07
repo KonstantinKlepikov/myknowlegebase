@@ -12,6 +12,7 @@ tags: machine-learning
 - [[pandas]]
 - [missingno](https://github.com/ResidentMario/missingno) Missing data visualization module for Python.
 - [[scipy]]
+- [[pytorch]]
 
 ## [[computer-visions]]
 
@@ -79,6 +80,7 @@ tags: machine-learning
 [numpy]: ../notes/numpy "Numpy"
 [pandas]: ../notes/pandas "Pandas"
 [scipy]: ../notes/scipy "Scipy"
+[pytorch]: ../notes/pytorch "Machine learning framework Pytorch"
 [computer-visions]: computer-visions "Computer visions"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
 [imagehash]: ../notes/imagehash "imagehash - хеширование изображений"

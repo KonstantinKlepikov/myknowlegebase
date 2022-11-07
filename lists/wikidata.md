@@ -14,7 +14,6 @@ tags: wiki
 - [more wikidata clients](https://www.wikidata.org/wiki/Wikidata:Tools/For_programmers)
 
 - [Wikipedia](https://github.com/goldsmith/Wikipedia) is a Python library that makes it easy to access and parse data from Wikipedia
-- [Apache JENA](https://jena.apache.org/) - RDF хранилище
 
 Еще ссылки:
 

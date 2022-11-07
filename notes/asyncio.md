@@ -511,6 +511,7 @@ results: [9, 0, 16, 1, 4]
 
 Смотри еще:
 
+- [[aiohttp]]
 - [[threading]]
 - [[multiprocess]]
 - [[asyncio-transports-and-protocols]]
@@ -527,6 +528,7 @@ results: [9, 0, 16, 1, 4]
 [queue]: queue "queue"
 [asyncio-transports-and-protocols]: asyncio-transports-and-protocols "Asyncio transports and protocols"
 [python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
+[aiohttp]: aiohttp "Aiohttp"
 [threading]: threading "Threading"
 [multiprocess]: multiprocess "Управление процессами в python"
 [asyncio-transports-and-protocols]: asyncio-transports-and-protocols "Asyncio transports and protocols"
