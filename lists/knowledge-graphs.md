@@ -36,6 +36,7 @@ category: list
 - [[neo4j]] rdf
   - [neosemantics](https://neo4j.com/labs/neosemantics/)
   - [install](https://neo4j.com/labs/neosemantics/installation/)]
+  - [Build a Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/) with Neo4j
 - [Ontotext GraphDB](https://www.ontotext.com/products/graphdb/?ref=menu). RDF Database for Knowledge Graphs
 - Sparql
   - [sparql-wraper](https://sparqlwrapper.readthedocs.io/en/stable/)
@@ -45,6 +46,10 @@ category: list
 ## Ontology
 
 - [protege](https://protege.stanford.edu/). A free, open-source ontology editor and framework for building intelligent systems
+
+## Other
+
+- [Knowledge Base Question Answering (KBQA)](http://docs.deeppavlov.ai/en/master/features/models/kbqa.html) on [DeepPavlov](https://github.com/deeppavlov/DeepPavlov)
 
 Смотри еще:
 

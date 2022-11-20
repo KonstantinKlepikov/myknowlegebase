@@ -141,6 +141,20 @@
 <span class="p">{</span><span class="s">'private_gists'</span><span class="p">:</span> <span class="mi">419</span><span class="p">,</span> <span class="s">'total_private_repos'</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="p">...}</span>
 </code></pre></div></div>
 
+<h2 id="how-to-send-request_body-encoded-as-applicationx-www-form-urlencoded">How to send request_body encoded as application/x-www-form-urlencoded</h2>
+
+<p>Это требуется, к примеру, при реализации bearer [<a href="../lists/http" title="Http">http</a>] схемы аутентификации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<span class="n">endpoint</span> <span class="o">=</span> <span class="s">"some url"</span>
+<span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">"username"</span><span class="p">:</span> <span class="s">f"</span><span class="si">{</span><span class="n">login</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">:</span> <span class="s">f"</span><span class="si">{</span><span class="n">password</span><span class="si">}</span><span class="s">"</span><span class="p">}</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/x-www-form-urlencoded'</span><span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/questions/62886283/python-requests-post-how-to-send-request-body-encoded-as-application-x-www-fo">Подробнее на stackoverflow</a></p>
+
 <p>Смотри еще:</p>
 
 <ul>

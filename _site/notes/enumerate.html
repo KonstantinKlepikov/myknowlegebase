@@ -254,9 +254,31 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">Using</span> <span class="n">attribute</span><span class="p">:</span> <span class="bp">True</span>
 </code></pre></div></div>
 
-<p>Больше примеров <a href="https://docs.python.org/3/library/enum.html?highlight=enum#interesting-examples">тут</a></p>
+<h2 id="how-do-i-test-if-int-value-exists-in-python-enum-without-using-trycatch"><a href="https://stackoverflow.com/questions/43634618/how-do-i-test-if-int-value-exists-in-python-enum-without-using-try-catch">How do I test if int value exists in Python Enum without using try/catch?</a></h2>
 
-<p>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="k">class</span> <span class="nc">Fruit</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">Apple</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">Orange</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">Pear</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="mi">5</span> <span class="ow">in</span> <span class="n">Fruit</span><span class="p">.</span><span class="n">_value2member_map_</span>  <span class="c1"># True
+</span><span class="mi">7</span> <span class="ow">in</span> <span class="n">Fruit</span><span class="p">.</span><span class="n">_value2member_map_</span>  <span class="c1"># False
+</span>
+<span class="s">'Apple'</span> <span class="ow">in</span> <span class="n">Fruit</span><span class="p">.</span><span class="n">_member_names_</span>  <span class="c1"># True
+</span><span class="s">'Mango'</span> <span class="ow">in</span> <span class="n">Fruit</span><span class="p">.</span><span class="n">_member_names_</span>  <span class="c1"># False
+</span></code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/43634746/15966204">Подробнее</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/enum.html?highlight=enum#interesting-examples">больше примеров</a></li>
+  <li><a href="https://docs.python.org/3/howto/enum.html">Enum HOWTO</a></li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
 
 
   </div>
