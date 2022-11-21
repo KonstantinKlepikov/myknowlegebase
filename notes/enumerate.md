@@ -159,8 +159,212 @@ class Fruit(Enum):
 
 [Подробнее](https://stackoverflow.com/a/43634746/15966204)
 
+## [Enum HOWTO](https://docs.python.org/3/howto/enum.html)
+
+```python
+>>> from enum import Enum
+>>> class Weekday(Enum):
+...    MONDAY = 1
+...    TUESDAY = 2
+...    WEDNESDAY = 3
+...    THURSDAY = 4
+...    FRIDAY = 5
+...    SATURDAY = 6
+...    SUNDAY = 7
+
+...    @classmethod
+...    def from_date(cls, date):
+...        return cls(date.isoweekday())
+
+>>> Weekday(3)
+<Weekday.WEDNESDAY: 3>
+
+>>> Weekday['MONDAY']
+<Weekday.WEDNESDAY: 3>
+
+>>> print(Weekday.THURSDAY)
+Weekday.THURSDAY
+
+>>> type(Weekday.MONDAY)
+<enum 'Weekday'>
+
+>>> isinstance(Weekday.FRIDAY, Weekday)
+True
+
+>>> print(Weekday.TUESDAY.name)
+TUESDAY
+
+>>> Weekday.WEDNESDAY.value
+3
+
+>>> from datetime import date
+>>> Weekday.from_date(date.today())
+<Weekday.TUESDAY: 2>
+
+>>> for i in Weekday:
+...     print(i)
+```
+
+В случаях, когда фактические значения вхождений не имеют значения, вы можете сэкономить немного времени и использовать auto() для значений. [Flag](https://docs.python.org/3/library/enum.html#enum.Flag) поддерживает побитовые операторы & (AND), | (OR), ^ (XOR), and ~ (INVERT); результаты этих операторов являются членами перечисления. Использование auto с флагом приводит к получению целых чисел, являющихся степенью двойки, начиная с 1.
+
+```python
+>>> from enum import auto
+
+>>> class Weekday(Flag):
+...     MONDAY = auto()
+...     TUESDAY = auto()
+...     WEDNESDAY = auto()
+...     THURSDAY = auto()
+...     FRIDAY = auto()
+...     SATURDAY = auto()
+...     SUNDAY = auto()
+...     WEEKEND = SATURDAY | SUNDAY
+
+>>> print(Weekday.WEEKEND.value)
+96
+```
+
+Поведение auto() может быть переопределено. Для этого метод _generate_next_value_() должен быть определен до любых членов.
+
+```python
+>>> class AutoName(Enum):
+...     def _generate_next_value_(name, start, count, last_values):
+...         return name
+
+>>> class Ordinal(AutoName):
+...     NORTH = auto()
+...     SOUTH = auto()
+...     EAST = auto()
+...     WEST = auto()
+
+>>> [member.value for member in Ordinal]
+['NORTH', 'SOUTH', 'EAST', 'WEST']
+```
+
+Наличие двух элементов перечисления с одинаковым именем недопустимо.
+
+```python
+>>> class Shape(Enum):
+...     SQUARE = 2
+...     SQUARE = 3
+
+Traceback (most recent call last):
+...
+TypeError: 'SQUARE' already defined as 2
+```
+
+Однако член перечисления может иметь другие связанные с ним имена... если не установлено, что членство уникально с помощью [unique()](https://docs.python.org/3/library/enum.html#enum.unique)
+
+```python
+from enum import Enum, unique
+
+>>> class Shape(Enum):
+...     SQUARE = 2
+...     DIAMOND = 1
+...     CIRCLE = 3
+...     ALIAS_FOR_SQUARE = 2
+
+>>> Shape.SQUARE
+<Shape.SQUARE: 2>
+>>> Shape.ALIAS_FOR_SQUARE
+<Shape.SQUARE: 2>
+>>> Shape(2)
+<Shape.SQUARE: 2>
+
+>>> @unique
+>>> class Mistake(Enum):
+...     ONE = 1
+...     TWO = 2
+...     THREE = 3
+...     FOUR = 3
+
+Traceback (most recent call last):
+...
+ValueError: duplicate values found in <enum 'Mistake'>: FOUR -> THREE
+```
+
+Специальный атрибут `__members__` представляет собой упорядоченное сопоставление имен с членами, доступное только для чтения.
+
+```python
+>>> for name, member in Shape.__members__.items():
+...     name, member
+
+('SQUARE', <Shape.SQUARE: 2>)
+('DIAMOND', <Shape.DIAMOND: 1>)
+('CIRCLE', <Shape.CIRCLE: 3>)
+('ALIAS_FOR_SQUARE', <Shape.SQUARE: 2>)
+```
+
+Доступно сравнение на идентичность и эквивалентность
+
+```python
+>>> Color.RED is Color.RED
+True
+>>> Color.RED is Color.BLUE
+False
+>>> Color.RED is not Color.BLUE
+True
+>>> Color.BLUE == Color.RED
+False
+>>> Color.BLUE != Color.RED
+True
+>>> Color.BLUE == Color.BLUE
+True
+```
+
+Однако порядковые сравнения не доступны - надо использовать [IntEnum](https://docs.python.org/3/library/enum.html#enum.IntEnum)
+
+```python
+>>> Color.RED < Color.BLUE
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: '<' not supported between instances of 'Color' and 'Color'
+```
+
+IntEnum аналогичен Enum, но его члены также являются целыми числами и могут использоваться везде, где могут использоваться целые числа. Если с элементом IntEnum выполняется какая-либо целочисленная операция, результирующее значение теряет свой статус перечисления.
+
+```python
+>>> from enum import IntEnum
+
+>>> class Numbers(IntEnum):
+...     ONE = 1
+...     TWO = 2
+...     THREE = 3
+>>> Numbers.THREE
+<Numbers.THREE: 3>
+>>> Numbers.ONE + Numbers.TWO
+3
+>>> Numbers.THREE + 5
+8
+>>> Numbers.THREE == 3
+True
+>>> Numbers.ONE > Numbers.TWO
+False
+```
+
+Перечисления — это классы Python, которые, как обычно, могут иметь методы и специальные методы. Перечисления могут иметь сабклассы, только если не содержат членов. Перечисления могут быть сериализованы и десериализованы.
+
+Кроме IntEnum доступны StrEnum, IntFlag. Другие типы можно конструировать миксуя:
+
+```python
+>>> from enum import Enum
+
+>>> class FloatNumbers(float, Enum):
+...     pass
+```
+
+При этом:
+
+- При создании подкласса Enum смешанные типы должны стоять перед самим Enum в последовательности оснований.
+- Смешанные типы должны иметь разрешение на подклассы. Например, bool и range не могут иметь подклассы и вызовут ошибку во время создания Enum, если они используются в качестве типа микширования.
+- Хотя Enum может иметь элементы любого типа, после добавления дополнительного типа все члены должны иметь значения этого типа. Это ограничение не распространяется на примеси, которые только добавляют методы и не указывают другой тип.
+- Когда вмешивается другой тип данных, атрибут value не совпадает с самим членом перечисления, хотя он и будет сравниваться с эквивалентным.
+- форматирование в стиле %: `%s` и `%r` вызывают `__str__()` и `__repr__()` класса Enum соответственно; другие коды (например, `%i` или `%h` для `IntEnum`) рассматривают член перечисления как смешанный тип.
+- Форматированные строковые литералы, `str.format()` и `format()` будут использовать метод перечисления `__str__()`.
+
 Смотри еще:
 
+- [примеры](https://docs.python.org/3/howto/enum.html#enum-cookbook)
 - [больше примеров](https://docs.python.org/3/library/enum.html?highlight=enum#interesting-examples)
 - [Enum HOWTO](https://docs.python.org/3/howto/enum.html)
 - [[python-standart-library]]

@@ -272,9 +272,212 @@
 
 <p><a href="https://stackoverflow.com/a/43634746/15966204">Подробнее</a></p>
 
+<h2 id="enum-howto"><a href="https://docs.python.org/3/howto/enum.html">Enum HOWTO</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Weekday</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="p">...</span>    <span class="n">MONDAY</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">...</span>    <span class="n">TUESDAY</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">...</span>    <span class="n">WEDNESDAY</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="p">...</span>    <span class="n">THURSDAY</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="p">...</span>    <span class="n">FRIDAY</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="p">...</span>    <span class="n">SATURDAY</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="p">...</span>    <span class="n">SUNDAY</span> <span class="o">=</span> <span class="mi">7</span>
+
+<span class="p">...</span>    <span class="o">@</span><span class="nb">classmethod</span>
+<span class="p">...</span>    <span class="k">def</span> <span class="nf">from_date</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+<span class="p">...</span>        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">date</span><span class="p">.</span><span class="n">isoweekday</span><span class="p">())</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Weekday</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">Weekday</span><span class="p">.</span><span class="n">WEDNESDAY</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Weekday</span><span class="p">[</span><span class="s">'MONDAY'</span><span class="p">]</span>
+<span class="o">&lt;</span><span class="n">Weekday</span><span class="p">.</span><span class="n">WEDNESDAY</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">Weekday</span><span class="p">.</span><span class="n">THURSDAY</span><span class="p">)</span>
+<span class="n">Weekday</span><span class="p">.</span><span class="n">THURSDAY</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">Weekday</span><span class="p">.</span><span class="n">MONDAY</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">enum</span> <span class="s">'Weekday'</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Weekday</span><span class="p">.</span><span class="n">FRIDAY</span><span class="p">,</span> <span class="n">Weekday</span><span class="p">)</span>
+<span class="bp">True</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">Weekday</span><span class="p">.</span><span class="n">TUESDAY</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">TUESDAY</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Weekday</span><span class="p">.</span><span class="n">WEDNESDAY</span><span class="p">.</span><span class="n">value</span>
+<span class="mi">3</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Weekday</span><span class="p">.</span><span class="n">from_date</span><span class="p">(</span><span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">())</span>
+<span class="o">&lt;</span><span class="n">Weekday</span><span class="p">.</span><span class="n">TUESDAY</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Weekday</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>В случаях, когда фактические значения вхождений не имеют значения, вы можете сэкономить немного времени и использовать auto() для значений. <a href="https://docs.python.org/3/library/enum.html#enum.Flag">Flag</a> поддерживает побитовые операторы &amp; (AND),</td>
+      <td>(OR), ^ (XOR), and ~ (INVERT); результаты этих операторов являются членами перечисления. Использование auto с флагом приводит к получению целых чисел, являющихся степенью двойки, начиная с 1.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">auto</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Weekday</span><span class="p">(</span><span class="n">Flag</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">MONDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">TUESDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">WEDNESDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">THURSDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">FRIDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">SATURDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">SUNDAY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">WEEKEND</span> <span class="o">=</span> <span class="n">SATURDAY</span> <span class="o">|</span> <span class="n">SUNDAY</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">Weekday</span><span class="p">.</span><span class="n">WEEKEND</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+<span class="mi">96</span>
+</code></pre></div></div>
+
+<p>Поведение auto() может быть переопределено. Для этого метод <em>generate_next_value</em>() должен быть определен до любых членов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">AutoName</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">def</span> <span class="nf">_generate_next_value_</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">last_values</span><span class="p">):</span>
+<span class="p">...</span>         <span class="k">return</span> <span class="n">name</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Ordinal</span><span class="p">(</span><span class="n">AutoName</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">NORTH</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">SOUTH</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">EAST</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+<span class="p">...</span>     <span class="n">WEST</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">member</span><span class="p">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">Ordinal</span><span class="p">]</span>
+<span class="p">[</span><span class="s">'NORTH'</span><span class="p">,</span> <span class="s">'SOUTH'</span><span class="p">,</span> <span class="s">'EAST'</span><span class="p">,</span> <span class="s">'WEST'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Наличие двух элементов перечисления с одинаковым именем недопустимо.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">SQUARE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">...</span>     <span class="n">SQUARE</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="p">...</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="s">'SQUARE'</span> <span class="n">already</span> <span class="n">defined</span> <span class="k">as</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>Однако член перечисления может иметь другие связанные с ним имена… если не установлено, что членство уникально с помощью <a href="https://docs.python.org/3/library/enum.html#enum.unique">unique()</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">SQUARE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">...</span>     <span class="n">DIAMOND</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">...</span>     <span class="n">CIRCLE</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="p">...</span>     <span class="n">ALIAS_FOR_SQUARE</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Shape</span><span class="p">.</span><span class="n">SQUARE</span>
+<span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">SQUARE</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Shape</span><span class="p">.</span><span class="n">ALIAS_FOR_SQUARE</span>
+<span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">SQUARE</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Shape</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">SQUARE</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">@</span><span class="n">unique</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Mistake</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">ONE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">...</span>     <span class="n">TWO</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">...</span>     <span class="n">THREE</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="p">...</span>     <span class="n">FOUR</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="p">...</span>
+<span class="nb">ValueError</span><span class="p">:</span> <span class="n">duplicate</span> <span class="n">values</span> <span class="n">found</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">enum</span> <span class="s">'Mistake'</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">FOUR</span> <span class="o">-&gt;</span> <span class="n">THREE</span>
+</code></pre></div></div>
+
+<p>Специальный атрибут <code class="language-plaintext highlighter-rouge">__members__</code> представляет собой упорядоченное сопоставление имен с членами, доступное только для чтения.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">Shape</span><span class="p">.</span><span class="n">__members__</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">name</span><span class="p">,</span> <span class="n">member</span>
+
+<span class="p">(</span><span class="s">'SQUARE'</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">SQUARE</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'DIAMOND'</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">DIAMOND</span><span class="p">:</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'CIRCLE'</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">CIRCLE</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">'ALIAS_FOR_SQUARE'</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Shape</span><span class="p">.</span><span class="n">SQUARE</span><span class="p">:</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Доступно сравнение на идентичность и эквивалентность</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span> <span class="ow">is</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span> <span class="ow">is</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span> <span class="o">==</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span>
+<span class="bp">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span> <span class="o">!=</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span> <span class="o">==</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>Однако порядковые сравнения не доступны - надо использовать <a href="https://docs.python.org/3/library/enum.html#enum.IntEnum">IntEnum</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">RED</span> <span class="o">&lt;</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLUE</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="s">'&lt;'</span> <span class="ow">not</span> <span class="n">supported</span> <span class="n">between</span> <span class="n">instances</span> <span class="n">of</span> <span class="s">'Color'</span> <span class="ow">and</span> <span class="s">'Color'</span>
+</code></pre></div></div>
+
+<p>IntEnum аналогичен Enum, но его члены также являются целыми числами и могут использоваться везде, где могут использоваться целые числа. Если с элементом IntEnum выполняется какая-либо целочисленная операция, результирующее значение теряет свой статус перечисления.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Numbers</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">ONE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">...</span>     <span class="n">TWO</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">...</span>     <span class="n">THREE</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">THREE</span>
+<span class="o">&lt;</span><span class="n">Numbers</span><span class="p">.</span><span class="n">THREE</span><span class="p">:</span> <span class="mi">3</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">ONE</span> <span class="o">+</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">TWO</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">THREE</span> <span class="o">+</span> <span class="mi">5</span>
+<span class="mi">8</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">THREE</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">ONE</span> <span class="o">&gt;</span> <span class="n">Numbers</span><span class="p">.</span><span class="n">TWO</span>
+<span class="bp">False</span>
+</code></pre></div></div>
+
+<p>Перечисления — это классы Python, которые, как обычно, могут иметь методы и специальные методы. Перечисления могут иметь сабклассы, только если не содержат членов. Перечисления могут быть сериализованы и десериализованы.</p>
+
+<p>Кроме IntEnum доступны StrEnum, IntFlag. Другие типы можно конструировать миксуя:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">FloatNumbers</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>При этом:</p>
+
+<ul>
+  <li>При создании подкласса Enum смешанные типы должны стоять перед самим Enum в последовательности оснований.</li>
+  <li>Смешанные типы должны иметь разрешение на подклассы. Например, bool и range не могут иметь подклассы и вызовут ошибку во время создания Enum, если они используются в качестве типа микширования.</li>
+  <li>Хотя Enum может иметь элементы любого типа, после добавления дополнительного типа все члены должны иметь значения этого типа. Это ограничение не распространяется на примеси, которые только добавляют методы и не указывают другой тип.</li>
+  <li>Когда вмешивается другой тип данных, атрибут value не совпадает с самим членом перечисления, хотя он и будет сравниваться с эквивалентным.</li>
+  <li>форматирование в стиле %: <code class="language-plaintext highlighter-rouge">%s</code> и <code class="language-plaintext highlighter-rouge">%r</code> вызывают <code class="language-plaintext highlighter-rouge">__str__()</code> и <code class="language-plaintext highlighter-rouge">__repr__()</code> класса Enum соответственно; другие коды (например, <code class="language-plaintext highlighter-rouge">%i</code> или <code class="language-plaintext highlighter-rouge">%h</code> для <code class="language-plaintext highlighter-rouge">IntEnum</code>) рассматривают член перечисления как смешанный тип.</li>
+  <li>Форматированные строковые литералы, <code class="language-plaintext highlighter-rouge">str.format()</code> и <code class="language-plaintext highlighter-rouge">format()</code> будут использовать метод перечисления <code class="language-plaintext highlighter-rouge">__str__()</code>.</li>
+</ul>
+
 <p>Смотри еще:</p>
 
 <ul>
+  <li><a href="https://docs.python.org/3/howto/enum.html#enum-cookbook">примеры</a></li>
   <li><a href="https://docs.python.org/3/library/enum.html?highlight=enum#interesting-examples">больше примеров</a></li>
   <li><a href="https://docs.python.org/3/howto/enum.html">Enum HOWTO</a></li>
   <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
