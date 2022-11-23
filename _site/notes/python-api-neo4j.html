@@ -276,11 +276,13 @@
     <span class="n">app</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div></div>
 
-<h3 id="driver-object">Driver object</h3>
+<h3 id="driver-и-graphdatabase"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#driver">Driver</a> и <a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.GraphDatabase">GraphDatabase</a></h3>
+
+<p>Этот объект содержит сведения, необходимые для установления соединения с базой данных Neo4j, включая URI сервера, учетные данные и другую конфигурацию. Объекты neo4j.Driver содержат пул соединений, из которого объекты neo4j.Session могут заимствовать соединения. Закрытие драйвера немедленно отключит все соединения в пуле.</p>
 
 <p>В языках, где безопасность потоков является проблемой, объект драйвера можно считать потокобезопасным.</p>
 
-<p>При создании драйверо обязвтельно необходимо предсотавить connection URI и аутентификационную информацию. При необходимости могут быть предоставлены дополнительные сведения о конфигурации. Детали конфигурации неизменяемы в течение всего времени существования объекта Driver. Следовательно, если требуется несколько конфигураций (например, при работе с несколькими пользователями базы данных), необходимо использовать несколько объектов-драйверов.</p>
+<p>При создании драйверf обязвтельно необходимо предjcтавить connection URI и аутентификационную информацию. При необходимости могут быть предоставлены дополнительные сведения о конфигурации. Детали конфигурации неизменяемы в течение всего времени существования объекта Driver. Следовательно, если требуется несколько конфигураций (например, при работе с несколькими пользователями базы данных), необходимо использовать несколько объектов-драйверов.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">GraphDatabase</span>
 
@@ -294,41 +296,121 @@
 
 <p><a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-connection-uris">Подробнее о connection URI’s</a>. <a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-authentication">Там же об аутентификации</a>, <a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-configuration">про конфиги</a> и <a href="https://neo4j.com/docs/python-manual/current/client-applications/#python-driver-logging">логгинг</a></p>
 
+<p>Допустимые uri:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">bolt://host[:port]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bolt+ssc://host[:port]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bolt+s://host[:port]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">neo4j://host[:port][?routing_context]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">neo4j+ssc://host[:port][?routing_context]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">neo4j+s://host[:port][?routing_context]</code></li>
+</ul>
+
 <h3 id="cypher-flow">[<a href="cypher" title="Cypher query language">cypher</a>] flow</h3>
 
 <p>Работа в канале cypher организована в сессии, транзакции и запросы следующим образом:</p>
 
 <p><img src="/myknowlegebase/attachments/2022-08-02-23-33-43.png" alt="cypher flow" /></p>
 
-<h4 id="сессии">Сессии</h4>
+<h4 id="сессии"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#session-construction">Сессии</a></h4>
 
-<p>Сессии всегда связаны с одним контекстом транзакции , которым обычно является отдельная база данных. Используется механизм закладок, сессии также гарантируют правильную последовательность транзакций, даже если транзакции происходят на нескольких членах кластера (принцип причинно-следственной связи). Сессии, по сути, обеспечивают контекст для хранения информации о последовательности транзакций в виде закладок.</p>
+<p>Сессии всегда связаны с одним контекстом транзакции, которым обычно является отдельная база данных. Используется механизм закладок, сессии также гарантируют правильную последовательность транзакций, даже если транзакции происходят на нескольких нодах кластера (принцип причинно-следственной связи). Сессии, по сути, обеспечивают контекст для хранения информации о последовательности транзакций в виде закладок.</p>
 
-<p>Когда транзакция начинается, сессия, в котором она содержится, получает соединение из пула соединений драйвера. При фиксации (или откате) транзакции сессия снова разрывает это соединение. Это означает, что только когда сессия выполняет работу, он занимает ресурс соединения. В состоянии простоя такой ресурс не используется.</p>
+<p>Когда транзакция начинается, сессия, в котором она содержится, получает соединение из пула соединений драйвера. При фиксации (или откате) транзакции сессия снова разрывает это соединение. Это означает, что только когда сессия выполняет работу, она занимает ресурс соединения. В состоянии простоя такой ресурс не используется.</p>
 
-<p>Из-за последовательности, гарантированной сессией, сессии могут одновременно содержать только одну транзакцию. Для параллельного выполнения следует использовать несколько сесиий. В языках, где важна безопасность потоков, сессии не следует считать потокобезопасными.</p>
+<p>Из-за последовательности, гарантированной сессией, сессии могут одновременно содержать только одну транзакцию. Для параллельного выполнения следует использовать несколько сесиий. <strong>В языках, где важна безопасность потоков, сессии не следует считать потокобезопасными</strong>.</p>
 
 <p>Закрытие сессии вызывает откат любой открытой транзакции, а связанное с ней соединение, следовательно, возвращается в пул.</p>
 
-<p>Сессии привязаны к одному транзакционному контексту, указанному при построении. Neo4j предоставляет каждую базу данных в своем собственном контексте, тем самым запрещая транзакции между базами данных (или сессии) по дизайну. Точно так же сессии, привязанные к разным базам данных, не могут быть связаны причинно-следственной связью путем распространения закладок между ними.</p>
+<p>Сессии привязаны к одному транзакционному контексту, указанному при построении. [<a href="neo4j" title="Neo4j graph data base">neo4j</a>] предоставляет каждую базу данных в своем собственном контексте, тем самым запрещая транзакции между базами данных (или сессии) по дизайну. Точно так же сессии, привязанные к разным базам данных, не могут быть связаны причинно-следственной связью путем распространения закладок между ними.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(...)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-    <span class="o">//</span> <span class="n">transactions</span> <span class="n">go</span> <span class="n">here</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(</span><span class="n">database</span><span class="o">=</span><span class="s">"example_database"</span><span class="p">,</span> <span class="n">fetch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (a:Person) RETURN a.name AS name"</span><span class="p">)</span>
+    <span class="c1"># do something with the result...
+</span></code></pre></div></div>
+
+<p><strong><a href="https://neo4j.com/docs/api/python-driver/current/api.html#session-configuration">Конфигурация сеанса</a>:</strong></p>
+
+<p><strong>bookmarks</strong>. Механизм, обеспечивающий причинно-следственную согласованность между транзакциями в сеансе. Закладки неявно передаются между транзакциями в рамках одного сеанса для удовлетворения требований причинно-следственной согласованности. Могут быть сценарии, в которых вы захотите использовать закладку из одного сеанса в другом новом сеансе. По умолчанию сеансы изначально будут создаваться без закладок</p>
+
+<p><strong>default_Access_Mode</strong>. Резервный вариант настройки режима доступа, когда функции транзакций не используются. Как правило, режим доступа устанавливается для каждой транзакции путем вызова соответствующего метода функции транзакции. В других случаях этот параметр наследуется. Обратите внимание, что функции транзакций будут игнорировать/переопределять этот параметр. <strong>По умолчанию: Запись</strong></p>
+
+<p><strong>database</strong>. База данных, с которой будет взаимодействовать сессия. При работе с базой данных, которая не является базой данных по умолчанию (например, с system базой данных или другой базой данных в Neo4j 4.0 Enterprise Edition), вы можете явно настроить базу данных, для которой драйвер выполняет транзакции. Разрешение псевдонимов базы данных происходит во время создания соединения, которое не находится под контролем сеанса. Поэтому не рекомендуется изменять псевдонимы базы данных во время активных сеансов.</p>
+
+<p><strong>fetch_size</strong>. Количество записей, извлекаемых в каждом пакете с сервера. В Neo4j 4.0 появилась возможность извлекать записи пакетами, что позволяет клиентскому приложению контролировать заполнение данных. <strong>По умолчанию: 1000 записей</strong></p>
+
+<p><strong>impersonated_user</strong>. Пользователи могут запускать транзакции в базе данных как разные пользователи, если им было предоставлено явное разрешение на это. При персонификации пользователя запрос выполняется в полном контексте безопасности данного пользователя, а не аутентифицированного пользователя (т. е. домашней базы данных, разрешений и т. д.).</p>
+
+<p>Доступны два объекта <a href="https://neo4j.com/docs/api/python-driver/current/api.html#session">Session</a> и <a href="https://neo4j.com/docs/api/python-driver/current/api.html#query">Query</a>. В сессии можн создавать запросы используя строки на языке [<a href="cypher" title="Cypher query language">cypher</a>] или объекты Query.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (n:Person) RETURN n.name AS name"</span><span class="p">)</span>
+    <span class="c1"># do something with the result...
+</span></code></pre></div></div>
+
+<p>Методы Session:</p>
+
+<ul>
+  <li>close() закрыть сессию</li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.run">run(query, parameters=None, **kwargs)</a> создать транзакцию с автоматической фиксацией</li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.begin_transaction">begin_transaction(metadata=None, timeout=None)</a> создать новую транзакицю (дефолтно на запись)</li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.read_transaction">read_transaction(transaction_function, *args, **kwargs)</a> новая транзакция на чтение</li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.write_transaction">write_transaction(transaction_function, *args, **kwargs)</a></li>
+</ul>
+
+<p>Доступны так-же методы доступа к закладкам межуд транзакциями.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_two_tx</span><span class="p">(</span><span class="n">tx</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"UNWIND [1,2,3,4] AS x RETURN x"</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">values</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="c1"># or shorter: values = [record.values()
+</span>    <span class="c1">#                       for record in result.fetch(2)]
+</span>
+    <span class="c1"># discard the remaining records if there are any
+</span>    <span class="n">summary</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">consume</span><span class="p">()</span>
+    <span class="c1"># use the summary for logging etc.
+</span>    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="n">get_two_tx</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><strong>Конфигурация сеанса:</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_node_tx</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s">"CREATE (n:NodeExample { name: $name }) RETURN id(n) AS node_id"</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="s">"node_id"</span><span class="p">]</span>
 
-<p><strong>Bookmarks</strong>. Механизм, обеспечивающий причинно-следственную согласованность между транзакциями в сеансе. Закладки неявно передаются между транзакциями в рамках одного сеанса для удовлетворения требований причинно-следственной согласованности. Могут быть сценарии, в которых вы захотите использовать закладку из одного сеанса в другом новом сеансе. По умолчанию сеансы изначально будут создаваться без закладок</p>
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">node_id</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_node_tx</span><span class="p">,</span> <span class="s">"example"</span><span class="p">)</span>
+</code></pre></div></div>
 
-<p><strong>Default Access Mode</strong>. Резервный вариант настройки режима доступа, когда функции транзакций не используются. Как правило, режим доступа устанавливается для каждой транзакции путем вызова соответствующего метода функции транзакции. В других случаях этот параметр наследуется. Обратите внимание, что функции транзакций будут игнорировать/переопределять этот параметр. По умолчанию: Запись</p>
+<p>Методы извлечения <a href="https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions">управляемых транзакций</a>:</p>
 
-<p><strong>Database</strong>. База данных, с которой будет взаимодействовать сессия. При работе с базой данных, которая не является базой данных по умолчанию (например, с system базой данных или другой базой данных в Neo4j 4.0 Enterprise Edition), вы можете явно настроить базу данных, для которой драйвер выполняет транзакции. Разрешение псевдонимов базы данных происходит во время создания соединения, которое не находится под контролем сеанса. Поэтому не рекомендуется изменять псевдонимы базы данных во время активных сеансов.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">execute_write()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">execute_read()</code></li>
+</ul>
 
-<p><strong>Fetch Size</strong>. Количество записей, извлекаемых в каждом пакете с сервера. В Neo4j 4.0 появилась возможность извлекать записи пакетами, что позволяет клиентскому приложению контролировать заполнение данных. По умолчанию: 1000 записей</p>
+<p>Они позволяют передать в качестве параметра функциональный объект, представляющий транзакционную единицу работы. Эта функция вызывается один или несколько раз в течение настраиваемого срока, пока не завершится успешно. Результаты должны быть полностью использованы внутри функции, и должны быть возвращены только совокупные значения или значения состояния. Возврат объекта реального результата помешает драйверу правильно управлять соединениями и нарушит гарантии повторных попыток.</p>
 
-<p>Impersonated User. Пользователи могут запускать транзакции в базе данных как разные пользователи, если им было предоставлено явное разрешение на это. При персонификации пользователя запрос выполняется в полном контексте безопасности данного пользователя пользователя, а не аутентифицированного пользователя (т. е. домашней базы данных, разрешений и т. д.).</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">node_id</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute_write</span><span class="p">(</span><span class="n">create_person_tx</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-<h4 id="транзакции">Транзакции</h4>
+<span class="k">def</span> <span class="nf">create_person_tx</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s">"CREATE (a:Person { name: $name }) RETURN id(a) AS node_id"</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="s">"node_id"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h4 id="транзакции"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#transaction">Транзакции</a></h4>
 
 <p>Транзакции могут включать операции чтения или записи и, как правило, направляются на соответствующий сервер для выполнения, где они будут выполняться полностью. В случае сбоя транзакции необходимо повторить транзакцию с самого начала.</p>
 
@@ -381,9 +463,46 @@
         <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">Query</span><span class="p">(</span><span class="s">"CREATE (a:Person {name: $name})"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions">Смотри в документации</a>.</p>
+
+<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions">Явные (explicit) транзакции</a>. Явные транзакции поддерживают несколько операторов и должны создаваться с помощью явного вызова neo4j.Session.begin_transaction(). Это создает новый объект neo4j.Transaction, который можно использовать для запуска Cypher. Это также дает приложениям возможность напрямую контролировать действия по фиксации и откату.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">neo4j</span>
+
+<span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">(</span><span class="n">default_access_mode</span><span class="o">=</span><span class="n">neo4j</span><span class="p">.</span><span class="n">WRITE_ACCESS</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">begin_transaction</span><span class="p">()</span>
+        <span class="n">node_id</span> <span class="o">=</span> <span class="n">create_person_node</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span>
+        <span class="n">set_person_name</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">tx</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">create_person_node</span><span class="p">(</span><span class="n">tx</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s">"CREATE (a:Person { name: $name }) RETURN id(a) AS node_id"</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">"default_name"</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="s">"node_id"</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">set_person_name</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">node_id</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s">"MATCH (a:Person) WHERE id(a) = $id SET a.name = $name"</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">node_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">consume</span><span class="p">()</span>
+    <span class="c1"># use the summary for logging etc.
+</span></code></pre></div></div>
+
+<p>Методы объекта <a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Transaction">Transaction</a>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">run(query, parameters=None, **kwparameters)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">commit()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">rollback()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">close()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">closed()</code></li>
+</ul>
+
 <p><strong>Конфигурация транзакции:</strong></p>
 
-<p><strong>Transaction Timeout</strong>. Можно указать значение тайм-аута, и транзакции, выполнение которых на сервере занимает больше времени, чем это значение, будут прекращены. Это значение переопределит значение, установленное <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code>. Если значение не указано, значение по умолчанию принимается настройкой сервера. При использовании с Neo4j 4.1 и более ранними версиями драйвер может переопределить любое значение, установленное с помощью <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code>. В 4.2 и более поздних версиях <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code> также действует как максимум, который драйвер не может переопределить. Например, при настройке сервера <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout=10s</code> драйвер может указать более короткое время ожидания (например, 5 секунд), но не более 10 секунд. Если указано большее значение, транзакция все равно прервется через 10 секунд.</p>
+<p><strong>transaction_timeout</strong>. Можно указать значение тайм-аута, и транзакции, выполнение которых на сервере занимает больше времени, чем это значение, будут прекращены. Это значение переопределит значение, установленное <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code>. Если значение не указано, значение по умолчанию принимается настройкой сервера. При использовании с Neo4j 4.1 и более ранними версиями драйвер может переопределить любое значение, установленное с помощью <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code>. В 4.2 и более поздних версиях <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout</code> также действует как максимум, который драйвер не может переопределить. Например, при настройке сервера <code class="language-plaintext highlighter-rouge">dbms.transaction.timeout=10s</code> драйвер может указать более короткое время ожидания (например, 5 секунд), но не более 10 секунд. Если указано большее значение, транзакция все равно прервется через 10 секунд.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">unit_of_work</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -397,7 +516,7 @@
         <span class="k">return</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_person</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><strong>Metadata</strong>. Транзакции могут быть помечены метаданными, которые будут прикреплены к выполняемой транзакции и видны в различных выходных данных при перечислении транзакций и запросов, а также в журнале запросов.</p>
+<p><strong>metadata</strong>. Транзакции могут быть помечены метаданными, которые будут прикреплены к выполняемой транзакции и видны в различных выходных данных при перечислении транзакций и запросов, а также в журнале запросов.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">unit_of_work</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s">"applicationId"</span><span class="p">:</span> <span class="s">"123"</span><span class="p">})</span>
 <span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
