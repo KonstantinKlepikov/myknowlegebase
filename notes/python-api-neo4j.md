@@ -227,7 +227,7 @@ with driver.session(database="example_database", fetch_size=100) as session:
 
 **impersonated_user**. Пользователи могут запускать транзакции в базе данных как разные пользователи, если им было предоставлено явное разрешение на это. При персонификации пользователя запрос выполняется в полном контексте безопасности данного пользователя, а не аутентифицированного пользователя (т. е. домашней базы данных, разрешений и т. д.).
 
-Доступны два объекта [Session](https://neo4j.com/docs/api/python-driver/current/api.html#session) и [Query](https://neo4j.com/docs/api/python-driver/current/api.html#query). В сессии можн создавать запросы используя строки на языке [[cypher]] или объекты Query.
+Доступны два объекта; [Session](https://neo4j.com/docs/api/python-driver/current/api.html#session) и [Query](https://neo4j.com/docs/api/python-driver/current/api.html#query). В сессии можн создавать запросы используя строки на языке [[cypher]] или объекты Query.
 
 ```python
 with driver.session() as session:
@@ -240,8 +240,10 @@ with driver.session() as session:
 - close() закрыть сессию
 - [run(query, parameters=None, **kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.run) создать транзакцию с автоматической фиксацией
 - [begin_transaction(metadata=None, timeout=None)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.begin_transaction) создать новую транзакицю (дефолтно на запись)
-- [read_transaction(transaction_function, *args, **kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.read_transaction) новая транзакция на чтение
-- [write_transaction(transaction_function, *args, **kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.write_transaction)
+- [read_transaction(transaction_function, *args, **kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.read_transaction) новая транзакция на чтение **deprecated с 5.0**
+- [write_transaction(transaction_function, *args, **kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.write_transaction) **deprecated с 5.0**
+- execute_write() **с 5.0**
+- execute_read() **с 5.0**
 
 Доступны так-же методы доступа к закладкам межуд транзакциями.
 
@@ -276,25 +278,6 @@ with driver.session() as session:
     node_id = session.write_transaction(create_node_tx, "example")
 ```
 
-Методы извлечения [управляемых транзакций](https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions):
-
-- `execute_write()`
-- `execute_read()`
-
-Они позволяют передать в качестве параметра функциональный объект, представляющий транзакционную единицу работы. Эта функция вызывается один или несколько раз в течение настраиваемого срока, пока не завершится успешно. Результаты должны быть полностью использованы внутри функции, и должны быть возвращены только совокупные значения или значения состояния. Возврат объекта реального результата помешает драйверу правильно управлять соединениями и нарушит гарантии повторных попыток.
-
-```python
-def create_person(driver, name)
-    with driver.session() as session:
-        node_id = session.execute_write(create_person_tx, name)
-
-def create_person_tx(tx, name):
-    query = "CREATE (a:Person { name: $name }) RETURN id(a) AS node_id"
-    result = tx.run(query, name=name)
-    record = result.single()
-    return record["node_id"]
-```
-
 #### [Транзакции](https://neo4j.com/docs/api/python-driver/current/api.html#transaction)
 
 Транзакции могут включать операции чтения или записи и, как правило, направляются на соответствующий сервер для выполнения, где они будут выполняться полностью. В случае сбоя транзакции необходимо повторить транзакцию с самого начала.
@@ -326,7 +309,15 @@ def add_person(driver, name):
         return session.write_transaction(create_person, name)
 ```
 
-[Транзакция с автоматической фиксацией](https://neo4j.com/docs/python-manual/current/session-api/#python-driver-simple-autocommit-transactions) — это базовая, но ограниченная форма транзакции. Такая транзакция состоит только из одного запроса Cypher и не повторяется автоматически в случае сбоя. Следовательно, любые сценарии ошибок должны обрабатываться самим клиентским приложением.
+**Реализованы три вида транзакций**:
+
+- [транзакция с автокоммитом](https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions)
+- [явная (explicit) транзакция](https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions)
+- [управляемая (manageв) транзакция или функция транзакции (transaction function)](https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions)
+
+[Транзакция с автоматической фиксацией](https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions) — это базовая, но ограниченная форма транзакции. Такая транзакция состоит только из одного запроса Cypher и не повторяется автоматически в случае сбоя. Следовательно, любые сценарии ошибок должны обрабатываться самим клиентским приложением.
+
+Автокоммит транзакция доступна через `neo4j.Session.run()`
 
 Транзакции с автоматической фиксацией служат следующим целям:
 
@@ -348,9 +339,7 @@ def add_person_within_a_second(self, name):
         session.run(Query("CREATE (a:Person {name: $name})", timeout=1.0), name=name)
 ```
 
-[Смотри в документации](https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions).
-
-[Явные (explicit) транзакции](https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions). Явные транзакции поддерживают несколько операторов и должны создаваться с помощью явного вызова neo4j.Session.begin_transaction(). Это создает новый объект neo4j.Transaction, который можно использовать для запуска Cypher. Это также дает приложениям возможность напрямую контролировать действия по фиксации и откату.
+[Явные (explicit) транзакции](https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions). Явные транзакции поддерживают несколько операторов и должны создаваться с помощью явного вызова `neo4j.Session.begin_transaction()`. Это создает новый объект `neo4j.Transaction`, который можно использовать для запуска [[cypher]] запроса. Это также дает приложениям возможность напрямую контролировать действия по фиксации и откату.
 
 ```python
 import neo4j
@@ -383,6 +372,24 @@ def set_person_name(tx, node_id, name):
 - `rollback()`
 - `close()`
 - `closed()`
+
+[Управляемые транзакции (функции транзакции)](https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions) — самая мощная форма транзакции, обеспечивающая возможность переопределения режима доступа и повторных попыток.
+
+Они позволяют передать в качестве параметра функциональный объект, представляющий транзакционную единицу работы. Эта функция вызывается один или несколько раз в течение настраиваемого срока, пока не завершится успешно. Результаты должны быть полностью использованы внутри функции, и должны быть возвращены только совокупные значения или значения состояния. Возврат объекта реального результата помешает драйверу правильно управлять соединениями и нарушит гарантии повторных попыток. Функции получают `neo4j.ManagedTransaction` объект, который реализует только методы `run()` и декоратор `unit_of_work()`.
+
+```python
+def create_person(driver, name)
+    with driver.session() as session:
+        node_id = session.execute_write(create_person_tx, name)
+
+def create_person_tx(tx, name):
+    query = "CREATE (a:Person { name: $name }) RETURN id(a) AS node_id"
+    result = tx.run(query, name=name)
+    record = result.single()
+    return record["node_id"]
+```
+
+Обратите внимание, что функции транзакций должны быть идемпотентными (т. е. результат однократного запуска функции должен быть таким же, как и при ее многократном запуске). Это связано с тем, что драйвер повторно попытается выполнить функцию транзакции, если ошибка будет классифицирована как повторяемая.
 
 **Конфигурация транзакции:**
 
@@ -420,7 +427,7 @@ def add_person(driver, name):
 
 Запросы состоят из запроса серверу на выполнение оператора Cypher, за которым следует ответ клиенту с результатом. Результаты передаются в виде потока записей вместе с метаданными и могут постепенно использоваться клиентским приложением.
 
-Для выполнения Cypher Query требуется текст запроса вместе с необязательным набором именованных параметров. Текст может содержать заполнители параметров  которые заменяются соответствующими значениями во время выполнения. Несмотря на то, что можно запускать непараметризованные запросы Cypher, **хорошей практикой программирования является использование параметров в запросах Cypher, когда это возможно**. Это позволяет кэшировать запросы внутри Cypher Engine, что положительно сказывается на производительности. Значения параметров должны соответствовать значениям Cypher.
+Для выполнения Cypher Query требуется текст запроса вместе с необязательным набором именованных параметров. Текст может содержать заполнители параметров, которые заменяются соответствующими значениями во время выполнения. Несмотря на то, что можно запускать непараметризованные запросы Cypher, **хорошей практикой программирования является использование параметров в запросах Cypher, когда это возможно**. Это позволяет кэшировать запросы внутри Cypher Engine, что положительно сказывается на производительности. Значения параметров должны соответствовать значениям Cypher.
 
 Результаты запроса обычно используются в виде потока записей. Драйверы предоставляют способ итерации через этот поток.
 
@@ -433,13 +440,13 @@ with driver.session() as session:
     people = session.read_transaction(match_person_nodes)
 ```
 
-В рамках сеанса одновременно может быть активен только один поток результатов . Таким образом, если результат одного запроса не используется полностью до выполнения другого запроса, оставшаяся часть первого результата будет автоматически помещена в буфер в объекте результата. Этот буфер обеспечивает промежуточную точку для результатов и разделяет обработку результатов на выборку (перемещение из сети в буфер) и потребление (перемещение из буфера в приложение).
+В рамках сеанса одновременно может быть активен только один поток результатов. Таким образом, если результат одного запроса не используется полностью до выполнения другого запроса, оставшаяся часть первого результата будет автоматически помещена в буфер в объекте результата. Этот буфер обеспечивает промежуточную точку для результатов и разделяет обработку результатов на выборку (перемещение из сети в буфер) и потребление (перемещение из буфера в приложение).
 
 ![neo4j buffer](../attachments/2022-08-03-00-11-27.png)
 
-Для больших результатов буфер результатов может потребовать значительного объема памяти. По этой причине рекомендуется потреблять результаты по возможности по порядку/
+Для больших результатов буфер результатов может потребовать значительного объема памяти. По этой причине рекомендуется потреблять результаты по возможности по порядку.
 
-Клиентские приложения могут управлять более сложными шаблонами запросов, явно сохраняя результаты. Такое явное сохранение может также быть полезным, когда результат необходимо сохранить для будущей обработки. Драйвер ет поддержку этого процесса.
+Клиентские приложения могут управлять более сложными шаблонами запросов, явно сохраняя результаты. Такое явное сохранение может также быть полезным, когда результат необходимо сохранить для будущей обработки. Драйвер дает поддержку этого процесса.
 
 ```python
 def add_employee_to_company(tx, person, company_name):
@@ -463,7 +470,52 @@ def add_employees(company_name):
     return employees
 ```
 
-#### Причинная цепочка и закладки
+#### [Result object](https://neo4j.com/docs/api/python-driver/current/api.html#result)
+
+Является результатом запросак БД. Обеспечивает дескриптор результата запроса, предоставляя доступ к записям внутри него, а также к метаданным результата. Также содержит буфер, который автоматически сохраняет неиспользованные записи, когда результаты используются не по порядку. `Neo4j.Result` присоединяется к активному соединению через `neo4j.Session` до тех пор, пока все его содержимое не будет буферизовано или использовано.
+
+Доступно:
+
+- `iter(result)`
+- `next(result)`
+- `keys()` кортеж с ключами
+- `consume()` потребляет оставшуюся часть результата и возвращает [neo4j.ResultSummary](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.ResultSummary)
+- `single(strict: te.Literal[False] = False) → Optional[Record]`
+- `single(strict: te.Literal[True])` → Record получить следующую и единственную оставшуюся запись или None. Предупреждение генерируется, если доступно более одной записи, но первая из них все еще возвращается.
+- `fetch(n)` получить n записей из результата
+- `peek()` Получить следующую запись из этого результата, не потребляя его. Это оставляет запись в буфере для дальнейшей обработки.
+- `graph()` Возвращает экземпляр [neo4j.graph.Graph](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.graph.Graph), содержащий все объекты графа - ноды, связи свойства связей. После вызова этого метода результат становится отсоединенным, буферизуя все оставшиеся записи.
+- `value(key=0, default=None)` Вспомогательная функция, возвращающая остаток результата в виде списка значений.
+- `values(*keys)` Вспомогательная функция, которая возвращает остаток результата в виде списка списков значений.
+- `data(*keys)` тоже самое, только в виде списка словарей
+- `to_df(expand=False, parse_dates=False)` в [[pandas]] датафрейм
+- `closed()`
+
+```python
+# consume() usage
+def create_node_tx(tx, name):
+    result = tx.run(
+        "CREATE (n:ExampleNode { name: $name }) RETURN n", name=name
+    )
+    record = result.single()
+    value = record.value()
+    summary = result.consume()
+    return value, summary
+
+with driver.session() as session:
+    node_id, summary = session.execute_write(
+        create_node_tx, "example"
+    )
+```
+
+Другие объекты:
+
+- [Graph](https://neo4j.com/docs/api/python-driver/current/api.html#graph)
+- [Record](https://neo4j.com/docs/api/python-driver/current/api.html#record)
+- [ResultSummary](https://neo4j.com/docs/api/python-driver/current/api.html#resultsummary)
+- [SummaryCounters](https://neo4j.com/docs/api/python-driver/current/api.html#summarycounters)
+
+#### [Причинная цепочка и закладки](https://neo4j.com/docs/api/python-driver/current/api.html#bookmarkmanager)
 
 При работе с причинно-следственным кластером транзакции могут быть объединены в цепочку через сеанс для обеспечения причинно-следственной согласованности. Это означает, что для любых двух транзакций гарантируется, что вторая транзакция начнется только после того, как первая будет успешно зафиксирована. Это справедливо даже в том случае, если транзакции выполняются на разных физических элементах кластера.
 
@@ -590,7 +642,7 @@ with driver.session(database="example", default_access_mode=READ_ACCESS) as sess
     print(message)
 ```
 
-#### Сопоставление типов
+#### [Сопоставление типов](https://neo4j.com/docs/api/python-driver/current/api.html#core-data-types)
 
 Для передачи параметров и обработки результатов важно знать основы работы Cypher с типами и понимать, как типы Cypher отображаются в драйвере.
 
@@ -643,7 +695,8 @@ harry_potter.author.connect(rowling)
 Смотир еще:
 
 - [neo4j-python-driver](https://github.com/neo4j/neo4j-python-driver) Neo4j Bolt driver for Python. [docs](https://neo4j.com/developer/python/)
-- [Driver API docs](https://neo4j.com/docs/api/python-driver/current/)
+- [Driver API](https://neo4j.com/docs/api/python-driver/current/)
+- **[API docs](https://neo4j.com/docs/api/python-driver/current/api.html#api-documentation)**
 - [The Neo4j Python Driver Manual v4.4](https://neo4j.com/docs/python-manual/current/)
 - [[pytoneo]]
 - [neomodel](https://github.com/neo4j-contrib/neomodel) An Object Graph Mapper (OGM) for the Neo4j graph database.
@@ -654,13 +707,20 @@ harry_potter.author.connect(rowling)
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [cypher]: cypher "Cypher query language"
+[neo4j]: neo4j "Neo4j graph data base"
+[cypher]: cypher "Cypher query language"
+[cypher]: cypher "Cypher query language"
+[pandas]: pandas "Pandas"
 [pytoneo]: pytoneo "pytoneo client library and toolkit for working with neo4j"
 [graphs]: ../lists/graphs "Machine learning with graphs"
+[cypher]: cypher "Cypher query language"
 [//end]: # "Autogenerated link references"
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [cypher]: cypher "Cypher query language"
 [neo4j]: neo4j "Neo4j graph data base"
 [cypher]: cypher "Cypher query language"
+[cypher]: cypher "Cypher query language"
+[pandas]: pandas "Pandas"
 [pytoneo]: pytoneo "pytoneo client library and toolkit for working with neo4j"
 [graphs]: ../lists/graphs "Machine learning with graphs"
 [cypher]: cypher "Cypher query language"

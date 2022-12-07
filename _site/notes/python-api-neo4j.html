@@ -18,7 +18,7 @@
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-api-neo4j.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-api-neo4j.html","headline":"Python api for neo4j","description":"python апи для neo4j","@context":"https://schema.org"}</script>
+{"description":"python апи для neo4j","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-api-neo4j.html","headline":"Python api for neo4j","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -342,7 +342,7 @@
 
 <p><strong>impersonated_user</strong>. Пользователи могут запускать транзакции в базе данных как разные пользователи, если им было предоставлено явное разрешение на это. При персонификации пользователя запрос выполняется в полном контексте безопасности данного пользователя, а не аутентифицированного пользователя (т. е. домашней базы данных, разрешений и т. д.).</p>
 
-<p>Доступны два объекта <a href="https://neo4j.com/docs/api/python-driver/current/api.html#session">Session</a> и <a href="https://neo4j.com/docs/api/python-driver/current/api.html#query">Query</a>. В сессии можн создавать запросы используя строки на языке [<a href="cypher" title="Cypher query language">cypher</a>] или объекты Query.</p>
+<p>Доступны два объекта; <a href="https://neo4j.com/docs/api/python-driver/current/api.html#session">Session</a> и <a href="https://neo4j.com/docs/api/python-driver/current/api.html#query">Query</a>. В сессии можн создавать запросы используя строки на языке [<a href="cypher" title="Cypher query language">cypher</a>] или объекты Query.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (n:Person) RETURN n.name AS name"</span><span class="p">)</span>
@@ -355,8 +355,10 @@
   <li>close() закрыть сессию</li>
   <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.run">run(query, parameters=None, **kwargs)</a> создать транзакцию с автоматической фиксацией</li>
   <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.begin_transaction">begin_transaction(metadata=None, timeout=None)</a> создать новую транзакицю (дефолтно на запись)</li>
-  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.read_transaction">read_transaction(transaction_function, *args, **kwargs)</a> новая транзакция на чтение</li>
-  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.write_transaction">write_transaction(transaction_function, *args, **kwargs)</a></li>
+  <li>[read_transaction(transaction_function, *args, <strong>kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.read_transaction) новая транзакция на чтение **deprecated с 5.0</strong></li>
+  <li>[write_transaction(transaction_function, *args, <strong>kwargs)](https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.Session.write_transaction) **deprecated с 5.0</strong></li>
+  <li>execute_write() <strong>с 5.0</strong></li>
+  <li>execute_read() <strong>с 5.0</strong></li>
 </ul>
 
 <p>Доступны так-же методы доступа к закладкам межуд транзакциями.</p>
@@ -390,26 +392,6 @@
     <span class="n">node_id</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_node_tx</span><span class="p">,</span> <span class="s">"example"</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Методы извлечения <a href="https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions">управляемых транзакций</a>:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">execute_write()</code></li>
-  <li><code class="language-plaintext highlighter-rouge">execute_read()</code></li>
-</ul>
-
-<p>Они позволяют передать в качестве параметра функциональный объект, представляющий транзакционную единицу работы. Эта функция вызывается один или несколько раз в течение настраиваемого срока, пока не завершится успешно. Результаты должны быть полностью использованы внутри функции, и должны быть возвращены только совокупные значения или значения состояния. Возврат объекта реального результата помешает драйверу правильно управлять соединениями и нарушит гарантии повторных попыток.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-        <span class="n">node_id</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute_write</span><span class="p">(</span><span class="n">create_person_tx</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">create_person_tx</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-    <span class="n">query</span> <span class="o">=</span> <span class="s">"CREATE (a:Person { name: $name }) RETURN id(a) AS node_id"</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="s">"node_id"</span><span class="p">]</span>
-</code></pre></div></div>
-
 <h4 id="транзакции"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#transaction">Транзакции</a></h4>
 
 <p>Транзакции могут включать операции чтения или записи и, как правило, направляются на соответствующий сервер для выполнения, где они будут выполняться полностью. В случае сбоя транзакции необходимо повторить транзакцию с самого начала.</p>
@@ -440,7 +422,17 @@
         <span class="k">return</span> <span class="n">session</span><span class="p">.</span><span class="n">write_transaction</span><span class="p">(</span><span class="n">create_person</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><a href="https://neo4j.com/docs/python-manual/current/session-api/#python-driver-simple-autocommit-transactions">Транзакция с автоматической фиксацией</a> — это базовая, но ограниченная форма транзакции. Такая транзакция состоит только из одного запроса Cypher и не повторяется автоматически в случае сбоя. Следовательно, любые сценарии ошибок должны обрабатываться самим клиентским приложением.</p>
+<p><strong>Реализованы три вида транзакций</strong>:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions">транзакция с автокоммитом</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions">явная (explicit) транзакция</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions">управляемая (manageв) транзакция или функция транзакции (transaction function)</a></li>
+</ul>
+
+<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions">Транзакция с автоматической фиксацией</a> — это базовая, но ограниченная форма транзакции. Такая транзакция состоит только из одного запроса Cypher и не повторяется автоматически в случае сбоя. Следовательно, любые сценарии ошибок должны обрабатываться самим клиентским приложением.</p>
+
+<p>Автокоммит транзакция доступна через <code class="language-plaintext highlighter-rouge">neo4j.Session.run()</code></p>
 
 <p>Транзакции с автоматической фиксацией служат следующим целям:</p>
 
@@ -463,9 +455,7 @@
         <span class="n">session</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">Query</span><span class="p">(</span><span class="s">"CREATE (a:Person {name: $name})"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#auto-commit-transactions">Смотри в документации</a>.</p>
-
-<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions">Явные (explicit) транзакции</a>. Явные транзакции поддерживают несколько операторов и должны создаваться с помощью явного вызова neo4j.Session.begin_transaction(). Это создает новый объект neo4j.Transaction, который можно использовать для запуска Cypher. Это также дает приложениям возможность напрямую контролировать действия по фиксации и откату.</p>
+<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#explicit-transactions">Явные (explicit) транзакции</a>. Явные транзакции поддерживают несколько операторов и должны создаваться с помощью явного вызова <code class="language-plaintext highlighter-rouge">neo4j.Session.begin_transaction()</code>. Это создает новый объект <code class="language-plaintext highlighter-rouge">neo4j.Transaction</code>, который можно использовать для запуска [<a href="cypher" title="Cypher query language">cypher</a>] запроса. Это также дает приложениям возможность напрямую контролировать действия по фиксации и откату.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">neo4j</span>
 
@@ -499,6 +489,23 @@
   <li><code class="language-plaintext highlighter-rouge">close()</code></li>
   <li><code class="language-plaintext highlighter-rouge">closed()</code></li>
 </ul>
+
+<p><a href="https://neo4j.com/docs/api/python-driver/current/api.html#managed-transactions-transaction-functions">Управляемые транзакции (функции транзакции)</a> — самая мощная форма транзакции, обеспечивающая возможность переопределения режима доступа и повторных попыток.</p>
+
+<p>Они позволяют передать в качестве параметра функциональный объект, представляющий транзакционную единицу работы. Эта функция вызывается один или несколько раз в течение настраиваемого срока, пока не завершится успешно. Результаты должны быть полностью использованы внутри функции, и должны быть возвращены только совокупные значения или значения состояния. Возврат объекта реального результата помешает драйверу правильно управлять соединениями и нарушит гарантии повторных попыток. Функции получают <code class="language-plaintext highlighter-rouge">neo4j.ManagedTransaction</code> объект, который реализует только методы <code class="language-plaintext highlighter-rouge">run()</code> и декоратор <code class="language-plaintext highlighter-rouge">unit_of_work()</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_person</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">node_id</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute_write</span><span class="p">(</span><span class="n">create_person_tx</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">create_person_tx</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s">"CREATE (a:Person { name: $name }) RETURN id(a) AS node_id"</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="s">"node_id"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что функции транзакций должны быть идемпотентными (т. е. результат однократного запуска функции должен быть таким же, как и при ее многократном запуске). Это связано с тем, что драйвер повторно попытается выполнить функцию транзакции, если ошибка будет классифицирована как повторяемая.</p>
 
 <p><strong>Конфигурация транзакции:</strong></p>
 
@@ -534,7 +541,7 @@
 
 <p>Запросы состоят из запроса серверу на выполнение оператора Cypher, за которым следует ответ клиенту с результатом. Результаты передаются в виде потока записей вместе с метаданными и могут постепенно использоваться клиентским приложением.</p>
 
-<p>Для выполнения Cypher Query требуется текст запроса вместе с необязательным набором именованных параметров. Текст может содержать заполнители параметров  которые заменяются соответствующими значениями во время выполнения. Несмотря на то, что можно запускать непараметризованные запросы Cypher, <strong>хорошей практикой программирования является использование параметров в запросах Cypher, когда это возможно</strong>. Это позволяет кэшировать запросы внутри Cypher Engine, что положительно сказывается на производительности. Значения параметров должны соответствовать значениям Cypher.</p>
+<p>Для выполнения Cypher Query требуется текст запроса вместе с необязательным набором именованных параметров. Текст может содержать заполнители параметров, которые заменяются соответствующими значениями во время выполнения. Несмотря на то, что можно запускать непараметризованные запросы Cypher, <strong>хорошей практикой программирования является использование параметров в запросах Cypher, когда это возможно</strong>. Это позволяет кэшировать запросы внутри Cypher Engine, что положительно сказывается на производительности. Значения параметров должны соответствовать значениям Cypher.</p>
 
 <p>Результаты запроса обычно используются в виде потока записей. Драйверы предоставляют способ итерации через этот поток.</p>
 
@@ -546,13 +553,13 @@
     <span class="n">people</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">read_transaction</span><span class="p">(</span><span class="n">match_person_nodes</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>В рамках сеанса одновременно может быть активен только один поток результатов . Таким образом, если результат одного запроса не используется полностью до выполнения другого запроса, оставшаяся часть первого результата будет автоматически помещена в буфер в объекте результата. Этот буфер обеспечивает промежуточную точку для результатов и разделяет обработку результатов на выборку (перемещение из сети в буфер) и потребление (перемещение из буфера в приложение).</p>
+<p>В рамках сеанса одновременно может быть активен только один поток результатов. Таким образом, если результат одного запроса не используется полностью до выполнения другого запроса, оставшаяся часть первого результата будет автоматически помещена в буфер в объекте результата. Этот буфер обеспечивает промежуточную точку для результатов и разделяет обработку результатов на выборку (перемещение из сети в буфер) и потребление (перемещение из буфера в приложение).</p>
 
 <p><img src="/myknowlegebase/attachments/2022-08-03-00-11-27.png" alt="neo4j buffer" /></p>
 
-<p>Для больших результатов буфер результатов может потребовать значительного объема памяти. По этой причине рекомендуется потреблять результаты по возможности по порядку/</p>
+<p>Для больших результатов буфер результатов может потребовать значительного объема памяти. По этой причине рекомендуется потреблять результаты по возможности по порядку.</p>
 
-<p>Клиентские приложения могут управлять более сложными шаблонами запросов, явно сохраняя результаты. Такое явное сохранение может также быть полезным, когда результат необходимо сохранить для будущей обработки. Драйвер ет поддержку этого процесса.</p>
+<p>Клиентские приложения могут управлять более сложными шаблонами запросов, явно сохраняя результаты. Такое явное сохранение может также быть полезным, когда результат необходимо сохранить для будущей обработки. Драйвер дает поддержку этого процесса.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_employee_to_company</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">person</span><span class="p">,</span> <span class="n">company_name</span><span class="p">):</span>
     <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="s">"MATCH (emp:Person {name: $person_name}) "</span>
@@ -575,7 +582,55 @@
     <span class="k">return</span> <span class="n">employees</span>
 </code></pre></div></div>
 
-<h4 id="причинная-цепочка-и-закладки">Причинная цепочка и закладки</h4>
+<h4 id="result-object"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#result">Result object</a></h4>
+
+<p>Является результатом запросак БД. Обеспечивает дескриптор результата запроса, предоставляя доступ к записям внутри него, а также к метаданным результата. Также содержит буфер, который автоматически сохраняет неиспользованные записи, когда результаты используются не по порядку. <code class="language-plaintext highlighter-rouge">Neo4j.Result</code> присоединяется к активному соединению через <code class="language-plaintext highlighter-rouge">neo4j.Session</code> до тех пор, пока все его содержимое не будет буферизовано или использовано.</p>
+
+<p>Доступно:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">iter(result)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">next(result)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">keys()</code> кортеж с ключами</li>
+  <li><code class="language-plaintext highlighter-rouge">consume()</code> потребляет оставшуюся часть результата и возвращает <a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.ResultSummary">neo4j.ResultSummary</a></li>
+  <li><code class="language-plaintext highlighter-rouge">single(strict: te.Literal[False] = False) → Optional[Record]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">single(strict: te.Literal[True])</code> → Record получить следующую и единственную оставшуюся запись или None. Предупреждение генерируется, если доступно более одной записи, но первая из них все еще возвращается.</li>
+  <li><code class="language-plaintext highlighter-rouge">fetch(n)</code> получить n записей из результата</li>
+  <li><code class="language-plaintext highlighter-rouge">peek()</code> Получить следующую запись из этого результата, не потребляя его. Это оставляет запись в буфере для дальнейшей обработки.</li>
+  <li><code class="language-plaintext highlighter-rouge">graph()</code> Возвращает экземпляр <a href="https://neo4j.com/docs/api/python-driver/current/api.html#neo4j.graph.Graph">neo4j.graph.Graph</a>, содержащий все объекты графа - ноды, связи свойства связей. После вызова этого метода результат становится отсоединенным, буферизуя все оставшиеся записи.</li>
+  <li><code class="language-plaintext highlighter-rouge">value(key=0, default=None)</code> Вспомогательная функция, возвращающая остаток результата в виде списка значений.</li>
+  <li><code class="language-plaintext highlighter-rouge">values(*keys)</code> Вспомогательная функция, которая возвращает остаток результата в виде списка списков значений.</li>
+  <li><code class="language-plaintext highlighter-rouge">data(*keys)</code> тоже самое, только в виде списка словарей</li>
+  <li><code class="language-plaintext highlighter-rouge">to_df(expand=False, parse_dates=False)</code> в [<a href="pandas" title="Pandas">pandas</a>] датафрейм</li>
+  <li><code class="language-plaintext highlighter-rouge">closed()</code></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># consume() usage
+</span><span class="k">def</span> <span class="nf">create_node_tx</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tx</span><span class="p">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="s">"CREATE (n:ExampleNode { name: $name }) RETURN n"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span>
+    <span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">single</span><span class="p">()</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">record</span><span class="p">.</span><span class="n">value</span><span class="p">()</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">consume</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">summary</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="p">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">node_id</span><span class="p">,</span> <span class="n">summary</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">execute_write</span><span class="p">(</span>
+        <span class="n">create_node_tx</span><span class="p">,</span> <span class="s">"example"</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Другие объекты:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#graph">Graph</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#record">Record</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#resultsummary">ResultSummary</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/api.html#summarycounters">SummaryCounters</a></li>
+</ul>
+
+<h4 id="причинная-цепочка-и-закладки"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#bookmarkmanager">Причинная цепочка и закладки</a></h4>
 
 <p>При работе с причинно-следственным кластером транзакции могут быть объединены в цепочку через сеанс для обеспечения причинно-следственной согласованности. Это означает, что для любых двух транзакций гарантируется, что вторая транзакция начнется только после того, как первая будет успешно зафиксирована. Это справедливо даже в том случае, если транзакции выполняются на разных физических элементах кластера.</p>
 
@@ -699,7 +754,7 @@
     <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre></div></div>
 
-<h4 id="сопоставление-типов">Сопоставление типов</h4>
+<h4 id="сопоставление-типов"><a href="https://neo4j.com/docs/api/python-driver/current/api.html#core-data-types">Сопоставление типов</a></h4>
 
 <p>Для передачи параметров и обработки результатов важно знать основы работы Cypher с типами и понимать, как типы Cypher отображаются в драйвере.</p>
 
@@ -751,7 +806,8 @@
 
 <ul>
   <li><a href="https://github.com/neo4j/neo4j-python-driver">neo4j-python-driver</a> Neo4j Bolt driver for Python. <a href="https://neo4j.com/developer/python/">docs</a></li>
-  <li><a href="https://neo4j.com/docs/api/python-driver/current/">Driver API docs</a></li>
+  <li><a href="https://neo4j.com/docs/api/python-driver/current/">Driver API</a></li>
+  <li><strong><a href="https://neo4j.com/docs/api/python-driver/current/api.html#api-documentation">API docs</a></strong></li>
   <li><a href="https://neo4j.com/docs/python-manual/current/">The Neo4j Python Driver Manual v4.4</a></li>
   <li>[<a href="pytoneo" title="pytoneo client library and toolkit for working with neo4j">pytoneo</a>]</li>
   <li><a href="https://github.com/neo4j-contrib/neomodel">neomodel</a> An Object Graph Mapper (OGM) for the Neo4j graph database.</li>
