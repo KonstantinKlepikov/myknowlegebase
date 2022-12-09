@@ -23,6 +23,7 @@ title: Githunb action
 - [create envfile](https://github.com/KonstantinKlepikov/create-envfile)
 - [action-gh-release](https://github.com/softprops/action-gh-release) - создаем релиз
 - [release-action](https://github.com/ncipollo/release-action) - создаем релизы и аплоадим артефакты
+- [action-gh-release](https://github.com/softprops/action-gh-release) - GitHub Action for creating GitHub Releases
 - [SCP for GitHub Actions](https://github.com/appleboy/scp-action) - реализует [[linux-scp]] обмен файлами по ssh
 - [Upload-Artifact v2](https://github.com/actions/upload-artifact) - шаринг данных между jobs и workflows
 - [Public IP](https://github.com/haythem/public-ip) - This action allows you to whitelist the runner's address and remove it once the pipeline finishes
@@ -31,6 +32,8 @@ title: Githunb action
 - [heroku-deploy](https://github.com/AkhileshNS/heroku-deploy) A simple github action that dynamically deploys an app to heroku
 - [action-github-changelog-generator](https://github.com/heinrichreimer/action-github-changelog-generator) Automatically generate change log from your tags, issues, labels and pull requests on GitHub.
 - [actions-gh-pages](https://github.com/peaceiris/actions-gh-pages). GitHub Actions for GitHub Pages
+
+[actions-ecosystem/repositories](https://github.com/orgs/actions-ecosystem/repositories?type=all)
 
 [[cl]]
 

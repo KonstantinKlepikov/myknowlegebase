@@ -1,5 +1,5 @@
 ---
-title: Some python tricks 2
+title: Some python tricks 1 - custom exceptions, dataclasses, dot accessing to dict and annotations
 description: Some tricks for custom exceptions, dataclasses, dot accessing to dict and annotations
 category: post
 ---

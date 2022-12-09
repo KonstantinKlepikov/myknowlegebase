@@ -1,5 +1,5 @@
 ---
-title: Some pandas trick 2
+title: Some pandas tricks 2
 description: Some tricks for creation, get values, set new columns and groupby
 category: post
 ---
