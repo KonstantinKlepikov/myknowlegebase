@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>pytest-bdd | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="pytest-bdd" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Тестирование с помощью функциональных тестов в pytest" />
+<meta property="og:description" content="Тестирование с помощью функциональных тестов в pytest" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/pytest-bdd.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pytest-bdd.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Тестирование с помощью функциональных тестов в pytest","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pytest-bdd.html","headline":"pytest-bdd","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">pytest-bdd</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/tests" title="tests" class="link-tags">tests&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/behave" title="behave" class="link-tags">behave&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/pip" title="pip" class="link-tags">pip&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Pytest-bdd implements a subset of the [<a href="gherkin" title="Gherkin">gherkin</a>] language to enable automating project requirements testing and to facilitate behavioral driven development</p>
+
+<h2 id="пример-проекта">Пример проекта</h2>
+
+<p><code class="language-plaintext highlighter-rouge">pip install pytest</code>
+<code class="language-plaintext highlighter-rouge">pip install pytest-bdd</code></p>
+
+<p>Структура проекта</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>project root directory]
+|‐‐ <span class="o">[</span>product code packages]
+|-- <span class="o">[</span><span class="nb">test </span>directories]
+|   |-- features
+|   |   <span class="sb">`</span><span class="nt">--</span> <span class="k">*</span>.feature
+|   <span class="sb">`</span><span class="nt">--</span> step_defs
+|       |-- __init__.py
+|       |-- conftest.py
+|       <span class="sb">`</span><span class="nt">--</span> test_<span class="k">*</span>.py
+<span class="sb">`</span><span class="nt">--</span> <span class="o">[</span>pytest.ini|tox.ini|setup.cfg]
+</code></pre></div></div>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">@web</span> <span class="nt">@duckduckgo</span>
+<span class="kd">Feature</span><span class="p">:</span> DuckDuckGo Web Browsing
+  As a web surfer,
+  I want to find information online,
+  So I can learn new things and get tasks done.
+
+  <span class="c"># The "@" annotations are tags</span>
+  <span class="c"># One feature can have multiple scenarios</span>
+  <span class="c"># The lines immediately after the feature title are just comments</span>
+
+  <span class="kn">Scenario</span><span class="p">:</span> Basic DuckDuckGo Search
+    <span class="nf">Given </span>the DuckDuckGo home page is displayed
+    <span class="nf">When </span>the user searches for <span class="s">"panda"</span>
+    <span class="nf">Then </span>results are shown for <span class="s">"panda"</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что в файле feature допускается только одна feature.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">scenarios</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">when</span><span class="p">,</span> <span class="n">then</span><span class="p">,</span> <span class="n">parsers</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="kn">import</span> <span class="n">Keys</span>
+
+<span class="c1"># Constants
+</span>
+<span class="n">DUCKDUCKGO_HOME</span> <span class="o">=</span> <span class="s">'https://duckduckgo.com/'</span>
+
+<span class="c1"># Scenarios
+</span>
+<span class="n">scenarios</span><span class="p">(</span><span class="s">'../features/web.feature'</span><span class="p">)</span>
+
+<span class="c1"># Fixtures
+</span>
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">browser</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Firefox</span><span class="p">()</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">implicitly_wait</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">b</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+
+<span class="c1"># Given Steps
+</span>
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">'the DuckDuckGo home page is displayed'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ddg_home</span><span class="p">(</span><span class="n">browser</span><span class="p">):</span>
+    <span class="n">browser</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">DUCKDUCKGO_HOME</span><span class="p">)</span>
+
+<span class="c1"># When Steps
+</span>
+<span class="o">@</span><span class="n">when</span><span class="p">(</span><span class="n">parsers</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">'the user searches for "{phrase}"'</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">search_phrase</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="n">phrase</span><span class="p">):</span>
+    <span class="n">search_input</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">'search_form_input_homepage'</span><span class="p">)</span>
+    <span class="n">search_input</span><span class="p">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">phrase</span> <span class="o">+</span> <span class="n">Keys</span><span class="p">.</span><span class="n">RETURN</span><span class="p">)</span>
+
+<span class="c1"># Then Steps
+</span>
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="n">parsers</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">'results are shown for "{phrase}"'</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">search_results</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="n">phrase</span><span class="p">):</span>
+    <span class="c1"># Check search result list
+</span>    <span class="c1"># (A more comprehensive test would check results for matching phrases)
+</span>    <span class="c1"># (Check the list before the search phrase for correct implicit waiting)
+</span>    <span class="n">links_div</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">'links'</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">links_div</span><span class="p">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s">'//div'</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="c1"># Check search phrase
+</span>    <span class="n">search_input</span> <span class="o">=</span> <span class="n">browser</span><span class="p">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s">'search_form_input'</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">search_input</span><span class="p">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s">'value'</span><span class="p">)</span> <span class="o">==</span> <span class="n">phrase</span>
+</code></pre></div></div>
+
+<p>launch: <code class="language-plaintext highlighter-rouge">pytest tests/step_defs</code></p>
+
+<h2 id="более-подробный-пример"><a href="https://pytest-bdd.readthedocs.io/en/latest/#example">Более подробный пример</a></h2>
+
+<p>Функции, декорированные как scenario, ведут себя как обычные тестовые функции и будут выполняться после всех шагов сценария. Рекомендуется по возможности помещать всю логику внутрь when, then и and.</p>
+
+<p>Иногда приходится объявлять одни и те же установки или шаги разными именами для лучшей читабельности. Чтобы использовать одну и ту же пошаговую функцию с несколькими именами шагов, ее можно декорировать несколько раз. Указанные псевдонимы шагов являются независимыми и будут выполняться каждый раз при упоминании.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"I have an article"</span><span class="p">)</span>
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"there's an article"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">article</span><span class="p">(</span><span class="n">author</span><span class="p">,</span> <span class="n">target_fixture</span><span class="o">=</span><span class="s">"article"</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">create_test_article</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Сами шаги можно использовать с разными параметрами повторно. При этом доступно несколько типов парсеров параметра шага:</p>
+
+<ul>
+  <li>string (the default)</li>
+  <li>parse (based on: pypi_parse) - предоставляет простой синтаксический анализатор, который заменяет регулярные выражения для параметров шага удобочитаемым синтаксисом, например <code class="language-plaintext highlighter-rouge">{param:Type}</code>. Синтаксис вдохновлен встроенной в Python функцией <code class="language-plaintext highlighter-rouge">string.format()</code>. Параметры шага должны использовать синтаксис именованных полей pypi_parse в определениях шага. Именованные поля извлекаются, дополнительно преобразуются типы, а затем используются в качестве аргументов функции шага. Поддерживает преобразования типов с помощью преобразователей типов, передаваемых через extra_types.</li>
+  <li>cfparse (extends: pypi_parse, based on: pypi_parse_type) - предоставляет расширенный синтаксический анализатор с поддержкой «поля кардинальности» (CF)</li>
+  <li>re</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cparse example
+</span><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">parsers</span>
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span>
+    <span class="n">parsers</span><span class="p">.</span><span class="n">cfparse</span><span class="p">(</span><span class="s">"there are {start:Number} cucumbers"</span><span class="p">,</span> <span class="n">extra_types</span><span class="o">=</span><span class="p">{</span><span class="s">"Number"</span><span class="p">:</span> <span class="nb">int</span><span class="p">}),</span>
+    <span class="n">target_fixture</span><span class="o">=</span><span class="s">"cucumbers"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">given_cucumbers</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"start"</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="s">"eat"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+<span class="c1"># for re
+</span><span class="o">@</span><span class="n">given</span><span class="p">(</span>
+    <span class="n">parsers</span><span class="p">.</span><span class="n">re</span><span class="p">(</span><span class="s">r"there are (?P&lt;start&gt;\d+) cucumbers"</span><span class="p">),</span>
+    <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="s">"start"</span><span class="p">:</span> <span class="nb">int</span><span class="p">},</span>
+    <span class="n">target_fixture</span><span class="o">=</span><span class="s">"cucumbers"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">given_cucumbers</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"start"</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="s">"eat"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Кроме того,можно имплементировать собственные парсеры.</p>
+
+<p>Иногда нужен такой заданный шаг, который обязательно менял бы фикстуру только для определенного теста (сценария), а для остальных тестов он оставался бы нетронутым. Для этого в given декораторе существует специальный параметр target_fixture. В этом примере существующая фикстура foo будет переопределена шагом только для сценария, в котором она используется.</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">Feature</span><span class="p">:</span> Target fixture
+    <span class="kn">Scenario</span><span class="p">:</span> Test given fixture injection
+        <span class="nf">Given </span>I have injecting given
+        <span class="nf">Then </span>foo should be <span class="s">"injected foo"</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">given</span>
+
+<span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"foo"</span>
+
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"I have injecting given"</span><span class="p">,</span> <span class="n">target_fixture</span><span class="o">=</span><span class="s">"foo"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">injecting_given</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"injected foo"</span>
+
+
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="s">'foo should be "injected foo"'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">foo_is_foo</span><span class="p">(</span><span class="n">foo</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">foo</span> <span class="o">==</span> <span class="s">'injected foo'</span>
+</code></pre></div></div>
+
+<p>Как и Gherkin, pytest-bdd поддерживает многострочные шаги (также известные как строки документа). Но гораздо более чистым и мощным способом:</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">Feature</span><span class="p">:</span> Multiline steps
+    <span class="kn">Scenario</span><span class="p">:</span> Multiline step using sub indentation
+        <span class="err">Given I have a step with</span><span class="p">:</span>
+            <span class="err">Some</span>
+            <span class="err">Extra</span>
+            <span class="err">Lines</span>
+        <span class="nf">Then </span>the text should be parsed with correct indentation
+</code></pre></div></div>
+
+<p>Шаг считается многострочным, если следующая(ые) строка(и) после первой строки имеет отступ относительно первой строки. Затем имя шага просто расширяется путем добавления дополнительных строк с символами новой строки. В приведенном выше примере имя заданного шага будет таким</p>
+
+<p><code class="language-plaintext highlighter-rouge">'I have a step with:\nSome\nExtra\nLines'</code>. Использоать это можно так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">then</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">parsers</span>
+
+
+<span class="n">scenarios</span><span class="p">(</span><span class="s">"multiline.feature"</span><span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="n">parsers</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">"I have a step with:</span><span class="se">\n</span><span class="s">{content}"</span><span class="p">),</span> <span class="n">target_fixture</span><span class="o">=</span><span class="s">"text"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">given_text</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">content</span>
+
+
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="s">"the text should be parsed with correct indentation"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">text_should_be_correct</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">text</span> <span class="o">==</span> <span class="s">"Some</span><span class="se">\n</span><span class="s">Extra</span><span class="se">\n</span><span class="s">Lines"</span>
+</code></pre></div></div>
+
+<p>Если есть относительно большой набор файлов функций, вручную привязывать сценарии к тестам с помощью декоратора сценариев сложно. Конечно, при ручном подходе вы получаете все возможности, чтобы иметь возможность дополнительно параметризовать тест, дать тестовой функции красивое имя, задокументировать ее и т. д., но в большинстве случаев вам это не нужно. Вместо этого вы хотите рекурсивно автоматически связать все сценарии, найденные в папках функций, с помощью помощника сценариев. Вы можете передать несколько путей, и эти пути могут быть либо файлами функций, либо папками функций.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">scenarios</span>
+
+<span class="c1"># pass multiple paths/files
+</span><span class="n">scenarios</span><span class="p">(</span><span class="s">'features'</span><span class="p">,</span> <span class="s">'other_features/some.feature'</span><span class="p">,</span> <span class="s">'some_other_features'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, сценарий можно привязать и декоратором</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">scenarios</span>
+
+<span class="o">@</span><span class="n">scenario</span><span class="p">(</span><span class="s">'features/some.feature'</span><span class="p">,</span> <span class="s">'Test something'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_something</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+<span class="c1"># assume 'features' subfolder is in this file's directory
+</span><span class="n">scenarios</span><span class="p">(</span><span class="s">'features'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Сценарии могут быть параметризованы для охвата нескольких случаев. В Gherkin они называются Scenario Outlines, а шаблоны переменных записываются с использованием угловых скобок (например, <code class="language-plaintext highlighter-rouge">&lt;var_name&gt;</code>).</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># content of scenario_outlines.feature</span>
+
+<span class="kd">Feature</span><span class="p">:</span> Scenario outlines
+    <span class="kn">Scenario Outline</span><span class="p">:</span> Outlined given, when, then
+        <span class="nf">Given </span>there are <span class="nv">&lt;start&gt;</span> cucumbers
+        <span class="nf">When </span>I eat <span class="nv">&lt;eat&gt;</span> cucumbers
+        <span class="nf">Then </span>I should have <span class="nv">&lt;left&gt;</span> cucumbers
+
+        <span class="nn">Examples</span><span class="p">:</span>
+        <span class="p">|</span> <span class="nv">start</span> <span class="p">|</span> <span class="nv">eat</span> <span class="p">|</span> <span class="nv">left</span> <span class="p">|</span>
+        <span class="p">|</span>  <span class="n">12</span>   <span class="p">|</span>  <span class="n">5</span>  <span class="p">|</span>  <span class="n">7</span>   <span class="p">|</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">scenarios</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">when</span><span class="p">,</span> <span class="n">then</span><span class="p">,</span> <span class="n">parsers</span>
+
+
+<span class="n">scenarios</span><span class="p">(</span><span class="s">"scenario_outlines.feature"</span><span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="n">parsers</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">"there are {start:d} cucumbers"</span><span class="p">),</span> <span class="n">target_fixture</span><span class="o">=</span><span class="s">"cucumbers"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">given_cucumbers</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"start"</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="s">"eat"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">when</span><span class="p">(</span><span class="n">parsers</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">"I eat {eat:d} cucumbers"</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">eat_cucumbers</span><span class="p">(</span><span class="n">cucumbers</span><span class="p">,</span> <span class="n">eat</span><span class="p">):</span>
+    <span class="n">cucumbers</span><span class="p">[</span><span class="s">"eat"</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eat</span>
+
+
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="n">parsers</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="s">"I should have {left:d} cucumbers"</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">should_have_left_cucumbers</span><span class="p">(</span><span class="n">cucumbers</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">cucumbers</span><span class="p">[</span><span class="s">"start"</span><span class="p">]</span> <span class="o">-</span> <span class="n">cucumbers</span><span class="p">[</span><span class="s">"eat"</span><span class="p">]</span> <span class="o">==</span> <span class="n">left</span>
+</code></pre></div></div>
+
+<p>Организовать структуру тестов можно так:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>features
+│
+├──frontend
+│  │
+│  └──auth
+│     │
+│     └──login.feature
+└──backend
+   │
+   └──auth
+      │
+      └──login.feature
+
+tests
+│
+└──functional
+   │
+   └──test_auth.py
+      │
+      └ <span class="s2">"""Authentication tests."""</span>
+        from pytest_bdd import scenario
+
+        @scenario<span class="o">(</span><span class="s1">'frontend/auth/login.feature'</span><span class="o">)</span>
+        def test_logging_in_frontend<span class="o">()</span>:
+            pass
+
+        @scenario<span class="o">(</span><span class="s1">'backend/auth/login.feature'</span><span class="o">)</span>
+        def test_logging_in_backend<span class="o">()</span>:
+            pass
+</code></pre></div></div>
+
+<p>Cucumber использует теги как способ классификации ваших функций и сценариев, которые поддерживает pytest-bdd.</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">@login</span> <span class="nt">@backend</span>
+<span class="kd">Feature</span><span class="p">:</span> Login
+
+  @successful
+  <span class="kn">Scenario</span><span class="p">:</span> Successful login
+</code></pre></div></div>
+
+<p>Теперь это можно запустить так: <code class="language-plaintext highlighter-rouge">pytest -m "backend and login and successful"</code></p>
+
+<p>Маркеры функций и сценариев не отличаются от стандартных маркеров pytest, а символ <code class="language-plaintext highlighter-rouge">@</code> автоматически удаляется, чтобы разрешить выражения селектора тестов. Если вы хотите, чтобы теги, связанные с bdd, отличались от других тестовых маркеров, используйте префикс, например <code class="language-plaintext highlighter-rouge">bdd</code>. Обратите внимание: если вы используете pytest с параметром <code class="language-plaintext highlighter-rouge">--strict</code>, все теги bdd, упомянутые в файлах функций, также должны быть в настройке маркеров конфигурации pytest.ini. Также для тегов используйте имена переменных, совместимые с python, т. е. начинайте не с числа, используйте только символы подчеркивания или буквенно-цифровые символы и т. д. Таким образом, вы можете безопасно использовать теги для фильтрации тестов. Вы можете настроить преобразование тегов в метки pytest, внедрив хук <code class="language-plaintext highlighter-rouge">pytest_bdd_apply_tag</code> и вернув из него True:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">pytest_bdd_apply_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s">'todo'</span><span class="p">:</span>
+        <span class="n">marker</span> <span class="o">=</span> <span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s">"Not implemented yet"</span><span class="p">)</span>
+        <span class="n">marker</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Fall back to the default behavior of pytest-bdd
+</span>        <span class="k">return</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>Первоначальные установки теста осуществляется с помощью Given. Несмотря на то, что эти шаги выполняются в обязательном порядке для применения возможных побочных эффектов, pytest-bdd пытается извлечь выгоду из фикстур PyTest, которые основаны на внедрении зависимостей и делают настройку более декларативной.</p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">Feature</span><span class="p">:</span> The power of PyTest
+    <span class="kn">Scenario</span><span class="p">:</span> Symbolic name across steps
+        <span class="nf">Given </span>I have a beautiful article
+        <span class="nf">When </span>I publish this article
+        <span class="nf">And </span>my article is published
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"I have a beautiful article"</span><span class="p">,</span> <span class="n">target_fixture</span><span class="o">=</span><span class="s">"article"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">article</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Article</span><span class="p">(</span><span class="n">is_beautiful</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">when</span><span class="p">(</span><span class="s">"I publish this article"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">publish_article</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+    <span class="n">article</span><span class="p">.</span><span class="n">publish</span><span class="p">()</span>
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"my article is published"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">published_article</span><span class="p">(</span><span class="n">article</span><span class="p">):</span>
+    <span class="n">article</span><span class="p">.</span><span class="n">publish</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">article</span>
+</code></pre></div></div>
+
+<p>pytest-bdd не зависит от глобального контекста и все установки теста можно определять в given.</p>
+
+<p>Часто бывает так, что для охвата определенной функции вам потребуется несколько сценариев. И логично, что установка для этих сценариев будет иметь некоторые общие части. pytest-bdd реализует бекграунды для функций.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Feature</span><span class="p">:</span> <span class="n">Multiple</span> <span class="n">site</span> <span class="n">support</span>
+
+  <span class="n">Background</span><span class="p">:</span>
+    <span class="n">Given</span> <span class="n">a</span> <span class="k">global</span> <span class="n">administrator</span> <span class="n">named</span> <span class="s">"Greg"</span>
+    <span class="n">And</span> <span class="n">a</span> <span class="n">blog</span> <span class="n">named</span> <span class="s">"Greg's anti-tax rants"</span>
+    <span class="n">And</span> <span class="n">a</span> <span class="n">customer</span> <span class="n">named</span> <span class="s">"Wilson"</span>
+    <span class="n">And</span> <span class="n">a</span> <span class="n">blog</span> <span class="n">named</span> <span class="s">"Expensive Therapy"</span> <span class="n">owned</span> <span class="n">by</span> <span class="s">"Wilson"</span>
+
+  <span class="n">Scenario</span><span class="p">:</span> <span class="n">Wilson</span> <span class="n">posts</span> <span class="n">to</span> <span class="n">his</span> <span class="n">own</span> <span class="n">blog</span>
+    <span class="n">Given</span> <span class="n">I</span> <span class="n">am</span> <span class="n">logged</span> <span class="ow">in</span> <span class="k">as</span> <span class="n">Wilson</span>
+    <span class="n">When</span> <span class="n">I</span> <span class="k">try</span> <span class="n">to</span> <span class="n">post</span> <span class="n">to</span> <span class="s">"Expensive Therapy"</span>
+    <span class="n">Then</span> <span class="n">I</span> <span class="n">should</span> <span class="n">see</span> <span class="s">"Your article was published."</span>
+
+  <span class="n">Scenario</span><span class="p">:</span> <span class="n">Greg</span> <span class="n">posts</span> <span class="n">to</span> <span class="n">a</span> <span class="n">client</span><span class="s">'s blog
+    Given I am logged in as Greg
+    When I try to post to "Expensive Therapy"
+    Then I should see "Your article was published."
+</span></code></pre></div></div>
+
+<p>В разделе Background следует использовать только Given шаги. Шаги When и Then запрещены, потому что их цели связаны с действиями и потреблением результатов; что противоречит цели Background — подготовить систему к испытаниям или «привести систему в известное состояние», как это делает Given. Утверждение выше относится к строгому режиму Gherkin, который включен по умолчанию.</p>
+
+<p>Steps и Given можно использовать повторно. Лучшее решение - определить реюзабельные фикстуры в <code class="language-plaintext highlighter-rouge">conftest</code></p>
+
+<div class="language-gherkin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># content of common_steps.feature</span>
+
+<span class="kn">Scenario</span><span class="p">:</span> All steps are declared in the conftest
+    <span class="nf">Given </span>I have a bar
+    <span class="nf">Then </span>bar should have value <span class="s">"bar"</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># content of conftest.py
+</span><span class="kn">from</span> <span class="nn">pytest_bdd</span> <span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">then</span>
+
+
+<span class="o">@</span><span class="n">given</span><span class="p">(</span><span class="s">"I have a bar"</span><span class="p">,</span> <span class="n">target_fixture</span><span class="o">=</span><span class="s">"bar"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">bar</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">"bar"</span>
+
+
+<span class="o">@</span><span class="n">then</span><span class="p">(</span><span class="s">'bar should have value "bar"'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">bar_is_bar</span><span class="p">(</span><span class="n">bar</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">bar</span> <span class="o">==</span> <span class="s">"bar"</span>
+
+
+<span class="c1"># content of test_common.py
+</span><span class="o">@</span><span class="n">scenario</span><span class="p">(</span><span class="s">"common_steps.feature"</span><span class="p">,</span> <span class="s">"All steps are declared in the conftest"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_conftest</span><span class="p">():</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>Иногда у вас есть определения шагов, которые было бы гораздо проще автоматизировать, чем писать их вручную снова и снова. Это распространено, например, при использовании таких библиотек, как <a href="https://pytest-factoryboy.readthedocs.io/en/stable/">pytest-factoryboy</a>, которые автоматически создают фикстуры. Написание определений шагов для каждой модели может стать утомительной задачей. По этой причине pytest-bdd позволяет автоматически генерировать определения шагов. Хитрость заключается в том, чтобы передать параметр stacklevel в Given, When и т.д.. Это даст им указание внедрить фикстуры шага в соответствующий модуль, а не просто вставить их в кадр вызывающего объекта. <a href="https://pytest-bdd.readthedocs.io/en/latest/#programmatic-step-generation">Пример тут</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://pytest-bdd.readthedocs.io/en/latest/">документация</a></li>
+  <li><a href="https://github.com/pytest-dev/pytest-bdd">репо</a></li>
+  <li>[<a href="gherkin" title="Gherkin">gherkin</a>]</li>
+  <li>[<a href="behave" title="Behave">behave</a>]</li>
+  <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
+  <li>[<a href="../lists/тестирование" title="Основные принципы тестровния">тестирование</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

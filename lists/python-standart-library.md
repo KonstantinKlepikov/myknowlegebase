@@ -149,6 +149,7 @@ title: Стандартная библиотека python и полезные р
 - [[PIL]]
 - [[imagehash]]
 - [[returns]] Make your functions return something meaningful, typed, and safe!
+- [shedule](https://github.com/dbader/schedule) Python job scheduling for humans.
 
 ### [[python-public-api]]
 

@@ -998,6 +998,7 @@ pip uninstall pytest-NAME
 
 Смотри еще:
 
+- [[pytest-bdd]]
 - [[unittest]]
 - [[doctest]]
 - [[env-for-test]]
@@ -1009,6 +1010,8 @@ pip uninstall pytest-NAME
 - [[2022-07-04-daily-note]] how to get the current test's name from the setup method
 - [[pydantic-factories]]
 - [pytest tricks](https://hackebrot.github.io/pytest-tricks/)
+- [[behave]]
+- [pytest-factoryboy](https://pytest-factoryboy.readthedocs.io/en/stable/#) makes it easy to combine factory approach to the test setup with the dependency injection, heart of the pytest fixtures
 
 Моки:
 

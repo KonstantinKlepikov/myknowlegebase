@@ -53,3 +53,11 @@ Search in your repo with `cmd+shift+f`: type "search" (go back to the file explo
 required `ruby => 2.6.0` (install `rvm`, `openssl` with `rvm pkg install openssl` and install required ruby with `rvm install ruby-<version> --with-openssl-dir=/usr/share/rvm/usr`, `gem update --system` and `bundle install`)
 
 [install jekill](https://jekyllrb.com/docs/installation/)
+
+## Use
+
+`rvm use 2.6.0`
+
+`make serve`
+
+`make build`
