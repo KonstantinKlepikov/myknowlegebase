@@ -23,7 +23,7 @@ tags: data-bases graphs
 
 neo4j реализует два типа поддержки - встроенную и серверную.
 
-Встроенный режим - бд запускается в одном процессе с приложением. Преимущество:
+**Встроенный режим** - бд запускается в одном процессе с приложением. Преимущество:
 
 - быстрый отклик
 - большой выбор интерфейсов
@@ -35,7 +35,7 @@ neo4j реализует два типа поддержки - встроенну
 - звыисимость от сборки мусора, как следствие - длинные паузы между сборками, приводящие к увеличению времени выполнения запросов
 - жизненный цикл БД целиком и полностью связан с приложением
 
-В серверном режиме экземпляры бд запускаются на собственных серверах и доступны через интерфейсы. Преимущества:
+В **серверном режиме** экземпляры бд запускаются на собственных серверах и доступны через интерфейсы. Преимущества:
 
 - доступ по Rest api
 - не зависит от использующего приложения
@@ -58,12 +58,15 @@ neo4j реализует два типа поддержки - встроенну
 - [[neo4j-ml]]
 - [[neosematics]] (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
 - [Natural Language Processing (NLP)](https://neo4j.com/labs/apoc/4.1/nlp/)
-- [graph-data-science-client](https://github.com/neo4j/graph-data-science-client) A Python client for the Neo4j Graph Data Science (GDS) library.
-- [container](https://hub.docker.com/_/neo4j/?tab=description)
-- [neo4jupyter](https://github.com/merqurio/neo4jupyter) A quick visualization tool for Jupyter and Neo4J
+- [graph-data-science-client](https://github.com/neo4j/graph-data-science-client) A Python client for the Neo4j Graph Data Science (GDS) library (sorce is hosted on Amazon)
+- [docker container](https://hub.docker.com/_/neo4j/?tab=description)
+- [neo4jupyter](https://github.com/merqurio/neo4jupyter) A quick visualization tool for Jupyter and Neo4J (not great)
 - [SciGraph](https://github.com/SciGraph/SciGraph) Represent ontologies and ontology-encoded knowledge in a neo4j graph.
-- [[trinity]] A VSCode extension for [[cypher]] and Neo4j
+- [[trinity]] A VSCode extension for [[cypher]] and Neo4j (very weak)
 - [Neo4j web brouser](https://neo4j.com/docs/browser-manual/current/deployment-modes/dedicated-web-server/) dedicated installation
+- [yworks.com](https://www.yworks.com/) Niils and solutions for graph and diagram visualizing. [demos](https://live.yworks.com/demos/)
+  - [Data Explorer for Neo4j](https://www.yworks.com/products/data-explorer-for-neo4j)ю The free tool to visualize and explore graph database
+  - [yFiles Graphs for Jupyter](https://www.yworks.com/products/yfiles-graphs-for-jupyter). [How use](https://youtu.be/M_PbbMVg4ME). [Repo](https://github.com/yWorks/yfiles-jupyter-graphs)
 - [pyingest](https://github.com/neo4j-field/pyingest). A script for loading CSV and JSON files into a Neo4j . It performs well due to several factors: Records are grouped into configurable-sized chunks before ingest. For CSV files, we leverage the optimized CSV parsing capabilities of the Pandas library. For JSON files, we use a streaming JSON parser (ijson) to avoid reading the entire document into memorydatabase written in Python3
 - [[apache-spark]] Unified engine for large-scale data analytics
 - [[dgraph]]

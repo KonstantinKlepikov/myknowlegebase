@@ -3,7 +3,7 @@ description: Trinity VSCode extension for cypher and neo4j
 title: Trinity
 tags: data-bases graphs vscode
 ---
-A VSCode extension for cypher and neo4j
+A VSCode extension for cypher and neo4j (very weak)
 
 Как использовать?
 
