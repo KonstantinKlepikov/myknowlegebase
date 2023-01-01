@@ -4,7 +4,6 @@ title: Evolution methods
 tags: machine-learning evol
 category: list
 ---
-
 Смотри еще:
 
 - [[deap]]
