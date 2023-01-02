@@ -67,6 +67,7 @@ category: list
 [apache-spark]: ../notes/apache-spark "Unified engine for large-scale data analytics"
 [apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
+[bd]: bd "Data Bases"
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
 [dgraph]: ../notes/dgraph "Dgraph"
 [janus-graph]: ../notes/janus-graph "Janus Graph"
