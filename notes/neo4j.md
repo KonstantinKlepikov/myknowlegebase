@@ -51,10 +51,10 @@ neo4j реализует два типа поддержки - встроенну
 Смотир еще:
 
 - [документация](https://neo4j.com/developer/graph-platform/)
-- [[neo4j-ml]]
 - [[cypher]]
 - [[python-api-neo4j]]
 - [[pytoneo]]
+- [[neo4j-apoc]]
 - [[neo4j-ml]]
 - [[neosematics]] (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
 - [Natural Language Processing (NLP)](https://neo4j.com/labs/apoc/4.1/nlp/)

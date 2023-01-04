@@ -106,6 +106,7 @@ Use autocompletion to discover the different procedures.
 Смотри еще:
 
 - [[neo4j]]
+- [[neo4j-apoc]]
 - [[neo4j-ml]]
 - [[python-api-neo4j]]
 - [[cypher]]
