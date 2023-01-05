@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Neo4j APOC библиотека | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Neo4j APOC библиотека" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Neo4j APOC Library" />
+<meta property="og:description" content="Neo4j APOC Library" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-apoc.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-apoc.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Neo4j APOC Library","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-apoc.html","headline":"Neo4j APOC библиотека","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Neo4j APOC библиотека</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/data-bases" title="data-bases" class="link-tags">data-bases&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/graphs" title="graphs" class="link-tags">graphs&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p><a href="https://neo4j.com/developer/neo4j-apoc/">APOC Library</a></p>
+
+<p>APOC расшифровывается как « Удивительные процедуры на шифровании » . Перед выпуском APOC разработчикам приходилось писать свои собственные процедуры и функции для общих функций, которые Cypher или база данных Neo4j еще не реализовали. Каждый разработчик мог бы написать свою версию этих функций, что привело бы к большому количеству дублирования. APOC - это стандартная служебная библиотека для общих процедур и функций. APOC включает более 450 стандартных процедур, предоставляющих функциональные возможности для утилит, преобразований, обновления графов и многого другого. Они хорошо поддерживаются и их очень легко запускать как отдельные функции или включать в запросы Cypher.</p>
+
+<p>Начиная с Neo4j 4.1.1, доступны две версии библиотеки APOC:</p>
+
+<ul>
+  <li>процедуры и функции APOC Core, которые не имеют внешних зависимостей и не требуют настройки. Это также доступно в Neo4j AuraDB</li>
+  <li>APOC Full содержит все, что есть в ядре APOC, а также дополнительные процедуры и функции, которые доступны как в Neo4j Sandbox, Docker-образе и Neo4j Desktop, так и при селф-хостед размещении.</li>
+</ul>
+
+<p><a href="https://neo4j.com/labs/apoc/4.3/installation/">Instalation</a></p>
+
+<p>Пример использования:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">WITH</span> <span class="s1">'https://raw.githubusercontent.com/neo4j-contrib/neo4j-apoc-procedures/4.3/core/src/test/resources/person.json'</span> <span class="k">AS</span> <span class="n">url</span>
+
+<span class="k">CALL</span> <span class="n">apoc</span><span class="p">.</span><span class="k">load</span><span class="p">.</span><span class="n">json</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="n">YIELD</span> <span class="n">value</span> <span class="k">as</span> <span class="n">person</span>
+
+<span class="n">MERGE</span> <span class="p">(</span><span class="n">p</span><span class="p">:</span><span class="n">Person</span> <span class="err">{</span><span class="n">name</span><span class="p">:</span><span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="err">}</span><span class="p">)</span>
+   <span class="k">ON</span> <span class="k">CREATE</span> <span class="k">SET</span> <span class="n">p</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">children</span> <span class="o">=</span> <span class="k">size</span><span class="p">(</span><span class="n">person</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Процедура <code class="language-plaintext highlighter-rouge">call apoc.help('keyword')</code> позволяет получить справку по доступным в APOC функциям и процедурам. <a href="https://neo4j.com/labs/apoc/4.3/help/">Подробнее</a>.</p>
+
+<h2 id="список-функций"><a href="https://neo4j.com/labs/apoc/4.3/overview/">Список функций</a></h2>
+
+<ul>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/config/">конфигурация бд</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/import/">import</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/export/">export</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/database-integration/">Database Integration</a> (интеграция с другими BD ElasticSearch,MongoDB, Couchbase, Redis)</li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/graph-updates/">graph updates</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/data-structures/">structures</a> (collections of aggregate functions, maps and conversion to types)</li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/temporal/">date time functions</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/mathematical/">мат-функции</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/graph-querying/">дополнительные методы запросов к бд</a> (ближайшие ноды, пути, связанности и т.п.)</li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/comparing-graphs/">сравнение графов</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/cypher-execution/">выполнение cypher запросов</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/virtual/">Virtual Nodes &amp; Relationships</a> (Graph Projections) - необходимо для работы в [<a href="neo4j-ml" title="Machine learning in Neo4j">neo4j-ml</a>]. Виртуальные узлы и связи не существуют в графе, они возвращаются только по запросу и могут использоваться для представления проекции графа. Способы применения:
+    <ul>
+      <li>return only a few properties of nodes/rels to the visualization, e.g. if you have huge text properties</li>
+      <li>visualize clusters found by graph algorithms</li>
+      <li>aggregate information to a higher level of abstraction</li>
+      <li>skip intermediate nodes in a longer path</li>
+      <li>hide away properties or intermediate nodes/relationships for security reasons</li>
+      <li>graph grouping</li>
+      <li>visualization of data from other sources (computation, RDBMS, document-dbs, CSV, XML, JSON) as graph without even storing it</li>
+    </ul>
+  </li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/nlp/">NLP</a> (google, amazon and azure integration)</li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/background-operations/">фоновое выполнение</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/database-introspection/">мониторинг БД</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/operational/">логирование и ворнинги</a></li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/misc/">несколько не вошедших в другие разделы функций</a> (к примеру для работы с текстом)</li>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/indexes/">индексы</a></li>
+</ul>
+
+<p>Тут <a href="https://neo4j.com/labs/apoc/4.3/transaction/">список процедур</a>, выполняемых со своей собственной транзакцией</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/labs/apoc/4.3/">документация</a></li>
+  <li>[<a href="neo4j-ml" title="Machine learning in Neo4j">neo4j-ml</a>]</li>
+  <li>[<a href="neosematics" title="Neosematics">neosematics</a>]</li>
+  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

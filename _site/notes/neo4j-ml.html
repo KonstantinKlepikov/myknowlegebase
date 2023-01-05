@@ -121,7 +121,17 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <ul>
+    <p>Для бесплатной версии:</p>
+
+<ul>
+  <li>Maximum of 4 CPU cores</li>
+  <li>максимум 4 проекции в каталоге GDS</li>
+  <li>Open source</li>
+</ul>
+
+<h2 id="установка">Установка</h2>
+
+<ul>
   <li><a href="https://neo4j.com/docs/operations-manual/current/docker/">docker instalation algorythm plugins</a></li>
   <li><a href="https://neo4j.com/labs/kafka/4.0/docker/">run with docker</a></li>
 </ul>
@@ -160,20 +170,154 @@
   <span class="na">neo4j-learn</span><span class="pi">:</span>
 </code></pre></div></div>
 
-<h2 id="neo4j-graph-data-science-library-gdsl">Neo4j Graph Data Science Library (GDSL)</h2>
+<h2 id="использование">Использование</h2>
 
-<p>Neo4j Graph Data Science Community Edition is open source for small projects, learning, experimentation, and prototyping.</p>
+<p>Схема использования библиотеки GDS обычно делится на две фазы: разработка и производство. На этапе разработки цель состоит в том, чтобы установить рабочий процесс полезных алгоритмов. Для этого необходимо настроить систему, определить проекции графа и выбрать алгоритмы. Обычно используются функции оценки памяти библиотеки. Это позволяет успешно настроить систему для обработки большого объема данных. Следует помнить о двух видах ресурсов: проекция графа и структуры данных алгоритма.</p>
 
-<p>Бесплатно для:</p>
+<p>На этапе производства система будет настроена соответствующим образом для успешного запуска нужных алгоритмов. Последовательность операций обычно заключается в создании проекции графа, выполнении на нем одного или нескольких алгоритмов и использовании результатов.</p>
+
+<p>На изображении ниже показан обзор стандартной работы GDS:</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-04-22-43-02.png" alt="gds" /></p>
+
+<p>GDS жадно выполняет свои процедуры с точки зрения системных ресурсов. Это означает, что каждая процедура будет пытаться использовать:</p>
 
 <ul>
-  <li>Maximum of 4 CPU cores</li>
-  <li>Open source</li>
+  <li>столько памяти, сколько нужно для выполнения</li>
+  <li>столько ядер ЦП, сколько ему нужно (не превышая пределов concurrency)</li>
 </ul>
 
-<p><a href="https://neo4j.com/developer/graph-data-science/graph-algorithms/">Alghorytms</a> (<code class="language-plaintext highlighter-rouge">graph-algorythms</code> deprecated, use <code class="language-plaintext highlighter-rouge">graph-data-science</code>):</p>
+<p>Одновременно выполняемые процедуры совместно используют ресурсы системы, в которой размещена СУБД, и поэтому могут влиять на производительность друг друга. Чтобы получить обзор состояния системы, вы можете использовать <a href="https://neo4j.com/docs/graph-data-science/current/common-usage/monitoring-system/">процедуру мониторинга</a>.</p>
+
+<p>Выполнение ожно разбить на несколько этапов:</p>
 
 <ul>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/common-usage/memory-estimation/">Оценка памяти</a></li>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/management-ops/graph-catalog-ops/">Построение проекций графов</a> (используется [<a href="neo4j-apoc" title="Neo4j APOC библиотека">neo4j-apoc</a>])</li>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/common-usage/running-algos/">Запуск алгоритмов</a></li>
+  <li>логирование и мониторинг</li>
+</ul>
+
+<p>Подробнее <a href="https://neo4j.com/docs/graph-data-science/current/common-usage/">читай в этом разделе</a></p>
+
+<p>GDS полностью построена на куче, а это значит, что сервер Neo4j необходимо настроить с гораздо большим размером кучи, чем для транзакционных рабочих нагрузок. На приведенной ниже диаграмме показано, как память используется моделью проекции графа:</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-04-22-49-04.png" alt="gds heap" /></p>
+
+<p>Модель содержит три типа данных:</p>
+
+<ul>
+  <li>Идентификаторы узлов - до 2^45 (“35 триллионов”)</li>
+  <li>Отношения - пары идентификаторов узлов. Отношения сохраняются дважды, если граф “UNDIRECTED”.</li>
+  <li>Веса - хранятся как двоичные данные (8 байтов на узел) в структуре данных, подобной массиву, рядом с отношениями.</li>
+</ul>
+
+<p>Конфигурация памяти зависит от используемой проекции графа.</p>
+
+<p>Во многих случаях будет полезно оценить требуемую память для построения проекции графика и запуска алгоритма перед его запуском, чтобы убедиться, что рабочая нагрузка может работать на доступной свободной памяти. Для этого можно использовать режим estimate, который возвращает оценку объема памяти, необходимого для запуска графовых алгоритмов. Обратите внимание, что режим гарантированно есть только у алгоритмов уровня, готового к производству. Дополнительные сведения см. в разделе <a href="https://neo4j.com/docs/graph-data-science/current/algorithms/syntax/">Обзор синтаксиса</a>.</p>
+
+<p>Синтаксис:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CALL</span> <span class="n">gds</span><span class="p">[.</span><span class="o">&lt;</span><span class="n">tier</span><span class="o">&gt;</span><span class="p">].</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="n">execution</span><span class="o">-</span><span class="k">mode</span><span class="o">&gt;</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span>
+  <span class="n">graphNameOrConfig</span><span class="p">:</span> <span class="n">String</span> <span class="k">or</span> <span class="k">Map</span><span class="p">,</span>
+  <span class="n">configuration</span><span class="p">:</span> <span class="k">Map</span>
+<span class="p">)</span> <span class="n">YIELD</span>
+  <span class="n">nodeCount</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">relationshipCount</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">requiredMemory</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+  <span class="n">treeView</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+  <span class="n">mapView</span><span class="p">:</span> <span class="k">Map</span><span class="p">,</span>
+  <span class="n">bytesMin</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">bytesMax</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">heapPercentageMin</span><span class="p">:</span> <span class="nb">Float</span><span class="p">,</span>
+  <span class="n">heapPercentageMax</span><span class="p">:</span> <span class="nb">Float</span>
+</code></pre></div></div>
+
+<p>Процедуры <code class="language-plaintext highlighter-rouge">gds.graph.project</code> также поддерживают estimate оценку использования памяти только для графика. Эти процедуры не принимают имя графа в качестве первого аргумента, поскольку фактически не строят проекцию.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CALL</span> <span class="n">gds</span><span class="p">.</span><span class="n">graph</span><span class="p">.</span><span class="n">project</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">nodeProjection</span><span class="p">:</span> <span class="n">String</span><span class="o">|</span><span class="n">List</span><span class="o">|</span><span class="k">Map</span><span class="p">,</span> <span class="n">relationshipProjection</span><span class="p">:</span> <span class="n">String</span><span class="o">|</span><span class="n">List</span><span class="o">|</span><span class="k">Map</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="k">Map</span><span class="p">)</span>
+<span class="n">YIELD</span> <span class="n">requiredMemory</span><span class="p">,</span> <span class="n">treeView</span><span class="p">,</span> <span class="n">mapView</span><span class="p">,</span> <span class="n">bytesMin</span><span class="p">,</span> <span class="n">bytesMax</span><span class="p">,</span> <span class="n">heapPercentageMin</span><span class="p">,</span> <span class="n">heapPercentageMax</span><span class="p">,</span> <span class="n">nodeCount</span><span class="p">,</span> <span class="n">relationshipCount</span>
+</code></pre></div></div>
+
+<p>Все процедуры в GDS, которые поддерживают оценку, включая создание графа, будут выполнять оценку в начале своего выполнения. Сюда входят все режимы выполнения, но не сама estimate процедура.</p>
+
+<p>Если проверка оценки может определить, что текущего объема свободной памяти недостаточно для выполнения операции, операция будет прервана и будет сообщено об ошибке. Ошибка будет содержать сведения об оценке и свободной памяти во время оценки.</p>
+
+<p>Эта логика управления кучей является ограничительной в том смысле, что она блокирует только выполнение, которое точно не помещается в память. Это не гарантирует, что выполнение, прошедшее проверку, будет успешным без истощения памяти. Таким образом, по-прежнему полезно сначала запустить режим оценки перед запуском алгоритма или создания графа для большого набора данных, чтобы просмотреть все детали оценки.</p>
+
+<p>Объем свободной памяти можно увеличить, либо удалив неиспользуемые графы из каталога, либо увеличив максимальный размер кучи перед запуском экземпляра Neo4j.</p>
+
+<p><a href="https://neo4j.com/docs/graph-data-science/current/common-usage/memory-estimation/">Подробнее</a></p>
+
+<p>Все алгоритмы представлены в виде процедур Neo4j. Их можно вызывать непосредственно из Cypher с помощью браузера Neo4j cypher-shell или из кода клиента с помощью драйвера Neo4j на выбранном языке. Алгоритмы запускаются с использованием одного из режимов выполнения stream, или stats. Выполнение любого алгоритма можно отменить, завершив транзакцию Cypher, выполняющую вызов процедуры.</p>
+
+<h3 id="stream">Stream</h3>
+
+<p>Режим stream вернет результаты вычисления алгоритма в виде строк результатов Cypher. Это похоже на то, как работают стандартные запросы чтения Cypher.</p>
+
+<p>Возвращаемые данные могут быть идентификатором узла и вычисленным значением для узла (например, page rank или WCC componentid) или двумя идентификаторами узла и вычисленным значением для пары узлов (например, показателем сходства узла).</p>
+
+<p>Если граф очень большой, результат stream вычисления моды также будет очень большим. Использование <code class="language-plaintext highlighter-rouge">ORDER BY</code> и <code class="language-plaintext highlighter-rouge">LIMIT</code> в запросе Cypher может быть полезно.</p>
+
+<h3 id="stats">Stats</h3>
+
+<p>stats режим возвращает статистические результаты вычисления алгоритма, такие как подсчеты или процентные распределения. Статистическая сводка вычислений возвращается в виде одной строки результата Cypher. Непосредственные результаты алгоритма недоступны при использовании stats режима. Этот режим формирует основу режимов выполнения mutate и write, но не пытается вносить какие-либо изменения или обновления где-либо.</p>
+
+<h3 id="mutate">Mutate</h3>
+
+<p>Режим mutate запишет результаты вычисления алгоритма обратно в проекцию графа. Обратите внимание, что указанное mutateProperty значение не должно существовать в проекции заранее. Это позволяет запускать несколько алгоритмов на одной проекции без записи результатов в Neo4j в промежутках между выполнением алгоритма.</p>
+
+<p>Этот режим выполнения особенно полезен в трех сценариях:</p>
+
+<ul>
+  <li>Алгоритмы могут зависеть от результатов предыдущих алгоритмов без необходимости записи в Neo4j.</li>
+  <li>Результаты алгоритма можно записать целиком.</li>
+  <li>Результаты алгоритма можно запросить через Cypher без необходимости вообще писать в Neo4j.</li>
+</ul>
+
+<p>Статистическая сводка вычислений возвращается аналогично stats режиму. Измененные данные могут быть свойствами узла (такими как page rank), новыми отношениями (такими как сходство узлов) или свойствами отношений.</p>
+
+<h3 id="write">Write</h3>
+
+<p>Режим writeза пишет результаты расчета алгоритма обратно в базу данных Neo4j. Это похоже на то, как работают стандартные запросы на запись Cypher. Статистическая сводка вычислений возвращается аналогично stats режиму. Это единственный режим выполнения, который попытается внести изменения в базу данных Neo4j.</p>
+
+<p>Записанные данные могут быть свойствами узла (такими как page rank), новыми отношениями (такими как сходство узлов) или свойствами отношений. write режим может быть очень полезен для случаев использования, когда результаты алгоритма будут проверяться несколько раз отдельными запросами, поскольку результаты вычислений полностью обрабатываются библиотекой.</p>
+
+<p>Для того чтобы результаты write режима могли быть использованы другим алгоритмом, необходимо создавать новую проекуцию из из базы данных Neo4j с обновленным графом.</p>
+
+<h2 id="graph-management">Graph management</h2>
+
+<p>Центральным элементом библиотеки GDS является управление проекциями графов. <a href="https://neo4j.com/docs/graph-data-science/current/management-ops/">Смотри как</a>.</p>
+
+<ul>
+  <li>Graph Catalog</li>
+  <li>Node Properties</li>
+  <li>Utility functions</li>
+  <li>Cypher on GDS graph</li>
+  <li>Administration</li>
+  <li>Backup and Restore</li>
+  <li>Defaults and Limits</li>
+</ul>
+
+<p>Каталог графов — это концепция в библиотеке GDS, которая позволяет управлять несколькими проекциями графов по имени. <a href="https://neo4j.com/docs/graph-data-science/current/management-ops/graph-catalog-ops/">Тпипичные операции</a>: <code class="language-plaintext highlighter-rouge">gds.graph.list</code>, <code class="language-plaintext highlighter-rouge">gds.graph.project.cypher</code>, <code class="language-plaintext highlighter-rouge">gds.graph.drop</code></p>
+
+<h2 id="graph-algorythms"><a href="https://neo4j.com/docs/graph-data-science/current/algorithms/">Graph algorythms</a></h2>
+
+<p><a href="https://neo4j.com/docs/graph-data-science/current/algorithms/syntax/">Обзор синтаксиса</a></p>
+
+<p>Алгоритмы разделены на категории, которые представляют разные классы задач:</p>
+
+<ul>
+  <li>Centrality</li>
+  <li>Community detection</li>
+  <li>Similarity</li>
+  <li>Path finding</li>
+  <li>Node embeddings</li>
+  <li>Topological link prediction</li>
+  <li>Auxiliary procedures</li>
+  <li>
+    <p>Pregel API</p>
+  </li>
   <li>Path Finding - these algorithms help find the shortest path or evaluate the availability and quality of routes
     <ul>
       <li>Production-quality
@@ -290,16 +434,22 @@
   <li>Link prediction - these algorithms use machine learning to predict new links between pairs of nodes</li>
 </ul>
 
-<p><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">Machine learning</a>:</p>
+<h3 id="machine-learning"><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">Machine learning</a></h3>
+
+<p>В GDS конвейеры предлагают сквозной рабочий процесс, от извлечения признаков до обучения и применения моделей машинного обучения.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-04-23-16-42.png" alt="neo4j ml" /></p>
+
+<p>GDS включает следующие конвейеры:</p>
 
 <ul>
-  <li>Beta
+  <li>Бета
     <ul>
       <li>Node Classification Pipelines</li>
       <li>Link Prediction Pipelines</li>
     </ul>
   </li>
-  <li>Alpha
+  <li>Альфа
     <ul>
       <li>Node Regression Pipelines</li>
     </ul>
@@ -314,6 +464,20 @@
   <li><a href="https://neo4j.com/developer/graph-data-science/link-prediction/scikit-learn/">Link Prediction with GDSL and scikit-learn</a></li>
 </ul>
 
+<h2 id="python-client">Python client</h2>
+
+<p><a href="https://pypi.org/project/graphdatascience/">Neo4j Graph Data Science Client on pypi</a> работает с [<a href="python-api-neo4j" title="Python api for neo4j">python-api-neo4j</a>]. <a href="https://neo4j.com/docs/graph-data-science-client/current/">Мануал</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install graphdatascience</code></p>
+
+<p>Примеры использования:</p>
+
+<ul>
+  <li><a href="https://github.com/neo4j/graph-data-science-client/blob/main/examples/fastrp-and-knn.ipynb">FastRP and kNN end-to-end example</a></li>
+  <li><a href="https://github.com/neo4j/graph-data-science-client/blob/main/examples/import-sample-export-gnn.ipynb">Export and integration with PyG example</a></li>
+  <li><a href="https://github.com/neo4j/graph-data-science-client/blob/main/examples/load-data-via-graph-construction.ipynb">Load data to a projected graph via graph construction</a></li>
+</ul>
+
 <p>Смотир еще:</p>
 
 <ul>
@@ -322,8 +486,10 @@
   <li><a href="https://neo4j.com/developer/cypher/procedures-functions/">User Defined Procedures and Functions</a></li>
   <li><a href="https://github.com/neo4j/graph-data-science-client">graph-data-science-client</a> A Python client for the Neo4j Graph Data Science (GDS) library.</li>
   <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
-  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+  <li>[<a href="neosematics" title="Neosematics">neosematics</a>]</li>
+  <li>[<a href="neo4j-apoc" title="Neo4j APOC библиотека">neo4j-apoc</a>]</li>
   <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
 </ul>
 
 
