@@ -1,9 +1,14 @@
 ---
 description: Графы знаний
 title: Knowledge graphs
-tags: machine-learning graphs
+tags: machine-learning graphs knowledge-graphs
 category: list
 ---
+## Bases
+
+- [[semantic-web]]
+- [[rdf]]
+
 ## Курсы
 
 - [курс лекций семантический web МИФИ](https://www.youtube.com/channel/UCTUhNxKRFtOHIW9ytAHbSDA/videos). [Ресусры курса](http://env-8380827.jelastic.regruhosting.ru/index_x.html).
@@ -38,7 +43,7 @@ category: list
   - [GraphDB docker](https://hub.docker.com/r/ontotext/graphdb/)
   - [docs](https://graphdb.ontotext.com/documentation/10.0/index.html)
   - [python api](https://github.com/patzomir/graphdb-python-api)
-- [[neo4j]] rdf
+- [[neo4j]] rdf resources
   - [[neosematics]] [neosemantics](https://neo4j.com/labs/neosemantics/) (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
   - [install](https://neo4j.com/labs/neosemantics/installation/)]
   - [Build a Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/) with Neo4j
@@ -72,7 +77,6 @@ category: list
 [neosematics]: ../notes/neosematics "Neosematics"
 [sparql]: ../notes/sparql "SPARQL"
 [apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
 [janus-graph]: ../notes/janus-graph "Janus Graph"
 [graphs]: graphs "Machine learning with graphs"
 [pyg]: ../notes/pyg "Pytorch geometric"
