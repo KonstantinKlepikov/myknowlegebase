@@ -124,6 +124,7 @@ RDF и RDFs реализует логику предикатов, формулы
 [turtle]: turtle "Turtle for RDF"
 [semantic-web]: semantic-web "Semantic web"
 [owl]: owl "OWL ontology"
+[turtle]: turtle "Turtle for RDF"
 [knowledge-graphs]: ../lists/knowledge-graphs "Knowledge graphs"
 [neosematics]: neosematics "Neosematics"
 [neo4j]: neo4j "Neo4j graph data base"

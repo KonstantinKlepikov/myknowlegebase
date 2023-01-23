@@ -84,7 +84,7 @@ $$V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]$$
 
 [A Comparison of Reinforcement Learning Frameworks: Dopamine, RLLib, Keras-RL, Coach, TRFL, Tensorforce, Coach and More](https://winder.ai/a-comparison-of-reinforcement-learning-frameworks-dopamine-rllib-keras-rl-coach-trfl-tensorforce-coach-and-more/#google-dopamine-https-github-com-google-dopamine)
 
-- [openai gym](https://github.com/openai/gym) A toolkit for developing and comparing reinforcement learning algorithms.
+- [openai gym](https://github.com/openai/gym) A toolkit for developing and comparing reinforcement learning algorithms. Now is a [Gymnasium](https://gymnasium.farama.org/).
 - Google [dopamine](https://github.com/google/dopamine). Dopamine is a research framework for fast prototyping of reinforcement learning algorithms.
 - [RLib](https://docs.ray.io/en/latest/rllib/index.html). Industry-Grade Reinforcement Learning. [github](https://github.com/ray-project/ray)
 - [keras-rl](https://github.com/keras-rl/keras-rl). Deep Reinforcement Learning for Keras.

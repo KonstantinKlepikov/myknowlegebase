@@ -800,6 +800,7 @@ DEBUG:root:Command update with request id 1957747793 on server ('localhost', 270
 - [api reference](http://docs.mongoengine.org/apireference.html#)
 - [гитхаб](https://github.com/MongoEngine/mongoengine)
 - [Dropping all collections in Mongoengine](https://stackoverflow.com/a/15886728/15966204)
+- [MotorEngine MongoDB Async ORM](https://motorengine.readthedocs.io/en/latest/) asynco port of mongoengine. More old sulution: [AIOMotorEngine MongoDB Asyncio ORM](https://aiomotorengine.readthedocs.io/en/latest/).
 - [[2022-11-19-daily-note]] None в mongoDB, return to dict и Pymongo API TypeError
 - [[mongodb]]
 - [mongomock](https://github.com/mongomock/mongomock) Small library for mocking pymongo collection objects for testing purposes. [Use mongomock for testing](http://docs.mongoengine.org/guide/mongomock.html)

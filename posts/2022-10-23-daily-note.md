@@ -2,6 +2,7 @@
 title: Screenshoots with pytests amd dataclass fields dynamicaly and literal choices
 description: How to get screenshot with selenium and pytest, dataclass literal and dataclass dynamic fields
 category: post
+tags: tests python crawlers python-standart-library
 ---
 ## [Take screenshot of full page with Selenium Python with chromedriver](https://stackoverflow.com/questions/41721734/take-screenshot-of-full-page-with-selenium-python-with-chromedriver)
 

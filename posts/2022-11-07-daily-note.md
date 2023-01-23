@@ -2,6 +2,7 @@
 title: Кастомные классы от python-словаря
 description: Custom dict-subclasses
 category: post
+tags: python
 ---
 ## How to subclass a dictionary so it supports generic type hints?
 

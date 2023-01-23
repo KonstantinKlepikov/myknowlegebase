@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Some pydantic tricks-1. Закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Some pydantic tricks-1. Закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Несколько трюков с pydantic - закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy" />
+<meta property="og:description" content="Несколько трюков с pydantic - закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2023-01-23-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2023-01-23-daily-note.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Несколько трюков с pydantic - закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2023-01-23-daily-note.html","headline":"Some pydantic tricks-1. Закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Some pydantic tricks-1. Закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/pydantic" title="pydantic" class="link-tags">pydantic&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="private-model-attributes"><a href="https://docs.pydantic.dev/usage/models/#private-model-attributes">Private model attributes</a></h2>
+
+<p>Если вам нужно изменить или манипулировать внутренними атрибутами экземпляров модели, вы можете объявить их с помощью <code class="language-plaintext highlighter-rouge">PrivateAttr</code>. Имена частных атрибутов должны начинаться с подчеркивания, чтобы предотвратить конфликты с полями модели: поддерживаются как <code class="language-plaintext highlighter-rouge">_attr</code>, так и <code class="language-plaintext highlighter-rouge">__attr__</code>. Если <code class="language-plaintext highlighter-rouge">Config</code>.<code class="language-plaintext highlighter-rouge">underscore_attrs_are_private</code> имеет значение <code class="language-plaintext highlighter-rouge">True</code>, любой атрибут с дандером, не относящийся к <code class="language-plaintext highlighter-rouge">ClassVar</code>, будет рассматриваться как приватный.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">PrivateAttr</span>
+
+<span class="k">class</span> <span class="nc">TimeAwareModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">_processed_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">_secret_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="c1"># this could also be done with default_factory
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">_secret_value</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">_class_var</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s">'class var value'</span>
+    <span class="n">_private_attr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">'private attr value'</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">underscore_attrs_are_private</span> <span class="o">=</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<h2 id="model-and-field-level-include-and-exclude"><a href="https://docs.pydantic.dev/usage/exporting_models/#advanced-include-and-exclude">Model and field level include and exclude</a></h2>
+
+<p>В дополнение к явным аргументам <code class="language-plaintext highlighter-rouge">exclude</code> и <code class="language-plaintext highlighter-rouge">include</code>, передаваемым в методы <code class="language-plaintext highlighter-rouge">dict</code>, <code class="language-plaintext highlighter-rouge">json</code> и <code class="language-plaintext highlighter-rouge">copy</code>, мы также можем передать аргументы <code class="language-plaintext highlighter-rouge">include/exclude</code> непосредственно конструктору <code class="language-plaintext highlighter-rouge">Field</code> или эквивалентной записи поля в классе <code class="language-plaintext highlighter-rouge">Config</code> моделей.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SecretStr</span>
+
+
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">password</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(...,</span> <span class="n">exclude</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">user</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(...,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s">'username'</span><span class="p">})</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span><span class="s">'value'</span><span class="p">:</span> <span class="p">{</span><span class="s">'exclude'</span><span class="p">:</span> <span class="bp">True</span><span class="p">}}</span>
+
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s">'1234567890'</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">User</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+        <span class="n">username</span><span class="o">=</span><span class="s">'JohnDoe'</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="s">'hashedpassword'</span>
+    <span class="p">),</span>
+    <span class="n">value</span><span class="o">=</span><span class="mi">9876543210</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="nb">dict</span><span class="p">())</span>
+<span class="c1">#&gt; {'id': '1234567890', 'user': {'id': 42}}
+</span></code></pre></div></div>
+
+<p><a href="https://docs.pydantic.dev/usage/exporting_models/#advanced-include-and-exclude">Остальные примеры</a></p>
+
+<h2 id="generic-models"><a href="https://docs.pydantic.dev/usage/models/#generic-models">Generic Models</a></h2>
+
+<p>В [<a href="../notes/pydantic" title="Pydantic">pydantic</a>] поддерживается создание универсальных моделей, чтобы упростить повторное использование общей структуры модели.</p>
+
+<p>Чтобы объявить универсальную модель, выполните следующие шаги:</p>
+
+<ul>
+  <li>Объявите один или несколько экземпляров <code class="language-plaintext highlighter-rouge">typing.TypeVar</code> для использования для параметризации вашей модели.</li>
+  <li>Объявите модель <code class="language-plaintext highlighter-rouge">pydantic</code>, которая наследуется от <code class="language-plaintext highlighter-rouge">pydantic.generics.GenericModel</code> и <code class="language-plaintext highlighter-rouge">typing.Generic,</code> где вы передаете экземпляры <code class="language-plaintext highlighter-rouge">TypeVar</code> в качестве параметров в <code class="language-plaintext highlighter-rouge">typing.Generic</code>.</li>
+  <li>Используйте экземпляры <code class="language-plaintext highlighter-rouge">TypeVar</code> в качестве аннотаций, когда вы захотите заменить их другими типами или моделями <code class="language-plaintext highlighter-rouge">pydantic</code>.</li>
+</ul>
+
+<p><a href="https://docs.pydantic.dev/usage/models/#generic-models">Примеры тут</a></p>
+
+<h2 id="how-does-pydantic-implement-overriding-defaults-in-the-config-class"><a href="https://stackoverflow.com/a/72724820/15966204">How does Pydantic implement overriding defaults in the Config class?</a></h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BasePerson</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">BasePerson</span><span class="p">.</span><span class="n">Config</span><span class="p">):</span>
+        <span class="n">n_arms</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h2 id="how-can-i-create-a-mappingmodel-using-pydantic"><a href="https://stackoverflow.com/a/66255455/15966204">How can I create a MappingModel using pydantic?</a></h2>
+
+<p>Можно использовать <a href="https://docs.pydantic.dev/usage/models/#custom-root-types">Custom Root Types</a>. Модели Pydantic можно определить с пользовательским корневым типом, объявив поле <code class="language-plaintext highlighter-rouge">__root__</code>. Корневой тип может быть любым типом, поддерживаемым <code class="language-plaintext highlighter-rouge">pydantic</code>, и указывается подсказкой типа в поле <code class="language-plaintext highlighter-rouge">__root__</code>. Корневое значение может быть передано в модель <code class="language-plaintext highlighter-rouge">__init__</code> через ключевой аргумент <code class="language-plaintext highlighter-rouge">__root__</code> или в качестве первого и единственного аргумента для <code class="language-plaintext highlighter-rouge">parse_obj</code>. <a href="https://docs.pydantic.dev/usage/models/#custom-root-types">Подробнее тут</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">__root__</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">__root__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__root__</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">Model</span><span class="p">.</span><span class="n">parse_obj</span><span class="p">({</span><span class="s">'key1'</span><span class="p">:</span> <span class="s">'val1'</span><span class="p">,</span> <span class="s">'key2'</span><span class="p">:</span> <span class="s">'val2'</span><span class="p">})</span>
+<span class="k">assert</span> <span class="n">m</span><span class="p">.</span><span class="n">key1</span> <span class="o">==</span> <span class="s">"val1"</span>
+</code></pre></div></div>
+
+<p>Dictlike объект должен реализовывать <a href="https://stackoverflow.com/a/23976949/15966204">такие методы</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Mapping</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">has_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">.</span><span class="n">values</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>[<a href="2022-11-07-daily-note" title="Кастомные классы от python-словаря">2022-11-07-daily-note</a>] кастомные классы от python-словаря</p>
+
+<h2 id="how-serialize-a-property">How Serialize a property?</h2>
+
+<p>Можно использовать женерики [<a href="../notes/pydantic" title="Pydantic">pydantic</a>], создав сабкласс, поддерживающий сериализацию свойств.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">PropertyBaseModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="s">"""
+    Workaround for serializing properties with pydantic until
+    https://github.com/samuelcolvin/pydantic/issues/935
+    is solved
+    """</span>
+    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">get_properties</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">prop</span> <span class="k">for</span> <span class="n">prop</span>
+            <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">prop</span><span class="p">),</span> <span class="nb">property</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">"__values__"</span><span class="p">,</span> <span class="s">"fields"</span><span class="p">)</span>
+                <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">include</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s">'AbstractSetIntStr'</span><span class="p">,</span> <span class="s">'MappingIntStrAny'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">exclude</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s">'AbstractSetIntStr'</span><span class="p">,</span> <span class="s">'MappingIntStrAny'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">by_alias</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="n">skip_defaults</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">exclude_unset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="n">exclude_defaults</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="n">exclude_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s">'DictStrAny'</span><span class="p">:</span>
+        <span class="n">attribs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">().</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span>
+            <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span>
+            <span class="n">by_alias</span><span class="o">=</span><span class="n">by_alias</span><span class="p">,</span>
+            <span class="n">skip_defaults</span><span class="o">=</span><span class="n">skip_defaults</span><span class="p">,</span>
+            <span class="n">exclude_unset</span><span class="o">=</span><span class="n">exclude_unset</span><span class="p">,</span>
+            <span class="n">exclude_defaults</span><span class="o">=</span><span class="n">exclude_defaults</span><span class="p">,</span>
+            <span class="n">exclude_none</span><span class="o">=</span><span class="n">exclude_none</span>
+        <span class="p">)</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_properties</span><span class="p">()</span>
+        <span class="c1"># Include and exclude properties
+</span>        <span class="k">if</span> <span class="n">include</span><span class="p">:</span>
+            <span class="n">props</span> <span class="o">=</span> <span class="p">[</span><span class="n">prop</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">props</span> <span class="k">if</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">include</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">exclude</span><span class="p">:</span>
+            <span class="n">props</span> <span class="o">=</span> <span class="p">[</span><span class="n">prop</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">props</span> <span class="k">if</span> <span class="n">prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">]</span>
+
+        <span class="c1"># Update the attribute dict with the properties
+</span>        <span class="k">if</span> <span class="n">props</span><span class="p">:</span>
+            <span class="n">attribs</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="n">prop</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">props</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">attribs</span>
+</code></pre></div></div>
+
+<p>Это (и другие) - неофициальная реализация. Читай <a href="https://github.com/pydantic/pydantic/issues/935#issuecomment-641175527">обсуждение тут</a>.</p>
+
+<p>Еще решение для заполнения: <a href="https://pypi.org/project/pydantic-computed/">pydantic-computed</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">pydantic_computed</span> <span class="kn">import</span> <span class="n">Computed</span><span class="p">,</span> <span class="n">computed</span>
+
+<span class="k">class</span> <span class="nc">ExampleModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">c</span><span class="p">:</span> <span class="n">Computed</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+
+    <span class="o">@</span><span class="n">computed</span><span class="p">(</span><span class="s">'c'</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">calculate_c</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">ExampleModel</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">c</span><span class="p">)</span> <span class="c1"># Outputs 2
+</span></code></pre></div></div>
+
+<h2 id="required-fields-format"><a href="https://docs.pydantic.dev/usage/models/#field-ordering">Required fields format</a></h2>
+
+<p>Чтобы объявить поле обязательным, вы можете объявить его, используя только аннотацию, или вы можете использовать многоточие <code class="language-plaintext highlighter-rouge">(...)</code> в качестве значения:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="p">...</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(...)</span>
+</code></pre></div></div>
+
+<p>Тот же подход для опциональных обязательных полей, которые могут принимать значение <code class="language-plaintext highlighter-rouge">None</code> если не заполнены:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ValidationError</span>
+
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">...</span>
+    <span class="n">c</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(...)</span>
+</code></pre></div></div>
+
+<h2 id="root-validators"><a href="https://docs.pydantic.dev/usage/validators/#root-validators">Root Validators</a></h2>
+
+<p>Root-валидаторы используются для валидации всех данных модели. Один из вариантов примененеия - это заполнение полей перед или после примененеия (что бывает полезно, когда входящая модель определяет поля, для которых вы не хотите назначать алиасы). <a href="https://stackoverflow.com/questions/63676411/pydantic-how-to-use-one-fields-value-to-set-values-for-other-fields">Пример со stackoweflow</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">account_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s">'user'</span>
+    <span class="n">field1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s">''</span>
+    <span class="n">field1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s">''</span>
+
+    <span class="o">@</span><span class="n">root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="s">"""This is a validator that sets the field values based on the
+        the user's account type.
+
+        Args:
+            values (dict): Stores the attributes of the User object.
+
+        Returns:
+            dict: The attributes of the user object with the user's fields.
+        """</span>
+        <span class="n">values</span><span class="p">[</span><span class="s">"field1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_dict</span><span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="s">"account_type"</span><span class="p">]][</span><span class="s">"field1"</span><span class="p">]</span>
+        <span class="n">values</span><span class="p">[</span><span class="s">"field2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_dict</span><span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="s">"account_type"</span><span class="p">]][</span><span class="s">"field2"</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div></div>
+
+<p>Как и в случае с валидаторами полей, корневые валидаторы могут иметь <code class="language-plaintext highlighter-rouge">pre=True</code>, и в этом случае они вызываются до того, как происходит проверка поля (и предоставляются с необработанными входными данными), или <code class="language-plaintext highlighter-rouge">pre=False</code> (по умолчанию), и в этом случае они вызывается после проверки поля. Проверка поля не будет выполняться, если корневые валидаторы <code class="language-plaintext highlighter-rouge">pre=True</code> выдают ошибку. Как и в случае с валидаторами полей, корневые валидаторы с <code class="language-plaintext highlighter-rouge">pre=False</code> по умолчанию будут вызываться, даже если предыдущие валидаторы терпят неудачу; это поведение можно изменить, установив аргумент ключевого слова <code class="language-plaintext highlighter-rouge">skip_on_failure=True</code> для валидатора. Аргумент значений будет представлять собой словарь, содержащий значения, прошедшие проверку поля, и поля по умолчанию, там где это применимо.</p>
+
+<h2 id="mypy-error-with-custom-pydantic-fields">MyPy error with custom pydantic fields</h2>
+
+<p>Вот это будет выдавать ошибку:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">conint</span>
+
+<span class="k">class</span> <span class="nc">MyPyProblem</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">big_int</span><span class="p">:</span> <span class="n">conint</span><span class="p">(</span><span class="n">gt</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">lt</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>Решение (<a href="https://github.com/pydantic/pydantic/issues/239">обсуждалось тут</a>):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConstrainedInt</span>
+
+<span class="k">class</span> <span class="nc">BigInt</span><span class="p">(</span><span class="n">ConstrainedInt</span><span class="p">):</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">lt</span> <span class="o">=</span> <span class="mi">1024</span>
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">foo</span><span class="p">:</span> <span class="n">BigInt</span>  <span class="c1"># required
+</span>    <span class="n">bar</span><span class="p">:</span> <span class="n">BigInt</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">BigInt</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>  <span class="c1"># with a default
+</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">foo</span><span class="o">=</span><span class="mi">1011</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="nb">dict</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../notes/pydantic" title="Pydantic">pydantic</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

@@ -860,7 +860,9 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 - [[sql-model]]. SQLModel is a library for interacting with SQL databases from Python code, with Python objects. Используется в [[databases]] и [[fastapi]]
 - [[pydantic-validation-custom]]
   [Pydantic Settings management](https://pydantic-docs.helpmanual.io/usage/settings/)
+  [pydantic-computed](https://pypi.org/project/pydantic-computed/) а new decorator for pydantic allowing you to define dynamic fields that are computed from other properties.
 - [[mock-libraries]]
+- [[2023-01-23-daily-note]] закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy
 
 - [[devtools]]
 - [[fastapi-setting-environment-variables]] про поддержку .env
@@ -876,6 +878,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [fastapi]: fastapi "Fastapi"
 [pydantic-validation-custom]: pydantic-validation-custom "Pydantic-validation-custom"
 [mock-libraries]: mock-libraries "Либы для создания моков"
+[2023-01-23-daily-note]: ../posts/2023-01-23-daily-note "Some pydantic tricks-1. Закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy"
 [devtools]: devtools "Python devtools"
 [fastapi-setting-environment-variables]: fastapi-setting-environment-variables "Fastapi environment variables"
 [fastapi]: fastapi "Fastapi"
@@ -890,6 +893,7 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
 [fastapi]: fastapi "Fastapi"
 [pydantic-validation-custom]: pydantic-validation-custom "Pydantic-validation-custom"
 [mock-libraries]: mock-libraries "Либы для создания моков"
+[2023-01-23-daily-note]: ../posts/2023-01-23-daily-note "Some pydantic tricks-1. Закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy"
 [devtools]: devtools "Python devtools"
 [fastapi-setting-environment-variables]: fastapi-setting-environment-variables "Fastapi environment variables"
 [fastapi]: fastapi "Fastapi"

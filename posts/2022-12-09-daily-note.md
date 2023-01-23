@@ -2,6 +2,7 @@
 title: Some python tricks 2 - классы и словари
 description: Проверка классов и инстансов на то что они являются субклассами другого класса, удаление ключей в словаре и объединение словарей.
 category: post
+tags: python
 ---
 ## Test an object is a subclass of the type of another instance
 

@@ -2,6 +2,7 @@
 title: Несколько вопросов о MongoDB и mongoengine
 description: None в mongoDB, return to dict и Pymongo API TypeError.
 category: post
+tags: python mongodb
 ---
 В заметке о нескольких важных нюансах и приемах работы с MongoDB из python.
 
