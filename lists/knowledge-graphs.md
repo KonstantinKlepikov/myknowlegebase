@@ -45,14 +45,6 @@ category: list
 
 ## Frameworks, languages, db and tools
 
-- [Apache JENA](https://jena.apache.org/) - RDF хранилище
-  - [apache jena github](https://github.com/apache/jena) Java framework for writing Semantic Web applications.
-  - [stain/jena-fuseki](https://hub.docker.com/r/stain/jena-fuseki) This is a Docker image for running Apache Jena Fuseki, which is a SPARQL 1.1 server with a web interface, backed by the Apache Jena TDB RDF triple store.
-  - [pyfuseki](https://yubincloud.github.io/pyfuseki/) An easy way to mix together OWL and Jena Fuseki
-  - [pyfuseki github](https://github.com/yubinCloud/pyfuseki)
-  - [stain/jena](https://hub.docker.com/r/stain/jena) This docker image exposes the Apache Jena command line tool riot and its variants (e.g. turtle, rdfxml), in addition to the other Jena command line tools
-  - [Apache Jena and Python](https://stackoverflow.com/questions/52948493/apache-jena-and-python) - how on stackoverflow
-  - [JayDeBeApi](https://github.com/baztian/jaydebeapi) - bridge from JDBC database drivers to Python DB-API
 - [RDFLib](https://github.com/RDFLib) python tools:
   - [RDFLIB](https://github.com/RDFLib/rdflib) RDFLib is a pure Python package for working with RDF. RDFLib contains most things you need to work with RDF, including:
     - parsers and serializers for RDF/XML, N3, NTriples, N-Quads, Turtle, TriX, Trig and JSON-LD
@@ -63,22 +55,17 @@ category: list
     - [docs](https://rdflib.readthedocs.io/en/stable/)
   - [sparqlwrapper](https://github.com/RDFLib/sparqlwrapper)
   - [pyshacl](https://github.com/RDFLib/pySHACL)
-- [AllegroGraph](https://allegrograph.com/products/allegrograph/)
-  - [AllegroGraph Python client](https://franz.com/agraph/support/documentation/6.4.0/python/index.html) offers convenient and efficient access to an AllegroGraph server from a Python-based application. This API provides methods for creating, querying and maintaining RDF data, and for managing the stored triples. The AllegroGraph Python API deliberately emulates the Eclipse RDF4J (formerly Aduna Sesame) API to make it easier to migrate from RDF4J to AllegroGraph.
-- DB
-  - [Ontotext GraphDB](https://www.ontotext.com/products/graphdb/?ref=menu). RDF Database for Knowledge Graphs
-    - [GraphDB docker](https://hub.docker.com/r/ontotext/graphdb/)
-    - [docs](https://graphdb.ontotext.com/documentation/10.0/index.html)
-    - [python api](https://github.com/patzomir/graphdb-python-api)
-    - [Using GraphDB with the RDF4J API](https://graphdb.ontotext.com/documentation/10.0/using-graphdb-with-the-rdf4j-api.html)
+- [RASQAL](https://librdf.org/rasqal/) is a free software / Open Source C library that handles Resource Description Framework (RDF) query language syntaxes, query construction and execution of queries returning results as bindings, boolean, RDF graphs/triples or syntaxes. The supported query languages are SPARQL Query 1.0, SPARQL Query 1.1, SPARQL Update 1.1 (no executing) and the Experimental SPARQL extensions (LAQRS). Rasqal can write binding query results in the SPARQL XML, SPARQL JSON, CSV, TSV, HTML, ASCII tables, RDF/XML and Turtle / N3 and read them in SPARQL XML, CSV, TSV, RDF/XML and Turtle / N3.
+- **[[bd]]**
+  - [[ontotext-graphdb]]
   - [[neo4j]] rdf resources
     - [[neosematics]] [neosemantics](https://neo4j.com/labs/neosemantics/) (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
     - [install](https://neo4j.com/labs/neosemantics/installation/)]
     - [Build a Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/) with Neo4j
   - [Eclipse RDF4J](https://rdf4j.org/). Eclipse RDF4J is an open source modular Java framework for working with RDF data. This includes parsing, storing, inferencing and querying of/over such data. It offers an easy-to-use API that can be connected to all leading RDF storage solutions. RDF4J offers a set of database implementations out of the box. [Repo](https://github.com/eclipse/rdf4j).
-  - [AllegroGraph](https://allegrograph.com/products/allegrograph/)
-    - [AllegroGraph Python client](https://franz.com/agraph/support/documentation/6.4.0/python/index.html) offers convenient and efficient access to an AllegroGraph server from a Python-based application. This API provides methods for creating, querying and maintaining RDF data, and for managing the stored triples. The AllegroGraph Python API deliberately emulates the Eclipse RDF4J (formerly Aduna Sesame) API to make it easier to migrate from RDF4J to AllegroGraph.
-    - [Gruff](https://allegrograph.com/products/gruff/) is a free Knowledge Graph visualization product from Franz Inc.
+  - [[alegrograph]]
+  - [[apache-jena]]
+  - full list is here: [[bd]]
 - [Awesome-knowledge-graph-question-answering](https://github.com/BshoterJ/awesome-kgqa) A collection of some materials of knowledge graph question answering
 - [OpenRefine](https://github.com/OpenRefine)
   - [OpenRefine](https://github.com/OpenRefine/OpenRefine) is a Java-based power tool that allows you to load data, understand it, clean it up, reconcile it, and augment it with data coming from the web. All from a web browser and the comfort and privacy of your own computer. [Website](https://openrefine.org/).
@@ -96,6 +83,7 @@ category: list
 - [Sindice](https://sindice.com/developers/welcome.html) RDF-search engine
 - [Ontop4theWeb](https://github.com/ConstantB/Ontop4TheWeb) is a framework that extends the OBDA paradigm with the ability to query Web APIs (Foursquare, Twitter, Yelp, etc) and Web tables (HTML) using SPARQL on-the-fly, saving time and resources for developers and data scientists/engineers as data don't have to be downloaded and converted into RDF before querying. With Ontop4TheWeb, you can create a virtual OBDA repository and pose SPARQL queries to the Web APIs of your interest. The data will be transparently downloaded after posing the queries, thus retrieving the most up-to-date snapshots of data. For this reason, Ontop4TheWeb is suitable for querying On-the-fly data of high velocity, i.e., that get updated frequently.
 - [RSSOwlnix](https://github.com/Xyrio/RSSOwlnix) is a fork of RSSOwl a powerful application to organize, search and read your RSS, RDF & Atom news feeds in a comfortable way. Highlights are saved searches, notifications, filters, fast fulltext search and a flexible, clean user interface.
+- [stardog](https://www.stardog.com/) - enterprize knowledge-graphs platform
 
 Смотри еще:
 
@@ -114,8 +102,30 @@ category: list
 [owl]: ../notes/owl "OWL ontology"
 [turtle]: ../notes/turtle "Turtle for RDF"
 [wikidata]: wikidata "Wikidata"
+[ontotext-graphdb]: ../notes/ontotext-graphdb "Ontotext graph-db"
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
 [neosematics]: ../notes/neosematics "Neosematics"
+[sparql]: ../notes/sparql "SPARQL"
+[apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
+[neo4j]: ../notes/neo4j "Neo4j graph data base"
+[janus-graph]: ../notes/janus-graph "Janus Graph"
+[graphs]: graphs "Machine learning with graphs"
+[pyg]: ../notes/pyg "Pytorch geometric"
+[machine-learning]: machine-learning "Алгоритмы машинного обучения"
+[//end]: # "Autogenerated link references"
+[//begin]: # "Autogenerated link references for markdown compatibility"
+[semantic-web]: ../notes/semantic-web "Semantic web"
+[rdf]: ../notes/rdf "RDF"
+[owl]: ../notes/owl "OWL ontology"
+[turtle]: ../notes/turtle "Turtle for RDF"
+[wikidata]: wikidata "Wikidata"
+[bd]: bd "Data Bases"
+[ontotext-graphdb]: ../notes/ontotext-graphdb "Ontotext graph-db"
+[neo4j]: ../notes/neo4j "Neo4j graph data base"
+[neosematics]: ../notes/neosematics "Neosematics"
+[alegrograph]: ../notes/alegrograph "Alegro graph"
+[apache-jena]: ../notes/apache-jena "Apache JENA"
+[bd]: bd "Data Bases"
 [sparql]: ../notes/sparql "SPARQL"
 [apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
