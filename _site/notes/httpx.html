@@ -203,7 +203,8 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="s">'https://httpbin.org/get'</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="p">.</span><span class="n">options</span><span class="p">(</span><span class="s">'https://httpbin.org/get'</span><span class="p">)</span>
 
-<span class="c1"># To include URL query parameters in the request, use the params keyword
+<span class="c1"># To include URL query parameters in the request,
+# use the params keyword
 </span><span class="o">&gt;&gt;&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'key1'</span><span class="p">:</span> <span class="s">'value1'</span><span class="p">,</span> <span class="s">'key2'</span><span class="p">:</span> <span class="s">'value2'</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://httpbin.org/get'</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
@@ -216,7 +217,8 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">url</span>
 <span class="n">URL</span><span class="p">(</span><span class="s">'https://httpbin.org/get?key1=value1&amp;key2=value2&amp;key2=value3'</span><span class="p">)</span>
 
-<span class="c1"># HTTPX will automatically handle decoding the response content into Unicode text
+<span class="c1"># HTTPX will automatically handle decoding the response
+# content into Unicode text
 </span><span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://www.example.org/'</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span>
 <span class="s">'&lt;!doctype html&gt;</span><span class="se">\n</span><span class="s">&lt;html&gt;</span><span class="se">\n</span><span class="s">&lt;head&gt;</span><span class="se">\n</span><span class="s">&lt;title&gt;Example Domain&lt;/title&gt;...'</span>
@@ -224,7 +226,8 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">encoding</span>
 <span class="s">'UTF-8'</span>
 
-<span class="c1"># response may not contain an explicit encoding, in which case HTTPX will attempt to automatically determine an encoding to use
+<span class="c1"># response may not contain an explicit encoding, in which case
+# HTTPX will attempt to automatically determine an encoding to use
 </span><span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">encoding</span>
 <span class="bp">None</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">text</span>
@@ -381,7 +384,8 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">next_request</span>
 <span class="o">&lt;</span><span class="n">Request</span><span class="p">(</span><span class="s">'GET'</span><span class="p">,</span> <span class="s">'https://github.com/'</span><span class="p">)</span><span class="o">&gt;</span>
 
-<span class="c1"># You can modify the default redirection handling with the follow_redirects parameter
+<span class="c1"># You can modify the default redirection handling with
+# the follow_redirects parameter
 </span><span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">httpx</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://github.com/'</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">url</span>
 <span class="n">URL</span><span class="p">(</span><span class="s">'https://github.com/'</span><span class="p">)</span>

@@ -79,7 +79,8 @@ HTTPX is a fully featured HTTP client for Python 3, which provides sync and asyn
 >>> r = httpx.head('https://httpbin.org/get')
 >>> r = httpx.options('https://httpbin.org/get')
 
-# To include URL query parameters in the request, use the params keyword
+# To include URL query parameters in the request,
+# use the params keyword
 >>> params = {'key1': 'value1', 'key2': 'value2'}
 >>> r = httpx.get('https://httpbin.org/get', params=params)
 
@@ -92,7 +93,8 @@ URL('https://httpbin.org/get?key2=value2&key1=value1')
 >>> r.url
 URL('https://httpbin.org/get?key1=value1&key2=value2&key2=value3')
 
-# HTTPX will automatically handle decoding the response content into Unicode text
+# HTTPX will automatically handle decoding the response
+# content into Unicode text
 >>> r = httpx.get('https://www.example.org/')
 >>> r.text
 '<!doctype html>\n<html>\n<head>\n<title>Example Domain</title>...'
@@ -100,7 +102,8 @@ URL('https://httpbin.org/get?key1=value1&key2=value2&key2=value3')
 >>> r.encoding
 'UTF-8'
 
-# response may not contain an explicit encoding, in which case HTTPX will attempt to automatically determine an encoding to use
+# response may not contain an explicit encoding, in which case
+# HTTPX will attempt to automatically determine an encoding to use
 >>> r.encoding
 None
 >>> r.text
@@ -257,7 +260,8 @@ Headers({
 >>> r.next_request
 <Request('GET', 'https://github.com/')>
 
-# You can modify the default redirection handling with the follow_redirects parameter
+# You can modify the default redirection handling with
+# the follow_redirects parameter
 >>> r = httpx.get('http://github.com/', follow_redirects=True)
 >>> r.url
 URL('https://github.com/')
