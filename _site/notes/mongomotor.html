@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Mongomotor - асинхронный драйвер MongoDb | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Mongomotor - асинхронный драйвер MongoDb" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Mongomotor - async driver to mongodb" />
+<meta property="og:description" content="Mongomotor - async driver to mongodb" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/mongomotor.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/mongomotor.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Mongomotor - async driver to mongodb","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/mongomotor.html","headline":"Mongomotor - асинхронный драйвер MongoDb","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Mongomotor - асинхронный драйвер MongoDb</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/data-bases" title="data-bases" class="link-tags">data-bases&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/mongodb" title="mongodb" class="link-tags">mongodb&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/asyncio" title="asyncio" class="link-tags">asyncio&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Motor presents a coroutine-based API for non-blocking access to MongoDB from [<a href="tornado" title="Tornado - http web-фреймворк и асинхронная библиотека">tornado</a>] or [<a href="asyncio" title="Asyncio">asyncio</a>].</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ python -m pip install motor</code></p>
+
+<h2 id="разница-между-pymongo-и-mongomotor"><a href="https://motor.readthedocs.io/en/stable/differences.html">Разница</a> между pymongo и mongomotor</h2>
+
+<h2 id="фичи">Фичи</h2>
+
+<ul>
+  <li>Неблокирующий асинхронный драйвер для MongoDB. Его можно использовать из приложений Tornado или asyncio. Motor никогда не блокирует цикл обработки событий при подключении к MongoDB или выполнении операций ввода-вывода.</li>
+  <li>Motor охватывает почти весь API PyMongo и делает его неблокирующим.</li>
+  <li>Модуль <code class="language-plaintext highlighter-rouge">tornado.gen</code> позволяет использовать сопрограммы для упрощения асинхронного кода. Методы motor возвращают фьючерсы, которые удобно использовать с сопрограммами.</li>
+  <li>Настраиваемые циклы ввода/вывода. Motor поддерживает приложения Tornado с несколькими файлами <code class="language-plaintext highlighter-rouge">IOLoops</code>. Передайте <code class="language-plaintext highlighter-rouge">io_loop</code> аргумент, чтобы настроить цикл для экземпляра <code class="language-plaintext highlighter-rouge">MotorClient</code>.</li>
+  <li>Потоковая передача статических файлов из <code class="language-plaintext highlighter-rouge">GridFS</code>. Motor может передавать данные из GridFS в Tornado RequestHandler с помощью класса stream_to_handler() или GridFSHandler. Он также может обслуживать данные GridFS с помощью [<a href="aiohttp" title="Aiohttp асинхронный клиент-свервер на python.">aiohttp</a>], используя AIOHTTPGridFSкласс.</li>
+</ul>
+
+<h2 id="tutorial-using-motor-with-tornado"><a href="https://motor.readthedocs.io/en/stable/tutorial-tornado.html">Tutorial: Using Motor With Tornado</a></h2>
+
+<h2 id="tutorial-using-motor-with-asyncio"><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html">Tutorial: Using Motor With asyncio</a></h2>
+
+<p>Motor, как и PyMongo, представляет данные с 4-уровневой иерархией объектов:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorClient</code> представляет процесс mongod или гуппу процессов. Вы явно создаете один из этих клиентских объектов, подключаете его к работающему mongod или mongods и используете его на протяжении всего времени существования вашего приложения.</li>
+  <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorDatabase</code> каждый mongod имеет набор баз данных (отдельные наборы файлов данных на диске). Вы можете получить ссылку на базу данных от клиента.</li>
+  <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorCollection</code> в базе данных есть набор коллекций, содержащих документы; вы получаете ссылку на коллекцию из базы данных.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">AsyncIOMotorCursor</code> выполнение <code class="language-plaintext highlighter-rouge">find()</code> для <code class="language-plaintext highlighter-rouge">AsyncIOMotorCollection</code> получает <code class="language-plaintext highlighter-rouge">AsyncIOMotorCursor</code>, представляющий набор документов, соответствующих запросу.</p>
+  </li>
+  <li><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#creating-a-client">Создание клиента</a></li>
+  <li><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#getting-a-database">получение бд</a></li>
+  <li><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#getting-a-collection">получение коллекции</a></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">motor.motor_asyncio</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">motor</span><span class="p">.</span><span class="n">motor_asyncio</span><span class="p">.</span><span class="n">AsyncIOMotorClient</span><span class="p">()</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">test_database</span>
+<span class="n">collection</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span>
+</code></pre></div></div>
+
+<p><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#inserting-a-document">Добавление документов</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_insert</span><span class="p">():</span>
+<span class="p">...</span>    <span class="n">document</span> <span class="o">=</span> <span class="p">{</span><span class="s">'key'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">}</span>
+<span class="p">...</span>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="s">'result %s'</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">inserted_id</span><span class="p">))</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_insert</span><span class="p">())</span>
+<span class="n">result</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#getting-a-single-document-with-find-one">Find one</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_find_one</span><span class="p">():</span>
+<span class="p">...</span>    <span class="n">document</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$lt'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}})</span>
+<span class="p">...</span>    <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_find_one</span><span class="p">())</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Используйте <code class="language-plaintext highlighter-rouge">find()</code> для запроса набора документов. <code class="language-plaintext highlighter-rouge">find()</code> не выполняет ввод-вывод и не требует выражения <code class="language-plaintext highlighter-rouge">await</code>. Он просто создает экземпляр <code class="language-plaintext highlighter-rouge">AsyncIOMotorCursor</code>. Запрос фактически выполняется на сервере, когда вы вызываете <code class="language-plaintext highlighter-rouge">to_list()</code> или выполняете асинхронный цикл for.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_find</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$lt'</span><span class="p">:</span> <span class="mi">5</span><span class="p">}}).</span><span class="n">sort</span><span class="p">(</span><span class="s">'i'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">cursor</span><span class="p">.</span><span class="n">to_list</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="p">...</span>         <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_find</span><span class="p">())</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Вы можете обрабатывать один документ за раз в асинхронном цикле for. Вы можете применить сортировку, ограничение или пропустить запрос, прежде чем начать итерацию.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_find</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">c</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span>
+<span class="p">...</span>     <span class="c1"># Modify the query before iterating
+</span><span class="p">...</span>     <span class="n">cursor</span><span class="p">.</span><span class="n">sort</span><span class="p">(</span><span class="s">'i'</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="n">skip</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">async</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+<span class="p">...</span>         <span class="n">pprint</span><span class="p">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_find</span><span class="p">())</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Подсчет документов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_count</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">n</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'%s documents in collection'</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">...</span>     <span class="c1"># matched to pattern
+</span><span class="p">...</span>     <span class="n">n</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'%s documents where i &gt; 1000'</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_count</span><span class="p">())</span>
+<span class="mi">2000</span> <span class="n">documents</span> <span class="ow">in</span> <span class="n">collection</span>
+<span class="mi">999</span> <span class="n">documents</span> <span class="n">where</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+</code></pre></div></div>
+
+<h3 id="updating-documents"><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#updating-documents">Updating documents</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">replace_one()</code> изменяет документ. Для этого требуются два параметра: запрос, указывающий, какой документ следует заменить, и замещающий документ. Запрос следует тому же синтаксису, что и для <code class="language-plaintext highlighter-rouge">find()</code> или <code class="language-plaintext highlighter-rouge">find_one()</code>. <code class="language-plaintext highlighter-rouge">replace_one()</code> заменяет все в старом документе, кроме его <code class="language-plaintext highlighter-rouge">_id</code>, новым документом.</p>
+
+<p>Используйте <code class="language-plaintext highlighter-rouge">update_one()</code> с операторами-модификаторами MongoDB, чтобы обновить часть документа и оставить остальную часть нетронутой. <code class="language-plaintext highlighter-rouge">update_one()</code> афектит только первый найденный документ. Чтобы изменить несколько - надо использовать <code class="language-plaintext highlighter-rouge">update_many()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_replace</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">coll</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span>
+<span class="p">...</span>     <span class="n">old_document</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="mi">50</span><span class="p">})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'found document: %s'</span> <span class="o">%</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">old_document</span><span class="p">))</span>
+<span class="p">...</span>     <span class="n">_id</span> <span class="o">=</span> <span class="n">old_document</span><span class="p">[</span><span class="s">'_id'</span><span class="p">]</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">replace_one</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">_id</span><span class="p">},</span> <span class="p">{</span><span class="s">'key'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'replaced %s document'</span> <span class="o">%</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">new_document</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">_id</span><span class="p">})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'document is now %s'</span> <span class="o">%</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">new_document</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_replace</span><span class="p">())</span>
+<span class="n">found</span> <span class="n">document</span><span class="p">:</span> <span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+<span class="n">replaced</span> <span class="mi">1</span> <span class="n">document</span>
+<span class="n">document</span> <span class="ow">is</span> <span class="n">now</span> <span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'key'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_update</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">coll</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">update_one</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="mi">51</span><span class="p">},</span> <span class="p">{</span><span class="s">'$set'</span><span class="p">:</span> <span class="p">{</span><span class="s">'key'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">}})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'updated %s document'</span> <span class="o">%</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">new_document</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="mi">51</span><span class="p">})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'document is now %s'</span> <span class="o">%</span> <span class="n">pprint</span><span class="p">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">new_document</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_update</span><span class="p">())</span>
+<span class="n">updated</span> <span class="mi">1</span> <span class="n">document</span>
+<span class="n">document</span> <span class="ow">is</span> <span class="n">now</span> <span class="p">{</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'...'</span><span class="p">),</span> <span class="s">'i'</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span> <span class="s">'key'</span><span class="p">:</span> <span class="s">'value'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="deleting-documents"><a href="https://motor.readthedocs.io/en/stable/tutorial-asyncio.html#deleting-documents">Deleting documents</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">delete_one()</code> и <code class="language-plaintext highlighter-rouge">delete_many()</code>. Оба метода используют тот же синтаксис, что и <code class="language-plaintext highlighter-rouge">find_one()</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_delete_one</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">coll</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span>
+<span class="p">...</span>     <span class="n">n</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'%s documents before calling delete_one()'</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gte'</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'%s documents after'</span> <span class="o">%</span> <span class="p">(</span><span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({})))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_delete_one</span><span class="p">())</span>
+<span class="mi">2000</span> <span class="n">documents</span> <span class="n">before</span> <span class="n">calling</span> <span class="n">delete_one</span><span class="p">()</span>
+<span class="mi">1999</span> <span class="n">documents</span> <span class="n">after</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">do_delete_many</span><span class="p">():</span>
+<span class="p">...</span>     <span class="n">coll</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span>
+<span class="p">...</span>     <span class="n">n</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'%s documents before calling delete_many()'</span> <span class="o">%</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">...</span>     <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="p">.</span><span class="n">test_collection</span><span class="p">.</span><span class="n">delete_many</span><span class="p">({</span><span class="s">'i'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gte'</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}})</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'%s documents after'</span> <span class="o">%</span> <span class="p">(</span><span class="k">await</span> <span class="n">coll</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({})))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">get_io_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">do_delete_many</span><span class="p">())</span>
+<span class="mi">1999</span> <span class="n">documents</span> <span class="n">before</span> <span class="n">calling</span> <span class="n">delete_many</span><span class="p">()</span>
+<span class="mi">1000</span> <span class="n">documents</span> <span class="n">after</span>
+</code></pre></div></div>
+
+<h2 id="примеры-использования-mongomotor"><a href="https://motor.readthedocs.io/en/stable/examples/index.html">Примеры использования mongomotor</a></h2>
+
+<h2 id="api">API</h2>
+
+<ul>
+  <li><a href="https://motor.readthedocs.io/en/stable/api-tornado/index.html">Motor Tornado API</a>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">MotorClient</code> – Connection to MongoDB</li>
+      <li><code class="language-plaintext highlighter-rouge">MotorClientSession</code> – Sequence of operations</li>
+      <li><code class="language-plaintext highlighter-rouge">MotorDatabase</code></li>
+      <li><code class="language-plaintext highlighter-rouge">MotorCollection</code></li>
+      <li><code class="language-plaintext highlighter-rouge">MotorChangeStream</code></li>
+      <li><code class="language-plaintext highlighter-rouge">MotorClientEncryption</code></li>
+      <li><code class="language-plaintext highlighter-rouge">MotorCursor</code></li>
+      <li><code class="language-plaintext highlighter-rouge">MotorCommandCursor</code></li>
+      <li>Motor GridFS Classes</li>
+      <li><code class="language-plaintext highlighter-rouge">motor.web</code> - Integrate Motor with the [<a href="tornado" title="Tornado - http web-фреймворк и асинхронная библиотека">tornado</a>] web framework</li>
+    </ul>
+  </li>
+  <li><a href="https://motor.readthedocs.io/en/stable/api-asyncio/index.html">Motor asyncio API</a>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorClient</code> – Connection to MongoDB</li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorClientSession</code> – Sequence of operations</li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorDatabase</code></li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorCollection</code></li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorChangeStream</code></li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorClientEncryption</code></li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorCursor</code></li>
+      <li><code class="language-plaintext highlighter-rouge">AsyncIOMotorCommandCursor</code></li>
+      <li>asyncio GridFS Classes</li>
+      <li><code class="language-plaintext highlighter-rouge">motor.aiohttp</code> - Integrate Motor with the [<a href="aiohttp" title="Aiohttp асинхронный клиент-свервер на python.">aiohttp</a>] web framework</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="fastapi-with-motor">[<a href="fastapi" title="Fastapi">fastapi</a>] with motor</h2>
+
+<ul>
+  <li><a href="https://www.mongodb.com/developer/languages/python/python-quickstart-fastapi/">Getting Started with MongoDB and FastAPI</a>. <a href="https://github.com/mongodb-developer/mongodb-with-fastapi">Репо с примером</a></li>
+  <li><a href="https://testdriven.io/blog/fastapi-mongo/">Building a CRUD App with FastAPI and MongoDB</a></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://motor.readthedocs.io/en/stable/">документация</a></li>
+  <li><a href="https://github.com/mongodb/motor">on github</a></li>
+  <li><a href="https://www.mongodb.com/docs/drivers/motor/">on mongo world</a></li>
+  <li>[<a href="mongodb" title="MongoDB">mongodb</a>]</li>
+  <li>[<a href="mongoengine" title="Object Object-Document Mapper for MongoDB">mongoengine</a>]</li>
+  <li>[<a href="tornado" title="Tornado - http web-фреймворк и асинхронная библиотека">tornado</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
