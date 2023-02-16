@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pytest-asyncio | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pytest-asyncio" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Асинхронное тестирование с использованием pytest" />
+<meta property="og:description" content="Асинхронное тестирование с использованием pytest" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/pytest-asyncio.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/pytest-asyncio.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Асинхронное тестирование с использованием pytest","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/pytest-asyncio.html","headline":"Pytest-asyncio","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Pytest-asyncio</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/tests" title="tests" class="link-tags">tests&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/pip" title="pip" class="link-tags">pip&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/asyncio" title="asyncio" class="link-tags">asyncio&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>pytest-asyncio запускает каждый тестовый элемент в своем собственном цикле событий [<a href="asyncio" title="Asyncio">asyncio</a>]. Доступ к циклу можно получить через фикстуру <code class="language-plaintext highlighter-rouge">event_loop</code>, которая автоматически запрашивается всеми асинхронными тестами.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">test_provided_loop_is_running_loop</span><span class="p">(</span><span class="n">event_loop</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">event_loop</span> <span class="ow">is</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Pytest-asyncio предоставляет два режима обнаружения тестов: строгий и автоматический.</p>
+
+<h2 id="строгий-режим">Строгий режим</h2>
+
+<p>В строгом режиме pytest-asyncio будет запускать только тесты с маркером [<a href="asyncio" title="Asyncio">asyncio</a>] и оценивать только асинхронные фикстуры, декорированные @pytest_asyncio.fixture. Тестовые функции и фикстуры без этих маркеров и декораторов не будут обрабатываться pytest-asyncio.</p>
+
+<p>Этот режим предназначен для проектов, которые хотят поддерживать несколько библиотек асинхронного программирования, поскольку он позволяет pytest-asyncio сосуществовать с другими плагинами для асинхронного тестирования в одной кодовой базе.</p>
+
+<p>Pytest автоматически включает установленные плагины. В результате плагины [<a href="pytest" title="Pytest">pytest</a>] должны мирно сосуществовать в конфигурации по умолчанию. Вот почему строгий режим является режимом по умолчанию.</p>
+
+<h2 id="автоматический-режим">Автоматический режим</h2>
+
+<p>В автоматическом режиме pytest-asyncio автоматически добавляет маркер asyncio ко всем функциям асинхронного тестирования. Он также станет владельцем всех асинхронных фикстур, независимо от того, декорированы ли они символами @pytest.fixture или @pytest_asyncio.fixture.</p>
+
+<p>Этот режим предназначен для проектов, которые используют [<a href="asyncio" title="Asyncio">asyncio</a>] в качестве единственной библиотеки асинхронного программирования. Автоматический режим обеспечивает простейшую настройку теста и приспособления и является рекомендуемым значением по умолчанию.</p>
+
+<p>Если вы собираетесь поддерживать несколько библиотек асинхронного программирования, например, [<a href="asyncio" title="Asyncio">asyncio</a>] и [<a href="trio" title="Trio асинхронный фреймворк">trio</a>], предпочтительным вариантом будет строгий режим.</p>
+
+<h2 id="конфиг">Конфиг</h2>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># pytest.ini</span>
+<span class="pi">[</span><span class="nv">pytest</span><span class="pi">]</span>
+<span class="s">asyncio_mode = auto</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">pytest tests --asyncio-mode=strict</code> для выбора режима</p>
+
+<h2 id="fixtures"><a href="https://pytest-asyncio.readthedocs.io/en/latest/reference/fixtures.html">Fixtures</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">event_loop</code> создает новый асинхронный цикл событий на основе текущей политики цикла событий. Новый цикл доступен как возвращаемое значение этой фикстуры или через <code class="language-plaintext highlighter-rouge">asyncio.get_running_loop</code>. Цикл событий завершается, когда область действия фикстуры заканчивается. Область фикстуры по умолчанию ограничивается областью видимости функции.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_http_client</span><span class="p">(</span><span class="n">event_loop</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">"http://httpbin.org/get"</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">event_loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">http_client</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="s">b"HTTP/1.1 200 OK"</span> <span class="ow">in</span> <span class="n">resp</span>
+</code></pre></div></div>
+
+<p>Обратите внимание, что при использовании фикстуры <code class="language-plaintext highlighter-rouge">event_loop</code> вам необходимо взаимодействовать с циклом событий, используя такие методы, как <code class="language-plaintext highlighter-rouge">event_loop.run_until_complete</code>. Если вы хотите ожидать код внутри своей тестовой функции, вам нужно написать сопрограмму и использовать ее в качестве тестовой функции. Маркер asyncio используется для обозначения сопрограмм, которые следует рассматривать как тестовые функции. Фикстура <code class="language-plaintext highlighter-rouge">event_loop</code> может быть переопределена в любом из стандартных местоположений [<a href="pytest" title="Pytest">pytest</a>], например, непосредственно в тестовом файле или в <code class="language-plaintext highlighter-rouge">conftest.py</code>. Это позволяет переопределить область видимости:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">pytest</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"session"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">event_loop</span><span class="p">():</span>
+    <span class="n">policy</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_event_loop_policy</span><span class="p">()</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">policy</span><span class="p">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">loop</span>
+    <span class="n">loop</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Если вам нужно изменить тип цикла событий, необходимо установить пользовательскую политику цикла событий, а не переопределять фикстуру <code class="language-plaintext highlighter-rouge">event_loop</code>.</p>
+
+<p>Если декоратор <code class="language-plaintext highlighter-rouge">pytest.mark.asyncio</code> применяется к тестовой функции, фикстура <code class="language-plaintext highlighter-rouge">event_loop</code> будет автоматически запрашиваться тестовой функцией.</p>
+
+<p>Другие готовые фикстуры: <code class="language-plaintext highlighter-rouge">unused_tcp_port</code>, <code class="language-plaintext highlighter-rouge">unused_tcp_port_factory</code>, <code class="language-plaintext highlighter-rouge">unused_udp_port</code> and <code class="language-plaintext highlighter-rouge">unused_udp_port_factory</code>.</p>
+
+<h2 id="markers"><a href="https://pytest-asyncio.readthedocs.io/en/latest/reference/markers.html">Markers</a></h2>
+
+<p>Сопрограмма или асинхронный генератор с маркером <code class="language-plaintext highlighter-rouge">pytest.mark.asyncio</code> будут рассматриваться [<a href="pytest" title="Pytest">pytest</a>] как тестовая функция. Отмеченная функция будет выполняться как асинхронная задача в цикле событий, предоставленном фикстурой <code class="language-plaintext highlighter-rouge">event_loop</code>. Чтобы сделать ваш тестовый код немного более лаконичным, можно использовать фичу [<a href="pytest" title="Pytest">pytest</a>] <code class="language-plaintext highlighter-rouge">pytestmark</code> для маркировки целых модулей или классов этим маркером. Будут затронуты только тестовые сопрограммы (по умолчанию сопрограммы с префиксом test_).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="c1"># All test coroutines will be treated as marked.
+</span><span class="n">pytestmark</span> <span class="o">=</span> <span class="n">pytest</span><span class="p">.</span><span class="n">mark</span><span class="p">.</span><span class="n">asyncio</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">test_example</span><span class="p">(</span><span class="n">event_loop</span><span class="p">):</span>
+    <span class="s">"""No marker!"""</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">event_loop</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В автоматическом режиме маркер <code class="language-plaintext highlighter-rouge">pytest.mark.asyncio</code> можно не указывать, маркер автоматически добавляется в функции асинхронного тестирования.</p>
+
+<h2 id="decorators"><a href="https://pytest-asyncio.readthedocs.io/en/latest/reference/decorators.html">Decorators</a></h2>
+
+<p>Асинхронные фикстуры определяются так же, как и обычные фикстуры pytest, за исключением того, что они должны быть декорированы @pytest_asyncio.fixture.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytest_asyncio</span>
+
+
+<span class="o">@</span><span class="n">pytest_asyncio</span><span class="p">.</span><span class="n">fixture</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">async_gen_fixture</span><span class="p">():</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="s">"a value"</span>
+
+
+<span class="o">@</span><span class="n">pytest_asyncio</span><span class="p">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s">"module"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">async_fixture</span><span class="p">():</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Поддерживаются все области, но если вы используете область за границами функции, вам потребуется переопределить фикстуру <code class="language-plaintext highlighter-rouge">event_loop</code>, чтобы она имела ту же или более широкую область. Для асинхронных фикстур требуется цикл обработки событий, поэтому они должны иметь ту же или более узкую область действия, чем фикстура <code class="language-plaintext highlighter-rouge">event_loop</code>. автоматический режим автоматически преобразует асинхронные фикстуры, объявленные с помощью стандартного декоратора @pytest.fixture, в асинхронные версии.</p>
+
+<p>Смотир еще:</p>
+
+<ul>
+  <li><a href="https://pytest-asyncio.readthedocs.io/en/latest/concepts.html">документация</a></li>
+  <li>[<a href="pytest" title="Pytest">pytest</a>]</li>
+  <li>[<a href="pytest-bdd" title="pytest-bdd">pytest-bdd</a>]</li>
+  <li><a href="https://github.com/pnuckowski/aioresponses">aioresponses</a> is a helper to mock/fake web requests in python [<a href="aiohttp" title="Aiohttp асинхронный клиент-свервер на python.">aiohttp</a>] package</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>[<a href="модульные-тесты" title="Модульные тесты">модульные-тесты</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
