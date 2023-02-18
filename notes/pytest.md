@@ -1032,6 +1032,7 @@ pip uninstall pytest-NAME
 [Flaky-tests]: flaky-tests "Flaky tests"
 [pytest-parametrizing]: pytest-parametrizing "Pytest parametrizing tests python"
 [pytest-bdd]: pytest-bdd "pytest-bdd"
+[pytest-asyncio]: pytest-asyncio "Pytest-asyncio"
 [unittest]: unittest "Unittest"
 [doctest]: doctest "Doctest"
 [env-for-test]: env-for-test "Env variables for tests"

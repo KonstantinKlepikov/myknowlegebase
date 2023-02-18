@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Telegram python bots | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Telegram python bots" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Python боты для telegram" />
+<meta property="og:description" content="Python боты для telegram" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/telegram-bots.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/telegram-bots.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Python боты для telegram","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/telegram-bots.html","headline":"Telegram python bots","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Telegram python bots</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="aiogram"><a href="https://github.com/aiogram/aiogram">aiogram</a></h2>
+
+<p>Is a pretty simple and fully asynchronous framework for Telegram Bot API written in Python 3.7 with [<a href="asyncio" title="Asyncio">asyncio</a>] and [<a href="aiohttp" title="Aiohttp асинхронный клиент-свервер на python.">aiohttp</a>].</p>
+
+<p><a href="https://docs.aiogram.dev/en/latest/">Документация</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install -U aiogram</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+This is a echo bot.
+It echoes any incoming text messages.
+"""</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">Bot</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">executor</span><span class="p">,</span> <span class="n">types</span>
+
+<span class="c1"># Then you have to initialize bot and dispatcher instances.
+# Bot token you can get from @BotFather
+</span><span class="n">API_TOKEN</span> <span class="o">=</span> <span class="s">'BOT TOKEN HERE'</span>
+<span class="c1"># Configure logging
+</span><span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="c1"># Initialize bot and dispatcher
+</span><span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">API_TOKEN</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">bot</span><span class="p">)</span>
+
+<span class="c1"># interaction with bots starts with one command.
+# Register your first command handler
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="p">[</span><span class="s">'start'</span><span class="p">,</span> <span class="s">'help'</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send_welcome</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="s">"""
+    This handler will be called when user sends `/start` or `/help` command
+    """</span>
+    <span class="k">await</span> <span class="n">message</span><span class="p">.</span><span class="n">reply</span><span class="p">(</span><span class="s">"Hi!</span><span class="se">\n</span><span class="s">I'm EchoBot!</span><span class="se">\n</span><span class="s">Powered by aiogram."</span><span class="p">)</span>
+
+<span class="c1"># If you want to handle all text messages in
+# the chat simply add handler without filters
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">echo</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="c1"># old style:
+</span>    <span class="c1"># await bot.send_message(message.chat.id, message.text)
+</span>    <span class="k">await</span> <span class="n">message</span><span class="p">.</span><span class="n">answer</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">executor</span><span class="p">.</span><span class="n">start_polling</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">skip_updates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.aiogram.dev/en/latest/examples/index.html">Больше примеров</a></p>
+
+<p>АПИ реализуется с помощью классов <code class="language-plaintext highlighter-rouge">Bot</code>и <code class="language-plaintext highlighter-rouge">Dispatcher</code>. Bot реализует [<a href="aiohttp" title="Aiohttp асинхронный клиент-свервер на python.">aiohttp</a>] сервер и связку с api telegram. Dispatcher обрабатывает входящие обновления: сообщения, отредактированные сообщения, сообщения канала, отредактированные сообщения канала, встроенные запросы, выбранные встроенные результаты, запросы колбеков, запросы на доставку, запросы пречекаута. <code class="language-plaintext highlighter-rouge">execitor</code> это <a href="https://docs.aiogram.dev/en/latest/utils/executor.html">хелпер</a> для запуска бота в разных режимах, к примеру ниже в long-polling mode.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">API_TOKEN</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">bot</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">regexp</span><span class="o">=</span><span class="s">'(^cat[s]?$|puss)'</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">cats</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data/cats.jpg'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">photo</span><span class="p">:</span>
+        <span class="s">'''
+        # Old fashioned way:
+        await bot.send_photo(
+            message.chat.id,
+            photo,
+            caption='Cats are here 😺',
+            reply_to_message_id=message.message_id,
+        )
+        '''</span>
+
+        <span class="k">await</span> <span class="n">message</span><span class="p">.</span><span class="n">reply_photo</span><span class="p">(</span><span class="n">photo</span><span class="p">,</span> <span class="n">caption</span><span class="o">=</span><span class="s">'Cats are here 😺'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">executor</span><span class="p">.</span><span class="n">start_polling</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">skip_updates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Подробнее:</p>
+
+<ul>
+  <li><a href="https://docs.aiogram.dev/en/latest/telegram/bot.html">Bot object</a></li>
+  <li><a href="https://docs.aiogram.dev/en/latest/dispatcher/index.html">Dispatcher</a></li>
+  <li><a href="https://docs.aiogram.dev/en/latest/utils/executor.html">Executor</a></li>
+</ul>
+
+<h3 id="bot-class"><a href="https://docs.aiogram.dev/en/latest/telegram/bot.html#telegram-bot">Bot</a> class</h3>
+
+<p>Методы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">download_file_by_id</code> Скачать файл по file_id в целевой файл или каталог</li>
+  <li><code class="language-plaintext highlighter-rouge">get_updates</code> получать входящие обновления с помощью long polling</li>
+  <li><code class="language-plaintext highlighter-rouge">set_webhook</code> Используйте этот метод, чтобы указать URL-адрес и получать входящие обновления через исходящий вебхук. Всякий раз, когда для бота появляется обновление, мы отправляем HTTPS-запрос POST на указанный URL-адрес, содержащий сериализованное обновление JSON. В случае неудачного запроса мы откажемся после разумного количества попыток. Возвращает <code class="language-plaintext highlighter-rouge">True</code> в случае успеха.</li>
+  <li><code class="language-plaintext highlighter-rouge">delete_webhook</code> удалить интеграцию с вебхуком</li>
+  <li><code class="language-plaintext highlighter-rouge">get_webhook_info</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_me</code> simple method for testing your bot’s auth token</li>
+  <li><code class="language-plaintext highlighter-rouge">log_out</code> Используйте этот метод для логаута от сервера API перед локальным запуском бота. Вы должны выйти, прежде чем запускать локально, иначе нет гарантии, что бот будет получать обновления. После успешного звонка вы не сможете снова войти в систему с тем же токеном в течение 10 минут. Возвращает <code class="language-plaintext highlighter-rouge">True</code> в случае успеха.</li>
+  <li><code class="language-plaintext highlighter-rouge">close_bot</code> Используйте этот метод, чтобы закрыть экземпляр бота перед его перемещением с одного локального сервера на другой. Вам необходимо удалить вебхук перед вызовом этого метода, чтобы гарантировать, что бот не запустится снова после перезапуска сервера. Метод вернет ошибку 429 в первые 10 минут после запуска бота. Возвращает True в случае успеха</li>
+  <li><code class="language-plaintext highlighter-rouge">send_message</code> для текстовых сообщений</li>
+  <li><code class="language-plaintext highlighter-rouge">forward_message</code></li>
+  <li><code class="language-plaintext highlighter-rouge">copy_message</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_photo</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_audio</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_document</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_video</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_animation</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_voice</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_video_note</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_media_group</code></li>
+  <li><code class="language-plaintext highlighter-rouge">send_location</code></li>
+  <li>many send methods and chat_methods</li>
+</ul>
+
+<h3 id="dispatcher-class"><a href="https://docs.aiogram.dev/en/latest/dispatcher/index.html#dispatcher-class">Dispatcher</a> class</h3>
+
+<p>Методы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">skip_updates</code> Вы можете пропустить старые входящие обновления из очереди. Этот метод не рекомендуется использовать на проде</li>
+  <li><code class="language-plaintext highlighter-rouge">process_updates</code> Обработать список обновлений</li>
+  <li><code class="language-plaintext highlighter-rouge">process_update</code></li>
+  <li><code class="language-plaintext highlighter-rouge">reset_webhook</code></li>
+  <li><code class="language-plaintext highlighter-rouge">start_polling</code> старт long-polling</li>
+  <li><code class="language-plaintext highlighter-rouge">stop_polling</code></li>
+  <li><code class="language-plaintext highlighter-rouge">wait_closed</code> дождаться завершения long pooling</li>
+  <li><code class="language-plaintext highlighter-rouge">is_polling</code></li>
+  <li><code class="language-plaintext highlighter-rouge">message_handler</code> декоратор для обработки сообщений</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Simple commands handler
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="p">[</span><span class="s">'start'</span><span class="p">,</span> <span class="s">'welcome'</span><span class="p">,</span> <span class="s">'about'</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">cmd_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="c1"># Filter messages by regular expression
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">regexp</span><span class="o">=</span><span class="s">'^[a-z]+-[0-9]+'</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">msg_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="c1"># Filter messages by command regular expression
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">filters</span><span class="p">.</span><span class="n">RegexpCommandsFilter</span><span class="p">(</span><span class="n">regexp_commands</span><span class="o">=</span><span class="p">[</span><span class="s">'item_([0-9]*)'</span><span class="p">]))</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">send_welcome</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="c1"># Filter by content type
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="n">ContentType</span><span class="p">.</span><span class="n">PHOTO</span> <span class="o">|</span> <span class="n">ContentType</span><span class="p">.</span><span class="n">DOCUMENT</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">audio_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="c1"># Filter by custom function
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="k">lambda</span> <span class="n">message</span><span class="p">:</span> <span class="n">message</span><span class="p">.</span><span class="n">text</span> <span class="ow">and</span> <span class="s">'hello'</span> <span class="ow">in</span> <span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">text_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="c1"># Use multiple filters
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="p">[</span><span class="s">'command'</span><span class="p">],</span> <span class="n">content_types</span><span class="o">=</span><span class="n">ContentType</span><span class="p">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">text_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+
+<span class="c1"># Register multiple filters set for one handler
+</span><span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="p">[</span><span class="s">'command'</span><span class="p">])</span>
+<span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="k">lambda</span> <span class="n">message</span><span class="p">:</span> <span class="n">demojize</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="s">':new_moon_with_face:'</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">text_handler</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">types</span><span class="p">.</span><span class="n">Message</span><span class="p">):</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">register_edited_message_handler</code> зарегистрировать обработчик для редактируемого сообщения</li>
+  <li><code class="language-plaintext highlighter-rouge">edited_message_handler</code> декоратор</li>
+  <li>and ome register and decorator method for many types of messages</li>
+  <li><code class="language-plaintext highlighter-rouge">current_state</code> Получить текущее состояние пользователя в чате в качестве контекста</li>
+  <li><code class="language-plaintext highlighter-rouge">throttle</code></li>
+  <li><code class="language-plaintext highlighter-rouge">check_key</code> Получить информацию о ключе в бакете</li>
+  <li><code class="language-plaintext highlighter-rouge">release_key</code> выпустить залоченный ключ</li>
+  <li><code class="language-plaintext highlighter-rouge">async_task</code> декоратор, который выполняет хендлер как асинхронный таск. Это надо использовать для медленных хендлеров с таймоутом.</li>
+  <li><code class="language-plaintext highlighter-rouge">throttled</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bind_filter</code>, <code class="language-plaintext highlighter-rouge">unbind_filter</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setup_middleware</code></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.aiogram.dev/en/latest/examples/index.html">примеры с aiogram</a></li>
+  <li><a href="https://core.telegram.org/">API telegram</a></li>
+  <li><a href="https://python-telegram-bot.org/">python-telegram-bot</a></li>
+  <li><a href="https://pytba.readthedocs.io/en/latest/index.html">pyTelegramBot</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

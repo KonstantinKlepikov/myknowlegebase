@@ -56,6 +56,8 @@ PONG
 Смотри еще:
 
 - [документация](https://redis.io/)
+- [redis-py](https://github.com/redis/redis-py) Redis Python Client
+- [redis-om-python](https://github.com/redis/redis-om-python) Object mapping, and more, for Redis and Python
 - [[celery]]
 - [[python-rq]]
 - [[rabbitmq]]
