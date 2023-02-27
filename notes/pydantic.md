@@ -863,6 +863,8 @@ settings = Settings(_env_file='prod.env', _env_file_encoding='utf-8')
   [pydantic-computed](https://pypi.org/project/pydantic-computed/) а new decorator for pydantic allowing you to define dynamic fields that are computed from other properties.
 - [[mock-libraries]]
 - [[2023-01-23-daily-note]] закрытые атрибуты, женерики, корневые типы, корневые валидаторы, заполнение полей и ошибки в mypy
+- [awesome-pydantic](https://github.com/Kludex/awesome-pydantic) A curated list of awesome things related to Pydantic!
+
 
 - [[devtools]]
 - [[fastapi-setting-environment-variables]] про поддержку .env
