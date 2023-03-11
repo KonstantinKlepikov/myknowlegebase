@@ -4,7 +4,8 @@ category: list
 title: Алгоритмы машинного обучения
 tags: machine-learning
 ---
-[ml_monorepo](https://github.com/timothyyu/ml_monorepo) Super-monorepo for machine learning and algorithmic trading
+- [ml_monorepo](https://github.com/timothyyu/ml_monorepo) Super-monorepo for machine learning and algorithmic trading
+- [CS50’s Introduction to Computer Science](https://cs50.harvard.edu/x/2023/)
 
 ## Data engines
 

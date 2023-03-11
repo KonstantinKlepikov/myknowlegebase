@@ -84,26 +84,29 @@ $$V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]$$
 
 [A Comparison of Reinforcement Learning Frameworks: Dopamine, RLLib, Keras-RL, Coach, TRFL, Tensorforce, Coach and More](https://winder.ai/a-comparison-of-reinforcement-learning-frameworks-dopamine-rllib-keras-rl-coach-trfl-tensorforce-coach-and-more/#google-dopamine-https-github-com-google-dopamine)
 
-- [openai gym](https://github.com/openai/gym) A toolkit for developing and comparing reinforcement learning algorithms. Now is a [Gymnasium](https://gymnasium.farama.org/).
-- [stable-baselines3](https://github.com/DLR-RM/stable-baselines3) PyTorch version of Stable Baselines, reliable implementations of reinforcement learning algorithms.
-- Google [dopamine](https://github.com/google/dopamine). Dopamine is a research framework for fast prototyping of reinforcement learning algorithms.
-- [RLib](https://docs.ray.io/en/latest/rllib/index.html). Industry-Grade Reinforcement Learning. [github](https://github.com/ray-project/ray)
-- [keras-rl](https://github.com/keras-rl/keras-rl). Deep Reinforcement Learning for Keras.
-- [TRFL](https://github.com/deepmind/trfl). TensorFlow Reinforcement Learning
-- [tensorforce](https://github.com/tensorforce/tensorforce). A TensorFlow library for applied reinforcement learning.
-- Facebook [ReAgent](https://github.com/facebookresearch/ReAgent). A platform for Reasoning systems (Reinforcement Learning, Contextual Bandits, etc.).
-- Intel [coach](https://github.com/IntelLabs/coach). Reinforcement Learning Coach by Intel AI Lab enables easy experimentation with state of the art Reinforcement Learning algorithms.
-- [MAgent](https://github.com/geek-ai/MAgent). A Platform for Many-agent Reinforcement Learning
-- [MAgent2](https://github.com/Farama-Foundation/MAgent2) is a library for the creation of environments where large numbers of pixel agents in a gridworld interact in battles or other competitive scenarios.
-- [TF-Agents](https://github.com/tensorflow/agents). A reliable, scalable and easy to use TensorFlow library for Contextual Bandits and Reinforcement Learning.
-- [SLM-Lab](https://github.com/kengz/SLM-Lab). Modular Deep Reinforcement Learning framework in [[pytorch]]. Companion library of the book "Foundations of Deep Reinforcement Learning".
-- [DeeR](https://github.com/VinF/deer). DeeR is a python library for Deep Reinforcement. It is build with modularity in mind so that it can easily be adapted to any need. It provides many possibilities out of the box such as Double Q-learning, prioritized Experience Replay, Deep deterministic policy gradient (DDPG), Combined Reinforcement via Abstract Representations (CRAR). Many different environment examples are also provided (some of them using OpenAI gym).
-- [garage](https://github.com/rlworkgroup/garage). A toolkit for reproducible reinforcement learning research.
-- [surreal](https://github.com/SurrealAI/surreal). Open-Source Distributed Reinforcement Learning Framework by Stanford Vision and Learning Lab
-- [RLgraph](https://github.com/rlgraph/rlgraph). RLgraph is a framework to quickly prototype, define and execute reinforcement learning algorithms both in research and practice. RLgraph is different from most other libraries as it can support TensorFlow (or static graphs in general) or eager/define-by run execution (PyTorch) through a single component interface.
-- [simple_rl](https://github.com/david-abel/simple_rl). A simple framework for experimenting with Reinforcement Learning in Python.
-- [godot_rl_agents](https://github.com/edbeeching/godot_rl_agents) An Open Source package that allows video game creators, AI researchers and hobbyists the opportunity to learn complex behaviors for their Non Player Characters or agents in [[godot]]
+- [openai gym](https://github.com/openai/gym) A toolkit for developing and comparing reinforcement learning algorithms.
+- Now is gym is a [Gymnasium](https://gymnasium.farama.org/) - is eorked, and gym project not supported yet.
 - [PettingZoo](https://github.com/Farama-Foundation/PettingZoo) A standard API for multi-agent reinforcement learning environments, with popular reference environments and related utilities
+- [stable-baselines3](https://github.com/DLR-RM/stable-baselines3) PyTorch version of Stable Baselines, reliable implementations of reinforcement learning algorithms.
+- [SuperSuit](https://github.com/Farama-Foundation/SuperSuit) A collection of wrappers for Gymnasium and PettingZoo environments - being merged into gymnasium.wrappers and pettingzoo.wrappers
+- Other:
+  - Google [dopamine](https://github.com/google/dopamine). Dopamine is a research framework for fast prototyping of reinforcement learning algorithms.
+  - [RLib](https://docs.ray.io/en/latest/rllib/index.html). Industry-Grade Reinforcement Learning. [github](https://github.com/ray-project/ray)
+  - [keras-rl](https://github.com/keras-rl/keras-rl). Deep Reinforcement Learning for Keras.
+  - [TRFL](https://github.com/deepmind/trfl). TensorFlow Reinforcement Learning
+  - [tensorforce](https://github.com/tensorforce/tensorforce). A TensorFlow library for applied reinforcement learning.
+  - Facebook [ReAgent](https://github.com/facebookresearch/ReAgent). A platform for Reasoning systems (Reinforcement Learning, Contextual Bandits, etc.).
+  - Intel [coach](https://github.com/IntelLabs/coach). Reinforcement Learning Coach by Intel AI Lab enables easy experimentation with state of the art Reinforcement Learning algorithms.
+  - [MAgent](https://github.com/geek-ai/MAgent). A Platform for Many-agent Reinforcement Learning
+  - [MAgent2](https://github.com/Farama-Foundation/MAgent2) is a library for the creation of environments where large numbers of pixel agents in a gridworld interact in battles or other competitive scenarios.
+  - [TF-Agents](https://github.com/tensorflow/agents). A reliable, scalable and easy to use TensorFlow library for Contextual Bandits and Reinforcement Learning.
+  - [SLM-Lab](https://github.com/kengz/SLM-Lab). Modular Deep Reinforcement Learning framework in [[pytorch]]. Companion library of the book "Foundations of Deep Reinforcement Learning".
+  - [DeeR](https://github.com/VinF/deer). DeeR is a python library for Deep Reinforcement. It is build with modularity in mind so that it can easily be adapted to any need. It provides many possibilities out of the box such as Double Q-learning, prioritized Experience Replay, Deep deterministic policy gradient (DDPG), Combined Reinforcement via Abstract Representations (CRAR). Many different environment examples are also provided (some of them using OpenAI gym).
+  - [garage](https://github.com/rlworkgroup/garage). A toolkit for reproducible reinforcement learning research.
+  - [surreal](https://github.com/SurrealAI/surreal). Open-Source Distributed Reinforcement Learning Framework by Stanford Vision and Learning Lab
+  - [RLgraph](https://github.com/rlgraph/rlgraph). RLgraph is a framework to quickly prototype, define and execute reinforcement learning algorithms both in research and practice. RLgraph is different from most other libraries as it can support TensorFlow (or static graphs in general) or eager/define-by run execution (PyTorch) through a single component interface.
+  - [simple_rl](https://github.com/david-abel/simple_rl). A simple framework for experimenting with Reinforcement Learning in Python.
+  - [godot_rl_agents](https://github.com/edbeeching/godot_rl_agents) An Open Source package that allows video game creators, AI researchers and hobbyists the opportunity to learn complex behaviors for their Non Player Characters or agents in [[godot]]
 
 ## Другие ресурсы
 
@@ -114,6 +117,7 @@ $$V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]$$
   - [cs285 Deep Reinforcement Learning UC Berkeley](http://rail.eecs.berkeley.edu/deeprlcourse/)
   - [Implementation of Reinforcement Learning Algorithms](https://github.com/dennybritz/reinforcement-learning). Python, OpenAI Gym, Tensorflow. Exercises and Solutions to accompany Sutton's Book and David Silver's course.
   - [OpenAI to Spinning Up](https://spinningup.openai.com/en/latest/) An educational resource to help anyone learn deep reinforcement learning.
+- [GYM environments](https://github.com/openai/gym/wiki/Environments)
 
 ## Книги
 
@@ -138,12 +142,16 @@ Dr. Phil. [Winder Reinforcement Learning](https://rl-book.com/). Industrial Appl
 [mppr]: ../notes/mppr "MPPR"
 [dynamic-programming]: ../notes/dynamic-programming "Dynamic programming for reinforcement-learning"
 [monte-carlo]: ../notes/monte-carlo "Monte-Carlo methods"
+[temporal-difference]: ../notes/temporal-difference "Temporal difference methods and n-steps methods"
 [deep-Q-learning]: ../notes/deep-q-learning "Deep Q-learning"
 [policy-gradient-methods]: ../notes/policy-gradient-methods "Policy Gradient Methods"
 [another-and-nonstandart-methods-of-reinforcement-learning]: ../notes/another-and-nonstandart-methods-of-reinforcement-learning "Another and nonstandart methods of reinforcemebt learning"
+[mppr]: ../notes/mppr "MPPR"
 [deep-q-learning]: ../notes/deep-q-learning "Deep Q-learning"
+[policy-gradient-methods]: ../notes/policy-gradient-methods "Policy Gradient Methods"
 [pytorch]: ../notes/pytorch "Machine learning framework Pytorch"
 [godot]: ../notes/godot "godot engine"
+[evolution-methods]: evolution-methods "Evolution methods"
 [machine-learning]: machine-learning "Алгоритмы машинного обучения"
 [//end]: # "Autogenerated link references"
 [//begin]: # "Autogenerated link references for markdown compatibility"

@@ -84,6 +84,7 @@ variable_name='command [option ...] arg1 arg2 ...'
 - [[linux-snap]]
 - [[shell-comans-in-one-line]]
 - [[makefile]]
+- [gnu make](https://www.gnu.org/software/make/manual/make.html#Flavors)
 
 Статьи:
 

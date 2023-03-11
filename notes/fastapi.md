@@ -21,6 +21,7 @@ title: Fastapi
 - [[fatsapi-sql-orm-example]]
 - [[fastapi-тестирование-базы-данных]]
 - [[fastapi-зависимости-с-yield]]
+- [[fastapi-events]]
 - [[get-not_support_body]]
 - [[fastapi-change-error-meaasage]]
 - [[fastapi-setup-teardown]]
@@ -53,6 +54,7 @@ title: Fastapi
 [fatsapi-sql-orm-example]: fatsapi-sql-orm-example "Fatsapi sql orm example"
 [fastapi-тестирование-базы-данных]: fastapi-тестирование-базы-данных "Fastapi тестирование базы данных"
 [fastapi-зависимости-с-yield]: fastapi-зависимости-с-yield "Fastapi зависимости с yield"
+[fastapi-events]: fastapi-events "Fastapi events"
 [get-not_support_body]: get-not_support_body "GET not support body"
 [fastapi-change-error-meaasage]: fastapi-change-error-meaasage "Fastapi change error measage"
 [fastapi-setup-teardown]: fastapi-setup-teardown "Fastapi setup teardown"
@@ -83,6 +85,7 @@ title: Fastapi
 [fatsapi-sql-orm-example]: fatsapi-sql-orm-example "Fatsapi sql orm example"
 [fastapi-тестирование-базы-данных]: fastapi-тестирование-базы-данных "Fastapi тестирование базы данных"
 [fastapi-зависимости-с-yield]: fastapi-зависимости-с-yield "Fastapi зависимости с yield"
+[fastapi-events]: fastapi-events "Fastapi events"
 [get-not_support_body]: get-not_support_body "GET not support body"
 [fastapi-change-error-meaasage]: fastapi-change-error-meaasage "Fastapi change error measage"
 [fastapi-setup-teardown]: fastapi-setup-teardown "Fastapi setup teardown"

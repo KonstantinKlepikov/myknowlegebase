@@ -16,6 +16,12 @@ title: Gamedev
 - [Liberated Pixel Cup styleguide](https://lpc.opengameart.org/static/LPC-Style-Guide/build/styleguide.html)
 - [opengameart.org](https://opengameart.org/)
 
+## History resources
+
+- [List of text-based computer games](https://en.wikipedia.org/wiki/List_of_text-based_computer_games) (wiki)
+- [Balance of Power](https://en.wikipedia.org/wiki/Balance_of_Power_(video_game)) (video game) (wiki)
+- [Balance of Power web emulation](https://archive.org/details/BalanceOfPower2Macintosh)
+
 Смотри еще:
 
 - [[reinforcement-learning]]

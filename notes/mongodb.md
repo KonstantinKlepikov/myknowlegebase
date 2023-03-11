@@ -432,13 +432,17 @@ new_account_balance = ret["account_balance"]
 
 - [MongoDB manual](http://www.mongodb.org/display/DOCS/Manual)
 - [default mongodb ports](https://www.mongodb.com/docs/manual/reference/default-mongodb-port/)
-- [python mongodb API's](https://www.mongodb.com/docs/drivers/python/)
-- [docker mongodb](https://hub.docker.com/_/mongo)
-- [mongodb minimal docker compose](https://gist.github.com/KonstantinKlepikov/b45792fe49a3ceb401377de727f6d652)
-- [pymongo](https://pymongo.readthedocs.io/en/stable/)
-- [pymongo API](https://pymongo.readthedocs.io/en/stable/api/index.html)
-- [[mongoengine]] mongodb orm
-- [[mongomotor]] asyncronous mongo client
+- [спецификация метода find() в mongodb](https://www.mongodb.com/docs/manual/reference/method/db.collection.find/)
+- [организация индексов](https://www.mongodb.com/docs/manual/indexes/)
+- движки и контейнеры:
+  - [python mongodb API's](https://www.mongodb.com/docs/drivers/python/)
+  - [docker mongodb](https://hub.docker.com/_/mongo)
+  - [mongodb minimal docker compose](https://gist.github.com/KonstantinKlepikov/b45792fe49a3ceb401377de727f6d652)
+  - [pymongo](https://pymongo.readthedocs.io/en/stable/)
+  - [pymongo API](https://pymongo.readthedocs.io/en/stable/api/index.html)
+  - [PyMongo create unique index with 2 or more fields](https://stackoverflow.com/questions/35812685/pymongo-create-unique-index-with-2-or-more-fields) (overflow)
+  - [[mongoengine]] mongodb orm
+  - [[mongomotor]] asyncronous mongo client
 - [mongomock](https://github.com/mongomock/mongomock) Small library for mocking pymongo collection objects for testing purpose
 - [[2022-11-19-daily-note]] None в mongoDB, return to dict и Pymongo API TypeError
 - [NoSQL (Distributed / Big Data) Databases](https://fastapi.tiangolo.com/advanced/nosql-databases/) usage in [[fastapi]]

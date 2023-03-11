@@ -198,26 +198,38 @@ document is now {'_id': ObjectId('...'), 'i': 51, 'key': 'value'}
   - Motor GridFS Classes
   - `motor.web` - Integrate Motor with the [[tornado]] web framework
 - [Motor asyncio API](https://motor.readthedocs.io/en/stable/api-asyncio/index.html)
-  - `AsyncIOMotorClient` – Connection to MongoDB
-  - `AsyncIOMotorClientSession` – Sequence of operations
-  - `AsyncIOMotorDatabase`
-  - `AsyncIOMotorCollection`
+  - [AsyncIOMotorClient](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_client.html) – Connection to MongoDB
+  - [AsyncIOMotorClientSession](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_client_session.html) – Sequence of operations
+  - [AsyncIOMotorDatabase](https://motor.readthedocs.io/en/stable/api-tornado/motor_database.html) some operations with given named db
+  - [AsyncIOMotorCollection](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.insert_one)
   - `AsyncIOMotorChangeStream`
   - `AsyncIOMotorClientEncryption`
-  - `AsyncIOMotorCursor`
+  - [AsyncIOMotorCursor](https://motor.readthedocs.io/en/stable/api-asyncio/cursors.html#motor.motor_asyncio.AsyncIOMotorCursor.to_list) prowide query filtering
   - `AsyncIOMotorCommandCursor`
   - asyncio GridFS Classes
   - `motor.aiohttp` - Integrate Motor with the [[aiohttp]] web framework
 
-## [[fastapi]] with motor
+Pymongo references:
+
+- [mongo_client](https://pymongo.readthedocs.io/en/4.3.2/api/pymongo/mongo_client.html) – Tools for connecting to MongoDB
+- [client_session](https://pymongo.readthedocs.io/en/4.3.2/api/pymongo/client_session.html) – Logical sessions for sequential operations
+- [pynongo collection](https://pymongo.readthedocs.io/en/4.3.2/api/pymongo/collection.html)
+- [operations](https://pymongo.readthedocs.io/en/4.3.2/api/pymongo/operations.html) – Operation class definitions, в т.ч. IndexModel
+- [results](https://pymongo.readthedocs.io/en/4.3.2/api/pymongo/results.html) – Result class definitions
+- [errorrs](https://pymongo.readthedocs.io/en/4.3.2/api/pymongo/errors.html#pymongo.errors.InvalidOperation) Exceptions raised by the pymongo package
+
+## [[fastapi]] with motor and some questions
 
 - [Getting Started with MongoDB and FastAPI](https://www.mongodb.com/developer/languages/python/python-quickstart-fastapi/). [Репо с примером](https://github.com/mongodb-developer/mongodb-with-fastapi)
 - [Building a CRUD App with FastAPI and MongoDB](https://testdriven.io/blog/fastapi-mongo/)
+- [How to parse ObjectId in a pydantic model?](https://stackoverflow.com/questions/59503461/how-to-parse-objectid-in-a-pydantic-model)
+- [Why does PyMongo add an _id field to all of my documents?](https://pymongo.readthedocs.io/en/4.3.2/faq.html#writes-and-ids) in a [FAQ](https://pymongo.readthedocs.io/en/4.3.2/faq.html#id1)
+- [Datetimes and Timezones in pymongo](https://pymongo.readthedocs.io/en/stable/examples/datetimes.html)
 
 Смотри еще:
 
 - [документация](https://motor.readthedocs.io/en/stable/)
-- [on github](https://github.com/mongodb/motor)
+- [на github](https://github.com/mongodb/motor)
 - [on mongo world](https://www.mongodb.com/docs/drivers/motor/)
 - [[mongodb]]
 - [[mongoengine]]
