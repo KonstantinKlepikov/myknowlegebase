@@ -87,7 +87,7 @@ $$V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]$$
 - [openai gym](https://github.com/openai/gym) A toolkit for developing and comparing reinforcement learning algorithms.
 - Now is gym is a [Gymnasium](https://gymnasium.farama.org/) - is eorked, and gym project not supported yet.
 - [PettingZoo](https://github.com/Farama-Foundation/PettingZoo) A standard API for multi-agent reinforcement learning environments, with popular reference environments and related utilities
-- [stable-baselines3](https://github.com/DLR-RM/stable-baselines3) PyTorch version of Stable Baselines, reliable implementations of reinforcement learning algorithms.
+- [[stable-baseline-3]] PyTorch version of Stable Baselines, reliable implementations of reinforcement learning algorithms.
 - [SuperSuit](https://github.com/Farama-Foundation/SuperSuit) A collection of wrappers for Gymnasium and PettingZoo environments - being merged into gymnasium.wrappers and pettingzoo.wrappers
 - Other:
   - Google [dopamine](https://github.com/google/dopamine). Dopamine is a research framework for fast prototyping of reinforcement learning algorithms.
@@ -168,7 +168,8 @@ Dr. Phil. [Winder Reinforcement Learning](https://rl-book.com/). Industrial Appl
 [mppr]: ../notes/mppr "MPPR"
 [deep-q-learning]: ../notes/deep-q-learning "Deep Q-learning"
 [policy-gradient-methods]: ../notes/policy-gradient-methods "Policy Gradient Methods"
-[pytorch]: ../notes/pytorch "Machine learning framework Pytorch"
+[stable-baseline-3]: ../notes/stable-baseline-3 "Stable baseline 3"
+[pytorch]: ../notes/pytorch "Machine learning framework pytorch"
 [godot]: ../notes/godot "godot engine"
 [evolution-methods]: evolution-methods "Evolution methods"
 [machine-learning]: machine-learning "Алгоритмы машинного обучения"

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Stable baseline 3 | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Stable baseline 3" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="stable baseline - алгоритмы reinforcement learning на pytorch" />
+<meta property="og:description" content="stable baseline - алгоритмы reinforcement learning на pytorch" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/stable-baseline-3.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/stable-baseline-3.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"stable baseline - алгоритмы reinforcement learning на pytorch","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/stable-baseline-3.html","headline":"Stable baseline 3","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Stable baseline 3</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/r-learning" title="r-learning" class="link-tags">r-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/pytorch" title="pytorch" class="link-tags">pytorch&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="install">Install</h2>
+
+<p>Со всеми зависимостями: <code class="language-plaintext highlighter-rouge">pip install stable-baselines3[extra]</code> (tensorboard and etc)</p>
+
+<p><a href="https://github.com/DLR-RM/stable-baselines3/issues/1324">Проблема установки</a> (python 3.10+) - полечить: <code class="language-plaintext highlighter-rouge">pip install -U setuptools==65.5.0</code></p>
+
+<p>Для запуска визализаций возможно <a href="https://stackoverflow.com/questions/74314778/nameerror-name-glpushmatrix-is-not-defined">потребуется поставить</a> более старую версию: <code class="language-plaintext highlighter-rouge">pip install pyglet==1.5.27</code></p>
+
+<p>Чтобы поставить в докере нужен <a href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a></p>
+
+<h3 id="другие-известные-проблемы">Другие известные проблемы</h3>
+
+<ul>
+  <li><a href="https://github.com/openai/gym/issues/1423">AttributeError: module ‘gym.envs.box2d’ has no attribute ‘LunarLander’</a></li>
+  <li><a href="https://stackoverflow.com/questions/50037674/attributeerror-module-box2d-has-no-attribute-rand-limit-swigconstant">AttributeError: module ‘_Box2D’ has no attribute ‘RAND_LIMIT_swigconstant’</a></li>
+</ul>
+
+<h2 id="ограничения"><a href="https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html#discrete-actions">Ограничения</a></h2>
+
+<p>Алгоритмы [<a href="../lists/reinforcement-learning" title="Reinforcement learning">reinforcement-learning</a>] без моделей SB3 обычно неэффективны с точки зрения выборки. Им требуется множество примеров (иногда миллионы взаимодействий), чтобы узнать что-то полезное. Вот почему большая часть успехов в RL была достигнута только в играх или симуляциях. Общий совет: для повышения производительности следует увеличить бюджет агента (количество временных шагов обучения). Для достижения желаемого поведения часто требуются экспертные знания для разработки адекватной функции вознаграждения. Эта разработка вознаграждения требует нескольких итераций. В качестве хорошего примера формирования вознаграждения вы можете взглянуть на статью <a href="https://xbpeng.github.io/projects/DeepMimic/index.html">Deep Mimic</a>, которая сочетает в себе имитационное обучение и обучение с подкреплением для выполнения акробатических движений. Последним ограничением RL является нестабильность обучения. То есть вы можете наблюдать во время тренировки огромное падение производительности. Такое поведение особенно характерно для DDPG, поэтому его расширение TD3 пытается решить эту проблему. Другой метод, такой как TRPO или PPO, использует <code class="language-plaintext highlighter-rouge">trust region</code>, чтобы свести к минимуму эту проблему, избегая слишком большого обновления.</p>
+
+<p>Поскольку большинство алгоритмов во время обучения используют исследовательский шум, вам потребуется отдельная тестовая среда для оценки производительности вашего агента в заданное время. Рекомендуется периодически оценивать вашего агента для n тестовых эпизодов (n обычно составляет от 5 до 20) и усреднять вознаграждение за эпизод, чтобы получить точную оценку.</p>
+
+<p>Поскольку некоторые политики являются стохастическими по умолчанию (например, A2C или PPO), вы также должны попытаться установить deterministic=True при вызове метода .predict(), это часто приводит к повышению производительности.</p>
+
+<p>DQN поддерживает только дискретные действия, тогда как SAC ограничен непрерывными действиями.</p>
+
+<p>Если важно время обучения (оно ограничено), то ледует выбрать A2C и его производные (PPO и т.д.). Стоит выбрать <a href="https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html">векторизованные среды</a>, чтобы распараллелить обучение (если это позволяет алгоритм).</p>
+
+<p>DQN с расширениями (двойной DQN, prioritized replay и т. д.) являются рекомендуемыми алгоритмами для дискретных действий с одним процессом. DQN обычно медленнее обучается, но является наиболее эффективным (из-за своего буфера воспроизведения).</p>
+
+<p>Для распараллеленных дискретных сред PPO или A2C. Следует использовать гиперпараметры с rl-baselines3-zoo.</p>
+
+<p>Для однопроцессных непрерывных сред сотой являеются SAC, TD3 и TQC.</p>
+
+<p>Для многопроцессорных - PPO, TRPO или A2C. Опять же, не забудьте взять гиперпараметры из rl-baselines3-zoo для задач с непрерывными действиями.</p>
+
+<p>Если ваша среда соответствует интерфейсу GoalEnv (см. HER), вам следует использовать HER + (SAC/TD3/DDPG/DQN/QR-DQN/TQC) в зависимости от области применения.</p>
+
+<ul>
+  <li>Ввсегда нормализуйте свое пространство наблюдений, когда есть такая возможность (т.е. когда известны предельные значения)</li>
+  <li>Нормализуйте свое пространство действий и сделайте его симметричным, когда оно непрерывное. Хорошей практикой является изменение масштаба ваших действий, чтобы они находились в [-1, 1]. Это не ограничивает вас, так как вы можете легко масштабировать действие внутри среды.</li>
+  <li>Начните с сформированного вознаграждения (т. е. информативного вознаграждения) и упрощенной версии вашей проблемы. Не усложняйте задачу на старте.</li>
+  <li>Отладьте случайными действиями, чтобы убедиться, что ваша среда работает и соответствует интерфейсу gym</li>
+  <li>При создании пользовательской среды следует помнить о двух важных вещах: не нарушать марковский принцип и правильно обрабатывать завершение из-за тайм-аута (максимальное количество шагов в эпизоде). Например, если есть некоторая задержка между действием и наблюдением (например, из-за связи по Wi-Fi), вы должны предоставить историю наблюдений в качестве входных данных.</li>
+  <li>Прекращение из-за тайм-аута (максимальное количество шагов в эпизоде) необходимо обрабатывать отдельно.</li>
+</ul>
+
+<p>Мы рекомендуем выполнить следующие шаги, чтобы иметь работающий алгоритм RL на основе статьи исследования:</p>
+
+<ul>
+  <li>Прочтите исходную статью несколько раз</li>
+  <li>Изучите существующие реализации (если доступны)</li>
+  <li>Старайтесь протестироватьалгоритм на игрушечных задачах.</li>
+  <li>Подтвердите реализацию, заставив ее работать на все более и более сложных средах. Обычно для этого шага необходимо запустить оптимизацию гиперпараметров.</li>
+  <li>Вы должны быть особенно осторожны с размерностью различных объектов, которыми вы манипулируете</li>
+  <li>Не забудьте отдельно обрабатывать прерывание из-за тайм-аута</li>
+</ul>
+
+<p><a href="https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html#discrete-actions">Статья целиком</a></p>
+
+<h2 id="алгоритмы"><a href="https://stable-baselines3.readthedocs.io/en/master/guide/algos.html">Алгоритмы</a></h2>
+
+<p><img src="/myknowlegebase/attachments/2023-03-12-01-07-44.png" alt="RL algorythms" /></p>
+
+<p>More algorithms (like QR-DQN or TQC) are implemented in our <a href="https://stable-baselines3.readthedocs.io/en/master/guide/sb3_contrib.html#sb3-contrib">contrib repo</a>.</p>
+
+<h2 id="examples-and-main-solutions">Examples and main solutions</h2>
+
+<ul>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/examples.html">Примеры реализаций</a></li>
+  <li><a href="https://github.com/Stable-Baselines-Team/rl-colab-notebooks/tree/sb3">colab-notebooks</a> (github)</li>
+</ul>
+
+<h2 id="vectorized-environments"><a href="https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html">Vectorized Environments</a></h2>
+
+<p>Это методы объединения нескольких независимых сред в единую среду. Вместо того, чтобы обучать агента RL в 1 среде за шаг, мы можем обучать его в n средах за шаг. Из-за этого действия, передаваемые в среду, теперь являются вектором (размерности n). То же самое для наблюдений, наград и сигналов об окончании эпизода. В случае пространств наблюдений, не являющихся массивами, таких как <code class="language-plaintext highlighter-rouge">Dict</code> или <code class="language-plaintext highlighter-rouge">Tuple</code>, где разные подпространства могут иметь разную форму, последующие наблюдения будут являтсья векторами (размерности n).</p>
+
+<ul>
+  <li>Vectorized Environments Wrappers
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">VёVecEnv</code> -  Абстрактная асинхронная векторизованная среда.</li>
+      <li><code class="language-plaintext highlighter-rouge">DummyVecEnv</code> - Создает простую векторизованную оболочку для нескольких сред, последовательно вызывая каждую среду в текущем процессе Python. Это полезно для вычислительно простой среды, такой как cartpole-v1, поскольку накладные расходы на многопроцессорность или многопоточность перевешивают время вычисления среды. Это также можно использовать для методов RL, для которых требуется векторизованная среда, но вы хотите использовать одну среду для обучения.</li>
+      <li><code class="language-plaintext highlighter-rouge">SubprocVecEnv</code> - Создает многопроцессорную векторизованную оболочку для нескольких сред, распределяя каждую среду по отдельному процессу, что позволяет значительно ускорить работу, когда среда является сложной в вычислительном отношении. По соображениям производительности, если ваша среда не привязана к вводу-выводу, количество сред не должно превышать количество логических ядер вашего ЦП.</li>
+    </ul>
+  </li>
+  <li>Wrappers
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">VecFrameStack</code> - Оболочка стека кадров для векторизованной среды. Предназначена для наблюдения изображений.</li>
+      <li><code class="language-plaintext highlighter-rouge">StackedObservations</code> - Оболочка сстека кадров для данных, не являющихся изображениями.</li>
+      <li><code class="language-plaintext highlighter-rouge">VecNormalize</code> - Скользящее среднее, нормализующая оболочка для векторизованной среды. поддерживает сохранение/загрузку скользящей средней</li>
+      <li><code class="language-plaintext highlighter-rouge">VecVideoRecorder</code> - запись обработанного изображения как видео в формате mp4. Для этого на машине должны быть установлены ffmpeg или avconv</li>
+      <li><code class="language-plaintext highlighter-rouge">VecCheckNan</code> - проверка NaN и inf для векторизованной среды. По умолчанию поднимет ворнинг, позволяя узнать, из чего возник NaN/inf.</li>
+      <li><code class="language-plaintext highlighter-rouge">VecTransposeImage¶</code> - Re-order channels, from HxWxC to CxHxW. It is required for PyTorch convolution layers</li>
+      <li><code class="language-plaintext highlighter-rouge">VecMonitor</code> - используется для записи вознаграждения за эпизод, продолжительности, времени и других данных.</li>
+      <li><code class="language-plaintext highlighter-rouge">VecExtractDictObs</code> - извлечение наблюдений в виде словаря</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="policy-networks"><a href="https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html">Policy networks</a></h2>
+
+<p>Stable Baselines3 предоставляет сети политик для изображений (CnnPolicies), другие типы входных функций (MlpPolicies) и мультимодальных данных (MultiInputPolicies). Сети SB3 разделены на две основные части.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-03-16-01-47-08.png" alt="sb3 networks" /></p>
+
+<p>Архитектура сети по умолчанию, используемая SB3, зависит от алгоритма и пространства наблюдения. Вы можете визуализировать архитектуру через <code class="language-plaintext highlighter-rouge">model.policy</code>. Один из способов настроить архитектуру сети политик — передать аргументы при создании модели с помощью <code class="language-plaintext highlighter-rouge">policy_kwargs</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">th</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">PPO</span>
+
+<span class="c1"># Custom actor (pi) and value function (vf) networks
+# of two layers of size 32 each with Relu activation function
+# Note: an extra linear layer will be added on top of the pi and the vf nets, respectively
+</span><span class="n">policy_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activation_fn</span><span class="o">=</span><span class="n">th</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">ReLU</span><span class="p">,</span>
+                     <span class="n">net_arch</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pi</span><span class="o">=</span><span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span> <span class="n">vf</span><span class="o">=</span><span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">]))</span>
+<span class="c1"># Create the agent
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="s">"MlpPolicy"</span><span class="p">,</span> <span class="s">"CartPole-v1"</span><span class="p">,</span> <span class="n">policy_kwargs</span><span class="o">=</span><span class="n">policy_kwargs</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Retrieve the environment
+</span><span class="n">env</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">get_env</span><span class="p">()</span>
+<span class="c1"># Train the agent
+</span><span class="n">model</span><span class="p">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="mi">20_000</span><span class="p">)</span>
+<span class="c1"># Save the agent
+</span><span class="n">model</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="s">"ppo_cartpole"</span><span class="p">)</span>
+
+<span class="k">del</span> <span class="n">model</span>
+<span class="c1"># the policy_kwargs are automatically loaded
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">"ppo_cartpole"</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Если вы хотите иметь настраиваемый экстрактор функций (например, пользовательский CNN при использовании изображений), вы можете определить класс, производный от <code class="language-plaintext highlighter-rouge">BaseFeaturesExtractor</code>, а затем <a href="https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html#custom-feature-extractor">передать его модели при обучении</a>.</p>
+
+<p>Stable Baselines3 поддерживает обработку множественных входных данных с помощью пространства <code class="language-plaintext highlighter-rouge">Dict</code> Gym. Это можно сделать с помощью <code class="language-plaintext highlighter-rouge">MultiInputPolicy</code>, который по умолчанию использует экстрактор функций <code class="language-plaintext highlighter-rouge">CombinedExtractor</code> для преобразования нескольких входных данных в один вектор, обрабатываемый <code class="language-plaintext highlighter-rouge">net_arch</code> сетью. <a href="https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html#multiple-inputs-and-dictionary-observations">Подробнее</a>.</p>
+
+<p>Подробнее о реализации сетей для алгоритмов <a href="https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html#on-policy-algorithms">с политиками</a> и <a href="https://stable-baselines3.readthedocs.io/en/master/guide/custom_policy.html#on-policy-algorithms">вне политик</a>.</p>
+
+<h2 id="using-custom-environments"><a href="https://stable-baselines3.readthedocs.io/en/master/guide/custom_env.html">Using Custom Environments</a></h2>
+
+<h2 id="колбеки-и-интеграции">Колбеки и интеграции</h2>
+
+<ul>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/callbacks.html">Callbacks</a></li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/tensorboard.html">TensorBoard</a></li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/integrations.html">интеграции со сторонними сервисами</a></li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/checking_nan.html">Dealing with NaNs and infs</a></li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/export.html">Exporting model</a></li>
+</ul>
+
+<h2 id="дополнительные-фичи">Дополнительные фичи</h2>
+
+<ul>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/rl_zoo.html">RL Baselines3 Zoo</a> предоставляет сценарии для обучения, оценки агентов, настройки гиперпараметров, отображения результатов и записи видео. Кроме того, включает в себя набор настроенных гиперпараметров для распространенных сред и алгоритмов RL, а также агентов, обученных ПО этим настройкам.</li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/sb3_contrib.html">SB3 Contrib</a> реализует передовые алгоритмы не влезая в ядро баблиотеки.
+    <ul>
+      <li>Augmented Random Search (ARS)</li>
+      <li>Quantile Regression DQN (QR-DQN)</li>
+      <li>PPO with invalid action masking (Maskable PPO)</li>
+      <li>PPO with recurrent policy (RecurrentPPO aka PPO LSTM)</li>
+      <li>Truncated Quantile Critics (TQC)</li>
+      <li>Trust Region Policy Optimization (TRPO)</li>
+    </ul>
+  </li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/imitation.html">Imitation Learning</a>
+    <ul>
+      <li>Behavioral Cloning</li>
+      <li>DAgger with synthetic examples</li>
+      <li>Adversarial Inverse Reinforcement Learning (AIRL)</li>
+      <li>Generative Adversarial Imitation Learning (GAIL)</li>
+      <li>Deep RL from Human Preferences (DRLHP)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/install.html">документация</a></li>
+  <li><a href="https://colab.research.google.com/github/araffin/rl-tutorial-jnrr19/blob/master/5_custom_gym_env.ipynb">пример создания среды</a> (colab)</li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html">Vectorized Environments</a></li>
+  <li><a href="https://stable-baselines3.readthedocs.io/en/master/guide/sb3_contrib.html#sb3-contrib">SB3 Contrib</a> стабильно работающие алгоритмы на оснвое sb3. <a href="https://sb3-contrib.readthedocs.io/en/master/">Доки</a></li>
+  <li><a href="https://github.com/DLR-RM/rl-baselines3-zoo">rl-baselines3-zoo</a> A Training Framework for Stable Baselines3 Reinforcement Learning Agents</li>
+  <li>[<a href="../lists/reinforcement-learning" title="Reinforcement learning">reinforcement-learning</a>]</li>
+  <li>[<a href="pytorch" title="Machine learning framework pytorch">pytorch</a>]</li>
+  <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
