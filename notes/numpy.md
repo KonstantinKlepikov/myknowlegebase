@@ -14,6 +14,7 @@ title: Numpy
 
 - [[2021-09-26-daily-note]] - n-мерные массивы, как создавать и проч.
 - [[2021-11-30-daily-note]] - разница массивов, случайный выбор, конвертация в булев массив и произвольные заполнители
+- [[2023-03-29-daily-note]] - numpy arrais comparison
 
 Смотри еще:
 
@@ -40,6 +41,7 @@ title: Numpy
 [random-choice]: random-choice "Random choice"
 [2021-09-26-daily-note]: ../posts/2021-09-26-daily-note "Про переменные инстанса класса и n-мерные массивы в numpy"
 [2021-11-30-daily-note]: ../posts/2021-11-30-daily-note "Diff массивов, случайный выбор, конвертация в булев массив и произвольные заполнители в numpy"
+[2023-03-29-daily-note]: ../posts/2023-03-29-daily-note "Watchdogtricks, numpy arrais comparison"
 [pandas]: pandas "Pandas"
 [scikit-image]: scikit-image "Scikit-image"
 [scipy]: scipy "Scipy"

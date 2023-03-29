@@ -10,6 +10,19 @@ title: Gamedev
 - [kyvy.org](https://kivy.org/). The Open Source Python App development Framework
 - [Gymnasium](https://gymnasium.farama.org/) is a standard API for [[reinforcement-learning]], and a diverse collection of reference environments
 - [[godot]]
+- [pyxel](https://github.com/kitao/pyxel) - A retro game engine for Python
+- [pyxel-snipets](https://github.com/kris-classes/pyxel-snippets) Small snippets for the Python retro game engine
+
+## Other engines
+
+- [PICO-8](https://www.lexaloffle.com/pico-8.php) is a fantasy console for making, sharing and playing tiny games and other computer programs.
+- [TIC-80](https://tic80.com/) is a free and open source fantasy computer for making, playing and sharing tiny games.
+- [Fancade](https://www.fancade.com/wiki/home), the mobile app where you can play thousands of games, or make your own!
+
+## Tools
+
+- [Predict Game Economies & Systems](https://machinations.io/)
+- [itch.io](https://itch.io/) is a simple way to find and share indie games online for free
 
 ## Pixelart
 

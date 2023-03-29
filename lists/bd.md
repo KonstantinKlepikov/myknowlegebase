@@ -40,6 +40,8 @@ category: list
 - [NebulaGraph](https://github.com/vesoft-inc/nebula) is a popular open-source graph database that can handle large volumes of data with milliseconds of latency, scale up quickly, and have the ability to perform fast graph analytics. NebulaGraph has been widely used for social media, recommendation systems, knowledge graphs, security, capital flows, AI, etc.
 - [OrientDB](https://orientdb.org/) is an Open Source Multi-Model NoSQL DBMS with the support of Native Graphs, Documents, Full-Text search, Reactivity, Geo-Spatial and Object Oriented concepts
 
+- [Qdrant](https://github.com/qdrant/qdrant) - Vector Search Engine and Database for the next generation of AI applications. Also available in the cloud
+
 ### Triplet storages
 
 - [ClioPatria](https://cliopatria.swi-prolog.org/home) is a SWI-Prolog application that integrates SWI-Prolog's the SWI-Prolog libraries for [[rdf]] and [[http]] services into a ready to use [[semantic-web]] server (**very old**)

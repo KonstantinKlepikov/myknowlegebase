@@ -208,6 +208,126 @@ dialog = Dialog(
 - `Whenable` могут быть скрыты или показаны в зависимости от данных или некоторых условий. В настоящее время все виджеты доступны.
 - `Actionable` любой виджет с действием (в настоящее время только любой тип клавиатуры). Он имеет id и может быть найден по этому идентификатору. Рекомендуется, чтобы все виджеты с состоянием (например, флаги) имели уникальный идентификатор в диалоговом окне. Кнопки с разным поведением также должны иметь разные идентификаторы.
 
+#### Тексты
+
+- `Const` - возвращает текст без промежуточных значений
+- `Format` - форматирует текст с помощью `format`. При использовании в окне данные извлекаются через getter.
+- `Multi` - несколько текстов, соединенных разделителем
+- `Case` - показывает один из текстов по условию
+- `Progress` - показывает индикатор выполнения
+- `Jinja` — представляет собой HTML, отображаемый с использованием шаблона jinja2.
+
+#### Клавиатуры
+
+Каждая клавиатура имеет одну или несколько встроенных кнопок. Текст на кнопке отображается с помощью текстового виджета
+
+- `Button` — одна встроенная кнопка. Предоставленный пользователем on_click метод вызывается при нажатии.
+- `Url` — одна встроенная кнопка с URL
+- `Group` - любая группа клавиатур друг над другом или микс из кнопок
+- `ScrollingGroup` — то же, что и `Group`, но с возможностью прокрутки страниц кнопками.
+- `ListGroup` - группа виджетов применяемая многократно для каждого элемента в списке
+- `Row` - упрощенный вариант группы. Все кнопки расположены в один ряд.
+- `Column` — еще одна упрощенная версия группы. Все кнопки размещены в одном столбце по одной в строке.
+- `Checkbox` — кнопка с двумя состояниями
+- `Select` - динамическая группа кнопок, предназначенная для использования при выборе.
+- `Radio` - переключение между несколькими элементами. Подобно select, но сохраняет выбранный элемент и отображает его по-другому.
+- `Multiselect` - выбор нескольких элементов. Подобно select/radio, но сохраняет все выбранные элементы и отображает их по-разному.
+- `Calendar` — имитирует календарь в виде клавиатуры.
+- `SwitchTo`- переключает окно в диалоге, используя предоставленное состояние
+- `Next/Back` - переключает состояние вперед или назад
+- `Start` - запускает новый диалог без параметров
+- `Cancel` - закрывает текущий диалог без результата. Отображается базовый диалог
+
+## [Transitions](https://aiogram-dialog.readthedocs.io/en/latest/transitions.html)
+
+Разговаривая с пользователем, вам нужно будет переключаться между различными состояниями чата. Это можно сделать с помощью четырех типов переходов:
+
+- Переключение состояния внутри диалога. При этом вы просто покажете другое окно.
+- Запук диалога в том же стеке. В этом случае диалог будет добавлен в стек задач с пустым контекстом диалога, а соответствующее окно будет показано вместо ранее видимого.
+- Начать диалог в новом стеке. В этом случае диалог будет отображаться в новом сообщении и вести себя независимо от текущего.
+- Закрыть диалог. Диалог будет удален из стека, его данные стерты. Основной диалог будет снова показан.
+
+### Стек задач
+
+Для работы с несколькими открытыми диалогами в aiogram_dialog есть стек диалогов. Это позволяет открывать диалоги друг над другом («складывать»), поэтому виден только один из них.
+
+Каждый раз, когда вы запускаете диалог, новая задача добавляется поверх стека и создается новый контекст диалога.
+
+Каждый раз, когда вы закрываете диалог, задача и контекст диалога удаляются.
+
+Вы можете запустить один и тот же диалог несколько раз, и несколько контекстов (обозначенных intent_id) будут добавлены в стек с сохранением порядка. Поэтому вы должны быть осторожны, перезапуская диалоги: не забудьте очистить стек, иначе он съест всю вашу память.
+
+Начиная с версии 1.0 вы можете создавать новые стеки, но всегда существует один по умолчанию.
+
+Самое простое, что вы можете сделать, чтобы изменить макет пользовательского интерфейса, — это переключить состояние диалога. Это не влияет на стек задач и просто рисует другое окно. Контекст диалога остается прежним, поэтому все ваши данные по-прежнему доступны.
+
+Есть несколько способов сделать это:
+
+- `dialog.switch_to` метод. Передайте другое состояние, и окно будет переключено
+- `dialog.next` метод. Он переключится на следующее окно в том же порядке, в котором они были переданы при создании диалога. Невозможно вызвать, когда последнее окно активно
+- `dialog.back` метод. Переключиться на противоположное направление (на предыдущее). Невозможно вызвать, когда активно первое окно
+
+Пример
+
+```python
+from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.types import CallbackQuery
+
+from aiogram_dialog import Dialog, DialogManager, Window
+from aiogram_dialog.widgets.kbd import Button, Row
+from aiogram_dialog.widgets.text import Const
+
+
+class DialogSG(StatesGroup):
+    first = State()
+    second = State()
+    third = State()
+
+
+async def to_second(c: CallbackQuery, button: Button, manager: DialogManager):
+    await manager.dialog().switch_to(DialogSG.second)
+
+
+async def go_back(c: CallbackQuery, button: Button, manager: DialogManager):
+    await manager.dialog().back()
+
+
+async def go_next(c: CallbackQuery, button: Button, manager: DialogManager):
+    await manager.dialog().next()
+
+
+dialog = Dialog(
+    Window(
+        Const("First"),
+        Button(Const("To second"), id="sec", on_click=to_second),
+        state=DialogSG.first,
+    ),
+    Window(
+        Const("Second"),
+        Row(
+            Button(Const("Back"), id="back2", on_click=go_back),
+            Button(Const("Next"), id="next2", on_click=go_next),
+        ),
+        state=DialogSG.second,
+    ),
+    Window(
+        Const("Third"),
+        Button(Const("Back"), id="back3", on_click=go_back),
+        state=DialogSG.third,
+    )
+)
+```
+
+Для упрощения у нас есть специальные типы кнопок. Каждый из них может содержать пользовательский текст, если это необходимо:
+
+- `SwitchTo` - switch_to при нажатии. Состояние предоставляется через атрибут конструктора
+- `Next` - next при клике
+- `Back` - back при клике
+
+[Пример тут](https://aiogram-dialog.readthedocs.io/en/latest/transitions.html)
+
+[Несколько полезных инстурментов контроля реализации диалгов](https://aiogram-dialog.readthedocs.io/en/latest/tools.html)
+
 Смотри еще:
 
 - [документация](https://aiogram-dialog.readthedocs.io/en/latest/overview.html)
@@ -218,6 +338,15 @@ dialog = Dialog(
 - [[asyncio]]
 
 [//begin]: # "Autogenerated link references for markdown compatibility"
+[aiogram]: aiogram "Telegram python bots with aiogram"
+[telegram-bots]: telegram-bots "Telegram python bots"
+[aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."
+[asyncio]: asyncio "Asyncio"
+[//end]: # "Autogenerated link references"
+[//begin]: # "Autogenerated link references for markdown compatibility"
+[aiogram]: aiogram "Telegram python bots with aiogram"
+[aiogram]: aiogram "Telegram python bots with aiogram"
+[aiogram]: aiogram "Telegram python bots with aiogram"
 [aiogram]: aiogram "Telegram python bots with aiogram"
 [telegram-bots]: telegram-bots "Telegram python bots"
 [aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."

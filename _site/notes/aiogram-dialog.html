@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Aiogram extention aiogram-dialog | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Aiogram extention aiogram-dialog" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Aiogram-dialog - библиотека для создания клавиатур и диалогов в telegram для aiogram" />
+<meta property="og:description" content="Aiogram-dialog - библиотека для создания клавиатур и диалогов в telegram для aiogram" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/aiogram-dialog.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/aiogram-dialog.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Aiogram-dialog - библиотека для создания клавиатур и диалогов в telegram для aiogram","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/aiogram-dialog.html","headline":"Aiogram extention aiogram-dialog","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Aiogram extention aiogram-dialog</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/bots" title="bots" class="link-tags">bots&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/asynco" title="asynco" class="link-tags">asynco&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Aiogram-dialog — это фреймворк графического интерфейса для телеграмм-бота. Он вдохновлен идеями Android SDK и React.js.</p>
+
+<h2 id="versions">Versions</h2>
+
+<p>На момент написания статьи последней дев-версией был 2.0b17. Как мигрировать <a href="https://github.com/Tishka17/aiogram_dialog/blob/develop/docs/migration.rst">тут</a>.</p>
+
+<p>Пример кода смотри <a href="https://github.com/Tishka17/aiogram_dialog/tree/develop/example">тут</a>.</p>
+
+<p>Version status</p>
+
+<ul>
+  <li>v1.x stable release, supports aiogram v2.x, bugfix only</li>
+  <li>v2.x beta, future release, supports aiogram v3.x</li>
+</ul>
+
+<h2 id="основные-идеи">Основные идеи</h2>
+
+<ul>
+  <li>Раздельное извлечение данных и рендеринг сообщений</li>
+  <li>Объединененные отрисовки кнопок и обработки кликов</li>
+  <li>Улучшенная маршрутизация состояний</li>
+  <li>Виджеты</li>
+</ul>
+
+<p>Основным строительным блоком интерфейса является <code class="language-plaintext highlighter-rouge">Window</code>. Каждое окно представляет собой сообщение, отправляемое пользователю, и обработку реакции пользователя на это сообщение.</p>
+
+<p>Каждое окно состоит из виджетов и функций обратного вызова. Виджеты могут отображать текст сообщения и клавиатуру. Обратные вызовы используются для получения необходимых данных или обработки пользовательского ввода.</p>
+
+<p>Окна объединены в <code class="language-plaintext highlighter-rouge">Dialog</code>. Это позволяет переключаться между окнами, создавая различные сценарии общения с пользователем.</p>
+
+<p>В более сложных случаях можно создать более одного диалога. Можно запускать новые диалоги, не закрывая предыдущий, и автоматически возвращаться обратно, когда новый диалог закрывается. Можно передавать данные между диалогами, одновременно сохраняя их состояние изолированным.</p>
+
+<h2 id="quicl-start">Quicl start</h2>
+
+<p><code class="language-plaintext highlighter-rouge">pip install aiogram_dialog</code></p>
+
+<p>Создайте [<a href="aiogram" title="Telegram python bots with aiogram">aiogram</a>] группу состояний для вашего диалога:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram.dispatcher.filters.state</span> <span class="kn">import</span> <span class="n">StatesGroup</span><span class="p">,</span> <span class="n">State</span>
+
+<span class="k">class</span> <span class="nc">MySG</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
+    <span class="n">main</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Создайте хотя бы одно окно с кнопками или текстом:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram.dispatcher.filters.state</span> <span class="kn">import</span> <span class="n">StatesGroup</span><span class="p">,</span> <span class="n">State</span>
+
+<span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.kbd</span> <span class="kn">import</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.text</span> <span class="kn">import</span> <span class="n">Const</span>
+
+
+<span class="k">class</span> <span class="nc">MySG</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
+    <span class="n">main</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+
+
+<span class="n">main_window</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span>
+    <span class="n">Const</span><span class="p">(</span><span class="s">"Hello, unknown person"</span><span class="p">),</span>  <span class="c1"># just a constant text
+</span>    <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"Useless button"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"nothing"</span><span class="p">),</span>  <span class="c1"># button with text and id
+</span>    <span class="n">state</span><span class="o">=</span><span class="n">MySG</span><span class="p">.</span><span class="n">main</span><span class="p">,</span>  <span class="c1"># state is used to identify window between dialogs
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Создайте диалог с вашими окнами:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">Dialog</span>
+
+<span class="n">dialog</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="n">main_window</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Предположим, что вы создали своего бота с диспетчером и хранилищем состояний, как обычно. Важно, чтобы у вас было хранилище, потому что aiogram_dialog использует FSMContext aiogram для хранения своего состояния</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">Bot</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">executor</span>
+<span class="kn">from</span> <span class="nn">aiogram.contrib.fsm_storage.memory</span> <span class="kn">import</span> <span class="n">MemoryStorage</span>
+
+<span class="n">storage</span> <span class="o">=</span> <span class="n">MemoryStorage</span><span class="p">()</span>
+<span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s">'BOT TOKEN HERE'</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Чтобы начать использовать ваш диалог, вам необходимо его зарегистрировать. Также библиотека нуждается в некоторых дополнительных регистрациях для своих внутренних процессов. Для этого мы создадим DialogRegistry и используем его для регистрации нашего диалога.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">DialogRegistry</span>
+
+<span class="n">registry</span> <span class="o">=</span> <span class="n">DialogRegistry</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span>  <span class="c1"># this is required to use `aiogram_dialog`
+</span><span class="n">registry</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="n">dialog</span><span class="p">)</span>  <span class="c1"># register a dialog
+</span></code></pre></div></div>
+
+<p>На данный момент мы все настроили. Но диалог не запускается сам. Мы создадим простой обработчик команд, чтобы справиться с этим. Для запуска диалога нам нужен <code class="language-plaintext highlighter-rouge">DialogManager</code>, который автоматически внедряется библиотекой. Также обратите внимание на <code class="language-plaintext highlighter-rouge">reset_stack</code> аргумент. Библиотека может запускать несколько диалогов, расположенных друг над другом. В настоящее время нам не нужна эта функция, поэтому мы будем сбрасывать стек при каждом запуске:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram.types</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">StartMode</span>
+
+<span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="p">[</span><span class="s">"start"</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">dialog_manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">):</span>
+    <span class="c1"># Important: always set `mode=StartMode.RESET_STACK` you don't want to stack dialogs
+</span>    <span class="k">await</span> <span class="n">dialog_manager</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">MySG</span><span class="p">.</span><span class="n">main</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">StartMode</span><span class="p">.</span><span class="n">RESET_STACK</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Последний шаг, вам нужно запустить бота как обычно:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">executor</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">executor</span><span class="p">.</span><span class="n">start_polling</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">skip_updates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Полный пример (совместим с [<a href="aiogram" title="Telegram python bots with aiogram">aiogram</a>] 2.0):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram</span> <span class="kn">import</span> <span class="n">Bot</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">executor</span>
+<span class="kn">from</span> <span class="nn">aiogram.contrib.fsm_storage.memory</span> <span class="kn">import</span> <span class="n">MemoryStorage</span>
+<span class="kn">from</span> <span class="nn">aiogram.dispatcher.filters.state</span> <span class="kn">import</span> <span class="n">StatesGroup</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">aiogram.types</span> <span class="kn">import</span> <span class="n">Message</span>
+
+<span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">Window</span><span class="p">,</span> <span class="n">Dialog</span><span class="p">,</span> <span class="n">DialogRegistry</span><span class="p">,</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">StartMode</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.kbd</span> <span class="kn">import</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.text</span> <span class="kn">import</span> <span class="n">Const</span>
+
+<span class="n">storage</span> <span class="o">=</span> <span class="n">MemoryStorage</span><span class="p">()</span>
+<span class="n">bot</span> <span class="o">=</span> <span class="n">Bot</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s">'BOT TOKEN HERE'</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">Dispatcher</span><span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">)</span>
+<span class="n">registry</span> <span class="o">=</span> <span class="n">DialogRegistry</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MySG</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
+    <span class="n">main</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+
+
+<span class="n">main_window</span> <span class="o">=</span> <span class="n">Window</span><span class="p">(</span>
+    <span class="n">Const</span><span class="p">(</span><span class="s">"Hello, unknown person"</span><span class="p">),</span>
+    <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"Useless button"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"nothing"</span><span class="p">),</span>
+    <span class="n">state</span><span class="o">=</span><span class="n">MySG</span><span class="p">.</span><span class="n">main</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">dialog</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span><span class="n">main_window</span><span class="p">)</span>
+<span class="n">registry</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="n">dialog</span><span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">dp</span><span class="p">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">commands</span><span class="o">=</span><span class="p">[</span><span class="s">"start"</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span> <span class="n">dialog_manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">dialog_manager</span><span class="p">.</span><span class="n">start</span><span class="p">(</span><span class="n">MySG</span><span class="p">.</span><span class="n">main</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">StartMode</span><span class="p">.</span><span class="n">RESET_STACK</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">executor</span><span class="p">.</span><span class="n">start_polling</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">skip_updates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="виджеты-и-рендеринг"><a href="https://aiogram-dialog.readthedocs.io/en/latest/widgets.html">Виджеты и рендеринг</a></h2>
+
+<h3 id="как-передаются-данные">Как передаются данные</h3>
+
+<p>Некоторые виджеты содержат фиксированный текст, другие могут отображать динамическое содержимое. Для загрузки данных в окнах и диалогах есть <code class="language-plaintext highlighter-rouge">getter</code> атрибут. <code class="language-plaintext highlighter-rouge">detter</code> может быть как функцией, возвращающей данные, так и статическим словарем или списком таких объектов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram.dispatcher.filters.state</span> <span class="kn">import</span> <span class="n">StatesGroup</span><span class="p">,</span> <span class="n">State</span>
+
+<span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">Window</span><span class="p">,</span> <span class="n">Dialog</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.kbd</span> <span class="kn">import</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.text</span> <span class="kn">import</span> <span class="n">Const</span><span class="p">,</span> <span class="n">Format</span>
+
+
+<span class="k">class</span> <span class="nc">MySG</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
+    <span class="n">main</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">"name"</span><span class="p">:</span> <span class="s">"Tishka17"</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="n">dialog</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span>
+    <span class="n">Window</span><span class="p">(</span>
+        <span class="n">Format</span><span class="p">(</span><span class="s">"Hello, {name}!"</span><span class="p">),</span>
+        <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"Useless button"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"nothing"</span><span class="p">),</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">MySG</span><span class="p">.</span><span class="n">main</span><span class="p">,</span>
+        <span class="n">getter</span><span class="o">=</span><span class="n">get_data</span><span class="p">,</span>  <span class="c1"># here we set our data getter
+</span>    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Часть объектов доступно без геттера, а через атрибут хендлера:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">dialog_data</code> - содержимое соответствующего поля из текущего контекста. Обычно он используется для хранения данных между несколькими вызовами и окнами в одном диалоговом окне.</li>
+  <li><code class="language-plaintext highlighter-rouge">start_data</code> - данные, передаваемые при запуске текущего диалога. Также доступны с помощью <code class="language-plaintext highlighter-rouge">current_context</code></li>
+  <li><code class="language-plaintext highlighter-rouge">middleware_data</code> - данные передаются от промежуточного программного обеспечения к обработчику. Еще можно так <code class="language-plaintext highlighter-rouge">dialog_manager.data</code></li>
+  <li><code class="language-plaintext highlighter-rouge">event</code> - текущее событие обработки, вызвавшее обновление окна. Будьте осторожны, используя его, потому что разные типы событий могут привести к обновлению одного и того же окна.</li>
+</ul>
+
+<h3 id="типы-виджетов">Типы виджетов</h3>
+
+<p>В настоящее время существует 3 вида виджетов: тексты, клавиатуры и медиа</p>
+
+<ul>
+  <li>Texts, используются для отображения текста в любом месте диалога. Это может быть текст сообщения, заголовок кнопки и так далее.</li>
+  <li>Keyboards представляют собой части <code class="language-plaintext highlighter-rouge">InlineKeyboard</code> [<a href="aiogram" title="Telegram python bots with aiogram">aiogram</a>]</li>
+  <li>Media представляет мультимедийный аттачмент к сообщению</li>
+</ul>
+
+<p>Также есть 2 основных типа:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Whenable</code> могут быть скрыты или показаны в зависимости от данных или некоторых условий. В настоящее время все виджеты доступны.</li>
+  <li><code class="language-plaintext highlighter-rouge">Actionable</code> любой виджет с действием (в настоящее время только любой тип клавиатуры). Он имеет id и может быть найден по этому идентификатору. Рекомендуется, чтобы все виджеты с состоянием (например, флаги) имели уникальный идентификатор в диалоговом окне. Кнопки с разным поведением также должны иметь разные идентификаторы.</li>
+</ul>
+
+<h4 id="тексты">Тексты</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Const</code> - возвращает текст без промежуточных значений</li>
+  <li><code class="language-plaintext highlighter-rouge">Format</code> - форматирует текст с помощью <code class="language-plaintext highlighter-rouge">format</code>. При использовании в окне данные извлекаются через getter.</li>
+  <li><code class="language-plaintext highlighter-rouge">Multi</code> - несколько текстов, соединенных разделителем</li>
+  <li><code class="language-plaintext highlighter-rouge">Case</code> - показывает один из текстов по условию</li>
+  <li><code class="language-plaintext highlighter-rouge">Progress</code> - показывает индикатор выполнения</li>
+  <li><code class="language-plaintext highlighter-rouge">Jinja</code> — представляет собой HTML, отображаемый с использованием шаблона jinja2.</li>
+</ul>
+
+<h4 id="клавиатуры">Клавиатуры</h4>
+
+<p>Каждая клавиатура имеет одну или несколько встроенных кнопок. Текст на кнопке отображается с помощью текстового виджета</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Button</code> — одна встроенная кнопка. Предоставленный пользователем on_click метод вызывается при нажатии.</li>
+  <li><code class="language-plaintext highlighter-rouge">Url</code> — одна встроенная кнопка с URL</li>
+  <li><code class="language-plaintext highlighter-rouge">Group</code> - любая группа клавиатур друг над другом или микс из кнопок</li>
+  <li><code class="language-plaintext highlighter-rouge">ScrollingGroup</code> — то же, что и <code class="language-plaintext highlighter-rouge">Group</code>, но с возможностью прокрутки страниц кнопками.</li>
+  <li><code class="language-plaintext highlighter-rouge">ListGroup</code> - группа виджетов применяемая многократно для каждого элемента в списке</li>
+  <li><code class="language-plaintext highlighter-rouge">Row</code> - упрощенный вариант группы. Все кнопки расположены в один ряд.</li>
+  <li><code class="language-plaintext highlighter-rouge">Column</code> — еще одна упрощенная версия группы. Все кнопки размещены в одном столбце по одной в строке.</li>
+  <li><code class="language-plaintext highlighter-rouge">Checkbox</code> — кнопка с двумя состояниями</li>
+  <li><code class="language-plaintext highlighter-rouge">Select</code> - динамическая группа кнопок, предназначенная для использования при выборе.</li>
+  <li><code class="language-plaintext highlighter-rouge">Radio</code> - переключение между несколькими элементами. Подобно select, но сохраняет выбранный элемент и отображает его по-другому.</li>
+  <li><code class="language-plaintext highlighter-rouge">Multiselect</code> - выбор нескольких элементов. Подобно select/radio, но сохраняет все выбранные элементы и отображает их по-разному.</li>
+  <li><code class="language-plaintext highlighter-rouge">Calendar</code> — имитирует календарь в виде клавиатуры.</li>
+  <li><code class="language-plaintext highlighter-rouge">SwitchTo</code>- переключает окно в диалоге, используя предоставленное состояние</li>
+  <li><code class="language-plaintext highlighter-rouge">Next/Back</code> - переключает состояние вперед или назад</li>
+  <li><code class="language-plaintext highlighter-rouge">Start</code> - запускает новый диалог без параметров</li>
+  <li><code class="language-plaintext highlighter-rouge">Cancel</code> - закрывает текущий диалог без результата. Отображается базовый диалог</li>
+</ul>
+
+<h2 id="transitions"><a href="https://aiogram-dialog.readthedocs.io/en/latest/transitions.html">Transitions</a></h2>
+
+<p>Разговаривая с пользователем, вам нужно будет переключаться между различными состояниями чата. Это можно сделать с помощью четырех типов переходов:</p>
+
+<ul>
+  <li>Переключение состояния внутри диалога. При этом вы просто покажете другое окно.</li>
+  <li>Запук диалога в том же стеке. В этом случае диалог будет добавлен в стек задач с пустым контекстом диалога, а соответствующее окно будет показано вместо ранее видимого.</li>
+  <li>Начать диалог в новом стеке. В этом случае диалог будет отображаться в новом сообщении и вести себя независимо от текущего.</li>
+  <li>Закрыть диалог. Диалог будет удален из стека, его данные стерты. Основной диалог будет снова показан.</li>
+</ul>
+
+<h3 id="стек-задач">Стек задач</h3>
+
+<p>Для работы с несколькими открытыми диалогами в aiogram_dialog есть стек диалогов. Это позволяет открывать диалоги друг над другом («складывать»), поэтому виден только один из них.</p>
+
+<p>Каждый раз, когда вы запускаете диалог, новая задача добавляется поверх стека и создается новый контекст диалога.</p>
+
+<p>Каждый раз, когда вы закрываете диалог, задача и контекст диалога удаляются.</p>
+
+<p>Вы можете запустить один и тот же диалог несколько раз, и несколько контекстов (обозначенных intent_id) будут добавлены в стек с сохранением порядка. Поэтому вы должны быть осторожны, перезапуская диалоги: не забудьте очистить стек, иначе он съест всю вашу память.</p>
+
+<p>Начиная с версии 1.0 вы можете создавать новые стеки, но всегда существует один по умолчанию.</p>
+
+<p>Самое простое, что вы можете сделать, чтобы изменить макет пользовательского интерфейса, — это переключить состояние диалога. Это не влияет на стек задач и просто рисует другое окно. Контекст диалога остается прежним, поэтому все ваши данные по-прежнему доступны.</p>
+
+<p>Есть несколько способов сделать это:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">dialog.switch_to</code> метод. Передайте другое состояние, и окно будет переключено</li>
+  <li><code class="language-plaintext highlighter-rouge">dialog.next</code> метод. Он переключится на следующее окно в том же порядке, в котором они были переданы при создании диалога. Невозможно вызвать, когда последнее окно активно</li>
+  <li><code class="language-plaintext highlighter-rouge">dialog.back</code> метод. Переключиться на противоположное направление (на предыдущее). Невозможно вызвать, когда активно первое окно</li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiogram.dispatcher.filters.state</span> <span class="kn">import</span> <span class="n">StatesGroup</span><span class="p">,</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">aiogram.types</span> <span class="kn">import</span> <span class="n">CallbackQuery</span>
+
+<span class="kn">from</span> <span class="nn">aiogram_dialog</span> <span class="kn">import</span> <span class="n">Dialog</span><span class="p">,</span> <span class="n">DialogManager</span><span class="p">,</span> <span class="n">Window</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.kbd</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Row</span>
+<span class="kn">from</span> <span class="nn">aiogram_dialog.widgets.text</span> <span class="kn">import</span> <span class="n">Const</span>
+
+
+<span class="k">class</span> <span class="nc">DialogSG</span><span class="p">(</span><span class="n">StatesGroup</span><span class="p">):</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+    <span class="n">third</span> <span class="o">=</span> <span class="n">State</span><span class="p">()</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">to_second</span><span class="p">(</span><span class="n">c</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">button</span><span class="p">:</span> <span class="n">Button</span><span class="p">,</span> <span class="n">manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">manager</span><span class="p">.</span><span class="n">dialog</span><span class="p">().</span><span class="n">switch_to</span><span class="p">(</span><span class="n">DialogSG</span><span class="p">.</span><span class="n">second</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">go_back</span><span class="p">(</span><span class="n">c</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">button</span><span class="p">:</span> <span class="n">Button</span><span class="p">,</span> <span class="n">manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">manager</span><span class="p">.</span><span class="n">dialog</span><span class="p">().</span><span class="n">back</span><span class="p">()</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">go_next</span><span class="p">(</span><span class="n">c</span><span class="p">:</span> <span class="n">CallbackQuery</span><span class="p">,</span> <span class="n">button</span><span class="p">:</span> <span class="n">Button</span><span class="p">,</span> <span class="n">manager</span><span class="p">:</span> <span class="n">DialogManager</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">manager</span><span class="p">.</span><span class="n">dialog</span><span class="p">().</span><span class="nb">next</span><span class="p">()</span>
+
+
+<span class="n">dialog</span> <span class="o">=</span> <span class="n">Dialog</span><span class="p">(</span>
+    <span class="n">Window</span><span class="p">(</span>
+        <span class="n">Const</span><span class="p">(</span><span class="s">"First"</span><span class="p">),</span>
+        <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"To second"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"sec"</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">to_second</span><span class="p">),</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">DialogSG</span><span class="p">.</span><span class="n">first</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">Window</span><span class="p">(</span>
+        <span class="n">Const</span><span class="p">(</span><span class="s">"Second"</span><span class="p">),</span>
+        <span class="n">Row</span><span class="p">(</span>
+            <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"Back"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"back2"</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">go_back</span><span class="p">),</span>
+            <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"Next"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"next2"</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">go_next</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">DialogSG</span><span class="p">.</span><span class="n">second</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">Window</span><span class="p">(</span>
+        <span class="n">Const</span><span class="p">(</span><span class="s">"Third"</span><span class="p">),</span>
+        <span class="n">Button</span><span class="p">(</span><span class="n">Const</span><span class="p">(</span><span class="s">"Back"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s">"back3"</span><span class="p">,</span> <span class="n">on_click</span><span class="o">=</span><span class="n">go_back</span><span class="p">),</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">DialogSG</span><span class="p">.</span><span class="n">third</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Для упрощения у нас есть специальные типы кнопок. Каждый из них может содержать пользовательский текст, если это необходимо:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">SwitchTo</code> - switch_to при нажатии. Состояние предоставляется через атрибут конструктора</li>
+  <li><code class="language-plaintext highlighter-rouge">Next</code> - next при клике</li>
+  <li><code class="language-plaintext highlighter-rouge">Back</code> - back при клике</li>
+</ul>
+
+<p><a href="https://aiogram-dialog.readthedocs.io/en/latest/transitions.html">Пример тут</a></p>
+
+<p><a href="https://aiogram-dialog.readthedocs.io/en/latest/tools.html">Несколько полезных инстурментов контроля реализации диалгов</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://aiogram-dialog.readthedocs.io/en/latest/overview.html">документация</a></li>
+  <li><a href="https://github.com/tishka17/aiogram_dialog">github</a></li>
+  <li>[<a href="aiogram" title="Telegram python bots with aiogram">aiogram</a>]</li>
+  <li>[<a href="telegram-bots" title="Telegram python bots">telegram-bots</a>]</li>
+  <li>[<a href="aiohttp" title="Aiohttp асинхронный клиент-свервер на python.">aiohttp</a>]</li>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
