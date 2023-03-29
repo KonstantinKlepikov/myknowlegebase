@@ -7,6 +7,7 @@ title: Telegram python bots
 
 - [API telegram](https://core.telegram.org/)
 - [[aiogram]]
+- [[aiogram-dialog]]
 - [python-telegram-bot](https://python-telegram-bot.org/)
 - [pyTelegramBot](https://pytba.readthedocs.io/en/latest/index.html)
 - [[asyncio]]

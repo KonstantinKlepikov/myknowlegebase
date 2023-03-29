@@ -189,6 +189,7 @@ async def text_handler(message: types.Message):
 
 - [примеры с aiogram](https://docs.aiogram.dev/en/latest/examples/index.html)
 - [Пишем Telegram-ботов с aiogram 3.x](https://mastergroosha.github.io/aiogram-3-guide/) неплохое и подробное руководство
+- [[aiogram-dialog]]
 - [[telegram-bots]]
 - [[aiohttp]]
 - [[asyncio]]
