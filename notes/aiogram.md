@@ -198,6 +198,7 @@ async def text_handler(message: types.Message):
 [asyncio]: asyncio "Asyncio"
 [aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."
 [aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."
+[aiogram-dialog]: aiogram-dialog "Aiogram extention aiogram-dialog"
 [telegram-bots]: telegram-bots "Telegram python bots"
 [aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."
 [asyncio]: asyncio "Asyncio"
