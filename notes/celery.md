@@ -54,7 +54,7 @@ Celery поддерживает:
 
 Брокеры: [[rabbitmq]] или [[redis]]
 
-Для редиса можно черех [[docker]]: `docker run -d -p 6379:6379 redis`
+Для редиса можно через [[docker]]: `docker run -d -p 6379:6379 redis`
 
 Ставим celery: `pip install celery`
 
@@ -149,7 +149,7 @@ timezone = 'Europe/Oslo'
 enable_utc = True
 ```
 
-Поддерживается формат в виде слвоаря. Отвалидировать конфиг можно так: `python -m celeryconfig`. Естественно можно создавать множество конфигов называя их как угодно для использования в разных приложениях celery
+Поддерживается формат в виде словаря. Отвалидировать конфиг можно так: `python -m celeryconfig`. Естественно можно создавать множество конфигов называя их как угодно для использования в разных приложениях celery
 
 ## [Более подробный пример](https://docs.celeryproject.org/en/stable/getting-started/next-steps.html)
 
@@ -241,7 +241,7 @@ def xsum(numbers):
 
 Здесь `broker` - это юрл к нашему брокеру. `concurrency`  определяет сколько доступно ядер. `events` это параметр, который заставляет Celery отправлять сообщения мониторинга (события) для действий, происходящих в воркере. Они могут использоваться программами мониторинга, такими как [[flower]]. `queues` это список доступных очередей, из которых процессы будут потреблять задачи. Это важный аспект, т.к. главный поинт в том, чтобы расписать из каких очередей что потреблять и в каком приоритете. Это делается через [маршрутизацию](https://docs.celeryproject.org/en/stable/userguide/routing.html#guide-routing).
 
-В текущем режиме воркера можно остановить через `ctrl-c`. В реальных условиях воркеров потребуется запускать в фоне - [читай руководство по "демонизации"](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing). Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является `/etc/default/celeryd`. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запск через `celery multy`, которому рут-права не нужны. Выглядит это примерно так:
+В текущем режиме воркера можно остановить через `ctrl-c`. В реальных условиях воркеров потребуется запускать в фоне - [читай руководство по "демонизации"](https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing). Вкратце - celery использует общие init-скрипты для всех воркеров и они должны работать на всех юникс-подобных платформах. Начальным скриптом является `/etc/default/celeryd`. Для его запуска требуются привилегии суперюзера (от которого конечно ни при каких условиях запускаться нельзя ввиду небезопасности структур данных, используемых в celery). К счастью реализован запуск через `celery multy`, которому рут-права не нужны. Выглядит это примерно так:
 
 ```bash
 $ celery multi start w1 -A proj -l INFO
@@ -263,7 +263,7 @@ celery multi v4.0.0 (latentcall)
     > w1.halcyon.local: TERM -> 64052
 ```
 
-Запущенный в фоне воркер не помнит контекеста, поэтому все переданные ему аругменты командной строки необходимо передавать каждый раз при каждой кманде (wtf). Остановить можно через `multi stop`, но надо понить, что такая остановка будет синхронной, что может привести к незавершению ряда задач. Для асинхронного стпа использовать `stopwait`
+Запущенный в фоне воркер не помнит контекеста, поэтому все переданные ему аругменты командной строки необходимо передавать каждый раз при каждой команде (wtf). Остановить можно через `multi stop`, но надо понить, что такая остановка будет синхронной, что может привести к незавершению ряда задач. Для асинхронного стопа использовать `stopwait`
 
 Вот так на самом деле придется запускать воркеров (создавая разделы для логов, чтобы не возникли ошибки `IOError: [Errno 13] Permission denied`):
 
@@ -278,7 +278,7 @@ $ celery multi start w1 -A proj -l INFO --pidfile=/var/run/celery/%n.pid \
 
 ### Вызов тасков
 
-Вызов тасков делается, как писалось выше, через `sig.delay(*args, **kwargs)`, котоырй является оберткой для `sig.apply_async(args=(), kwargs={}, **options)`, получающий больше конфигурационных аргументов (например название очереди или значение колдауна).
+Вызов тасков делается, как писалось выше, через `sig.delay(*args, **kwargs)`, котопый является оберткой для `sig.apply_async(args=(), kwargs={}, **options)`, получающий больше конфигурационных аргументов (например название очереди или значение колдауна).
 
 Если реализован бекенд, то результат можно получить через `get()`. Поддерживаются атрибуты, дающие доступ к состояниям:
 
@@ -301,7 +301,7 @@ True
 TypeError("unsupported operand type(s) for +: 'int' and 'str'")
 ```
 
-Такс проходит через три состояния (на самом деле состояние таска может меняться произволяно и SUCCESS не окончательный): PENDING -> STARTED -> RETRY -> STARTED -> RETRY -> STARTED -> SUCCESS. Извлечь можно так:
+Таск проходит через три состояния (на самом деле состояние таска может меняться произволяно и SUCCESS не окончательный): PENDING -> STARTED -> RETRY -> STARTED -> RETRY -> STARTED -> SUCCESS. Извлечь можно так:
 
 ```python
 >>> res.state
@@ -681,7 +681,7 @@ def some_task(self):
 
 Пример (плохо)
 
-```pythpn
+```python
 @app.task
 def update_page_info(url):
     page = fetch_page.delay(url).get()
@@ -871,29 +871,32 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 Смотри еще:
 
 - [документация cli celery](https://docs.celeryproject.org/en/stable/reference/cli.html?highlight=command)
+- [celery cli](https://docs.celeryq.dev/en/stable/reference/cli.html)
 - [[redis]]
 - [[rabbitmq]]
-- [[flower]]
+- [[flower]] дашборд для мониторинга тасков в celery
 - [[asyncio]]
 - [[fastapi]]
 
 Более простой аналог: [[python-rq]]
 
+## Celery и [[fastapi]]
+
+Самый простой пример [тут](https://testdriven.io/blog/fastapi-and-celery/) ([ссылка на репо](https://github.com/testdrivenio/fastapi-celery/tree/master/project))
+
+Здесь более подробный пример реализации [[fastapi]], celery и [[poetry]]
+
+Большой подробный курс на testdriven.io: [The Definitive Guide to Celery and FastAPI](https://testdriven.io/courses/fastapi-celery/intro/) (используется [[docker-compose]]) - в данном примере все запихивают в один контейнер.
+
 [//begin]: # "Autogenerated link references for markdown compatibility"
 [redis]: redis "Redis"
 [rabbitmq]: rabbitmq "Rabbitmq"
-[rabbitmq]: rabbitmq "Rabbitmq"
-[redis]: redis "Redis"
 [docker]: ../lists/docker "Docker"
-[redis]: redis "Redis"
-[rabbitmq]: rabbitmq "Rabbitmq"
-[flower]: flower "Flower pip python"
+[flower]: flower "Flower дашборд для мониторинга celery"
 [python-logging]: ../lists/python-logging "Python logging"
-[flower]: flower "Flower pip python"
-[redis]: redis "Redis"
-[rabbitmq]: rabbitmq "Rabbitmq"
-[flower]: flower "Flower pip python"
 [asyncio]: asyncio "Asyncio"
 [fastapi]: fastapi "Fastapi"
 [python-rq]: python-rq "Python-rq"
+[poetry]: poetry "Poetry"
+[docker-compose]: docker-compose "Docker compose"
 [//end]: # "Autogenerated link references"
