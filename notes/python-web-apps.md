@@ -5,10 +5,11 @@ tags: templating python
 ---
 Пакеты для создания web-приложений:
 
-- [[streamlit]] инструмент прототипирования web-ресурсов на python
+- [[streamlit]] инструмент прототипирования web-ресурсов на python (лучше всего подходит для DS)
 - [[plotly]] Dash Enterprise is the premier platform for building, scaling, and deploying data apps in Python.
 - [[flet]] Flet enables developers to easily build realtime web, mobile and desktop apps in Python. No frontend experience required
 - [kivy.org](https://kivy.org/) The Open Source Python App development Framework. Build and distribute beautiful Python cross-platform GUI apps with ease. Runs on Android, iOS, Linux, macOS and Windows.
+- [shiny](https://shiny.rstudio.com/py/) Shiny позволяет легко создавать интерактивные веб-приложения с помощью данных Python и научного стека.
 
 Смотри еще:
 

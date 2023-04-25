@@ -13,6 +13,7 @@ title: Gamedev
 - [pyxel](https://github.com/kitao/pyxel) - A retro game engine for Python
 - [pyxel-snipets](https://github.com/kris-classes/pyxel-snippets) Small snippets for the Python retro game engine
 - [gamemaker.io](https://gamemaker.io/ru) free lowcode платформа для разработки 2D-игр
+- [CONSTRUCT 3](https://www.construct.net/en) nocode gameemaker ide (pay)
 
 ## Other engines
 
@@ -29,6 +30,14 @@ title: Gamedev
 - [blockbench](https://www.blockbench.net/) A low-poly 3D model editor (free)
 - [pixilart.com](https://www.pixilart.com/) online pixelart tool and community
 - [Piskel](https://www.piskelapp.com/) is a free online editor for animated sprites & pixel art
+- [MagicaVoxel](https://ephtracy.github.io/#ss-carousel_ss) A free lightweight GPU-based voxel art editor and interactive path tracing renderer.
+- [Pixelorama](https://godotengine.org/showcase/pixelorama/) is a free & open source pixel art sprite editor, with animation support. It is made entirely with the Godot Engine.
+- [PimiEd](https://noyemi-k.itch.io/pimied) is a basic map editor for my future tactics and strategy (RPG?) projects
+- [Ephemeral](https://ephemeralen.itch.io/ephemeral-isotileset) Isometric Tileset Generator
+- [Isotile](https://kyd.itch.io/isotile) Quickly generate tiles for your next game from sprites or solid colors. Drag and drop images onto the interface to get started.
+- [Sprite Render Kit](https://blurymind.itch.io/sprite-render-kit-for-blender-3d) - for blender 3d (pay)
+- [Tile Customizer](https://rgsdev.itch.io/2d-tile-customizer-by-rgsdev) Generate custom tiles in pixel art for your 2D games (pay)
+- [voxel-editor](https://alexa-mulkerrin.itch.io/voxel-editor)
 
 ## Texts tools
 
@@ -56,6 +65,8 @@ title: Gamedev
 - [gamedeveloper.com](https://www.gamedeveloper.com/) новости, блоги и доска вакансий
 - [indiegamejams.com](https://www.indiegamejams.com/) доска с расписанием игровых джемов
 - [список геймдев-ивентов](https://ru.ingamejob.com/ru/events)
+- [gamedev.ru](https://gamedev.ru/) новости, статьи, работа в геймдеве
+- [Таблица городов для ламповых встреч GameDev](https://www.gdtalents.com/chats)
 
 Смотри еще:
 
