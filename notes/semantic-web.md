@@ -31,7 +31,6 @@ tags: machine-learning graphs knowledge-graphs
 [rdf]: rdf "RDF"
 [OWL]: owl "OWL ontology"
 [sparql]: sparql "SPARQL"
-[rdf]: rdf "RDF"
 [turtle]: turtle "Turtle for RDF"
 [owl]: owl "OWL ontology"
 [knowledge-graphs]: ../lists/knowledge-graphs "Knowledge graphs"

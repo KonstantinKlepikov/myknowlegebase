@@ -35,6 +35,7 @@ title: Fastapi
 - [[python-cryptography]]
 - [NoSQL (Distributed / Big Data) Databases](https://fastapi.tiangolo.com/advanced/nosql-databases/) - example with couchdb, can be used for [[mongodb]]
 - [Securing FastAPI with JWT Token-based Authentication](https://testdriven.io/blog/fastapi-jwt-auth/)
+- [awesome-fastapi)](https://github.com/mjhea0/awesome-fastapi) A curated list of awesome things related to FastAPI
 
 Смотри еще:
 
@@ -69,8 +70,6 @@ title: Fastapi
 [mongodb]: mongodb "MongoDB"
 [celery]: celery "Celery"
 [starlit]: starlit "Starlit"
-[pydantic]: pydantic "Pydantic"
-[starlette]: starlette "Starlette"
 [pydantic]: pydantic "Pydantic"
 [starlette]: starlette "Starlette"
 [aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."

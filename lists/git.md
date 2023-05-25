@@ -42,7 +42,6 @@ title: Git
 [github-creating-deleting]: ../notes/github-creating-deleting "Githunb creating and deleting of branches"
 [github-branch-protection]: ../notes/github-branch-protection "Githunb branch protection"
 [github-authentication]: ../notes/github-authentication "Github authentication"
-[github-authentication-failed]: ../notes/github-authentication-failed "Github Authentication Failed"
 [github-action]: ../notes/github-action "Githunb action"
 [github-actions-links]: ../notes/github-actions-links "Ссылка на версию экшена"
 [github-action-триггеры-и-переменные]: ../notes/github-action-триггеры-и-переменные "Github action триггеры и переменные - документация и полезные ссылки"

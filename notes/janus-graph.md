@@ -56,7 +56,6 @@ tags: data-bases graphs
 [knowledge-graphs]: ../lists/knowledge-graphs "Knowledge graphs"
 [apache-spark]: apache-spark "Unified engine for large-scale data analytics"
 [apache-tinkertop-and-gremlin]: apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
-[apache-tinkertop-and-gremlin]: apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
 [dgraph]: dgraph "Dgraph"
 [neo4j]: neo4j "Neo4j graph data base"
 [mongodb]: mongodb "MongoDB"

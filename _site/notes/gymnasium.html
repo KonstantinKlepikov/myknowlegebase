@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Gymnasium | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Gymnasium" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Gymnasium библиотека для построения стред обучения с подкреплением на python" />
+<meta property="og:description" content="Gymnasium библиотека для построения стред обучения с подкреплением на python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/gymnasium.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/gymnasium.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Gymnasium библиотека для построения стред обучения с подкреплением на python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/gymnasium.html","headline":"Gymnasium","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Gymnasium</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/r-learning" title="r-learning" class="link-tags">r-learning&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="n">gym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="s">"LunarLander-v2"</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s">"human"</span><span class="p">)</span>
+<span class="n">observation</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+   <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="n">action_space</span><span class="p">.</span><span class="n">sample</span><span class="p">()</span>  <span class="c1"># this is where you would insert your policy
+</span>   <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+   <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+      <span class="n">observation</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">env</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="создание-собственной-среды"><a href="https://gymnasium.farama.org/tutorials/gymnasium_basics/environment_creation/">Создание собственной среды</a></h2>
+
+<p>Пример создания собственной среды можно зарать так:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Farama-Foundation/gym-examples
+<span class="nb">cd </span>gym-examples
+python <span class="nt">-m</span> venv .env
+<span class="nb">source</span> .env/bin/activate
+pip <span class="nb">install</span> <span class="nt">-e</span> <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>Структура проекта:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gym-examples/
+  README.md
+  setup.py
+  gym_examples/
+    __init__.py
+    envs/
+      __init__.py
+      grid_world.py
+    wrappers/
+      __init__.py
+      relative_position.py
+      reacher_weighted_reward.py
+      discrete_action.py
+      clip_reward.py
+</code></pre></div></div>
+
+<p>Чтобы проиллюстрировать процесс создания подклассов <a href="https://gymnasium.farama.org/api/env/">gymnasium.Env</a>, мы реализуем очень простую игру под названием GridWorldEnv. Мы напишем код для нашей пользовательской среды в grid_world.py. Среда состоит из 2-мерной квадратной сетки фиксированного размера (задается параметром sizeпри построении). Агент может перемещаться вертикально или горизонтально между ячейками сетки на каждом временном шаге. Цель агента — перейти к цели на сетке, которая была случайно размещена в начале эпизода.</p>
+
+<ul>
+  <li>Наблюдения обеспечивают местоположение цели и агента.</li>
+  <li>В нашей среде есть 4 действия, соответствующие движениям «вправо», «вверх», «влево» и «вниз».</li>
+  <li>Сигнал готовности выдается, как только агент перейдет к ячейке сетки, где находится цель.</li>
+  <li>Вознаграждения являются бинарными и разреженными, что означает, что немедленное вознаграждение всегда равно нулю, если только агент не достиг цели, тогда оно равно 1.</li>
+</ul>
+
+<p>Эпизод в этой среде (с size=5) может выглядеть так: где синяя точка — агент, а красный квадрат — цель.</p>
+
+<h3 id="инициализация">Инициализация</h3>
+
+<p>Наша пользовательская среда будет наследоваться от абстрактного класса <code class="language-plaintext highlighter-rouge">gymnasium.Env</code>. Не забудьте добавить <code class="language-plaintext highlighter-rouge">metadata</code> атрибут в свой класс. Там вы должны указать режимы рендеринга, поддерживаемые вашей средой (например  “human”, “rgb_array”, , “ansi”) и частоту кадров, с которой должна отображаться ваша среда. Каждая среда должна поддерживать None в качестве режима рендеринга; вам не нужно добавлять его в метаданные. В GridWorldEnv, мы будем поддерживать режимы «rgb_array» и «human» и рендерить со скоростью 4 FPS.</p>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">__init__</code> нашей среды будет принимать целое число <code class="language-plaintext highlighter-rouge">size</code>, определяющее размер квадратной сетки. Мы настроим некоторые переменные для рендеринга и определим <code class="language-plaintext highlighter-rouge">self.observation_space</code> и <code class="language-plaintext highlighter-rouge">self.action_space</code>. В нашем случае наблюдения должны предоставлять информацию о местоположении агента и цели на двумерной сетке. Мы выберем представление наблюдений в виде словарей с ключами <code class="language-plaintext highlighter-rouge">agent</code> и <code class="language-plaintext highlighter-rouge">target.</code> Наблюдение может выглядеть так <code class="language-plaintext highlighter-rouge">{"agent": array([1, 0]), "target": array([0, 3])}</code>. Так как у нас есть 4 действия в нашей среде («вправо», «вверх», «влево», «вниз»), мы будем использовать в качестве действия пространство.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="n">gym</span>
+<span class="kn">from</span> <span class="nn">gymnasium</span> <span class="kn">import</span> <span class="n">spaces</span>
+
+
+<span class="k">class</span> <span class="nc">GridWorldEnv</span><span class="p">(</span><span class="n">gym</span><span class="p">.</span><span class="n">Env</span><span class="p">):</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s">"render_modes"</span><span class="p">:</span> <span class="p">[</span><span class="s">"human"</span><span class="p">,</span> <span class="s">"rgb_array"</span><span class="p">],</span> <span class="s">"render_fps"</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>  <span class="c1"># The size of the square grid
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="mi">512</span>  <span class="c1"># The size of the PyGame window
+</span>
+        <span class="c1"># Observations are dictionaries with the agent's
+</span>        <span class="c1"># and the target's location.
+</span>        <span class="c1"># Each location is encoded as an element of
+</span>        <span class="c1"># {0, ..., `size`}^2, i.e. MultiDiscrete([size, size]).
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="p">.</span><span class="n">Dict</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s">"agent"</span><span class="p">:</span> <span class="n">spaces</span><span class="p">.</span><span class="n">Box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>
+                <span class="s">"target"</span><span class="p">:</span> <span class="n">spaces</span><span class="p">.</span><span class="n">Box</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="c1"># We have 4 actions, corresponding to "right", "up", "left", "down"
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="p">.</span><span class="n">Discrete</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="s">"""
+        The following dictionary maps abstract actions from `self.action_space` to
+        the direction we will walk in if that action is taken.
+        I.e. 0 corresponds to "right", 1 to "up" etc.
+        """</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_action_to_direction</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="p">}</span>
+
+        <span class="k">assert</span> <span class="n">render_mode</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">render_mode</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">metadata</span><span class="p">[</span><span class="s">"render_modes"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">=</span> <span class="n">render_mode</span>
+
+        <span class="s">"""
+        If human-rendering is used, `self.window` will be a reference
+        to the window that we draw to. `self.clock` will be a clock that is used
+        to ensure that the environment is rendered at the correct framerate in
+        human-mode. They will remain `None` until human-mode is used for the
+        first time.
+        """</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">window</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">clock</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h3 id="наблюдения-из-состояния-среды">Наблюдения из состояния среды</h3>
+
+<p>Поскольку нам нужно будет вычислять наблюдения как в <code class="language-plaintext highlighter-rouge">reset</code> так и в <code class="language-plaintext highlighter-rouge">step</code>, часто удобно иметь метод <code class="language-plaintext highlighter-rouge">_get_obs</code>, который переносит состояние среды в наблюдения. Однако это не является обязательным, и вы также можете вычислять наблюдения в <code class="language-plaintext highlighter-rouge">reset</code> и <code class="language-plaintext highlighter-rouge">step</code> отдельно:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">_get_obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">"agent"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span><span class="p">,</span> <span class="s">"target"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Мы также можем реализовать аналогичный метод для вспомогательной информации, возвращаемой функциями <code class="language-plaintext highlighter-rouge">step</code> and <code class="language-plaintext highlighter-rouge">reset</code>. В нашем случае мы хотели бы указать манхэттенское расстояние между агентом и целью:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">_get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">"distance"</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="n">norm</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Часто информация также будет содержать некоторые данные, которые доступны только внутри <code class="language-plaintext highlighter-rouge">step</code> метода (например, отдельные условия вознаграждения). В этом случае нам пришлось бы обновлять словарь, возвращаемый <code class="language-plaintext highlighter-rouge">_get_info</code> in <code class="language-plaintext highlighter-rouge">step</code>.</p>
+
+<h3 id="сброс">Сброс</h3>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">reset</code> будет вызван для запуска нового эпизода. Вы можете полагаться на то, что <code class="language-plaintext highlighter-rouge">step</code> метод не будет вызываться до <code class="language-plaintext highlighter-rouge">reset</code>. Кроме того, <code class="language-plaintext highlighter-rouge">reset</code> должен вызываться всякий раз, когда был выдан сигнал готовности. Пользователи могут передать <code class="language-plaintext highlighter-rouge">seed</code> для <code class="language-plaintext highlighter-rouge">reset</code> инициализируя генератор случайных чисел, используемый средой, в детерминированное состояние. Рекомендуется использовать генератор случайных чисел <code class="language-plaintext highlighter-rouge">self.np_random</code>, предоставляемый базовым классом среды <code class="language-plaintext highlighter-rouge">gymnasium.Env</code>. Если вы используете только этот ГСЧ, вам не нужно сильно беспокоиться о сидах, но вам нужно не забыть вызвать <code class="language-plaintext highlighter-rouge">super().reset(seed=seed)</code>, чтобы убедиться, что <code class="language-plaintext highlighter-rouge">gymnasium.Env</code> правильно сидит генератор. Как только это будет сделано, мы можем случайным образом установить состояние нашей среды. В нашем случае мы случайным образом выбираем местоположение агента и случайную выборку целевых позиций до тех пор, пока она не совпадет с позицией агента.</p>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">reset</code> должен возвращать кортеж исходного наблюдения и некоторую вспомогательную информацию. Для этого мы можем использовать методы <code class="language-plaintext highlighter-rouge">_get_obs</code> и <code class="language-plaintext highlighter-rouge">_get_info</code>, которые мы реализовали ранее</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># We need the following line to seed self.np_random
+</span>    <span class="nb">super</span><span class="p">().</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># Choose the agent's location uniformly at random
+</span>    <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">np_random</span><span class="p">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># We will sample the target's location randomly until it
+</span>    <span class="c1"># does not coincide with the agent's location
+</span>    <span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span>
+    <span class="k">while</span> <span class="n">np</span><span class="p">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">np_random</span><span class="p">.</span><span class="n">integers</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
+        <span class="p">)</span>
+
+    <span class="n">observation</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_get_obs</span><span class="p">()</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_get_info</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s">"human"</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_render_frame</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">observation</span><span class="p">,</span> <span class="n">info</span>
+</code></pre></div></div>
+
+<h3 id="шаг">Шаг</h3>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">step</code> обычно содержит большую часть логики вашей среды. Он принимает action, вычисляет состояние среды после применения этого действия и возвращает 4-tuple (observation, reward, done, info). Как только новое состояние среды будет вычислено, мы можем проверить, является ли оно конечным состоянием, и установить его соответствующим образом. Поскольку мы используем разреженные бинарные вознаграждения в GridWorldEnv, вычисления становятся тривиальными, как только мы получаем сигнал <code class="language-plaintext highlighter-rouge">done</code> (готовности). Чтобы собрать observation и info, мы снова можем использовать <code class="language-plaintext highlighter-rouge">get_obs</code> и <code class="language-plaintext highlighter-rouge">_get_info</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="c1"># Map the action (element of {0,1,2,3}) to the direction we walk in
+</span>    <span class="n">direction</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_action_to_direction</span><span class="p">[</span><span class="n">action</span><span class="p">]</span>
+    <span class="c1"># We use `np.clip` to make sure we don't leave the grid
+</span>    <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span> <span class="o">+</span> <span class="n">direction</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="c1"># An episode is done iff the agent has reached the target
+</span>    <span class="n">terminated</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span><span class="p">)</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">terminated</span> <span class="k">else</span> <span class="mi">0</span>  <span class="c1"># Binary sparse rewards
+</span>    <span class="n">observation</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_get_obs</span><span class="p">()</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_get_info</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s">"human"</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_render_frame</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">info</span>
+</code></pre></div></div>
+
+<h3 id="рендеринг">Рендеринг</h3>
+
+<p>Здесь мы используем PyGame для рендеринга. Подобный подход к рендерингу используется во многих средах, входящих в состав Gymnasium, и вы можете использовать его в качестве основы для своих собственных сред</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s">"rgb_array"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_render_frame</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">_render_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">window</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s">"human"</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">display</span><span class="p">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">window</span> <span class="o">=</span> <span class="n">pygame</span><span class="p">.</span><span class="n">display</span><span class="p">.</span><span class="n">set_mode</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">window_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">window_size</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">clock</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s">"human"</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">Clock</span><span class="p">()</span>
+
+    <span class="n">canvas</span> <span class="o">=</span> <span class="n">pygame</span><span class="p">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="p">.</span><span class="n">window_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">window_size</span><span class="p">))</span>
+    <span class="n">canvas</span><span class="p">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+    <span class="n">pix_square_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">window_size</span> <span class="o">/</span> <span class="bp">self</span><span class="p">.</span><span class="n">size</span>
+    <span class="p">)</span>  <span class="c1"># The size of a single grid square in pixels
+</span>
+    <span class="c1"># First we draw the target
+</span>    <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="n">rect</span><span class="p">(</span>
+        <span class="n">canvas</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">Rect</span><span class="p">(</span>
+            <span class="n">pix_square_size</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">_target_location</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">pix_square_size</span><span class="p">,</span> <span class="n">pix_square_size</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="c1"># Now we draw the agent
+</span>    <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="n">circle</span><span class="p">(</span>
+        <span class="n">canvas</span><span class="p">,</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_agent_location</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">pix_square_size</span><span class="p">,</span>
+        <span class="n">pix_square_size</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Finally, add some gridlines
+</span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="n">line</span><span class="p">(</span>
+            <span class="n">canvas</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pix_square_size</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">window_size</span><span class="p">,</span> <span class="n">pix_square_size</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">draw</span><span class="p">.</span><span class="n">line</span><span class="p">(</span>
+            <span class="n">canvas</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">pix_square_size</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">pix_square_size</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">window_size</span><span class="p">),</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s">"human"</span><span class="p">:</span>
+        <span class="c1"># The following line copies our drawings from `canvas` to the visible window
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">blit</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">canvas</span><span class="p">.</span><span class="n">get_rect</span><span class="p">())</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">event</span><span class="p">.</span><span class="n">pump</span><span class="p">()</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">display</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="c1"># We need to ensure that human-rendering occurs at the predefined framerate.
+</span>        <span class="c1"># The following line will automatically add a delay to keep the framerate stable.
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">clock</span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">metadata</span><span class="p">[</span><span class="s">"render_fps"</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># rgb_array
+</span>        <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">transpose</span><span class="p">(</span>
+            <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">pygame</span><span class="p">.</span><span class="n">surfarray</span><span class="p">.</span><span class="n">pixels3d</span><span class="p">(</span><span class="n">canvas</span><span class="p">)),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="close">Close</h3>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">close</code> должен закрывать все открытые ресурсы, которые использовались средой. Во многих случаях вам не нужно беспокоиться о реализации этого метода. Однако в нашем примере <code class="language-plaintext highlighter-rouge">render_mode</code> может быть “human” и нам может понадобиться закрыть открытое окно:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">display</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="n">pygame</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>В других средах <code class="language-plaintext highlighter-rouge">close</code> также могут быть закрыты открытые файлы или освобождены другие ресурсы. Вы не должны взаимодействовать с окружением после вызова <code class="language-plaintext highlighter-rouge">close</code>.</p>
+
+<h3 id="регистрация-кастомного-окружения">Регистрация кастомного окружения</h3>
+
+<p>Чтобы Gymnasium обнаружил пользовательские среды, они должны быть зарегистрированы. Мы решим поместить регистрирующий код в <code class="language-plaintext highlighter-rouge">gym_examples/__init__.py</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">gymnasium.envs.registration</span> <span class="kn">import</span> <span class="n">register</span>
+
+<span class="n">register</span><span class="p">(</span>
+     <span class="nb">id</span><span class="o">=</span><span class="s">"gym_examples/GridWorld-v0"</span><span class="p">,</span>
+     <span class="n">entry_point</span><span class="o">=</span><span class="s">"gym_examples.envs:GridWorldEnv"</span><span class="p">,</span>
+     <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Идентификатор среды состоит из трех компонентов, два из которых являются необязательными: необязательное пространство имен (здесь: <code class="language-plaintext highlighter-rouge">gym_examples</code>), обязательное имя (здесь: <code class="language-plaintext highlighter-rouge">GridWorld)</code> и необязательная, но рекомендуемая версия (здесь: <code class="language-plaintext highlighter-rouge">v0</code>). Он также может быть зарегистрирован как <code class="language-plaintext highlighter-rouge">GridWorld-v0</code> (рекомендуемый подход) <code class="language-plaintext highlighter-rouge">GridWorld</code> или <code class="language-plaintext highlighter-rouge">gym_examples/GridWorld</code>, и затем при создании среды следует использовать соответствующий идентификатор.</p>
+
+<p>Аргумент ключевого слова <code class="language-plaintext highlighter-rouge">max_episode_steps=300</code> гарантирует, что среды <code class="language-plaintext highlighter-rouge">GridWorld</code>, созданные с помощью, <code class="language-plaintext highlighter-rouge">gymnasium.make</code> будут заключены в <code class="language-plaintext highlighter-rouge">TimeLimit</code> оболочку. Затем будет выдан сигнал <code class="language-plaintext highlighter-rouge">done</code>, если агент достиг цели или в текущем эпизоде ​​было выполнено 300 шагов. Чтобы отличать усечение от остановки, вы можете проверять <code class="language-plaintext highlighter-rouge">info["TimeLimit.truncated"]</code>.</p>
+
+<p>Помимо <code class="language-plaintext highlighter-rouge">id</code> и <code class="language-plaintext highlighter-rouge">entrypoint</code>, вы можете передать следующие дополнительные аргументы ключевого слова в <code class="language-plaintext highlighter-rouge">register</code>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">reward_threshold</code> (float) default <code class="language-plaintext highlighter-rouge">None</code> - Порог вознаграждения до того, как задача будет считаться решенной</li>
+  <li><code class="language-plaintext highlighter-rouge">nondeterministic</code> (bool) default <code class="language-plaintext highlighter-rouge">False</code> - Является ли эта среда недетерминированной даже после заполнения</li>
+  <li><code class="language-plaintext highlighter-rouge">max_episode_steps</code> (int) default <code class="language-plaintext highlighter-rouge">None</code> - Максимальное количество шагов, из которых может состоять эпизод. Если не <code class="language-plaintext highlighter-rouge">None</code>,добавляется обертка TimeLimit</li>
+  <li><code class="language-plaintext highlighter-rouge">order_enforce</code> (bool) default <code class="language-plaintext highlighter-rouge">True</code> - Обернуть ли среду в <code class="language-plaintext highlighter-rouge">OrderEnforcing</code> обертку</li>
+  <li><code class="language-plaintext highlighter-rouge">autoreset</code> (bool) default <code class="language-plaintext highlighter-rouge">False</code> - Обернуть ли среду в <code class="language-plaintext highlighter-rouge">AutoResetWrapper</code></li>
+  <li>kwargs (dict) default <code class="language-plaintext highlighter-rouge">{}</code> - Kwargs по умолчанию для передачи классу среды</li>
+</ul>
+
+<p>Большинство этих ключевых слов (за исключением <code class="language-plaintext highlighter-rouge">max_episode_steps</code>, <code class="language-plaintext highlighter-rouge">order_enforce</code> и <code class="language-plaintext highlighter-rouge">kwargs</code>) не изменяют поведение экземпляров среды, а просто предоставляют некоторую дополнительную информацию о вашей среде. После регистрации наша пользовательская GridWorld Env среда может быть создана с <code class="language-plaintext highlighter-rouge">.env = gymnasium.make('gym_examples/GridWorld-v0')</code></p>
+
+<p>gym_examples/envs/<strong>init</strong>.py должен иметь:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">gym_examples.envs.grid_world</span> <span class="kn">import</span> <span class="n">GridWorldEnv</span>
+</code></pre></div></div>
+
+<p>Если ваша среда не зарегистрирована, вы можете опционально передать модуль для импорта, который зарегистрирует вашу среду перед ее созданием следующим образом - <code class="language-plaintext highlighter-rouge">env = gymnasium.make('module:Env-v0')</code>. Для среды GridWorld код регистрации запускается путем импорта, поэтому, если было невозможно явно импортировать gym_examples, вы могли зарегистрироваться при создании с помощью <code class="language-plaintext highlighter-rouge">env = gymnasium.make('gym_examples:gym_examples/GridWorld-v0)</code>. Это особенно полезно, когда вам разрешено передавать только идентификатор среды в стороннюю кодовую базу (например, в обучающую библиотеку). Это позволяет вам зарегистрировать вашу среду без необходимости редактирования исходного кода сторонней библиотеки.</p>
+
+<h3 id="создани-е-пакета">Создани е пакета</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">"gym_examples"</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s">"0.0.1"</span><span class="p">,</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s">"gymnasium==0.26.0"</span><span class="p">,</span> <span class="s">"pygame==2.1.0"</span><span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">pip install -e gym-examples</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gym_examples</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="s">'gym_examples/GridWorld-v0'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Вы также можете передать аргументы в конструктор вашей среды, чтобы настроить экземпляр среды. В нашем случае мы могли бы сделать:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="s">'gym_examples/GridWorld-v0'</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="обертки"><a href="https://gymnasium.farama.org/api/wrappers/">Обертки</a></h3>
+
+<p>Часто мы хотим использовать разные варианты пользовательской среды или хотим изменить поведение среды, предоставляемой Gymnasium или какой-либо другой стороной. Обертки позволяют нам делать это без изменения реализации среды или добавления какого-либо бойлерплейта. В нашем примере наблюдения нельзя использовать непосредственно в обучающем коде, потому что они являются словарями. Однако на самом деле нам не нужно трогать нашу реализацию среды, чтобы исправить это! Мы можем просто добавить оболочку поверх экземпляров среды, чтобы объединить наблюдения в один массив.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gym_examples</span>
+<span class="kn">from</span> <span class="nn">gymnasium.wrappers</span> <span class="kn">import</span> <span class="n">FlattenObservation</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="s">'gym_examples/GridWorld-v0'</span><span class="p">)</span>
+<span class="n">wrapped_env</span> <span class="o">=</span> <span class="n">FlattenObservation</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">wrapped_env</span><span class="p">.</span><span class="n">reset</span><span class="p">())</span>     <span class="c1"># E.g.  [3 0 3 3], {}
+</span></code></pre></div></div>
+
+<p>У оберток есть большое преимущество, заключающееся в том, что они делают среду очень модульной. Например, вместо того, чтобы выравнивать наблюдения из GridWorld, вы можете захотеть посмотреть только относительное положение цели и агента.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gym_examples</span>
+<span class="kn">from</span> <span class="nn">gym_examples.wrappers</span> <span class="kn">import</span> <span class="n">RelativePosition</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gymnasium</span><span class="p">.</span><span class="n">make</span><span class="p">(</span><span class="s">'gym_examples/GridWorld-v0'</span><span class="p">)</span>
+<span class="n">wrapped_env</span> <span class="o">=</span> <span class="n">RelativePosition</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">wrapped_env</span><span class="p">.</span><span class="n">reset</span><span class="p">())</span>     <span class="c1"># E.g.  [-3  3], {}
+</span></code></pre></div></div>
+
+<p><a href="https://gymnasium.farama.org/api/wrappers/">Подробнее об обертках</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://gymnasium.farama.org/">Gymnasium</a></li>
+  <li>[<a href="stable-baseline-3" title="Stable baseline 3">stable-baseline-3</a>]</li>
+  <li>[<a href="../lists/reinforcement-learning" title="Reinforcement learning">reinforcement-learning</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Пакет для создания xlsx файлов на python. xlswxriter | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Пакет для создания xlsx файлов на python. xlswxriter" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="xlsxwriter - xlsx files on python" />
+<meta property="og:description" content="xlsxwriter - xlsx files on python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/xlsxwriter.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/xlsxwriter.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"xlsxwriter - xlsx files on python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/xlsxwriter.html","headline":"Пакет для создания xlsx файлов на python. xlswxriter","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Пакет для создания xlsx файлов на python. xlswxriter</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/templating" title="templating" class="link-tags">templating&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>XlsxWriter — это модуль Python, который можно использовать для записи текста, чисел, формул и гиперссылок на несколько листов в файле Excel 2007+ XLSX. Он поддерживает такие функции, как форматирование и многие другие, в том числе:</p>
+
+<ul>
+  <li>100% совместимые файлы Excel XLSX.</li>
+  <li>Полное форматирование.</li>
+  <li>Объединенные ячеек.</li>
+  <li>Имена.</li>
+  <li>Графики.</li>
+  <li>Автофильтры.</li>
+  <li>Проверка данных и выпадающие списки.</li>
+  <li>Условное форматирование.</li>
+  <li>Изображения PNG/JPEG/GIF/BMP/WMF/EMF.</li>
+  <li>Мультиформатные строки.</li>
+  <li>Комментарии к ячейкам.</li>
+  <li>Текстовые поля.</li>
+  <li>Интеграция с Pandas и Polars.</li>
+  <li>Режим оптимизации памяти для записи больших файлов.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">pip install XlsxWriter</code></p>
+
+<h2 id="работа-с-пакетом">Работа с пакетом</h2>
+
+<ul>
+  <li><a href="https://xlsxwriter.readthedocs.io/tutorial01.html">простой пример создания xlsx файла</a></li>
+  <li><a href="https://xlsxwriter.readthedocs.io/tutorial02.html">пример добавления форматирования</a></li>
+  <li><a href="https://xlsxwriter.readthedocs.io/tutorial03.html">пример записи разных типов данных</a></li>
+</ul>
+
+<p><a href="https://xlsxwriter.readthedocs.io/tutorial01.html">Создание документа</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xlsxwriter</span>
+
+<span class="c1"># Create a workbook and add a worksheet.
+</span><span class="n">workbook</span> <span class="o">=</span> <span class="n">xlsxwriter</span><span class="p">.</span><span class="n">Workbook</span><span class="p">(</span><span class="s">'Expenses01.xlsx'</span><span class="p">)</span>
+<span class="n">worksheet</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_worksheet</span><span class="p">()</span>
+
+<span class="c1"># Some data we want to write to the worksheet.
+</span><span class="n">expenses</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="s">'Rent'</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Gas'</span><span class="p">,</span>   <span class="mi">100</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Food'</span><span class="p">,</span>  <span class="mi">300</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Gym'</span><span class="p">,</span>    <span class="mi">50</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Start from the first cell. Rows and columns are zero indexed.
+</span><span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Iterate over the data and write it out row by row.
+</span><span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">cost</span> <span class="ow">in</span> <span class="p">(</span><span class="n">expenses</span><span class="p">):</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Write a total using a formula.
+</span><span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'Total'</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'=SUM(B1:B4)'</span><span class="p">)</span>
+
+<span class="n">workbook</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://xlsxwriter.readthedocs.io/tutorial02.html">Форматирование документа</a>. Объекты формата представляют все свойства форматирования, которые можно применить к ячейке в Excel, такие как шрифты, форматирование чисел, цвета и границы, передава в качестве аргумента в <code class="language-plaintext highlighter-rouge">worksheet.write()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xlsxwriter</span>
+
+<span class="c1"># Create a workbook and add a worksheet.
+</span><span class="n">workbook</span> <span class="o">=</span> <span class="n">xlsxwriter</span><span class="p">.</span><span class="n">Workbook</span><span class="p">(</span><span class="s">'Expenses02.xlsx'</span><span class="p">)</span>
+<span class="n">worksheet</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_worksheet</span><span class="p">()</span>
+
+<span class="c1"># Add a bold format to use to highlight cells.
+</span><span class="n">bold</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">({</span><span class="s">'bold'</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+
+<span class="c1"># Add a number format for cells with money.
+</span><span class="n">money</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">({</span><span class="s">'num_format'</span><span class="p">:</span> <span class="s">'$#,##0'</span><span class="p">})</span>
+
+<span class="c1"># Write some data headers.
+</span><span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'A1'</span><span class="p">,</span> <span class="s">'Item'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'B1'</span><span class="p">,</span> <span class="s">'Cost'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+
+<span class="c1"># Some data we want to write to the worksheet.
+</span><span class="n">expenses</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="s">'Rent'</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Gas'</span><span class="p">,</span>   <span class="mi">100</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Food'</span><span class="p">,</span>  <span class="mi">300</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Gym'</span><span class="p">,</span>    <span class="mi">50</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Start from the first cell below the headers.
+</span><span class="n">row</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Iterate over the data and write it out row by row.
+</span><span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">cost</span> <span class="ow">in</span> <span class="p">(</span><span class="n">expenses</span><span class="p">):</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">money</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Write a total using a formula.
+</span><span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'Total'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'=SUM(B2:B5)'</span><span class="p">,</span> <span class="n">money</span><span class="p">)</span>
+
+<span class="n">workbook</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://xlsxwriter.readthedocs.io/tutorial03.html">Запись разных типов данных</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">xlsxwriter</span>
+
+<span class="c1"># Create a workbook and add a worksheet.
+</span><span class="n">workbook</span> <span class="o">=</span> <span class="n">xlsxwriter</span><span class="p">.</span><span class="n">Workbook</span><span class="p">(</span><span class="s">'Expenses03.xlsx'</span><span class="p">)</span>
+<span class="n">worksheet</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_worksheet</span><span class="p">()</span>
+
+<span class="c1"># Add a bold format to use to highlight cells.
+</span><span class="n">bold</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">({</span><span class="s">'bold'</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="c1"># Add a number format for cells with money.
+</span><span class="n">money_format</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">({</span><span class="s">'num_format'</span><span class="p">:</span> <span class="s">'$#,##0'</span><span class="p">})</span>
+
+<span class="c1"># Add an Excel date format.
+</span><span class="n">date_format</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">({</span><span class="s">'num_format'</span><span class="p">:</span> <span class="s">'mmmm d yyyy'</span><span class="p">})</span>
+
+<span class="c1"># Adjust the column width.
+</span><span class="n">worksheet</span><span class="p">.</span><span class="n">set_column</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+
+<span class="c1"># Write some data headers.
+</span><span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'A1'</span><span class="p">,</span> <span class="s">'Item'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'B1'</span><span class="p">,</span> <span class="s">'Date'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'C1'</span><span class="p">,</span> <span class="s">'Cost'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+
+<span class="c1"># Some data we want to write to the worksheet.
+</span><span class="n">expenses</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="s">'Rent'</span><span class="p">,</span> <span class="s">'2013-01-13'</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Gas'</span><span class="p">,</span>  <span class="s">'2013-01-14'</span><span class="p">,</span>  <span class="mi">100</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Food'</span><span class="p">,</span> <span class="s">'2013-01-16'</span><span class="p">,</span>  <span class="mi">300</span><span class="p">],</span>
+    <span class="p">[</span><span class="s">'Gym'</span><span class="p">,</span>  <span class="s">'2013-01-20'</span><span class="p">,</span>   <span class="mi">50</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Start from the first cell below the headers.
+</span><span class="n">row</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">date_str</span><span class="p">,</span> <span class="n">cost</span> <span class="ow">in</span> <span class="p">(</span><span class="n">expenses</span><span class="p">):</span>
+    <span class="c1"># Convert the date string into a datetime object.
+</span>    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="s">"%Y-%m-%d"</span><span class="p">)</span>
+
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write_string</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write_datetime</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">date_format</span><span class="p">)</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write_number</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">money_format</span><span class="p">)</span>
+    <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Write a total using a formula.
+</span><span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'Total'</span><span class="p">,</span> <span class="n">bold</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'=SUM(C2:C5)'</span><span class="p">,</span> <span class="n">money_format</span><span class="p">)</span>
+
+<span class="n">workbook</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="workbook"><a href="https://xlsxwriter.readthedocs.io/workbook.html#Workbook">Workbook</a></h3>
+
+<p>Класс реализует конструктор новго excel документа. Он предоставляет апи управления используемой памятью и реализует протокол контекстного менеджера.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">xlsxwriter</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">xlsxwriter</span><span class="p">.</span><span class="n">Workbook</span><span class="p">(</span><span class="s">'hello_world.xlsx'</span><span class="p">)</span> <span class="k">as</span> <span class="n">workbook</span><span class="p">:</span>
+    <span class="n">worksheet</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_worksheet</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'A1'</span><span class="p">,</span> <span class="s">'Hello world'</span><span class="p">)</span>
+
+<span class="n">xlsx_data</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">getvalue</span><span class="p">()</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">workbook.add_worksheet()</code> реализует добавление страницы в документ</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.add_format()</code> реализует добавление свойств из Format или позже</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.add_chart()</code> создает объект диаграмы</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.add_chartsheet()</code> добавляет лист диаграмы</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.close()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.set_size()</code> размер окна рабочей области книги</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.tab_ratio()</code> добавляет полосы прокрутки</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.set_properties()</code> добавляет стандартные свойства, такие как тайтл, автор и т.п.</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.set_custom_property()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.define_name()</code> добавляет имя, которое можно использовать как переменную в xlsx</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.add_vba_project()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.set_vba_name()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.worksheets()</code> список вккладок</li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.get_default_url_format()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.set_calc_mode()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.use_zip64()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">workbook.read_only_recommended()</code></li>
+</ul>
+
+<h3 id="the-format-class"><a href="https://xlsxwriter.readthedocs.io/format.html#format">The Format Class</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cell_format1</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">()</span>  <span class="c1"># Set properties later.
+</span><span class="n">cell_format2</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">(</span><span class="n">props</span><span class="p">)</span>  <span class="c1"># Set properties at creation.
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cell_format</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">()</span>
+<span class="n">cell_format</span><span class="p">.</span><span class="n">set_bold</span><span class="p">()</span>
+<span class="n">cell_format</span><span class="p">.</span><span class="n">set_font_color</span><span class="p">(</span><span class="s">'red'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cell_format</span> <span class="o">=</span> <span class="n">workbook</span><span class="p">.</span><span class="n">add_format</span><span class="p">({</span><span class="s">'bold'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">'font_color'</span><span class="p">:</span> <span class="s">'red'</span><span class="p">})</span>
+</code></pre></div></div>
+
+<p>После создания объекта Format и установки его свойств его можно передать в качестве аргумента методам <code class="language-plaintext highlighter-rouge">write()</code>, <code class="language-plaintext highlighter-rouge">set_row()</code>, <code class="language-plaintext highlighter-rouge">set_column()</code> рабочего листа</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'Foo'</span><span class="p">,</span> <span class="n">cell_format</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write_string</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'Bar'</span><span class="p">,</span> <span class="n">cell_format</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write_number</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">cell_format</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write_blank</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">cell_format</span><span class="p">)</span>
+
+<span class="n">worksheet</span><span class="p">.</span><span class="n">set_row</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="n">cell_format</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">set_column</span><span class="p">(</span><span class="s">'A:D'</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">cell_format</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В отсутствии утсановленного офрмата используется дефолтный Excel 2007+ cell format Calibri 11. При желании уже установленное форматирование можно переопределить позже в коде. Поддерживаются различные числовые форматы. <a href="https://xlsxwriter.readthedocs.io/format.html#format">Смотри подробнее про методы форматирования и свойства Format</a></p>
+
+<h3 id="worksheet-class">Worksheet class</h3>
+
+<p>Основной метод <code class="language-plaintext highlighter-rouge">worksheet.write()</code> Для записи разных типов доступно несколько дополнительных методов:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">write_string()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_number()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_blank()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_formula()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_datetime()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_boolean()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_url()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_rich_string()</code></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">worksheet.add_write_handler()</code> добавляет функцию обратного вызова в метод <code class="language-plaintext highlighter-rouge">write()</code> для обработки определяемых пользователем типов. Можно добавлять множественные колбеки, но только один будет валиден для одного типа. Один и тот же колбек можно применять к разным типам.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">write_uuid</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">string_uuid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">worksheet</span><span class="p">.</span><span class="n">write_string</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">string_uuid</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+
+<span class="n">worksheet</span><span class="p">.</span><span class="n">add_write_handler</span><span class="p">(</span><span class="n">uuid</span><span class="p">.</span><span class="n">UUID</span><span class="p">,</span> <span class="n">write_uuid</span><span class="p">)</span>
+
+<span class="n">my_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="p">.</span><span class="n">uuid3</span><span class="p">(</span><span class="n">uuid</span><span class="p">.</span><span class="n">NAMESPACE_DNS</span><span class="p">,</span> <span class="s">'python.org'</span><span class="p">)</span>
+
+<span class="c1"># now use
+</span><span class="n">my_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="p">.</span><span class="n">uuid3</span><span class="p">(</span><span class="n">uuid</span><span class="p">.</span><span class="n">NAMESPACE_DNS</span><span class="p">,</span> <span class="s">'python.org'</span><span class="p">)</span>
+<span class="n">worksheet</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'A1'</span><span class="p">,</span> <span class="n">my_uuid</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Кроме того, можно писать строки и колонки</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">write_row()</code> Напишите строку данных, начиная с (row, col).</li>
+  <li><code class="language-plaintext highlighter-rouge">write_column()</code> Напишите столбец данных, начиная с (row, col)</li>
+  <li><code class="language-plaintext highlighter-rouge">set_row()</code> Установите свойства для ряда ячеек.</li>
+  <li><code class="language-plaintext highlighter-rouge">set_row_pixels()</code> Задайте свойства строки ячеек с высотой строки в пикселях.</li>
+  <li><code class="language-plaintext highlighter-rouge">set_column()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_column_pixels()</code></li>
+</ul>
+
+<p>Дополнительно:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">autofit()</code> Имитирует автоподгонку по ширине столбцов.</li>
+  <li><code class="language-plaintext highlighter-rouge">insert_image()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">insert_chart()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">insert_textbox()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">insert_button()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">data_validation()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">conditional_format()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">add_table()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">write_comment()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">show_comments()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_comments_author()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_name()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">activate()</code> Сделайте рабочий лист активным, то есть видимым рабочим листом.</li>
+  <li><code class="language-plaintext highlighter-rouge">select()</code> Установите вкладку рабочего листа как выбранную.</li>
+  <li><code class="language-plaintext highlighter-rouge">hide()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_first_sheet()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">merge_range()</code> Объединить диапазон ячеек.</li>
+  <li><code class="language-plaintext highlighter-rouge">autofilter()</code> Установите область автофильтра на листе.</li>
+  <li><code class="language-plaintext highlighter-rouge">filter_column()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">filter_column_list()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_selection()</code> Установите выбранную ячейку или ячейки на листе.</li>
+  <li><code class="language-plaintext highlighter-rouge">set_top_left_cell()</code> Установите первую видимую ячейку в левом верхнем углу рабочего листа.</li>
+  <li><code class="language-plaintext highlighter-rouge">freeze_panes()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">split_panes()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_zoom()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">right_to_left()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">hide_zero()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_background()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_tab_color()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">protect()</code> Защитить элементы рабочего листа от модификации (усьанавливается пароль)</li>
+  <li><code class="language-plaintext highlighter-rouge">unprotect_range()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_default_row()</code> Установите свойства строки по умолчанию.</li>
+  <li><code class="language-plaintext highlighter-rouge">outline_settings()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_vba_name()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ignore_errors()</code></li>
+</ul>
+
+<p>Дополнительно <a href="https://xlsxwriter.readthedocs.io/page_setup.html">можно задать параметры страницы</a> (к примеру формат печатного листа и etc)</p>
+
+<h3 id="the-chart-class"><a href="https://xlsxwriter.readthedocs.io/chart.html">The Chart Class</a></h3>
+
+<h3 id="the-chartsheet-class"><a href="https://xlsxwriter.readthedocs.io/chartsheet.html">The Chartsheet Class</a></h3>
+
+<h3 id="the-exceptions-class"><a href="https://xlsxwriter.readthedocs.io/exceptions.html">The Exceptions Class</a></h3>
+
+<p>Смотир еще:</p>
+
+<ul>
+  <li><a href="https://xlsxwriter.readthedocs.io/contents.html">примеры обрадотки различных типов данных иприемы работы с докуменами</a> (много)</li>
+  <li>[<a href="../lists/шаблонизаторы" title="Шаблонизаторы">шаблонизаторы</a>]</li>
+  <li>[<a href="toml" title="Toml">toml</a>]</li>
+  <li>[<a href="yaml" title="Yaml">yaml</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

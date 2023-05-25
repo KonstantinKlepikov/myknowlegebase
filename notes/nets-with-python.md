@@ -109,7 +109,6 @@ XML-RPC сервер, в настоящий момент стандарт мож
 [http]: ../lists/http "Http"
 [email-tools-python]: email-tools-python "Email tools in python"
 [asyncio]: asyncio "Asyncio"
-[http]: ../lists/http "Http"
 [http-cors]: http-cors "Http cors"
 [http-methods]: http-methods "Http methods"
 [http-requests-errors]: http-requests-errors "Http requests"

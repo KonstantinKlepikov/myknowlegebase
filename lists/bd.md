@@ -75,7 +75,6 @@ category: list
 [neo4j]: ../notes/neo4j "Neo4j graph data base"
 [dgraph]: ../notes/dgraph "Dgraph"
 [janus-graph]: ../notes/janus-graph "Janus Graph"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
 [rdf]: ../notes/rdf "RDF"
 [http]: http "Http"
 [semantic-web]: ../notes/semantic-web "Semantic web"

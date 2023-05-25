@@ -309,7 +309,6 @@ def fun(arg: 'expensive_mod.SomeType') -> None:
 [ordereddict]: ordereddict "OrderedDict упорядоченный словарь с опцией сравнения по порядку"
 [defaultdict]: defaultdict "Defaultdict словарь с возвратом значения по умолчанию"
 [python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
-[type-annotation]: type-annotation "Аннотация типов в python"
 [python-datamodel]: ../lists/python-datamodel "Python datamodel"
 [python-patterns]: python-patterns "Python patterns programming"
 [from-future-import-annotations]: from-future-import-annotations "From future import annotations"

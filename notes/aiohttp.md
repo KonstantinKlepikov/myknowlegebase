@@ -327,6 +327,7 @@ web.run_app(app)
 - [github](https://github.com/aio-libs/aiohttp)
 - [aioresponses](https://github.com/pnuckowski/aioresponses) is a helper to mock/fake web requests in python aiohttp package
 - [pytest-aiohttp](https://github.com/aio-libs/pytest-aiohttp)
+- [aiohttp-session](https://github.com/aio-libs/aiohttp-session)
 - yarl [Public API](https://yarl.aio-libs.org/en/stable/api.html#yarl.URL) The module provides handy URL class for URL parsing and changing - is used in aiohttp
 - [[trio]]
 - [[requests]]
@@ -343,7 +344,6 @@ web.run_app(app)
 [pytest]: pytest "Pytest"
 [trio]: trio "Trio асинхронный фреймворк"
 [requests]: requests "Requests"
-[httpx]: httpx "httpx cинхронный и асинхронный http-клиент"
 [AnyIO]: anyio "AnyIO асинхронный бекенд на базе asyncio и trio"
 [http]: ../lists/http "Http"
 [telegram-bots]: telegram-bots "Telegram python bots"
