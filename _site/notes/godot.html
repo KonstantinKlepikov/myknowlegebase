@@ -12,13 +12,13 @@
 <meta name="generator" content="Jekyll v3.8.7" />
 <meta property="og:title" content="godot engine" />
 <meta property="og:locale" content="ru_RU" />
-<meta name="description" content="Godotengine жвижок для создания игр" />
-<meta property="og:description" content="Godotengine жвижок для создания игр" />
+<meta name="description" content="Godotengine движок для создания игр" />
+<meta property="og:description" content="Godotengine движок для создания игр" />
 <link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/godot.html" />
 <meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/godot.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"description":"Godotengine жвижок для создания игр","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/godot.html","headline":"godot engine","@context":"https://schema.org"}</script>
+{"description":"Godotengine движок для создания игр","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/godot.html","headline":"godot engine","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -115,7 +115,73 @@
       </p>
   </div>
   <div class="prose mb-4 py-4">
-    <p>The Godot Engine is a free, all-in-one, cross-platform game engine that makes it easy for you to create 2D and 3D games.</p>
+    <p>Кроссплатформенный опенсорсный движок, поддерживающий 2D и 3d разработку. Основные зяыки: GDScript и C#. Можно писать скрипты на [<a href="../lists/c-plus-plus" title="Ресурсы по языку программирования С++">c-plus-plus</a>] или C без рекомпиляции. <a href="https://docs.godotengine.org/en/stable/index.html">Документация</a>.</p>
+
+<h2 id="основные-концепты">Основные концепты</h2>
+
+<h3 id="сцены">Сцены</h3>
+
+<p>В Godot вы разбиваете свою игру на реюзабельные сцены. Сцена может быть персонажем, оружием, меню в пользовательском интерфейсе, отдельным домом, целым уровнем или чем угодно. Можно создавать иерархию сцен, вкладывая одну в другую.</p>
+
+<h3 id="ноды">Ноды</h3>
+
+<p>Сцена состоит из одного или нескольких узлов (нод). Ноды — это наименьшие строительные блоки вашей игры, которые можно собирать в иерархические древоподобные структуры.</p>
+
+<p>Имена узлов заканчиваются на «2D» для 2D-сцен. Их трехмерные аналоги имеют имена, оканчивающиеся на «3D». «Spatial» ноды называются «Node3D», начиная с Godot 4.</p>
+
+<p>Godot предоставляет обширную библиотеку базовых типов нод, которые вы можете комбинировать и расширять для создания более мощных нод.</p>
+
+<h3 id="дерево-сцены">Дерево сцены</h3>
+
+<p>Все сцены вашей игры собраны в дереве сцен. А поскольку сцены — это деревья нод, дерево сцен также является деревом нод.</p>
+
+<h3 id="сигналы">Сигналы</h3>
+
+<p>Узлы излучают сигналы, когда происходит какое-то событие. Эта функция позволяет вам заставить узлы обмениваться данными, не запрограммировав это жестко в коде. Это дает вам большую гибкость в том, как вы структурируете свои сцены. Сигнал реализует паттерн “наблюдатель”</p>
+
+<h2 id="редактор">Редактор</h2>
+
+<p>Подробная информация в <a href="https://docs.godotengine.org/en/stable/tutorials/editor/index.html#toc-learn-editor">руководстве по редактору</a></p>
+
+<p>Когда вы запускаете Godot, первое окно, которое вы видите, — это менеджер проектов. На вкладке «Локальные проекты» по умолчанию вы можете управлять существующими проектами, импортировать или создавать новые и т. д.</p>
+
+<p>Когда вы открываете новый или существующий проект, появляется интерфейс редактора.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-05-31-01-56-33.png" alt="godot main" /></p>
+
+<p>В центре находится окно просмотра с панелью инструментов вверху, где вы найдете инструменты для перемещения, масштабирования или блокировки нод сцены. По обеим сторонам окна просмотра находятся docks (доки). А внизу окна лежит нижняя панель. Содержимое панели инструментов меняется в зависимости от контекста и выбранной ноды.</p>
+
+<p>В доке FileSystem перечислены файлы вашего проекта, включая сценарии, изображения, аудиосэмплы и многое другое.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-05-31-02-00-53.png" alt="godot filesystems" /></p>
+
+<p>В доке «Scene» перечислены ноды активной сцены.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-05-31-02-01-45.png" alt="godot scene" /></p>
+
+<p>Инспектор позволяет редактировать свойства выбранной ноды.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-05-31-02-02-23.png" alt="godot inspector" /></p>
+
+<p>Нижняя панель, расположенная под окном просмотра, является хостом для консоли отладки, редактора анимации, аудиомикшера и многого другого.</p>
+
+<p>В верхней части редактора расположены четыре кнопки основного экрана: 2D, 3D, Script и AssetLib.</p>
+
+<p>Вы будете использовать 2D-экран для всех типов игр. Помимо 2D-игр, на 2D-экране вы будете создавать свои интерфейсы.</p>
+
+<p>На 3D-экране вы можете работать с сетками, источниками света и уровнями дизайна для 3D-игр.</p>
+
+<p>Экран «Script» — это полноценный редактор кода с отладчиком, расширенными возможностями линтинга и встроенным справочником по коду.</p>
+
+<p>Наконец, AssetLib — это библиотека бесплатных надстроек, скриптов и ресурсов с открытым исходным кодом для использования в ваших проектах.</p>
+
+<p>Встроенная справочная система:</p>
+
+<ul>
+  <li>F1</li>
+  <li>кнопка «Search Help»</li>
+  <li><code class="language-plaintext highlighter-rouge">ctrl</code> + клик на класс, метод и т.п.</li>
+</ul>
 
 <p>Смотри еще:</p>
 
