@@ -14,11 +14,11 @@
 <meta property="og:locale" content="ru_RU" />
 <meta name="description" content="Deugging в vscode" />
 <meta property="og:description" content="Deugging в vscode" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/debugging.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/debugging.html" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/debugging.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/debugging.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"headline":"Debugging in VSCode","description":"Deugging в vscode","@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/debugging.html","@context":"https://schema.org"}</script>
+{"description":"Deugging в vscode","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/debugging.html","headline":"Debugging in VSCode","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,40 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
 
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
 
 <!-- Favicon -->
-<link rel="icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -155,6 +179,117 @@
 <p><img src="/myknowlegebase/attachments/2023-06-05-17-18-23.png" alt="debugging bar" /></p>
 
 <p>Кроме того, статус отладки отображается в строке состояния, показывающей активную конфигурацию отладки. Выбрав статус отладки, пользователь может изменить активную конфигурацию запуска и начать отладку, не открывая представление <code class="language-plaintext highlighter-rouge">Run and Debug</code></p>
+
+<h2 id="дебаггинг">Дебаггинг</h2>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-22-44-19.png" alt="debugging" /></p>
+
+<ul>
+  <li>продолжить до следующей точки / пауза выполнить текущую строку и приостановить</li>
+  <li>переступить - выполнить следующий объект кода целиком не проверяя и не следуя его строкам</li>
+  <li>шаг вверх/вниз выполнить шаг и отследить построчно</li>
+  <li>выйти - выйти в более ранний контекст выполнения, если внутри метода или сабмодуля</li>
+  <li>перезапустить - завершить выполнение отладки и снова запустить отладку</li>
+  <li>прекратить выполнение</li>
+</ul>
+
+<h3 id="брейепоинты">Брейепоинты</h3>
+
+<ul>
+  <li>Точки останова на полях редактора обычно отображаются в виде красных закрашенных кружков.</li>
+  <li>Отключенные точки останова отмечены серым кружком.</li>
+  <li>Когда начинается сеанс отладки, точки останова, которые не могут быть зарегистрированы отладчиком, становятся серыми полыми кружками. То же самое может произойти, если исходный код редактируется во время сеанса отладки без поддержки редактирования в реальном времени.</li>
+</ul>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-22-50-31.png" alt="brakepoints" /></p>
+
+<h3 id="логпоинты">Логпоинты</h3>
+
+<p>Логпойнт — это вариант точки останова, которая не входит в отладчик, а вместо этого выводит сообщение на консоль. Точки журналирования особенно полезны для вывода журналов при отладке рабочих серверов, которые нельзя приостановить или остановить.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-22-52-51.png" alt="logpoints" /></p>
+
+<h3 id="проверка-данных">Проверка данных</h3>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-22-54-10.png" alt="check data" /></p>
+
+<p>Значения переменных можно изменить с помощью действия «Установить значение» в контекстном меню переменной. Кроме того, вы можете использовать действие «Копировать значение» , чтобы скопировать значение переменной, или действие «Копировать как выражение» , чтобы скопировать выражение для доступа к переменной.</p>
+
+<p>Переменные и выражения также можно оценивать и отслеживать в разделе WATCH представления Run and Debug .</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-22-55-13.png" alt="variables" /></p>
+
+<h3 id="атрибуты-launchjson">Атрибуты launch.json</h3>
+
+<ul>
+  <li>type - the type of debugger to use for this launch configuration. Every installed debug extension introduces a type: node for the built-in Node debugger, for example, or php and go for the PHP and Go extensions.</li>
+  <li>request - the request type of this launch configuration. Currently, launch and attach are supported.</li>
+  <li>name - the reader-friendly name to appear in the Debug launch configuration dropdown.</li>
+  <li>presentation - using the order, group, and hidden attributes in the presentation object, you can sort, group, and hide configurations and compounds in the Debug configuration dropdown and in the Debug quick pick.</li>
+  <li>preLaunchTask - to launch a task before the start of a debug session, set this attribute to the label of a task specified in tasks.json (in the workspace’s .vscode folder). Or, this can be set to ${defaultBuildTask} to use your default build task.</li>
+  <li>postDebugTask - to launch a task at the very end of a debug session, set this attribute to the name of a task specified in tasks.json (in the workspace’s .vscode folder).</li>
+  <li>internalConsoleOptions - this attribute controls the visibility of the Debug Console panel during a debugging session.</li>
+  <li>debugServer - for debug extension authors only: this attribute allows you to connect to a specified port instead of launching the debug adapter.</li>
+  <li>serverReadyAction - if you want to open a URL in a web browser whenever the program under debugging outputs a specific message to the debug console or integrated terminal. For details see section Automatically open a URI when debugging a server program below.</li>
+  <li>program - executable or file to run when launching the debugger</li>
+  <li>args - arguments passed to the program to debug</li>
+  <li>env - environment variables (the value null can be used to “undefine” a variable)</li>
+  <li>envFile - path to dotenv file with environment variables</li>
+  <li>cwd - current working directory for finding dependencies and other files</li>
+  <li>port - port when attaching to a running process</li>
+  <li>stopOnEntry - break immediately when the program launches</li>
+  <li>console - what kind of console to use, for example, internalConsole, integratedTerminal, or externalTerminal</li>
+</ul>
+
+<p><a href="https://code.visualstudio.com/docs/editor/debugging#_variable-substitution">Больше опций по настройки отладки смотри тут</a></p>
+
+<h2 id="python-debugging"><a href="https://code.visualstudio.com/docs/python/debugging">Python debugging</a></h2>
+
+<p>Если вы хотите отлаживать веб-приложение с помощью Flask, Django или [<a href="fastapi" title="Fastapi">fastapi</a>], расширение Python предоставляет динамически создаваемые конфигурации отладки на основе структуры вашего проекта в разделе «Показать все конфигурации автоматической отладки» в представлении «Выполнение и отладка».</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-23-03-07.png" alt="fastapy debug" /></p>
+
+<p><a href="https://fastapi.tiangolo.com/tutorial/debugging/">Подробнее тут</a></p>
+
+<p><a href="https://code.visualstudio.com/docs/python/debugging#_debugging-specific-app-types">Пример дебага flask</a></p>
+
+<p>Два распространенных варианта: использовать конфигурацию файла Python для запуска открытого в данный момент файла Python или использовать конфигурацию «Присоединить с помощью идентификатора процесса» для присоединения отладчика к уже запущенному процессу.</p>
+
+<p>Отладчик также можно запустить из командной строки. Синтаксис командной строки отладчика следующий:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> debugpy
+    <span class="nt">--listen</span> | <span class="nt">--connect</span>
+    <span class="o">[</span>&lt;host&gt;:]&lt;port&gt;
+    <span class="o">[</span><span class="nt">--wait-for-client</span><span class="o">]</span>
+    <span class="o">[</span><span class="nt">--configure-</span>&lt;name&gt; &lt;value&gt;]...
+    <span class="o">[</span><span class="nt">--log-to</span> &lt;path&gt;] <span class="o">[</span><span class="nt">--log-to-stderr</span><span class="o">]</span>
+    &lt;filename&gt; | <span class="nt">-m</span> &lt;module&gt; | <span class="nt">-c</span> &lt;code&gt; | <span class="nt">--pid</span> &lt;pid&gt;
+    <span class="o">[</span>&lt;arg&gt;]...
+</code></pre></div></div>
+
+<p>Например, из командной строки вы можете запустить отладчик, используя указанный порт (5678) и сценарий, используя следующий синтаксис. В этом примере предполагается, что сценарий выполняется в течение длительного времени, и <code class="language-plaintext highlighter-rouge">--wait-for-client</code> флаг снят, что означает, что сценарий не будет ждать подключения клиента.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> debugpy <span class="nt">--listen</span> 5678 ./myscript.py
+</code></pre></div></div>
+
+<p>Конфигурация в launch.json будет выглядеть так:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python: Attach"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"attach"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"connect"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">5678</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><a href="https://code.visualstudio.com/docs/python/debugging#_command-line-debugging">Подробнее тут</a></p>
+
+<p>Доступна отладка на сервере и отлатка по SSH.</p>
+
+<p>Про конфигурирование launch.json для отладки python <a href="https://code.visualstudio.com/docs/python/debugging#_set-configuration-options">читай тут</a>.</p>
 
 <ul>
   <li>[<a href="pdb-python-debugger" title="Pdb python debugger">pdb-python-debugger</a>]</li>
