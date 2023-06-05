@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Debugging in VSCode | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Debugging in VSCode" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Deugging в vscode" />
+<meta property="og:description" content="Deugging в vscode" />
+<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/debugging.html" />
+<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/debugging.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"headline":"Debugging in VSCode","description":"Deugging в vscode","@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/debugging.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+<!-- Favicon -->
+<link rel="icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Debugging in VSCode</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/vscode" title="vscode" class="link-tags">vscode&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/debugger" title="debugger" class="link-tags">debugger&nbsp;</a>
+      
+      </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p><img src="/myknowlegebase/attachments/2023-06-05-17-05-15.png" alt="debugger" /></p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-06-06.png" alt="run" /></p>
+
+<p>Если запуск и отладка еще не настроены (не создан <code class="language-plaintext highlighter-rouge">launch.js</code>), VSCode выдаст запрос на создание представления.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-07-33.png" alt="launch.json" /></p>
+
+<p>Выполнять можно через меню</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-08-22.png" alt="menu" /></p>
+
+<p>Для большинства сценариев отладки полезно создать файл конфигурации запуска, поскольку он позволяет настраивать и сохранять детали настройки отладки. VSCode сохраняет отладочную информацию о конфигурации в <code class="language-plaintext highlighter-rouge">launch.json</code> файле, расположенном в <code class="language-plaintext highlighter-rouge">.vscode</code> папке в вашей рабочей области (корневая папка проекта) или в ваших пользовательских настройках или настройках рабочей области .</p>
+
+<p>VSCode попытается автоматически определить вашу среду отладки, но если это не удастся, вам придется выбрать ее вручную:</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-09-28.png" alt="settings manual 1" /></p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-10-54.png" alt="launch.json" /></p>
+
+<p>Обратите внимание, что атрибуты, доступные в конфигурациях запуска, различаются от отладчика к отладчику. Вы можете использовать предложения IntelliSense ( <code class="language-plaintext highlighter-rouge">Ctrl+Space</code> ), чтобы узнать, какие атрибуты существуют для определенного отладчика. Помощь при наведении также доступна для всех атрибутов.</p>
+
+<p>Не думайте, что атрибут, доступный для одного отладчика, автоматически работает и для других отладчиков. Если вы видите зеленые волнистые линии в конфигурации запуска, наведите на них курсор, чтобы узнать, в чем проблема, и попытайтесь исправить ее перед запуском сеанса отладки.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-11-30.png" alt="launch.json errors" /></p>
+
+<p>Просмотрите все автоматически сгенерированные значения и убедитесь, что они подходят для вашего проекта и среды отладки.</p>
+
+<h2 id="два-вида-конфигов">Два вида конфигов</h2>
+
+<p>В VSCode есть два основных режима отладки, Launch и Attach, которые обрабатывают два разных рабочих процесса.</p>
+
+<p>Если вы работаете с инструментами разработчика в браузере, возможно, вы не привыкли к «запуску из своего инструмента», поскольку экземпляр вашего браузера уже открыт. Когда вы открываете DevTools, вы просто прикрепляете DevTools к открытой вкладке браузера. С другой стороны, если вы пришли с сервера или рабочего стола, вполне нормально, что ваш редактор запускает ваш процесс за вас, и ваш редактор автоматически подключает свой отладчик к только что запущенному процессу.</p>
+
+<p>Лучший способ объяснить разницу между Launch и Attach — представить Launch как способ запустить приложение в режиме отладки до того, как к нему подключится VSCode, в то время как Attach — это способ подключить VSCode, отладчик для приложения или процесса, которого уже запущен.</p>
+
+<p>Отладчики VSCode обычно поддерживают запуск программы в режиме отладки или присоединение к уже запущенной программе в режиме отладки. В зависимости от запроса (attach или launch) требуются разные атрибуты, и launch.json помоагет в этом.</p>
+
+<h2 id="добавление-конфига">Добавление конфига</h2>
+
+<p>Создать конфиг можно так:</p>
+
+<ul>
+  <li>Используйте IntelliSense, если курсор находится внутри массива конфигураций.</li>
+  <li>Нажмите кнопку «Добавить конфигурацию», чтобы вызвать фрагмент IntelliSense в начале массива.</li>
+  <li>Выберите опцию «Добавить конфигурацию» в меню «Выполнить».</li>
+</ul>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-32-35.png" alt="add config" /></p>
+
+<p>VSCode также поддерживает <a href="https://code.visualstudio.com/docs/editor/debugging#_compound-launch-configurations">составные конфигурации</a> для одновременного запуска нескольких конфигураций.</p>
+
+<p>Чтобы начать сеанс отладки, сначала выберите конфигурацию с именем Launch Program в раскрывающемся списке Configuration dropdown в представлении un and Debug. После того, как вы установили конфигурацию запуска, запустите сеанс отладки с помощью F5.</p>
+
+<p>Кроме того, вы можете запустить свою конфигурацию через палитру команд ( <code class="language-plaintext highlighter-rouge">Ctrl + Shift + P</code> ), <code class="language-plaintext highlighter-rouge">Debug: Select and Start Debugging</code>.</p>
+
+<p>Как только начинается сеанс отладки, отображается панель КОНСОЛИ ОТЛАДКИ и отображаются выходные данные отладки, а строка состояния меняет цвет (оранжевый для цветовых тем по умолчанию):</p>
+
+<p><img src="/myknowlegebase/attachments/2023-06-05-17-18-23.png" alt="debugging bar" /></p>
+
+<p>Кроме того, статус отладки отображается в строке состояния, показывающей активную конфигурацию отладки. Выбрав статус отладки, пользователь может изменить активную конфигурацию запуска и начать отладку, не открывая представление <code class="language-plaintext highlighter-rouge">Run and Debug</code></p>
+
+<ul>
+  <li>[<a href="pdb-python-debugger" title="Pdb python debugger">pdb-python-debugger</a>]</li>
+  <li>[<a href="devtools" title="Python devtools">devtools</a>]</li>
+  <li><a href="https://github.com/gotcha/ipdb">ipdb</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
