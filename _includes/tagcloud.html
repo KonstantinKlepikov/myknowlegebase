@@ -7,6 +7,8 @@
     {% endfor %}
     {% assign stags = stags | uniq | sort %}
     {% for tag in stags %}
-        <span class="h4"><a href="{{ site.baseurl }}/tag/{{ tag | downcase }}" title="Тег: {{ tag | downcase }}">{{ tag }}</a> | </span>
+        {% if tag != "" %}
+            <span class="h4"><a href="{{ site.baseurl }}/tag/{{ tag | downcase }}" title="Тег: {{ tag | downcase }}">{{ tag }}</a> | </span>
+        {% endif %}
     {% endfor %}
 </div>

@@ -13,7 +13,16 @@ tags: market-stocks python
 ## [rolling window](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html)
 
 ```python
-DataFrame.rolling(window, min_periods=None, center=False, win_type=None, on=None, axis=0, closed=None, method='single')
+DataFrame.rolling(
+     window,
+     min_periods=None,
+     center=False,
+     win_type=None,
+     on=None,
+     axis=0,
+     closed=None,
+     method='single'
+          )
 ```
 
 **window int, offset, or BaseIndexer subclass** - размер скользящего окна. Это количество наблюдений из фрейма, используемых для расчета статистики. Каждое окно будет фиксированного размера.
