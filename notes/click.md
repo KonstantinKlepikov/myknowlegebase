@@ -1,6 +1,6 @@
 ---
 description: Click - командная строка в python
-tags: cl cli pip python
+tags: cli pip python
 title: Click интерфейс командной строки
 ---
 ```shell

@@ -1,6 +1,6 @@
 ---
 description: Aiogram - библиотека для создания ботовв для telegram на python
-tags: python bots asynco
+tags: python bots asyncio
 title: Telegram python bots with aiogram
 ---
 ## [aiogram](https://github.com/aiogram/aiogram)

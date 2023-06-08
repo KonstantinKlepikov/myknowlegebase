@@ -1,6 +1,6 @@
 ---
 description: Aiogram-dialog - библиотека для создания клавиатур и диалогов в telegram для aiogram
-tags: python bots asynco
+tags: python bots asyncio
 title: Aiogram extention aiogram-dialog
 ---
 Aiogram-dialog — это фреймворк графического интерфейса для телеграмм-бота. Он вдохновлен идеями Android SDK и React.js.

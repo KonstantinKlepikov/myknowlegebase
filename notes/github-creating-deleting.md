@@ -1,6 +1,6 @@
 ---
 description: Создание и удаление веток на github
-tags: cl github
+tags: cicd github
 title: Githunb creating and deleting of branches
 ---
 [Как создавать и удалять ветки (ui вариант)](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository)

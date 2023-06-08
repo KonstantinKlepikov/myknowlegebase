@@ -1,7 +1,7 @@
 ---
 description: Пакет python для ассинхронной работы с базами данных database
 title: Databases python
-tags: asiyncio databases bd
+tags: asyncio data-bases bd
 ---
 Пакет python для ассинхронной работы с базами данных.
 

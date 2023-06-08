@@ -1,7 +1,7 @@
 ---
 description: База данных postgres
 title: Postgres
-tags: databases bd
+tags: data-bases bd
 ---
 \* Статья является сокращением "Postgresql знакомство" Лузанов, Лёвшин, Рогов.
 

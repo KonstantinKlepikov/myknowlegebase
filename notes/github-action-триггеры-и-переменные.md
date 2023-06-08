@@ -1,6 +1,6 @@
 ---
 description: Триггеры и переменные в github action
-tags: cl github
+tags: cicd github
 title: Github action триггеры и переменные - документация и полезные ссылки
 ---
 - [Events that trigger workflows](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#pull_request)

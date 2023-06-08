@@ -1,6 +1,6 @@
 ---
 description: Sync and async HTTP 1/2 Client for Python3
-tags: http asincio python
+tags: http asyncio python
 title: httpx cинхронный и асинхронный http-клиент
 ---
 HTTPX is a fully featured HTTP client for Python 3, which provides sync and async APIs, and support for both HTTP/1.1 and HTTP/2.

@@ -1,6 +1,6 @@
 ---
 description: Переменные окружения в github actions
-tags: cl github
+tags: cicd github
 title: Github environment variables
 ---
 [Как использовать переменные окружения](https://docs.github.com/en/actions/reference/environment-variables) в [[github-action]]

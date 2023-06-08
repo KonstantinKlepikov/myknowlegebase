@@ -1,6 +1,6 @@
 ---
 description: Вычислительные ресурсы, предоставляемые github под экшены
-tags: cl github
+tags: cicd github
 title: Github actions resources
 ---
 [Supported runners and hardware resources](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources)

@@ -1,0 +1,12 @@
+<div>
+    <h2>Теги</h2>
+    {% assign stags = "" %}
+    {% for tag in tag_list %}
+        {% assign splited = tag | split: " "%}
+        {% assign stags = stags | concat: splited %}
+    {% endfor %}
+    {% assign stags = stags | uniq | sort %}
+    {% for tag in stags %}
+        <span class="h4"><a href="{{ site.baseurl }}/tag/{{ tag | downcase }}" title="Тег: {{ tag | downcase }}">{{ tag }}</a> | </span>
+    {% endfor %}
+</div>

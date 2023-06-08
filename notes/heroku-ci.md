@@ -1,6 +1,6 @@
 ---
 description: Ci для heroku
-tags: heroku ci
+tags: heroku cicd
 title: Heroku-CI
 ---
 [основная статья](https://devcenter.heroku.com/articles/heroku-ci)

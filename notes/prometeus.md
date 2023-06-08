@@ -1,7 +1,7 @@
 ---
 description: Метрики и мониторинг с prometeus
 title: Prometeus
-tags: cl
+tags: cli
 ---
 [Python client](https://github.com/prometheus/client_python)
 

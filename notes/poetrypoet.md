@@ -1,6 +1,6 @@
 ---
 description: Таскранер для poetry
-tags: cl cli pip python
+tags: cli pip python
 title: Poetrypoet
 ---
 ## Features

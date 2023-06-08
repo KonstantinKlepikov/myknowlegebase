@@ -1,6 +1,6 @@
 ---
 description: Шифрование переменных окружения в github actions
-tags: cl github
+tags: cicd github
 title: Github secrets
 ---
 [Как использовать encrypted secrets](https://docs.github.com/en/actions/reference/encrypted-secrets) в [[github-action]]

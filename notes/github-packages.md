@@ -1,6 +1,6 @@
 ---
 description: Регистри дял контейнеров и пакетов на github
-tags: cl github templating
+tags: cicd github templating
 title: Github packages
 ---
 [Документация](https://docs.github.com/en/packages)

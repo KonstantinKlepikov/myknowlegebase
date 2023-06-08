@@ -113,12 +113,15 @@
         <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
       
         
-        <a href="/myknowlegebase/tag/asincio" title="asincio" class="link-tags">asincio&nbsp;</a>
+        <a href="/myknowlegebase/tag/asyncio" title="asyncio" class="link-tags">asyncio&nbsp;</a>
       
         
         <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
       
-      </p>
+    </p>
+  </div>
+  <div>
+    <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'ru'}, 'google_translate_element'); } </script> <script type="text/javascript" src="//[translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </div>
   <div class="prose mb-4 py-4">
     <p>Модель асинхронности в python строится на концепции сопрограмм. Сопрограмма (<a href="https://docs.python.org/3/glossary.html#term-coroutine">coroutine</a>) передает управление вызвавшему ее коду без потери своего состояния. В отличии от обычных программ, в которые входят в одной точке, а выходят в другой, в сопрограммы можно входить и выходить из них в разных точках, кроме того, их можно продолжать используя сохраненное состояние. Первоначально апи асинхронных функций был реализован на <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio-generator-based-coro">генераторах с декораторами</a>. В python3.8 такой подход уже депрекейтед. Пример такого кода:</p>
@@ -162,7 +165,7 @@
 
 <p>Высокоуровнево реализовано три подхода.</p>
 
-<p><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.run">Первый подход</a> - через <code class="language-plaintext highlighter-rouge">asynco.run()</code>. Непосредственный вызов сопрограммы возвращает инициализированный объект сопрограммы, который сам по себе ничего не делает и ожидает включения в цикл событий. Функция <code class="language-plaintext highlighter-rouge">asynco.run()</code> запускает новый цикл и заботится о завершении цикла, когда все сопрограммы выполнены. Функция не может запустить новый цикл, если в текущем потоке уже есть другой цикл.</p>
+<p><a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.run">Первый подход</a> - через <code class="language-plaintext highlighter-rouge">asyncio.run()</code>. Непосредственный вызов сопрограммы возвращает инициализированный объект сопрограммы, который сам по себе ничего не делает и ожидает включения в цикл событий. Функция <code class="language-plaintext highlighter-rouge">asyncio.run()</code> запускает новый цикл и заботится о завершении цикла, когда все сопрограммы выполнены. Функция не может запустить новый цикл, если в текущем потоке уже есть другой цикл.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -337,7 +340,7 @@
 
 <h2 id="управление-сопрограммами">Управление сопрограммами</h2>
 
-<p>Помимо <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep">метода</a> <code class="language-plaintext highlighter-rouge">asynco.sleep()</code>, который уже использовался выше для ожидания в цикле, высокоуровневый апи предлагает несколько инстурментов для создания управляющих конструкций, которые сложно конструирвоать используя одни <code class="language-plaintext highlighter-rouge">await</code> и <code class="language-plaintext highlighter-rouge">async</code></p>
+<p>Помимо <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.sleep">метода</a> <code class="language-plaintext highlighter-rouge">asyncio.sleep()</code>, который уже использовался выше для ожидания в цикле, высокоуровневый апи предлагает несколько инстурментов для создания управляющих конструкций, которые сложно конструирвоать используя одни <code class="language-plaintext highlighter-rouge">await</code> и <code class="language-plaintext highlighter-rouge">async</code></p>
 
 <p><code class="language-plaintext highlighter-rouge">wait()</code> реализует <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.wait">ожидание завершения</a> нескольких сопрограмм. Сопрограммы передаются функции в виде последовательности, а условие завершения можно определить через константы - завершить ожидание, когда любой переданный объект выполнен или отменен, либо когда поднята первая ошибка, либо когда все “работы” выполнены. Эвейтебл объекты, переданные функции, будут сконверчены в таски. Результатом выполнения метода будет кортеж, состоящий из выполненных тасков и невыполненных фьючерсов.</p>
 
@@ -413,13 +416,13 @@
 <span class="p">[</span><span class="s">'phase 2 result'</span><span class="p">,</span> <span class="s">'phase 1 result'</span><span class="p">,</span> <span class="s">'phase 0 result'</span><span class="p">]</span>
 </code></pre></div></div>
 
-<p><code class="language-plaintext highlighter-rouge">asynco.shield()</code> <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.shield">реализует защиту</a> сопрограммы от отмсены в случае отмены другой сопрограммы, содержащей защищенную. Сопрограмма оборачивается в таск и если случилась отмена, то таск отменен не будет. Если отмена происходит по какой-то другой причине (например непосредственно отменена сама переданная в <code class="language-plaintext highlighter-rouge">shield()</code> сопрограмма), то таск все-таки будет отменен.</p>
+<p><code class="language-plaintext highlighter-rouge">asyncio.shield()</code> <a href="https://docs.python.org/3/library/asyncio-task.html#asyncio.shield">реализует защиту</a> сопрограммы от отмсены в случае отмены другой сопрограммы, содержащей защищенную. Сопрограмма оборачивается в таск и если случилась отмена, то таск отменен не будет. Если отмена происходит по какой-то другой причине (например непосредственно отменена сама переданная в <code class="language-plaintext highlighter-rouge">shield()</code> сопрограмма), то таск все-таки будет отменен.</p>
 
 <p>Кроме того, в python3.9 добьавлен <code class="language-plaintext highlighter-rouge">asyncio.to_thread</code>, позволяющий запускать сопрограммы в разных потоках. В python3.7 добавлены <code class="language-plaintext highlighter-rouge">asyncio.current_task()</code> и <code class="language-plaintext highlighter-rouge">asyncio.all_tasks()</code> для получения текущей задачи из цикла и всех невыполненных тасков.</p>
 
 <h2 id="синхронизация-и-взаимодействие-в-цикле">Синхронизация и взаимодействие в цикле</h2>
 
-<p><code class="language-plaintext highlighter-rouge">asynco</code> сконструирован для однопоточных процессов и конструкции синхронизации хоть и реализованы в стиле [<a href="threading" title="Threading">threading</a>], являются потоконебезопасными. Кроме того, в этих конструкциях нельзя задать время ожидания (вместо этого необходимо использовать <code class="language-plaintext highlighter-rouge">asyncio.wait_for()</code> и <code class="language-plaintext highlighter-rouge">asyncio.wait()</code>)</p>
+<p><code class="language-plaintext highlighter-rouge">asyncio</code> сконструирован для однопоточных процессов и конструкции синхронизации хоть и реализованы в стиле [<a href="threading" title="Threading">threading</a>], являются потоконебезопасными. Кроме того, в этих конструкциях нельзя задать время ожидания (вместо этого необходимо использовать <code class="language-plaintext highlighter-rouge">asyncio.wait_for()</code> и <code class="language-plaintext highlighter-rouge">asyncio.wait()</code>)</p>
 
 <ul>
   <li><a href="https://docs.python.org/3/library/asyncio-sync.html#lock">Lock</a> защищает доступ к разделяемым потоками ресурсам. Также можно использовать как асинхронный менеджер контекста</li>

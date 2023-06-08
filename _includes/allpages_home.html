@@ -12,11 +12,22 @@
         {% endfor %}
     </div>
 
+    {% include tagcloud.html %}
+
     <div>
         <h2>Daily notes</h2>
         {% for page in notes_list %}
             {% if page.category == 'post' and page.title %}
                 {% include allpages_list.html %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div>
+        <h2>Все заметки</h2>
+        {% for page in pages_list %}
+            {% if page.title and page.category == nil and page.tags != nil and page.robots == nil %}
+                {% include allpages_block.html %}
             {% endif %}
         {% endfor %}
     </div>
@@ -30,13 +41,4 @@
         {% endfor %}
     </div>
 
-
-    <div>
-        <h2>Все заметки</h2>
-        {% for page in pages_list %}
-            {% if page.title and page.category == nil and page.tags != nil and page.robots == nil %}
-                {% include allpages_block.html %}
-            {% endif %}
-        {% endfor %}
-    </div>
 </div>

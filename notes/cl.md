@@ -1,7 +1,7 @@
 ---
 description: Список заметок о непрерывной интеграции
 category: list
-tags: cl cicd
+tags: cicd
 title: ci/cd - непрервыная интеграция
 ---
 - [[fabric]]

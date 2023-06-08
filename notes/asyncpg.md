@@ -1,6 +1,6 @@
 ---
 description: Asyncpg асинхронный клиент для postgresql
-tags: asincio python data-bases
+tags: asyncio python data-bases
 title: asyncpg postgresql client
 ---
 Asyncpg -- A fast PostgreSQL Database Client Library for Python/asyncio

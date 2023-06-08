@@ -1,6 +1,6 @@
 ---
 description: Trio - Python library for async concurrency and I/O
-tags: http asincio python
+tags: http asyncio python
 title: Trio асинхронный фреймворк
 ---
 Trio: a friendly Python library for async concurrency and I/O
