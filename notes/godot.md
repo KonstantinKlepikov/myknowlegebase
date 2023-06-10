@@ -143,6 +143,8 @@ GDExtension — лучший выбор для повышения произво
 - [docs](https://docs.godotengine.org/en/stable/index.html#), [github repo](https://github.com/godotengine/godot)
 - [GDScripts](https://gdscript.com/) evolved as a custom scripting language to be used with the Godot computer (and mobile device) Game engine, and for those people who look beyond the real world, it also supports Virtual Reality.
 - [Awesome Godot repo](https://github.com/godotengine/awesome-godot) A curated list of free/libre plugins, scripts and add-ons for Godot
+- [godot_recipes](https://kidscancode.org/godot_recipes/4.x/)
+- [more godot resources](https://godot-engine.zeef.com/andre.antonio.schmitz)
 - [[gdscript]]
 - [godot_rl_agents](https://github.com/edbeeching/godot_rl_agents) An Open Source package that allows video game creators, AI researchers and hobbyists the opportunity to learn complex behaviors for their Non Player Characters or agents
 - [[gamedev]]
