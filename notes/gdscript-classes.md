@@ -78,7 +78,150 @@ Networking with nodes: после подключения к серверу (ил
   - [ColorRect](https://docs.godotengine.org/en/stable/classes/class_colorrect.html) окрашенный прямоугольник
   - ConeTwistJoint3D Поворотное соединение между двумя 3D PhysicsBodies.
   - [ConfirmationDialog](https://docs.godotengine.org/en/stable/classes/class_confirmationdialog.html) Диалог подтверждения действий. Это диалоговое окно наследуется от AcceptDialog, но по умолчанию имеет кнопки «ОК» и «Отмена» (в порядке хост-операционки).
-- Resources
+  - [Container](https://docs.godotengine.org/en/stable/classes/class_container.html) базовая нода для контейнеров
+  - CPUParticles2D - 2D частицы с обработкой процессором
+  - CPUParticles3D
+  - CSGBox3D бокс для использования CSG системы
+  - CSGCombiner3D, CSGCylinder3D, CSGMesh3D, CSGPolygon3D, CSGPrimitive3D, CSGShape3D, CSGTorus3D
+  - [DampedSpringJoint2D](https://docs.godotengine.org/en/stable/classes/class_dampedspringjoint2d.html) Демпфированная пружинная зависимость для 2D-физики. Это напоминает пружинное соединение, которое всегда хочет вернуться к заданной длине.
+  - [Decal](https://docs.godotengine.org/en/stable/classes/class_decal.html) Декали используются для проецирования текстуры на меш в сцене. Используйте декали, чтобы добавить детали к сцене, не затрагивая базовую сетку. Они часто используются, чтобы добавить атмосферных воздействий зданию, добавить грязь или следы или разнообразить реквизит. Декали можно перемещать в любое время, что делает их подходящими для таких вещей, как тени от капель или точки лазерного прицела.
+  - [DirectionalLight2D](https://docs.godotengine.org/en/stable/classes/class_directionallight2d.html) Направленный свет — это тип узла Light2D, который моделирует бесконечное количество параллельных лучей, покрывающих всю сцену. Он используется для источников света с высокой интенсивностью, расположенных далеко от сцены (например, для моделирования солнечного или лунного света).
+  - DirectionalLight3D
+  - EditorCommandPalette, EditorFileDialog, EditorFileSystem, EditorInspector, EditorInterface, EditorPlugin, EditorProperty, EditorResourcePicker, EditorResourcePreview, EditorSpinSliderEditorScriptPicker
+  - FileDialog — это предустановленный диалог, используемый для выбора файлов и каталогов в файловой системе.
+  - FileSystemDock
+  - FlowContainer базовый класс для потоковых контейнеров
+  - [FogVolume](https://docs.godotengine.org/en/stable/classes/class_fogvolume.html) используются для добавления локализованного тумана в глобальный объемный эффект тумана. FogVolumes также может удалять объемный туман из определенных областей при использовании FogMaterial с отрицательным значением FogMaterial.density.
+  - Generic6DOFJoint3D, GeometryInstance3D
+  - [GPUParticles2D](https://docs.godotengine.org/en/stable/classes/class_gpuparticles2d.html) 2D частицы с процессингом на гпу
+  - GPUParticles3D, GPUParticlesAttractor3D, GPUParticlesAttractorBox3D, GPUParticlesAttractorSphere3D, GPUParticlesAttractorVectorField3D, GPUParticlesCollision3D, GPUParticlesCollisionHeightField3D, GPUParticlesCollisionSDF3D, GPUParticlesCollisionSphere3D
+  - [GraphEdit¶](https://docs.godotengine.org/en/stable/classes/class_graphedit.html) — это элемент управления, отвечающий за отображение графоподобных данных и управление ими с помощью GraphNodes. Предоставляет доступ к созданию, удалению, подключению и отключению узлов.
+  - [GraphNode](https://docs.godotengine.org/en/stable/classes/class_graphnode.html) — это элемент управления Container, представляющий один блок данных в графе GraphEdit. Вы можете настроить количество, тип и цвет портов подключения слева и справа. GraphNode позволяет создавать узлы для графа GraphEdit с настраиваемым содержимым на основе его дочерних элементов управления. GraphNode является контейнером и отвечает за размещение своих дочерних элементов на экране. Это работает аналогично VBoxContainer. Дети, в свою очередь, предоставляют GraphNode так называемые слоты, каждый из которых может иметь порт подключения с любой стороны. Это похоже на то, как TabContainer использует дочерние элементы для создания вкладок.
+  - [GridContainer](https://docs.godotengine.org/en/stable/classes/class_gridcontainer.html) используется для размещения дочерних элементов, производных от Control, настеке
+  - GridMap Узел для 3D-карт на основе тайлов
+  - [GrooveJoint2D](https://docs.godotengine.org/en/stable/classes/class_groovejoint2d.html) Ограничение канавы для 2D-физики. Это полезно для того, чтобы заставить тело «двигаться» через сегмент, помещенный в другой сегмент.
+  - HBoxContainer, HFlowContainer, HingeJoint3D, HScrollBar, HSeparator, HSlider, HSplitContainer горизонтальные контейнеры
+  - [HTTPRequest](https://docs.godotengine.org/en/stable/classes/class_httprequest.html) нода из которой можно делать http-запросы
+  - ImporterMeshInstance3D
+  - InstancePlaceholder Это полезно, чтобы избежать одновременной загрузки больших сцен путем выборочной загрузки их частей.
+  - [ItemList](https://docs.godotengine.org/en/stable/classes/class_itemlist.html) Элемент управления, предоставляющий список доступных для выбора элементов (и/или значков) в одном столбце или, при необходимости, в нескольких столбцах.
+  - [Joint2D](https://docs.godotengine.org/en/stable/classes/class_joint2d.html) Базовый узел для всех совместных ограничений в 2D-физике.
+  - Joint3D
+  - [Label](https://docs.godotengine.org/en/stable/classes/class_label.html) отображает обычный текст в строке или в прямоугольнике. Для форматированного текста используйте RichTextLabel.
+  - Label3D
+  - [Light2D](https://docs.godotengine.org/en/stable/classes/class_light2d.html) Излучает свет в 2D-среде. Свет определяется как цвет, значение энергии, режим (см. константы) и различные другие параметры (связанные с диапазоном и тенями).
+  - Light3D
+  - LightmapGI Вычисляет и сохраняет карты освещения для быстрого глобального освещения.
+  - LightmapProbe Представляет один размещенный вручную источник для динамического освещения объекта с помощью LightmapGI.
+  - [LightOccluder2D](https://docs.godotengine.org/en/stable/classes/class_lightoccluder2d.html) Перекрывает свет, отбрасываемый Light2D, отбрасывая тени
+  - [Line2D](https://docs.godotengine.org/en/stable/classes/class_line2d.html)
+  - [LineEdit](https://docs.godotengine.org/en/stable/classes/class_lineedit.html) Элемент управления, обеспечивающий редактирование строки.
+  - [LinkButton](https://docs.godotengine.org/en/stable/classes/class_linkbutton.html) Простая кнопка, используемая для представления ссылки на какой-либо ресурс.
+  - [MarginContainer](https://docs.godotengine.org/en/stable/classes/class_margincontainer.html) Добавляет верхнее, левое, нижнее и правое поле ко всем узлам управления, которые являются прямыми дочерними элементами контейнера.
+  - Marker2D подсказка положения для редактирования. Это как обычный Node2D, но он всегда отображается в виде креста в 2D-редакторе. Вы можете установить визуальный размер креста, используя гизмо в 2D-редакторе, пока узел выбран.
+  - Marker3D
+  - MenuBar, MenuButton
+  - [MeshInstance2D](https://docs.godotengine.org/en/stable/classes/class_meshinstance2d.html) Узел, используемый для отображения Mesh в 2D. Mesh — это тип ресурса, который содержит геометрию на основе массива вершин, разделенную на поверхности. Каждая поверхность содержит полностью отдельный массив и материал, используемый для его рисования. С точки зрения дизайна сетка с несколькими поверхностями предпочтительнее одной поверхности, потому что объекты, созданные в программном обеспечении для 3D-редактирования, обычно содержат несколько материалов.
+  - MeshInstance3D
+  - MissingNode Это класс внутреннего редактора, предназначенный для хранения данных узлов неизвестного типа.
+  - MultiMeshInstance2D, MultiMeshInstance3D
+  - MultiplayerSpawner, MultiplayerSynchronizer
+  - [NavigationAgent2D](https://docs.godotengine.org/en/stable/classes/class_navigationagent2d.html) 2D-агент, который используется в навигации для достижения позиции, избегая статических и динамических препятствий. Динамические препятствия обходятся с помощью предотвращения столкновений RVO. Агенту нужны навигационные данные для правильной работы. NavigationAgent2D безопасен для физики
+  - NavigationAgent3D
+  - [NavigationLink2D](https://docs.godotengine.org/en/stable/classes/class_navigationlink2d.html) Создает связь между двумя позициями, через которые NavigationServer2D может направлять агентов. Ссылки можно использовать для выражения методов навигации, которые небанально перемещаются по поверхности навигационной сетки, например, зиплайны, телепорты или прыжки через промежутки.
+  - NavigationLink3D
+  - [NavigationObstacle2D](https://docs.godotengine.org/en/stable/classes/class_navigationobstacle2d.html) 2D-препятствие, используемое в навигации для предотвращения столкновений. Препятствию нужны навигационные данные для правильной работы. NavigationObstacle2D безопасен с точки зрения физики.
+  - NavigationObstacle3D
+  - [NavigationRegion2D](https://docs.godotengine.org/en/stable/classes/class_navigationregion2d.html) Регион навигационной карты. Он сообщает NavigationServer2D, что можно перемещать, а что нельзя, на основе его ресурса NavigationPolygon.
+  - NavigationRegion3D
+  - [NinePatchRect](https://docs.godotengine.org/en/stable/classes/class_ninepatchrect.html) Масштабируемая рамка на основе текстуры, которая заполняет центр и стороны текстуры, но сохраняет исходный размер углов. Идеально подходит для панелей и диалоговых окон.
+  - [Node2D](https://docs.godotengine.org/en/stable/classes/class_node2d.html) Объект 2D-игры, наследуемый всеми узлами, связанными с 2D. Имеет позицию, вращение, масштаб и Z-индекс. Двухмерный игровой объект с трансформацией (положением, вращением и масштабом). Все 2D-узлы, включая физические объекты и спрайты, наследуются от Node2D. Используйте Node2D в качестве родительского узла для перемещения, масштабирования и поворота дочерних узлов в 2D-проекте. Также дает контроль над порядком рендеринга узла.
+  - Node3D
+  - OccluderInstance3D
+  - OmniLight3D
+  - OpenXRHand Узел, поддерживающий отслеживание пальцев в OpenXR
+  - [OptionButton](https://docs.godotengine.org/en/stable/classes/class_optionbutton.html) Кнопочное управление, которое обеспечивает выбор параметров при нажатии
+  - [Panel](https://docs.godotengine.org/en/stable/classes/class_panel.html) Обеспечивает непрозрачный фон для дочерних элементов управления.
+  - PanelContainer
+  - ParallaxBackground Узел, используемый для создания фона прокрутки параллакса.
+  - ParallaxLayer
+  - [Path2D](https://docs.godotengine.org/en/stable/classes/class_path2d.html) Содержит путь Curve2D для узлов PathFollow2D.
+  - Path3D
+  - [PathFollow2D](https://docs.godotengine.org/en/stable/classes/class_pathfollow2d.html) Этот узел берет свой родительский Path2D и возвращает координаты точки внутри него, учитывая расстояние от первой вершины. Это полезно для того, чтобы заставить другие узлы следовать по пути без кодирования шаблона движения. Для этого узлы должны быть потомками этого узла. Затем узлы-потомки будут перемещаться соответствующим образом при настройке хода выполнения в этом узле.
+  - PathFollow3D
+  - [PhysicalBone2D](https://docs.godotengine.org/en/stable/classes/class_physicalbone2d.html) Узел PhysicalBone2D — это узел на основе RigidBody2D, который можно использовать для того, чтобы узлы Bone2D в Skeleton2D реагировали на физику. Этот узел очень похож на узел PhysicalBone3D, только для 2D вместо 3D.
+  - PhysicalBone3D
+  - [PhysicsBody2D](https://docs.godotengine.org/en/stable/classes/class_physicsbody2d.html) Базовый класс для всех объектов, затронутых физикой в ​​2D-пространстве.
+  - PhysicsBody3D
+  - [PinJoint2D](https://docs.godotengine.org/en/stable/classes/class_pinjoint2d.html) Шарнирное соединение для 2D твердых тел. Он соединяет два тела (динамические или статические) вместе.
+  - PinJoint3D
+  - [PointLight2D](https://docs.godotengine.org/en/stable/classes/class_pointlight2d.html) позиционный 2D свет
+  - [Polygon2D](https://docs.godotengine.org/en/stable/classes/class_polygon2d.html) двухмерный полигон. Polygon2D определяется набором точек. Каждая точка соединяется со следующей, а последняя точка соединяется с первой, в результате чего получается замкнутый многоугольник. Polygon2D могут быть заполнены цветом (сплошным или градиентным) или заполнены заданной текстурой.
+  - [Popup](https://docs.godotengine.org/en/stable/classes/class_popup.html), [PopupMenu](https://docs.godotengine.org/en/stable/classes/class_popupmenu.html), [PopupPanel](https://docs.godotengine.org/en/stable/classes/class_popuppanel.html)
+  - [ProgressBar](https://docs.godotengine.org/en/stable/classes/class_progressbar.html)
+  - Range Абстрактный базовый класс для элементов управления на основе диапазона.
+  - [RayCast2D](https://docs.godotengine.org/en/stable/classes/class_raycast2d.html) представляет собой линию от начала до места назначения, target_position. Он используется для запроса 2D-пространства, чтобы найти ближайший объект на пути луча.
+  - RayCast3D
+  - [ReferenceRect](https://docs.godotengine.org/en/stable/classes/class_referencerect.html) Рамка отсчета для графического интерфейса.
+  - [ReflectionProbe](https://docs.godotengine.org/en/stable/classes/class_reflectionprobe.html) Захватывает свое окружение, чтобы создать быстрые и точные отражения от заданной точки.
+  - [RemoteTransform2D](https://docs.godotengine.org/en/stable/classes/class_remotetransform2d.html) отправляет свой собственный Transform2D на другой производный узел Node2D в сцене.
+  - RemoteTransform3D
+  - [ResourcePreloader](https://docs.godotengine.org/en/stable/classes/class_resourcepreloader.html) Предварительно загружает список ресурсов внутри сцены. Этот узел используется для предварительной загрузки подресурсов внутри сцены, поэтому, когда сцена загружается, все ресурсы готовы к использованию и могут быть получены из загрузчика. Вы можете добавить ресурсы, используя вкладку ResourcePreloader, когда узел выбран.
+  - [RichTextLabel](https://docs.godotengine.org/en/stable/classes/class_richtextlabel.html) Форматированный текст может содержать пользовательский текст, шрифты, изображения и некоторое базовое форматирование. Label управляет ими как внутренним стеком тегов. Он также адаптируется к заданной ширине/высоте.
+  - [RigidBody2D](https://docs.godotengine.org/en/stable/classes/class_rigidbody2d.html) Физическое тело, которое перемещается с помощью 2D-моделирования физики. Полезно для объектов, которые имеют гравитацию и могут толкаться другими объектами.
+  - RigidBody3D
+  - RootMotionView хелпер для редактора
+  - ScriptCreateDialog попап для создания нового скрипта в редакторе
+  - ScriptEditor, ScriptEditorBase
+  - ScrollBar
+  - ScrollContainer
+  - Separator
+  - [ShapeCast2D](https://docs.godotengine.org/en/stable/classes/class_shapecast2d.html) Приведение формы позволяет обнаруживать объекты столкновения, перемещая форму вдоль направления до цели, определяемого target_position (полезно для таких вещей, как лучевое оружие).
+  - ShapeCast3D
+  - [Skeleton2D](https://docs.godotengine.org/en/stable/classes/class_skeleton2d.html) для 2D-персонажей и анимированных объектов, является родителем иерархии объектов Bone2D. Это требование Bone2D. Skeleton2D содержит ссылку на позу покоя своих дочерних элементов и действует как единая точка доступа к своим bons.
+  - Skeleton3D
+  - SkeletonIK3D
+  - Slider базовый класс для GUI слайдера
+  - SliderJoint3D
+  - SoftBody3D
+  - [SpinBox](https://docs.godotengine.org/en/stable/classes/class_spinbox.html) Текстовое поле числового ввода.
+  - [SplitContainer](https://docs.godotengine.org/en/stable/classes/class_splitcontainer.html) Контейнер для разделения двух элементов управления по вертикали или горизонтали с захватом, который позволяет регулировать смещение или соотношение разделения.
+  - SpotLight3D
+  - SpringArm3D
+  - [Sprite2D](https://docs.godotengine.org/en/stable/classes/class_sprite2d.html) Узел, отображающий 2D-текстуру. Отображаемая текстура может быть областью из более крупной текстуры атласа или кадром из анимации листа спрайтов.
+  - Sprite3D, SpriteBase3D
+  - [StaticBody2D](https://docs.godotengine.org/en/stable/classes/class_staticbody2d.html) — это простое тело, которое не движется при моделировании физики, т. е. оно не может быть перемещено внешними силами или контактами, но его преобразование все еще может быть обновлено пользователем вручную. Он идеально подходит для реализации объектов в окружающей среде, таких как стены или платформы. В отличие от RigidBody2D, он не потребляет никаких ресурсов процессора, пока они не перемещаются.
+  - StaticBody3D
+  - SubViewport Создает подвид на экране
+  - SubViewportContainer
+  - TabBar Панель управления вкладками
+  - TabContainer
+  - TextEdit Управление редактированием многострочного текста.
+  - TextureButton кнопка на основе текстуры. Поддерживает состояния Pressed, Hover, Disabled и Focused.
+  - TextureProgressBar
+  - TextureRect
+  - [TileMap](https://docs.godotengine.org/en/stable/classes/class_tilemap.html) Узел для двухмерных тайловых карт. Tilemaps используют TileSet, который содержит список плиток, которые используются для создания карт на основе сетки. TileMap может иметь несколько слоев, размещающих плитки друг над другом.
+  - [Timer](https://docs.godotengine.org/en/stable/classes/class_timer.html) Таймер обратного отсчета
+  - [TouchScreenButton](https://docs.godotengine.org/en/stable/classes/class_touchscreenbutton.html) Кнопка для устройств с сенсорным экраном для использования в игре.
+  - [Tree](https://docs.godotengine.org/en/stable/classes/class_tree.html) Это показывает дерево элементов, которые можно выбрать, развернуть и свернуть. Дерево может иметь несколько столбцов с пользовательскими элементами управления, такими как редактирование текста, кнопки и всплывающие окна. Это может быть полезно для структурированных дисплеев и взаимодействий.
+  - VBoxContainer горизонтальный бокс-контейнер
+  - VehicleBody3D Физическое тело, имитирующее поведение автомобиля
+  - VehicleWheel3D
+  - VFlowContainer вертикальный контейнер потока
+  - VideoStreamPlayer Управление воспроизведением видеопотоков.
+  - Viewport базовый класс для отображения экранов
+  - [VisibleOnScreenEnabler2D](https://docs.godotengine.org/en/stable/classes/class_visibleonscreenenabler2d.html) Автоматически отключает другой узел, если он не отображается на экране.
+  - VisibleOnScreenEnabler3D
+  - [VisibleOnScreenNotifier2D](https://docs.godotengine.org/en/stable/classes/class_visibleonscreennotifier2d.html) Определяет, когда экстенты узла видны на экране.
+  - VisibleOnScreenNotifier3D
+  - VisualInstance3D
+  - [VoxelGI](https://docs.godotengine.org/en/stable/classes/class_voxelgi.html) используются для предоставления высококачественного непрямого света и отражений в сценах в реальном времени. Он предварительно вычисляет эффект объектов, излучающих свет, и эффект статической геометрии для имитации поведения сложного света в реальном времени. VoxelGI необходимо сериализовать, прежде чем появится видимый эффект. Однако после сериализации динамические объекты будут получать от них свет. Кроме того, источники света могут быть полностью динамическими или сериализованными.
+  - VScrollBar вертикальный скролбар
+  - VSeparator, VSlider, VSplitContainer
+  - Window Узел, создающий окно. Окно может быть либо собственным системным окном, либо встроенным в другое окно.
+  - [WorldEnvironment](https://docs.godotengine.org/en/stable/classes/class_worldenvironment.html) Свойства среды по умолчанию для всей сцены (эффекты постобработки, настройки освещения и фона).
+  - XRAnchor3D, XRCamera3D, XRController3D, XRNode3D, XROrigin3D
+- [Resources](https://docs.godotengine.org/en/stable/classes/index.html#resources)
 - Other objects
 - Variant types
 
