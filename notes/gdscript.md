@@ -217,6 +217,21 @@ var my_inherited_scene = MyScene.instantiate(PackedScene.GEN_EDIT_STATE_MAIN) # 
 - Если кто-то хочет создать базовый инструмент, который будет повторно использоваться в нескольких различных проектах и ​​который, вероятно, будут использовать люди всех уровней квалификации (включая тех, кто не называет себя «программистами»), то есть вероятность, что это скрипт, вероятно, с пользовательским именем/значком.
 - Если кто-то хочет создать концепцию, характерную для его игры, то это всегда должна быть сцена. Сцены легче отслеживать/редактировать, и они обеспечивают большую безопасность, чем сценарии.
 
+Полезные ссылки:
+
+- [@GlobalScope](https://docs.godotengine.org/en/stable/classes/class_%40globalscope.html#)
+- [Exporting projects](https://docs.godotengine.org/en/stable/tutorials/export/exporting_projects.html)
+- [Sprite2D](https://docs.godotengine.org/en/stable/classes/class_sprite2d.html)
+- [Shape2D](https://docs.godotengine.org/en/stable/classes/class_shape2d.html#class-shape2d)
+- [CollisionObject2D](https://docs.godotengine.org/en/stable/classes/class_collisionobject2d.html)
+- [Importing images](https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_images.html#importing-textures)
+- [Using TileMaps](https://docs.godotengine.org/en/stable/tutorials/2d/using_tilemaps.html#doc-using-tilemaps)
+- [Using TileSets](https://docs.godotengine.org/en/stable/tutorials/2d/using_tilesets.html#doc-using-tilesets)
+- [Nodes and scene instances](https://docs.godotengine.org/en/stable/tutorials/scripting/nodes_and_scene_instances.html)
+- [Random number generation](https://docs.godotengine.org/en/stable/tutorials/math/random_number_generation.html)
+- [Overview of debugging tools](https://docs.godotengine.org/en/stable/tutorials/scripting/debug/overview_of_debugging_tools.html)
+- [Duplicate a node with sub-nodes and change position](https://ask.godotengine.org/84708/duplicate-a-node-with-sub-nodes-and-change-position)
+
 Смотри еще:
 
 - [Документация GDScript](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html#doc-gdscript)
