@@ -115,7 +115,11 @@
     </p>
   </div>
   <div class="prose mb-4 py-4">
-    <h2 id="как-перезагрузить-сервер">Как перезагрузить сервер</h2>
+    <h2 id="документация-утилит">Документация утилит</h2>
+
+<p><code class="language-plaintext highlighter-rouge">man &lt;util name&gt;</code></p>
+
+<h2 id="как-перезагрузить-сервер">Как перезагрузить сервер</h2>
 
 <p><code class="language-plaintext highlighter-rouge">sudo reboot</code> или <code class="language-plaintext highlighter-rouge">sudo shutdown -r now</code></p>
 
@@ -185,6 +189,21 @@ pg something
 <span class="nv">variable_name</span><span class="o">=</span><span class="s1">'command'</span>
 <span class="nv">variable_name</span><span class="o">=</span><span class="s1">'command [option ...] arg1 arg2 ...'</span>
 </code></pre></div></div>
+
+<h2 id="работа-с-путями-содержимым-папок-и-тд">Работа с путями, содержимым папок и т.д</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ls -l /usr | less</code> поэкранный вывод в длинном виде. Утилита знает куда выводит - когда в stdout, упорядочивает  вывод в несколько столбцов</li>
+  <li><code class="language-plaintext highlighter-rouge">wc file.txt</code> колво строк, слов и символов в фале (<code class="language-plaintext highlighter-rouge">-l</code> только строки, <code class="language-plaintext highlighter-rouge">-w</code> только слова, <code class="language-plaintext highlighter-rouge">-c</code> только символы).</li>
+  <li>Есди не указать имя файла, то данне читаются из stdin. <code class="language-plaintext highlighter-rouge">ls -l | wc -l</code> - посчитает число файлов</li>
+  <li><code class="language-plaintext highlighter-rouge">head n3 this.txt</code> первые 3 строки файла (по умолчанию 10)</li>
+  <li><code class="language-plaintext highlighter-rouge">head -n3 this.txt | wc -w</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ls /bin | head -n5</code> сокращение длинного списка файлов каталога</li>
+  <li><code class="language-plaintext highlighter-rouge">cut</code> текст из файла по колонкам (<code class="language-plaintext highlighter-rouge">-f</code> разделение по tab, <code class="language-plaintext highlighter-rouge">-c</code> по позиции символа в строке, <code class="language-plaintext highlighter-rouge">d</code> флаг меняет разделитель на произвольный)</li>
+  <li><code class="language-plaintext highlighter-rouge">grep</code> поиск соответствия, <code class="language-plaintext highlighter-rouge">grep -v</code> поиск несоответствия</li>
+  <li><code class="language-plaintext highlighter-rouge">ls -l /usr | cut -c1 | grep d | wc -l</code> - число подкаталогов каталога (длинный вывод | только первый символ строки | все строки содержащие d | посчитать строки)</li>
+  <li><code class="language-plaintext highlighter-rouge">sort</code> сортировка по возрастанию, <code class="language-plaintext highlighter-rouge">sort -r</code> по убыванию, <code class="language-plaintext highlighter-rouge">sort -n</code> в числовом порядке (код симваол в начале строки), <code class="language-plaintext highlighter-rouge">sort -nr</code> убывание в числовом</li>
+</ul>
 
 <p>Другие ресурсы:</p>
 
