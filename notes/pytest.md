@@ -1013,6 +1013,7 @@ pip uninstall pytest-NAME
 - [pytest tricks](https://hackebrot.github.io/pytest-tricks/)
 - [[behave]]
 - [pytest-factoryboy](https://pytest-factoryboy.readthedocs.io/en/stable/#) makes it easy to combine factory approach to the test setup with the dependency injection, heart of the pytest fixtures
+- [pytest-alembic](https://pytest-alembic.readthedocs.io/en/latest/setup.html#setting-up-fixtures) плагин для тестирования миграций [[alembic]]
 
 Моки:
 
@@ -1039,6 +1040,7 @@ pip uninstall pytest-NAME
 [2022-07-04-daily-note]: ../posts/2022-07-04-daily-note "Postgres Initialization scripts and unzip with init"
 [pydantic-factories]: pydantic-factories "Pydantic-factories"
 [behave]: behave "Behave"
+[alembic]: alembic "Alembic"
 [faker]: faker "Faker - пакет для создания фейковых данных для тестов"
 [aiohttp]: aiohttp "Aiohttp асинхронный клиент-свервер на python."
 [asyncio]: asyncio "Asyncio"

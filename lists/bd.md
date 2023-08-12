@@ -14,6 +14,8 @@ category: list
 
 ## NOSQL and Graph data-bases
 
+- [список графовых дб на wiki](https://en.wikipedia.org/wiki/Graph_database)
+
 - [[mongodb]]
 - [[apache-hadoop]]
 - [[apache-spark]]

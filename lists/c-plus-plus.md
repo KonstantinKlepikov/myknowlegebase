@@ -1,10 +1,12 @@
 ---
-description: Язык программирования С++
+description: Языкb программирования С/С++
 tags: cpp
 category: list
-title: Ресурсы по языку программирования С++
+title: Ресурсы по языку программирования С/С++
 ---
 ## Документация
+
+- [C++ references](https://en.cppreference.com/w/)
 
 ## Книги
 
@@ -22,6 +24,7 @@ title: Ресурсы по языку программирования С++
 ## Другие ресурсы
 
 - [Using C++ on Linux in VS Code](https://code.visualstudio.com/docs/cpp/config-linux)
+- [О сборке многофайловых программ в C](https://younglinux.info/c/multifile)
 
 Смотир еще:
 

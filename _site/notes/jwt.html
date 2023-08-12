@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>JWT | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="JWT" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="JSON Web Tokens" />
+<meta property="og:description" content="JSON Web Tokens" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/jwt.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/jwt.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"JSON Web Tokens","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/jwt.html","headline":"JWT","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">JWT</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/jwt" title="jwt" class="link-tags">jwt&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/http" title="http" class="link-tags">http&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Токен JWT состоит из трех частей: заголовка (header), полезной нагрузки (payload) и подписи. Первые два элемента — это JSON-объекты Третий элемент вычисляется на основании первых и зависит от выбранного алгоритма (в случае использования неподписанного JWT можно пропустить). Токены могут быть перекодированы в компактное представление (JWS/JWE Compact Serialization): к заголовку и полезной нагрузке применяется алгоритм кодирования Base64-URL, после чего добавляется подпись и все три элемента разделяются точками («.»).</p>
+
+<h2 id="заголовок">Заголовок</h2>
+
+<p>В заголовке описывается сам токен.</p>
+
+<p>Обязательный ключ:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">alg</code>: алгоритм, используемый для подписи/шифрования (в случае неподписанного JWT используется значение «none»).</li>
+</ul>
+
+<p>Необязательные ключи:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">typ</code>: тип токена (type). Используется в случае, когда токены смешиваются с другими объектами, имеющими JOSE заголовки. Должно иметь значение «JWT».</li>
+  <li><code class="language-plaintext highlighter-rouge">cty</code>: тип содержимого (content type). Если в токене помимо зарегистрированных служебных ключей есть пользовательские, то данный ключ не должен присутствовать. В противном случае должно иметь значение «JWT»</li>
+</ul>
+
+<h2 id="полезная-нагрузка">Полезная нагрузка</h2>
+
+<p>Тут пользовательская информация, а также могут быть использованы некоторые служебные ключи. Все это необязательно:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">iss</code>: чувствительная к регистру строка или URI, которая является уникальным идентификатором стороны, генерирующей токен (issuer).</li>
+  <li><code class="language-plaintext highlighter-rouge">sub</code>: чувствительная к регистру строка или URI, которая является уникальным идентификатором стороны, о которой содержится информация в данном токене (subject). Значения с этим ключом должны быть уникальны в контексте стороны, генерирующей JWT.</li>
+  <li><code class="language-plaintext highlighter-rouge">aud</code>: массив чувствительных к регистру строк или URI, являющийся списком получателей данного токена. Когда принимающая сторона получает JWT с данным ключом, она должна проверить наличие себя в получателях — иначе проигнорировать токен (audience).</li>
+  <li><code class="language-plaintext highlighter-rouge">exp</code>: время в формате Unix Time, определяющее момент, когда токен станет невалидным (expiration).</li>
+  <li><code class="language-plaintext highlighter-rouge">nbf</code>: в противоположность ключу exp, это время в формате Unix Time, определяющее момент, когда токен станет валидным (not before).</li>
+  <li><code class="language-plaintext highlighter-rouge">jti</code>: строка, определяющая уникальный идентификатор данного токена (JWT ID).</li>
+  <li><code class="language-plaintext highlighter-rouge">iat</code>: время в формате Unix Time, определяющее момент, когда токен был создан. iat и nbf могут не совпадать, например, если токен был создан раньше, чем время, когда он должен стать валидным (issued at).</li>
+</ul>
+
+<p>Подробнее в <a href="https://ru.wikipedia.org/wiki/JSON_Web_Token">статье wiki</a></p>
+
+<p>Пример с <a href="https://pyjwt.readthedocs.io/en/stable/index.html">pyjwt</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">jwt</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">encoded_jwt</span> <span class="o">=</span> <span class="n">jwt</span><span class="p">.</span><span class="n">encode</span><span class="p">({</span><span class="s">"some"</span><span class="p">:</span> <span class="s">"payload"</span><span class="p">},</span> <span class="s">"secret"</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s">"HS256"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">encoded_jwt</span><span class="p">)</span>
+<span class="n">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span><span class="p">.</span><span class="n">eyJzb21lIjoicGF5bG9hZCJ9</span><span class="p">.</span><span class="mi">4</span><span class="n">twFt5NiznN84AWoo1d7KO1T_yoc0Z6XOpOVswacPZg</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">jwt</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoded_jwt</span><span class="p">,</span> <span class="s">"secret"</span><span class="p">,</span> <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="s">"HS256"</span><span class="p">])</span>
+<span class="p">{</span><span class="s">'some'</span><span class="p">:</span> <span class="s">'payload'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Еще ресурсы:</p>
+
+<ul>
+  <li><a href="https://ru.wikipedia.org/wiki/JSON_Web_Token">wiki</a></li>
+  <li><a href="https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/#__tabbed_2_1">пример с jwt</a> для [<a href="fastapi" title="Fastapi">fastapi</a>]</li>
+  <li><a href="https://jwt.io/libraries">все jwt либы</a></li>
+  <li><a href="https://pyjwt.readthedocs.io/en/stable/index.html">PyJWT</a></li>
+  <li><a href="https://github.com/mpdavis/python-jose/">python-jose</a></li>
+  <li><a href="https://github.com/lepture/authlib">authlib</a></li>
+  <li><a href="https://github.com/latchset/jwcrypto/">JWCrypto</a></li>
+  <li><a href="https://github.com/IndominusByte/fastapi-jwt-auth/">fastapi-jwt-auth</a> брошено</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
