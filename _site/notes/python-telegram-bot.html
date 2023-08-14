@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python telegram bot lib | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python telegram bot lib" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="python-telegram-bot - библиотека для создания ботов для telegram на python" />
+<meta property="og:description" content="python-telegram-bot - библиотека для создания ботов для telegram на python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-telegram-bot.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-telegram-bot.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"python-telegram-bot - библиотека для создания ботов для telegram на python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-telegram-bot.html","headline":"Python telegram bot lib","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Python telegram bot lib</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/bots" title="bots" class="link-tags">bots&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/asyncio" title="asyncio" class="link-tags">asyncio&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p><code class="language-plaintext highlighter-rouge">pip install python-telegram-bot --upgrade</code></p>
+
+<h2 id="optional-dependencies">Optional Dependencies</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[passport]"</code> installs the cryptography&gt;=39.0.1 library. Use this, if you want to use Telegram Passport related functionality.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[socks]"</code> installs httpx[socks]. Use this, if you want to work behind a Socks5 server.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[http2]"</code> installs httpx[http2]. Use this, if you want to use HTTP/2.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[rate-limiter]"</code> installs aiolimiter~=1.1.0. Use this, if you want to use <code class="language-plaintext highlighter-rouge">telegram.ext.AIORateLimiter</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[webhooks]"</code> installs the tornado~=6.2 library. Use this, if you want to use <code class="language-plaintext highlighter-rouge">telegram.ext.Updater.start_webhook/telegram.ext.Application.run_webhook</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[callback-data]"</code> installs the cachetools~=5.3.1 library. Use this, if you want to use arbitrary callback_data.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[job-queue]"</code> installs the APScheduler~=3.10.1 library and enforces pytz&gt;=2018.6, where pytz is a dependency of <code class="language-plaintext highlighter-rouge">APScheduler</code>. Use this, if you want to use the <code class="language-plaintext highlighter-rouge">telegram.ext.JobQueue</code>.</li>
+</ul>
+
+<p>To install multiple optional dependencies, separate them by commas, e.g. pip install <code class="language-plaintext highlighter-rouge">"python-telegram-bot[socks,webhooks]"</code>.</p>
+
+<p>Additionally, two shortcuts are provided:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[all]"</code> installs all optional dependencies.</li>
+  <li><code class="language-plaintext highlighter-rouge">pip install "python-telegram-bot[ext]"</code> installs all optional dependencies that are related to <code class="language-plaintext highlighter-rouge">telegram.ext</code>, i.e. [rate-limiter, webhooks, callback-data, job-queue].</li>
+</ul>
+
+<h2 id="примеры"><a href="https://docs.python-telegram-bot.org/en/stable/examples.html">Примеры</a></h2>
+
+<p><a href="https://docs.python-telegram-bot.org/en/stable/examples.echobot.html">Простейший эхобот</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+# pylint: disable=unused-argument, wrong-import-position
+# This program is dedicated to the public domain under the CC0 license.
+</span>
+<span class="s">"""
+Simple Bot to reply to Telegram messages.
+
+First, a few handler functions are defined. Then, those functions are passed to
+the Application and registered at their respective places.
+Then, the bot is started and runs until we press Ctrl-C on the command line.
+
+Usage:
+Basic Echobot example, repeats messages.
+Press Ctrl-C on the command line or send a signal to the process to stop the
+bot.
+"""</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">telegram</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">TG_VER</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">telegram</span> <span class="kn">import</span> <span class="n">__version_info__</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="n">__version_info__</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]
+</span>
+<span class="k">if</span> <span class="n">__version_info__</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">"alpha"</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span>
+        <span class="s">f"This example is not compatible with your current PTB version </span><span class="si">{</span><span class="n">TG_VER</span><span class="si">}</span><span class="s">. To view the "</span>
+        <span class="s">f"</span><span class="si">{</span><span class="n">TG_VER</span><span class="si">}</span><span class="s"> version of this example, "</span>
+        <span class="s">f"visit https://docs.python-telegram-bot.org/en/v</span><span class="si">{</span><span class="n">TG_VER</span><span class="si">}</span><span class="s">/examples.html"</span>
+    <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">telegram</span> <span class="kn">import</span> <span class="n">ForceReply</span><span class="p">,</span> <span class="n">Update</span>
+<span class="kn">from</span> <span class="nn">telegram.ext</span> <span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">CommandHandler</span><span class="p">,</span> <span class="n">ContextTypes</span><span class="p">,</span> <span class="n">MessageHandler</span><span class="p">,</span> <span class="n">filters</span>
+
+<span class="c1"># Enable logging
+</span><span class="n">logging</span><span class="p">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s">"%(asctime)s - %(name)s - %(levelname)s - %(message)s"</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="p">.</span><span class="n">INFO</span>
+<span class="p">)</span>
+<span class="c1"># set higher logging level for httpx to avoid all GET and POST requests being logged
+</span><span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">"httpx"</span><span class="p">).</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Define a few command handlers. These usually take the two arguments update and
+# context.
+</span><span class="k">async</span> <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">update</span><span class="p">:</span> <span class="n">Update</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">ContextTypes</span><span class="p">.</span><span class="n">DEFAULT_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""Send a message when the command /start is issued."""</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">update</span><span class="p">.</span><span class="n">effective_user</span>
+    <span class="k">await</span> <span class="n">update</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">reply_html</span><span class="p">(</span>
+        <span class="s">rf"Hi </span><span class="si">{</span><span class="n">user</span><span class="p">.</span><span class="n">mention_html</span><span class="p">()</span><span class="si">}</span><span class="s">!"</span><span class="p">,</span>
+        <span class="n">reply_markup</span><span class="o">=</span><span class="n">ForceReply</span><span class="p">(</span><span class="n">selective</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">help_command</span><span class="p">(</span><span class="n">update</span><span class="p">:</span> <span class="n">Update</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">ContextTypes</span><span class="p">.</span><span class="n">DEFAULT_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""Send a message when the command /help is issued."""</span>
+    <span class="k">await</span> <span class="n">update</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">reply_text</span><span class="p">(</span><span class="s">"Help!"</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">echo</span><span class="p">(</span><span class="n">update</span><span class="p">:</span> <span class="n">Update</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">ContextTypes</span><span class="p">.</span><span class="n">DEFAULT_TYPE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""Echo the user message."""</span>
+    <span class="k">await</span> <span class="n">update</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">reply_text</span><span class="p">(</span><span class="n">update</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="s">"""Start the bot."""</span>
+    <span class="c1"># Create the Application and pass it your bot's token.
+</span>    <span class="n">application</span> <span class="o">=</span> <span class="n">Application</span><span class="p">.</span><span class="n">builder</span><span class="p">().</span><span class="n">token</span><span class="p">(</span><span class="s">"TOKEN"</span><span class="p">).</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="c1"># on different commands - answer in Telegram
+</span>    <span class="n">application</span><span class="p">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">CommandHandler</span><span class="p">(</span><span class="s">"start"</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span>
+    <span class="n">application</span><span class="p">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">CommandHandler</span><span class="p">(</span><span class="s">"help"</span><span class="p">,</span> <span class="n">help_command</span><span class="p">))</span>
+
+    <span class="c1"># on non command i.e message - echo the message on Telegram
+</span>    <span class="n">application</span><span class="p">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">MessageHandler</span><span class="p">(</span><span class="n">filters</span><span class="p">.</span><span class="n">TEXT</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">filters</span><span class="p">.</span><span class="n">COMMAND</span><span class="p">,</span> <span class="n">echo</span><span class="p">))</span>
+
+    <span class="c1"># Run the bot until the user presses Ctrl-C
+</span>    <span class="n">application</span><span class="p">.</span><span class="n">run_polling</span><span class="p">(</span><span class="n">allowed_updates</span><span class="o">=</span><span class="n">Update</span><span class="p">.</span><span class="n">ALL_TYPES</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="telegram-bots" title="Telegram python bots">telegram-bots</a>]</li>
+  <li><a href="https://docs.python-telegram-bot.org/en/stable/#">документация</a></li>
+  <li><a href="https://github.com/python-telegram-bot/python-telegram-bot/wiki">wiki</a></li>
+  <li><a href="https://core.telegram.org/">API telegram</a></li>
+  <li>[<a href="aiogram" title="Telegram python bots with aiogram">aiogram</a>] библиотека</li>
+  <li>[<a href="aiogram-dialog" title="Aiogram extention aiogram-dialog">aiogram-dialog</a>] библиотека</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
