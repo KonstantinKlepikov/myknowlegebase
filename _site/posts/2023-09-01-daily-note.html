@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Несколько практических вопросов по загрузке файлов в фастапи | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Несколько практических вопросов по загрузке файлов в фастапи" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Несколько вопросов по загрузке файлов в fastapi" />
+<meta property="og:description" content="Несколько вопросов по загрузке файлов в fastapi" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2023-09-01-daily-note.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2023-09-01-daily-note.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Несколько вопросов по загрузке файлов в fastapi","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2023-09-01-daily-note.html","headline":"Несколько практических вопросов по загрузке файлов в фастапи","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Несколько практических вопросов по загрузке файлов в фастапи</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/fastapi" title="fastapi" class="link-tags">fastapi&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="how-do-i-return-an-image-in-fastapi"><a href="https://stackoverflow.com/questions/55873174/how-do-i-return-an-image-in-fastapi">How do I return an image in fastAPI</a></h2>
+
+<h3 id="если-у-вас-уже-есть-байты-изображения-в-памяти">Если у вас уже есть байты изображения в памяти</h3>
+
+<p><code class="language-plaintext highlighter-rouge">fastapi.responses.Response</code> вашими настройками <code class="language-plaintext highlighter-rouge">content</code> и <code class="language-plaintext highlighter-rouge">media_type.</code></p>
+
+<p>Вам также придется повозиться с декоратором эндпоинта, чтобы FastAPI указал правильный тип носителя в спецификации OpenAPI.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s">"/image"</span><span class="p">,</span>
+
+    <span class="c1"># Set what the media type will be in the autogenerated OpenAPI specification.
+</span>    <span class="n">responses</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">200</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"content"</span><span class="p">:</span> <span class="p">{</span><span class="s">"image/png"</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="c1"># Prevent FastAPI from adding "application/json" as an additional
+</span>    <span class="c1"># response media type in the autogenerated OpenAPI specification.
+</span>    <span class="c1"># https://github.com/tiangolo/fastapi/issues/3258
+</span>    <span class="n">response_class</span><span class="o">=</span><span class="n">Response</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_image</span><span class="p">()</span>
+    <span class="n">image_bytes</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">generate_cat_picture</span><span class="p">()</span>
+    <span class="c1"># media_type here sets the media type of the actual response sent to the client.
+</span>    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_bytes</span><span class="p">,</span> <span class="n">media_type</span><span class="o">=</span><span class="s">"image/png"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://fastapi.tiangolo.com/advanced/custom-response/#response">документация</a></li>
+  <li><a href="https://fastapi.tiangolo.com/advanced/additional-responses/#additional-media-types-for-the-main-response">про дополнительные медиатипы в swagger</a></li>
+</ul>
+
+<h3 id="если-ваше-изображение-существует-только-в-файловой-системе">Если ваше изображение существует только в файловой системе</h3>
+
+<p><code class="language-plaintext highlighter-rouge">fastapi.responses.FileResponse</code></p>
+
+<p><a href="https://fastapi.tiangolo.com/advanced/custom-response/#fileresponse">документация</a></p>
+
+<p><strong>Будь осторожен с <code class="language-plaintext highlighter-rouge">StreamingResponse</code></strong></p>
+
+<p>StreamingResponse труднее использовать правильно. StreamingResponse соответствует фрагментированному кодированию передачи HTTP . (Это может зависеть от вашего сервера ASGI, но , по крайней мере, это относится к Uvicorn .) И это не лучший вариант использования кодирования фрагментированной передачи. Этот ответ кодирует передачу по частям. Кодирование передачи по частям имеет смысл, когда вы не знаете заранее размер выходных данных и не хотите ждать, чтобы собрать все вместе, прежде чем начать отправлять его клиенту. Это может применяться к таким вещам, как обслуживание результатов медленных запросов к базе данных, но обычно не применимо к обслуживанию изображений. Ненужное фрагментированное кодирование передачи может быть вредным.</p>
+
+<p><a href="https://stackoverflow.com/questions/55873174/how-do-i-return-an-image-in-fastapi">Источник</a></p>
+
+<h2 id="how-to-upload-file-using-fastapi">How to Upload File using FastAPI</h2>
+
+<p>Необходимо установить python-multipart. Необходимо внимательно отнестись к операциям функции, чтобы не столкнуться с блокировкой асинхронного цикла, если функция объявлена как асинхронная. Используемый <code class="language-plaintext highlighter-rouge">SpooledTemporaryFile</code> FastAPI/Starlette max_size атрибут имеет значение 1 МБ, что означает, что данные помещаются в память до тех пор, пока размер файла не превысит 1 МБ, после чего данные записываются во временный файл на диске во временном каталоге ОС. Следовательно, если вы загрузите файл размером более 1 МБ, он не будет сохранен в памяти, и вызов <code class="language-plaintext highlighter-rouge">file.file.read()</code> фактически считывает данные с диска в память. Таким образом, если файл слишком велик, чтобы поместиться в оперативную память вашего сервера, вам следует читать файл по частям и обрабатывать один фрагмент за раз, как описано в разделе «<a href="https://stackoverflow.com/questions/73442335/how-to-upload-a-large-file-%e2%89%a53gb-to-fastapi-backend/73443824#73443824">Чтение файла по частям</a>». Вы также можете взглянуть на этот ответ , который демонстрирует другой подход к загрузке большого файла частями, используя метод <code class="language-plaintext highlighter-rouge">Starlette.stream()</code> и <code class="language-plaintext highlighter-rouge">streaming-form-data</code> пакет, позволяющий анализировать multipart/form-data фрагменты потоковой передачи, что позволяет значительно минимизировать время, необходимое для загрузки файлов.</p>
+
+<p>Если вам необходимо определить свою конечную точку с помощью <code class="language-plaintext highlighter-rouge">async def</code> т.к. это может потребоваться <code class="language-plaintext highlighter-rouge">await</code> для некоторых других сопрограмм внутри вашего маршрута — тогда вам следует использовать асинхронное чтение и запись содержимого, как показано в <a href="https://stackoverflow.com/questions/65342833/fastapi-uploadfile-is-slow-compared-to-flask/70667530#70667530">этом ответе</a>. Более того, если вам нужно отправить дополнительные данные (например, JSON данные) вместе с загрузкой файла (файлов), ознакомьтесь с <a href="https://stackoverflow.com/questions/65504438/how-to-add-both-file-and-json-body-in-a-fastapi-post-request/70640522#70640522">этим ответом</a>. Я бы также предложил вам взглянуть на <a href="https://stackoverflow.com/questions/71516140/fastapi-runs-api-calls-in-serial-instead-of-parallel-fashion/71517830#71517830">этот ответ</a>, который объясняет разницу между def и async def эндпоинтами.</p>
+
+<h3 id="загрузка-одного-файла">Загрузка одного файла</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">File</span><span class="p">,</span> <span class="n">UploadFile</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">"/upload"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="nb">file</span><span class="p">:</span> <span class="n">UploadFile</span> <span class="o">=</span> <span class="n">File</span><span class="p">(...)):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">"There was an error uploading the file"</span><span class="p">}</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">f"Successfully uploaded </span><span class="si">{</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>или по частям (слишком большой файл)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">File</span><span class="p">,</span> <span class="n">UploadFile</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">"/upload"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="nb">file</span><span class="p">:</span> <span class="n">UploadFile</span> <span class="o">=</span> <span class="n">File</span><span class="p">(...)):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">while</span> <span class="n">contents</span> <span class="p">:</span><span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">):</span>
+                <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">"There was an error uploading the file"</span><span class="p">}</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">f"Successfully uploaded </span><span class="si">{</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span><span class="si">}</span><span class="s">"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>можно так-же через <code class="language-plaintext highlighter-rouge">shutil.copyfileobj()</code> (смотри в исходнике)</p>
+
+<h3 id="загрузка-нескольких-файлов">Загрузка нескольких файлов</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">File</span><span class="p">,</span> <span class="n">UploadFile</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">"/upload"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">UploadFile</span><span class="p">]</span> <span class="o">=</span> <span class="n">File</span><span class="p">(...)):</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">"There was an error uploading the file(s)"</span><span class="p">}</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">f"Successfuly uploaded </span><span class="si">{</span><span class="p">[</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span> <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>по частям</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">File</span><span class="p">,</span> <span class="n">UploadFile</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">"/upload"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">UploadFile</span><span class="p">]</span> <span class="o">=</span> <span class="n">File</span><span class="p">(...)):</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">contents</span> <span class="p">:</span><span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">):</span>
+                    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+        <span class="k">except</span> <span class="nb">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">"There was an error uploading the file(s)"</span><span class="p">}</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="nb">file</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">"message"</span><span class="p">:</span> <span class="s">f"Successfuly uploaded </span><span class="si">{</span><span class="p">[</span><span class="nb">file</span><span class="p">.</span><span class="n">filename</span> <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://stackoverflow.com/questions/63048825/how-to-upload-file-using-fastapi">источник</a>
+<a href="https://fastapi.tiangolo.com/tutorial/request-files/">File uploades документация</a></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../notes/fastapi" title="Fastapi">fastapi</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

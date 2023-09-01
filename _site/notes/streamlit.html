@@ -178,6 +178,28 @@
 
 <p><img src="/myknowlegebase/attachments/2022-10-22-23-06-35.png" alt="layouts" /></p>
 
+<h2 id="how-to-add-extra-lines-space">How to add extra lines space</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">st</span><span class="p">.</span><span class="n">button</span><span class="p">(</span><span class="s">"button 1"</span><span class="p">)</span>
+<span class="n">st</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+<span class="n">st</span><span class="p">.</span><span class="n">button</span><span class="p">(</span><span class="s">"button 2"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="clear-the-cache-for-file-uploder-on-streamlit">Clear the cache for file uploder on streamlit</h2>
+
+<p>Очистить кеш аплоадера не получится. Засовывать в экспандер бесполезно. Экспандер запускает код даже если он свернут при рендеринге страницы. Доступа к состоянию экспандера нет. Поэтому лучшее решение - собсрать что-то на основе <code class="language-plaintext highlighter-rouge">st.empty()</code>. Загрузку же запускать обычной кнопкой.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">st</span><span class="p">.</span><span class="n">form</span><span class="p">(</span><span class="s">"my-form"</span><span class="p">,</span> <span class="n">clear_on_submit</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="nb">file</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">file_uploader</span><span class="p">(</span><span class="s">"FILE UPLOADER"</span><span class="p">)</span>
+        <span class="n">submitted</span> <span class="o">=</span> <span class="n">st</span><span class="p">.</span><span class="n">form_submit_button</span><span class="p">(</span><span class="s">"UPLOAD!"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">submitted</span> <span class="ow">and</span> <span class="nb">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">st</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"UPLOADED!"</span><span class="p">)</span>
+        <span class="c1"># do stuff with your uploaded file
+</span></code></pre></div></div>
+
+<p><a href="https://discuss.streamlit.io/t/clear-the-cache-for-file-uploder-on-streamlit/14304">сурс</a></p>
+
 <p>Смотри еще:</p>
 
 <ul>
@@ -186,6 +208,7 @@
   <li>[<a href="plotly" title="Plotly and dash">plotly</a>]</li>
   <li>[<a href="flet" title="Flet web apps">flet</a>]</li>
   <li>[<a href="../lists/шаблонизаторы" title="Шаблонизаторы">шаблонизаторы</a>]</li>
+  <li><a href="https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/">Streamlit emoji shortcodes</a></li>
 </ul>
 
 

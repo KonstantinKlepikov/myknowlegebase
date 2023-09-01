@@ -32,6 +32,7 @@ title: Fastapi
 - [[fastapi-template-deployment]]
 - [[fastapi-template-buildin-routes]]
 - [[2021-10-18-daily-note]] - problems with postgresql template
+- [[2023-09-01-daily-note]] - загрузка файлов
 - [[python-cryptography]]
 - [NoSQL (Distributed / Big Data) Databases](https://fastapi.tiangolo.com/advanced/nosql-databases/) - example with couchdb, can be used for [[mongodb]]
 - [Securing FastAPI with JWT Token-based Authentication](https://testdriven.io/blog/fastapi-jwt-auth/)
@@ -67,6 +68,7 @@ title: Fastapi
 [fastapi-template-deployment]: fastapi-template-deployment "Fastapi template deployment"
 [fastapi-template-buildin-routes]: fastapi-template-buildin-routes "Fastapi template buildin routes"
 [2021-10-18-daily-note]: ../posts/2021-10-18-daily-note "Проблемы с fastapi postgresql template"
+[2023-09-01-daily-note]: ../posts/2023-09-01-daily-note "Несколько практических вопросов по загрузке файлов в фастапи"
 [python-cryptography]: python-cryptography "Криптография в python"
 [mongodb]: mongodb "MongoDB"
 [celery]: celery "Celery"
