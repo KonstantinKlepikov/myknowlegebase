@@ -7,13 +7,13 @@ title: Организация тегов на git
 
 Создавать метку надо сразу после коммита.
 
-```Git
+```sh
 $ git tag
 v1.0
 v2.0
 ```
 
-```git
+```sh
 $ git tag -l "v1.8.5*"
 v1.8.5
 v1.8.5-rc0
@@ -29,7 +29,7 @@ v1.8.5.5
 
 Анотированные метки
 
-```Git
+```sh
 $ git tag -a v1.4 -m "my version 1.4"
 $ git tag
 v0.1
@@ -39,7 +39,7 @@ v1.4
 
 Просмотр метки всместе с коммитом
 
-```Git
+```sh
 $ git show v1.4
 tag v1.4
 Tagger: Ben Straub <ben@straub.cc>
@@ -56,13 +56,13 @@ Date:   Mon Mar 17 21:52:11 2008 -0700
 
 Посмотреть все метки и все аннотации
 
-```Git
+```sh
 git tag -n
 ```
 
 Легковесные метки
 
-```Git
+```sh
 $ git tag v1.4-lw
 $ git tag
 v0.1
@@ -72,7 +72,7 @@ v1.4-lw
 v1.5
 ```
 
-```Git
+```sh
 $ git show v1.4-lw
 commit ca82a6dff817ec66f44342007202690a93763949
 Author: Scott Chacon <schacon@gee-mail.com>
@@ -83,7 +83,7 @@ Date:   Mon Mar 17 21:52:11 2008 -0700
 
 Отправка меток
 
-```Git
+```sh
 $ git push origin v1.5
 Counting objects: 14, done.
 Delta compression using up to 8 threads.
@@ -94,7 +94,7 @@ To git@github.com:schacon/simplegit.git
  * [new tag]         v1.5 -> v1.5
 ```
 
-```Git
+```sh
 $ git push origin --tags
 Counting objects: 1, done.
 Writing objects: 100% (1/1), 160 bytes | 0 bytes/s, done.
@@ -106,14 +106,14 @@ To git@github.com:schacon/simplegit.git
 
 Удаление меток
 
-```Git
+```sh
 $ git tag -d v1.4-lw
 Deleted tag 'v1.4-lw' (was e7d5add)
 ```
 
 С удаленного репозитория (метод №1)
 
-```Git
+```sh
 $ git push origin :refs/tags/v1.4-lw
 To /git@github.com:schacon/simplegit.git
  - [deleted]         v1.4-lw
@@ -121,20 +121,20 @@ To /git@github.com:schacon/simplegit.git
 
 С удаленного репозитория (метод №2)
 
-```Git
+```sh
 $git push origin --delete <tagname>
 ```
 
 Метки для конкретного коммита
 
-```Git
+```sh
 git tag <tag_name> <commit_sha>
 git tag -a <tag_name> <commit_sha> -m "message"
 ```
 
 Просмотр всех коммитов с метками
 
-```Git
+```sh
 git log --oneline
 
 9127753 (HEAD -> master) Commit 3
@@ -144,7 +144,7 @@ cab6e1b (origin/master) master : initial commit
 
 Создание тегов для текущего или предыдущих коммитов
 
-```Git
+```sh
 git tag <tag_name> HEAD   # for the last commit
 git tag -a <tag_name> HEAD -m "message"
 

@@ -144,7 +144,7 @@
 
 <h2 id="фичи"><a href="https://core.telegram.org/bots/features">Фичи</a></h2>
 
-<p>Пользователи могут отправлять ботам сообщения всех типов, включая текст, файлы, местоположения, стикеры, голосовые сообщения. Кщк опции:</p>
+<p>Пользователи могут отправлять ботам сообщения всех типов, включая текст, файлы, местоположения, стикеры, голосовые сообщения. Еще опции:</p>
 
 <ul>
   <li>Commands, которые выделяются в сообщениях и могут быть выбраны из списка после ввода / (до 32 символов латиницей).</li>
@@ -245,6 +245,110 @@
 <h3 id="вложенные-меню">Вложенные меню</h3>
 
 <p>Некоторые боты могут быть добавлены непосредственно во вложенные меню пользователя, что дает им легкий доступ к боту в любом чате. В настоящее время этот параметр ограничен некоторыми одобренными ботами, но может быть расширен позже.</p>
+
+<h3 id="интеграции">Интеграции</h3>
+
+<p>Существуют различные способы дальнейшей интеграции ботов с Telegram и другими сервисами.</p>
+
+<ul>
+  <li>Используйте веб-приложения гибких интерфейсов.</li>
+  <li>Принимайте платежи через интегрированные платежные системы.</li>
+  <li>Подключитесь к Telegram, используя функцию веб-входа.</li>
+  <li>Создавайте игровых ботов, интегрируя игры HTML5.</li>
+  <li>Помогите пользователям создавать стикеры Telegram и управлять ими.</li>
+</ul>
+
+<h4 id="веб-приложения">Веб-приложения</h4>
+
+<p>Боты могут легко обрабатывать сложные входные данные любого типа и динамические потоки взаимодействия через веб-приложения. Благодаря этой уникальной функции вы можете разрабатывать любое количество гибких и оптимизированных интерфейсов на JavaScript.</p>
+
+<ul>
+  <li><a href="https://core.telegram.org/bots/webapps">руководство по mini apps api</a></li>
+  <li><a href="https://core.telegram.org/bots/webapps#design-guidelines">рекомендации по проектированию</a></li>
+</ul>
+
+<h4 id="платежи"><a href="https://core.telegram.org/bots/payments">Платежи</a></h4>
+
+<p>Боты могут принимать платежи с помощью оптимизированного интерфейса, который собирает все необходимые данные от пользователя. Telegram не собирает никаких платежных данных (например, данных кредитной карты пользователя) и отправляет их непосредственно одной из <a href="https://core.telegram.org/bots/payments#supported-payment-providers">поддерживаемых платежных систем</a>.</p>
+
+<p>Вот краткое руководство по внедрению платежей:</p>
+
+<ul>
+  <li>Выберите поставщика и получите <a href="https://core.telegram.org/bots/payments#getting-a-token">соответствующий токен</a>, а также тестовый токен от поставщика <code class="language-plaintext highlighter-rouge">Stripe TEST MODE</code>.</li>
+  <li>Осуществляйте платежи через <a href="https://core.telegram.org/bots/api#payments">соответствующие методы API.</a></li>
+  <li>Проверьте свою реализацию, используя тестовый токен и <a href="https://stripe.com/docs/testing#cards">тестовую кредитную карту</a>.</li>
+</ul>
+
+<p>Затем, чтобы выставить счет и обработать поток заказов:</p>
+
+<ul>
+  <li><a href="https://core.telegram.org/bots/api#sendinvoice">Отправьте пользователю счет</a> за товары или услуги, которые вы предлагаете.</li>
+  <li>Подтвердите заказ и примите оформление заказа через ответ <a href="https://core.telegram.org/bots/api#answerprecheckoutquery">answerPreCheckoutQuery</a>.</li>
+  <li>Подтвердите платеж, проверив <a href="https://core.telegram.org/bots/api#successfulpayment">сообщение об успехе</a>.</li>
+  <li>Отправьте товар или окажите услуги.
+Полное и исчерпывающее руководство, включая оперативный контрольный список, параметры и подробное описание методов, доступно <a href="https://core.telegram.org/bots/payments">здесь</a>.</li>
+</ul>
+
+<h4 id="веб-вход">Веб-вход</h4>
+
+<p>Telegram предлагает гибкую, легкую и бесплатную платформу для аутентификации пользователей на любом веб-сайте и в приложении. Это можно использовать для объединения вашей платформы с Telegram, обеспечивая удобство работы вашим пользователям. Вы также можете свободно полагаться на эту платформу для реализации быстрого входа на свой сайт без регистрации, независимо от его подключения к Telegram.</p>
+
+<h5 id="виджеты">Виджеты</h5>
+
+<p>Виджет входа в Telegram — это простой и безопасный способ авторизации пользователей на вашем сайте.</p>
+
+<ul>
+  <li>Выберите бота — в идеале его имя и аватар должны совпадать с названием и логотипом сайта.</li>
+  <li>Используйте /setdomain команду в <code class="language-plaintext highlighter-rouge">@BotFather</code>, чтобы связать бота с доменом вашего сайта.</li>
+  <li>Настройте свой виджет с помощью <a href="https://core.telegram.org/widgets/login#widget-configuration">нашего специального инструмента</a> и вставьте его на свой сайт.</li>
+</ul>
+
+<h5 id="встроенный-вход">Встроенный вход</h5>
+
+<p>Когда пользователи открывают ваш веб-сайт с помощью встроенной кнопки, вы можете использовать параметр <a href="https://core.telegram.org/bots/api#loginurl">login_url</a> в качестве альтернативы виджетам входа в систему. Таким образом, вы сможете легко <a href="https://telegram.org/blog/privacy-discussions-web-bots#meet-seamless-web-bots">авторизовать</a> их на своем веб-сайте или в приложении еще до загрузки страницы.</p>
+
+<ul>
+  <li><a href="https://core.telegram.org/widgets/login#checking-authorization">руководство по аутентификации</a></li>
+</ul>
+
+<h5 id="html5-игры">HTML5-игры</h5>
+
+<p>Боты могут служить самостоятельными игровыми платформами — с помощью <a href="https://core.telegram.org/bots/api#games">игрового API HTML5</a> вы можете разрабатывать многопользовательские или однопользовательские игры и позволять своим пользователям развлекаться, сравнивая ранги, очки и многое другое.</p>
+
+<p>Для начала выполните следующие простые шаги:</p>
+
+<ul>
+  <li>Отправьте <code class="language-plaintext highlighter-rouge">/newgame</code> команду <code class="language-plaintext highlighter-rouge">@BotFather</code></li>
+  <li>Предоставьте текст описания, изображение или дополнительный GIF-файл, чтобы продемонстрировать игровой процесс.</li>
+  <li>Отправьте игру пользователям с помощью метода <code class="language-plaintext highlighter-rouge">sendGame</code> или встроенного запроса.</li>
+  <li>Когда кто-то захочет поиграть, вы получите соответствующее сообщение <code class="language-plaintext highlighter-rouge">game_short_nameв</code> <code class="language-plaintext highlighter-rouge">CallbackQuery</code>.</li>
+  <li>Чтобы запустить игру, укажите URL-адрес игры HTML5 в качестве url параметра ответа <code class="language-plaintext highlighter-rouge">CallbackQuery</code>.</li>
+</ul>
+
+<p>Затем для обработки рекордов :</p>
+
+<ul>
+  <li>Используйте <code class="language-plaintext highlighter-rouge">setGameScore</code>, чтобы публиковать рекорды в чате игры.</li>
+  <li>Используйте <code class="language-plaintext highlighter-rouge">getGameHighScores</code>, чтобы получить таблицы рекордов в игре.</li>
+</ul>
+
+<p>Вы также можете встроить кнопку «Поделиться» в свою игру. Чтобы получить лучшее представление, обязательно посмотрите:</p>
+
+<ul>
+  <li><a href="https://core.telegram.org/bots/games">Руководство по играм HTML5</a></li>
+  <li><a href="https://core.telegram.org/bots/api#games">Документация по API HTML5-игровых ботов</a></li>
+</ul>
+
+<h5 id="стикеры-и-пользовательские-эмодзи"><a href="https://core.telegram.org/bots/features#stickers-and-custom-emoji">Стикеры и пользовательские эмодзи</a></h5>
+
+<h3 id="еще-опции-доступные-в-апи">Еще опции, доступные в АПИ</h3>
+
+<ul>
+  <li><a href="https://core.telegram.org/bots/features#language-support">Языковая поддержка</a></li>
+  <li><a href="https://core.telegram.org/bots/features#bot-management">Управление ботами</a></li>
+  <li><a href="https://core.telegram.org/bots/features#testing-your-bot">Тестирование вашего бота</a> (запуск бота с дополнительной тестовой учетки бота, запуск в тестовой среде, запуск локально)</li>
+  <li><a href="https://core.telegram.org/bots/features#botfather">Управление ботами</a> через <code class="language-plaintext highlighter-rouge">@BotFather</code></li>
+</ul>
 
 <p>Смотри еще:</p>
 
