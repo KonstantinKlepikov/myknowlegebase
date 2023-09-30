@@ -877,6 +877,9 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 - [[flower]] дашборд для мониторинга тасков в celery
 - [[asyncio]]
 - [[fastapi]]
+- [Working example of celery with mongo DB](https://stackoverflow.com/questions/15740755/working-example-of-celery-with-mongo-db) бекенд celery на [[mongodb]]
+- [Where should I put the Celery configuration file?](https://stackoverflow.com/questions/53318596/where-should-i-put-the-celery-configuration-file)
+- [How can I trigger tasks from another task in Python Celery?](https://stackoverflow.com/questions/15887081/how-can-i-trigger-tasks-from-another-task-in-python-celery)
 
 Более простой аналог: [[python-rq]]
 
@@ -902,6 +905,7 @@ $ celery -A proj worker --loglevel=INFO --concurrency=10 -n worker3@%h
 [python-logging]: ../lists/python-logging "Python logging"
 [asyncio]: asyncio "Asyncio"
 [fastapi]: fastapi "Fastapi"
+[mongodb]: mongodb "MongoDB"
 [python-rq]: python-rq "Python-rq"
 [poetry]: poetry "Poetry"
 [docker-compose]: docker-compose "Docker compose"

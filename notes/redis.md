@@ -64,6 +64,7 @@ PONG
 - [[python-rq]]
 - [[rabbitmq]]
 - [How to use Redis Pub/Sub in your Python Application](https://blog.devgenius.io/how-to-use-redis-pub-sub-in-your-python-application-b6d5e11fc8de)
+- [How to create a redis cloud connection url with an auth password](https://stackoverflow.com/questions/44344628/how-to-create-a-redis-cloud-connection-url-with-an-auth-password)
 
 [redis-py](https://github.com/redis/redis-py) - питоний интерфейс к редису
 

@@ -102,6 +102,7 @@ variable_name='command [option ...] arg1 arg2 ...'
 - [[shell-comans-in-one-line]]
 - [[makefile]]
 - [gnu make](https://www.gnu.org/software/make/manual/make.html#Flavors)
+- [Run multiple commands in one line with `;`, `&&` and `||` - Linux Tips](https://dev.to/0xbf/run-multiple-commands-in-one-line-with-and-linux-tips-5hgm)
 
 Статьи:
 
