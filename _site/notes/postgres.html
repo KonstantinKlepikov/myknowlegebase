@@ -118,21 +118,21 @@
     </p>
   </div>
   <div class="prose mb-4 py-4">
-    <p>* Статья является сокращением “Postgresql знакомство” Лузанов, Лёвшин, Рогов.</p>
+    <p>* Статья является сокращением “Postgresql знакомство” Лузанов, Лёвшин, Рогов и “Оптимизация запросов в Postgresql” Домбровская, Новиков, Бейликова.</p>
 
-<p>“PostgreSQL обеспечивает полную поддержку свойств ACID и обеспечивает эффективную изоляцию транзакций. Для этого в PostgreSQL используется механизм многоверсионного управления одновременным доступом (MVCC), который позволяет обходиться без блокировок строк во всех случаях, кроме одновременного изменения одной и той же строки данных в нескольких процессах: читающие транзакции никогда не блокируют пишущих транзакций, а пишущие — читающих.</p>
+<p>PostgreSQL обеспечивает полную поддержку свойств ACID и обеспечивает эффективную изоляцию транзакций. Для этого в PostgreSQL используется механизм многоверсионного управления одновременным доступом (MVCC), который позволяет обходиться без блокировок строк во всех случаях, кроме одновременного изменения одной и той же строки данных в нескольких процессах: читающие транзакции никогда не блокируют пишущих транзакций, а пишущие — читающих.</p>
 
 <p>Это справедливо и для самого строгого уровня изоляции serializable, который, используя инновационную систему Serializable Snapshot Isolation, обеспечивает полное отсутствие аномалий сериализации и гарантирует, что при одновременном выполнении транзакций результат будет таким же, как и при последовательном выполнении.</p>
 
-<p>PostgreSQL эффективно использует современную архитектуру многоядерных процессоров — производительность СУБД растет практически линейно с увеличением количе- ства ядер.</p>
+<p>PostgreSQL эффективно использует современную архитектуру многоядерных процессоров — производительность СУБД растет практически линейно с увеличением количества ядер.</p>
 
-<p>Есть возможность параллельного выполнения запросов: PostgreSQL умеет распараллеливать чтение данных и соединения (в том числе и для секционированных таблиц), выполнять в параллельном режиме ряд служебных команд (создание индексов, очистку). JIT-компиляция запросов по- вышает возможности использования аппаратных средств для ускорения операций.</p>
+<p>Есть возможность параллельного выполнения запросов: PostgreSQL умеет распараллеливать чтение данных и соединения (в том числе и для секционированных таблиц), выполнять в параллельном режиме ряд служебных команд (создание индексов, очистку). JIT-компиляция запросов повышает возможности использования аппаратных средств для ускорения операций.</p>
 
 <p>В PostgreSQL реализованы различные способы индексирования. Помимо традиционных B-деревьев доступно множество других методов доступа:</p>
 
 <ul>
   <li>Hash — индекс на основе хеширования. В отличие от B-деревьев, такие индексы работают только при проверке на равенство, но в ряде случаев могут оказаться компактнее и эффективнее.</li>
-  <li>GiST — обобщенное сбалансированное дерево поиска, которое применяется для данных, не допускающих упорядочения. Примерами могут служить R-деревья для индексирования точек на плоскости с возможностью быстрого поиска ближайших соседей (k-NN search) и индексирование операции пересечения интервалов.</li>
+  <li>GiST — обобщенное сбалансированное дерево поиска, которое применяется для данных, не допускающих упорядочения. Примерами могут служить R-деревья для индексирования точек на плоскости с возможностью быстрого поиска ближайших соседей (kNN search) и индексирование операции пересечения интервалов.</li>
   <li>SP-GiST — обобщенное несбалансированное дерево, основанное на разбиении области значений на непересекающиеся вложенные области. Примерами могут служить дерево квадрантов для пространственных данных и префиксное дерево для текстовых строк.</li>
   <li>GIN — обобщенный инвертированный индекс, который используется для сложных значений, состоящих из элементов. Основной областью применения является полнотекстовый поиск, где требуется находить документы, в которых встречается указанные в поисковом запросе слова. Другим примером использования является поиск значений в массивах данных</li>
   <li>RUM — дальнейшее развитие метода GIN для полнотекстового поиска. Этот индекс, доступный в виде расширения, позволяет ускорить фразовый поиск и сразу выдавать результаты упорядоченными по релевантности.</li>
@@ -140,7 +140,7 @@
   <li>Bloom — индекс, основанный на фильтре Блума. Такой индекс, имея очень компактное представление, позволяет быстро отсечь заведомо ненужные строки, однако требует перепроверки оставшихся</li>
 </ul>
 
-<p>Многие типы индексов могут создаваться не только по одному, но и по нескольким столбцам таблицы. Независимо от типа можно строить индексы как по столбцам, так и по произвольным выражениям, а также создавать частичные индексы только для определенных строк. Покрывающие индексы позволяют ускорить запросы за счет того, что все необходимые данные извлекаются из самого индекса без обращения к таблице. В арсенале планировщика имеется сканирование по бито- вой карте, которое позволяет объединять сразу несколько индексов для ускорения доступа</p>
+<p>Многие типы индексов могут создаваться не только по одному, но и по нескольким столбцам таблицы. Независимо от типа можно строить индексы как по столбцам, так и по произвольным выражениям, а также создавать частичные индексы только для определенных строк. Покрывающие индексы позволяют ускорить запросы за счет того, что все необходимые данные извлекаются из самого индекса без обращения к таблице. В арсенале планировщика имеется сканирование по битовой карте, которое позволяет объединять сразу несколько индексов для ускорения доступа</p>
 
 <p>Пользователи могут самостоятельно, не меняя базовый код системы, добавлять:</p>
 
@@ -171,11 +171,11 @@ test=#
 
 <p>Создание таблицы</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# CREATE TABLE courses( test(#
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># CREATE TABLE courses( test(#</span>
 c_no text PRIMARY KEY,
-test(# title text,
-test(# hours integer
-test(# );
+<span class="nb">test</span><span class="o">(</span><span class="c"># title text,</span>
+<span class="nb">test</span><span class="o">(</span><span class="c"># hours integer</span>
+<span class="nb">test</span><span class="o">(</span><span class="c"># );</span>
 CREATE TABLE
 </code></pre></div></div>
 
@@ -183,9 +183,9 @@ CREATE TABLE
 
 <p>Добавляем даныне</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# INSERT INTO courses(c_no, title, hours)
-VALUES  ('CS301', 'Базы данных', 30),
-        ('CS305', 'Сети ЭВМ', 60);
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># INSERT INTO courses(c_no, title, hours)</span>
+VALUES  <span class="o">(</span><span class="s1">'CS301'</span>, <span class="s1">'Базы данных'</span>, 30<span class="o">)</span>,
+        <span class="o">(</span><span class="s1">'CS305'</span>, <span class="s1">'Сети ЭВМ'</span>, 60<span class="o">)</span><span class="p">;</span>
 INSERT 0 2
 </code></pre></div></div>
 
@@ -193,17 +193,17 @@ INSERT 0 2
 
 <p>Для дальнейших примеров нам потребуется еще две таблицы: студенты и экзамены. Для каждого студента будем хранить его имя и год поступления; идентифицироваться он будет числовым номером студенческого билета.</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# CREATE TABLE students(
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># CREATE TABLE students(</span>
     s_id integer PRIMARY KEY,
     name text,
     start_year integer
-);
+<span class="o">)</span><span class="p">;</span>
 CREATE TABLE
 
-test=# INSERT INTO students(s_id, name, start_year)
-VALUES  (1451, 'Анна', 2014),
-        (1432, 'Виктор', 2014),
-        (1556, 'Нина', 2015);
+<span class="nb">test</span><span class="o">=</span><span class="c"># INSERT INTO students(s_id, name, start_year)</span>
+VALUES  <span class="o">(</span>1451, <span class="s1">'Анна'</span>, 2014<span class="o">)</span>,
+        <span class="o">(</span>1432, <span class="s1">'Виктор'</span>, 2014<span class="o">)</span>,
+        <span class="o">(</span>1556, <span class="s1">'Нина'</span>, 2015<span class="o">)</span><span class="p">;</span>
 INSERT 0 3
 </code></pre></div></div>
 
@@ -211,12 +211,12 @@ INSERT 0 3
 
 <p>Запись в таблице экзаменов идентифицируется совокупностью номера студбилета и номера курса. Такое ограничение целостности, относящее сразу к нескольким столбцам, определяется с помощью фразы CONSTRAINT</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# CREATE TABLE exams(
-    s_id integer REFERENCES students(s_id),
-    c_no text REFERENCES courses(c_no),
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># CREATE TABLE exams(</span>
+    s_id integer REFERENCES students<span class="o">(</span>s_id<span class="o">)</span>,
+    c_no text REFERENCES courses<span class="o">(</span>c_no<span class="o">)</span>,
     score integer,
-    CONSTRAINT pk PRIMARY KEY(s_id, c_no)
-);
+    CONSTRAINT pk PRIMARY KEY<span class="o">(</span>s_id, c_no<span class="o">)</span>
+<span class="o">)</span><span class="p">;</span>
 CREATE TABLE
 </code></pre></div></div>
 
@@ -230,41 +230,41 @@ CREATE TABLE
 
 <p>Две колонки</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT title AS course_title, hours FROM courses;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT title AS course_title, hours FROM courses;</span>
 course_title  | hours
---------------+-------
+<span class="nt">--------------</span>+-------
 Базы данных   | 30
 Сети ЭВМ      | 60
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Все что есть в таблице</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT <span class="err">*</span> FROM courses;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT * FROM courses;</span>
 c_no   | title       | hours
--------+-------------+-------
+<span class="nt">-------</span>+-------------+-------
 CS301  | Базы данных | 30
 CS305  | Сети ЭВМ    | 60
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Убираем дублирующие значения <a href="https://postgrespro.ru/docs/postgrespro/14/sql-select#SQL-DISTINCT">с помощью DISTINCT</a></p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT DISTINCT start_year FROM students;
-<span class="gh">start_year
-------------
-</span>2014
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT DISTINCT start_year FROM students;</span>
+start_year
+<span class="nt">------------</span>
+2014
 2015
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>С условием для SELECT</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT <span class="err">*</span> FROM courses WHERE hours &gt; 45;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT * FROM courses WHERE hours &gt; 45;</span>
 c_no   | title    | hours
--------+----------+-------
+<span class="nt">-------</span>+----------+-------
 CS305  | Сети ЭВМ | 60
-(1 row)
+<span class="o">(</span>1 row<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Условие должно иметь логический тип. Например, оно может содержать отношения =, &lt;&gt; (или !=), &gt;, &gt;=, &lt;, &lt;=; может объединять более простые условия с помощью логических операций AND, OR, NOT и круглых скобок — как в обычных языках программирования.</p>
@@ -285,70 +285,70 @@ CS305  | Сети ЭВМ | 60
 
 <p>Поэтому для получения всех необходимых значений в запросе часто приходится соединять данные из нескольких таблиц, перечисляя их имена во фразе FROM</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT <span class="err">*</span> FROM courses, exams;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT * FROM courses, exams;</span>
 </code></pre></div></div>
 
 <p>То, что получилось, называется прямым или декартовым произведением таблиц — к каждой строке одной таблицы добавляется каждая строка другой.</p>
 
 <p>Как правило, более полезный и содержательный результат можно получить, указав во фразе WHERE условие соединения</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT courses.title, exams.s_id, exams.score
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT courses.title, exams.s_id, exams.score</span>
 FROM courses, exams
-WHERE courses.c_no = exams.c_no;
+WHERE courses.c_no <span class="o">=</span> exams.c_no<span class="p">;</span>
 title        | s_id | score
--------------+------+-------
+<span class="nt">-------------</span>+------+-------
 Базы данных  | 1451 | 5
 Базы данных  | 1556 | 5
 Сети ЭВМ     | 1451 | 5
 Сети ЭВМ     | 1432 | 4
-(4 rows)
+<span class="o">(</span>4 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Запросы можно формулировать и в другом виде, указывая соединения с помощью ключевого слова JOIN</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT students.name, exams.score
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT students.name, exams.score</span>
 FROM students
 JOIN exams
-    ON students.s_id = exams.s_id
-    AND exams.c_no = 'CS305';
+    ON students.s_id <span class="o">=</span> exams.s_id
+    AND exams.c_no <span class="o">=</span> <span class="s1">'CS305'</span><span class="p">;</span>
 name    | score
---------+-------
+<span class="nt">--------</span>+-------
 Анна    | 5
 Виктор   | 4
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>С точки зрения СУБД обе формы эквивалентны, так что можно использовать тот способ, который представляется более наглядным.</p>
 
 <p>Этот пример показывает, что в результат не включаются строки исходной таблицы, для которых не нашлось пары в другой таблице: хотя условие наложено на дисциплины, но при этом исключаются и студенты, которые не сдавали экзамен по данной дисциплине. Чтобы в выборку попали все студенты, надо использовать внешнее соединение:</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT students.name, exams.score
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT students.name, exams.score</span>
 FROM students
 LEFT JOIN exams
-    ON students.s_id = exams.s_id
-    AND exams.c_no = 'CS305';
+    ON students.s_id <span class="o">=</span> exams.s_id
+    AND exams.c_no <span class="o">=</span> <span class="s1">'CS305'</span><span class="p">;</span>
 name    | score
---------+-------
+<span class="nt">--------</span>+-------
 Анна    | 5
 Виктор  | 4
 Нина    |
-(3 rows)
+<span class="o">(</span>3 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>В этом примере в результат добавляются строки из левой таблицы (поэтому операция называется LEFT JOIN), для которых не нашлось пары в правой. При этом для столб- цов правой таблицы возвращаются неопределенные значения</p>
 
 <p>Условия во фразе WHERE применяются к уже готовому результату соединений, поэтому, если вынести ограничение на дисциплины из условия соединения, Нина не попадет в выборку — ведь для нее exams.c_no не определен:</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT students.name, exams.score
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT students.name, exams.score</span>
 FROM students
 LEFT JOIN exams
-    ON students.s_id = exams.s_id
-WHERE exams.c_no = 'CS305';
+    ON students.s_id <span class="o">=</span> exams.s_id
+WHERE exams.c_no <span class="o">=</span> <span class="s1">'CS305'</span><span class="p">;</span>
 name    | score
---------+-------
+<span class="nt">--------</span>+-------
 Анна    | 5
 Виктор  | 4
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Соединения - это обычная и естественная для реляционных СУБД операция, и у PostgreSQL имеется целый арсенал эффективных механизмов для ее выполнения. Не соединяйте данные в приложении, доверьте эту работу серверу баз данных. <a href="https://postgrespro.ru/docs/postgrespro/14/sql-select#SQL-FROM">Подробнее</a></p>
@@ -359,80 +359,80 @@ name    | score
 
 <p>Если подзапрос возвращает ровно одну строку и ровно один столбец, его можно использовать как обычное скалярное выражение</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT name,
-    (SELECT score
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT name,</span>
+    <span class="o">(</span>SELECT score
     FROM exams
-    WHERE exams.s_id = students.s_id
-    AND exams.c_no = 'CS305')
-FROM students;
+    WHERE exams.s_id <span class="o">=</span> students.s_id
+    AND exams.c_no <span class="o">=</span> <span class="s1">'CS305'</span><span class="o">)</span>
+FROM students<span class="p">;</span>
 name    | score
---------+-------
+<span class="nt">--------</span>+-------
 Анна    | 5
 Виктор  | 4
 Нина    |
-(3 rows)
+<span class="o">(</span>3 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Скалярные подзапросы можно также использовать в условиях фильтрации</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT <span class="err">*</span> FROM exams
-WHERE   (SELECT start_year
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT * FROM exams</span>
+WHERE   <span class="o">(</span>SELECT start_year
         FROM students
-        WHERE students.s_id = exams.s_id) &gt; 2014;
+        WHERE students.s_id <span class="o">=</span> exams.s_id<span class="o">)</span> <span class="o">&gt;</span> 2014<span class="p">;</span>
 s_id  | c_no  | score
-------+-------+-------
+<span class="nt">------</span>+-------+-------
 1556  | CS301 |
-5 (1 row)
+5 <span class="o">(</span>1 row<span class="o">)</span>
 </code></pre></div></div>
 
 <p>В SQL можно формулировать условия и на подзапросы, возвращающие произвольное количество строк. Для этого существует несколько конструкций, одна из которых — отношение IN — проверяет, содержится ли значение в таблице, возвращаемой подзапросом. В примере ниже выводятся даныне студентов, у которых есть какие-либо оценки.</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT name, start_year
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT name, start_year</span>
 FROM students
-WHERE s_id IN (SELECT s_id FROM exams WHERE c_no = 'CS305');
+WHERE s_id IN <span class="o">(</span>SELECT s_id FROM exams WHERE c_no <span class="o">=</span> <span class="s1">'CS305'</span><span class="o">)</span><span class="p">;</span>
 name    | start_year
---------+------------
+<span class="nt">--------</span>+------------
 Анна    | 2014
 Виктор  | 2014
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p>Отношение NOT IN возвращает противоположный результат. Еще одна возможность — использовать предикат EXISTS, проверяющий, что подзапрос возвратил хотя бы одну строку.</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT name, start_year
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT name, start_year</span>
 FROM students
-WHERE NOT EXISTS (SELECT s_id FROM exams WHERE exams.s_id = students.s_id AND score = 5);
+WHERE NOT EXISTS <span class="o">(</span>SELECT s_id FROM exams WHERE exams.s_id <span class="o">=</span> students.s_id AND score <span class="o">=</span> 5<span class="o">)</span><span class="p">;</span>
 name    | start_year
---------+------------
+<span class="nt">--------</span>+------------
 Виктор  | 2014
-(1 row)
+<span class="o">(</span>1 row<span class="o">)</span>
 </code></pre></div></div>
 
 <p><a href="https://postgrespro.ru/docs/postgrespro/14/functions-subquery">Подробнее</a></p>
 
-<p>после подзапроса можно указать про- извольное имя, которое называется псевдонимом (alias). Псевдонимы можно использовать и для обычных таблиц. Здесь s — псевдоним таблицы, а ce — псевдоним подзапроса.</p>
+<p>после подзапроса можно указать произвольное имя, которое называется псевдонимом (alias). Псевдонимы можно использовать и для обычных таблиц. Здесь s — псевдоним таблицы, а ce — псевдоним подзапроса.</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT s.name, ce.score
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT s.name, ce.score</span>
 FROM students s
-    JOIN    (SELECT exams.<span class="err">*</span>
+    JOIN    <span class="o">(</span>SELECT exams.<span class="k">*</span>
             FROM courses, exams
-            WHERE courses.c_no = exams.c_no
-            AND courses.title = 'Базы данных') ce
-    ON s.s_id = ce.s_id;
+            WHERE courses.c_no <span class="o">=</span> exams.c_no
+            AND courses.title <span class="o">=</span> <span class="s1">'Базы данных'</span><span class="o">)</span> ce
+    ON s.s_id <span class="o">=</span> ce.s_id<span class="p">;</span>
 </code></pre></div></div>
 
 <h3 id="сортировка">Сортировка</h3>
 
 <p>Данные в таблицах не упорядочены, но часто бывает важно получить строки результата в строго определенном порядке. Для этого используется предло- жение ORDER BY со списком выражений, по которым надо выполнить сортировку. После каждого выражения (ключа сортировки) можно указать направление: ASC — по воз- растанию (этот порядок используется по умолчанию) или DESC — по убыванию. Операцию сортировки имеет смысл выполнять в конце запроса непосредственно перед получением результата; в подзапросах она обычно бессмысленна.</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT <span class="err">*</span> FROM exams ORDER BY score, s_id, c_no DESC;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT * FROM exams ORDER BY score, s_id, c_no DESC;</span>
 s_id  | c_no  | score
-------+-------+-------
+<span class="nt">------</span>+-------+-------
 1432  | CS305 | 4
 1451  | CS305 | 5
 1451  | CS301 | 5
 1556  | CS301 | 5
-(4 rows)
+<span class="o">(</span>4 rows<span class="o">)</span>
 Здесь
 </code></pre></div></div>
 
@@ -442,42 +442,42 @@ s_id  | c_no  | score
 
 <p>При группировке в одной строке результата размещается значение, вычисленное на основании данных нескольких строк исходных таблиц. Вместе с группировкой используют агрегатные функции. Например, общее количество проведенных экзаменов, количество сдававших их студентов и средний балл:</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT count(<span class="err">*</span>), count(DISTINCT s_id), avg(score)
-FROM exams;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT count(*), count(DISTINCT s_id), avg(score)</span>
+FROM exams<span class="p">;</span>
 count  | count | avg
--------+-------+--------------------
+<span class="nt">-------</span>+-------+--------------------
 4      | 3     | 4.7500000000000000
-(1 row)
+<span class="o">(</span>1 row<span class="o">)</span>
 </code></pre></div></div>
 
 <p>В разбивке по номерам курсов с помощью предложения GROUP BY, в котором указываются ключи группировки:</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# SELECT c_no, count(<span class="err">*</span>), count(DISTINCT s_id), avg(score)
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># SELECT c_no, count(*), count(DISTINCT s_id), avg(score)</span>
 FROM exams
-GROUP BY c_no;
+GROUP BY c_no<span class="p">;</span>
 c_no   | count | count | avg
--------+-------+-------+--------------------
+<span class="nt">-------</span>+-------+-------+--------------------
 CS301  | 2     | 2     | 5.0000000000000000
 CS305  | 2     | 2     | 4.5000000000000000
-(2 rows)
+<span class="o">(</span>2 rows<span class="o">)</span>
 </code></pre></div></div>
 
 <p><a href="https://postgrespro.ru/docs/postgrespro/14/functions-aggregate">Подробнее об агрегатных функциях</a></p>
 
-<p>В запросах, использующих группировку, может возник- нуть необходимость отфильтровать строки на основании результатов агрегирования. Такие условия можно задать в предложении HAVING. Отличие от WHERE состоит в том, что условия WHERE применяются до группировки (в них можно использовать столбцы исходных таблиц), а условия HAVING — после группировки (и в них можно также использовать столбцы таблицы-результата). <a href="https://postgrespro.ru/docs/postgrespro/14/sql-select#SQL-GROUPBY">Подробнее</a></p>
+<p>В запросах, использующих группировку, может возникнуть необходимость отфильтровать строки на основании результатов агрегирования. Такие условия можно задать в предложении HAVING. Отличие от WHERE состоит в том, что условия WHERE применяются до группировки (в них можно использовать столбцы исходных таблиц), а условия HAVING — после группировки (и в них можно также использовать столбцы таблицы-результата). <a href="https://postgrespro.ru/docs/postgrespro/14/sql-select#SQL-GROUPBY">Подробнее</a></p>
 
 <h3 id="изменениеудаление-данных">Изменение/удаление данных</h3>
 
 <p>Изменение данных в таблице выполняет <a href="https://postgrespro.ru/docs/postgrespro/14/sql-update">оператор UPDATE</a>, в котором указываются новые значения полей для строк, определяемых предложением WHERE (таким же, как в операторе SELECT). <a href="https://postgrespro.ru/docs/postgrespro/14/sql-delete">Оператор DELETE</a> удаляет из указанной таблицы строки, определяемые все тем же предложением WHERE</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# UPDATE courses
-SET hours = hours <span class="err">*</span> 2
-WHERE c_no = 'CS301';
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># UPDATE courses</span>
+SET hours <span class="o">=</span> hours <span class="k">*</span> 2
+WHERE c_no <span class="o">=</span> <span class="s1">'CS301'</span><span class="p">;</span>
 UPDATE 1
 </code></pre></div></div>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# DELETE FROM exams
-WHERE score &lt; 5;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># DELETE FROM exams</span>
+WHERE score &lt; 5<span class="p">;</span>
 DELETE 1
 </code></pre></div></div>
 
@@ -485,15 +485,15 @@ DELETE 1
 
 <p>Когда две операции надо совершить одновременно, потому что ни одна из них не имеет смысла без другой или данные одной приведут к несогласованному состоянию без данных второй. Такие операции, составляющие логически неделимую единицу работы, называются транзакцией.</p>
 
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# BEGIN;
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span><span class="o">=</span><span class="c"># BEGIN;</span>
 BEGIN
 
-test=<span class="err">*</span># INSERT INTO groups(g_no, monitor)
-SELECT 'A-101', s_id
-FROM students WHERE name = 'Анна';
+<span class="nb">test</span><span class="o">=</span><span class="k">*</span><span class="c"># INSERT INTO groups(g_no, monitor)</span>
+SELECT <span class="s1">'A-101'</span>, s_id
+FROM students WHERE name <span class="o">=</span> <span class="s1">'Анна'</span><span class="p">;</span>
 INSERT 0 1
 
-test=<span class="err">*</span># COMMIT;
+<span class="nb">test</span><span class="o">=</span><span class="k">*</span><span class="c"># COMMIT;</span>
 COMMIT
 </code></pre></div></div>
 
@@ -531,6 +531,72 @@ COMMIT
   <li><code class="language-plaintext highlighter-rouge">\q</code> Выход</li>
 </ul>
 
+<h2 id="оптимизация-запросов-к-postgres">Оптимизация запросов к postgres</h2>
+
+<p>В postgres три этапа компиляции запроса:</p>
+
+<ul>
+  <li>компиляция sql-запроса в выражение, состоящее из логических выражений высокого уровня (логический план)</li>
+  <li>оптимизация логического плана и превращение его в план исполнения (физический план выполнения)</li>
+  <li>интерпретация плана и возврат результата</li>
+</ul>
+
+<p>На первом этапе, при компиляции логического плана запросы от пользователя преобразуются в такой же декларативный запрос. Этот план определяет возможный порядок операций, но не способ их выполнения. План выполнения зависит от структуры бд. На втором этапе, при оптимизации, план выполнения преобразуется в инструкцию по выполнению - здесь логические операции заменяются на алгоритмы выполнения и изменяется порядок выполнения логических операций. Это делается основываясь на оценки стоимости выполнения алгоритмов. На третьем этапе план выполнения интепретируется движком и возвращается результат.</p>
+
+<p>Оптимизация sql-запроса зависит от двух вещей: высокая вариативность запроса (широкий выбор возможностей замены на эквивалентым интерпретаторов postgres) и отсутствие побочных эффектов реляционных операций (таких как временные таблицы и т.п.). Т.е. операции должны быть как можно более декларативные (запрос не должен пытаться следовать императивной логике) и все что они должны порождать - это результат операции.</p>
+
+<h3 id="алгоритмы-доступа-к-данным">Алгоритмы доступа к данным</h3>
+
+<p>Селективность -соотношение количества строк в результате к количеству строк в сохраненной таблице. Выбор алгоритма роперации чтения и очередность операций фильтрации зависит от селективности.</p>
+
+<p>Строки таблицы хранятся с использованием кучи (heap), что позволяет делать вставку без переупорядочивания.</p>
+
+<p>Строки в бд хранятся блоками определенной длины в байтах. Несколько строк могут храниться в одном блоке. При полном сканировании движок бд считывает таблицу блоками и построчно из блоков для каждой строки проверяет условие фильтрации.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>each block <span class="k">in </span>table loop
+    <span class="nb">read </span>block
+    <span class="k">for </span>each row <span class="k">in </span>block loop
+        <span class="k">if </span>condition<span class="o">(</span>row<span class="o">)</span>
+            <span class="k">then </span>output<span class="o">(</span>row<span class="o">)</span>
+        end <span class="k">if
+    </span>end loop
+end loop
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">fullcost = C1*BR + C2*TR + C3*S*TR</code>, где BR - кол-во операций ввода-вывода, TR общее число итераций внутри внешнего цикла, S - селективность, а С1, С2, С3 - константы определяющие аппаратное обеспечение.</p>
+
+<p>Для убыстрения доступа к данным в postgres создаются избыточные структуры - индексы. Они не хранят никакой дополнительной информации для таблицы и используются только для повышения производительности. Индексы определяют дополнительные пути доступа к строкам в блоках за счет хранения указателей на блоки, содержащие строки соответствующие условиям филтрации. Только эти блоки читаются при сканировании на оснвое индексов. Postgres использует две операции для получения данных по индексу:</p>
+
+<ul>
+  <li>индексное скинрование (index scan) - сканируется весь индекс, в этом же порядке извлекаются блоки. Т.к. бд - это куча, несколько индексов могут указывать на один и тот же блок</li>
+  <li>сканирование по битовой карте (bitmap heap scan) - битовая карта содержит  карту блоков, содержащих необходимые строки, чтобы исключить повторное чтение.</li>
+</ul>
+
+<p>Чем меньше селективность, тем выше вероятность, что все строки будут в разных блоках, а значит стоимость будет пропорциональна количеству возвращаемых строк. При большой селективности стоимость доступа может превысить полное сканирование, т.к. доступ к индексу сам по себе требует дополнительного цикла.</p>
+
+<p>Кроме того, используется сканирование только индекса - это полезно, когда индекс содержит все необходимые для фильтрации поля. Стоимость такой модели аналогична индексному сканированию за исключением того, что не требуется извлечение блоков. Стоимост ьпросмотра индекса обычно в целом ниже, чем стоимость полного просмотра таблицы.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-10-23-18-42-56.png" alt="связь стоимости и секлективности для sql запросов" /></p>
+
+<p>Основные индексные алгоритмы в postgres:</p>
+
+<ul>
+  <li>B-деревья (позволяют делать дешевую вставку) - стандарт для всех бд</li>
+  <li>битовые карты используются для компактного представления свойств табличных данных</li>
+  <li>хеши позволяют эффективно выполнять операции точног осравнения</li>
+  <li>R-дерево позволяет искать в пространственных данных с небольшим числом измерений (2-3)</li>
+</ul>
+
+<h3 id="план-выполнения">План выполнения</h3>
+
+<p>Для построения плана оптимизатор использует правила преобразования, эвристики и алгоритмы оптимизации на основе стоимости выполнения. Алгоритм оптимизации выбирает план с самой низкой стоимостью выполнения. Т.к. пространство поиска такого плана огромно, оценка производится приблизительно за счет эвристик.</p>
+
+<p>План выполнения представлен в виде дерева физических операций, где узлы - это операции, а стрелки - операнды. Большинство планов запросов удобно читать в текстовом, а не графическом виде.</p>
+
+<p>Оценки плана неточны, т.к. неточны оценки стоимсоти выполнения операций по чтению данных. Кроме того, поиск оптимального плана затратен и для оптимизации этого поиска используются статистики данных конкретно БД, хранимые в виде гистограм. Кроме того, эвристические подходы к оценке оптимальности могут исключать оптимальный план на этапе примененеия эвристик. В этом случае требуется вмешательство инженера.</p>
+
+<p>План выполнения можно получить с помощью sql-команды <code class="language-plaintext highlighter-rouge">EXPLAIN</code></p>
+
 <p>Смотри еще:</p>
 
 <ul>
@@ -541,6 +607,7 @@ COMMIT
   <li><a href="https://stackoverflow.com/questions/11618898/pg-config-executable-not-found">pg_config executable not found</a> проблема установки в linux</li>
   <li>[<a href="psycopq" title="psycopq">psycopq</a>]</li>
   <li>[<a href="../lists/bd" title="Data Bases">bd</a>]</li>
+  <li>[<a href="sql" title="SQL">sql</a>]</li>
   <li>[<a href="ormar" title="Ormar">ormar</a>]</li>
 </ul>
 
