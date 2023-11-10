@@ -4,11 +4,26 @@ tags: data-bases mongodb
 title: mongodb solutions
 ---
 - [How to parse ObjectId in a pydantic model?](https://stackoverflow.com/questions/59503461/how-to-parse-objectid-in-a-pydantic-model)
+- [How do I get a list of just the ObjectId's using pymongo?](https://stackoverflow.com/questions/29771192/how-do-i-get-a-list-of-just-the-objectids-using-pymongo)
 - [Insert Binary data into Mongo field in pymongo](https://stackoverflow.com/questions/18213544/insert-binary-data-into-mongo-field-in-pymongo)
 - [Mongodb v4.0 Transaction, MongoError: Transaction numbers are only allowed on a replica set member or mongos](https://stackoverflow.com/questions/51461952/mongodb-v4-0-transaction-mongoerror-transaction-numbers-are-only-allowed-on-a) к вопросу о том, что в монго транзакции распределенные
 - [How to add configuration for MongoDB 4.2 Transaction in spring boot?](https://stackoverflow.com/questions/61846280/how-to-add-configuration-for-mongodb-4-2-transaction-in-spring-boot)
+- [Running mongorestore on Docker once the container starts](https://stackoverflow.com/questions/66067320/running-mongorestore-on-docker-once-the-container-starts). And [here](https://stackoverflow.com/a/62548382/15966204)
 - [Working example of celery with mongo DB](https://stackoverflow.com/questions/15740755/working-example-of-celery-with-mongo-db) бекенд [[celery]] на [[mongodb]]
 - [How would I find documents based on whether a field exists AND another that doesn't, in MongoDB?](https://stackoverflow.com/questions/53943900/how-would-i-find-documents-based-on-whether-a-field-exists-and-another-that-does)
+- aggregation
+  - [Aggregation Examples](https://pymongo.readthedocs.io/en/stable/examples/aggregation.html) from docs.
+  - [Aggregation Pipeline](https://www.mongodb.com/docs/manual/core/aggregation-pipeline/)
+  - [Aggregation Pipeline Operators](https://www.mongodb.com/docs/manual/reference/operator/aggregation/)
+  - [aggregate in pymongo](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.aggregate)
+- group by date
+  - [pymongo group by datetime](https://stackoverflow.com/questions/22031853/pymongo-group-by-datetime)
+  - [group by dates in mongodb](https://stackoverflow.com/questions/5168904/group-by-dates-in-mongodb)
+  - [Find objects between two dates MongoDB](https://stackoverflow.com/questions/2943222/find-objects-between-two-dates-mongodb)
+  - [How to filter for time in a IsoDate field?](https://stackoverflow.com/questions/66747399/how-to-filter-for-time-in-a-isodate-field)
+  - [MongoDB group by hour](https://stackoverflow.com/questions/23293082/mongodb-group-by-hour)
+  - [MongoDB aggregation - $group by date even if doesn't exist](https://stackoverflow.com/questions/33268955/mongodb-aggregation-group-by-date-even-if-doesnt-exist)
+- [Get an array of values of a field in MongoDB](https://stackoverflow.com/questions/41423288/get-an-array-of-values-of-a-field-in-mongodb)
 
 Смотри еще:
 
