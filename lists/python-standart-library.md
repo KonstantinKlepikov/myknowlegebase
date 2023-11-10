@@ -38,6 +38,9 @@ title: Стандартная библиотека python и полезные р
 - [[datetime]]
 - [[time]]
 - [[calendar]]
+- [Generate list of months between interval](https://stackoverflow.com/a/65776598/15966204)
+- [Creating a range of dates in Python](https://stackoverflow.com/questions/993358/creating-a-range-of-dates-in-python)
+- [RFC 1123 Date Representation in Python](https://stackoverflow.com/questions/225086/rfc-1123-date-representation-in-python)
 
 ### Math and func
 

@@ -24,6 +24,7 @@ title: mongodb solutions
   - [MongoDB group by hour](https://stackoverflow.com/questions/23293082/mongodb-group-by-hour)
   - [MongoDB aggregation - $group by date even if doesn't exist](https://stackoverflow.com/questions/33268955/mongodb-aggregation-group-by-date-even-if-doesnt-exist)
 - [Get an array of values of a field in MongoDB](https://stackoverflow.com/questions/41423288/get-an-array-of-values-of-a-field-in-mongodb)
+- [Difference between "id" and "_id" fields in MongoDB](https://stackoverflow.com/questions/9694460/difference-between-id-and-id-fields-in-mongodb). **id is an alias for _id in mongoid.id would return the _id of the document**
 
 Смотри еще:
 
