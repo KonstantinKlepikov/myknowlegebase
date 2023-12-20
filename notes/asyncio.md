@@ -744,6 +744,281 @@ for coro in as_completed(aws):
     # ...
 ```
 
+### [Running in Threads](https://docs.python.org/3/library/asyncio-task.html#running-in-threads)
+
+`coroutine asyncio.to_thread(func, /, *args, **kwargs)` Асинхронно запускает функцию func в отдельном потоке. Любые `*args` и `**kwargs`, указанные для этой функции, передаются напрямую функции. Кроме того, распространяется текущий `contextvars.Context`. Возвращает сопрограмму, которую можно ожидать, чтобы получить конечный результат func.
+
+Эта в первую очередь предназначена для использования для выполнения синхронных Функции/методов, связанных с вводом-выводом, которые в противном случае заблокировали бы цикл событий, если они запускались бы в основном потоке.
+
+```python
+def blocking_io():
+    print(f"start blocking_io at {time.strftime('%X')}")
+    # Note that time.sleep() can be replaced with any blocking
+    # IO-bound operation, such as file operations.
+    time.sleep(1)
+    print(f"blocking_io complete at {time.strftime('%X')}")
+
+async def main():
+    print(f"started main at {time.strftime('%X')}")
+
+    await asyncio.gather(
+        asyncio.to_thread(blocking_io),
+        asyncio.sleep(1))
+
+    print(f"finished main at {time.strftime('%X')}")
+
+
+asyncio.run(main())
+
+# Expected output:
+#
+# started main at 19:50:53
+# start blocking_io at 19:50:53
+# blocking_io complete at 19:50:54
+# finished main at 19:50:54
+```
+
+`asyncio.run_coroutine_threadsafe(coro, loop)` Функция предназначена для ожидания из другого потока.
+
+Цикл событий запускается в потоке (обычно в основном потоке) и выполняется все обратные вызовы и задачи в своем потоке. Пока Задача выполняется в цикле событий, никакие другие задачи не могут выполняться в том же потоке. Когда задача выполняет выражение await, выполняющаяся задача приостанавливается и цикл событий выполняет следующую задачу. Чтобы запланировать обратный вызов из другого потока ОС, Следует использовать метод `loop.call_soon_threadsafe()`. Пример:
+
+```python
+loop.call_soon_threadsafe(callback, *args)
+```
+
+Почти все объекты asyncio не являются потокобезопасными, что обычно бывает не проблема, если нет кода, который разделяет общие объекты в памяти или работает с источниками данных снаружи. Планирование сопрограмм из другого потока делается так:
+
+```python
+async def coro_func():
+     return await asyncio.sleep(1, 42)
+
+# Later in another OS thread:
+
+future = asyncio.run_coroutine_threadsafe(coro_func(), loop)
+# Wait for the result:
+result = future.result()
+```
+
+Для обработки сигналов цикл событий должен быть запустить в основном потоке. Метод `loop.run_in_executor()` можно использовать с `concurrent.futures.ThreadPoolExecutor` для выполнения блокировка кода в другом потоке ОС без блокировки потока где выполняется цикл событий.
+
+В настоящее время невозможно напрямую запланировать сопрограммы или обратные вызовы. из другого процесса (например, запущенного с `multiprocessing`).
+
+Блокирующий (привязанный к процессору) код не следует вызывать напрямую. Например, если функция выполняет вычисления с интенсивным использованием ЦП в течение 1 секунды, все одновременные задачи asyncio и операции ввода-вывода будут задержаны на 1 секунду.
+
+Исполнитель может использоваться для запуска задачи в другом потоке или даже в другой процессе, см. метод `loop.run_in_executor()` [асинхроннорго цикла](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor).
+
+```python
+import asyncio
+import concurrent.futures
+
+def blocking_io():
+    # File operations (such as logging) can block the
+    # event loop: run them in a thread pool.
+    with open('/dev/urandom', 'rb') as f:
+        return f.read(100)
+
+def cpu_bound():
+    # CPU-bound operations will block the event loop:
+    # in general it is preferable to run them in a
+    # process pool.
+    return sum(i * i for i in range(10 ** 7))
+
+async def main():
+    loop = asyncio.get_running_loop()
+
+    ## Options:
+
+    # 1. Run in the default loop's executor:
+    result = await loop.run_in_executor(
+        None, blocking_io)
+    print('default thread pool', result)
+
+    # 2. Run in a custom thread pool:
+    with concurrent.futures.ThreadPoolExecutor() as pool:
+        result = await loop.run_in_executor(
+            pool, blocking_io)
+        print('custom thread pool', result)
+
+    # 3. Run in a custom process pool:
+    with concurrent.futures.ProcessPoolExecutor() as pool:
+        result = await loop.run_in_executor(
+            pool, cpu_bound)
+        print('custom process pool', result)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+```
+
+## [Task Object](https://docs.python.org/3/library/asyncio-task.html#task-object)
+
+`class asyncio.Task(coro, *, loop=None, name=None, context=None, eager_start=False)`
+
+Циклы событий используют совместное планирование: цикл событий запускается по одной задаче за раз. Пока Задача ожидает завершения В будущем цикл событий запускает другие задачи, обратные вызовы или выполняет Операции ввода-вывода.
+
+Используйте функцию высокого уровня `asyncio.create_task()` для создания Задачи, или низкоуровневые `loop.create_task()` или `ensure_future()` функции. Не следует сздавать экземпляры тасков вручную.
+
+Чтобы отменить запущенную Задачу, используйте метод `cancel()`, что выдаст исключение `CancelledError`. Если сопрограмма ожидает объект фьючерса во время отмены, он будет отменен.
+
+`cancelled()` можно использовать, чтобы проверить, была ли задача отменена.
+
+`asyncio.Task` наследует от `Future` все свои API, кроме `Future.set_result()` и `Future.set_exception()`.
+
+Необязательный аргумент `context`, предназначенный только для ключевых слов, позволяет указать специальный `contextvars.Context` для coro для запуска. Если контекст не указан, Задача копирует текущий контекст. и позже запускает свою сопрограмму в скопированном контексте.
+
+Необязательный аргумент `eager_start`, предназначенный только для ключевых слов, позволяет начать выполнять задачу во время создания (добавлено в 3.12).
+
+Методы%
+
+- `done()`
+- `result()`
+- `exception()`
+- `add_done_callback(callback, *, context=None)`
+- `remove_done_callback(callback)`
+- `get_stack(*, limit=None)`
+- `print_stack(*, limit=None, file=None)`
+- `get_coro()`
+- `get_context()`
+- `get_name()`
+- `set_name(value)`
+- `cancel(msg=None)`
+- `cancelled()`
+- `uncancel()`
+- `cancelling()`
+
+### [Streams](https://docs.python.org/3/library/asyncio-stream.html)
+
+Обеспечивает потоковое чтение и запись. Предоставлются два класса - `StreamReader` и `StreamWriter`, а так-же функции для управления сокетами. Дополнительно - [Transports and Protocols](https://docs.python.org/3/library/asyncio-protocol.html#asyncio-example-create-connection) и моудль [socket](https://docs.python.org/3/library/socket.html?highlight=socket#module-socket).
+
+### [Synchronization Primitives](https://docs.python.org/3/library/asyncio-sync.html)
+
+`class asyncio.Lock` реализует блокировку [мьютекса](https://ru.wikipedia.org/wiki/%D0%9C%D1%8C%D1%8E%D1%82%D0%B5%D0%BA%D1%81) для асинхронных задач. Не потокобезопасный. Асинхронную блокировку можно использовать, чтобы гарантировать эксклюзивный доступ к общкму ресурсу. Предпочтительным способом использования блокировки является `async with`
+
+```python
+lock = asyncio.Lock()
+
+# ... later
+async with lock:
+    # access shared state
+```
+
+Методы:
+
+- `acquire()`
+- `release()`
+- `locked()`
+
+`class asyncio.Event` не потокобезопасный. Эвент можно использовать для уведомления нескольких задач asyncio. что произошло какое-то событие. Объект Event управляет внутренним флагом, которому можно установить `true` с помощью метода `set()` и сбросить значение в `false` с помощью `clear()` метод. Метод `wait()` блокируется до тех пор, пока флаг не будет установлен в `true`. Изначально для флага установлено значение `false`.
+
+`class asyncio.Condition(lock=None)` Не потокобезопасный. Условие может использоваться задачей для ожидания что какое-то событие должно произойти, а затем получения преимущественого доступа к общему ресурсу.
+
+По сути, объект Condition сочетает в себе функциональность Event и Lock. Несколько объектов Condition используют один Lock, что позволяет координировать эксклюзивный доступ к общему ресурсу между различными задачами. Необязательный аргумент lock должен быть объектом Lock или None. Предпочтительный способ использования условия – `async with`. Дополнительные методы `notify(n=1)` и `notify_all()` позволяют уведомить о событии n-сопрограмм или все. Методы `wait()` и `wait_for()` позволяют ожидать определенным сопрограммам наступления события.
+
+`class asyncio.Semaphore(value=1)` Не потокобезопасный. Семафор управляет внутренним счетчиком, который уменьшается при каждом `acquire()`в и увеличивается при каждом `release()`. Счетчик никогда не может опуститься ниже нуля; когда `acquire()` найдет что он равен нулю, он блокируется, ожидая вызова какой-нибудь задачи и `release()`. Необязательный аргумент `value` задает начальное значение для счетчика (1 по умолчанию). Если заданное значение меньше, чем 0, поднимется `ValueError`. Предпочтительным способом использования семафора является `async with`.
+
+`class asyncio.BoundedSemaphore(value=1)` Не потокобезопасный. Ограниченный семафор — это версия `Semaphore`, которая возбуждает `ValueError` в `release()`, если это увеличивает счетчик выше начального значения.
+
+`class asyncio.Barrier(parties)` Не потокобезопасный. Барьер — это простой примитив синхронизации, который позволяет блокировать сопрограммы до тех пор, пока не накопится требуемое количество задач, ожидающих выполнения. Задачи могут ожидать выполнения метод `wait()` и будут заблокированы до тех пор, пока указанное количество задач не накопится. В этот момент все ожидающие задачи разблокируются одновременно. Добавлено в 3.11
+
+```python
+async def example_barrier():
+   # barrier with 3 parties
+   b = asyncio.Barrier(3)
+
+   # create 2 new waiting tasks
+   asyncio.create_task(b.wait())
+   asyncio.create_task(b.wait())
+
+   await asyncio.sleep(0)
+   print(b)
+
+   # The third .wait() call passes the barrier
+   await b.wait()
+   print(b)
+   print("barrier passed")
+
+   await asyncio.sleep(0)
+   print(b)
+
+asyncio.run(example_barrier())
+
+<asyncio.locks.Barrier object at 0x... [filling, waiters:2/3]>
+<asyncio.locks.Barrier object at 0x... [draining, waiters:0/3]>
+barrier passed
+<asyncio.locks.Barrier object at 0x... [filling, waiters:0/3]>
+```
+
+Возвращаемое `wait()` значение представляет собой целое число в диапазоне от 0 до parties-1, отличающееся для каждой задачи. Это можно использовать для выбора задачи, требующей выполнения каких-то особых действий.
+
+```python
+...
+async with barrier as position:
+   if position == 0:
+      # Only one task prints this
+      print('End of *draining phase*')
+```
+
+### [Subprocesses](https://docs.python.org/3/library/asyncio-subprocess.html)
+
+### [Queues](https://docs.python.org/3/library/asyncio-queue.html)
+
+пример
+
+```python
+import asyncio
+import random
+import time
+
+
+async def worker(name, queue):
+    while True:
+        # Get a "work item" out of the queue.
+        sleep_for = await queue.get()
+
+        # Sleep for the "sleep_for" seconds.
+        await asyncio.sleep(sleep_for)
+
+        # Notify the queue that the "work item" has been processed.
+        queue.task_done()
+
+        print(f'{name} has slept for {sleep_for:.2f} seconds')
+
+
+async def main():
+    # Create a queue that we will use to store our "workload".
+    queue = asyncio.Queue()
+
+    # Generate random timings and put them into the queue.
+    total_sleep_time = 0
+    for _ in range(20):
+        sleep_for = random.uniform(0.05, 1.0)
+        total_sleep_time += sleep_for
+        queue.put_nowait(sleep_for)
+
+    # Create three worker tasks to process the queue concurrently.
+    tasks = []
+    for i in range(3):
+        task = asyncio.create_task(worker(f'worker-{i}', queue))
+        tasks.append(task)
+
+    # Wait until the queue is fully processed.
+    started_at = time.monotonic()
+    await queue.join()
+    total_slept_for = time.monotonic() - started_at
+
+    # Cancel our worker tasks.
+    for task in tasks:
+        task.cancel()
+    # Wait until all worker tasks are cancelled.
+    await asyncio.gather(*tasks, return_exceptions=True)
+
+    print('====')
+    print(f'3 workers slept in parallel for {total_slept_for:.2f} seconds')
+    print(f'total expected sleep time: {total_sleep_time:.2f} seconds')
+
+
+asyncio.run(main())
+```
+
 Смотри еще:
 
 - [high level api reference](https://docs.python.org/3/library/asyncio.html)

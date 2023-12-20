@@ -847,6 +847,277 @@
     <span class="c1"># ...
 </span></code></pre></div></div>
 
+<h3 id="running-in-threads"><a href="https://docs.python.org/3/library/asyncio-task.html#running-in-threads">Running in Threads</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">coroutine asyncio.to_thread(func, /, *args, **kwargs)</code> Асинхронно запускает функцию func в отдельном потоке. Любые <code class="language-plaintext highlighter-rouge">*args</code> и <code class="language-plaintext highlighter-rouge">**kwargs</code>, указанные для этой функции, передаются напрямую функции. Кроме того, распространяется текущий <code class="language-plaintext highlighter-rouge">contextvars.Context</code>. Возвращает сопрограмму, которую можно ожидать, чтобы получить конечный результат func.</p>
+
+<p>Эта в первую очередь предназначена для использования для выполнения синхронных Функции/методов, связанных с вводом-выводом, которые в противном случае заблокировали бы цикл событий, если они запускались бы в основном потоке.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">blocking_io</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f"start blocking_io at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%X'</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="c1"># Note that time.sleep() can be replaced with any blocking
+</span>    <span class="c1"># IO-bound operation, such as file operations.
+</span>    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f"blocking_io complete at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%X'</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f"started main at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%X'</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gather</span><span class="p">(</span>
+        <span class="n">asyncio</span><span class="p">.</span><span class="n">to_thread</span><span class="p">(</span><span class="n">blocking_io</span><span class="p">),</span>
+        <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">f"finished main at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'%X'</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+
+<span class="c1"># Expected output:
+#
+# started main at 19:50:53
+# start blocking_io at 19:50:53
+# blocking_io complete at 19:50:54
+# finished main at 19:50:54
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">asyncio.run_coroutine_threadsafe(coro, loop)</code> Функция предназначена для ожидания из другого потока.</p>
+
+<p>Цикл событий запускается в потоке (обычно в основном потоке) и выполняется все обратные вызовы и задачи в своем потоке. Пока Задача выполняется в цикле событий, никакие другие задачи не могут выполняться в том же потоке. Когда задача выполняет выражение await, выполняющаяся задача приостанавливается и цикл событий выполняет следующую задачу. Чтобы запланировать обратный вызов из другого потока ОС, Следует использовать метод <code class="language-plaintext highlighter-rouge">loop.call_soon_threadsafe()</code>. Пример:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">loop</span><span class="p">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Почти все объекты asyncio не являются потокобезопасными, что обычно бывает не проблема, если нет кода, который разделяет общие объекты в памяти или работает с источниками данных снаружи. Планирование сопрограмм из другого потока делается так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">coro_func</span><span class="p">():</span>
+     <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Later in another OS thread:
+</span>
+<span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">coro_func</span><span class="p">(),</span> <span class="n">loop</span><span class="p">)</span>
+<span class="c1"># Wait for the result:
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">future</span><span class="p">.</span><span class="n">result</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Для обработки сигналов цикл событий должен быть запустить в основном потоке. Метод <code class="language-plaintext highlighter-rouge">loop.run_in_executor()</code> можно использовать с <code class="language-plaintext highlighter-rouge">concurrent.futures.ThreadPoolExecutor</code> для выполнения блокировка кода в другом потоке ОС без блокировки потока где выполняется цикл событий.</p>
+
+<p>В настоящее время невозможно напрямую запланировать сопрограммы или обратные вызовы. из другого процесса (например, запущенного с <code class="language-plaintext highlighter-rouge">multiprocessing</code>).</p>
+
+<p>Блокирующий (привязанный к процессору) код не следует вызывать напрямую. Например, если функция выполняет вычисления с интенсивным использованием ЦП в течение 1 секунды, все одновременные задачи asyncio и операции ввода-вывода будут задержаны на 1 секунду.</p>
+
+<p>Исполнитель может использоваться для запуска задачи в другом потоке или даже в другой процессе, см. метод <code class="language-plaintext highlighter-rouge">loop.run_in_executor()</code> <a href="https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor">асинхроннорго цикла</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">concurrent.futures</span>
+
+<span class="k">def</span> <span class="nf">blocking_io</span><span class="p">():</span>
+    <span class="c1"># File operations (such as logging) can block the
+</span>    <span class="c1"># event loop: run them in a thread pool.
+</span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'/dev/urandom'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">cpu_bound</span><span class="p">():</span>
+    <span class="c1"># CPU-bound operations will block the event loop:
+</span>    <span class="c1"># in general it is preferable to run them in a
+</span>    <span class="c1"># process pool.
+</span>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_running_loop</span><span class="p">()</span>
+
+    <span class="c1">## Options:
+</span>
+    <span class="c1"># 1. Run in the default loop's executor:
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_in_executor</span><span class="p">(</span>
+        <span class="bp">None</span><span class="p">,</span> <span class="n">blocking_io</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'default thread pool'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># 2. Run in a custom thread pool:
+</span>    <span class="k">with</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">futures</span><span class="p">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_in_executor</span><span class="p">(</span>
+            <span class="n">pool</span><span class="p">,</span> <span class="n">blocking_io</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'custom thread pool'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># 3. Run in a custom process pool:
+</span>    <span class="k">with</span> <span class="n">concurrent</span><span class="p">.</span><span class="n">futures</span><span class="p">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="p">.</span><span class="n">run_in_executor</span><span class="p">(</span>
+            <span class="n">pool</span><span class="p">,</span> <span class="n">cpu_bound</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'custom process pool'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h2 id="task-object"><a href="https://docs.python.org/3/library/asyncio-task.html#task-object">Task Object</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.Task(coro, *, loop=None, name=None, context=None, eager_start=False)</code></p>
+
+<p>Циклы событий используют совместное планирование: цикл событий запускается по одной задаче за раз. Пока Задача ожидает завершения В будущем цикл событий запускает другие задачи, обратные вызовы или выполняет Операции ввода-вывода.</p>
+
+<p>Используйте функцию высокого уровня <code class="language-plaintext highlighter-rouge">asyncio.create_task()</code> для создания Задачи, или низкоуровневые <code class="language-plaintext highlighter-rouge">loop.create_task()</code> или <code class="language-plaintext highlighter-rouge">ensure_future()</code> функции. Не следует сздавать экземпляры тасков вручную.</p>
+
+<p>Чтобы отменить запущенную Задачу, используйте метод <code class="language-plaintext highlighter-rouge">cancel()</code>, что выдаст исключение <code class="language-plaintext highlighter-rouge">CancelledError</code>. Если сопрограмма ожидает объект фьючерса во время отмены, он будет отменен.</p>
+
+<p><code class="language-plaintext highlighter-rouge">cancelled()</code> можно использовать, чтобы проверить, была ли задача отменена.</p>
+
+<p><code class="language-plaintext highlighter-rouge">asyncio.Task</code> наследует от <code class="language-plaintext highlighter-rouge">Future</code> все свои API, кроме <code class="language-plaintext highlighter-rouge">Future.set_result()</code> и <code class="language-plaintext highlighter-rouge">Future.set_exception()</code>.</p>
+
+<p>Необязательный аргумент <code class="language-plaintext highlighter-rouge">context</code>, предназначенный только для ключевых слов, позволяет указать специальный <code class="language-plaintext highlighter-rouge">contextvars.Context</code> для coro для запуска. Если контекст не указан, Задача копирует текущий контекст. и позже запускает свою сопрограмму в скопированном контексте.</p>
+
+<p>Необязательный аргумент <code class="language-plaintext highlighter-rouge">eager_start</code>, предназначенный только для ключевых слов, позволяет начать выполнять задачу во время создания (добавлено в 3.12).</p>
+
+<p>Методы%</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">done()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">result()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">exception()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">add_done_callback(callback, *, context=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">remove_done_callback(callback)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_stack(*, limit=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">print_stack(*, limit=None, file=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_coro()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_context()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">get_name()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">set_name(value)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cancel(msg=None)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cancelled()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">uncancel()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">cancelling()</code></li>
+</ul>
+
+<h3 id="streams"><a href="https://docs.python.org/3/library/asyncio-stream.html">Streams</a></h3>
+
+<p>Обеспечивает потоковое чтение и запись. Предоставлются два класса - <code class="language-plaintext highlighter-rouge">StreamReader</code> и <code class="language-plaintext highlighter-rouge">StreamWriter</code>, а так-же функции для управления сокетами. Дополнительно - <a href="https://docs.python.org/3/library/asyncio-protocol.html#asyncio-example-create-connection">Transports and Protocols</a> и моудль <a href="https://docs.python.org/3/library/socket.html?highlight=socket#module-socket">socket</a>.</p>
+
+<h3 id="synchronization-primitives"><a href="https://docs.python.org/3/library/asyncio-sync.html">Synchronization Primitives</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.Lock</code> реализует блокировку <a href="https://ru.wikipedia.org/wiki/%D0%9C%D1%8C%D1%8E%D1%82%D0%B5%D0%BA%D1%81">мьютекса</a> для асинхронных задач. Не потокобезопасный. Асинхронную блокировку можно использовать, чтобы гарантировать эксклюзивный доступ к общкму ресурсу. Предпочтительным способом использования блокировки является <code class="language-plaintext highlighter-rouge">async with</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">Lock</span><span class="p">()</span>
+
+<span class="c1"># ... later
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+    <span class="c1"># access shared state
+</span></code></pre></div></div>
+
+<p>Методы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">acquire()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">release()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">locked()</code></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.Event</code> не потокобезопасный. Эвент можно использовать для уведомления нескольких задач asyncio. что произошло какое-то событие. Объект Event управляет внутренним флагом, которому можно установить <code class="language-plaintext highlighter-rouge">true</code> с помощью метода <code class="language-plaintext highlighter-rouge">set()</code> и сбросить значение в <code class="language-plaintext highlighter-rouge">false</code> с помощью <code class="language-plaintext highlighter-rouge">clear()</code> метод. Метод <code class="language-plaintext highlighter-rouge">wait()</code> блокируется до тех пор, пока флаг не будет установлен в <code class="language-plaintext highlighter-rouge">true</code>. Изначально для флага установлено значение <code class="language-plaintext highlighter-rouge">false</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.Condition(lock=None)</code> Не потокобезопасный. Условие может использоваться задачей для ожидания что какое-то событие должно произойти, а затем получения преимущественого доступа к общему ресурсу.</p>
+
+<p>По сути, объект Condition сочетает в себе функциональность Event и Lock. Несколько объектов Condition используют один Lock, что позволяет координировать эксклюзивный доступ к общему ресурсу между различными задачами. Необязательный аргумент lock должен быть объектом Lock или None. Предпочтительный способ использования условия – <code class="language-plaintext highlighter-rouge">async with</code>. Дополнительные методы <code class="language-plaintext highlighter-rouge">notify(n=1)</code> и <code class="language-plaintext highlighter-rouge">notify_all()</code> позволяют уведомить о событии n-сопрограмм или все. Методы <code class="language-plaintext highlighter-rouge">wait()</code> и <code class="language-plaintext highlighter-rouge">wait_for()</code> позволяют ожидать определенным сопрограммам наступления события.</p>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.Semaphore(value=1)</code> Не потокобезопасный. Семафор управляет внутренним счетчиком, который уменьшается при каждом <code class="language-plaintext highlighter-rouge">acquire()</code>в и увеличивается при каждом <code class="language-plaintext highlighter-rouge">release()</code>. Счетчик никогда не может опуститься ниже нуля; когда <code class="language-plaintext highlighter-rouge">acquire()</code> найдет что он равен нулю, он блокируется, ожидая вызова какой-нибудь задачи и <code class="language-plaintext highlighter-rouge">release()</code>. Необязательный аргумент <code class="language-plaintext highlighter-rouge">value</code> задает начальное значение для счетчика (1 по умолчанию). Если заданное значение меньше, чем 0, поднимется <code class="language-plaintext highlighter-rouge">ValueError</code>. Предпочтительным способом использования семафора является <code class="language-plaintext highlighter-rouge">async with</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.BoundedSemaphore(value=1)</code> Не потокобезопасный. Ограниченный семафор — это версия <code class="language-plaintext highlighter-rouge">Semaphore</code>, которая возбуждает <code class="language-plaintext highlighter-rouge">ValueError</code> в <code class="language-plaintext highlighter-rouge">release()</code>, если это увеличивает счетчик выше начального значения.</p>
+
+<p><code class="language-plaintext highlighter-rouge">class asyncio.Barrier(parties)</code> Не потокобезопасный. Барьер — это простой примитив синхронизации, который позволяет блокировать сопрограммы до тех пор, пока не накопится требуемое количество задач, ожидающих выполнения. Задачи могут ожидать выполнения метод <code class="language-plaintext highlighter-rouge">wait()</code> и будут заблокированы до тех пор, пока указанное количество задач не накопится. В этот момент все ожидающие задачи разблокируются одновременно. Добавлено в 3.11</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">example_barrier</span><span class="p">():</span>
+   <span class="c1"># barrier with 3 parties
+</span>   <span class="n">b</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">Barrier</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+   <span class="c1"># create 2 new waiting tasks
+</span>   <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">wait</span><span class="p">())</span>
+   <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">wait</span><span class="p">())</span>
+
+   <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+   <span class="c1"># The third .wait() call passes the barrier
+</span>   <span class="k">await</span> <span class="n">b</span><span class="p">.</span><span class="n">wait</span><span class="p">()</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+   <span class="k">print</span><span class="p">(</span><span class="s">"barrier passed"</span><span class="p">)</span>
+
+   <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">example_barrier</span><span class="p">())</span>
+
+<span class="o">&lt;</span><span class="n">asyncio</span><span class="p">.</span><span class="n">locks</span><span class="p">.</span><span class="n">Barrier</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span> <span class="p">[</span><span class="n">filling</span><span class="p">,</span> <span class="n">waiters</span><span class="p">:</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">asyncio</span><span class="p">.</span><span class="n">locks</span><span class="p">.</span><span class="n">Barrier</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span> <span class="p">[</span><span class="n">draining</span><span class="p">,</span> <span class="n">waiters</span><span class="p">:</span><span class="mi">0</span><span class="o">/</span><span class="mi">3</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="n">barrier</span> <span class="n">passed</span>
+<span class="o">&lt;</span><span class="n">asyncio</span><span class="p">.</span><span class="n">locks</span><span class="p">.</span><span class="n">Barrier</span> <span class="nb">object</span> <span class="n">at</span> <span class="mi">0</span><span class="n">x</span><span class="p">...</span> <span class="p">[</span><span class="n">filling</span><span class="p">,</span> <span class="n">waiters</span><span class="p">:</span><span class="mi">0</span><span class="o">/</span><span class="mi">3</span><span class="p">]</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Возвращаемое <code class="language-plaintext highlighter-rouge">wait()</code> значение представляет собой целое число в диапазоне от 0 до parties-1, отличающееся для каждой задачи. Это можно использовать для выбора задачи, требующей выполнения каких-то особых действий.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">barrier</span> <span class="k">as</span> <span class="n">position</span><span class="p">:</span>
+   <span class="k">if</span> <span class="n">position</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="c1"># Only one task prints this
+</span>      <span class="k">print</span><span class="p">(</span><span class="s">'End of *draining phase*'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="subprocesses"><a href="https://docs.python.org/3/library/asyncio-subprocess.html">Subprocesses</a></h3>
+
+<h3 id="queues"><a href="https://docs.python.org/3/library/asyncio-queue.html">Queues</a></h3>
+
+<p>пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">queue</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c1"># Get a "work item" out of the queue.
+</span>        <span class="n">sleep_for</span> <span class="o">=</span> <span class="k">await</span> <span class="n">queue</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="c1"># Sleep for the "sleep_for" seconds.
+</span>        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_for</span><span class="p">)</span>
+
+        <span class="c1"># Notify the queue that the "work item" has been processed.
+</span>        <span class="n">queue</span><span class="p">.</span><span class="n">task_done</span><span class="p">()</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">f'</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s"> has slept for </span><span class="si">{</span><span class="n">sleep_for</span><span class="p">:.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds'</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Create a queue that we will use to store our "workload".
+</span>    <span class="n">queue</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">Queue</span><span class="p">()</span>
+
+    <span class="c1"># Generate random timings and put them into the queue.
+</span>    <span class="n">total_sleep_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">sleep_for</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">total_sleep_time</span> <span class="o">+=</span> <span class="n">sleep_for</span>
+        <span class="n">queue</span><span class="p">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">sleep_for</span><span class="p">)</span>
+
+    <span class="c1"># Create three worker tasks to process the queue concurrently.
+</span>    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">worker</span><span class="p">(</span><span class="s">f'worker-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">'</span><span class="p">,</span> <span class="n">queue</span><span class="p">))</span>
+        <span class="n">tasks</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+    <span class="c1"># Wait until the queue is fully processed.
+</span>    <span class="n">started_at</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">monotonic</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">queue</span><span class="p">.</span><span class="n">join</span><span class="p">()</span>
+    <span class="n">total_slept_for</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="n">started_at</span>
+
+    <span class="c1"># Cancel our worker tasks.
+</span>    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+        <span class="n">task</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+    <span class="c1"># Wait until all worker tasks are cancelled.
+</span>    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">,</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">'===='</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f'3 workers slept in parallel for </span><span class="si">{</span><span class="n">total_slept_for</span><span class="p">:.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f'total expected sleep time: </span><span class="si">{</span><span class="n">total_sleep_time</span><span class="p">:.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds'</span><span class="p">)</span>
+
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
 <p>Смотри еще:</p>
 
 <ul>
