@@ -505,8 +505,248 @@ blocks(4) done
 results: [9, 0, 16, 1, 4]
 ```
 
+## Высокоуровневый АПИ
+
+[high level api reference](https://docs.python.org/3/library/asyncio.html)
+
+### [Runers](https://docs.python.org/3/library/asyncio-runner.html)
+
+`asyncio.run(coro, *, debug=None, loop_factory=None)`
+
+Выполняет сопрограмму coro и возвращает результат. Эта функция запускает переданную сопрограмму, заботясь о управление циклом событий asyncio, завершении асинхронного генератора и закрытии исполнителя.
+
+Эту функцию нельзя вызвать, когда выполняется другой цикл событий asyncio. работающий в том же потоке.
+
+Если `debug` `True`, цикл событий будет запущен в режиме отладки. False отключает режим отладки явно. `None` используется для соблюдения глобального Настройки режима отладки.
+
+Если `loop_factory` не `None`, он используется для создания нового цикла событий; в противном случае используется `asyncio.new_event_loop()`. В конце цикл закрывается. Эту функцию следует использовать в качестве основной точки входа для асинхронных программ. и в идеале она должена вызываться только один раз. Рекомендуется использовать `loop_factory` для настройки цикла событий вместо политик.
+
+Исполнителю предоставляется тайм-аут продолжительностью 5 минут для завершения работы. Если исполнитель не закончил работу за это время, выдается предупреждение. поток выпускается и исполнитель закрывается.
+
+```python
+async def main():
+    await asyncio.sleep(1)
+    print('hello')
+
+asyncio.run(main())
+```
+
+`class asyncio.Runner(*, debug=None, loop_factory=None)`
+
+Менеджер контекста, который упрощает множественные вызовы асинхронных функций в одном и том же контексте.
+
+Иногда в одном и том же цикле событий необходимо вызвать несколько асинхронных функций с тем же самым contextvars.Context.
+
+Если debug равно True, цикл событий будет запущен в режиме отладки. False отключает режим отладки явно. None используется для соблюдения глобального Настройки режима отладки.
+
+По сути, `asyncio.run()` пример можно переписать так:
+
+```python
+async def main():
+    await asyncio.sleep(1)
+    print('hello')
+
+with asyncio.Runner() as runner:
+    runner.run(main())
+```
+
+Методы:
+
+- `run(coro, *, context=None)` (нельзя вызвать, когда выполняется другой цикл событий asyncio в том же потоке)
+- `close()`
+- `get_loop()`
+
+### [Coroutines](https://docs.python.org/3/library/asyncio-task.html)
+
+Предпочтительно создавать сопрограммы через `async/await`. При вызове сопрограммы вне цикла событий возвращается объект сопрограммы, а не результат вычислений. Механизмы вызова сопрограммы:
+
+- функция `asyncio.run()` принимает сопрограмму в качестве аргумента
+- ожидание сопрограммы через `await`
+- функция `asyncio.create_task()` для запуска сопрограмм одновременно как объектов `Task`
+- класс `asyncio.TaskGroup` предоставляет более современный альтернатива `create_task()`
+
+Мы говорим, что объект является ожидаемым объектом (awaitable), если его можно использовать в выражении await.
+
+Существует три основных типа ожидаемых объектов: сопрограммы (coroutines), задачи (tasks) и фьючерсы (futures).
+
+Сопрограммы можно ожидать в других сопрограммах (функциях сопрограмм). Задачи используются для планирования сопрограмм одновременно. Фьючерс — это специальный **низкоуровневый** ожидаемый объект, который представляет конечный результат асинхронной операции. Объекты фьючерсов в asyncio необходимы для реализации кода на основе обратного вызова. для использования с async/await.
+
+### [Creating Tasks](https://docs.python.org/3/library/asyncio-task.html#creating-tasks)
+
+`asyncio.create_task(coro, *, name=None, context=None)` оборачивает сопрограмму и возвращает объект `Task`. Если `name` не `None`, оно устанавливается как имя задачи с помощью `Task.set_name()`. Необязательный аргумент `context`, предназначенный только для ключевых слов, позволяет указать специальный `contextvars.Context`. Текущая копия контекста создается, когда контекст не указан. Задача выполняется в цикле, возвращаемом `get_running_loop()`, `RuntimeError` возникает, если в текущем потоке нет работающиего цикла.
+
+ВЦикл событий сохраняет только слабые ссылки на задачи. Задача, на которую нет ссылок в другом месте может быть собрана GC в любое время, даже до того, как это будет выполнена.
+
+```python
+background_tasks = set()
+
+for i in range(10):
+    task = asyncio.create_task(some_coro(param=i))
+
+    # Add task to the set. This creates a strong reference.
+    background_tasks.add(task)
+
+    # To prevent keeping references to finished tasks forever,
+    # make each task remove its own reference from the set after
+    # completion:
+    task.add_done_callback(background_tasks.discard)
+```
+
+Задачи можно легко и безопасно отменить. Когда задача отменена, будет поднята `asyncio.CancelledError` в задаче как только появится возможность. Рекомендуется использовать `try/finaly` для надежной очистки.
+
+Группы задач сочетают в себе API создания задач с удобным и надежный способ дождаться завершения всех задач в группе.
+
+`class asyncio.TaskGroup` асинхронный менеджер, имеющий метод `create_task(coro, *, name=None, context=None)`
+
+```python
+async def main():
+    async with asyncio.TaskGroup() as tg:
+        task1 = tg.create_task(some_coro(...))
+        task2 = tg.create_task(another_coro(...))
+    print(f"Both tasks have completed now: {task1.result()}, {task2.result()}")
+```
+
+Инструкция будет ждать завершения всех задач в группе. Во время ожидания в группу еще могут добавляться новые задачи.После завершения последней задачи и выхода из блока в группу нельзя добавлять новые задачи. При первом сбое какой-либо задачи, принадлежащей группе за исключением `asyncio.CancelledError,` остальные задачи в группе отменяются. После этого в группу невозможно будет добавить никакие дальнейшие задачи.
+
+После завершения всех задач, если какие-либо задачи не удалось выполнить за исключением `asyncio.CancelledError`, исключения объединены в `ExceptionGroup` или `BaseExceptionGroup`, который подымается. Если какая-либо задача завершается с ошибкой `KeyboardInterrupt` или `SystemExit`, группа задач по-прежнему отменяет оставшиеся задачи и ожидает завершения, а `KeyboardInterrupt` или `SystemExit` подымается вместо `ExceptionGroup` или `BaseExceptionGroup`.
+
+Если тело оператора завершается с исключением, это рассматривается так же, как если бы одна из задач не удалась: оставшиеся задачи отменяются и затем ожидаются, и исключения, не подлежащие отмене группируются.
+
+### Sleeping
+
+`coroutine asyncio.sleep(delay, result=None)` приостанавливает задачу на переданное количество секунд. Установка задержки на 0 обеспечивает возможность другим сопрограммам запускаться. Если предоставлен `result`, он возвращается вызывающей стороне когда сопрограмма завершится.
+
+### [Running Tasks Concurrently](https://docs.python.org/3/library/asyncio-task.html#running-tasks-concurrently)
+
+`awaitable asyncio.gather(*aws, return_exceptions=False)` запуск ожидаемых объектов в aws последовательности одновременно. Все сопрограммы в последовательноси будут обернуты в `Task`. Если все awaitable выполнены успешно, результатом будет совокупный список возвращаемых значений. Порядок значений результата соответствует порядку ожидаемых объектов в aws.
+
+`return_exceptions` определяет как будут обработаны исключения задач. `False` (дефолтное) поднимет исключения (что не отменит остальные задачи), `True` запишет их и вернет после завершения группы.
+
+Если `gather()` отменен, все задачи, которые ще не завершены, тоже будут отвемнены. Отмена задач не отменяет gather.
+
+Альтернатива gather - это `TaskGroup,` которая гарантирует отмену всех оставшихся вложенных задач при исключении задачи.
+
+`asyncio.eager_task_factory(loop, coro, *, name=None, context=None)`. При использовании этой фабрики (через `loop.set_task_factory(asyncio.eager_task_factory)`), сопрограммы начинают выполнение синхронно во время построения Task. Задачи планируются в цикле событий только в том случае, если они блокируются. Это может быть улучшением производительности, поскольку накладные расходы на планирование циклов избегаются для сопрограмм, которые выполняются синхронно. Типичным примером, где это полезно, являются сопрограммы, которые используют кэширование или мемоизация, чтобы избежать фактического ввода-вывода, когда это возможно.
+
+Примечание Немедленное выполнение сопрограммы является семантическим изменением. Если сопрограмма возвращается или вызывается, задача никогда не запланирована. в цикле событий. Если выполнение сопрограммы блокируется, задача запланирована в цикле событий. Это изменение может привести к изменению в существующих приложениях. Например, порядок выполнения задач приложения может измениться. Добавлено в 3.12.
+
+`asyncio.create_eager_task_factory(custom_task_constructor)` реализует фабрику через кастомный конструктор.
+
+### Shielding
+
+`awaitable asyncio.shield(aw)` устанавливает защиту от отмены. Позволяет защитить от cancelled после создания таска. Сохранение ссылок на задачи, переданные в функцию, обязательно по тем же причинам, что и при создании таска
+
+```python
+task = asyncio.create_task(something())
+res = await shield(task)
+
+# эквивалентно (за исключением отмены содержащей сопрограммы)
+res = await something()
+```
+
+### Timeouts
+
+`asyncio.timeout(delay)` создает асинхронный контекстный менеджер который можно использовать для ограничения количества времени, затрачиваемого на ожидание чего-то (к примеру задачи). delay может быть либо None, либо int/flot. Если задержка равна None, ограничения по времени не будет применяться; это может быть полезно, если задержка неизвестна, когда контекстный менеджер создан. В любом случае, диспетчер контекста может быть перепланирован после создание с использованием `Timeout.reschedule()`. Добавлено в 3.11
+
+```python
+async def main():
+    async with asyncio.timeout(10):
+        await long_running_task()
+
+# перехватить исключение TimeoutError можно только вне контекстного менеджера
+async def main():
+    try:
+        async with asyncio.timeout(10):
+            await long_running_task()
+    except TimeoutError:
+        print("The long operation timed out, but we've handled it.")
+
+    print("This statement will run regardless.")
+```
+
+`class asyncio.Timeout(when)` сам контекстный менеджер, обладает методами `when()`, `reschedule(when: float | None)`, `expired()`. Добавлено в 3.11
+
+```python
+async def main():
+    try:
+        # We do not know the timeout when starting, so we pass ``None``.
+        async with asyncio.timeout(None) as cm:
+            # We know the timeout now, so we reschedule it.
+            new_deadline = get_running_loop().time() + 10
+            cm.reschedule(new_deadline)
+
+            await long_running_task()
+    except TimeoutError:
+        pass
+
+    if cm.expired():
+        print("Looks like we haven't finished on time.")
+```
+
+`asyncio.timeout_at(when)` аналогично функции за исключением того, что время ожидания абсолютное. Добавлено в 3.11
+
+```python
+async def main():
+    loop = get_running_loop()
+    deadline = loop.time() + 20
+    try:
+        async with asyncio.timeout_at(deadline):
+            await long_running_task()
+    except TimeoutError:
+        print("The long operation timed out, but we've handled it.")
+
+    print("This statement will run regardless.")
+```
+
+`coroutine asyncio.wait_for(aw, timeout)` позволяет дождаться выполнения с таймаутом. Если происходит тайм-аут, задача отменяется и поднимается `TimeoutError`. Чтобы избежать cancellation, оберните в `shield()`. Функция будет ждать, пока future не будет фактически отменено, поэтому общее время ожидания может превысить тайм-аут. Если исключение происходит во время отмены, оно распространяется. Если ожидание отменяется, future aw также отменяется.
+
+```python
+async def eternity():
+    # Sleep for one hour
+    await asyncio.sleep(3600)
+    print('yay!')
+
+async def main():
+    # Wait for at most 1 second
+    try:
+        await asyncio.wait_for(eternity(), timeout=1.0)
+    except TimeoutError:
+        print('timeout!')
+
+asyncio.run(main())
+
+# Expected output:
+#
+#     timeout!
+```
+
+### [Waiting Primitives](https://docs.python.org/3/library/asyncio-task.html#waiting-primitives)
+
+`coroutine asyncio.wait(aws, *, timeout=None, return_when=ALL_COMPLETED)` таски запускаются одновременно и блокируются, пока не будет выполнено условие return_when. Итерируемый элемент aws не должен быть пустым. Возвращает два набора задач//ьючерсов: (done, pending)
+
+```python
+done, pending = await asyncio.wait(aws)
+```
+
+Эта функция не вызывает TimeoutError. В отличие от `wait_for()`, `wait()` не отменяет фьючерсы, когда происходит тайм-аут. Фьючерсы или задачи, которые не выполняются, когда наступает тайм-аут, просто вернулся во втором сете.
+
+return_when указывает, когда эта функция должна вернуться. Это должно быть одной из следующих констант:
+
+- `FIRST_COMPLETED` Функция вернется, когда любой из вьючерсов завершается или отменяется
+- `FIRST_EXCEPTION` Функция вернется, когда любой фьючерс поднимает исключение (если ни один - эквивалент олл комплитед)
+- `ALL_COMPLETED` Функция вернется, когда все фьючерсы заканчиваются или отменяются.
+
+`asyncio.as_completed(aws, *, timeout=None)` Возвращает итератор сопрограмм. Каждую возвращенную сопрограмму можно ожидатьВызывает TimeoutError, если тайм-аут наступает раньше чем все фьючерсы выполнены.
+
+```python
+for coro in as_completed(aws):
+    earliest_result = await coro
+    # ...
+```
+
 Смотри еще:
 
+- [high level api reference](https://docs.python.org/3/library/asyncio.html)
 - [[python-standart-library]]
 - [[threading]]
 - [[multiprocess]]
@@ -523,6 +763,8 @@ results: [9, 0, 16, 1, 4]
 - [[asyncpg]]
 - [A list of libraries](https://github.com/python/asyncio/wiki/ThirdParty#filesystem) for AsyncIO is available on PyPI with Framework::AsyncIO classifier (github)
 
+## [Coroutines and Tasks](https://docs.python.org/3/library/asyncio-task.html)
+
 Полезные асинхронные пакеты:
 
 - [aiobreaker](https://github.com/arlyon/aiobreaker) — это реализация шаблона Circuit Breaker на Python, описанная в книге Майкла Т. Найгарда `Release It!`. Автоматические выключатели существуют для того, чтобы позволить одной подсистеме выйти из строя, не разрушая всю систему. Это делается путем объединения опасных операций (обычно точек интеграции) с компонентом, который может обходить вызовы, когда система неработоспособна.
@@ -535,7 +777,7 @@ results: [9, 0, 16, 1, 4]
 [functools]: functools "Functools"
 [queue]: queue "queue"
 [asyncio-transports-and-protocols]: asyncio-transports-and-protocols "Asyncio transports and protocols"
-[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
+[python-standart-library]: ..%2Flists%2Fpython-standart-library "Стандартная библиотека python и полезные ресурсы"
 [multiprocess]: multiprocess "Управление процессами в python"
 [contextvars]: contextvars "Contextvars"
 [molotov]: molotov "Molotov"
