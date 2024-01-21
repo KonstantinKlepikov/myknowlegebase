@@ -795,7 +795,7 @@ environ['TESTING'] = 'TRUE'
 [fastapi]: fastapi "Fastapi"
 [uvicorn]: uvicorn "Uvicorn"
 [type-annotation]: type-annotation "Аннотация типов в python"
-[sqlalchemy]: ..%2Flists%2Fsqlalchemy "Sqlalchemy"
+[sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [gino]: gino "Gino"
 [databases]: databases "Databases python"
 [alembic]: alembic "Alembic"

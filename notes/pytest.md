@@ -999,6 +999,7 @@ pip uninstall pytest-NAME
 ## Полезные ресурсы на stack owerflow
 
 - [How to parametrize a Pytest fixture?](https://stackoverflow.com/questions/42228895/how-to-parametrize-a-pytest-fixture). [Apply indirect on particular arguments](https://docs.pytest.org/en/latest/example/parametrize.html#apply-indirect-on-particular-arguments)
+- [pytest using fixtures as arguments in parametrize](https://stackoverflow.com/questions/42014484/pytest-using-fixtures-as-arguments-in-parametrize)
 
 Смотри еще:
 
@@ -1041,7 +1042,7 @@ pip uninstall pytest-NAME
 [mock]: mock "Mock-тесты"
 [testfixtures]: testfixtures "Testfixtures"
 [testinfra]: testinfra "Testinfra"
-[2022-07-04-daily-note]: ..%2Fposts%2F2022-07-04-daily-note "Postgres Initialization scripts and unzip with init"
+[2022-07-04-daily-note]: ../posts/2022-07-04-daily-note "Postgres Initialization scripts and unzip with init"
 [pydantic-factories]: pydantic-factories "Pydantic-factories"
 [behave]: behave "Behave"
 [alembic]: alembic "Alembic"

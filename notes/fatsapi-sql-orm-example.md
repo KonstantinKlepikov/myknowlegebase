@@ -85,7 +85,7 @@ print(database_exists(engine.url))
 [fastapi]: fastapi "Fastapi"
 [fastapi-тестирование-базы-данных]: fastapi-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B1%D0%B0%D0%B7%D1%8B-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85 "Fastapi тестирование базы данных"
 [fastapi-зависимости-с-yield]: fastapi-%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B8-%D1%81-yield "Fastapi зависимости с yield"
-[sqlalchemy]: ..%2Flists%2Fsqlalchemy "Sqlalchemy"
+[sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
 [alembic]: alembic "Alembic"
 [sqlite]: sqlite "Sqlite bd"
 [starlette]: starlette "Starlette"

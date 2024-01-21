@@ -210,7 +210,7 @@ def packagefunction():
 [requirements]: requirements "Requirements.txt"
 [toml]: toml "Toml"
 [pypy]: pypy "Pypy"
-[heroku]: ..%2Flists%2Fheroku "Heroku"
+[heroku]: ../lists/heroku "Heroku"
 [heroku-cli]: heroku-cli "Heroku-cl"
 [click]: click "Click интерфейс командной строки"
 [poetrypoet]: poetrypoet "Poetrypoet"

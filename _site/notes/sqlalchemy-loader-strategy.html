@@ -123,7 +123,7 @@
   <div class="prose mb-4 py-4">
     <p><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#tutorial-orm-loader-strategies">Ссылка на статью</a></p>
 
-<p>[<a href="..%2Flists%2Fsqlalchemy" title="Sqlalchemy">sqlalchemy</a>] ОРИ загружает объекты лениво (laizy load), по мере их востребованности. Этот шаблон проектирования довольно противоречив - когда в памяти несколько десятков объектов, которые ссылаются на несколько других объектов, ленивая загрузка может привести к избыточным запросам к БД. Такие запросы выполняются неявно, могут провоцировать ошибки и, что важно, не работают с [<a href="asyncio" title="Asyncio">asyncio</a>]. При этом ленивая (отложенная) загрузка имеет много преиуществ, если совместима с параллельной обработкой.</p>
+<p>[<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>] ОРИ загружает объекты лениво (laizy load), по мере их востребованности. Этот шаблон проектирования довольно противоречив - когда в памяти несколько десятков объектов, которые ссылаются на несколько других объектов, ленивая загрузка может привести к избыточным запросам к БД. Такие запросы выполняются неявно, могут провоцировать ошибки и, что важно, не работают с [<a href="asyncio" title="Asyncio">asyncio</a>]. При этом ленивая (отложенная) загрузка имеет много преиуществ, если совместима с параллельной обработкой.</p>
 
 <p>Задача применении ОРМ сводится к запуску <code class="language-plaintext highlighter-rouge">SQL echoing</code> с целью проверки избыточности одних и тех-же селектов и дальнешем применении различных стратегий загрузки.</p>
 
@@ -146,7 +146,7 @@
 
 <h2 id="selectin-load"><a href="https://docs.sqlalchemy.org/en/14/tutorial/orm_related_objects.html#selectin-load">Selectin load</a></h2>
 
-<p><code class="language-plaintext highlighter-rouge">selectinload()</code> наиболее используемая опция лоадера в [<a href="..%2Flists%2Fsqlalchemy" title="Sqlalchemy">sqlalchemy</a>]. Опция гарантирует, что конкретная коллекция для полной серии объектов загружается заранее с помощью одного запроса. Он делает это с помощью SELECT, который в большинстве случаев может быть отправлен только для связанной таблицы, без введения JOIN или подзапросов, и только для тех родительских объектов, для которых коллекция еще не загружена. Пример:</p>
+<p><code class="language-plaintext highlighter-rouge">selectinload()</code> наиболее используемая опция лоадера в [<a href="../lists/sqlalchemy" title="Sqlalchemy">sqlalchemy</a>]. Опция гарантирует, что конкретная коллекция для полной серии объектов загружается заранее с помощью одного запроса. Он делает это с помощью SELECT, который в большинстве случаев может быть отправлен только для связанной таблицы, без введения JOIN или подзапросов, и только для тех родительских объектов, для которых коллекция еще не загружена. Пример:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">selectinload</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">stmt</span> <span class="o">=</span> <span class="p">(</span>
