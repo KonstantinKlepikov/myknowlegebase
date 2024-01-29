@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Dependency injection | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Dependency injection" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Библиотека внедрения зависимостей dependency-injector на python" />
+<meta property="og:description" content="Библиотека внедрения зависимостей dependency-injector на python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/dependency-injection.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/dependency-injection.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Библиотека внедрения зависимостей dependency-injector на python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/dependency-injection.html","headline":"Dependency injection","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Dependency injection</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Первоначально шаблон внедрения зависимостей стал популярным в языках со статической типизацией, таких как Java. Внедрение зависимостей — это принцип, который помогает добиться инверсии управления.</p>
+
+<p>Python — интерпретируемый язык с динамической типизацией. Существует мнение, что внедрение зависимостей для него работает не так хорошо, как для Java. Большая часть гибкости уже встроена. Также существует мнение, что фреймворк внедрения зависимостей — это то, что редко нужно разработчику Python. Разработчики Python говорят, что внедрение зависимостей можно легко реализовать, используя основы языка.</p>
+
+<p>Внедрение зависимостей — это принцип, который помогает уменьшить связанность и повысить связность.</p>
+
+<p>Как реализовать внедрение зависимостей?</p>
+
+<p>Объекты больше не создают друг друга. Вместо этого они предоставляют способ внедрения зависимостей.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># before
+</span><span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">class</span> <span class="nc">ApiClient</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"API_KEY"</span><span class="p">)</span>  <span class="c1"># &lt;-- dependency
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"TIMEOUT"</span><span class="p">))</span>  <span class="c1"># &lt;-- dependency
+</span>
+
+<span class="k">class</span> <span class="nc">Service</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">api_client</span> <span class="o">=</span> <span class="n">ApiClient</span><span class="p">()</span>  <span class="c1"># &lt;-- dependency
+</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">Service</span><span class="p">()</span>  <span class="c1"># &lt;-- dependency
+</span>    <span class="p">...</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+<span class="c1"># after
+</span><span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">class</span> <span class="nc">ApiClient</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>  <span class="c1"># &lt;-- dependency is injected
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>  <span class="c1"># &lt;-- dependency is injected
+</span>
+
+<span class="k">class</span> <span class="nc">Service</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_client</span><span class="p">:</span> <span class="n">ApiClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">api_client</span> <span class="o">=</span> <span class="n">api_client</span>  <span class="c1"># &lt;-- dependency is injected
+</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">service</span><span class="p">:</span> <span class="n">Service</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># &lt;-- dependency is injected
+</span>    <span class="p">...</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span>
+        <span class="n">service</span><span class="o">=</span><span class="n">Service</span><span class="p">(</span>
+            <span class="n">api_client</span><span class="o">=</span><span class="n">ApiClient</span><span class="p">(</span>
+                <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"API_KEY"</span><span class="p">),</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"TIMEOUT"</span><span class="p">)),</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="что-делает-dependency-injector">Что делает Dependency Injector?</h2>
+
+<p>Dependency Injector помогает собрать и внедрить зависимости. Он предоставляет контейнер и поставщиков, которые помогут вам со сборкой объектов. Когда вам нужен объект, вы помещаете <code class="language-plaintext highlighter-rouge">Provide</code> маркер в качестве значения по умолчанию аргумента функции. Когда вы вызываете эту функцию, фреймворк собирает и внедряет зависимости.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dependency_injector</span> <span class="kn">import</span> <span class="n">containers</span><span class="p">,</span> <span class="n">providers</span>
+<span class="kn">from</span> <span class="nn">dependency_injector.wiring</span> <span class="kn">import</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">inject</span>
+
+
+<span class="k">class</span> <span class="nc">Container</span><span class="p">(</span><span class="n">containers</span><span class="p">.</span><span class="n">DeclarativeContainer</span><span class="p">):</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">providers</span><span class="p">.</span><span class="n">Configuration</span><span class="p">()</span>
+
+    <span class="n">api_client</span> <span class="o">=</span> <span class="n">providers</span><span class="p">.</span><span class="n">Singleton</span><span class="p">(</span>
+        <span class="n">ApiClient</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">config</span><span class="p">.</span><span class="n">api_key</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="n">config</span><span class="p">.</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">service</span> <span class="o">=</span> <span class="n">providers</span><span class="p">.</span><span class="n">Factory</span><span class="p">(</span>
+        <span class="n">Service</span><span class="p">,</span>
+        <span class="n">api_client</span><span class="o">=</span><span class="n">api_client</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">inject</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">Provide</span><span class="p">[</span><span class="n">Container</span><span class="p">.</span><span class="n">service</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+    <span class="n">container</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">api_key</span><span class="p">.</span><span class="n">from_env</span><span class="p">(</span><span class="s">"API_KEY"</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">container</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">timeout</span><span class="p">.</span><span class="n">from_env</span><span class="p">(</span><span class="s">"TIMEOUT"</span><span class="p">,</span> <span class="n">as_</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">container</span><span class="p">.</span><span class="n">wire</span><span class="p">(</span><span class="n">modules</span><span class="o">=</span><span class="p">[</span><span class="n">__name__</span><span class="p">])</span>
+
+    <span class="n">main</span><span class="p">()</span>  <span class="c1"># &lt;-- dependency is injected automatically
+</span>
+    <span class="k">with</span> <span class="n">container</span><span class="p">.</span><span class="n">api_client</span><span class="p">.</span><span class="n">override</span><span class="p">(</span><span class="n">mock</span><span class="p">.</span><span class="n">Mock</span><span class="p">()):</span>
+        <span class="n">main</span><span class="p">()</span>  <span class="c1"># &lt;-- overridden dependency is injected automatically
+</span></code></pre></div></div>
+
+<p>Когда вы вызываете <code class="language-plaintext highlighter-rouge">main()</code> функцию из примера, <code class="language-plaintext highlighter-rouge">Service</code> зависимость собирается и внедряется автоматически.</p>
+
+<p>Когда вы проводите тестирование, вы вызываете <code class="language-plaintext highlighter-rouge">container.api_client.override()</code> метод, чтобы заменить реальный клиент API моком. Когда вы вызываете <code class="language-plaintext highlighter-rouge">main()</code>, вводится мок.</p>
+
+<p>Вы можете заменить любого провайдера другим провайдером.</p>
+
+<p>Это также поможет вам переконфигурировать проект для различных сред: замените клиент API заглушкой на стадии разработки.</p>
+
+<p>Сборка объектов объединена в контейнер. Внедрение зависимостей определяется явно. Это облегчает понимание и изменение работы приложения.</p>
+
+<h2 id="ключевые-фичи-dependency-injector">Ключевые фичи dependency injector</h2>
+
+<ul>
+  <li><strong>Провайдеры</strong>. Предоставляет <code class="language-plaintext highlighter-rouge">Factory</code>, <code class="language-plaintext highlighter-rouge">Singleton</code>, <code class="language-plaintext highlighter-rouge">Callable</code>, <code class="language-plaintext highlighter-rouge">Coroutine</code>, <code class="language-plaintext highlighter-rouge">Object</code>, <code class="language-plaintext highlighter-rouge">List</code>, <code class="language-plaintext highlighter-rouge">Dict</code>, <code class="language-plaintext highlighter-rouge">Configuration</code>, <code class="language-plaintext highlighter-rouge">Resource</code>, <code class="language-plaintext highlighter-rouge">Dependency</code>, и <code class="language-plaintext highlighter-rouge">Selector</code> поставщиков, которые помогают собирать объекты.</li>
+  <li><strong>Переопределение</strong>. Может на лету переопределить любого провайдера другим провайдером. Это помогает в тестировании и настройке среды разработки/этапа для замены клиентов API заглушками и т. д.</li>
+  <li><strong>Конфигурация</strong>. Считывает конфигурацию из yaml, ini, json, настроек pydantic, переменных среды и словарей.</li>
+  <li><strong>Ресурсы</strong>. Помогает при инициализации и настройке ведения журнала, цикла событий, пула потоков или процессов и т. д. Может использоваться для выполнения каждой функции в тандеме с подключением.</li>
+  <li><strong>Контейнеры</strong>. Предоставляет декларативные и динамические контейнеры.</li>
+  <li><strong>Проводка</strong>. Внедряет зависимости в функции и методы. Помогает интегрироваться с другими фреймворками: Django, Flask, Aiohttp, Sanic, [<a href="fastapi" title="Fastapi">fastapi</a>].</li>
+  <li><strong>Асинхронный</strong>. Поддерживает асинхронные инъекции и [<a href="asyncio" title="Asyncio">asyncio</a>].</li>
+  <li><strong>Типизация</strong>. Поддерживает [<a href="mypy" title="Mypy">mypy</a>].</li>
+  <li><strong>Производительность</strong>. Быстрый. Написано на Cython.</li>
+  <li><strong>Зрелость</strong>. Зрелый и готовый к производству. Хорошо протестировано, документировано и поддерживается.</li>
+</ul>
+
+<h2 id="установка">Установка</h2>
+
+<p><code class="language-plaintext highlighter-rouge">pip install dependency-injector</code></p>
+
+<h2 id="примеры"><a href="https://python-dependency-injector.ets-labs.org/examples/index.html">Примеры</a></h2>
+
+<ul>
+  <li><a href="https://python-dependency-injector.ets-labs.org/examples/fastapi.html">FastAPI example</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/examples/fastapi-redis.html">FastAPI + Redis example</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/examples/fastapi-sqlalchemy.html">FastAPI + SQLAlchemy example</a></li>
+</ul>
+
+<h2 id="api">API</h2>
+
+<h3 id="providers"><a href="https://python-dependency-injector.ets-labs.org/providers/index.html">Providers</a></h3>
+
+<p>Провайдеры помогают собирать объекты. Они создают объекты и внедряют зависимости.</p>
+
+<p>Каждый провайдер является вызываемым объектом. Поставщик извлекает базовые зависимости и внедряет их в созданный объект. Это вызывает каскадный эффект, который помогает собирать графы объектов.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>provider1<span class="o">()</span>
+│
+├──&gt; provider2<span class="o">()</span>
+│
+├──&gt; provider3<span class="o">()</span>
+│    │
+│    └──&gt; provider4<span class="o">()</span>
+│
+└──&gt; provider5<span class="o">()</span>
+     │
+     └──&gt; provider6<span class="o">()</span>
+</code></pre></div></div>
+
+<p>Еще одна особенность провайдеров — переопределение. Вы можете заменить любого провайдера другим провайдером. Это помогает в тестировании. Это также помогает переопределить клиенты API с помощью заглушек для среды разработки или промежуточной среды.</p>
+
+<ul>
+  <li><a href="https://python-dependency-injector.ets-labs.org/api/providers.html#module-dependency_injector.providers">Документация АПИ провайдеров</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/factory.html">Factory provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/singleton.html">Singleton provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/callable.html">Callable provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/coroutine.html">Coroutine provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/object.html">Object provider</a> возвращает объект как есть</li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/list.html">List provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/dict.html">Dict provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/configuration.html">Configuration provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/resource.html">Resource provider</a> объекты с логикой инициализации и шотдауна</li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/selector.html">Selector provider</a></li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/providers/dependency.html">Dependency provider</a> плейсхолдер для зависимостей ожидаемого типа</li>
+</ul>
+
+<h3 id="containers"><a href="https://python-dependency-injector.ets-labs.org/containers/index.html">Containers</a></h3>
+
+<p>Контейнеры — это коллекции провайдеров.</p>
+
+<p>Существует несколько вариантов использования контейнеров:</p>
+
+<ul>
+  <li>Хранение всех провайдеров в одном контейнере (чаще всего).</li>
+  <li>Группировка провайдеров из одного архитектурного уровня (например, провайдеров Services и Models контейнеров Forms).</li>
+  <li>
+    <p>Группировка провайдеров из одних функциональных групп (например, контейнер Users, содержащий все функциональные части пакета users).</p>
+  </li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/containers/declarative.html">Declarative container</a> определение контейнера, базирующееся на классе</li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/containers/dynamic.html">Dynamic container</a> контейнеры. определяемые в рантайм</li>
+</ul>
+
+<h3 id="wiring"><a href="https://python-dependency-injector.ets-labs.org/wiring.html">Wiring</a></h3>
+
+<p>Функция подключения обеспечивает возможность внедрения поставщиков контейнеров в функции и методы.</p>
+
+<ul>
+  <li>Поместите декоратор <code class="language-plaintext highlighter-rouge">@inject</code>.</li>
+  <li>Разместите маркеры. Маркер связи указывает, какую зависимость следует внедрить, например <code class="language-plaintext highlighter-rouge">Provide[Container.bar]</code>. Это помогает контейнеру найти инъекции.</li>
+  <li>Подключите контейнер с помощью маркеров в коде. Вызовите <code class="language-plaintext highlighter-rouge">container.wire()</code>, указав модули и пакеты, с которыми вы хотите его связать.</li>
+  <li>Используйте функции и классы, как обычно. Framework обеспечит указанные инъекции.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dependency_injector</span> <span class="kn">import</span> <span class="n">containers</span><span class="p">,</span> <span class="n">providers</span>
+<span class="kn">from</span> <span class="nn">dependency_injector.wiring</span> <span class="kn">import</span> <span class="n">Provide</span><span class="p">,</span> <span class="n">inject</span>
+
+
+<span class="k">class</span> <span class="nc">Service</span><span class="p">:</span>
+    <span class="p">...</span>
+
+
+<span class="k">class</span> <span class="nc">Container</span><span class="p">(</span><span class="n">containers</span><span class="p">.</span><span class="n">DeclarativeContainer</span><span class="p">):</span>
+
+    <span class="n">service</span> <span class="o">=</span> <span class="n">providers</span><span class="p">.</span><span class="n">Factory</span><span class="p">(</span><span class="n">Service</span><span class="p">)</span>
+
+
+<span class="o">@</span><span class="n">inject</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">Provide</span><span class="p">[</span><span class="n">Container</span><span class="p">.</span><span class="n">service</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="p">...</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+    <span class="n">container</span><span class="p">.</span><span class="n">wire</span><span class="p">(</span><span class="n">modules</span><span class="o">=</span><span class="p">[</span><span class="n">__name__</span><span class="p">])</span>
+
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="fastapi" title="Fastapi">fastapi</a>]</li>
+  <li><a href="https://python-dependency-injector.ets-labs.org/">python-dependency-injector</a> framework</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

@@ -1,5 +1,5 @@
 ---
-description: Среда управления puppen
+description: Среда управления puppet
 tags: cicd
 title: puppet
 ---

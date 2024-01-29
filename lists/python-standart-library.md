@@ -160,7 +160,7 @@ title: Стандартная библиотека python и полезные р
 - [[returns]] Make your functions return something meaningful, typed, and safe!
 - [shedule](https://github.com/dbader/schedule) Python job scheduling for humans.
 - [[blinker]]
-- [python-dependency-injector](https://python-dependency-injector.ets-labs.org/) framework
+- [[dependency-injection]]
 
 ### [[python-public-api]]
 
@@ -245,6 +245,7 @@ title: Стандартная библиотека python и полезные р
 [imagehash]: ../notes/imagehash "imagehash - хеширование изображений"
 [returns]: ../notes/returns "returns"
 [blinker]: ../notes/blinker "blinker сигналы в python"
+[dependency-injection]: ../notes/dependency-injection "Dependency injection"
 [python-public-api]: ../notes/python-public-api "Публичные АПИ к сервисам на python"
 [remove-dict-key-python]: ../notes/remove-dict-key-python "Как удалить ключ словаря в python"
 [calling-finction-by-name-python]: ../notes/calling-finction-by-name-python "Вызов функции по ее строковому имени в python"
