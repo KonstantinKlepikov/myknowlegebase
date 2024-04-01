@@ -500,6 +500,7 @@ end loop
 - [PostgreSQL wildcard LIKE for any of a list of words](https://stackoverflow.com/questions/4928054/postgresql-wildcard-like-for-any-of-a-list-of-words)
 - [pg_config executable not found](https://stackoverflow.com/questions/11618898/pg-config-executable-not-found) проблема установки в linux
 - [PostgreSQL-триггеры: создание, удаление, примеры](https://timeweb.cloud/tutorials/postgresql/postgresql-triggery-sozdanie-udalenie-primery)
+- [Inserting related data into two tables using in psql](https://stackoverflow.com/questions/44748990/inserting-related-data-into-two-tables-using-in-psql)
 - [[psycopq]]
 - [[bd]]
 - [[sql]]

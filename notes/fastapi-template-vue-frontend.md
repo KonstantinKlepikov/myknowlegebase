@@ -3,6 +3,8 @@ description: Шаблон приложения на fastapi. Frontend
 tags: fastapi python
 title: Fastapi frontend development
 ---
+Актуальный фулстек-шаблон находжится [тут](https://github.com/tiangolo/full-stack-fastapi-template)
+
 * Enter the `frontend` directory, install the npm packages and start the live server using the `npm` scripts:
 
 ```bash
@@ -11,7 +13,7 @@ npm install
 npm run serve
 ```
 
-Then open your browser at http://localhost:8080
+Then open your browser at [http://localhost:8080](http://localhost:8080)
 
 Notice that this live server is not running inside Docker, it is for local development, and that is the recommended workflow. Once you are happy with your frontend, you can build the frontend Docker image and start it, to test it in a production-like environment. But compiling the image at every change will not be as productive as running the local development server with live reload.
 

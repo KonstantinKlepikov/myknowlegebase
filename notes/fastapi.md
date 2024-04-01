@@ -29,6 +29,7 @@ title: Fastapi
 - [[fastapi-testing-dependencies-with-override]]
 - [[fastapi-setting-environment-variables]]
 - [[fastapi-template-backend]]
+- [Актуальный фулстек-шаблон находжится](https://github.com/tiangolo/full-stack-fastapi-template)
 - [[fastapi-template-vue-frontend]]
 - [[fastapi-template-deployment]]
 - [[fastapi-template-buildin-routes]]
@@ -44,6 +45,7 @@ title: Fastapi
 - [How to Upload a large File (≥3GB) to FastAPI backend](https://stackoverflow.com/questions/73442335/how-to-upload-a-large-file-%E2%89%A53gb-to-fastapi-backend)
 - [FASTAPI logging to file](https://stackoverflow.com/questions/60715275/fastapi-logging-to-file)
 - [awesome-fastapi)](https://github.com/mjhea0/awesome-fastapi) A curated list of awesome things related to FastAPI
+- [Sub application startup event never triggered](https://github.com/tiangolo/fastapi/issues/811) проблема стартап эвентов для монтированных путей в fastapi
 
 Смотри еще:
 

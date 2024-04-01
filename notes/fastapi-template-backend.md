@@ -3,6 +3,8 @@ description: Шаблон приложения на fastapi. Backend
 tags: fastapi python
 title: Fastapi template backend
 ---
+Актуальный фулстек-шаблон находжится [тут](https://github.com/tiangolo/full-stack-fastapi-template)
+
 Backend Requirements
 
 - [[docker]]

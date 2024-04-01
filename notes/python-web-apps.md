@@ -10,6 +10,9 @@ tags: templating python
 - [[flet]] Flet enables developers to easily build realtime web, mobile and desktop apps in Python. No frontend experience required
 - [kivy.org](https://kivy.org/) The Open Source Python App development Framework. Build and distribute beautiful Python cross-platform GUI apps with ease. Runs on Android, iOS, Linux, macOS and Windows.
 - [shiny](https://shiny.rstudio.com/py/) Shiny позволяет легко создавать интерактивные веб-приложения с помощью данных Python и научного стека.
+- [taipy](https://github.com/Avaiga/taipy?tab=readme-ov-file) Turns Data and AI algorithms into production-ready web applications in no time.
+- [nicegui.io](https://nicegui.io/) NiceGUI manages web development details, letting you focus on Python code for diverse applications, including robotics, IoT solutions, smart home automation, and machine learning.
+
 
 Смотри еще:
 

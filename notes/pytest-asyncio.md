@@ -112,6 +112,7 @@ async def async_fixture():
 - [документация](https://pytest-asyncio.readthedocs.io/en/latest/concepts.html)
 - [[pytest]]
 - [[pytest-bdd]]
+- [pytest-asyncio has a closed event loop, but only when running all tests](https://stackoverflow.com/questions/61022713/pytest-asyncio-has-a-closed-event-loop-but-only-when-running-all-tests)
 - [aioresponses](https://github.com/pnuckowski/aioresponses) is a helper to mock/fake web requests in python [[aiohttp]] package
 - [[asyncio]]
 - [[модульные-тесты]]
