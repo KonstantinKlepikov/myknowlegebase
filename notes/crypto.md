@@ -12,6 +12,11 @@ Binance:
 - [binance public data](https://github.com/binance/binance-public-data) To help users download our public data easily, we've put all Kline, Trade, and AggTrade data for all pairs, month by month, online.
 - [python binance](https://github.com/sammchardy/python-binance)
 
+Bybit:
+
+- [docs](https://bybit-exchange.github.io/docs/v5/intro)
+- [pybit](https://github.com/bybit-exchange/pybit)
+
 Смотир еще:
 
 - [[nft]]
