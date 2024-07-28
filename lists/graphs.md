@@ -23,6 +23,7 @@ category: list
 - [[apache-spark]] Unified engine for large-scale data analytics
 - [[apache-tinkertop-and-gremlin]] Apache TinkerPop™ is a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP)
 - [SciGraph](https://github.com/SciGraph/SciGraph) Represent ontologies and ontology-encoded knowledge in a [[neo4j]] graph.
+- [GraphRAG](https://microsoft.github.io/graphrag/) s a structured, hierarchical approach to Retrieval Augmented Generation (RAG), as opposed to naive semantic-search approaches using plain text snippets. The GraphRAG process involves extracting a knowledge graph out of raw text, building a community hierarchy, generating summaries for these communities, and then leveraging these structures when perform RAG-based tasks.
 
 - [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
 - [Community detection for NetworkX](https://python-louvain.readthedocs.io/en/latest/index.html) Louvain Community Detection
