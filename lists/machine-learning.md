@@ -20,6 +20,13 @@ tags: machine-learning
 - [[PIL]]
 - [[imagehash]]
 
+## NLP
+
+- [Natural Language Toolkit](https://www.nltk.org/index.html) NLTK is a leading platform for building Python programs to work with human language data. It provides easy-to-use interfaces to over 50 corpora and lexical resources such as WordNet, along with a suite of text processing libraries for classification, tokenization, stemming, tagging, parsing, and semantic reasoning, wrappers for industrial-strength NLP libraries, and an active discussion forum.
+- [Levenshtein](https://rapidfuzz.github.io/Levenshtein/) a C extension module for fast computation of Levenshtein (edit) distance and edit sequence manipulation, string similarity, approximate median strings, and generally string averaging, string sequence and set similarity.
+- [python-string-similarity](https://pypi.org/project/strsimpy/#levenshtein) a library implementing different string similarity and distance measures. A dozen of algorithms (including Levenshtein edit distance and sibblings, Jaro-Winkler, Longest Common Subsequence, cosine similarity etc.) are currently implemented.
+- [open-llms](https://github.com/eugeneyan/open-llms) a list of open LLMs available for commercial use.
+
 ## [[graphs]]
 
 ## [[knowledge-graphs]]

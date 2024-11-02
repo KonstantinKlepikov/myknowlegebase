@@ -5,6 +5,8 @@ title: NFT
 ---
 [A curated list of awesome Non Fungible Token (NFT, ERC721) frameworks, libraries and software](https://github.com/gianni-dalerta/awesome-nft)
 
+- [www.oasys.games](https://www.oasys.games/) Oasys combines public and private blockchain technologies to deliver a seamless, speedy, zero-gas-fee gaming experience. Discover how Oasys is building a community of gamers and developers to pioneer the future of fun.
+
 Смотри еще:
 
 - [[notes/crypto]]

@@ -239,6 +239,8 @@ var my_inherited_scene = MyScene.instantiate(PackedScene.GEN_EDIT_STATE_MAIN) # 
 - [How can I get a node from an instanced scene by name](https://forum.godotengine.org/t/how-can-i-get-a-node-from-an-instanced-scene-by-name/18851)
 - [Basic Screen Scrolling](https://lasteamlab.com/documentation/game-design/godot/RPG/lessons/7-screen-scrolling.html)
 - [How to make an infinite scrolling background](https://forum.godotengine.org/t/how-to-make-an-infinite-scrolling-background/24114)
+- [a way to check for (recently) freed object](https://forum.godotengine.org/t/is-there-a-way-to-check-for-recently-freed-object/12772)
+- [Ways to lock a rotation](https://forum.godotengine.org/t/ways-to-lock-a-rotation/693)
 
 Смотри еще:
 

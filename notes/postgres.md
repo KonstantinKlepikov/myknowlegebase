@@ -501,6 +501,8 @@ end loop
 - [pg_config executable not found](https://stackoverflow.com/questions/11618898/pg-config-executable-not-found) проблема установки в linux
 - [PostgreSQL-триггеры: создание, удаление, примеры](https://timeweb.cloud/tutorials/postgresql/postgresql-triggery-sozdanie-udalenie-primery)
 - [Inserting related data into two tables using in psql](https://stackoverflow.com/questions/44748990/inserting-related-data-into-two-tables-using-in-psql)
+- [Killing/cancelling a long running Postgres query](https://www.sqlprostudio.com/blog/8-killing-cancelling-a-long-running-postgres-query)
+- [How to list indexes created for table in postgres](https://stackoverflow.com/questions/37329561/how-to-list-indexes-created-for-table-in-postgres)
 - [[psycopq]]
 - [[bd]]
 - [[sql]]

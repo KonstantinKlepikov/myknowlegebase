@@ -5,17 +5,26 @@ tags: crypto
 title: Криптовалюты
 ---
 
-Binance:
+## Binance
 
 - [binance Api](https://www.binance.com/ru/binance-api)
 - [binance docks](https://binance-docs.github.io/apidocs/spot/en/#introduction)
 - [binance public data](https://github.com/binance/binance-public-data) To help users download our public data easily, we've put all Kline, Trade, and AggTrade data for all pairs, month by month, online.
 - [python binance](https://github.com/sammchardy/python-binance)
 
-Bybit:
+## Bybit
 
 - [docs](https://bybit-exchange.github.io/docs/v5/intro)
 - [pybit](https://github.com/bybit-exchange/pybit)
+
+## coinmarketcap
+
+- [api](https://coinmarketcap.com/api/) The Ultimate Cryptocurrency API From the Industry Authority. [docs](https://coinmarketcap.com/api/documentation/v1/#)
+- [python-coinmarketcap](https://github.com/rsz44/python-coinmarketcap)
+
+## Etherium
+
+- [etherscan.io](https://etherscan.io/) The Ethereum Blockchain Explorer
 
 Смотир еще:
 
