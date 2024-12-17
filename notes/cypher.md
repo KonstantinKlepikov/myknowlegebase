@@ -890,6 +890,7 @@ RETURN map
 
 - [документация для neo4j](https://neo4j.com/developer/cypher/)
 - [openCypher](http://opencypher.org/)
+- [Cypher styleguide](https://neo4j.com/docs/cypher-manual/current/styleguide/)
 - [[neo4j]]
 - [[neosematics]]
 - [[neo4j-apoc]]

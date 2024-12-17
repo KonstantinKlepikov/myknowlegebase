@@ -188,6 +188,7 @@ async def text_handler(message: types.Message):
 Смотри еще:
 
 - [примеры с aiogram](https://docs.aiogram.dev/en/latest/examples/index.html)
+- [Aiogram starts and stops polling with TimeoutError](https://github.com/aiogram/aiogram/issues/1394)
 - [Пишем Telegram-ботов с aiogram 3.x](https://mastergroosha.github.io/aiogram-3-guide/) неплохое и подробное руководство
 - [[aiogram-dialog]] библиотека
 - [[telegram-bots]] библиотека

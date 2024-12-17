@@ -10,6 +10,7 @@ title: docker solutions
 - [Dockerfile Command to Keep the Container Running](https://devopscube.com/keep-docker-container-running/)
 - [Stop and delete Docker container if it's running](https://stackoverflow.com/questions/34228864/stop-and-delete-docker-container-if-its-running)
 - [docker-compose up for only certain containers](https://stackoverflow.com/questions/30233105/docker-compose-up-for-only-certain-containers)
+- [How To Remove Docker Images, Containers, and Volumes](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes)
 
 Смотри еще:
 

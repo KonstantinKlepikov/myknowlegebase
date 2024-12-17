@@ -435,6 +435,7 @@ new_account_balance = ret["account_balance"]
 - [default mongodb ports](https://www.mongodb.com/docs/manual/reference/default-mongodb-port/)
 - [спецификация метода find() в mongodb](https://www.mongodb.com/docs/manual/reference/method/db.collection.find/)
 - [организация индексов](https://www.mongodb.com/docs/manual/indexes/)
+- [Model One-to-One Relationships with Embedded Documents](https://www.mongodb.com/docs/manual/tutorial/model-embedded-one-to-one-relationships-between-documents/)
 - движки и контейнеры:
   - [python mongodb API's](https://www.mongodb.com/docs/drivers/python/)
   - [docker mongodb](https://hub.docker.com/_/mongo)

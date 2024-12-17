@@ -127,9 +127,14 @@ in main 1 != 2
 
 Обратите внимание, что вызов `@profile` осуществляется с `()` - даже если мы не передаем аргументы это необходимо сделать, чтобы не получить исключение.
 
-Пример: [как сделать параметризированный декоратор](https://stackoverflow.com/a/25827070/15966204) с помощью [[functools]]
+Статьи и обсуждения:
 
-Подробнее о [декорировании функций](https://docs.python.org/3/reference/compound_stmts.html#function) и [декорирвоании классов](https://docs.python.org/3/reference/compound_stmts.html#class)
+- [как сделать параметризированный декоратор](https://stackoverflow.com/a/25827070/15966204) с помощью [[functools]]
+- Подробнее о [декорировании функций](https://docs.python.org/3/reference/compound_stmts.html#function) и [декорирвоании классов](https://docs.python.org/3/reference/compound_stmts.html#class)
+- [Using a coroutine as decorator](https://stackoverflow.com/questions/42043226/using-a-coroutine-as-decorator)
+- [Decorators with parameters?](https://stackoverflow.com/questions/5929107/decorators-with-parameters)
+- [Python decorators in classes](https://stackoverflow.com/questions/1263451/python-decorators-in-classes)
+- [How to strip decorators from a function in Python](https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python), [undecorated](https://pypi.org/project/undecorated/)
 
 Смотри еще:
 

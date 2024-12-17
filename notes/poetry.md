@@ -203,6 +203,8 @@ def packagefunction():
 
 Смотри еще:
 
+- [b'Head' on 'poetry update' or 'poetry lock'](https://github.com/python-poetry/poetry/issues/7523)
+- [Document docker poetry best practices](https://github.com/orgs/python-poetry/discussions/1879)
 - [[setuptools]]
 - [cookiecutter-poetry](https://fpgmaas.github.io/cookiecutter-poetry/)
 

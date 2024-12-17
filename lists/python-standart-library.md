@@ -64,6 +64,7 @@ title: Стандартная библиотека python и полезные р
 - [[archives-in-python]] архивация
 - [[python-cryptography]]
 - [[python-reading-and-writing-files]]
+- [Python in-memory zip library](https://stackoverflow.com/questions/2463770/python-in-memory-zip-library)
 
 ### Proceses and threads
 

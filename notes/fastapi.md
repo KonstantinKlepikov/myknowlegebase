@@ -36,13 +36,21 @@ title: Fastapi
 - [[2021-10-18-daily-note]] - problems with postgresql template
 - [[2023-09-01-daily-note]] - загрузка файлов
 - [[python-cryptography]]
+- [About fastapy sync threads pool and async thread](https://stackoverflow.com/a/71517830)
+- [Deployment](https://fastapi.tiangolo.com/ru/deployment/)
+- [Fastapy with sentry](https://docs.sentry.io/platforms/python/integrations/fastapi/#install)
+- [Openapi callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/)
+- [Openapi webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/)
+- [fastapi-scheduler](https://github.com/amisadmin/fastapi-scheduler?tab=readme-ov-file)
 - [NoSQL (Distributed / Big Data) Databases](https://fastapi.tiangolo.com/advanced/nosql-databases/) - example with couchdb, can be used for [[mongodb]]
 - [Securing FastAPI with JWT Token-based Authentication](https://testdriven.io/blog/fastapi-jwt-auth/)
 - [How to submit HTML form input value using FastAPI and Jinja2 Templates](https://stackoverflow.com/questions/74318682/how-to-submit-html-form-input-value-using-fastapi-and-jinja2-templates)
 - [How to redirect the user back to the home page using FastAPI, after submitting an HTML form](https://stackoverflow.com/questions/70690454/how-to-redirect-the-user-back-to-the-home-page-using-fastapi-after-submitting-a)
 - [How to send RedirectResponse from a POST to a GET route in FastAPI](https://stackoverflow.com/questions/73076517/how-to-send-redirectresponse-from-a-post-to-a-get-route-in-fastapi)
 - [How to upload a csv file using Jinja2 Templates and FastAPI , and return it after modifications](https://stackoverflow.com/questions/74573656/how-to-upload-a-csv-file-using-jinja2-templates-and-fastapi-and-return-it-afte)
+- [How to Upload File using FastAPI?](https://stackoverflow.com/questions/63048825/how-to-upload-file-using-fastapi)
 - [How to Upload a large File (≥3GB) to FastAPI backend](https://stackoverflow.com/questions/73442335/how-to-upload-a-large-file-%E2%89%A53gb-to-fastapi-backend)
+- [How to download a large file using FastAPI?](https://stackoverflow.com/questions/73550398/how-to-download-a-large-file-using-fastapi)
 - [FASTAPI logging to file](https://stackoverflow.com/questions/60715275/fastapi-logging-to-file)
 - [awesome-fastapi)](https://github.com/mjhea0/awesome-fastapi) A curated list of awesome things related to FastAPI
 - [Sub application startup event never triggered](https://github.com/tiangolo/fastapi/issues/811) проблема стартап эвентов для монтированных путей в fastapi

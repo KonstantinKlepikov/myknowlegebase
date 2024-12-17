@@ -3,7 +3,8 @@ description: python апи для neo4j
 title: Python api for neo4j
 tags: data-bases graphs python
 ---
-[Документация](https://neo4j.com/developer/python/)
+- [Документация](https://neo4j.com/developer/python/)
+- [Async API Documentation](https://neo4j.com/docs/api/python-driver/current/async_api.html#neo4j.AsyncResult.keys)
 
 `pip install neo4j`
 
@@ -697,6 +698,7 @@ harry_potter.author.connect(rowling)
 - [neo4j-python-driver](https://github.com/neo4j/neo4j-python-driver) Neo4j Bolt driver for Python. [docs](https://neo4j.com/developer/python/)
 - [Driver API](https://neo4j.com/docs/api/python-driver/current/)
 - **[API docs](https://neo4j.com/docs/api/python-driver/current/api.html#api-documentation)**
+- [Async API Documentation](https://neo4j.com/docs/api/python-driver/current/async_api.html#neo4j.AsyncResult.keys)
 - [The Neo4j Python Driver Manual v4.4](https://neo4j.com/docs/python-manual/current/)
 - [[pytoneo]]
 - [neomodel](https://github.com/neo4j-contrib/neomodel) An Object Graph Mapper (OGM) for the Neo4j graph database.

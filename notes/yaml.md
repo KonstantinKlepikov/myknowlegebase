@@ -9,6 +9,7 @@ tags: templating pip
 
 Смотри еще:
 
+- [Python YAML dumping pointer references](https://stackoverflow.com/questions/51272814/python-yaml-dumping-pointer-references)
 - [[python-standart-library]]
 - [[argparsing]]
 - [[toml]]
