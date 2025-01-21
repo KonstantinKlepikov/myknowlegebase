@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Diffusers library | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Diffusers library" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Библиотека машинного обучения diffusers" />
+<meta property="og:description" content="Библиотека машинного обучения diffusers" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/diffusers.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/diffusers.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Библиотека машинного обучения diffusers","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/diffusers.html","headline":"Diffusers library","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Diffusers library</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Диффузионные модели обучаются пошагово удалять случайный гауссовский шум, чтобы сгенерировать интересующий образец, например изображение или аудио. Diffusers — это библиотека, нацеленная на то, чтобы сделать такие модели широкодоступными для всех.</p>
+
+<h2 id="краткое-введение">Краткое введение</h2>
+
+<p>Есть три основных компонента библиотеки, о которых нужно знать:</p>
+
+<ul>
+  <li>DiffusionPipeline — это сквозной класс высокого уровня, предназначенный для быстрой генерации выборок из предварительно обученных моделей.</li>
+  <li><a href="https://huggingface.co/docs/diffusers/main/en/api/models">Популярные предварительно обученные архитектуры моделей и модули</a>, которые можно использовать в качестве строительных блоков для создания диффузионных систем.</li>
+  <li><a href="https://huggingface.co/docs/diffusers/api/schedulers/overview">Множество различных планировщиков</a> — алгоритмов, которые управляют тем, как добавляется шум для обучения, и как генерируются изображения с шумоподавлением во время вывода.</li>
+</ul>
+
+<h3 id="основные-задачи">Основные задачи</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Task</th>
+      <th>Description</th>
+      <th>Pipeline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unconditional Image Generation</td>
+      <td>generate an image from Gaussian noise</td>
+      <td><a href="https://huggingface.co/docs/diffusers/using-diffusers/unconditional_image_generation">unconditional_image_generation</a></td>
+    </tr>
+    <tr>
+      <td>Text-Guided Image Generation</td>
+      <td>generate an image given a text prompt</td>
+      <td><a href="https://huggingface.co/docs/diffusers/using-diffusers/conditional_image_generation">conditional_image_generation</a></td>
+    </tr>
+    <tr>
+      <td>Text-Guided Image-to-Image Translation</td>
+      <td>adapt an image guided by a text prompt</td>
+      <td><a href="https://huggingface.co/docs/diffusers/using-diffusers/img2img">img2img</a></td>
+    </tr>
+    <tr>
+      <td>Text-Guided Image-Inpainting</td>
+      <td>fill the masked part of an image given the image, the mask and a text prompt</td>
+      <td><a href="https://huggingface.co/docs/diffusers/using-diffusers/inpaint">inpaint</a></td>
+    </tr>
+    <tr>
+      <td>Text-Guided Depth-to-Image Translation</td>
+      <td>adapt parts of an image guided by a text prompt while preserving structure via depth estimation</td>
+      <td><a href="https://huggingface.co/docs/diffusers/using-diffusers/depth2img">depth2img</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Еще <a href="https://huggingface.co/docs/diffusers/using-diffusers/text-img2vid">txt-to-img-to-video</a></p>
+
+<p>Подробнее как организовать простейший пайплайн <a href="https://huggingface.co/docs/diffusers/quicktour">смотри тут</a>. Как работает дифузионная модель с понижением размерности смотри в <a href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/diffusers/diffusers_intro.ipynb">этом колабе</a>.</p>
+
+<h3 id="autopipeline"><a href="https://huggingface.co/docs/diffusers/tutorials/autopipeline">AutoPipeline</a></h3>
+
+<p>Класс AutoPipeline разработан для упрощения разнообразия конвейеров в Diffusers. Это общий конвейер task-first, который позволяет сосредоточиться на задаче (AutoPipelineForText2Image, AutoPipelineForImage2Image и AutoPipelineForInpainting) без необходимости знать конкретный класс конвейера. AutoPipeline автоматически определяет правильный класс конвейера для использования.</p>
+
+<p>Под капотом AutoPipeline :</p>
+
+<ul>
+  <li>Обнаруживает класс для выбранной модели</li>
+  <li>В зависимости от задачи, загружает StableDiffusionPipeline, StableDiffusionImg2ImgPipeline или StableDiffusionInpaintPipelin . Любой параметр ( strength, num_inference_steps, и т. д.), который вы передадите этим конкретным конвейерам, также может быть передан AutoPipeline.</li>
+</ul>
+
+<h2 id="обучение"><a href="https://huggingface.co/docs/diffusers/tutorials/basic_training">Обучение</a></h2>
+
+<h2 id="lora-для-инференса-пример-с-пикселартом"><a href="https://huggingface.co/docs/diffusers/tutorials/using_peft_for_inference">LoRA для инференса</a> (пример с пикселартом)</h2>
+
+<p>Существует множество типов адаптеров (самыми популярными являются <a href="https://huggingface.co/docs/peft/conceptual_guides/adapter#low-rank-adaptation-lora">LoRA</a>), обученных в разных стилях для достижения разных эффектов. Можно комбинировать несколько адаптеров для создания новых и уникальных изображений.</p>
+
+<h2 id="load">Load</h2>
+
+<ul>
+  <li><a href="https://huggingface.co/docs/diffusers/using-diffusers/loading">load pipeline</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/using-diffusers/custom_pipeline_overview">load community pipelines</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/using-diffusers/schedulers">load shedulers and models</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/using-diffusers/loading_adapters">load adapters</a></li>
+</ul>
+
+<h3 id="файлы-моделей-и-макеты"><a href="https://huggingface.co/docs/diffusers/using-diffusers/other-formats">Файлы моделей и макеты</a></h3>
+
+<h4 id="файлы">Файлы</h4>
+
+<p>Веса моделей [<a href="pytorch" title="Machine learning framework pytorch">pytorch</a>] обычно сохраняются с помощью утилиты <code class="language-plaintext highlighter-rouge">pickle</code> Python в виде файлов ckpt или bin. Однако <code class="language-plaintext highlighter-rouge">pickle</code> не является безопасным, и файлы <code class="language-plaintext highlighter-rouge">pickle</code> могут содержать вредоносный код, который может быть выполнен. Эта уязвимость вызывает серьезную озабоченность, учитывая популярность совместного использования моделей. Для решения этой проблемы безопасности была разработана библиотека <code class="language-plaintext highlighter-rouge">Safetensors</code> как безопасная альтернатива <code class="language-plaintext highlighter-rouge">pickle</code>, которая сохраняет модели в виде файлов safetensors.</p>
+
+<h4 id="safetensors"><a href="https://blog.eleuther.ai/safetensors-security-audit/">Safetensors</a></h4>
+
+<p>Safetensors — это безопасный и быстрый формат файла для безопасного хранения и загрузки тензоров. Safetensors ограничивает размер заголовка, чтобы ограничить определенные типы атак, поддерживает ленивую загрузку (полезно для распределенных установок) и в целом имеет более высокую скорость загрузки.</p>
+
+<p>Safetensors хранит веса в файле safetensors. Diffusers загружает файлы safetensors по умолчанию, если они доступны и установлена ​​библиотека Safetensors. Существует два способа организации файлов safetensors:</p>
+
+<ul>
+  <li>Макет Diffusers-multifolder: может быть несколько отдельных файлов safetensors, по одному для каждого компонента конвейера (текстовый кодировщик, UNet, VAE), организованных в подпапки (в качестве примера см. репозиторий stable-diffusion-v1-5/stable-diffusion-v1-5)</li>
+  <li>Однофайловая компоновка: все веса моделей можно сохранить в одном файле (в качестве примера см. репозиторий WarriorMama777/OrangeMixs)</li>
+</ul>
+
+<p>Метод <code class="language-plaintext highlighter-rouge">from_pretrained()</code> используется для загрузки модели с файлами safetensors, хранящимися в нескольких папках.</p>
+
+<h4 id="файлы-lora">Файлы LoRA</h4>
+
+<p>LoRA — это легкий адаптер, который быстро и легко обучается, что делает его особенно популярным для генерации изображений определенным образом или в определенном стиле. Эти адаптеры обычно хранятся в файле safetensors и широко распространены на платформах обмена моделями, таких как civitai.</p>
+
+<p>LoRA загружаются в базовую модель с помощью метода <code class="language-plaintext highlighter-rouge">load_lora_weights()</code>.</p>
+
+<h4 id="ckpt">ckpt</h4>
+
+<p><code class="language-plaintext highlighter-rouge">pickle</code> файлы могут быть небезопасными, поскольку их можно использовать для выполнения вредоносного кода. Рекомендуется использовать файлы safetensors, где это возможно, или преобразовать веса в файлы safetensors.</p>
+
+<h2 id="cogvideox">CogVideoX</h2>
+
+<h2 id="инференс-подробнее"><a href="https://huggingface.co/docs/diffusers/using-diffusers/overview_techniques">Инференс</a> (подробнее)</h2>
+
+<h3 id="оптимизация">Оптимизация</h3>
+
+<ul>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/fp16">Speed up inference</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/memory">Reduce memory usage</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/torch2.0">PyTorch 2.0</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/xformers">xFormers</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/tome">Token merging</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/deepcache">DeepCache</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/tgate">TGATE</a></li>
+  <li><a href="https://huggingface.co/docs/diffusers/optimization/xdit">xDiT</a></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">machine-learning</a>]</li>
+  <li>[<a href="pytorch" title="Machine learning framework pytorch">pytorch</a>]</li>
+  <li><a href="https://huggingface.co/docs/diffusers/index">документация</a></li>
+  <li><a href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/annotated_diffusion.ipynb#scrollTo=290edb0b">theory-1 colab</a></li>
+  <li><a href="https://colab.research.google.com/github/huggingface/notebooks/blob/main/diffusers/diffusers_intro.ipynb#scrollTo=PzW5ublpBuUt">theory02 colab</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

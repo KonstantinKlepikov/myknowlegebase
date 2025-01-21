@@ -19,6 +19,7 @@ tags: machine-learning
 
 - [[PIL]]
 - [[imagehash]]
+- [[diffusers]]
 
 ## NLP
 
@@ -94,6 +95,7 @@ tags: machine-learning
 [computer-visions]: computer-visions "Computer visions"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
 [imagehash]: ../notes/imagehash "imagehash - хеширование изображений"
+[diffusers]: ../notes/diffusers "Diffusers library"
 [graphs]: graphs "Machine learning with graphs"
 [knowledge-graphs]: knowledge-graphs "Knowledge graphs"
 [evolution-methods]: evolution-methods "Evolution methods"
