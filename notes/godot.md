@@ -153,6 +153,7 @@ GDExtension — лучший выбор для повышения произво
 - [Nakama Godot 4](https://heroiclabs.com/docs/nakama/client-libraries/godot/) Клиент сервака для godot. Nakama is a scalable server for social and real-time games and apps. [repo](https://github.com/heroiclabs/nakama-godot), [Nakama Godot Demo](https://github.com/heroiclabs/nakama-godot-demo)
 - [godot_voxel](https://github.com/Zylann/godot_voxel) [[voxel]] module for Godot Engine
 - [[godot_shaders]]
+- [Hengo](https://github.com/Henrique-Henrique/Hengo) Godot Visual Script. [site](https://hengoscript.com/)
 - [[gamedev]]
 
 Материалы:

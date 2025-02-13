@@ -13,6 +13,7 @@ RDF — это ориентированный формат данных для �
 - [sparql-client](https://github.com/eea/sparql-client) Python API to query a SPARQL endpoint
 - [sparql на mediawiki](https://en.wikibooks.org/wiki/SPARQL)
 - [SPARQL 1.2 Query Language](https://www.w3.org/TR/sparql12-query/)
+- [stain/jena-fuseki](https://hub.docker.com/r/stain/jena-fuseki)
 - [[wikidata]]
 - [[graphs]]
 - [[bd]]
