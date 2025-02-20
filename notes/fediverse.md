@@ -10,6 +10,10 @@ title: Fediverse
 - [Hollo](https://docs.hollo.social/) A federated microblogging software for single-users. ActivityPub-enabled, Mastodon-compatible API, supports CommonMark and Misskey-style quotes.
 - [dokieli](https://dokie.li/) dokieli is a clientside editor for decentralised article publishing, annotations, and social interactions. [github](https://github.com/dokieli/dokieli)
 - [Social Web Working Group - Publications](https://www.w3.org/groups/wg/social/publications/)
+- [AT protocol](https://atproto.com/) is an open, decentralized network for building social applications (bluesky)
+- [Retroshare](https://retroshare.cc/) establish encrypted connections between you and your friends to create a network of computers, and provides various distributed services on top of it: forums, channels, chat, mail
+- [Hyphanetis](https://www.hyphanet.org/) peer-to-peer network for censorship-resistant and privacy-respecting publishing and communication
+- [Urbit](https://urbit.org/): a clean-slate OS and network for the 21st century (разрабатывается прогером-неофашистом, если это кому-то важно)
 
 Смотри еще:
 
