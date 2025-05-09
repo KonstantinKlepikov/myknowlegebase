@@ -45,6 +45,7 @@ category: list
 
 ## Frameworks, languages, db and tools
 
+- [Knowledge Graph Embedding](https://knowledge-graph-embedding.readthedocs.io/en/latest/index.html) translate and semantic models collection
 - [RDFLib](https://github.com/RDFLib) python tools:
   - [RDFLIB](https://github.com/RDFLib/rdflib) RDFLib is a pure Python package for working with RDF. RDFLib contains most things you need to work with RDF, including:
     - parsers and serializers for RDF/XML, N3, NTriples, N-Quads, Turtle, TriX, Trig and JSON-LD
@@ -60,7 +61,7 @@ category: list
   - [[ontotext-graphdb]]
   - [[neo4j]] rdf resources
     - [[neosematics]] [neosemantics](https://neo4j.com/labs/neosemantics/) (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
-    - [install](https://neo4j.com/labs/neosemantics/installation/)]
+    - [install](https://neo4j.com/labs/neosemantics/installation/)
     - [Build a Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/) with Neo4j
   - [Eclipse RDF4J](https://rdf4j.org/). Eclipse RDF4J is an open source modular Java framework for working with RDF data. This includes parsing, storing, inferencing and querying of/over such data. It offers an easy-to-use API that can be connected to all leading RDF storage solutions. RDF4J offers a set of database implementations out of the box. [Repo](https://github.com/eclipse/rdf4j).
   - [[alegrograph]]

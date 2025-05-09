@@ -89,6 +89,7 @@ $$V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]$$
 - [PettingZoo](https://github.com/Farama-Foundation/PettingZoo) A standard API for multi-agent reinforcement learning environments, with popular reference environments and related utilities
 - [[stable-baseline-3]] PyTorch version of Stable Baselines, reliable implementations of reinforcement learning algorithms.
 - [SuperSuit](https://github.com/Farama-Foundation/SuperSuit) A collection of wrappers for Gymnasium and PettingZoo environments - being merged into gymnasium.wrappers and pettingzoo.wrappers
+- Arcade-Learning-Environment(ALE) is a simple framework that allows researchers and hobbyists to develop AI agents for Atari 2600 games
 - Other:
   - Google [dopamine](https://github.com/google/dopamine). Dopamine is a research framework for fast prototyping of reinforcement learning algorithms.
   - [RLib](https://docs.ray.io/en/latest/rllib/index.html). Industry-Grade Reinforcement Learning. [github](https://github.com/ray-project/ray)
@@ -107,6 +108,7 @@ $$V(S_t) \leftarrow (S_t) + \alpha[V(S_{t+1}) - V(S_t)]$$
   - [RLgraph](https://github.com/rlgraph/rlgraph). RLgraph is a framework to quickly prototype, define and execute reinforcement learning algorithms both in research and practice. RLgraph is different from most other libraries as it can support TensorFlow (or static graphs in general) or eager/define-by run execution (PyTorch) through a single component interface.
   - [simple_rl](https://github.com/david-abel/simple_rl). A simple framework for experimenting with Reinforcement Learning in Python.
   - [godot_rl_agents](https://github.com/edbeeching/godot_rl_agents) An Open Source package that allows video game creators, AI researchers and hobbyists the opportunity to learn complex behaviors for their Non Player Characters or agents in [[godot]]
+  - [Arcade-Learning-Environment(ALE)](https://github.com/Farama-Foundation/Arcade-Learning-Environment) is a simple framework that allows researchers and hobbyists to develop AI agents for Atari 2600 games
 
 ## Другие ресурсы
 

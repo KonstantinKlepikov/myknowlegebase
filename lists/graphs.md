@@ -15,6 +15,7 @@ category: list
 - [dgl.ai](https://www.dgl.ai/)
 - [igraph](https://igraph.org/)
 - [networkit](https://networkit.github.io/)
+- [nx-cugraph](https://github.com/rapidsai/nx-cugraph/) GPU Accelerated Backend for NetworkX
 - [RAPIDS cuGraph](https://github.com/rapidsai/cugraph) is a monorepo that represents a collection of packages focused on GPU-accelerated graph analytics, including support for property graphs, remote (graph as a service) operations, and graph neural (GNNs). cuGraph supports the creation and manipulation of graphs followed by the execution of scalable fast graph algorithms. Включает nx-cugraph, a [[networkx]] backend that provides GPU acceleration to NetworkX with zero code change.
 - [SNAP](https://snap.stanford.edu/snap/)
 - [deep snap](https://snap.stanford.edu/deepsnap/)
@@ -25,6 +26,7 @@ category: list
 - [[apache-tinkertop-and-gremlin]] Apache TinkerPop™ is a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP)
 - [SciGraph](https://github.com/SciGraph/SciGraph) Represent ontologies and ontology-encoded knowledge in a [[neo4j]] graph.
 - [GraphRAG](https://microsoft.github.io/graphrag/) s a structured, hierarchical approach to Retrieval Augmented Generation (RAG), as opposed to naive semantic-search approaches using plain text snippets. The GraphRAG process involves extracting a knowledge graph out of raw text, building a community hierarchy, generating summaries for these communities, and then leveraging these structures when perform RAG-based tasks.
+- [PyTorch-BigGraph](https://github.com/facebookresearch/PyTorch-BigGraph) Generate embeddings from large-scale graph-structured data.
 
 - [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
 - [Community detection for NetworkX](https://python-louvain.readthedocs.io/en/latest/index.html) Louvain Community Detection
@@ -35,8 +37,17 @@ category: list
 - [GraphWorld](https://github.com/google-research/graphworld) toolbox for graph learning researchers to systematically test new models on synthetic graph datasets. [More info](https://ai.googleblog.com/2022/05/graphworld-advances-in-graph.html)
 - [GraphGalery](https://github.com/EdisonLeeeee/GraphGallery) GraphGallery is a gallery for benchmarking Graph Neural Networks (GNNs)
 - [Large graphs datasets](https://law.di.unimi.it/datasets.php)
+- [Networks](http://konect.cc/networks/) большая коллекция графовых датасетов с их описанием и подсчитанными метриками
+- [Leaderboards](https://ogb.stanford.edu/docs/leader_overview/) allow researchers to keep track of state-of-the-art methods and encourage reproducible research.
 
 - [Tools created by the OSoMe team](https://osome.iu.edu/tools)
+
+## Boocs, cources
+
+- [Graph Representation Learning Book](https://www.cs.mcgill.ca/~wlh/grl_book/)
+- [network science book](https://networksciencebook.com/) Barabashi
+- [Networks, Crowds, and Markets: Reasoning About a Highly Connected World](https://www.cs.cornell.edu/home/kleinber/networks-book/)  combines different scientific perspectives in its approach to understanding networks and behavior. Drawing on ideas from economics, sociology, computing and information science, and applied mathematics, it describes the emerging field of study that is growing at the interface of all these areas, addressing fundamental questions about how the social, economic, and technological worlds are connected.
+- [Leaderboards](https://ogb.stanford.edu/docs/leader_overview/) allow researchers to keep track of state-of-the-art methods and encourage reproducible research.
 
 ## Graph [[bd]]
 

@@ -11,6 +11,8 @@ title: Fastapi
 - [fastapi-docker-debug](https://github.com/Kludex/fastapi-docker-debug) - This is a very simple demonstration on how to debug your FastAPI application via Docker container
 - [fastapi-celery](https://github.com/GregaVrbancic/fastapi-celery)
 - [python-dependency-injections](https://python-dependency-injector.ets-labs.org/examples/fastapi.html) example with FastAPI
+- [FastAPI Utilities](https://fastapi-utils.davidmontague.xyz/)
+- [fastapi-scheduler](https://github.com/amisadmin/fastapi-scheduler?tab=readme-ov-file)
 
 ## Resources
 
@@ -41,7 +43,6 @@ title: Fastapi
 - [Fastapy with sentry](https://docs.sentry.io/platforms/python/integrations/fastapi/#install)
 - [Openapi callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/)
 - [Openapi webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/)
-- [fastapi-scheduler](https://github.com/amisadmin/fastapi-scheduler?tab=readme-ov-file)
 - [NoSQL (Distributed / Big Data) Databases](https://fastapi.tiangolo.com/advanced/nosql-databases/) - example with couchdb, can be used for [[mongodb]]
 - [Securing FastAPI with JWT Token-based Authentication](https://testdriven.io/blog/fastapi-jwt-auth/)
 - [How to submit HTML form input value using FastAPI and Jinja2 Templates](https://stackoverflow.com/questions/74318682/how-to-submit-html-form-input-value-using-fastapi-and-jinja2-templates)
@@ -54,6 +55,8 @@ title: Fastapi
 - [FASTAPI logging to file](https://stackoverflow.com/questions/60715275/fastapi-logging-to-file)
 - [awesome-fastapi)](https://github.com/mjhea0/awesome-fastapi) A curated list of awesome things related to FastAPI
 - [Sub application startup event never triggered](https://github.com/tiangolo/fastapi/issues/811) проблема стартап эвентов для монтированных путей в fastapi
+- [fastapi развертывание](https://fastapi.tiangolo.com/ru/deployment/)
+- [FastAPI runs API calls in serial instead of parallel fashion](https://stackoverflow.com/questions/71516140/fastapi-runs-api-calls-in-serial-instead-of-parallel-fashion) подробное объяснение как устроен асинхронный режим в fastapi
 
 Смотри еще:
 

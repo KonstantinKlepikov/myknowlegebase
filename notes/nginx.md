@@ -11,6 +11,13 @@ sudo systemctl reload nginx
 
 Журнал регистрирования ошибок nginx находится `/var/log/nginx/error.log`
 
+Книги:
+
+- [nginx books](https://nginx.org/en/books.html)
+- [nginx: документация](https://nginx.org/ru/docs/)
+
+Смотри еще:
+
 - [[staging-промежуточная-среда]]
 - [[пример-staging]]
 

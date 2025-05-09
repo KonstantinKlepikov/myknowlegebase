@@ -4,6 +4,9 @@ title: Evolution methods
 tags: machine-learning evol
 category: list
 ---
+
+[10 Python library for evolutionary and genetic algorithm](https://www.kaggle.com/discussions/getting-started/112297)
+
 Смотри еще:
 
 - [[deap]]

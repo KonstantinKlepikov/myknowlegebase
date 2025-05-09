@@ -132,6 +132,7 @@ title: Стандартная библиотека python и полезные р
 - [ordered-set](https://github.com/rspeer/ordered-set)
 - [[PIL]]
 - [natsort](https://github.com/SethMMorton/natsort) Simple yet flexible natural sorting in Python
+- [[imagehash]]
 
 ### REPL and docks
 
@@ -148,6 +149,10 @@ title: Стандартная библиотека python и полезные р
 - [asyncer](https://asyncer.tiangolo.com/) is a small library built on top of AnyIO. It has a small number of utility functions that allow working with async, await, and concurrent code in a more convenient way
 - [gevent](https://github.com/gevent/gevent) gevent is a coroutine -based Python networking library that uses greenlet to provide a high-level synchronous API on top of the libev or libuv event loop
 
+### Profiling
+
+- [memray](https://github.com/bloomberg/memray) is a memory profiler for Python. It can track memory allocations in Python code, in native extension modules, and in the Python interpreter itself. It can generate several different types of reports to help you analyze the captured memory usage data. While commonly used as a CLI tool, it can also be used as a library to perform more fine-grained profiling tasks.
+
 ### Other
 
 - [buildbot](http://docs.buildbot.net/current/index.html#) is a continuous integration framework written in Python
@@ -156,13 +161,13 @@ title: Стандартная библиотека python и полезные р
 - [WTForms](https://wtforms.readthedocs.io/en/3.0.x/) is a flexible forms validation and rendering library for Python web development
 - [Pipelines](https://returns.readthedocs.io/en/latest/pages/pipeline.html) several tools to make functional programming composition easy, readable, pythonic, and useful
 - [dotmap](https://github.com/drgrib/dotmap) Dot access dictionary with dynamic hierarchy creation and ordered iteration
-- [[PIL]]
-- [[imagehash]]
 - [[returns]] Make your functions return something meaningful, typed, and safe!
 - [shedule](https://github.com/dbader/schedule) Python job scheduling for humans.
 - [[blinker]]
 - [[dependency-injection]]
 - [ruff](https://astral.sh/blog/ruff-v0.4.0) extremely fast Python linter and formatter, written in [[rust]]
+- [Advanced Python Scheduler](https://apscheduler.readthedocs.io/en/master/index.html#)
+- [Testcontainers Python](https://github.com/testcontainers/testcontainers-python) facilitates the use of Docker containers for functional and integration testing
 
 ### [[python-public-api]]
 
@@ -243,8 +248,8 @@ title: Стандартная библиотека python и полезные р
 [python-import-tools]: ../notes/python-import-tools "Python import tools"
 [setuptools]: ../notes/setuptools "Setuptools"
 [PIL]: ../notes/PIL "Pillow - обработка изображений"
-[click]: ../notes/click "Click интерфейс командной строки"
 [imagehash]: ../notes/imagehash "imagehash - хеширование изображений"
+[click]: ../notes/click "Click интерфейс командной строки"
 [returns]: ../notes/returns "returns"
 [blinker]: ../notes/blinker "blinker сигналы в python"
 [dependency-injection]: ../notes/dependency-injection "Dependency injection"
