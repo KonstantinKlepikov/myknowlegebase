@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Game on Rust — обзор фреймворков и библиотек для разработки игр на Rust | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Game on Rust — обзор фреймворков и библиотек для разработки игр на Rust" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Краткий обзор популярных движков, библиотек и утилит для разработки игр на Rust на основе репозитория dasifefe/rust-game-development-frameworks" />
+<meta property="og:description" content="Краткий обзор популярных движков, библиотек и утилит для разработки игр на Rust на основе репозитория dasifefe/rust-game-development-frameworks" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/game-on-rust.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/game-on-rust.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Краткий обзор популярных движков, библиотек и утилит для разработки игр на Rust на основе репозитория dasifefe/rust-game-development-frameworks","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/game-on-rust.html","headline":"Game on Rust — обзор фреймворков и библиотек для разработки игр на Rust","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Game on Rust — обзор фреймворков и библиотек для разработки игр на Rust</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/rust" title="rust" class="link-tags">rust&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/gamedev" title="gamedev" class="link-tags">gamedev&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/engines" title="engines" class="link-tags">engines&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/wgpu" title="wgpu" class="link-tags">wgpu&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Этот обзор основан на подборке <code class="language-plaintext highlighter-rouge">rust-game-development-frameworks</code> и обобщает основные направления, зрелые проекты и утилиты, полезные при создании игр на [<a href="../lists/rust" title="Ресурсы по языку программирования Rust">rust</a>]. Статья написана с помощью gpt-5 mini.</p>
+
+<p>Rust выдвигается как конкурентная платформа для разработки игр: безопасность памяти, высокая производительность и сильная экосистема для работы с графикой (wgpu), параллелизмом и сетями. Сообщество поддерживает множество движков и специализированных библиотек — от «легковесных» 2D‑фреймворков до полноценной 3D‑стека и инструментов для physics, аудио и UI.</p>
+
+<h2 id="основные-категории-и-заметные-проекты">Основные категории и заметные проекты</h2>
+
+<h3 id="полноценные-игровые-движки-2d--3d">Полноценные игровые движки (2D + 3D)</h3>
+
+<ul>
+  <li><a href="https://bevy.org/">Bevy</a> — современный data‑driven игровой движок на Rust, основанный на ECS; быстро развивается и имеет активное сообщество.</li>
+  <li><a href="https://docs.rs/ambient_api/latest/ambient_api/">Ambient</a> — runtime для высокопроизводительных мультплеерных игр и 3D‑приложений, ориентирован на WebAssembly и WebGPU.</li>
+  <li><a href="https://docs.rs/fyrox/latest/fyrox/">Fyrox</a> (бывший rg3d) — feature‑rich движок с редактором сцен, подходящий для 3D‑проектов.</li>
+  <li><a href="https://docs.rs/hotham/latest/hotham/">Hotham</a> — легковесный движок с прицелом на VR/стенд‑алоне.</li>
+</ul>
+
+<h3 id="2dфреймворки-простые-и-быстрые-стартовые-наборы">2D‑фреймворки (простые и быстрые стартовые наборы)</h3>
+
+<ul>
+  <li><a href="https://docs.rs/macroquad/latest/macroquad/">Macroquad</a> — лёгкий мультиплатформенный фреймворк, прост в использовании, похож на или вдохновлённый raylib/miniquad.</li>
+  <li><a href="https://docs.rs/ggez/latest/ggez/">ggez</a> — удобный для прототипов 2D игр (интерфейс, похожий на Love2D из мира Lua).</li>
+  <li><a href="https://docs.rs/tetra/latest/tetra/">Tetra</a> — небольшой, прост в освоении 2D‑фреймворк.</li>
+  <li><a href="https://docs.rs/emerald/latest/emerald/">Emerald</a>, <a href="https://github.com/17cupsofcoffee/nova">Nova</a>, <a href="https://docs.rs/oxygengine/latest/oxygengine/">Oxygengine</a> — другие варианты 2D‑ориентированных фреймворков.</li>
+</ul>
+
+<h3 id="графические-библиотеки-и-рендербэкенды">Графические библиотеки и рендер‑бэкенды</h3>
+
+<ul>
+  <li><a href="https://docs.rs/wgpu/latest/wgpu/">wgpu</a> — современный кроссплатформенный рендер‑бэкенд (Vulkan/Metal/D3D/GL/WebGPU). Базовая инфраструктура для многих проектов.</li>
+  <li><a href="https://docs.rs/rend3/latest/rend3/">rend3</a>, <a href="https://docs.rs/rafx/latest/rafx/">rafx</a> — более высокоуровневые рендер‑решения поверх wgpu.</li>
+  <li><a href="https://docs.rs/ash/latest/ash/">ash</a> — низкоуровневая обёртка Vulkan</li>
+  <li><a href="https://docs.rs/glow/latest/glow/">glow</a> - низкоуровневая обёртка над OpenGL/WebGL</li>
+  <li><a href="https://docs.rs/vulkano/latest/vulkano/">vulkano</a>, <a href="https://github.com/dasifefe/rust-game-development-frameworks">erupt</a> — низкоуровневая обёртка Vulkan</li>
+  <li><a href="https://docs.rs/lyon/latest/lyon/">lyon</a>, <a href="https://docs.rs/miniquad/latest/miniquad/">miniquad</a> — 2D‑рендеринг/векторная графика и переносимость.</li>
+  <li><a href="https://docs.rs/luminance/latest/luminance/">luminance</a> - высокоуровневая реализация поверх OpenGL</li>
+  <li><a href="https://docs.rs/golem/latest/golem/">golem</a> - высокоуровневая обертка на основе подсветки</li>
+  <li><a href="https://docs.rs/gl46">gl46</a> — низкоуровневая обёртка для OpenGL 4.6 (сгенерирована Phosphorus).</li>
+  <li><a href="https://docs.rs/gl33">gl33</a> — низкоуровневая обёртка для OpenGL 3.3 (сгенерирована Phosphorus).</li>
+  <li><a href="https://docs.rs/screen-13">screen-13</a> — простой Vulkan‑рендерер в духе QBasic.</li>
+  <li><a href="https://docs.rs/sierra">sierra</a> — низкоуровневый контроль и высокоуровневые возможности; построен поверх <code class="language-plaintext highlighter-rouge">erupt</code>.</li>
+</ul>
+
+<h2 id="window-creation-and-os-integration">Window creation and OS integration</h2>
+
+<ul>
+  <li><a href="https://docs.rs/winit">winit</a> — фреймворк для создания окон и обработки событий; де‑факто стандарт в сообществе Rust.</li>
+  <li><a href="https://docs.rs/glfw">glfw</a> — обёртка на Rust для C‑библиотеки GLFW3.</li>
+  <li><a href="https://docs.rs/fermium">fermium</a> — обёртка на Rust для SDL2; предоставляет больше, чем просто создание окон.</li>
+  <li><a href="https://docs.rs/sdl2">sdl2</a> — обёртка на Rust для SDL2 с расширенным функционалом.</li>
+</ul>
+
+<h2 id="frameworks-for-generational-arena-containers-for-entities-and-other-objects">Frameworks for generational-arena (containers for entities and other objects)</h2>
+
+<ul>
+  <li><a href="https://docs.rs/thunderdome">thunderdome</a> — генерационная арена, вдохновлённая generational‑arena, slotmap и slab; обеспечивает вставку, поиск и удаление за константное время с помощью небольших ключей <code class="language-plaintext highlighter-rouge">Arena</code>.</li>
+  <li><a href="https://docs.rs/slotmap">slotmap</a> Container with persistent unique keys to access stored values.</li>
+  <li><a href="https://docs.rs/generational-arena">generational-arena</a> A safe arena allocator that allows deletion without suffering from the <a href="https://en.wikipedia.org/wiki/ABA_problem">ABA problem</a> by using generational indices.</li>
+</ul>
+
+<h2 id="frameworks-for-ecs-containers-for-entities-and-other-objects">Frameworks for ECS (containers for entities and other objects)</h2>
+
+<ul>
+  <li><a href="https://docs.rs/hecs">hecs</a> — реализация ECS на основе архетипов (archetype).</li>
+  <li><a href="https://docs.rs/yaks">yaks</a> — добавляет многопоточность к <code class="language-plaintext highlighter-rouge">hecs</code>.</li>
+  <li><a href="https://docs.rs/legion">legion</a> — ECS на основе архетипов.</li>
+  <li><a href="https://docs.rs/shipyard">shipyard</a> — реализация ECS на основе sparse‑структур.</li>
+  <li><a href="https://docs.rs/specs">specs</a> — ECS, использующая битовые множества (bitset).</li>
+</ul>
+
+<p>See <a href="https://github.com/SanderMertens/ecs-faq#what-are-the-different-ways-to-implement-an-ecs">this repository</a> for information on the different types of ECS (archetype, sparse, bitset).</p>
+
+<h2 id="frameworks-for-physics-and-linear-math-for-2d-and-3d-programming">Frameworks for physics and linear math (for 2D and 3D programming)</h2>
+
+<ul>
+  <li><a href="https://docs.rs/glam">glam</a></li>
+  <li><a href="https://docs.rs/rapier2d">rapier2d</a> / <a href="https://docs.rs/rapier3d">rapier3d</a> — современный физический движок для 2D/3D от автора <code class="language-plaintext highlighter-rouge">nphysics</code>; есть демонстрации для 2D и 3D (<a href="https://rapier.rs/demos2d/index.html">2D demo</a>, <a href="https://rapier.rs/demos3d/index.html">3D demo</a>).</li>
+  <li><a href="https://docs.rs/cgmath">cgmath</a></li>
+  <li><a href="https://docs.rs/nalgebra">nalgebra</a></li>
+  <li><a href="https://docs.rs/ultraviolet">ultraviolet</a></li>
+  <li><a href="https://docs.rs/vek">vek</a></li>
+</ul>
+
+<h2 id="graphical-user-interface-gui">Graphical user interface (GUI)</h2>
+
+<ul>
+  <li><a href="https://github.com/LPGhatguy/yakui">yakui</a> — сочетает модель компоновки, вдохновлённую Flutter, с простотой immediate‑mode UI (Dear ImGui / egui).</li>
+  <li><a href="https://docs.rs/egui/">egui</a> — кроссплатформенная GUI‑библиотека на Rust; многие рендереры имеют интеграцию с <code class="language-plaintext highlighter-rouge">egui</code>.</li>
+  <li><a href="https://docs.rs/iced/">iced</a> — декларативная кроссплатформенная GUI‑библиотека на Rust.</li>
+  <li><a href="https://docs.rs/imgui/">imgui</a> — биндинги Dear ImGui (C++) для Rust.</li>
+</ul>
+
+<h2 id="font-parser-andor-rasterizer">Font (parser and/or rasterizer)</h2>
+
+<ul>
+  <li><a href="https://docs.rs/fontdue">fontdue</a></li>
+  <li><a href="https://github.com/dfrg/swash">swash</a></li>
+  <li><a href="https://docs.rs/rustybuzz">rustybuzz</a> — полная реализация алгоритма шейпинга HarfBuzz, портированная на Rust.</li>
+  <li><a href="https://docs.rs/ttf-parser">ttf-parser</a> — высокоуровневый, безопасный парсер TrueType шрифтов без выделения памяти (zero-allocation).</li>
+</ul>
+
+<h2 id="space-partitioning">Space partitioning</h2>
+
+<ul>
+  <li><a href="https://docs.rs/crate/rstar/">rstar</a> — N‑мерная реализация [r<em>-tree](https://en.wikipedia.org/wiki/R</em>_tree) для пространственного индексирования.</li>
+  <li><a href="https://docs.rs/crate/bvh/">bvh</a> — иерархия ограничивающих объёмов (Bounding Volume Hierarchy), реализована поверх <a href="https://www.nalgebra.org/">nalgebra</a>.</li>
+  <li><a href="https://docs.rs/crate/kdtree/">kdtree</a> — k‑мерное дерево для быстрого геопространственного индексирования и поиска ближайших соседей.</li>
+  <li><a href="https://docs.rs/crate/ncollide2d/">ncollide 2D</a> — реализация Bounding Volume Tree для 2D. <a href="https://www.ncollide.org/rustdoc/ncollide2d/partitioning/struct.BVT.html">(2d documentation)</a>.</li>
+  <li><a href="https://docs.rs/crate/ncollide3d/">ncollide 3D</a> — реализация Bounding Volume Tree для 3D. <a href="https://www.ncollide.org/rustdoc/ncollide3d/partitioning/struct.BVT.html">(3d documentation)</a>.</li>
+  <li><a href="https://docs.rs/crate/spade/">spade</a> — реализует [r<em>-tree](https://en.wikipedia.org/wiki/R</em>_tree) и триангуляцию Делоне. <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation">delaunay triangulation</a>.</li>
+  <li><a href="https://docs.rs/crate/flat_spatial/">flat_spatial</a> — простые плоские структуры (например, сетка или хеш‑таблица ячеек) для быстрых запросов.</li>
+  <li><a href="https://docs.rs/crate/acacia/">acacia</a> — обобщённая по размерности структура разделения пространства; поддерживает бинарные деревья, квадродерева, октодрева и т.д.</li>
+</ul>
+
+<h2 id="network">Network</h2>
+
+<ul>
+  <li><a href="https://docs.rs/tokio">tokio</a> — асинхронный рантайм и набор утилит для работы с I/O; поддержка асинхронных TCP и UDP сокетов.</li>
+  <li><a href="https://docs.rs/quinn">quinn</a> — реализация транспортного протокола QUIC на Rust; построен с учётом интеграции с <code class="language-plaintext highlighter-rouge">tokio</code>.</li>
+</ul>
+
+<h2 id="audio">Audio</h2>
+
+<ul>
+  <li><a href="https://docs.rs/oddio">oddio</a> — библиотека аудио, построенная на <code class="language-plaintext highlighter-rouge">cpal</code>.</li>
+  <li><a href="https://docs.rs/kira">kira</a> — аудиобиблиотека поверх <code class="language-plaintext highlighter-rouge">cpal</code>.</li>
+  <li><a href="https://docs.rs/rodio">rodio</a> — высокоуровневая аудиобиблиотека поверх <code class="language-plaintext highlighter-rouge">cpal</code>.</li>
+  <li><a href="https://docs.rs/cpal">cpal</a> — низкоуровневая кроссплатформенная библиотека для ввода/вывода аудио.</li>
+  <li><a href="https://docs.rs/alto">alto</a> — обёртка над OpenAL.</li>
+  <li><a href="https://docs.rs/openal">openal</a> — биндинги/обёртка для OpenAL.</li>
+</ul>
+
+<h2 id="serialization-deserialization">Serialization-Deserialization</h2>
+
+<ul>
+  <li><a href="https://github.com/fjall-rs/fjall">fjall</a> — встроенная key‑value база данных, написанная на чистом Rust.</li>
+  <li><a href="https://docs.rs/redb">redb</a> — встраиваемая key‑value база данных на Rust.</li>
+  <li><a href="https://docs.rs/speedy">speedy</a> — быстрая и простая бинарная сериализация/десериализация.</li>
+  <li><a href="https://docs.rs/serde">serde</a> — универсальная библиотека для сериализации и десериализации структур данных.</li>
+  <li><a href="https://crates.io/crates/serde_json">serde-json</a> — реализация формата JSON для <code class="language-plaintext highlighter-rouge">serde</code>.</li>
+  <li><a href="https://crates.io/crates/bincode">bincode</a> — компактный бинарный формат сериализации на основе <code class="language-plaintext highlighter-rouge">serde</code>.</li>
+  <li><a href="https://docs.rs/borsh">borsh</a> — реализация бинарного формата Borsh, ориентированного на детерминированность, консистентность и безопасность.</li>
+</ul>
+
+<h2 id="other-utilities">Other utilities</h2>
+
+<ul>
+  <li><a href="https://docs.rs/hexasphere">hexasphere</a> — делит 3D‑формы (икосаэдр, тетраэдр, квадрат, треугольник, куб) на треугольные сетки.</li>
+  <li><a href="https://docs.rs/navmesh/">navmesh</a> — навигационная сетка (navmesh) для поиска пути.</li>
+  <li><a href="https://docs.rs/density-mesh-core">density-mesh-core</a> / <a href="https://docs.rs/density-mesh-image">density-mesh-image</a> — генерация 2D‑сетки из изображений, представляющих плотность/высотную карту.</li>
+  <li><a href="https://docs.rs/image">image</a> — кодирование и декодирование изображений во множестве форматов.</li>
+  <li><a href="https://docs.rs/rayon">rayon</a> — добавляет параллелизм в код и упрощает безопасное многопоточное выполнение без data‑race.</li>
+  <li><a href="https://docs.rs/palette">palette</a> — операции и преобразования в цветовом пространстве, линейные цветовые вычисления.</li>
+  <li><a href="https://docs.rs/pathfinding">pathfinding</a> — набор реализаций алгоритмов поиска пути.</li>
+  <li><a href="https://docs.rs/salva2d">salva2d</a> / <a href="https://docs.rs/salva3d">salva3d</a> — моделирование динамики жидкости на основе частиц.</li>
+  <li><a href="https://docs.rs/collider">collider</a> — непрерывное обнаружение столкновений в 2D.</li>
+</ul>
+
+<h3 id="примеры-открытых-игр-в-репозитории">Примеры открытых игр в <a href="https://github.com/dasifefe/rust-game-development-frameworks">репозитории</a></h3>
+
+<p>В подборке перечислены множество проектов‑примеров (RecWars, Veloren, RustCycles и др.), которые можно изучить как источник архитектурных идей и практических реализаций.</p>
+
+<h2 id="смотри-еще">Смотри еще</h2>
+
+<ul>
+  <li><a href="https://github.com/dasifefe/rust-game-development-frameworks">репозиторий со ссылками на фреймворки</a></li>
+  <li><a href="https://sotrh.github.io/learn-wgpu/">Learn WGPU</a></li>
+  <li><a href="https://arewegameyet.rs/">Are We Game Yet?</a></li>
+  <li>[<a href="../lists/rust" title="Ресурсы по языку программирования Rust">rust</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

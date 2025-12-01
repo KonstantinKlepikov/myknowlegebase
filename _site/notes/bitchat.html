@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Bitchat — децентрализованный P2P-мессенджер (обзор) | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Bitchat — децентрализованный P2P-мессенджер (обзор)" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Обзор проекта Bitchat — децентрализованного мессенджера с Bluetooth mesh и Nostr" />
+<meta property="og:description" content="Обзор проекта Bitchat — децентрализованного мессенджера с Bluetooth mesh и Nostr" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/bitchat.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/bitchat.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Обзор проекта Bitchat — децентрализованного мессенджера с Bluetooth mesh и Nostr","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/bitchat.html","headline":"Bitchat — децентрализованный P2P-мессенджер (обзор)","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Bitchat — децентрализованный P2P-мессенджер (обзор)</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/p2p" title="p2p" class="link-tags">p2p&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/messaging" title="messaging" class="link-tags">messaging&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/nostr" title="nostr" class="link-tags">nostr&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/bluetooth" title="bluetooth" class="link-tags">bluetooth&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/bitchat" title="bitchat" class="link-tags">bitchat&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/opensource" title="opensource" class="link-tags">opensource&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Bitchat — мобильное/настольное приложение для децентрализованного обмена сообщениями, спроектированное для работы в офлайн-сетях и через глобальные Nostr‑реле при наличии интернета. Проект ориентирован на приватность: нет учётных записей, номеров телефонов и центральных серверов — только прямые подключения и распределённые реле. Статья написана с помощью gpt-5 mini.</p>
+
+<p><a href="https://github.com/permissionlesstech/bitchat">bitchat</a></p>
+
+<h2 id="главная-идея">Главная идея</h2>
+
+<p>Приложение использует гибридную архитектуру с двумя транспортными уровнями:</p>
+
+<ul>
+  <li>Bluetooth LE mesh для локального общения без интернета (многоступенчатая ретрансляция через соседние устройства).</li>
+  <li>Nostr (через реле) для глобальной доставки и покрытия зон, где нет прямого Bluetooth‑соединения.</li>
+</ul>
+
+<p>Комбинация позволяет использовать Bitchat в условиях отключённого интернета (протесты, чрезвычайные ситуации, удалённые области) и одновременно обеспечить связь с внешним миром, когда это необходимо.</p>
+
+<h2 id="основные-возможности">Основные возможности</h2>
+
+<ul>
+  <li>Двойная транспортная архитектура (Bluetooth mesh + Nostr) с автоматическим выбором лучшего канала.</li>
+  <li>Каналы на основе геолокации (geohash): чат для блока, района, города и т.д.</li>
+  <li>Многоступенчатая ретрансляция сообщений в mesh (поддержка нескольких хопов).</li>
+  <li>Приватность: отсутствие постоянных идентификаторов, учётных записей и телефонных номеров.</li>
+  <li>Шифрование приватных сообщений: протокол Noise для bluetooth‑сессий и NIP‑17 для Nostr.</li>
+  <li>Поддержка IRC‑подобных команд для управления (например, <code class="language-plaintext highlighter-rouge">/msg</code>, <code class="language-plaintext highlighter-rouge">/who</code> и т. п.).</li>
+  <li>Опции производительности: сжатие сообщений (LZ4), режимы энергосбережения и оптимизированная сеть.</li>
+  <li>Экстренная очистка данных (Emergency Wipe) — быстрый сброс локального хранилища.</li>
+</ul>
+
+<h2 id="архитектура-и-канализация">Архитектура и канализация</h2>
+
+<p>Bitchat делит каналы на несколько типов:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mesh #bluetooth</code> — локальные каналы, полностью функционируют по Bluetooth, подходят для офлайн‑сред и локальных событий.</li>
+  <li>Локационные каналы через Nostr — геохеши разных точностей: block (7 символов), neighborhood (6), city (5), province (4), region (2). Это позволяет организовать чаты, связанные с местоположением.</li>
+</ul>
+
+<p>Такой подход даёт гибкость: локальные разговоры остаются в радиусе mesh, а при необходимости сообщения могут «провалиться» в Nostr для доставки адресату, оказавшемуся вне Bluetooth‑досягаемости.</p>
+
+<h2 id="маршрутизация-приватных-сообщений">Маршрутизация приватных сообщений</h2>
+
+<p>Для приватной пересылки Bitchat применяет умную стратегию:</p>
+
+<ol>
+  <li>Сначала — Bluetooth (если доступен). Сообщение шифруется через Noise и отправляется напрямую или через mesh‑хопы.</li>
+  <li>Если Bluetooth недоступен — откат на Nostr (через публичные реле). Для приватности используется NIP‑17 (“gift‑wrapping”) и работа с временными/эпhemeral ключами.</li>
+  <li>Если ни один транспорт недоступен — сообщение ставится в очередь и отправится автоматически при появлении соединения.</li>
+</ol>
+
+<h2 id="безопасность-и-ограничения">Безопасность и ограничения</h2>
+
+<ul>
+  <li>Проект подчёркивает приватность, однако приватные сообщения не проходили формального внешнего аудита на момент заметки; поэтому не рекомендуется доверять критически важной информации до проведения аудита.</li>
+  <li>Для mesh‑сессий Bitchat применяет Noise Protocol (предоставляет свойства E2E и forward secrecy).</li>
+  <li>Публичные локальные чаты (основная особенность приложения) не несут тех же рисков, но всё равно следует быть внимательным с личной информацией.</li>
+</ul>
+
+<h2 id="сборка-и-запуск-кратко">Сборка и запуск (кратко)</h2>
+
+<p>Репозиторий содержит инструкции для запуска из исходников на macOS / iOS и утилиту <code class="language-plaintext highlighter-rouge">just</code> для упрощения задач сборки.</p>
+
+<ul>
+  <li>Запуск из Xcode: открыть <code class="language-plaintext highlighter-rouge">bitchat.xcodeproj</code>, подготовить локальные конфиги (например, <code class="language-plaintext highlighter-rouge">Configs/Local.xcconfig</code>), указать Team ID и обновить entitlements перед запуском на устройстве.</li>
+  <li>Альтернатива: установить <code class="language-plaintext highlighter-rouge">just</code> (через Homebrew) и использовать прописанные рецепты (<code class="language-plaintext highlighter-rouge">just run</code>, <code class="language-plaintext highlighter-rouge">just clean</code> и т. п.) для локального тестирования.</li>
+</ul>
+
+<p>Для подробных шагов сборки и отладки см. README в репозитории и файл WHITEPAPER.md с технической документацией.</p>
+
+<h2 id="локализация-и-развитие">Локализация и развитие</h2>
+
+<p>Проект поддерживает локализацию — текстовые ресурсы лежат в соответствующих папках <code class="language-plaintext highlighter-rouge">Localization/*.lproj</code>. При добавлении переводов следует обновлять <code class="language-plaintext highlighter-rouge">Localizable.strings</code> и <code class="language-plaintext highlighter-rouge">Localizable.stringsdict</code>.</p>
+
+<h2 id="для-кого-это-подходит">Для кого это подходит</h2>
+
+<ul>
+  <li>Активисты и сообщества, которым нужна связь в офлайн‑условиях.</li>
+  <li>Люди, желающие экспериментировать с децентрализованными P2P‑сетями и Nostr.</li>
+  <li>Разработчики, желающие изучить гибридные транспортные архитектуры и приватные протоколы для мобильных приложений.</li>
+</ul>
+
+<h2 id="еще-ссылки">Еще ссылки</h2>
+
+<ul>
+  <li><a href="https://github.com/permissionlesstech/bitchat">bitchat</a></li>
+  <li><a href="https://raw.githubusercontent.com/permissionlesstech/bitchat/main/WHITEPAPER.md">Технический обзор / Whitepaper</a></li>
+  <li><a href="http://bitchat.free">Сайт проекта</a>: http://bitchat.free</li>
+</ul>
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>
