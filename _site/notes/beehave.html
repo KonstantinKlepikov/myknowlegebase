@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Beehave — дополнение Behavior Tree для Godot | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Beehave — дополнение Behavior Tree для Godot" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Краткий обзор и руководство по аддону Beehave (bitbrain/beehave) — поведенческое дерево для Godot (поддержка Godot 3.x и 4.x)." />
+<meta property="og:description" content="Краткий обзор и руководство по аддону Beehave (bitbrain/beehave) — поведенческое дерево для Godot (поддержка Godot 3.x и 4.x)." />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/beehave.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/beehave.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Краткий обзор и руководство по аддону Beehave (bitbrain/beehave) — поведенческое дерево для Godot (поддержка Godot 3.x и 4.x).","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/beehave.html","headline":"Beehave — дополнение Behavior Tree для Godot","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Beehave — дополнение Behavior Tree для Godot</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/beehave" title="beehave" class="link-tags">beehave&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/godot" title="godot" class="link-tags">godot&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/gamedev" title="gamedev" class="link-tags">gamedev&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/behavior-tree" title="behavior-tree" class="link-tags">behavior-tree&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Beehave — минималистичный аддон behaviour tree для игрового движка [<a href="godot" title="godot engine">godot</a>]. Проект начат как форк простого примера и доработан автором для удобства использования: добавлен отладочный вид в редакторе, исправлены и расширены ноды, а также организован отдельный репозиторий с поддержкой веток для Godot 3.x и 4.x.</p>
+
+<p>Статья написана с помощью gpt-5 mini.</p>
+
+<p>Ключевая идея Beehave — дать простой и расширяемый набор нод для построения логики NPC через поведенческие деревья (Behaviour Trees), не перегружая пользователем лишним функционалом.</p>
+
+<h2 id="что-умеет-beehave">Что умеет Beehave</h2>
+
+<ul>
+  <li>Минималистичная реализация behaviour tree, удобная для интеграции в проекты.</li>
+  <li>Поддержка Godot 3.x и Godot 4.x (отдельные ветки и сборки).</li>
+  <li>Отладочный режим/вид в редакторе для визуализации выполнения дерева.</li>
+  <li>Набор базовых нод: Conditions, Actions (leaf nodes), Composites (Selector, Sequence и их “Star” варианты) и Decorators (Failer, Succeeder, Inverter, Limiter).</li>
+</ul>
+
+<p><img src="/myknowlegebase/attachments/2025-12-03-20-31-55.png" alt="beehave ui" /></p>
+
+<h3 id="leaf-nodes">Leaf nodes</h3>
+
+<ul>
+  <li>Conditions (<code class="language-plaintext highlighter-rouge">ConditionLeaf</code>) — простые проверочные ноды, возвращают <code class="language-plaintext highlighter-rouge">SUCCESS</code> или <code class="language-plaintext highlighter-rouge">FAILURE</code> (например, проверка видимости, дистанции и т.д.).</li>
+  <li>Actions (<code class="language-plaintext highlighter-rouge">ActionLeaf</code>) — ноды действий, могут быть длительными и возвращать <code class="language-plaintext highlighter-rouge">RUNNING</code> до завершения.</li>
+</ul>
+
+<p>Пример Condition (GDScript):</p>
+
+<div class="language-gdscript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class_name</span> <span class="n">IsVisibleCondition</span>
+<span class="k">extends</span> <span class="n">ConditionLeaf</span>
+
+<span class="k">func</span> <span class="nf">tick</span><span class="p">(</span><span class="n">actor</span><span class="p">,</span> <span class="n">blackboard</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">actor</span><span class="o">.</span><span class="n">visible</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">SUCCESS</span>
+  <span class="k">return</span> <span class="n">FAILURE</span>
+</code></pre></div></div>
+
+<p>Пример Action (GDScript):</p>
+
+<div class="language-gdscript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class_name</span> <span class="n">MakeVisibleAction</span>
+<span class="k">extends</span> <span class="n">ActionLeaf</span>
+
+<span class="k">func</span> <span class="nf">tick</span><span class="p">(</span><span class="n">actor</span><span class="p">,</span> <span class="n">blackboard</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">actor</span><span class="o">.</span><span class="n">visible</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">FAILURE</span>
+  <span class="n">actor</span><span class="o">.</span><span class="n">visible</span> <span class="o">=</span> <span class="bp">true</span>
+  <span class="k">return</span> <span class="n">SUCCESS</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">blackboard</code> используется для обмена данными между нодами дерева.</p>
+
+<h3 id="composites">Composites</h3>
+
+<ul>
+  <li>Selector — возвращает <code class="language-plaintext highlighter-rouge">SUCCESS</code>, если хотя бы один ребёнок вернул <code class="language-plaintext highlighter-rouge">SUCCESS</code>; в противном случае <code class="language-plaintext highlighter-rouge">FAILURE</code>.</li>
+  <li>Selector Star — похож на Selector, но при наличии <code class="language-plaintext highlighter-rouge">RUNNING</code> ребенка пропускает ранее выполненные дети (полезно, если нужно, чтобы выполнялось только одно действие одновременно).</li>
+  <li>Sequence — возвращает <code class="language-plaintext highlighter-rouge">SUCCESS</code>, если все дети вернули <code class="language-plaintext highlighter-rouge">SUCCESS</code>; если хоть один вернул <code class="language-plaintext highlighter-rouge">FAILURE</code> — возвращает <code class="language-plaintext highlighter-rouge">FAILURE</code>.</li>
+  <li>Sequence Star — похож на Sequence, но при <code class="language-plaintext highlighter-rouge">RUNNING</code> ребёнка пропускает ранее успешные дети.</li>
+</ul>
+
+<h3 id="decorators">Decorators</h3>
+
+<ul>
+  <li>Failer — всегда возвращает <code class="language-plaintext highlighter-rouge">FAILURE</code>.</li>
+  <li>Succeeder — всегда возвращает <code class="language-plaintext highlighter-rouge">SUCCESS</code>.</li>
+  <li>Inverter — инвертирует статус дочерней ноды (<code class="language-plaintext highlighter-rouge">SUCCESS</code>↔<code class="language-plaintext highlighter-rouge">FAILURE</code>).</li>
+  <li>Limiter — ограничивает число запусков дочерней ноды.</li>
+</ul>
+
+<h2 id="смотри-еще">Смотри еще</h2>
+
+<p>Полную лицензию и исходный код смотрите в репозитории:</p>
+
+<ul>
+  <li>Репозиторий: <a href="https://github.com/bitbrain/beehave">bitbrain/beehave</a></li>
+  <li>[<a href="godot" title="godot engine">godot</a>]</li>
+  <li>[<a href="../lists/gamedev" title="Gamedev">gamedev</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

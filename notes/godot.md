@@ -154,6 +154,8 @@ GDExtension — лучший выбор для повышения произво
 - [godot_voxel](https://github.com/Zylann/godot_voxel) [[voxel]] module for Godot Engine
 - [[godot_shaders]]
 - [Hengo](https://github.com/Henrique-Henrique/Hengo) Godot Visual Script. [site](https://hengoscript.com/)
+- [[beehave]] Behaviour Trees
+- [[limboai]] Behaviour Trees and hsm
 - [[gamedev]]
 
 Материалы:
@@ -166,7 +168,6 @@ GDExtension — лучший выбор для повышения произво
 - [Creating movies](https://docs.godotengine.org/en/stable/tutorials/animation/creating_movies.html#converting-avi-video-to-mp4)
 - [Using InputEvent](https://docs.godotengine.org/en/stable/tutorials/inputs/inputevent.html)
 
-
 [gdscript]: gdscript "GDScript"
 [c-plus-plus]: ../lists/c-plus-plus "Ресурсы по языку программирования С/С++"
 [GDScript]: gdscript "GDScript"
@@ -175,3 +176,5 @@ GDExtension — лучший выбор для повышения произво
 [voxel]: voxel "Воксельные фреймворки и игры"
 [godot_shaders]: godot_shaders "Godot shaders"
 [gamedev]: ../lists/gamedev "Gamedev"
+[beehave]: beehave "Beehave — дополнение Behavior Tree для Godot"
+[limboai]: limboai "LimboAI — Behavior Trees и State Machines для Godot"

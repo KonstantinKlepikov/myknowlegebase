@@ -34,6 +34,11 @@ title: Gamedev
 - [[voxel]] воксельные фреймворки
 - [2D and 3D engines and frameworks](https://arewegameyet.rs/ecosystem/engines/)
 
+## Ai
+
+- [[beehave]] Behaviour Trees for [[godot]]
+- [[limboai]] Behaviour Trees and hsm for [[godot]]
+
 ## Neural
 
 - [Gymnasium](https://gymnasium.farama.org/) `python` АПИ [[reinforcement-learning]] для обучения в игровых средах.
@@ -158,7 +163,6 @@ title: Gamedev
 - [[game-on-rust]]
 - [[opensource]]
 
-
 [springs-engine]: ../notes/springs-engine "Springs Engine"
 [lua]: lua "Lua"
 [godot]: ../notes/godot "godot engine"
@@ -173,3 +177,6 @@ title: Gamedev
 [kernel-panic]: ../notes/kernel-panic "Kernel Panic game"
 [game-on-rust]: ../notes/game-on-rust "Game on Rust — обзор фреймворков и библиотек для разработки игр на Rust"
 [opensource]: opensource "Opensource"
+[beehave]: ../notes/beehave "Beehave — дополнение Behavior Tree для Godot"
+
+[limboai]: ../notes/limboai "LimboAI — Behavior Trees и State Machines для Godot"
