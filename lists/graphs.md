@@ -27,6 +27,7 @@ category: list
 - [SciGraph](https://github.com/SciGraph/SciGraph) Represent ontologies and ontology-encoded knowledge in a [[neo4j]] graph.
 - [GraphRAG](https://microsoft.github.io/graphrag/) s a structured, hierarchical approach to Retrieval Augmented Generation (RAG), as opposed to naive semantic-search approaches using plain text snippets. The GraphRAG process involves extracting a knowledge graph out of raw text, building a community hierarchy, generating summaries for these communities, and then leveraging these structures when perform RAG-based tasks.
 - [PyTorch-BigGraph](https://github.com/facebookresearch/PyTorch-BigGraph) Generate embeddings from large-scale graph-structured data.
+- [pykeen](https://pykeen.readthedocs.io/en/stable/) a Python package for reproducible, facile knowledge graph embeddings
 
 - [Бенчмарк](https://www.timlrx.com/blog/benchmark-of-popular-graph-network-packages-v2)
 - [Community detection for NetworkX](https://python-louvain.readthedocs.io/en/latest/index.html) Louvain Community Detection
@@ -36,18 +37,32 @@ category: list
 - [karateclub](https://github.com/benedekrozemberczki/KarateClub) is an unsupervised machine learning extension library for [NetworkX](https://networkx.org/)
 - [GraphWorld](https://github.com/google-research/graphworld) toolbox for graph learning researchers to systematically test new models on synthetic graph datasets. [More info](https://ai.googleblog.com/2022/05/graphworld-advances-in-graph.html)
 - [GraphGalery](https://github.com/EdisonLeeeee/GraphGallery) GraphGallery is a gallery for benchmarking Graph Neural Networks (GNNs)
-- [Large graphs datasets](https://law.di.unimi.it/datasets.php)
-- [Networks](http://konect.cc/networks/) большая коллекция графовых датасетов с их описанием и подсчитанными метриками
 - [Leaderboards](https://ogb.stanford.edu/docs/leader_overview/) allow researchers to keep track of state-of-the-art methods and encourage reproducible research.
 
 - [Tools created by the OSoMe team](https://osome.iu.edu/tools)
 
-## Boocs, cources
+- [PySceneDetect](https://github.com/Breakthrough/PySceneDetect) Python and OpenCV-based scene cut/transition detection program & library.
+
+## Datasets
+
+- [Network Repository](https://networkrepository.com/). An Interactive Scientific Network Data Repository
+- [MovieGraphs](http://moviegraphs.cs.toronto.edu/) A Dataset & Benchmark for Understanding Human-Centric Situations
+- [MovieNet](https://movienet.github.io/) A holistic dataset for movie understanding
+- [Large graphs datasets](https://law.di.unimi.it/datasets.php)
+- [konect.cc/networks](http://konect.cc/networks/) большая коллекция графовых датасетов с их описанием и подсчитанными метриками (может быть недоступен, смотри репозитории)
+  - [KONECT Extraction](https://github.com/kunegis/konect-extr) - collection of network extraction tools is part of the KONECT project, i.e., the Koblenz Network Collection, a network analysis project by Jérôme Kunegis. This package contains code for generating the network datasets
+  - [konect-handbook](https://github.com/kunegis/konect-handbook) contains all definitions used by the KONECT projects, covering many aspects of network analysis and corresponding parts of
+graph theory, as well as definitions of plots, statistics and internal data structures used in KONECT [arxiv](https://arxiv.org/pdf/1402.5500)
+  - [konect-www](https://github.com/kunegis/konect-www) kode to generate the website of the KONECT project, by Jérôme Kunegis
+  - [project maintainer blog](https://networkscience.wordpress.com/)
+
+## Books, cources
 
 - [Graph Representation Learning Book](https://www.cs.mcgill.ca/~wlh/grl_book/)
 - [network science book](https://networksciencebook.com/) Barabashi
 - [Networks, Crowds, and Markets: Reasoning About a Highly Connected World](https://www.cs.cornell.edu/home/kleinber/networks-book/)  combines different scientific perspectives in its approach to understanding networks and behavior. Drawing on ideas from economics, sociology, computing and information science, and applied mathematics, it describes the emerging field of study that is growing at the interface of all these areas, addressing fundamental questions about how the social, economic, and technological worlds are connected.
 - [Leaderboards](https://ogb.stanford.edu/docs/leader_overview/) allow researchers to keep track of state-of-the-art methods and encourage reproducible research.
+- [Temporal Graph Reading Group](https://www.cs.mcgill.ca/~shuang43/rg.html)
 
 ## Graph [[bd]]
 
@@ -75,7 +90,6 @@ category: list
 - [[pytorch]]
 - [[machine-learning]]
 
-
 [pyg]: ../notes/pyg "Pytorch geometric"
 [networkx]: ../notes/networkx "Networkx"
 [apache-spark]: ../notes/apache-spark "Unified engine for large-scale data analytics"
@@ -86,28 +100,6 @@ category: list
 [janus-graph]: ../notes/janus-graph "Janus Graph"
 [knowledge-graphs]: knowledge-graphs "Knowledge graphs"
 [graph-visualization]: ../notes/graph-visualization "Graph visualization"
-[neo4j-ml]: ../notes/neo4j-ml "Machine learning in Neo4j"
-[cypher]: ../notes/cypher "Cypher query language"
-[python-api-neo4j]: ../notes/python-api-neo4j "Python api for neo4j"
-[pytoneo]: ../notes/pytoneo "pytoneo client library and toolkit for working with neo4j"
-[graphql]: ../notes/graphql "Язык и система организации АПИ GraphQL"
-[sparql]: ../notes/sparql "SPARQL"
-[pytorch]: ../notes/pytorch "Machine learning framework pytorch"
-[machine-learning]: machine-learning "Алгоритмы машинного обучения"
-
-
-[pyg]: ../notes/pyg "Pytorch geometric"
-[apache-spark]: ../notes/apache-spark "Unified engine for large-scale data analytics"
-[apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
-[bd]: bd "Data Bases"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
-[dgraph]: ../notes/dgraph "Dgraph"
-[janus-graph]: ../notes/janus-graph "Janus Graph"
-[knowledge-graphs]: knowledge-graphs "Knowledge graphs"
-[graph-visualization]: ../notes/graph-visualization "Graph visualization"
-[networkx]: ../notes/networkx "Networkx"
-[pyg]: ../notes/pyg "Pytorch geometric"
 [neo4j-ml]: ../notes/neo4j-ml "Machine learning in Neo4j"
 [cypher]: ../notes/cypher "Cypher query language"
 [python-api-neo4j]: ../notes/python-api-neo4j "Python api for neo4j"

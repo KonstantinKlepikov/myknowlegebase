@@ -3,10 +3,14 @@ description: Ресурсы, посвязенные концепции fediverse
 tags: wiki
 title: Fediverse
 ---
-Ресурсы:
 
+- [fediverse.party](https://fediverse.party/)
+- [fediverse tools](https://fediverse.party/en/tools/)
 - [Comparison of software and protocols for distributed social networking](https://en.m.wikipedia.org/wiki/Comparison_of_software_and_protocols_for_distributed_social_networking)
 - [ActivityPub](https://en.m.wikipedia.org/wiki/ActivityPub) [ActivityPub protocol](https://www.w3.org/TR/activitypub/)
+
+Дополнительные ресурсы:
+
 - [Hollo](https://docs.hollo.social/) A federated microblogging software for single-users. ActivityPub-enabled, Mastodon-compatible API, supports CommonMark and Misskey-style quotes.
 - [dokieli](https://dokie.li/) dokieli is a clientside editor for decentralised article publishing, annotations, and social interactions. [github](https://github.com/dokieli/dokieli)
 - [Social Web Working Group - Publications](https://www.w3.org/groups/wg/social/publications/)
@@ -19,7 +23,6 @@ title: Fediverse
 
 - [[wikidata]]
 - [[wiki-resources]]
-
 
 [wikidata]: ../lists/wikidata "Wikidata"
 [wiki-resources]: wiki-resources "Wiki resources"

@@ -154,6 +154,7 @@ GDExtension — лучший выбор для повышения произво
 - [godot_voxel](https://github.com/Zylann/godot_voxel) [[voxel]] module for Godot Engine
 - [[godot_shaders]]
 - [Hengo](https://github.com/Henrique-Henrique/Hengo) Godot Visual Script. [site](https://hengoscript.com/)
+- [godot card game framework](https://github.com/db0/godot-card-game-framework?tab=readme-ov-file)
 - [[beehave]] Behaviour Trees
 - [[limboai]] Behaviour Trees and hsm
 - [[gamedev]]

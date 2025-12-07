@@ -45,6 +45,7 @@ category: list
 
 ## Frameworks, languages, db and tools
 
+- [pykeen](https://pykeen.readthedocs.io/en/stable/) a Python package for reproducible, facile knowledge graph embeddings
 - [Knowledge Graph Embedding](https://knowledge-graph-embedding.readthedocs.io/en/latest/index.html) translate and semantic models collection
 - [RDFLib](https://github.com/RDFLib) python tools:
   - [RDFLIB](https://github.com/RDFLib/rdflib) RDFLib is a pure Python package for working with RDF. RDFLib contains most things you need to work with RDF, including:
@@ -71,6 +72,9 @@ category: list
 - [OpenRefine](https://github.com/OpenRefine)
   - [OpenRefine](https://github.com/OpenRefine/OpenRefine) is a Java-based power tool that allows you to load data, understand it, clean it up, reconcile it, and augment it with data coming from the web. All from a web browser and the comfort and privacy of your own computer. [Website](https://openrefine.org/).
 - [XWiki](https://www.xwiki.org/xwiki/bin/view/Main/WebHome). First generation wikis are used to collaborate on content. [Second generation wikis](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/SecondGenerationWiki/) (a.k.a Structured and Applications Wikis) can be used to create collaborative web applications (by using the wiki paradigm and editing wiki pages). XWiki can be used either as a first generation wiki or a second generation one.
+- [Text2KG](https://gitlab.com/genesysubmission/text2kg) Repository for Genesy Paper "From Text to Knowledge Graph: Comparing Relation Extraction Methods in a Practical Context"
+- [itext2kg](https://github.com/AuvaLab/itext2kg) ATOM: AdapTive and OptiMized Dynamic Temporal Knowledge Graph Construction Using LLMs
+- [Text2KG](https://github.com/d1egoprog/Text2KG) Knowledge Graph construction from text, an approach applied to fictional novels
 
 ## Site templating
 
@@ -85,6 +89,7 @@ category: list
 - [Ontop4theWeb](https://github.com/ConstantB/Ontop4TheWeb) is a framework that extends the OBDA paradigm with the ability to query Web APIs (Foursquare, Twitter, Yelp, etc) and Web tables (HTML) using SPARQL on-the-fly, saving time and resources for developers and data scientists/engineers as data don't have to be downloaded and converted into RDF before querying. With Ontop4TheWeb, you can create a virtual OBDA repository and pose SPARQL queries to the Web APIs of your interest. The data will be transparently downloaded after posing the queries, thus retrieving the most up-to-date snapshots of data. For this reason, Ontop4TheWeb is suitable for querying On-the-fly data of high velocity, i.e., that get updated frequently.
 - [RSSOwlnix](https://github.com/Xyrio/RSSOwlnix) is a fork of RSSOwl a powerful application to organize, search and read your RSS, RDF & Atom news feeds in a comfortable way. Highlights are saved searches, notifications, filters, fast fulltext search and a flexible, clean user interface.
 - [stardog](https://www.stardog.com/) - enterprize knowledge-graphs platform
+- [Knowledge graph embeddings: Training in PyG, prediction with GDS](https://github.com/neo4j/graph-data-science-client/blob/main/examples/kge-predict-transe-pyg-train.ipynb) jupyter notebook, example KG on [[neo4j]]
 
 Смотри еще:
 
@@ -97,7 +102,6 @@ category: list
 - [[pyg]]
 - [[machine-learning]]
 
-
 [semantic-web]: ../notes/semantic-web "Semantic web"
 [rdf]: ../notes/rdf "RDF"
 [owl]: ../notes/owl "OWL ontology"
@@ -111,27 +115,6 @@ category: list
 [apache-jena]: ../notes/apache-jena "Apache JENA"
 [sparql]: ../notes/sparql "SPARQL"
 [apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
-[janus-graph]: ../notes/janus-graph "Janus Graph"
-[graphs]: graphs "Machine learning with graphs"
-[pyg]: ../notes/pyg "Pytorch geometric"
-[machine-learning]: machine-learning "Алгоритмы машинного обучения"
-
-
-[semantic-web]: ../notes/semantic-web "Semantic web"
-[rdf]: ../notes/rdf "RDF"
-[owl]: ../notes/owl "OWL ontology"
-[turtle]: ../notes/turtle "Turtle for RDF"
-[wikidata]: wikidata "Wikidata"
-[bd]: bd "Data Bases"
-[ontotext-graphdb]: ../notes/ontotext-graphdb "Ontotext graph-db"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
-[neosematics]: ../notes/neosematics "Neosematics"
-[alegrograph]: ../notes/alegrograph "Alegro graph"
-[apache-jena]: ../notes/apache-jena "Apache JENA"
-[bd]: bd "Data Bases"
-[sparql]: ../notes/sparql "SPARQL"
-[apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
 [janus-graph]: ../notes/janus-graph "Janus Graph"
 [graphs]: graphs "Machine learning with graphs"
 [pyg]: ../notes/pyg "Pytorch geometric"
