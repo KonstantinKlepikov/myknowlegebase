@@ -1040,6 +1040,7 @@ asyncio.run(main())
 - [[anyio]]
 - [[telegram-bots]]
 - [[asyncpg]]
+- [[async_property]]
 - [nest_asyncio](https://github.com/erdewit/nest_asyncio)
 - [A list of libraries](https://github.com/python/asyncio/wiki/ThirdParty#filesystem) for AsyncIO is available on PyPI with Framework::AsyncIO classifier (github)
 

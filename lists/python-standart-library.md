@@ -148,6 +148,7 @@ title: Стандартная библиотека python и полезные р
 - [asyncclick](https://github.com/python-trio/asyncclick) смотри [[click]]
 - [asyncer](https://asyncer.tiangolo.com/) is a small library built on top of AnyIO. It has a small number of utility functions that allow working with async, await, and concurrent code in a more convenient way
 - [gevent](https://github.com/gevent/gevent) gevent is a coroutine -based Python networking library that uses greenlet to provide a high-level synchronous API on top of the libev or libuv event loop
+- [[async_property]]
 
 ### Profiling
 

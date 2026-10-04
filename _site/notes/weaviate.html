@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Weaviate | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Weaviate" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Weaviate — cloud-native vector database для semantic search, RAG и recommendation." />
+<meta property="og:description" content="Weaviate — cloud-native vector database для semantic search, RAG и recommendation." />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/weaviate.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/weaviate.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Weaviate — cloud-native vector database для semantic search, RAG и recommendation.","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/weaviate.html","headline":"Weaviate","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Weaviate</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/ml" title="ml" class="link-tags">ml&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/go" title="go" class="link-tags">go&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/docker" title="docker" class="link-tags">docker&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/server" title="server" class="link-tags">server&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/bd" title="bd" class="link-tags">bd&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Weaviate — cloud-native vector database, которая хранит объекты и их векторы, объединяя векторный поиск с фильтрацией по метаданным. Подходит для RAG, semantic и image search, recommendation и задач nearest-neighbor. Основная реализация на Go; доступна как self-hosted, Edge-версия и управляемый сервис Weaviate Cloud.</p>
+
+<p>Источник: <a href="https://github.com/weaviate/weaviate">weaviate на GitHub</a></p>
+
+<h2 id="установка-и-быстрый-старт">Установка и быстрый старт</h2>
+
+<ul>
+  <li>Docker (быстрый старт):</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># пример из README</span>
+docker compose up <span class="nt">-d</span>
+<span class="c"># либо запустить образ напрямую</span>
+docker run <span class="nt">-p</span> 8080:8080 <span class="nt">-p</span> 50051:50051 cr.weaviate.io/semitechnologies/weaviate:latest
+</code></pre></div></div>
+
+<ul>
+  <li>Другие опции: Kubernetes, Weaviate Cloud. Список в установке: <a href="https://docs.weaviate.io/deploy">Weaviate installation docs</a>.</li>
+</ul>
+
+<p>Важно: при локальном запуске обычно подключают модуль vectorizer (встраиваемая модель) или используют <code class="language-plaintext highlighter-rouge">self_provided</code> векторы.</p>
+
+<h2 id="клиенты-и-api">Клиенты и API</h2>
+
+<p>Weaviate предоставляет клиентские библиотеки и API:</p>
+
+<ul>
+  <li>Официальные клиенты: Python, JavaScript/TypeScript, Java, Go, C#/.NET.</li>
+  <li>API: REST, gRPC и GraphQL (см. документацию).</li>
+</ul>
+
+<p>Подключение и пример на Python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">weaviate</span>
+<span class="kn">from</span> <span class="nn">weaviate.classes.config</span> <span class="kn">import</span> <span class="n">Configure</span><span class="p">,</span> <span class="n">DataType</span><span class="p">,</span> <span class="n">Property</span>
+
+<span class="c1"># подключение к локальному Weaviate
+</span><span class="n">client</span> <span class="o">=</span> <span class="n">weaviate</span><span class="p">.</span><span class="n">connect_to_local</span><span class="p">()</span>
+
+<span class="c1"># создать коллекцию с автоматическим векторизатором
+</span><span class="n">client</span><span class="p">.</span><span class="n">collections</span><span class="p">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">"Article"</span><span class="p">,</span>
+    <span class="n">properties</span><span class="o">=</span><span class="p">[</span><span class="n">Property</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"content"</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="n">DataType</span><span class="p">.</span><span class="n">TEXT</span><span class="p">)],</span>
+    <span class="n">vector_config</span><span class="o">=</span><span class="n">Configure</span><span class="p">.</span><span class="n">Vectors</span><span class="p">.</span><span class="n">text2vec_model2vec</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="c1"># вставка объектов (генерация векторов при импорте)
+</span><span class="n">articles</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">collections</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"Article"</span><span class="p">)</span>
+<span class="n">articles</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">insert_many</span><span class="p">([</span>
+    <span class="p">{</span><span class="s">"content"</span><span class="p">:</span> <span class="s">"Vector databases enable semantic search"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"content"</span><span class="p">:</span> <span class="s">"Machine learning models generate embeddings"</span><span class="p">},</span>
+<span class="p">])</span>
+
+<span class="c1"># семантический поиск
+</span><span class="n">results</span> <span class="o">=</span> <span class="n">articles</span><span class="p">.</span><span class="n">query</span><span class="p">.</span><span class="n">near_text</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s">"Search objects by meaning"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">client</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="ключевые-возможности">Ключевые возможности</h2>
+
+<ul>
+  <li>Быстрый семантический поиск по миллиардам векторов (ANN). См. <a href="https://docs.weaviate.io/weaviate/benchmarks/ann">benchmarks</a>.</li>
+  <li>Интегрированные векторизаторы (OpenAI, Cohere, HuggingFace и др.) и опция импортировать предсгенерированные векторы.</li>
+  <li>Гибридный поиск: комбинирует семантику и BM25/keyword-поиск, image search и фильтры.</li>
+  <li>Поддержка масштабирования: шардирование, репликация, multi-tenancy, RBAC.</li>
+  <li>Встроенные RAG и reranking, TTL для объектов, векторная компрессия и квантование для экономии памяти.</li>
+  <li>Web UI и набор demo/recipes для быстрого старта и интеграций.</li>
+</ul>
+
+<h2 id="когда-использовать">Когда использовать</h2>
+
+<ul>
+  <li>Системы RAG, чат-боты, semantic search и recommendation.</li>
+  <li>Проекты, где важно комбинировать векторный поиск и точечную фильтрацию по payload.</li>
+</ul>
+
+<h2 id="ресурсы">Ресурсы</h2>
+
+<ul>
+  <li>Документация: <a href="https://docs.weaviate.io/">Weaviate docs</a></li>
+  <li>Quickstart: <a href="https://docs.weaviate.io/weaviate/quickstart">Weaviate quickstart</a></li>
+  <li>Клиентские библиотеки: <a href="https://docs.weaviate.io/weaviate/client-libraries/python">Weaviate client libraries</a></li>
+  <li>Репозиторий: <a href="https://github.com/weaviate/weaviate">weaviate на GitHub</a></li>
+  <li>Weaviate Cloud: <a href="https://console.weaviate.cloud/">console.weaviate.cloud</a></li>
+  <li>[<a href="../lists/bd" title="Data Bases">lists/bd</a>]</li>
+  <li>[<a href="qdrant" title="Qdrant">notes/qdrant</a>]</li>
+  <li>[<a href="milvus" title="Milvus">notes/milvus</a>]</li>
+  <li>[<a href="chroma" title="Chroma">notes/chroma</a>]</li>
+</ul>
+
+<h2 id="лицензия">Лицензия</h2>
+
+<p>Большая часть кода доступна под BSD 3-Clause; в репозитории есть и коммерческие Enterprise-файлы (см. README и лицензионную секцию).</p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

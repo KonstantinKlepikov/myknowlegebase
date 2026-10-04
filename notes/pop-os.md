@@ -11,7 +11,4 @@ tags: linux
 
 - [[notes/linux]]
 
-
-
-
 [notes/linux]: linux "Linux"

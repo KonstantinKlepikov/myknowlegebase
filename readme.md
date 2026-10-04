@@ -31,7 +31,7 @@ Foam: Create New Note from Template
 `alt+shift+f` formats a table. Place the cursor in the table below and format the table.
 
 | column 1 | column 2 |
-|-|-|
+| - | - |
 | one element | another element |
 | second row | last cell |
 

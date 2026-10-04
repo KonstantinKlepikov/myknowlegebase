@@ -94,21 +94,21 @@ title: Crawlers
 
 ## Все заметки в этой тематике
 
-- [[scrapy]]
-- [[playwright]]
-- [[splash]]
-- [[selenium]]
-- [[xpath]]
-- [[css-selectors]]
-- [[xpath-css-examples]]
-- [[BeautifulSoup]]
-- [[urllibparse]]
-- [[scrapyd]]
+- [[notes/scrapy]]
+- [[notes/playwright]]
+- [[notes/splash]]
+- [[notes/selenium]]
+- [[notes/xpath]]
+- [[notes/css-selectors]]
+- [[notes/xpath-css-examples]]
+- [[notes/BeautifulSoup]]
+- [[notes/urllibparse]]
+- [[notes/scrapyd]]
 
 Дополнительно:
 
 - [[2022-01-04-daily-note]] использование proxy в selenium
-- [[2022-02-04-daily-note]] про вебдрайверы в [[selenium]]
+- [[2022-02-04-daily-note]] про вебдрайверы в [[notes/selenium]]
 - [Web Scraping with Selenium in Python](https://www.zenrows.com/blog/web-scraping-with-selenium-in-python#getting-started)
 - [про обход блокировок при скрапинге](https://www.zenrows.com/blog/stealth-web-scraping-in-python-avoid-blocking-like-a-ninja#behavioral-patterns)
 
@@ -117,12 +117,12 @@ title: Crawlers
 - [ultimate-sitemap-parser](https://github.com/mediacloud/ultimate-sitemap-parser)
 
 - [Scrapyd - an application for deploying and running Scrapy spiders](https://scrapyd.readthedocs.io/en/stable/index.html)
-- [Gerapy](https://docs.gerapy.com/en/latest/) - деплоер для [[scrapy]], реализует деплой пауков, таскменеджмент и админку
-- [scrapy-silenium](https://github.com/clemfromspace/scrapy-selenium) [[selenium]] в качестве мидлвейра для [[scrapy]]
+- [Gerapy](https://docs.gerapy.com/en/latest/) - деплоер для [[notes/scrapy]], реализует деплой пауков, таскменеджмент и админку
+- [scrapy-silenium](https://github.com/clemfromspace/scrapy-selenium) [[notes/selenium]] в качестве мидлвейра для [[notes/scrapy]]
 - [scrapy-playwright](https://github.com/scrapy-plugins/scrapy-playwright) Playwright integration for Scrapy
 - [scrapy-rotating-proxies](https://github.com/TeamHG-Memex/scrapy-rotating-proxies) This package provides a Scrapy middleware to use rotating proxies, check that they are alive and adjust crawling speed.
 - [Scrapy Cluster](https://scrapy-cluster.readthedocs.io/en/latest/index.html) Scrapy based distributed crawling project, Scrapy Cluster.
-- [[scrapyd]] is an application for deploying and running Scrapy spiders. It enables you to deploy (upload) your projects and control their spiders using a JSON API.
+- [[notes/scrapyd]] is an application for deploying and running Scrapy spiders. It enables you to deploy (upload) your projects and control their spiders using a JSON API.
 
 - [selenium-wire](https://github.com/wkeeling/selenium-wire) extends Selenium's Python bindings to give you access to the underlying requests made by the browser. You author your code in the same way as you do with Selenium, but you get extra APIs for inspecting requests and responses and making changes to them on the fly
 - [docker-selenium](https://github.com/SeleniumHQ/docker-selenium) Docker images for the Selenium Grid Server
@@ -145,42 +145,22 @@ title: Crawlers
 
 - [Robot Framework](https://robotframework.org/) is a generic open source automation framework. It can be used for test automation and robotic process automation (RPA).
 
-- [[feedparser]]
+- [[notes/feedparser]]
 
 Небольшая проблема с requests-html
 
 {% gist 1867a45b9e7a7490e055d4932ac912d3 %}
 
-
-[scrapy]: ../notes/scrapy "Scrapy"
-[playwright]: ../notes/playwright "Playwright"
-[splash]: ../notes/splash "Splash"
-[selenium]: ../notes/selenium "Selenium"
-[xpath]: ../notes/xpath "XPath в scrapy"
-[css-selectors]: ../notes/css-selectors "Css-selectors"
-[xpath-css-examples]: ../notes/xpath-css-examples "XPath css examples"
-[BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
-[urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
-[scrapyd]: ../notes/scrapyd "Scrapyd"
+[notes/scrapy]: ../notes/scrapy "Scrapy"
+[notes/playwright]: ../notes/playwright "Playwright"
+[notes/splash]: ../notes/splash "Splash"
+[notes/selenium]: ../notes/selenium "Selenium"
+[notes/xpath]: ../notes/xpath "XPath в scrapy"
+[notes/css-selectors]: ../notes/css-selectors "Css-selectors"
+[notes/xpath-css-examples]: ../notes/xpath-css-examples "XPath css examples"
+[notes/BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
+[notes/urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
+[notes/scrapyd]: ../notes/scrapyd "Scrapyd"
 [2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"
 [2022-02-04-daily-note]: ../posts/2022-02-04-daily-note "Работа в selenium с firefox"
-[feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
-
-[scrapy]: ../notes/scrapy "Scrapy"
-[playwright]: ../notes/playwright "Playwright"
-[splash]: ../notes/splash "Splash"
-[selenium]: ../notes/selenium "Selenium"
-[xpath]: ../notes/xpath "XPath в scrapy"
-[css-selectors]: ../notes/css-selectors "Css-selectors"
-[xpath-css-examples]: ../notes/xpath-css-examples "XPath css examples"
-[BeautifulSoup]: ../notes/beautifulsoup "BeautifulSoup"
-[urllibparse]: ../notes/urllibparse "Urllib.parse - парсинг урлов в компоненты"
-[scrapyd]: ../notes/scrapyd "Scrapyd"
-[2022-01-04-daily-note]: ../posts/2022-01-04-daily-note "Proxy в selenium, запуск локального smtp и несколько вопросов про pandas"
-[2022-02-04-daily-note]: ../posts/2022-02-04-daily-note "Работа в selenium с firefox"
-[selenium]: ../notes/selenium "Selenium"
-[scrapy]: ../notes/scrapy "Scrapy"
-[selenium]: ../notes/selenium "Selenium"
-[scrapy]: ../notes/scrapy "Scrapy"
-[scrapyd]: ../notes/scrapyd "Scrapyd"
-[feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"
+[notes/feedparser]: ../notes/feedparser "Feedparser - rss и atom парсинг"

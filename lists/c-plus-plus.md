@@ -28,8 +28,8 @@ title: Ресурсы по языку программирования С/С++
 
 Смотир еще:
 
-- [[rust]]
-- [[gamedev]]
+- [[lists/rust]]
+- [[lists/gamedev]]
 
-[rust]: rust "Ресурсы по языку программирования Rust"
-[gamedev]: gamedev "Gamedev"
+[lists/rust]: rust "Ресурсы по языку программирования Rust"
+[lists/gamedev]: gamedev "Gamedev"
