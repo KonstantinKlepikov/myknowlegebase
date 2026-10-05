@@ -56,6 +56,10 @@ res = client.search(collection_name="demo_collection", data=query_vectors, limit
 
 Проект распространяется под Apache-2.0 (репозиторий на GitHub содержит ссылки на лицензию и коммерческие разделы).
 
+## AI-warning
+
+✨ Данная статья сгенерирована с помощью ChatGPT 5.0 mini. Текст проверен человеком.
+
 [lists/bd]: ../lists/bd "Data Bases"
 [notes/qdrant]: qdrant "Qdrant"
 [notes/weaviate]: weaviate "Weaviate"

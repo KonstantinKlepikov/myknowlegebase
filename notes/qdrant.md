@@ -82,6 +82,10 @@ res = client.search("my_collection", query_vector=[...], limit=5)
 
 Apache License 2.0.
 
+## AI-warning
+
+✨ Данная статья сгенерирована с помощью ChatGPT 5.0 mini. Текст проверен человеком.
+
 [tag/rust]: ../tag/rust "Tag: rust"
 [tag/python]: ../tag/python "Tag: python"
 [lists/bd]: ../lists/bd "Data Bases"

@@ -73,5 +73,9 @@ instance = await Foo()  # вызовет load() и загрузит кеширо
 - [[notes/asyncio]]
 - [[lists/python-standart-library]]
 
+## AI-warning
+
+✨ Данная статья сгенерирована с помощью ChatGPT 5.0 mini. Текст проверен человеком.
+
 [notes/asyncio]: asyncio "Asyncio"
 [lists/python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"

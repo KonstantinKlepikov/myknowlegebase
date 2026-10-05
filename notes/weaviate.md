@@ -88,6 +88,10 @@ client.close()
 
 Большая часть кода доступна под BSD 3-Clause; в репозитории есть и коммерческие Enterprise-файлы (см. README и лицензионную секцию).
 
+## AI-warning
+
+✨ Данная статья сгенерирована с помощью ChatGPT 5.0 mini. Текст проверен человеком.
+
 [lists/bd]: ../lists/bd "Data Bases"
 [notes/qdrant]: qdrant "Qdrant"
 [notes/milvus]: milvus "Milvus"
