@@ -1041,6 +1041,7 @@ asyncio.run(main())
 - [[telegram-bots]]
 - [[asyncpg]]
 - [[async_property]]
+- [[async-lru]]
 - [nest_asyncio](https://github.com/erdewit/nest_asyncio)
 - [A list of libraries](https://github.com/python/asyncio/wiki/ThirdParty#filesystem) for AsyncIO is available on PyPI with Framework::AsyncIO classifier (github)
 
@@ -1099,3 +1100,5 @@ asyncio.run(main())
 [anyio]: anyio "AnyIO асинхронный бекенд на базе asyncio и trio"
 [telegram-bots]: telegram-bots "Telegram python bots"
 [asyncpg]: asyncpg "asyncpg postgresql client"
+[async_property]: async_property "async_property"
+[async-lru]: async-lru "async-lru"

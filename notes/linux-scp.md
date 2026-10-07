@@ -97,5 +97,4 @@ debug1: SSH2_MSG_KEXINIT received
 
 [[notes/linux]]
 
-
 [notes/linux]: linux "Linux"

@@ -10,7 +10,7 @@ tags: digital-ocean
 
 ## Digital-ocean container registry
 
-Для регистра [[docker]] контейнеров. [Страница на DG](https://www.digitalocean.com/products/container-registry/)
+Для регистра [[lists/docker]] контейнеров. [Страница на DG](https://www.digitalocean.com/products/container-registry/)
 
 [Прайс](https://docs.digitalocean.com/products/container-registry/#plans-and-pricing)
 
@@ -31,15 +31,12 @@ The name of a registry must:
 - Begin with a letter
 - End with a letter or number
 
-Чтобы работать с регистром, надо поставить [[digital-ocean-doctl]]
+Чтобы работать с регистром, надо поставить [[notes/digital-ocean-doctl]]
 
 [DigitalOcean Container Registry Quickstart](https://docs.digitalocean.com/products/container-registry/quickstart/)
 
- 1. Create a Registry
- 2. Push to Your Registry
-
-![DigitalOcean Container Registry Quickstart](../attachments/2021-08-18-22-00-11.png)
-
+1. Create a Registry
+2. Push to Your Registry: ![DigitalOcean Container Registry Quickstart](../attachments/2021-08-18-22-00-11.png)
 3. [Use Images in Your Registry with Docker or Kubernetes](https://docs.digitalocean.com/products/container-registry/how-to/use-registry-docker-kubernetes/)
 4. Use Images in Your Registry with [App Platform](https://cloud.digitalocean.com/apps)
 5. Manage Images
@@ -51,14 +48,14 @@ The name of a registry must:
 
 Можно [деплоить из контейнера](https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-registry/) с помощью UI AppPlatform.
 
-## Как пушить контейнер через [[github-action]] в digital-ocean containeer registry
+## Как пушить контейнер через [[notes/github-action]] в digital-ocean containeer registry
 
 [статья](https://wttech.blog/blog/2021/how-to-push-docker-image-to-digitalocean-container-registry-using-github-actions/)
 
 Вкратце:
 
-- собираем [[docker]] image
-- собираем Workflow в [[github-action]]
+- собираем [[lists/docker]] image
+- собираем Workflow в [[notes/github-action]]
 - реализуем интеграцию github-DG
 
 Пример workflow
@@ -104,45 +101,28 @@ jobs:
 
 Статьи:
 
-- Установка [[docker]] описана в [[digital-ocean-docker-install]]
-- Работа с базами данных описана в [[digital-ocean-databases]]
-- Проблемы трансфера данных между github и [[digital-ocean-container-registry]] в этой заметке: [[2021-09-07-daily-note]]
-- Как добавлять домены и управлять ns описано тут [[digital-ocean-dns-management]]
-- Как работать по SSH с digital ocean сервисами [[digital-ocean-ssh]]
+- Установка [[lists/docker]] описана в [[notes/digital-ocean-docker-install]]
+- Работа с базами данных описана в [[notes/digital-ocean-databases]]
+- Проблемы трансфера данных между github и [[notes/digital-ocean-container-registry]] в этой заметке: [[2021-09-07-daily-note]]
+- Как добавлять домены и управлять ns описано тут [[notes/digital-ocean-dns-management]]
+- Как работать по SSH с digital ocean сервисами [[notes/digital-ocean-ssh]]
 - [How to Install the DigitalOcean Metrics Agent](https://docs.digitalocean.com/products/monitoring/how-to/install-agent/)
 
 Смотри еще:
 
-- [[heroku]]
-- [[render]]
-- [[flyio]]
+- [[lists/heroku]]
+- [[notes/render]]
+- [[notes/flyio]]
 
-
-[docker]: docker "Docker"
-[digital-ocean-doctl]: ../notes/digital-ocean-doctl "Digital ocean doctl"
-[github-action]: ../notes/github-action "Githunb action"
-[digital-ocean-docker-install]: ../notes/digital-ocean-docker-install "Digital ocean docker install"
-[digital-ocean-databases]: ../notes/digital-ocean-databases "Digital ocean databases"
-[digital-ocean-container-registry]: ../notes/digital-ocean-container-registry "Digital ocean container registry"
+[lists/docker]: docker "Docker"
+[notes/digital-ocean-doctl]: ../notes/digital-ocean-doctl "Digital ocean doctl"
+[notes/github-action]: ../notes/github-action "Githunb action"
+[notes/digital-ocean-docker-install]: ../notes/digital-ocean-docker-install "Digital ocean docker install"
+[notes/digital-ocean-databases]: ../notes/digital-ocean-databases "Digital ocean databases"
+[notes/digital-ocean-container-registry]: ../notes/digital-ocean-container-registry "Digital ocean container registry"
 [2021-09-07-daily-note]: ../posts/2021-09-07-daily-note "Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами"
-[digital-ocean-dns-management]: ../notes/digital-ocean-dns-management "Digital ocean dns management"
-[digital-ocean-ssh]: ../notes/digital-ocean-ssh "Digital ocean SSH"
-[heroku]: heroku "Heroku"
-[render]: ../notes/render "Render.com"
-[flyio]: ../notes/flyio "Fly.io"
-
-[docker]: docker "Docker"
-[digital-ocean-doctl]: ../notes/digital-ocean-doctl "Digital ocean doctl"
-[github-action]: ../notes/github-action "Githunb action"
-[docker]: docker "Docker"
-[github-action]: ../notes/github-action "Githunb action"
-[docker]: docker "Docker"
-[digital-ocean-docker-install]: ../notes/digital-ocean-docker-install "Digital ocean docker install"
-[digital-ocean-databases]: ../notes/digital-ocean-databases "Digital ocean databases"
-[digital-ocean-container-registry]: ../notes/digital-ocean-container-registry "Digital ocean container registry"
-[2021-09-07-daily-note]: ../posts/2021-09-07-daily-note "Как устроен github packages, подводные камни интеграции с digital ocean и другими сервисами"
-[digital-ocean-dns-management]: ../notes/digital-ocean-dns-management "Digital ocean dns management"
-[digital-ocean-ssh]: ../notes/digital-ocean-ssh "Digital ocean SSH"
-[heroku]: heroku "Heroku"
-[render]: ../notes/render "Render.com"
-[flyio]: ../notes/flyio "Fly.io"
+[notes/digital-ocean-dns-management]: ../notes/digital-ocean-dns-management "Digital ocean dns management"
+[notes/digital-ocean-ssh]: ../notes/digital-ocean-ssh "Digital ocean SSH"
+[lists/heroku]: heroku "Heroku"
+[notes/render]: ../notes/render "Render.com"
+[notes/flyio]: ../notes/flyio "Fly.io"

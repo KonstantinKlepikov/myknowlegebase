@@ -11,7 +11,4 @@ title: NFT
 
 - [[notes/crypto]]
 
-
-
-
 [notes/crypto]: crypto "Криптовалюты"

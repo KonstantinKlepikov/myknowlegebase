@@ -245,20 +245,20 @@ var my_inherited_scene = MyScene.instantiate(PackedScene.GEN_EDIT_STATE_MAIN) # 
 Смотри еще:
 
 - [Документация GDScript](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html#doc-gdscript)
-- [все классы в документации](https://docs.godotengine.org/en/stable/classes/index.html) [[gdscript-classes]] - кратко
+- [все классы в документации](https://docs.godotengine.org/en/stable/classes/index.html) [[notes/gdscript-classes]] - кратко
 - [GDScript reference](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html)
 - [все классы в документации](https://docs.godotengine.org/en/stable/classes/index.html)
 - [gdscript.com](https://gdscript.com/) туториалы и решения
 - [godot demo projects](https://github.com/godotengine/godot-demo-projects)
 - [best practicies](https://docs.godotengine.org/en/stable/tutorials/best_practices/index.html)
 - [Godot Recipes](https://kidscancode.org/godot_recipes/4.x/)
-- [[godot]]
-- [[gdscript-classes]]
-- [[c-plus-plus]]
-- [[gamedev]]
+- [zed gdscript extention](https://github.com/GDQuest/zed-gdscript)
+- [[notes/godot]]
+- [[notes/gdscript-classes]]
+- [[lists/c-plus-plus]]
+- [[lists/gamedev]]
 
-
-[gdscript-classes]: gdscript-classes "GDScript classes"
-[godot]: godot "godot engine"
-[c-plus-plus]: ../lists/c-plus-plus "Ресурсы по языку программирования С/С++"
-[gamedev]: ../lists/gamedev "Gamedev"
+[notes/gdscript-classes]: gdscript-classes "GDScript classes"
+[notes/godot]: godot "godot engine"
+[lists/c-plus-plus]: ../lists/c-plus-plus "Ресурсы по языку программирования С/С++"
+[lists/gamedev]: ../lists/gamedev "Gamedev"

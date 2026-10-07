@@ -1,5 +1,5 @@
 ---
-description: Языкb программирования С/С++
+description: Язык программирования С/С++
 tags: cpp
 category: list
 title: Ресурсы по языку программирования С/С++

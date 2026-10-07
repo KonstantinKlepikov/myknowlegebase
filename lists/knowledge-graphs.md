@@ -6,10 +6,10 @@ category: list
 ---
 ## Bases
 
-- [[semantic-web]]
-- [[rdf]]
-- [[owl]]
-- [[turtle]]
+- [[notes/semantic-web]]
+- [[notes/rdf]]
+- [[notes/owl]]
+- [[notes/turtle]]
 - [w3c semantic web wiki](https://www.w3.org/2001/sw/wiki/Main_Page)
 - [W3c ALL STANDARDS AND DRAFTS](https://www.w3.org/TR/?tag=data)
 - [W3c linking data](https://www.w3.org/wiki/LinkedData) note
@@ -17,7 +17,7 @@ category: list
 - [SPIN - SPARQL Syntax](https://www.w3.org/Submission/spin-sparql/)
 - [DASH Constraint Components](https://datashapes.org/constraints.html). The DASH namespace includes a collection of SHACL constraint components that extend the Core of SHACL with new constraint types. This document introduces these additional constraint components.
 - [GRDDL](https://www.w3.org/2001/sw/wiki/GRDDL) (Gleaning Resource Descriptions from Dialects of Languages) - is a technique for obtaining RDF data from XML documents and in particular XHTML pages. Now is not supported.
-- w3c [Converters to RDF ](https://www.w3.org/wiki/ConverterToRdf) list
+- w3c [Converters to RDF](https://www.w3.org/wiki/ConverterToRdf) list
 - [Schema.org](https://schema.org/) is a collaborative, community activity with a mission to create, maintain, and promote schemas for structured data on the Internet, on web pages, in email messages, and beyond.
 - [protege](https://protege.stanford.edu/). A free, open-source ontology editor and framework for building intelligent systems. [Docs](https://protegewiki.stanford.edu/wiki/Main_Page)
 - [SPARQL Web Pages](https://uispin.org/) (SWP) is an RDF-based framework to describe user interfaces for rendering Semantic Web data
@@ -38,39 +38,40 @@ category: list
 
 ## Data
 
-- [[wikidata]]
+- [[lists/wikidata]]
 - [dbpedia access](http://wikidata.dbpedia.org/OnlineAccess)
 - [YAGO](https://yago-knowledge.org/): YAGO is a large knowledge base with general knowledge about people, cities, countries, movies, and organizations.
 - [The Linked Open Data Cloud](https://lod-cloud.net/)
+- [SciAtlas](https://github.com/zjunlp/SciAtlas): A Large-Scale Knowledge Graph for Automated Scientific Research
 
 ## Frameworks, languages, db and tools
 
 - [pykeen](https://pykeen.readthedocs.io/en/stable/) a Python package for reproducible, facile knowledge graph embeddings
 - [Knowledge Graph Embedding](https://knowledge-graph-embedding.readthedocs.io/en/latest/index.html) translate and semantic models collection
-- [RDFLib](https://github.com/RDFLib) python tools:
-  - [RDFLIB](https://github.com/RDFLib/rdflib) RDFLib is a pure Python package for working with RDF. RDFLib contains most things you need to work with RDF, including:
-    - parsers and serializers for RDF/XML, N3, NTriples, N-Quads, Turtle, TriX, Trig and JSON-LD
-    - a Graph interface which can be backed by any one of a number of Store implementations
-    - store implementations for in-memory, persistent on disk (Berkeley DB) and remote SPARQL endpoints
-    - a SPARQL 1.1 implementation - supporting SPARQL 1.1 Queries and Update statements
-    - SPARQL function extension mechanisms
-    - [docs](https://rdflib.readthedocs.io/en/stable/)
-  - [sparqlwrapper](https://github.com/RDFLib/sparqlwrapper)
-  - [pyshacl](https://github.com/RDFLib/pySHACL)
-- [RASQAL](https://librdf.org/rasqal/) is a free software / Open Source C library that handles Resource Description Framework (RDF) query language syntaxes, query construction and execution of queries returning results as bindings, boolean, RDF graphs/triples or syntaxes. The supported query languages are SPARQL Query 1.0, SPARQL Query 1.1, SPARQL Update 1.1 (no executing) and the Experimental SPARQL extensions (LAQRS). Rasqal can write binding query results in the SPARQL XML, SPARQL JSON, CSV, TSV, HTML, ASCII tables, RDF/XML and Turtle / N3 and read them in SPARQL XML, CSV, TSV, RDF/XML and Turtle / N3.
-- **[[bd]]**
-  - [[ontotext-graphdb]]
-  - [[neo4j]] rdf resources
-    - [[neosematics]] [neosemantics](https://neo4j.com/labs/neosemantics/) (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
-    - [install](https://neo4j.com/labs/neosemantics/installation/)
-    - [Build a Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/) with Neo4j
-  - [Eclipse RDF4J](https://rdf4j.org/). Eclipse RDF4J is an open source modular Java framework for working with RDF data. This includes parsing, storing, inferencing and querying of/over such data. It offers an easy-to-use API that can be connected to all leading RDF storage solutions. RDF4J offers a set of database implementations out of the box. [Repo](https://github.com/eclipse/rdf4j).
-  - [[alegrograph]]
-  - [[apache-jena]]
-  - full list is here: [[bd]]
+- [notes/RDFLib](https://github.com/RDFLib) python tools:
+    - [notes/RDFLIB](https://github.com/RDFLib/rdflib) RDFLib is a pure Python package for working with RDF. RDFLib contains most things you need to work with RDF, including:
+        - parsers and serializers for RDF/XML, N3, NTriples, N-Quads, Turtle, TriX, Trig and JSON-LD
+        - a Graph interface which can be backed by any one of a number of Store implementations
+        - store implementations for in-memory, persistent on disk (Berkeley DB) and remote SPARQL endpoints
+        - a SPARQL 1.1 implementation - supporting SPARQL 1.1 Queries and Update statements
+        - SPARQL function extension mechanisms
+        - [docs](https://rdflib.readthedocs.io/en/stable/)
+    - [sparqlwrapper](https://github.com/RDFLib/sparqlwrapper)
+    - [pyshacl](https://github.com/RDFLib/pySHACL)
+- [notes/RASQAL](https://librdf.org/rasqal/) is a free software / Open Source C library that handles Resource Description Framework (RDF) query language syntaxes, query construction and execution of queries returning results as bindings, boolean, RDF graphs/triples or syntaxes. The supported query languages are SPARQL Query 1.0, SPARQL Query 1.1, SPARQL Update 1.1 (no executing) and the Experimental SPARQL extensions (LAQRS). Rasqal can write binding query results in the SPARQL XML, SPARQL JSON, CSV, TSV, HTML, ASCII tables, RDF/XML and Turtle / N3 and read them in SPARQL XML, CSV, TSV, RDF/XML and Turtle / N3.
+- **[[lists/bd]]**
+    - [[notes/ontotext-graphdb]]
+    - [[notes/neo4j]] rdf resources
+        - [[notes/neosematics]] [neosemantics](https://neo4j.com/labs/neosemantics/) (n10s) is a plugin that enables the use of RDF and its associated vocabularies like (OWL,RDFS,SKOS and others) in Neo4
+        - [install](https://neo4j.com/labs/neosemantics/installation/)
+        - [Build a Knowledge Graph using NLP and Ontologies](https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/) with Neo4j
+    - [Eclipse RDF4J](https://rdf4j.org/). Eclipse RDF4J is an open source modular Java framework for working with RDF data. This includes parsing, storing, inferencing and querying of/over such data. It offers an easy-to-use API that can be connected to all leading RDF storage solutions. RDF4J offers a set of database implementations out of the box. [Repo](https://github.com/eclipse/rdf4j).
+    - [[notes/alegrograph]]
+    - [[notes/apache-jena]]
+    - full list is here: [[lists/bd]]
 - [Awesome-knowledge-graph-question-answering](https://github.com/BshoterJ/awesome-kgqa) A collection of some materials of knowledge graph question answering
 - [OpenRefine](https://github.com/OpenRefine)
-  - [OpenRefine](https://github.com/OpenRefine/OpenRefine) is a Java-based power tool that allows you to load data, understand it, clean it up, reconcile it, and augment it with data coming from the web. All from a web browser and the comfort and privacy of your own computer. [Website](https://openrefine.org/).
+    - [OpenRefine](https://github.com/OpenRefine/OpenRefine) is a Java-based power tool that allows you to load data, understand it, clean it up, reconcile it, and augment it with data coming from the web. All from a web browser and the comfort and privacy of your own computer. [Website](https://openrefine.org/).
 - [XWiki](https://www.xwiki.org/xwiki/bin/view/Main/WebHome). First generation wikis are used to collaborate on content. [Second generation wikis](https://www.xwiki.org/xwiki/bin/view/Documentation/UserGuide/Features/SecondGenerationWiki/) (a.k.a Structured and Applications Wikis) can be used to create collaborative web applications (by using the wiki paradigm and editing wiki pages). XWiki can be used either as a first generation wiki or a second generation one.
 - [Text2KG](https://gitlab.com/genesysubmission/text2kg) Repository for Genesy Paper "From Text to Knowledge Graph: Comparing Relation Extraction Methods in a Practical Context"
 - [itext2kg](https://github.com/AuvaLab/itext2kg) ATOM: AdapTive and OptiMized Dynamic Temporal Knowledge Graph Construction Using LLMs
@@ -89,33 +90,33 @@ category: list
 - [Ontop4theWeb](https://github.com/ConstantB/Ontop4TheWeb) is a framework that extends the OBDA paradigm with the ability to query Web APIs (Foursquare, Twitter, Yelp, etc) and Web tables (HTML) using SPARQL on-the-fly, saving time and resources for developers and data scientists/engineers as data don't have to be downloaded and converted into RDF before querying. With Ontop4TheWeb, you can create a virtual OBDA repository and pose SPARQL queries to the Web APIs of your interest. The data will be transparently downloaded after posing the queries, thus retrieving the most up-to-date snapshots of data. For this reason, Ontop4TheWeb is suitable for querying On-the-fly data of high velocity, i.e., that get updated frequently.
 - [RSSOwlnix](https://github.com/Xyrio/RSSOwlnix) is a fork of RSSOwl a powerful application to organize, search and read your RSS, RDF & Atom news feeds in a comfortable way. Highlights are saved searches, notifications, filters, fast fulltext search and a flexible, clean user interface.
 - [stardog](https://www.stardog.com/) - enterprize knowledge-graphs platform
-- [Knowledge graph embeddings: Training in PyG, prediction with GDS](https://github.com/neo4j/graph-data-science-client/blob/main/examples/kge-predict-transe-pyg-train.ipynb) jupyter notebook, example KG on [[neo4j]]
+- [Knowledge graph embeddings: Training in PyG, prediction with GDS](https://github.com/neo4j/graph-data-science-client/blob/main/examples/kge-predict-transe-pyg-train.ipynb) jupyter notebook, example KG on [[notes/neo4j]]
 
 Смотри еще:
 
 - [небольшая презентация по КГ](https://docs.google.com/presentation/d/1Artsa47IV_dSZkz7smXyAVZQmn3xDeZRO9Z_hVklirs/edit?usp=sharing) (на основе материалов курса М.Галкина)
-- [[sparql]]
-- [[apache-tinkertop-and-gremlin]]
-- [[neo4j]]
-- [[janus-graph]]
-- [[graphs]]
-- [[pyg]]
-- [[machine-learning]]
+- [[notes/sparql]]
+- [[notes/apache-tinkertop-and-gremlin]]
+- [[notes/neo4j]]
+- [[notes/janus-graph]]
+- [[lists/graphs]]
+- [[notes/pyg]]
+- [[lists/machine-learning]]
 
-[semantic-web]: ../notes/semantic-web "Semantic web"
-[rdf]: ../notes/rdf "RDF"
-[owl]: ../notes/owl "OWL ontology"
-[turtle]: ../notes/turtle "Turtle for RDF"
-[wikidata]: wikidata "Wikidata"
-[bd]: bd "Data Bases"
-[ontotext-graphdb]: ../notes/ontotext-graphdb "Ontotext graph-db"
-[neo4j]: ../notes/neo4j "Neo4j graph data base"
-[neosematics]: ../notes/neosematics "Neosematics"
-[alegrograph]: ../notes/alegrograph "Alegro graph"
-[apache-jena]: ../notes/apache-jena "Apache JENA"
-[sparql]: ../notes/sparql "SPARQL"
-[apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
-[janus-graph]: ../notes/janus-graph "Janus Graph"
-[graphs]: graphs "Machine learning with graphs"
-[pyg]: ../notes/pyg "Pytorch geometric"
-[machine-learning]: machine-learning "Алгоритмы машинного обучения"
+[notes/semantic-web]: ../notes/semantic-web "Semantic web"
+[notes/rdf]: ../notes/rdf "RDF"
+[notes/owl]: ../notes/owl "OWL ontology"
+[notes/turtle]: ../notes/turtle "Turtle for RDF"
+[lists/wikidata]: wikidata "Wikidata"
+[lists/bd]: bd "Data Bases"
+[notes/ontotext-graphdb]: ../notes/ontotext-graphdb "Ontotext graph-db"
+[notes/neo4j]: ../notes/neo4j "Neo4j graph data base"
+[notes/neosematics]: ../notes/neosematics "Neosematics"
+[notes/alegrograph]: ../notes/alegrograph "Alegro graph"
+[notes/apache-jena]: ../notes/apache-jena "Apache JENA"
+[notes/sparql]: ../notes/sparql "SPARQL"
+[notes/apache-tinkertop-and-gremlin]: ../notes/apache-tinkertop-and-gremlin "Apache TinkerPop and Gremlin"
+[notes/janus-graph]: ../notes/janus-graph "Janus Graph"
+[lists/graphs]: graphs "Machine learning with graphs"
+[notes/pyg]: ../notes/pyg "Pytorch geometric"
+[lists/machine-learning]: machine-learning "Алгоритмы машинного обучения"

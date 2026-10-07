@@ -71,6 +71,7 @@ instance = await Foo()  # вызовет load() и загрузит кеширо
 ## Дополнительно
 
 - [[notes/asyncio]]
+- [[async-lru]]
 - [[lists/python-standart-library]]
 
 ## AI-warning
@@ -79,3 +80,4 @@ instance = await Foo()  # вызовет load() и загрузит кеширо
 
 [notes/asyncio]: asyncio "Asyncio"
 [lists/python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
+[async-lru]: async-lru "async-lru"
