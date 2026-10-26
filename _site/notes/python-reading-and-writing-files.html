@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Режимы чтения и записи файлов | My knowledge base</title>
+<title>Source: Режимы чтения и записи файлов | My knowledge base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="Режимы чтения и записи файлов" />
+<meta property="og:title" content="Source: Режимы чтения и записи файлов" />
 <meta property="og:locale" content="ru_RU" />
-<meta name="description" content="Чтение и запись файлов в python" />
-<meta property="og:description" content="Чтение и запись файлов в python" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/python-reading-and-writing-files.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/python-reading-and-writing-files.html" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-reading-and-writing-files.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-reading-and-writing-files.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"headline":"Режимы чтения и записи файлов","description":"Чтение и запись файлов в python","@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/python-reading-and-writing-files.html","@context":"https://schema.org"}</script>
+{"description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-reading-and-writing-files.html","headline":"Source: Режимы чтения и записи файлов","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,42 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
+<meta name="robots" content="noindex">
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
 
 
 <!-- Favicon -->
-<link rel="icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -77,34 +103,30 @@
 
     <main role="main">
 
-      
-<article class="container mx-auto px-2 mt2 mb4">
+      <article class="container mx-auto px-2 mt2 mb4">
   <header>
-    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Режимы чтения и записи файлов</h1>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Source: Режимы чтения и записи файлов</h1>
+    <a class="h5 link-primary ml-2" href="/myknowlegebase/notes/python-reading-and-writing-files/">← Rendered</a>
   </header>
-  <div class="col-4 sm-width-full border-top-thin">
-    <p class="mb-3 h5">Теги:
-      
-        
-        <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
-      
-        
-        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
-      
-    </p>
-  </div>
   <div class="prose mb-4 py-4">
-    <p>Режимы чтения и записи определены [<a href="python-buildin-functions" title="Python build-in functions">python-buildin-functions</a>] <code class="language-plaintext highlighter-rouge">open(file, mode='r', buffering=- 1, encoding=None, errors=None, newline=None, closefd=True, opener=None)</code> (<a href="https://docs.python.org/3/library/functions.html#open">смотри докумсентацию</a>)</p>
+    <p class="h5">markdown source:</p>
+    <pre style="white-space: pre-wrap; word-break: break-word; overflow-x: auto;"><code>---
+description: Чтение и запись файлов в python
+tags: python-standart-library python
+title: Режимы чтения и записи файлов
+---
+Режимы чтения и записи определены [[python-buildin-functions]] `open(file, mode='r', buffering=- 1, encoding=None, errors=None, newline=None, closefd=True, opener=None)` ([смотри докумсентацию](https://docs.python.org/3/library/functions.html#open))
 
-<p>Функция открывает файл и воозвращает соответствующий файловый объект. Если файл не может быть открыт, возникает ошибка <code class="language-plaintext highlighter-rouge">OSError</code>.</p>
+Функция открывает файл и воозвращает соответствующий файловый объект. Если файл не может быть открыт, возникает ошибка `OSError`.
 
-<p><a href="https://docs.python.org/3/tutorial/inputoutput.html#tut-files">Вот тут примеры</a></p>
+[Вот тут примеры](https://docs.python.org/3/tutorial/inputoutput.html#tut-files)
 
-<p>file — это объект, подобный пути, задающий путь (абсолютный или относительный к текущему рабочему каталогу) файла, который нужно открыть, или целочисленный файловый дескриптор файла, который нужно обернуть. (Если указан файловый дескриптор, он закрывается при закрытии возвращаемого объекта ввода-вывода, если только для параметра closefd не задано значение False.)</p>
+file — это объект, подобный пути, задающий путь (абсолютный или относительный к текущему рабочему каталогу) файла, который нужно открыть, или целочисленный файловый дескриптор файла, который нужно обернуть. (Если указан файловый дескриптор, он закрывается при закрытии возвращаемого объекта ввода-вывода, если только для параметра closefd не задано значение False.)
 
-<p>mode — необязательная строка, указывающая режим, в котором открывается файл. По умолчанию это <code class="language-plaintext highlighter-rouge">r</code>.</p>
+mode — необязательная строка, указывающая режим, в котором открывается файл. По умолчанию это `r`.
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mode-string  | <span class="nb">truncate</span>? | create? | what<span class="s1">'s allowed
+```shell
+mode-string  | truncate? | create? | what's allowed
 -------------+-----------+---------+----------------
      r       |    no     |  no     |  reading (only)
      w       |    yes    |  yes    |  writing (only)
@@ -112,69 +134,70 @@
      r+      |    no     |  no     |  read and write
      w+      |    yes    |  yes    |  read and write
      a+      |    no     |  yes    |  read and (auto-appending) write
-</span></code></pre></div></div>
+```
 
-<p><a href="https://stackoverflow.com/a/33466886/15966204">Источник на оверфло</a></p>
+[Источник на оверфло](https://stackoverflow.com/a/33466886/15966204)
 
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> The argument mode points to a string beginning with one of the following
- sequences <span class="o">(</span>Additional characters may follow these sequences.<span class="o">)</span>:
+```shell
+ The argument mode points to a string beginning with one of the following
+ sequences (Additional characters may follow these sequences.):
 
- <span class="sb">``</span>r<span class="s1">''</span>   Open text file <span class="k">for </span>reading.  The stream is positioned at the
+ ``r''   Open text file for reading.  The stream is positioned at the
          beginning of the file.
 
- <span class="sb">``</span>r+<span class="s1">''</span>  Open <span class="k">for </span>reading and writing.  The stream is positioned at the
+ ``r+''  Open for reading and writing.  The stream is positioned at the
          beginning of the file.
 
- <span class="sb">``</span>w<span class="s1">''</span>   Truncate file to zero length or create text file <span class="k">for </span>writing.
+ ``w''   Truncate file to zero length or create text file for writing.
          The stream is positioned at the beginning of the file.
 
- <span class="sb">``</span>w+<span class="s1">''</span>  Open <span class="k">for </span>reading and writing.  The file is created <span class="k">if </span>it does not
+ ``w+''  Open for reading and writing.  The file is created if it does not
          exist, otherwise it is truncated.  The stream is positioned at
          the beginning of the file.
 
- <span class="sb">``</span>a<span class="s1">''</span>   Open <span class="k">for </span>writing.  The file is created <span class="k">if </span>it does not exist.  The
+ ``a''   Open for writing.  The file is created if it does not exist.  The
          stream is positioned at the end of the file.  Subsequent writes
-         to the file will always end up at the <span class="k">then </span>current end of file,
-         irrespective of any intervening fseek<span class="o">(</span>3<span class="o">)</span> or similar.
+         to the file will always end up at the then current end of file,
+         irrespective of any intervening fseek(3) or similar.
 
- <span class="sb">``</span>a+<span class="s1">''</span>  Open <span class="k">for </span>reading and writing.  The file is created <span class="k">if </span>it does not
+ ``a+''  Open for reading and writing.  The file is created if it does not
          exist.  The stream is positioned at the end of the file.  Subse-
-         quent writes to the file will always end up at the <span class="k">then </span>current
-         end of file, irrespective of any intervening fseek<span class="o">(</span>3<span class="o">)</span> or similar.
-</code></pre></div></div>
+         quent writes to the file will always end up at the then current
+         end of file, irrespective of any intervening fseek(3) or similar.
+```
 
-<p><a href="https://stackoverflow.com/a/1466036/15966204">Источник на оверфло</a></p>
+[Источник на оверфло](https://stackoverflow.com/a/1466036/15966204)
 
-<p>Важдными нюансами являются следующие аспекты:</p>
+Важдными нюансами являются следующие аспекты:
 
-<ul>
-  <li>какие операции можно производить над файлом</li>
-  <li>что происходит с содержимым</li>
-  <li>где оказывается курсор после открытия файла</li>
-</ul>
+- какие операции можно производить над файлом
+- что происходит с содержимым
+- где оказывается курсор после открытия файла
 
-<p>Когда мы вызываем метод, производящий усечение файла, даже если этио режим <code class="language-plaintext highlighter-rouge">w+</code> - файл будет усечен при открытии. Т.е. все что в нем находилось будет удалено - это может иметь значение, если, к примеру, нам надо открыть файл, прочитать его содержимое, сравнить с чем-то и перезаписать, если есть разница.</p>
+Когда мы вызываем метод, производящий усечение файла, даже если этио режим `w+` - файл будет усечен при открытии. Т.е. все что в нем находилось будет удалено - это может иметь значение, если, к примеру, нам надо открыть файл, прочитать его содержимое, сравнить с чем-то и перезаписать, если есть разница.
 
-<p>При откритии файла в режиме, позволяющем его дополнять, курсор помещается в конце файла.</p>
+При откритии файла в режиме, позволяющем его дополнять, курсор помещается в конце файла.
 
-<p>Чтобы решить приведенную выше нестандартную задачу, возможно придется открыть файл в режиме <code class="language-plaintext highlighter-rouge">a+</code>, затем передвинуть курсор в начало файла и прочитать его, а затем, если нам надо полностью перезаписать содержимое - произвести усечение. Сделать это можно примерно так:</p>
+Чтобы решить приведенную выше нестандартную задачу, возможно придется открыть файл в режиме `a+`, затем передвинуть курсор в начало файла и прочитать его, а затем, если нам надо полностью перезаписать содержимое - произвести усечение. Сделать это можно примерно так:
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="s">"a+"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="p">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># move cursor to the start of the file
-</span>    <span class="n">data</span><span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">()</span>
-    <span class="c1"># do something with data
-</span>    <span class="n">f</span><span class="p">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># trunkate file
-</span>    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Write new data"</span><span class="p">)</span>
-</code></pre></div></div>
+```python
+with open(file_name,&quot;a+&quot;) as f:
+    f.seek(0) # move cursor to the start of the file
+    data= f.readlines()
+    # do something with data
+    f.truncate(0) # trunkate file
+    f.write(&quot;Write new data&quot;)
+```
 
-<p>Смотир еще:</p>
+Смотир еще:
 
-<ul>
-  <li>[<a href="python-buildin-functions" title="Python build-in functions">python-buildin-functions</a>]</li>
-  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
-</ul>
+- [[python-buildin-functions]]
+- [[python-standart-library]]
 
 
+[python-buildin-functions]: python-buildin-functions &quot;Python build-in functions&quot;
+[python-standart-library]: ../lists/python-standart-library &quot;Стандартная библиотека python и полезные ресурсы&quot;
+</code></pre>
   </div>
 </article>
 
@@ -208,5 +231,34 @@
     if (l.href.endsWith('.md')) {
       l.href = l.href.substring(0, l.href.length-3)
     }
-  })
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
 </script>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>KV-cache | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="KV-cache" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Что такое KV-cache в больших языковых моделях и почему он ускоряет генерацию текста." />
+<meta property="og:description" content="Что такое KV-cache в больших языковых моделях и почему он ускоряет генерацию текста." />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/kv-cache/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/kv-cache/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Что такое KV-cache в больших языковых моделях и почему он ускоряет генерацию текста.","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/kv-cache/","headline":"KV-cache","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">KV-cache</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/kv-cache.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/llm" title="llm" class="link-tags">llm&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/attention" title="attention" class="link-tags">attention&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/cache" title="cache" class="link-tags">cache&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/inference" title="inference" class="link-tags">inference&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/transformers" title="transformers" class="link-tags">transformers&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>KV-cache (key-value cache) — это техника, которая позволяет LLM переиспользовать уже вычисленные векторы ключей и значений для прошлых токенов вместо того, чтобы пересчитывать их заново на каждом шаге генерации.</p>
+
+<p>Это одна из ключевых оптимизаций для инференса: без нее генерация текста становится заметно медленнее, особенно при длинных контекстах и больших моделях.</p>
+
+<p>В этой заметке я собрал основные идеи из статьи Sebastian Raschka про KV-cache и перевел их в более практический, инженерный язык.</p>
+
+<h2 id="почему-без-кэша-генерация-медленная">Почему без кэша генерация медленная</h2>
+
+<p>Большинство LLM генерируют текст по одному токену за раз: модель принимает контекст, предсказывает следующий токен, добавляет его в последовательность и повторяет.</p>
+
+<p>Пример:</p>
+
+<ul>
+  <li>prompt: “Time”</li>
+  <li>следующий токен: “flies”</li>
+  <li>затем: “fast”</li>
+</ul>
+
+<p>Если модель не использует кэш, то на каждом шаге она заново обрабатывает весь уже сгенерированный контекст:</p>
+
+<ul>
+  <li>для “Time” вычисляет все необходимые промежуточные представления</li>
+  <li>для “Time flies” снова всё пересчитывает</li>
+  <li>для “Time flies fast” снова всё пересчитывает</li>
+</ul>
+
+<p>То есть при генерации третьего токена модель уже дважды пересчитывает то, что было вычислено на предыдущих шагах.</p>
+
+<p>С точки зрения attention это особенно заметно: каждую новую позицию модель сравнивает с предыдущими ключами и значениями. Но для уже увиденных токенов эти K/V-представления не меняются — они были рассчитаны раньше и не должны пересчитываться.</p>
+
+<h2 id="что-такое-key-и-value-в-attention">Что такое key и value в attention</h2>
+
+<p>В self-attention каждый токен преобразуется в три вектора:</p>
+
+<ul>
+  <li>Query (Q): то, что модель ищет в контексте</li>
+  <li>Key (K): то, что модель “помечает” как доступный для поиска</li>
+  <li>Value (V): содержимое, которое будет использоваться для агрегации</li>
+</ul>
+
+<p>Для одного токена в каждом слое:</p>
+
+<ul>
+  <li>Q, K, V получаются линейными проекциями из эмбеддинга токена</li>
+  <li>далее модель вычисляет скоры attention между текущим query и всеми ключами</li>
+  <li>потом весирует значения по этим скорям</li>
+</ul>
+
+<p>Уже вычисленные K и V для прошлых токенов зависят только от самих токенов и параметров модели, а не от того, что генерируется дальше.</p>
+
+<p>Именно поэтому их можно сохранить и переиспользовать.</p>
+
+<h2 id="идея-kv-cache">Идея KV-cache</h2>
+
+<p>KV-cache хранит уже вычисленные:</p>
+
+<ul>
+  <li>ключи K для каждого токена</li>
+  <li>значения V для каждого токена</li>
+</ul>
+
+<p>на каждом слое и в каждом attention-head.</p>
+
+<p>При генерации следующего токена модель:</p>
+
+<ol>
+  <li>вычисляет K и V только для нового токена</li>
+  <li>добавляет их в кэш</li>
+  <li>использует весь кэш вместе с новым токеном для attention</li>
+</ol>
+
+<p>Вместо пересчета всей последовательности целиком модель работает только с:</p>
+
+<ul>
+  <li>новым токеном</li>
+  <li>уже сохраненными K/V для прошлого контекста</li>
+</ul>
+
+<p>Именно это резко снижает вычислительную нагрузку.</p>
+
+<h2 id="почему-это-важно-в-авторегрессионной-генерации">Почему это важно в авторегрессионной генерации</h2>
+
+<p>LLM обычно генерируют текст автререгрессионно:</p>
+
+<ul>
+  <li>исходный prompt обрабатывается один раз</li>
+  <li>далее на каждом шаге выбирается один следующий токен</li>
+  <li>новый токен добавляется в последовательность</li>
+</ul>
+
+<p>Если не использовать cache, то на каждом step мы пересчитываем историю заново. Это дает квадратичную зависимость по длине последовательности на уровне внимания.</p>
+
+<p>С KV-cache мы в сущности уменьшаем повторную работу: каждая пара K/V вычисляется один раз и дальше используется много раз.</p>
+
+<p>Упрощенно:</p>
+
+<ul>
+  <li>без кэша: O(n²) работы по накоплению</li>
+  <li>с кэшем: в каждом шаге мы добавляем только новые элементы, а старые переиспользуем</li>
+</ul>
+
+<p>Это не магия: в реальных моделях это превращается в значимый выигрыш в latency и throughput, особенно в продакшене и при длинных диалогах, код-интерфейсах, генерации длинного текста и RAG-пайплайнах.</p>
+
+<h2 id="идея-на-примере">Идея на примере</h2>
+
+<p>Представим, что мы уже сгенерировали контекст:</p>
+
+<p>“Time flies”</p>
+
+<p>Теперь генерируем следующий токен “fast”.</p>
+
+<p>Без cache модель заново делает:</p>
+
+<ul>
+  <li>вычисление key/value для “Time”</li>
+  <li>вычисление key/value для “flies”</li>
+  <li>затем для “fast”</li>
+</ul>
+
+<p>С cache:</p>
+
+<ul>
+  <li>“Time” и “flies” уже лежат в кэше</li>
+  <li>вычисляется только key/value для “fast”</li>
+  <li>дальше attention смотрит сразу на кэш + новый токен</li>
+</ul>
+
+<p>Это тот же результат математики, но без лишних вычислений.</p>
+
+<h2 id="как-выглядит-реализация-на-уровне-кода">Как выглядит реализация на уровне кода</h2>
+
+<p>Идея очень простая: хранить тензоры <code class="language-plaintext highlighter-rouge">cache_k</code> и <code class="language-plaintext highlighter-rouge">cache_v</code> и дополнять их новыми значениями.</p>
+
+<p>Пример в духе кода из статьи:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">class</span> <span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_key</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_value</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_query</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s">"cache_k"</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s">"cache_v"</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cache_k</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cache_v</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">use_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">d_in</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">shape</span>
+
+        <span class="n">keys_new</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_key</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">values_new</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_value</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">queries</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_query</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">use_cache</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">cache_k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">cache_k</span> <span class="o">=</span> <span class="n">keys_new</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">cache_v</span> <span class="o">=</span> <span class="n">values_new</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">cache_k</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="p">.</span><span class="n">cache_k</span><span class="p">,</span> <span class="n">keys_new</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">cache_v</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">([</span><span class="bp">self</span><span class="p">.</span><span class="n">cache_v</span><span class="p">,</span> <span class="n">values_new</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">cache_k</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">cache_v</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="n">keys_new</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values_new</span>
+
+        <span class="c1"># далее обычный attention
+</span>        <span class="c1"># scores = queries @ keys.transpose(-2, -1)
+</span>        <span class="c1"># weights = softmax(scores, dim=-1)
+</span>        <span class="c1"># output = weights @ values
+</span>        <span class="k">return</span> <span class="n">keys</span><span class="p">,</span> <span class="n">values</span>
+</code></pre></div></div>
+
+<p>Главная мысль здесь в том, что мы не заменяем сам attention, а лишь изменяем способ, каким модель получает K и V.</p>
+
+<h2 id="обязательный-паттерн-очистка-кэша">Обязательный паттерн: очистка кэша</h2>
+
+<p>Кэш нельзя просто держать между разными запросами или отдельными генерационными сессиями.</p>
+
+<p>Если этого не делать, то новый запрос может начать “видеть” старый контекст, что приведет к неправильному поведению и запутанным результатам.</p>
+
+<p>Поэтому обычно есть метод вроде:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">reset_kv_cache</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>или на уровне блока attention:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">trf_blocks</span><span class="p">:</span>
+    <span class="n">block</span><span class="p">.</span><span class="n">att</span><span class="p">.</span><span class="n">reset_cache</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Это особенно важно в продакшене, где один и тот же объект модели может использоваться для разных разговоров или запросов.</p>
+
+<h2 id="почему-нужен-offset--current_pos">Почему нужен offset / current_pos</h2>
+
+<p>В простом коде при каждом новом вызове нужно помнить, на какой позиции в контексте мы находимся.</p>
+
+<p>Например, если кэш уже содержит 10 токенов, а новый токен должен пойти после них, то позиционный индекс новых токенов должен начинаться не с 0, а с 10.</p>
+
+<p>Иначе модель “смешает” старые и новые позиции и будет ошибочно учитывать их как перекрывающиеся.</p>
+
+<p>Типичный паттерн:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="bp">self</span><span class="p">.</span><span class="n">current_pos</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>и затем при генерации:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pos_ids</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">current_pos</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">current_pos</span> <span class="o">+</span> <span class="n">seq_len</span><span class="p">)</span>
+<span class="bp">self</span><span class="p">.</span><span class="n">current_pos</span> <span class="o">+=</span> <span class="n">seq_len</span>
+</code></pre></div></div>
+
+<p>Это важно для корректного position embedding и для того, чтобы модель не путала временные шаги.</p>
+
+<h2 id="почему-кэш-помогает-в-реальном-инференсе">Почему кэш помогает в реальном инференсе</h2>
+
+<p>Кэш особенно полезен в системах, где:</p>
+
+<ul>
+  <li>пользователь пишет длинный диалог</li>
+  <li>модель должна быстро продолжать ответ</li>
+  <li>используется streaming generation</li>
+  <li>есть большие модели и длинный контекст</li>
+</ul>
+
+<p>Если без кэша при каждом новом токене модель заново прогоняет весь контекст, то задержка быстро растет. С кэшем повторные вычисления исчезают, и скорость генерации становится заметно выше.</p>
+
+<p>Это одна из причин, почему современные LLM-инференс-системы в продакшене используют кэширование K/V как стандартную практику.</p>
+
+<h2 id="трейд-оффы">Трейд-оффы</h2>
+
+<p>У KV-cache есть плюсы и недостатки</p>
+
+<h3 id="плюсы">Плюсы</h3>
+
+<ul>
+  <li>заметно ускоряет генерацию текста</li>
+  <li>уменьшает повторные вычисления</li>
+  <li>особенно полезен при длинных последовательностях</li>
+</ul>
+
+<h3 id="минусы">Минусы</h3>
+
+<ul>
+  <li>увеличивает потребление памяти</li>
+  <li>с длинным контекстом кэш может значительно расти</li>
+  <li>добавляет сложность в реализации</li>
+  <li>кэш нужен только для inference, не для training</li>
+</ul>
+
+<p>Для больших моделей с очень длинным контекстом память становится критичным фактором. Поэтому в продакшене часто используются оптимизации:</p>
+
+<ul>
+  <li>предаллокейшн памяти</li>
+  <li>sliding window для ограничения контекста</li>
+  <li>отсечение старых токенов</li>
+  <li>более специальные наборы K/V буферов</li>
+</ul>
+
+<h2 id="оптимизации-в-продакшене">Оптимизации в продакшене</h2>
+
+<p>В учебном примере кэш часто делается через <code class="language-plaintext highlighter-rouge">torch.cat</code>. Это удобно и понятно, но на больших моделях это может быть неэффективно, потому что:</p>
+
+<ul>
+  <li>создаются новые тензоры на каждом шаге</li>
+  <li>возникает лишнее выделение памяти</li>
+  <li>возможна фрагментация памяти</li>
+</ul>
+
+<p>Более продвинутые варианты:</p>
+
+<ol>
+  <li>Предаллоцировать буфер максимальной длины</li>
+  <li>Записывать новые значения в нужный слот вместо конкатенации</li>
+  <li>Использовать sliding window: держать только последние N токенов</li>
+  <li>Для длинных контекстов применять более сложные стратегии управления memory</li>
+</ol>
+
+<p>То есть в реальных системах KV-cache — это не просто “один словарь с K и V”, а обычно продуманная структура памяти, обученная под модель и устройство.</p>
+
+<h2 id="что-важно-запомнить">Что важно запомнить</h2>
+
+<ul>
+  <li>в autoregressive LLM прошлые токены не нужно пересчитывать заново</li>
+  <li>их K/V уже известны и стабильны</li>
+  <li>кэш позволяет переиспользовать их на каждом следующем шаге</li>
+</ul>
+
+<p>Это превращает генерацию текста из повторного пересчета всей истории в incremental inference, где каждый новый токен добавляет лишь небольшую дополнительную работу.</p>
+
+<p>Именно эта идея лежит в основе производительного инференса современных больших языковых моделей.</p>
+
+<h2 id="итог">Итог</h2>
+
+<p>KV-cache — это один из самых важных инженерных приемов в LLM-инференсе.</p>
+
+<p>Он решает одну и ту же проблему, с которой сталкивается любая генерация текста:</p>
+
+<ul>
+  <li>почему модель заново считает уже известный контекст?</li>
+  <li>почему скорость падает при длинных диалогах?</li>
+</ul>
+
+<p>Ответ в том, что без кэша она фактически заново вычисляет старый контекст каждый раз.</p>
+
+<p>KV-cache меняет ситуацию так, что:</p>
+
+<ul>
+  <li>прошлые ключи и значения сохраняются</li>
+  <li>новый токен обрабатывается отдельно</li>
+  <li>attention обращается к уже готовому контексту</li>
+</ul>
+
+<p>Именно поэтому кэш считается фундаментальной оптимизацией для эффективной работы LLM в production.</p>
+
+<h2 id="ссылки-и-рекомендуемое-чтение">Ссылки и рекомендуемое чтение</h2>
+
+<ul>
+  <li>статья: <a href="https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms">Understanding and Coding the KV Cache in LLMs from Scratch</a></li>
+  <li>про attention: <a href="https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention">Understanding and Coding Self-Attention, Multi-Head Attention, Causal-Attention, and Cross-Attention in LLMs</a></li>
+  <li>по книге: <a href="https://amzn.to/4fqvn0D">Build a Large Language Model (From Scratch)</a></li>
+  <li>[<a href="../lists/llm" title="LLM">lists/llm</a>]</li>
+</ul>
+
+<h2 id="ai-warning">AI-warning</h2>
+
+<p>✨ Данная статья сгенерирована с помощью MAI-Code-1.1-Flash. Текст проверен человеком.</p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

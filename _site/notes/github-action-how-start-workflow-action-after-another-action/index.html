@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How start second github action after success first | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="How start second github action after success first" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Github action - как запускать экшены последовательно" />
+<meta property="og:description" content="Github action - как запускать экшены последовательно" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Github action - как запускать экшены последовательно","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action/","headline":"How start second github action after success first","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">How start second github action after success first</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/github-action-how-start-workflow-action-after-another-action.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/cicd" title="cicd" class="link-tags">cicd&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/github" title="github" class="link-tags">github&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="тот-же-workflow-отдельный-job-с-needs-ключом">Тот же workflow, отдельный job с needs ключом</h2>
+
+<p>В одном воркфлоу можно определить дополнительный job через need - в этом случае экшен будет выполнен, только если успешно выполнен экшен в need</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI build and notify</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Docker image to Google Cloud Run</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+
+  <span class="na">notify</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Notify Slack and send eMail</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<h2 id="отдельный-workflow-использующий-workflow_run-эвент-в-качестве-триггера">Отдельный workflow, использующий workflow_run эвент в качестве триггера</h2>
+
+<p>Можно разделить события на два воркфлоу и запускать второй только, если успешен первый.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># build.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">CI build</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Docker image to Google Cloud Run</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># notify.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">CI notify</span>
+
+<span class="c1"># Only trigger, when the build workflow succeeded</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">workflow_run</span><span class="pi">:</span>
+    <span class="na">workflows</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CI</span><span class="nv"> </span><span class="s">build"</span><span class="pi">]</span>
+    <span class="na">types</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">completed</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">notify</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Notify Slack and send eMail</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">...</span>
+</code></pre></div></div>
+
+<p>Чтобы проверить, успешно или нет выполнен предыдущий workflow, можно запросить его статус (<a href="https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#workflow_run">подробнее тут</a>):</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">workflow_run</span><span class="pi">:</span>
+    <span class="na">workflows</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">Build"</span><span class="pi">]</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">completed</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">on-success</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">${{ github.event.workflow_run.conclusion == 'success' }}</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="s">...</span>
+  <span class="na">on-failure</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">${{ github.event.workflow_run.conclusion == 'failure' }}</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="s">...</span>
+
+</code></pre></div></div>
+
+<p>Важным недостатком второго подхода является то, что оба экшена должны быть реализованы в ветке по умолчанию длят ого, чтобы второй исполнился. Плюс, очевидно, заключается в том, что можно отключить второй экшен из админки github, не влезая в код.</p>
+
+<p><a href="https://stackoverflow.com/a/65698892/15966204">Ссылка на оверфло</a></p>
+
+<ul>
+  <li>[<a href="github-action" title="Githunb action">github-action</a>]</li>
+  <li>[<a href="cl" title="ci/cd - непрервыная интеграция">cl</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

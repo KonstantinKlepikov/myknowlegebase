@@ -10,8 +10,11 @@ help:
 # terget: serve - build site for production
 serve:
 	python3 tag_generator.py
+	python3 source_generator.py
 	JEKYLL_ENV=development bundle exec jekyll serve
 
 # target: build - build site for deployment
 build:
+	python3 tag_generator.py
+	python3 source_generator.py
 	JEKYLL_ENV=production bundle exec jekyll build

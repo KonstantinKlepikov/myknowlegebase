@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>LangChain | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="LangChain" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Обзор популярной Python-библиотеки LangChain для работы с языковыми моделями и создания агентов." />
+<meta property="og:description" content="Обзор популярной Python-библиотеки LangChain для работы с языковыми моделями и создания агентов." />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/langchain/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/langchain/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Обзор популярной Python-библиотеки LangChain для работы с языковыми моделями и создания агентов.","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/langchain/","headline":"LangChain","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">LangChain</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/langchain.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/natural-language-processing" title="natural-language-processing" class="link-tags">natural-language-processing&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/ai" title="ai" class="link-tags">ai&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/agents" title="agents" class="link-tags">agents&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/llm" title="llm" class="link-tags">llm&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>LangChain - это мощная и удобная Python-библиотека для создания приложений на основе языковых моделей. Она обеспечивает простой способ интеграции LLM с инструментами, памятью и работает с множеством провайдеров моделей.</p>
+
+<h2 id="основные-возможности">Основные возможности</h2>
+
+<p>LangChain предлагает:</p>
+
+<ul>
+  <li>Интеграцию с различными языковыми моделями (OpenAI, Google Gemini, Claude, Ollama и др.)</li>
+  <li>Создание агентов, которые могут использовать инструменты для выполнения задач</li>
+  <li>Управление памятью для сохранения контекста разговоров</li>
+  <li>Работу с документами и извлечение информации</li>
+  <li>Трассировку с помощью LangSmith</li>
+</ul>
+
+<h2 id="создание-базового-агента">Создание базового агента</h2>
+
+<p>Вот простой пример создания агента с использованием OpenAI:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+
+<span class="k">def</span> <span class="nf">get_weather</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Получить погоду для города."""</span>
+    <span class="k">return</span> <span class="s">f"В </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s"> всегда солнечно!"</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">get_weather</span><span class="p">],</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="s">"Ты полезный ассистент"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Какая погода в Санкт-Петербурге?"</span><span class="p">}]}</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">content_blocks</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="создание-реального-агента-с-инструментами">Создание реального агента с инструментами</h2>
+
+<h3 id="определение-системного-промпта">Определение системного промпта</h3>
+
+<p>Системный промпт определяет поведение вашего агента. Сделайте его конкретным и действенным:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SYSTEM_PROMPT</span> <span class="o">=</span> <span class="s">"""Ты литературный ассистент для анализа данных.
+
+## Возможности
+
+- `fetch_text_from_url`: загружает текст документа с URL в диалог.
+Не угадывай количество строк или позиции — получай их из результатов инструментов."""</span>
+</code></pre></div></div>
+
+<h3 id="создание-инструментов">Создание инструментов</h3>
+
+<p>Инструменты позволяют модели взаимодействовать с внешними системами. Используйте декоратор <code class="language-plaintext highlighter-rouge">@tool</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">urllib.error</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">fetch_text_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Загружает документ с URL."""</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">Request</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">"User-Agent"</span><span class="p">:</span> <span class="s">"Mozilla/5.0 (quickstart-research/1.0)"</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="n">resp</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">urllib</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">f"Ошибка загрузки: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">"</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">raw</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">"replace"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+</code></pre></div></div>
+
+<h3 id="конфигурация-модели">Конфигурация модели</h3>
+
+<p>Настройте модель с нужными параметрами:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">init_chat_model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span>
+    <span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">25000</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="добавление-памяти">Добавление памяти</h3>
+
+<p>Добавьте память для сохранения состояния между взаимодействиями:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langgraph.checkpoint.memory</span> <span class="kn">import</span> <span class="n">InMemorySaver</span>
+
+<span class="n">checkpointer</span> <span class="o">=</span> <span class="n">InMemorySaver</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="создание-и-запуск-агента">Создание и запуск агента</h3>
+
+<p>Соберите агент со всеми компонентами:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">deepagents</span> <span class="kn">import</span> <span class="n">create_deep_agent</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">fetch_text_from_url</span><span class="p">],</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="n">SYSTEM_PROMPT</span><span class="p">,</span>
+    <span class="n">checkpointer</span><span class="o">=</span><span class="n">checkpointer</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Или используйте Deep Agent
+</span><span class="n">deep_agent</span> <span class="o">=</span> <span class="n">create_deep_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">fetch_text_from_url</span><span class="p">],</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="n">SYSTEM_PROMPT</span><span class="p">,</span>
+    <span class="n">checkpointer</span><span class="o">=</span><span class="n">checkpointer</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Вопрос для анализа..."</span><span class="p">}]},</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s">"configurable"</span><span class="p">:</span> <span class="p">{</span><span class="s">"thread_id"</span><span class="p">:</span> <span class="s">"my-session"</span><span class="p">}},</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">content_blocks</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="agents">Agents</h2>
+
+<p>Агент в LangChain — это модель, вызывающая инструменты в цикле до завершения задачи.</p>
+
+<p><img src="/myknowlegebase/attachments/2026-10-24-04-02-39.png" alt="2026-10-24-04-02-39.png" /></p>
+
+<h3 id="модель-agent">Модель (Agent)</h3>
+
+<p>Модели — это механизм рассуждений агентов. Они управляют процессом принятия решений агентом, определяя, какие инструменты использовать, как интерпретировать результаты и когда давать окончательный ответ.</p>
+
+<p>Качество и возможности выбранной вами модели напрямую влияют на базовую надежность и производительность вашего агента. Разные модели лучше справляются с разными задачами — одни лучше выполняют сложные инструкции, другие лучше подходят для структурированного мышления, а третьи поддерживают более широкие контекстные окна для обработки большего объема информации.</p>
+
+<p>Стандартные интерфейсы моделей LangChain предоставляют доступ ко множеству различных интеграций с поставщиками, что упрощает экспериментирование и переключение между моделями для поиска оптимального варианта для ваших задач.</p>
+
+<p>Модели можно использовать двумя способами:</p>
+
+<ul>
+  <li>При работе с агентами модели можно задавать динамически при создании агента.</li>
+  <li>Автономный режим — модели можно вызывать напрямую (вне цикла работы агента) для таких задач, как генерация текста, классификация или извлечение данных, без необходимости использования агентской платформы.</li>
+</ul>
+
+<p>Один и тот же интерфейс модели работает в обоих контекстах, что дает вам гибкость для начала работы с простыми задачами и масштабирования до более сложных рабочих процессов на основе агентов по мере необходимости.</p>
+
+<h4 id="инициализация-моделей">Инициализация моделей</h4>
+
+<p>Используйте <code class="language-plaintext highlighter-rouge">init_chat_model</code> для инициализации модели:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">init_chat_model</span>
+
+<span class="c1"># OpenAI
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span><span class="s">"gpt-5.5"</span><span class="p">)</span>
+<span class="c1"># или с параметрами
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span>
+    <span class="s">"gpt-5.5"</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>      <span class="c1"># Случайность ответов (0-1)
+</span>    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>      <span class="c1"># Макс. токенов в ответе
+</span>    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>           <span class="c1"># Таймаут в секундах
+</span>    <span class="n">max_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>        <span class="c1"># Попытки повтора (по умолчанию 6)
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="использование-в-агентах">Использование в агентах</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+
+<span class="c1"># OpenAI
+</span><span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+
+<span class="c1"># Google Gemini
+</span><span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"google_genai:gemini-3.6-flash"</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+
+<span class="c1"># Claude (Anthropic)
+</span><span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"anthropic:claude-sonnet-5"</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+
+<span class="c1"># Ollama (локальная модель)
+</span><span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"ollama:north-mini-code-1.0"</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+
+<span class="c1"># Azure OpenAI
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span>
+    <span class="s">"azure_openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">azure_deployment</span><span class="o">=</span><span class="s">"my-deployment"</span>
+<span class="p">)</span>
+
+<span class="c1"># AWS Bedrock
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span>
+    <span class="s">"us.anthropic.claude-sonnet-5"</span><span class="p">,</span>
+    <span class="n">model_provider</span><span class="o">=</span><span class="s">"bedrock_converse"</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="ключевые-параметры-модели">Ключевые параметры модели</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Параметр</th>
+      <th>Описание</th>
+      <th>Пример</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">temperature</code></td>
+      <td>Контроль случайности (0-1). Выше = более творческий</td>
+      <td><code class="language-plaintext highlighter-rouge">0.5</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">max_tokens</code></td>
+      <td>Макс. токенов в ответе</td>
+      <td><code class="language-plaintext highlighter-rouge">1000</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">timeout</code></td>
+      <td>Таймаут ответа в секундах</td>
+      <td><code class="language-plaintext highlighter-rouge">30</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">max_retries</code></td>
+      <td>Количество повторных попыток при ошибке</td>
+      <td><code class="language-plaintext highlighter-rouge">6</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span>
+    <span class="s">"claude-sonnet-4-6"</span><span class="p">,</span>
+    <span class="c1"># Kwargs passed to the model:
+</span>    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>  <span class="c1"># Default; increase for unreliable networks
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h5 id="отказоустойчивость">Отказоустойчивость</h5>
+
+<p>Модели автоматически повторяют неудачные запросы с экспоненциальной задержкой. По умолчанию модели повторяют запросы до 6 раз при сетевых ошибках, превышении лимита запросов (429) и ошибках сервера (5xx). При ошибках клиента, таких как 401 (несанкционированный доступ) или 404, повторные попытки не выполняются.</p>
+
+<p>Для ненадежных сетей увеличьте <code class="language-plaintext highlighter-rouge">max_retries</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span>
+    <span class="s">"gpt-5.5"</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>    <span class="c1"># Увеличено для ненадежных сетей
+</span>    <span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>       <span class="c1"># Увеличено для медленных соединений
+</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="методы-вызова-моделей">Методы вызова моделей</h4>
+
+<p>Для генерации выходных данных необходимо вызвать модель чата. Существует три основных метода вызова, каждый из которых подходит для разных сценариев использования.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Одиночный вызов (ожидает полный ответ)
+</span><span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="s">"Вопрос?"</span><span class="p">)</span>
+
+<span class="c1"># Потоковая передача (получение ответа по частям)
+</span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">stream</span><span class="p">(</span><span class="s">"Вопрос?"</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Пакетная обработка (несколько запросов параллельно)
+</span><span class="n">responses</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="s">"Вопрос 1?"</span><span class="p">,</span>
+    <span class="s">"Вопрос 2?"</span><span class="p">,</span>
+    <span class="s">"Вопрос 3?"</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<p>Самый простой способ вызвать модель — использовать её <code class="language-plaintext highlighter-rouge">invoke()</code> с одним сообщением или со списком сообщений. В модель чата можно передать список сообщений, представляющих историю переписки. Каждое сообщение имеет роль, которую модель использует для указания отправителя сообщения в ходе беседы.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"system"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"You are a helpful assistant that translates English to French."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Translate: I love programming."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"assistant"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"J'adore la programmation."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Translate: I love building applications."</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># AIMessage("J'adore créer des applications.")
+</span>
+<span class="c1"># или с объектами LangChain
+</span><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">SystemMessage</span>
+
+<span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">SystemMessage</span><span class="p">(</span><span class="s">"You are a helpful assistant that translates English to French."</span><span class="p">),</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Translate: I love programming."</span><span class="p">),</span>
+    <span class="n">AIMessage</span><span class="p">(</span><span class="s">"J'adore la programmation."</span><span class="p">),</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Translate: I love building applications."</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># AIMessage("J'adore créer des applications.")
+</span></code></pre></div></div>
+
+<p><strong>Пакетная обработка.</strong></p>
+
+<p>Большинство моделей могут передавать свой выходной контент в режиме реального времени во время его генерации. Поэтапное отображение выходного контента значительно улучшает пользовательский опыт, особенно при обработке длинных ответов.</p>
+
+<p>Вызов <code class="language-plaintext highlighter-rouge">stream()</code> возвращаетитератор. Это позволяет получать выходные фрагменты по мере их создания. Для обработки каждого фрагмента в режиме реального времени можно использовать цикл:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">stream</span><span class="p">(</span><span class="s">"Why do parrots have colorful feathers?"</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">"|"</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В отличие от метода <code class="language-plaintext highlighter-rouge">invoke()</code>, который возвращает один объект <code class="language-plaintext highlighter-rouge">AIMessage</code> после того, как модель завершит генерацию полного ответа, метод <code class="language-plaintext highlighter-rouge">stream()</code> возвращает несколько <code class="language-plaintext highlighter-rouge">AIMessageChunk</code> объектов, каждый из которых содержит часть выходного текста. Важно отметить, что каждый фрагмент потока предназначен для объединения в полное сообщение путем суммирования.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">full</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># None | AIMessageChunk
+</span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">stream</span><span class="p">(</span><span class="s">"What color is the sky?"</span><span class="p">):</span>
+    <span class="n">full</span> <span class="o">=</span> <span class="n">chunk</span> <span class="k">if</span> <span class="n">full</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">full</span> <span class="o">+</span> <span class="n">chunk</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">full</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># The
+# The sky
+# The sky is
+# The sky is typically
+# The sky is typically blue
+# ...
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">full</span><span class="p">.</span><span class="n">content_blocks</span><span class="p">)</span>
+<span class="c1"># [{"type": "text", "text": "The sky is typically blue..."}]
+</span></code></pre></div></div>
+
+<p>Полученное сообщение можно обрабатывать так же, как и сообщение, сгенерированное с помощью соответствующего инструмента <code class="language-plaintext highlighter-rouge">invoke()</code> — например, его можно объединить в историю сообщений и передать обратно в модель в качестве контекста разговора.</p>
+
+<p>Потоковая обработка работает только в том случае, если все этапы программы умеют обрабатывать поток фрагментов данных. Например, приложение, не поддерживающее потоковую обработку, должно хранить весь вывод в памяти до его обработки.</p>
+
+<p><strong>Пакетная обработка.</strong></p>
+
+<p>Объединение набора независимых запросов к модели в пакеты может значительно повысить производительность и снизить затраты, поскольку обработка может выполняться параллельно:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">responses</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">batch</span><span class="p">([</span>
+    <span class="s">"Why do parrots have colorful feathers?"</span><span class="p">,</span>
+    <span class="s">"How do airplanes fly?"</span><span class="p">,</span>
+    <span class="s">"What is quantum computing?"</span>
+<span class="p">])</span>
+<span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>По умолчанию <code class="language-plaintext highlighter-rouge">batch()</code> будет возвращен только окончательный результат для всей партии. Если вы хотите получать результаты для каждого отдельного входного параметра по мере завершения его генерации, вы можете передавать результаты потоком с помощью <code class="language-plaintext highlighter-rouge">batch_as_completed()</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">model</span><span class="p">.</span><span class="n">batch_as_completed</span><span class="p">([</span>
+    <span class="s">"Why do parrots have colorful feathers?"</span><span class="p">,</span>
+    <span class="s">"How do airplanes fly?"</span><span class="p">,</span>
+    <span class="s">"What is quantum computing?"</span>
+<span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>При использовании этой функции <code class="language-plaintext highlighter-rouge">batch_as_completed()</code> результаты могут поступать в неправильном порядке. Каждый результат включает входной индекс для сопоставления, что позволяет восстановить исходный порядок по мере необходимости.</p>
+
+<p>При обработке большого количества входных данных с помощью <code class="language-plaintext highlighter-rouge">batch()</code> или <code class="language-plaintext highlighter-rouge">batch_as_completed()</code> может потребоваться ограничить максимальное количество параллельных вызовов. Это можно сделать, установив <code class="language-plaintext highlighter-rouge">max_concurrency</code> атрибут в <code class="language-plaintext highlighter-rouge">RunnableConfig</code> словаре.</p>
+
+<h4 id="вызов-инструмента-tool">Вызов инструмента (tool)</h4>
+
+<p>Модели могут запрашивать вызов инструментов, выполняющих такие задачи, как получение данных из базы данных, поиск в интернете или выполнение кода. Инструменты представляют собой пары:</p>
+
+<ul>
+  <li>Схема, включающая название инструмента, описание и/или определения аргументов (часто это JSON-схема).</li>
+  <li>Функция или сопрограмма для выполнения</li>
+</ul>
+
+<p><img src="/myknowlegebase/attachments/2026-10-26-03-32-16.png" alt="2026-10-26-03-32-16.png" /></p>
+
+<h4 id="проверка-модели">Проверка модели</h4>
+
+<p>Модели предоставляют профиль с информацией о возможностях:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">profile</span>
+<span class="c1"># {
+#   "max_input_tokens": 4096,
+#   "tool_calling": True,
+#   "structured_output": True,
+#   "reasoning_output": True,
+#   ...
+# }
+</span></code></pre></div></div>
+
+<h5 id="привязка-инструментов-к-модели">Привязка инструментов к модели</h5>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Поиск информации."""</span>
+    <span class="k">return</span> <span class="s">f"Результаты для: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s">"</span>
+
+<span class="c1"># Привяжите инструменты к модели
+</span><span class="n">model_with_tools</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">search</span><span class="p">])</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">model_with_tools</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="s">"Найди информацию о Python"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">tool_calls</span><span class="p">)</span>  <span class="c1"># Модель решит, использовать ли инструмент
+</span></code></pre></div></div>
+
+<h4 id="инструменты-tools">Инструменты (Tools)</h4>
+
+<p>Инструменты позволяют модели взаимодействовать с внешними системами. Используйте декоратор <code class="language-plaintext highlighter-rouge">@tool</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Поиск информации."""</span>
+    <span class="k">return</span> <span class="s">f"Результаты для: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s">"</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h4 id="системный-промпт-system-prompt">Системный промпт (System Prompt)</h4>
+
+<p>Определяет поведение и роль агента:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="s">"Ты полезный ассистент. Будь точным и кратким."</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="структурированный-вывод-structured-output">Структурированный вывод (Structured Output)</h4>
+
+<p>Возвращайте валидированную схему из агента:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+
+<span class="k">class</span> <span class="nc">Answer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">response_format</span><span class="o">=</span><span class="n">Answer</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">({</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Вопрос..."</span><span class="p">}]})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">"structured_response"</span><span class="p">])</span>  <span class="c1"># Answer(summary=..., confidence=...)
+</span></code></pre></div></div>
+
+<h4 id="состояние-агента-agent-state">Состояние агента (Agent State)</h4>
+
+<p>Каждый агент управляет контекстом выполнения через <code class="language-plaintext highlighter-rouge">AgentState</code> — типизированный словарь, содержащий историю разговора и пользовательские поля. Добавляйте пользовательские поля через подкласс:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">AgentState</span><span class="p">,</span> <span class="n">create_agent</span>
+
+<span class="k">class</span> <span class="nc">MyState</span><span class="p">(</span><span class="n">AgentState</span><span class="p">):</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">call_count</span><span class="p">:</span> <span class="nb">int</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">state_schema</span><span class="o">=</span><span class="n">MyState</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="вызов-агента">Вызов агента</h3>
+
+<p>Вызовите агент с сообщением. Это передаёт обновление в состояние агента. Все агенты включают последовательность сообщений; используйте <code class="language-plaintext highlighter-rouge">thread_id</code> для сохранения истории:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.uuid</span> <span class="kn">import</span> <span class="n">uuid7</span>
+<span class="kn">from</span> <span class="nn">langgraph.checkpoint.memory</span> <span class="kn">import</span> <span class="n">InMemorySaver</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">checkpointer</span><span class="o">=</span><span class="n">InMemorySaver</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s">"configurable"</span><span class="p">:</span> <span class="p">{</span><span class="s">"thread_id"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid7</span><span class="p">())}}</span>
+
+<span class="c1"># Первый запрос
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Какая погода в Санкт-Петербурге?"</span><span class="p">}]},</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Следующий запрос в одной беседе — повторно используйте thread_id
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"А завтра?"</span><span class="p">}]},</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="потоковая-передача-streaming">Потоковая передача (Streaming)</h3>
+
+<p>Вместо <code class="language-plaintext highlighter-rouge">invoke</code> используйте <code class="language-plaintext highlighter-rouge">stream_events</code> для получения прогресса в реальном времени:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">HumanMessage</span>
+
+<span class="n">stream</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">stream_events</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Поиск новостей об AI..."</span><span class="p">}]},</span>
+    <span class="n">version</span><span class="o">=</span><span class="s">"v3"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">snapshot</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">.</span><span class="n">values</span><span class="p">:</span>
+    <span class="n">latest_message</span> <span class="o">=</span> <span class="n">snapshot</span><span class="p">[</span><span class="s">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">latest_message</span><span class="p">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">latest_message</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f"Пользователь: </span><span class="si">{</span><span class="n">latest_message</span><span class="p">.</span><span class="n">content</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">latest_message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f"Агент: </span><span class="si">{</span><span class="n">latest_message</span><span class="p">.</span><span class="n">content</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">latest_message</span><span class="p">.</span><span class="n">tool_calls</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"Вызовы: </span><span class="si">{</span><span class="p">[</span><span class="n">tc</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="k">for</span> <span class="n">tc</span> <span class="ow">in</span> <span class="n">latest_message</span><span class="p">.</span><span class="n">tool_calls</span><span class="p">]</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="конфигурация-harness-шаблона-агента">Конфигурация harness (шаблона агента)</h3>
+
+<p><code class="language-plaintext highlighter-rouge">create_agent</code> расширяется через <strong>middleware</strong> — каждый слой обрабатывает одну проблему и встраивается в цикл агента:</p>
+
+<h4 id="окружение-выполнения-execution-environment">Окружение выполнения (Execution Environment)</h4>
+
+<p>Файловая система и выполнение кода:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">deepagents.backends</span> <span class="kn">import</span> <span class="n">StateBackend</span>
+<span class="kn">from</span> <span class="nn">deepagents.middleware</span> <span class="kn">import</span> <span class="n">FilesystemMiddleware</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search</span><span class="p">],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">FilesystemMiddleware</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">StateBackend</span><span class="p">())],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="управление-контекстом-context-management">Управление контекстом (Context Management)</h4>
+
+<p>Суммаризация, память и навыки:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">deepagents.middleware</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FilesystemMiddleware</span><span class="p">,</span> <span class="n">SummarizationMiddleware</span><span class="p">,</span>
+    <span class="n">MemoryMiddleware</span><span class="p">,</span> <span class="n">SkillsMiddleware</span>
+<span class="p">)</span>
+
+<span class="n">backend</span> <span class="o">=</span> <span class="n">StateBackend</span><span class="p">()</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search</span><span class="p">],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">FilesystemMiddleware</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">),</span>
+        <span class="n">SummarizationMiddleware</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">),</span>
+        <span class="n">MemoryMiddleware</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s">"./AGENTS.md"</span><span class="p">]),</span>
+        <span class="n">SkillsMiddleware</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s">"./skills/"</span><span class="p">]),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="отказоустойчивость-fault-tolerance">Отказоустойчивость (Fault Tolerance)</h4>
+
+<p>Повторные попытки для ошибок моделей и инструментов:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents.middleware</span> <span class="kn">import</span> <span class="n">ModelRetryMiddleware</span><span class="p">,</span> <span class="n">ToolRetryMiddleware</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search</span><span class="p">],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">ModelRetryMiddleware</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+        <span class="n">ToolRetryMiddleware</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="защита-данных-guardrails">Защита данных (Guardrails)</h4>
+
+<p>Обнаружение и защита персональных данных:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents.middleware</span> <span class="kn">import</span> <span class="n">PIIMiddleware</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search</span><span class="p">],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">PIIMiddleware</span><span class="p">(</span><span class="s">"email"</span><span class="p">)],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="контроль-человеком-steering">Контроль человеком (Steering)</h4>
+
+<p>Требовать одобрение перед критичными действиями:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents.middleware</span> <span class="kn">import</span> <span class="n">HumanInTheLoopMiddleware</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search</span><span class="p">],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">HumanInTheLoopMiddleware</span><span class="p">(</span><span class="n">interrupt_on</span><span class="o">=</span><span class="p">{</span><span class="s">"write_file"</span><span class="p">:</span> <span class="bp">True</span><span class="p">})],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="messages">Messages</h2>
+
+<p>Сообщения — это фундаментальная единица контекста для моделей в LangChain. Они представляют вход и выход моделей, содержа контент и метаданные, необходимые для представления состояния разговора при взаимодействии с LLM.</p>
+
+<p>Каждое сообщение содержит:</p>
+
+<ul>
+  <li><strong>Роль</strong> (role) — определяет тип сообщения (system, user, assistant, tool)</li>
+  <li><strong>Контент</strong> (content) — фактическое содержимое сообщения (текст, изображения, аудио, документы)</li>
+  <li><strong>Метаданные</strong> — опциональные поля (ID сообщения, использование токенов, провайдер-специфичные данные)</li>
+</ul>
+
+<p>Простейший способ использования сообщений — это создание объектов сообщений и передача их в модель при вызове метода.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">init_chat_model</span>
+<span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">SystemMessage</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span><span class="s">"gpt-5-nano"</span><span class="p">)</span>
+
+<span class="n">system_msg</span> <span class="o">=</span> <span class="n">SystemMessage</span><span class="p">(</span><span class="s">"You are a helpful assistant."</span><span class="p">)</span>
+<span class="n">human_msg</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Hello, how are you?"</span><span class="p">)</span>
+
+<span class="c1"># Use with chat models
+</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">system_msg</span><span class="p">,</span> <span class="n">human_msg</span><span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>  <span class="c1"># Returns AIMessage
+</span></code></pre></div></div>
+
+<p>Многоходовые агенты накапливают длинную историю сообщений.</p>
+
+<h3 id="текстовые-промпты">Текстовые промпты</h3>
+
+<p>Текстовые промпты представляют собой строки — идеально подходят для простых задач генерации, где не требуется сохранять историю переписки.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="s">"Write a haiku about spring"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Используйте текстовые промпты, когда:</p>
+
+<ul>
+  <li>У вас один, отдельный запрос.</li>
+  <li>История переписки не нужна.</li>
+  <li>Вам нужна минимальная сложность кода.</li>
+</ul>
+
+<h3 id="промпты-сообщений">Промпты сообщений</h3>
+
+<p>В качестве альтернативы, вы можете передать в модель список сообщений, предоставив список объектов сообщений.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">AIMessage</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">SystemMessage</span><span class="p">(</span><span class="s">"You are a poetry expert"</span><span class="p">),</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Write a haiku about spring"</span><span class="p">),</span>
+    <span class="n">AIMessage</span><span class="p">(</span><span class="s">"Cherry blossoms bloom..."</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Используйте подсказки сообщений в следующих случаях:</p>
+
+<ul>
+  <li>Управление многоэтапными диалогами</li>
+  <li>Работа с мультимодальным контентом (изображения, аудио, файлы)</li>
+  <li>Включение системных инструкций</li>
+</ul>
+
+<h3 id="формат-словаря">Формат словаря</h3>
+
+<p>Вы также можете указывать сообщения непосредственно в формате автозавершения чата OpenAI.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"system"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"You are a poetry expert"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Write a haiku about spring"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"assistant"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Cherry blossoms bloom..."</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="типы-сообщений">Типы сообщений</h3>
+
+<p><strong>SystemMessage</strong> — начальные инструкции, которые задают поведение модели. Вы можете использовать системное сообщение, чтобы задать тон, определить роль модели и установить правила для ответных действий.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">HumanMessage</span>
+
+<span class="n">system_msg</span> <span class="o">=</span> <span class="n">SystemMessage</span><span class="p">(</span><span class="s">"""
+You are a senior Python developer with expertise in web frameworks.
+Always provide code examples and explain your reasoning.
+Be concise but thorough in your explanations.
+"""</span><span class="p">)</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">system_msg</span><span class="p">,</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"How do I create a REST API?"</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>HumanMessage</strong> — представляет ввод пользователя. Он может содержать текст, изображения, аудио, файлы и любое другое количество мультимодального контента.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span>
+
+<span class="c1"># Простой текст
+</span><span class="n">human_msg</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Что такое машинное обучение?"</span><span class="p">)</span>
+
+<span class="c1"># С метаданными
+</span><span class="n">human_msg</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="s">"Привет!"</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">"alice"</span><span class="p">,</span>  <span class="c1"># Идентификатор пользователя
+</span>    <span class="nb">id</span><span class="o">=</span><span class="s">"msg_123"</span>   <span class="c1"># Уникальный ID для трассировки
+</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">([</span><span class="n">human_msg</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><strong>AIMessage</strong> — ответы, генерируемые моделью. Он может включать мультимодальные данные, вызовы инструментов и метаданные, специфичные для поставщика, к которым можно получить доступ позже.</p>
+
+<p>При вызове модели ей возвращаются объекты, содержащие все связанные метаданные в ответе.</p>
+
+<p>Поставщики услуг по-разному оценивают/контекстуализируют типы сообщений, поэтому иногда бывает полезно вручную создать новый <code class="language-plaintext highlighter-rouge">AIMessage</code> объект и вставить его в историю сообщений так, как если бы он поступил из модели.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">HumanMessage</span>
+
+<span class="c1"># Create an AI message manually (e.g., for conversation history)
+</span><span class="n">ai_msg</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span><span class="s">"I'd be happy to help you with that question!"</span><span class="p">)</span>
+
+<span class="c1"># Add to conversation history
+</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">SystemMessage</span><span class="p">(</span><span class="s">"You are a helpful assistant"</span><span class="p">),</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Can you help me?"</span><span class="p">),</span>
+    <span class="n">ai_msg</span><span class="p">,</span>  <span class="c1"># Insert as if it came from the model
+</span>    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Great! What's 2+2?"</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>AIMessage включает:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">text</code> — текстовое содержимое</li>
+  <li><code class="language-plaintext highlighter-rouge">content</code> - Исходное содержание сообщения.</li>
+  <li><code class="language-plaintext highlighter-rouge">content_blocks</code> — стандартизированное представление контента</li>
+  <li><code class="language-plaintext highlighter-rouge">tool_calls</code> — вызовы инструментов, которые сделала модель</li>
+  <li><code class="language-plaintext highlighter-rouge">id</code> - Уникальный идентификатор сообщения (либо автоматически сгенерированный LangChain, либо возвращенный в ответе поставщика).</li>
+  <li><code class="language-plaintext highlighter-rouge">usage_metadata</code> — использование токенов (input_tokens, output_tokens и др.)</li>
+  <li><code class="language-plaintext highlighter-rouge">response_metadata</code> - Метаданные ответа сообщения.</li>
+</ul>
+
+<p><strong>ToolMessage</strong> — результаты выполнения инструментов.</p>
+
+<p>Для моделей, поддерживающих вызов инструментов, сообщения ИИ могут содержать информацию о вызовах инструментов. Сообщения инструментов используются для передачи результатов выполнения одного инструмента обратно в модель.</p>
+
+<p>Инструменты позволяют создавать <code class="language-plaintext highlighter-rouge">ToolMessage</code> объекты напрямую. Ниже приведён простой пример.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">AIMessage</span>
+<span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">ToolMessage</span>
+
+<span class="c1"># After a model makes a tool call
+# (Here, we demonstrate manually creating the messages for brevity)
+</span><span class="n">ai_message</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">tool_calls</span><span class="o">=</span><span class="p">[{</span>
+        <span class="s">"name"</span><span class="p">:</span> <span class="s">"get_weather"</span><span class="p">,</span>
+        <span class="s">"args"</span><span class="p">:</span> <span class="p">{</span><span class="s">"location"</span><span class="p">:</span> <span class="s">"San Francisco"</span><span class="p">},</span>
+        <span class="s">"id"</span><span class="p">:</span> <span class="s">"call_123"</span>
+    <span class="p">}]</span>
+<span class="p">)</span>
+
+<span class="c1"># Execute tool and create result message
+</span><span class="n">weather_result</span> <span class="o">=</span> <span class="s">"Sunny, 72°F"</span>
+<span class="n">tool_message</span> <span class="o">=</span> <span class="n">ToolMessage</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="n">weather_result</span><span class="p">,</span>
+    <span class="n">tool_call_id</span><span class="o">=</span><span class="s">"call_123"</span>  <span class="c1"># Must match the call ID
+</span><span class="p">)</span>
+
+<span class="c1"># Continue conversation
+</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"What's the weather in San Francisco?"</span><span class="p">),</span>
+    <span class="n">ai_message</span><span class="p">,</span>  <span class="c1"># Model's tool call
+</span>    <span class="n">tool_message</span><span class="p">,</span>  <span class="c1"># Tool execution result
+</span><span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>  <span class="c1"># Model processes the result
+</span></code></pre></div></div>
+
+<h3 id="форматы-сообщений">Форматы сообщений</h3>
+
+<p><strong>Объекты сообщений (рекомендуется):</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">AIMessage</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">SystemMessage</span><span class="p">(</span><span class="s">"Ты поэт"</span><span class="p">),</span>
+    <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Напиши хайку о весне"</span><span class="p">),</span>
+    <span class="n">AIMessage</span><span class="p">(</span><span class="s">"Цветы распускаются..."</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Словарь (формат OpenAI):</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"system"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Ты поэт"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Напиши хайку о весне"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"assistant"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Цветы распускаются..."</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Простой текст (только для одиночного запроса):</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Это shortcut для HumanMessage
+</span><span class="n">response</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="s">"Напиши хайку о весне"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="содержимое-сообщения">Содержимое сообщения</h3>
+
+<p>Содержимое сообщения можно рассматривать как полезную нагрузку данных, отправляемых в модель. Сообщения имеют <code class="language-plaintext highlighter-rouge">content</code> атрибут с нестрогой типизацией, поддерживающий строки и списки нетипизированных объектов (например, словари). Это позволяет напрямую поддерживать структуры, присущие поставщикам данных, в моделях чата LangChain, такие как мультимодальный контент и другие данные.</p>
+
+<p>Отдельно LangChain предоставляет специальные типы контента для текста, рассуждений, цитат, мультимодальных данных, вызовов серверных инструментов и другого содержимого сообщений.</p>
+
+<p>Модели чата LangChain принимают содержимое сообщения в <code class="language-plaintext highlighter-rouge">content</code> атрибуте.
+Это может содержать либо:</p>
+
+<ul>
+  <li>Строка</li>
+  <li>Список блоков контента в формате, используемом самим поставщиком.</li>
+  <li>Список стандартных блоков контента LangChain</li>
+</ul>
+
+<p>Ниже приведён пример использования мультимодальных входных данных:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span>
+
+<span class="c1"># String content
+</span><span class="n">human_message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Hello, how are you?"</span><span class="p">)</span>
+
+<span class="c1"># Provider-native format (e.g., OpenAI)
+</span><span class="n">human_message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"text"</span><span class="p">,</span> <span class="s">"text"</span><span class="p">:</span> <span class="s">"Hello, how are you?"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"image_url"</span><span class="p">,</span> <span class="s">"image_url"</span><span class="p">:</span> <span class="p">{</span><span class="s">"url"</span><span class="p">:</span> <span class="s">"https://example.com/image.jpg"</span><span class="p">}}</span>
+<span class="p">])</span>
+
+<span class="c1"># List of standard content blocks
+</span><span class="n">human_message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content_blocks</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"text"</span><span class="p">,</span> <span class="s">"text"</span><span class="p">:</span> <span class="s">"Hello, how are you?"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"image"</span><span class="p">,</span> <span class="s">"url"</span><span class="p">:</span> <span class="s">"https://example.com/image.jpg"</span><span class="p">},</span>
+<span class="p">])</span>
+</code></pre></div></div>
+
+<h3 id="стандартные-блоки-контента">Стандартные блоки контента</h3>
+
+<p>LangChain предоставляет стандартное представление содержимого сообщений, которое работает у разных поставщиков услуг.</p>
+
+<p>Объекты сообщений реализуют <code class="language-plaintext highlighter-rouge">content_blocks</code> свойство, которое позволяет отложенно преобразовывать <code class="language-plaintext highlighter-rouge">content</code> атрибут в стандартное, типобезопасное представление. Например, сообщения, сгенерированные из <code class="language-plaintext highlighter-rouge">ChatAnthropic</code> или, <code class="language-plaintext highlighter-rouge">ChatOpenAI</code> будут включать блоки <code class="language-plaintext highlighter-rouge">thinking</code> или <code class="language-plaintext highlighter-rouge">reasoning</code> в формате соответствующего поставщика, но могут быть отложенно преобразованы в согласованное <code class="language-plaintext highlighter-rouge">ReasoningContentBlock</code> представление:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">AIMessage</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="n">AIMessage</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"thinking"</span><span class="p">,</span> <span class="s">"thinking"</span><span class="p">:</span> <span class="s">"..."</span><span class="p">,</span> <span class="s">"signature"</span><span class="p">:</span> <span class="s">"WaUjzkyp..."</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"text"</span><span class="p">,</span> <span class="s">"text"</span><span class="p">:</span> <span class="s">"..."</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">response_metadata</span><span class="o">=</span><span class="p">{</span><span class="s">"model_provider"</span><span class="p">:</span> <span class="s">"anthropic"</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">message</span><span class="p">.</span><span class="n">content_blocks</span>
+
+<span class="p">[{</span><span class="s">'type'</span><span class="p">:</span> <span class="s">'reasoning'</span><span class="p">,</span>
+  <span class="s">'reasoning'</span><span class="p">:</span> <span class="s">'...'</span><span class="p">,</span>
+  <span class="s">'extras'</span><span class="p">:</span> <span class="p">{</span><span class="s">'signature'</span><span class="p">:</span> <span class="s">'WaUjzkyp...'</span><span class="p">}},</span>
+ <span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="s">'text'</span><span class="p">,</span> <span class="s">'text'</span><span class="p">:</span> <span class="s">'...'</span><span class="p">}]</span>
+</code></pre></div></div>
+
+<p>Сообщения поддерживают стандартизированные блоки контента (<code class="language-plaintext highlighter-rouge">content_blocks</code>):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Тип</th>
+      <th>Описание</th>
+      <th>Пример</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">text</code></td>
+      <td>Текстовое содержимое</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "text", "text": "Привет"}</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">reasoning</code></td>
+      <td>Reasoning процесс модели</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "reasoning", "reasoning": "..."}</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">image</code></td>
+      <td>Изображение</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "image", "url": "..."}</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">audio</code></td>
+      <td>Аудио</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "audio", "base64": "..."}</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">video</code></td>
+      <td>Видео</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "video", "base64": "..."}</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">file</code></td>
+      <td>Документ</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "file", "url": "..."}</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">tool_call</code></td>
+      <td>Вызов инструмента</td>
+      <td><code class="language-plaintext highlighter-rouge">{"type": "tool_call", "name": "search", "id": "call_1"}</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="https://reference.langchain.com/python/langchain/messages">Справочник по блокам контента</a>.</p>
+
+<h3 id="мультимодальность">Мультимодальность</h3>
+
+<p>Мультимодальность подразумевает способность работать с данными, поступающими в различных формах, таких как текст, аудио, изображения и видео. LangChain включает стандартные типы для этих данных, которые могут использоваться различными поставщиками. Модели чата могут принимать многомодальные данные на вход и генерировать их на выходе.</p>
+
+<h3 id="сериализация-сообщений">Сериализация сообщений</h3>
+
+<p>Сохраняйте и восстанавливайте историю сообщений:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span>
+<span class="kn">from</span> <span class="nn">langchain_core.load</span> <span class="kn">import</span> <span class="n">dumpd</span><span class="p">,</span> <span class="n">load</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="s">"Какая столица Франции?"</span><span class="p">)</span>
+
+<span class="c1"># Сериализация в словарь
+</span><span class="n">serialized</span> <span class="o">=</span> <span class="n">dumpd</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="c1"># Десериализация обратно
+</span><span class="n">restored</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">serialized</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="tools">Tools</h2>
+
+<p>Инструменты — это функции с чётко определённым входом и выходом, которые предоставляют агентам способность получать данные в реальном времени, выполнять код, запрашивать внешние БД и выполнять действия.</p>
+
+<p>Модель решает, когда вызвать инструмент, основываясь на контексте разговора, и какие аргументы передать.</p>
+
+<h3 id="создание-инструментов-1">Создание инструментов</h3>
+
+<h4 id="базовое-определение-инструмента">Базовое определение инструмента</h4>
+
+<p>Используйте декоратор <code class="language-plaintext highlighter-rouge">@tool</code>. Docstring функции становится описанием инструмента.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">search_database</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Поиск в базе данных по запросу.
+
+    Args:
+        query: Поисковые термины
+        limit: Максимум результатов
+    """</span>
+    <span class="k">return</span> <span class="s">f"Найдено </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s"> результатов для '</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s">'"</span>
+</code></pre></div></div>
+
+<p><strong>Докстринги обязательны</strong> — они определяют схему входа инструмента. Используйте <code class="language-plaintext highlighter-rouge">snake_case</code> для имён инструментов (e.g. <code class="language-plaintext highlighter-rouge">web_search</code> вместо <code class="language-plaintext highlighter-rouge">Web Search</code>).</p>
+
+<h4 id="пользовательское-имя-и-описание">Пользовательское имя и описание</h4>
+
+<p>По умолчанию имя инструмента формируется из имени функции. Переопределите его, когда вам нужно что-то более описательное.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">tool</span><span class="p">(</span><span class="s">"web_search"</span><span class="p">)</span>  <span class="c1"># Пользовательское имя
+</span><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Поиск в сети."""</span>
+    <span class="k">return</span> <span class="s">f"Результаты для: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s">"</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">search</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># web_search
+</span></code></pre></div></div>
+
+<p>Так же можно переопределить автоматически сгенерированное описание</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">tool</span><span class="p">(</span><span class="s">"calculator"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">"Performs arithmetic calculations. Use this for any math problems."</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Evaluate mathematical expressions."""</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">expression</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="сложная-схема-входных-данных">Сложная схема входных данных</h4>
+
+<p>Определите сложные входные данные с помощью моделей Pydantic или схем JSON:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="k">class</span> <span class="nc">WeatherInput</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="s">"""Входные данные для запроса о погоде."""</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">"Название города"</span><span class="p">)</span>
+    <span class="n">units</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s">"celsius"</span><span class="p">,</span> <span class="s">"fahrenheit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="s">"celsius"</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s">"Единица температуры"</span>
+    <span class="p">)</span>
+    <span class="n">include_forecast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s">"Включить прогноз на 5 дней"</span>
+    <span class="p">)</span>
+
+<span class="o">@</span><span class="n">tool</span><span class="p">(</span><span class="n">args_schema</span><span class="o">=</span><span class="n">WeatherInput</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_weather</span><span class="p">(</span>
+    <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">"celsius"</span><span class="p">,</span>
+    <span class="n">include_forecast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Получить погоду и опциональный прогноз."""</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="mi">22</span> <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s">"celsius"</span> <span class="k">else</span> <span class="mi">72</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s">f"Погода в </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">temp</span><span class="si">}</span><span class="s">° </span><span class="si">{</span><span class="n">units</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s">"</span>
+    <span class="k">if</span> <span class="n">include_forecast</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">Следующие 5 дней: Солнечно"</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<h3 id="зарезервированные-имена-аргументов">Зарезервированные имена аргументов</h3>
+
+<p>Следующие имена параметров зарезервированы и не могут использоваться в качестве аргументов инструмента. Использование этих имен приведет к ошибкам во время выполнения.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">config</code> - Зарезервировано для передачи <code class="language-plaintext highlighter-rouge">RunnableConfig</code> инструментам внутри сессии</li>
+  <li><code class="language-plaintext highlighter-rouge">runtime</code> - Зарезервировано для <code class="language-plaintext highlighter-rouge">ToolRuntime</code> параметра (доступ к состоянию, контексту, хранилищу)</li>
+</ul>
+
+<p>Чтобы получить доступ к информации о времени выполнения, используйте параметр <code class="language-plaintext highlighter-rouge">ToolRuntime</code> вместо именования собственных аргументов <code class="language-plaintext highlighter-rouge">config</code> или <code class="language-plaintext highlighter-rouge">runtime</code>.</p>
+
+<h3 id="контекст-и-состояние">Контекст и состояние</h3>
+
+<p>Инструменты наиболее эффективны, когда они могут получить доступ к информации во время выполнения, такой как история разговоров, пользовательские данные и постоянная память.</p>
+
+<p>Инструменты могут получать доступ к информации о времени выполнения через <code class="language-plaintext highlighter-rouge">ToolRuntime</code> параметр, который обеспечивает:</p>
+
+<ul>
+  <li>State: кратковременная память — изменяемые данные, существующие для текущего диалога (сообщения, счетчики, настраиваемые поля). Использование: доступ к истории разговоров, отслеживание количества вызовов инструментов.</li>
+  <li>Context: неизменяемая конфигурация, передаваемая во время вызова (идентификаторы пользователей, информация о сеансе). Использование: ответы на основе личности пользователя</li>
+  <li>Store: долговременная память — постоянные данные, которые сохраняются во время разговоров. Использование: сохраняние предпочтений пользователей, поддержка базы знаний.</li>
+  <li>Stream Writer: публикует обновления в реальном времени во время выполнения инструмента. Использование: показать прогресс в долгосрочных операциях.</li>
+  <li>Execution Info: идентификационная информация для текущего выполнения (идентификатор потока, идентификатор запуска, номер попытки). Использование: доступ к идентификаторам потоков/запусков, настройка поведения на основе состояния повторной попытки</li>
+  <li>Server Info: метаданные, специфичные для сервера <code class="language-plaintext highlighter-rouge">LangGraph</code> (идентификатор помощника, идентификатор графа, аутентифицированный пользователь).</li>
+  <li>Config: <code class="language-plaintext highlighter-rouge">RunnableConfig</code> для исполнения. Использование: доступ к колбекам, тегам и метаданным.</li>
+  <li>ool Call ID: уникальный идентификатор текущего вызова инструмента.</li>
+</ul>
+
+<h4 id="доступ-к-состоянию-кратковременная-память">Доступ к состоянию (кратковременная память)</h4>
+
+<p>Состояние представляет собой кратковременную память, которая существует на протяжении всего диалога. Оно включает в себя историю сообщений и любые пользовательские поля, которые вы определяете.</p>
+
+<p>Добавьте в свой tool <code class="language-plaintext highlighter-rouge">runtime: ToolRuntime</code> для доступа к состоянию. Во время вызова <code class="language-plaintext highlighter-rouge">ToolNode</code> автоматически введет значение; параметр не включается в схему, которая отправляется моделли. Используйте <code class="language-plaintext highlighter-rouge">runtime.state</code> для чтения текущего состояния разговора:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span><span class="p">,</span> <span class="n">ToolRuntime</span>
+<span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_last_message</span><span class="p">(</span><span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Получить последнее сообщение пользователя."""</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">state</span><span class="p">[</span><span class="s">"messages"</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">message</span><span class="p">.</span><span class="n">content</span>
+    <span class="k">return</span> <span class="s">"Нет сообщений"</span>
+
+<span class="c1"># Доступ к пользовательским полям состояния
+</span><span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_user_preference</span><span class="p">(</span><span class="n">pref_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Получить предпочтение пользователя."""</span>
+    <span class="n">preferences</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"user_preferences"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="n">preferences</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">pref_name</span><span class="p">,</span> <span class="s">"Not set"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Используйте <code class="language-plaintext highlighter-rouge">Command</code> для обновления состояния агента. Это полезно для инструментов, которым необходимо обновлять пользовательские поля состояния. Включите <code class="language-plaintext highlighter-rouge">ToolMessage</code> в обновление, чтобы модель могла видеть результат вызова инструмента:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">AgentState</span>
+<span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">ToolMessage</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">ToolRuntime</span><span class="p">,</span> <span class="n">tool</span>
+<span class="kn">from</span> <span class="nn">langgraph.types</span> <span class="kn">import</span> <span class="n">Command</span>
+
+
+<span class="k">class</span> <span class="nc">CustomState</span><span class="p">(</span><span class="n">AgentState</span><span class="p">):</span>
+    <span class="n">user_name</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">set_user_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">CustomState</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Command</span><span class="p">:</span>
+    <span class="s">"""Set the user's name in the conversation state."""</span>
+    <span class="k">return</span> <span class="n">Command</span><span class="p">(</span>
+        <span class="n">update</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">"user_name"</span><span class="p">:</span> <span class="n">new_name</span><span class="p">,</span>
+            <span class="s">"messages"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">ToolMessage</span><span class="p">(</span>
+                    <span class="n">content</span><span class="o">=</span><span class="s">f"User name set to </span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s">."</span><span class="p">,</span>
+                    <span class="n">tool_call_id</span><span class="o">=</span><span class="n">runtime</span><span class="p">.</span><span class="n">tool_call_id</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Когда инструменты обновляют переменные состояния, можно использовать <a href="https://docs.langchain.com/oss/python/langgraph/graph-api#reducers">Reducers</a> для этих полей. Поскольку LLM могут вызывать несколько инструментов параллельно, редуктор определяет, как разрешать конфликты, когда одно и то же поле состояния обновляется одновременными вызовами инструментов.</p>
+
+<h4 id="доступ-к-контексту">Доступ к контексту</h4>
+
+<p>Контекст предоставляет неизменяемые данные конфигурации, которые передаются во время вызова. Используйте его для идентификаторов пользователей, сведений о сеансе или настроек, специфичных для приложения, которые не должны меняться во время разговора.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span><span class="p">,</span> <span class="n">ToolRuntime</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils.uuid</span> <span class="kn">import</span> <span class="n">uuid7</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langgraph.checkpoint.memory</span> <span class="kn">import</span> <span class="n">InMemorySaver</span>
+
+
+<span class="n">USER_DATABASE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"user123"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"name"</span><span class="p">:</span> <span class="s">"Alice Johnson"</span><span class="p">,</span>
+        <span class="s">"account_type"</span><span class="p">:</span> <span class="s">"Premium"</span><span class="p">,</span>
+        <span class="s">"balance"</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s">"email"</span><span class="p">:</span> <span class="s">"alice@example.com"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">"user456"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"name"</span><span class="p">:</span> <span class="s">"Bob Smith"</span><span class="p">,</span>
+        <span class="s">"account_type"</span><span class="p">:</span> <span class="s">"Standard"</span><span class="p">,</span>
+        <span class="s">"balance"</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span>
+        <span class="s">"email"</span><span class="p">:</span> <span class="s">"bob@example.com"</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">UserContext</span><span class="p">:</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_account_info</span><span class="p">(</span><span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">[</span><span class="n">UserContext</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Get the current user's account information."""</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">user_id</span>
+
+    <span class="k">if</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="n">USER_DATABASE</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">USER_DATABASE</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s">f"Account holder: </span><span class="si">{</span><span class="n">user</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span>
+            <span class="s">f"Type: </span><span class="si">{</span><span class="n">user</span><span class="p">[</span><span class="s">'account_type'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s">"</span>
+            <span class="s">f"Balance: $</span><span class="si">{</span><span class="n">user</span><span class="p">[</span><span class="s">'balance'</span><span class="p">]</span><span class="si">}</span><span class="s">"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="s">"User not found"</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"gpt-5.5"</span><span class="p">)</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">get_account_info</span><span class="p">],</span>
+    <span class="n">context_schema</span><span class="o">=</span><span class="n">UserContext</span><span class="p">,</span>
+    <span class="n">checkpointer</span><span class="o">=</span><span class="n">InMemorySaver</span><span class="p">(),</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="s">"You are a financial assistant."</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">thread_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid7</span><span class="p">())</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s">"configurable"</span><span class="p">:</span> <span class="p">{</span><span class="s">"thread_id"</span><span class="p">:</span> <span class="n">thread_id</span><span class="p">}}</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">UserContext</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="s">"user123"</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"What's my current balance?"</span><span class="p">}]},</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+    <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">content_blocks</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"What was my balance again?"</span><span class="p">}]},</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+    <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">"messages"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="n">content_blocks</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="store-долговременная-память-хранилище">Store. Долговременная память (Хранилище)</h3>
+
+<p>Обеспечивает постоянное хранилище, которое сохраняется во время разговоров. В отличие от состояния (кратковременной памяти), данные, сохраненные в хранилище, остаются доступными в будущих сеансах.
+Доступ в Store через <code class="language-plaintext highlighter-rouge">runtime.store</code>. Для организации данных хранилище использует шаблон пространства имен/ключей.</p>
+
+<p>Для производственных развертываний используйте реализацию постоянного хранилища, например <code class="language-plaintext highlighter-rouge">PostgresStore</code>, <code class="language-plaintext highlighter-rouge">MongoDBStore</code>, или <code class="language-plaintext highlighter-rouge">RedisStore</code> вместо <code class="language-plaintext highlighter-rouge">InMemoryStore</code>. Подробности настройки см. в документации по памяти.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langgraph.store.memory</span> <span class="kn">import</span> <span class="n">InMemoryStore</span>
+<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span><span class="p">,</span> <span class="n">ToolRuntime</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="c1"># Access memory
+</span><span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_user_info</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Look up user info."""</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">store</span>
+    <span class="n">user_info</span> <span class="o">=</span> <span class="n">store</span><span class="p">.</span><span class="n">get</span><span class="p">((</span><span class="s">"users"</span><span class="p">,),</span> <span class="n">user_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">user_info</span><span class="p">.</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">user_info</span> <span class="k">else</span> <span class="s">"Unknown user"</span>
+
+<span class="c1"># Update memory
+</span><span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">save_user_info</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Save user info."""</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">store</span>
+    <span class="n">store</span><span class="p">.</span><span class="n">put</span><span class="p">((</span><span class="s">"users"</span><span class="p">,),</span> <span class="n">user_id</span><span class="p">,</span> <span class="p">{</span><span class="s">"name"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s">"age"</span><span class="p">:</span> <span class="n">age</span><span class="p">,</span> <span class="s">"email"</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+    <span class="k">return</span> <span class="s">"Successfully saved user info."</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"gpt-5.5"</span><span class="p">)</span>
+
+<span class="n">store</span> <span class="o">=</span> <span class="n">InMemoryStore</span><span class="p">()</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">get_user_info</span><span class="p">,</span> <span class="n">save_user_info</span><span class="p">],</span>
+    <span class="n">store</span><span class="o">=</span><span class="n">store</span>
+<span class="p">)</span>
+
+<span class="c1"># First session: save user info
+</span><span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Save the following user: userid: abc123, name: Foo, age: 25, email: foo@langchain.dev"</span><span class="p">}]</span>
+<span class="p">})</span>
+
+<span class="c1"># Second session: get user info
+</span><span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Get user info for user with id 'abc123'"</span><span class="p">}]</span>
+<span class="p">})</span>
+<span class="c1"># Here is the user info for user with ID "abc123":
+# - Name: Foo
+# - Age: 25
+# - Email: foo@langchain.dev
+</span></code></pre></div></div>
+
+<h4 id="streaming-writing">Streaming writing</h4>
+
+<p>Передача обновлений в режиме реального времени от инструментов во время выполнения. Это полезно для предоставления пользователям обратной связи о ходе выполнения во время длительных операций.
+Используйте <code class="language-plaintext highlighter-rouge">runtime.stream_writer</code> для отправки пользовательских обновлений (необходим вызов в контексте выполнения [<a href="langgraph" title="langgraph">notes/langgraph</a>]):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span><span class="p">,</span> <span class="n">ToolRuntime</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_weather</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Get weather for a given city."""</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">stream_writer</span>
+
+    <span class="c1"># Stream custom updates as the tool executes
+</span>    <span class="n">writer</span><span class="p">(</span><span class="s">f"Looking up data for city: </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="n">writer</span><span class="p">(</span><span class="s">f"Acquired data for city: </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s">f"It's always sunny in </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s">!"</span>
+</code></pre></div></div>
+
+<h4 id="информация-о-runtime-и-сервере-дфтппкфзр">Информация о runtime и сервере ДфтпПкфзр</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span><span class="p">,</span> <span class="n">ToolRuntime</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">log_execution_context</span><span class="p">(</span><span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Log execution identity information."""</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">execution_info</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f"Thread: </span><span class="si">{</span><span class="n">info</span><span class="p">.</span><span class="n">thread_id</span><span class="si">}</span><span class="s">, Run: </span><span class="si">{</span><span class="n">info</span><span class="p">.</span><span class="n">run_id</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">f"Attempt: </span><span class="si">{</span><span class="n">info</span><span class="p">.</span><span class="n">node_attempt</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">"done"</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span><span class="p">,</span> <span class="n">ToolRuntime</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_assistant_scoped_data</span><span class="p">(</span><span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Fetch data scoped to the current assistant."""</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">server_info</span>
+    <span class="k">if</span> <span class="n">server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">f"Assistant: </span><span class="si">{</span><span class="n">server</span><span class="p">.</span><span class="n">assistant_id</span><span class="si">}</span><span class="s">, Graph: </span><span class="si">{</span><span class="n">server</span><span class="p">.</span><span class="n">graph_id</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">server</span><span class="p">.</span><span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">f"User: </span><span class="si">{</span><span class="n">server</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="n">identity</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">"done"</span>
+</code></pre></div></div>
+
+<h3 id="выполнение-инструмента">Выполнение инструмента</h3>
+
+<p>В LangChain инструменты используются агентами (например, через create_agent), а обработка ошибок инструментов настраивается через промежуточное ПО .
+Для рабочих процессов LangGraph выполнение инструментов осуществляется с помощью <code class="language-plaintext highlighter-rouge">ToolNode</code>.</p>
+
+<h4 id="возвращаемые-значения-инструментов">Возвращаемые значения инструментов</h4>
+
+<p>Вы можете выбрать различные возвращаемые значения для своих инструментов:</p>
+
+<ul>
+  <li>Возвращает значение a string для получения результатов в удобочитаемом формате.</li>
+  <li>Возвращает object структурированный результат, который модель должна обработать.</li>
+  <li>Возвращает значение <code class="language-plaintext highlighter-rouge">Command</code> с необязательным сообщением, когда необходимо записать данные в состояние.</li>
+</ul>
+
+<p><strong>Для простых текстовых результатов</strong>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_weather</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Получить погоду для города."""</span>
+    <span class="k">return</span> <span class="s">f"В </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s"> солнечно."</span>
+</code></pre></div></div>
+
+<p>Поведение: Возвращаемое значение преобразуется в <code class="language-plaintext highlighter-rouge">ToolMessage</code>. Модель видит этот текст и решает, что делать дальше. Поля состояния агента не изменяются, если только это не будет сделано позже моделью или другим инструментом. Используйте этот метод, когда в результате получается текст, естественно читаемый человеком.</p>
+
+<p><strong>Для структурированных данных</strong> - вохвращаемый объект (например, dict), когда ваш инструмент генерирует структурированные данные, которые модель должна проверить:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">get_weather_data</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s">"""Получить структурированные данные о погоде."""</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">"city"</span><span class="p">:</span> <span class="n">city</span><span class="p">,</span>
+        <span class="s">"temperature_c"</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+        <span class="s">"conditions"</span><span class="p">:</span> <span class="s">"sunny"</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Поведение: Объект сериализуется и отправляется обратно в качестве выходных данных инструмента. Модель может считывать определенные поля и рассуждать на их основе. Подобно возвращаемым строкам, это не обновляет состояние графа напрямую. Используйте это, когда для дальнейшего анализа данных предпочтительнее использовать явно заданные поля, а не произвольный текст.</p>
+
+<p><strong>Для возврата мультимодального контента</strong>. Инструменты не ограничиваются обычным текстом. Если модель поддерживает многомодальные результаты работы инструмента, он может возвращать стандартные блоки контента, так что модель получает текст, изображения и другие медиафайлы в одном результате.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">capture_screenshot</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="s">"""Capture a screenshot of the current page."""</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"text"</span><span class="p">,</span> <span class="s">"text"</span><span class="p">:</span> <span class="s">"Screenshot of the current page:"</span><span class="p">},</span>
+        <span class="p">{</span><span class="s">"type"</span><span class="p">:</span> <span class="s">"image"</span><span class="p">,</span> <span class="s">"url"</span><span class="p">:</span> <span class="s">"https://example.com/page.png"</span><span class="p">},</span>
+    <span class="p">]</span>
+</code></pre></div></div>
+
+<p>Поведение: Возвращаемое значение преобразуется в <code class="language-plaintext highlighter-rouge">ToolMessage</code> многомодальный формат content. Используйте <code class="language-plaintext highlighter-rouge">message.content_blocks</code> для чтения нормализованного списка блоков после запуска инструмента. Модель должна поддерживать возвращаемые вами форматы данных. Перед возвратом изображений, аудио или видео проверьте возможности вашей модели. Информацию о типах блоков и требованиях, специфичных для конкретного поставщика услуг. Инструменты MCP, возвращающие изображения или смешанный контент, преобразуются одинаково.</p>
+
+<p><strong>Когда инструмент должен обновить состояние агента</strong>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Command</code> возвращает значение, когда инструменту необходимо обновить состояние графа (например, установить пользовательские настройки или состояние приложения). Если обновление <code class="language-plaintext highlighter-rouge">Command</code> нацелено на текущий граф, в него включается объект <code class="language-plaintext highlighter-rouge">ToolMessag</code>e, идентификатор вызова которого соответствует текущему вызову инструмента. Каждый вызов инструмента в истории сообщений должен иметь соответствующий объект <code class="language-plaintext highlighter-rouge">ToolMessage</code>. Используйте <code class="language-plaintext highlighter-rouge">runtime.tool_call_id</code> параметр, который обеспечивает выполнение следующего требования: если для обновления нет соответствующего <code class="language-plaintext highlighter-rouge">ToolMessage</code>, он сгенерирует исключение <code class="language-plaintext highlighter-rouge">ValueError</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">ToolMessage</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">ToolRuntime</span><span class="p">,</span> <span class="n">tool</span>
+<span class="kn">from</span> <span class="nn">langgraph.types</span> <span class="kn">import</span> <span class="n">Command</span>
+
+<span class="o">@</span><span class="n">tool</span>
+<span class="k">def</span> <span class="nf">set_language</span><span class="p">(</span><span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Command</span><span class="p">:</span>
+    <span class="s">"""Установить предпочитаемый язык."""</span>
+    <span class="k">return</span> <span class="n">Command</span><span class="p">(</span>
+        <span class="n">update</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">"preferred_language"</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
+            <span class="s">"messages"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">ToolMessage</span><span class="p">(</span>
+                    <span class="n">content</span><span class="o">=</span><span class="s">f"Язык установлен на </span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s">"</span><span class="p">,</span>
+                    <span class="n">tool_call_id</span><span class="o">=</span><span class="n">runtime</span><span class="p">.</span><span class="n">tool_call_id</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Поведение: Эта команда обновляет состояние с помощью update. Обновленное состояние доступно последующим шагам в рамках того же выполнения. Используйте редукторы для полей, которые могут обновляться при параллельных вызовах инструментов. Используйте это, когда инструмент не просто возвращает данные, но и изменяет состояние агента.</p>
+
+<p><strong>Return Direct</strong> — прямой возврат без дополнительного вызова модели</p>
+
+<p>Установите параметр «Возврат напрямую» для инструмента, чтобы обойти цикл работы агента: агент немедленно возвращает выходные данные инструмента вызывающей стороне, не отправляя их обратно через модель для дальнейшей обработки.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+
+<span class="o">@</span><span class="n">tool</span><span class="p">(</span><span class="n">return_direct</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fetch_order_status</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s">"""Fetch the current status of a customer order."""</span>
+    <span class="c1"># In production, query your order management system here
+</span>    <span class="k">return</span> <span class="s">f"Order </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s"> is shipped and will arrive in 2 days."</span>
+
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s">"gpt-4o-mini"</span><span class="p">),</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">fetch_order_status</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"What is the status of order #12345?"</span><span class="p">}]</span>
+<span class="p">})</span>
+<span class="c1"># The agent returns the tool output directly without another LLM call:
+# "Order 12345 is shipped and will arrive in 2 days."
+</span></code></pre></div></div>
+
+<p>Поведение: Инструмент работает в обычном режиме, а его вывод заключен в тег <code class="language-plaintext highlighter-rouge">ToolMessage</code>. Агент прекращает цикл и возвращает результат работы инструмента в качестве окончательного ответа, минуя любые дополнительные вызовы модели.</p>
+
+<p>Многократные параллельные вызовы инструментов: Когда модель вызывает несколько инструментов за один шаг, сначала выполняются все они. После завершения работы всех инструментов агент перенаправляет запрос END только в том случае, если каждый инструмент в этой группе выполнил необходимые действия <code class="language-plaintext highlighter-rouge">return_direct=True</code>. Окончательный ответ включает выходные данные каждого инструмента, вызванного на этом шаге.</p>
+
+<p>Используйте это, когда:</p>
+
+<ul>
+  <li>Результатом работы инструмента является полный, готовый к отображению ответ (например, поисковый запрос, возвращающий готовый к показу результат). Следует избегать лишнего вызова модели, когда дополнительные рассуждения не требуются.</li>
+  <li>Вам необходимы детерминированные, неизмененные выходные данные: модель не может перефразировать, обобщать или использовать результаты работы инструмента.</li>
+</ul>
+
+<p>Поскольку данная модель не обрабатывает выходные данные инструмента, она не подходит для инструментов, результаты которых требуют дальнейшего анализа, обобщения или связывания с вызовами других инструментов.</p>
+
+<p>Смешанные параллельные вызовы: если модель вызывает <code class="language-plaintext highlighter-rouge">return_direct=True</code> инструмент одновременно с инструментами, которые не имеют <code class="language-plaintext highlighter-rouge">return_direct=True</code>, агент не завершает работу после этого шага. Он перенаправляет запрос обратно в модель с каждым вызовом из пакета, чтобы модель могла проанализировать все результаты. Завершение цикла происходит только тогда, когда каждый вызов инструмента на шаге имеет <code class="language-plaintext highlighter-rouge">return_direct=True</code>.</p>
+
+<p>Инструмент <code class="language-plaintext highlighter-rouge">return_direct=True</code> также может возвращать значение <code class="language-plaintext highlighter-rouge">Command</code> для обновления состояния графа перед завершением работы агента. В отличие от обычного возвращаемого значения, значение <code class="language-plaintext highlighter-rouge">Command</code> не преобразуется автоматически в <code class="language-plaintext highlighter-rouge">ToolMessage</code>. Когда целевой объект находится в текущем графе, включите сопоставление вызова инструмента tool_call_id. Отсутствие этого значения приводит <code class="language-plaintext highlighter-rouge">ToolNode</code> к возникновению ошибки <code class="language-plaintext highlighter-rouge">ValueError</code>, поскольку каждый <code class="language-plaintext highlighter-rouge">AIMessage</code> вызов инструмента должен иметь соответствующее значение <code class="language-plaintext highlighter-rouge">ToolMessage</code> в истории сообщений.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">ToolMessage</span>
+<span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">ToolRuntime</span><span class="p">,</span> <span class="n">tool</span>
+<span class="kn">from</span> <span class="nn">langgraph.types</span> <span class="kn">import</span> <span class="n">Command</span>
+
+
+<span class="o">@</span><span class="n">tool</span><span class="p">(</span><span class="n">return_direct</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fetch_and_store_order</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">ToolRuntime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Command</span><span class="p">:</span>
+    <span class="s">"""Fetch order status and store it in state."""</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="s">f"Order </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s"> is shipped and will arrive in 2 days."</span>
+    <span class="k">return</span> <span class="n">Command</span><span class="p">(</span>
+        <span class="n">update</span><span class="o">=</span><span class="p">{</span>
+            <span class="s">"last_order_status"</span><span class="p">:</span> <span class="n">status</span><span class="p">,</span>
+            <span class="c1"># Must include a ToolMessage so the message history stays valid
+</span>            <span class="s">"messages"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">ToolMessage</span><span class="p">(</span>
+                    <span class="n">content</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+                    <span class="n">tool_call_id</span><span class="o">=</span><span class="n">runtime</span><span class="p">.</span><span class="n">tool_call_id</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Чтобы записывать данные в родительский граф, установите значение <code class="language-plaintext highlighter-rouge">graph=Command.PARENT</code>. В этом случае требование снимается, поскольку выполнение полностью покидает текущий граф.</p>
+
+<h3 id="обработка-ошибок-инструментов">Обработка ошибок инструментов</h3>
+
+<p>Обработка ошибок инструментов с помощью промежуточного ПО агента LangChain позволяет повторять неудачные вызовы инструментов или возвращать пользовательские сообщения об ошибках:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.agents.middleware</span> <span class="kn">import</span> <span class="n">wrap_tool_call</span>
+<span class="kn">from</span> <span class="nn">langchain.messages</span> <span class="kn">import</span> <span class="n">ToolMessage</span>
+<span class="kn">from</span> <span class="nn">langchain.tools.tool_node</span> <span class="kn">import</span> <span class="n">ToolCallRequest</span>
+
+
+<span class="o">@</span><span class="n">wrap_tool_call</span>
+<span class="k">def</span> <span class="nf">handle_tool_errors</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">ToolCallRequest</span><span class="p">,</span>
+    <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ToolCallRequest</span><span class="p">],</span> <span class="n">ToolMessage</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ToolMessage</span><span class="p">:</span>
+    <span class="s">"""Convert tool exceptions into ToolMessages the model can handle."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ToolMessage</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="s">f"Tool error: Please check your input and try again. (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">)"</span><span class="p">,</span>
+            <span class="n">tool_call_id</span><span class="o">=</span><span class="n">request</span><span class="p">.</span><span class="n">tool_call</span><span class="p">[</span><span class="s">"id"</span><span class="p">],</span>
+        <span class="p">)</span>
+
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"ollama:north-mini-code-1.0"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">handle_tool_errors</span><span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="динамический-выбор-инструментов">Динамический выбор инструментов</h3>
+
+<p>При использовании динамических инструментов набор инструментов, доступных агенту, изменяется во время выполнения, а не определяется заранее. Не каждый инструмент подходит для каждой ситуации. Слишком много инструментов может перегрузить модель (перегрузить контекст) и увеличить количество ошибок; слишком мало ограничивает возможности. Динамический выбор инструментов позволяет адаптировать доступный набор инструментов в зависимости от состояния аутентификации, прав пользователя, флагов функций или этапа диалога.</p>
+
+<p>Существует два подхода, в зависимости от того, известны ли инструменты заранее:</p>
+
+<ul>
+  <li>Фильтрация предварительно зарегистрированных инструментов</li>
+  <li>Регистрация инструмента выполнения</li>
+</ul>
+
+<p>Когда все возможные инструменты известны на этапе создания агента, вы можете предварительно зарегистрировать их и динамически фильтровать, какие из них будут доступны модели, на основе состояния, разрешений или контекста. Например штатный пример (реализация для Store и Context отличается):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.agents.middleware</span> <span class="kn">import</span> <span class="n">wrap_model_call</span><span class="p">,</span> <span class="n">ModelRequest</span><span class="p">,</span> <span class="n">ModelResponse</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="o">@</span><span class="n">wrap_model_call</span>
+<span class="k">def</span> <span class="nf">state_based_tools</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">ModelRequest</span><span class="p">,</span>
+    <span class="n">handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ModelRequest</span><span class="p">],</span> <span class="n">ModelResponse</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelResponse</span><span class="p">:</span>
+    <span class="s">"""Filter tools based on conversation State."""</span>
+    <span class="c1"># Read from State: check if user has authenticated
+</span>    <span class="n">state</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">state</span>
+    <span class="n">is_authenticated</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"authenticated"</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">message_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s">"messages"</span><span class="p">])</span>
+
+    <span class="c1"># Only enable sensitive tools after authentication
+</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">request</span><span class="p">.</span><span class="n">tools</span> <span class="k">if</span> <span class="n">t</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"public_"</span><span class="p">)]</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">override</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message_count</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="c1"># Limit tools early in conversation
+</span>        <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">request</span><span class="p">.</span><span class="n">tools</span> <span class="k">if</span> <span class="n">t</span><span class="p">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s">"advanced_search"</span><span class="p">]</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">override</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">public_search</span><span class="p">,</span> <span class="n">private_search</span><span class="p">,</span> <span class="n">advanced_search</span><span class="p">],</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">state_based_tools</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Этот подход наиболее эффективен в следующих случаях:</p>
+
+<ul>
+  <li>Все возможные инструменты известны на этапе компиляции/запуска.</li>
+  <li>Вы хотите выполнить фильтрацию на основе разрешений, флагов функций или состояния беседы.</li>
+  <li>Инструменты статичны, но их доступность динамична.</li>
+</ul>
+
+<h3 id="встроенные-и-mcp-инструменты">Встроенные и MCP инструменты</h3>
+
+<p>LangChain предоставляет обширную коллекцию готовых инструментов и инструментариев для решения распространенных задач, таких как веб-поиск, интерпретация кода, доступ к базам данных и многое другое. Эти готовые к использованию инструменты можно напрямую интегрировать в ваши агенты без написания собственного кода.</p>
+
+<p>Полный список доступных инструментов, отсортированных по категориям, можно найти на <a href="https://docs.langchain.com/oss/python/integrations/tools">странице интеграции инструментов и наборов инструментов</a>.</p>
+
+<h4 id="встроенные-инструменты-server-side">Встроенные инструменты (Server-side)</h4>
+
+<p>В некоторых моделях чата есть встроенные инструменты, которые выполняются на стороне сервера поставщиком модели. К ним относятся такие возможности, как веб-поиск и интерпретаторы кода, которые не требуют от вас определения или размещения логики этих инструментов.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Включите встроенные инструменты через параметры модели
+# (см. документацию провайдера)
+</span></code></pre></div></div>
+
+<h4 id="инструменты-из-mcp-серверов">Инструменты из MCP серверов</h4>
+
+<p>Протокол контекста модели (MCP) — это открытый протокол, стандартизирующий способ предоставления приложениями инструментов языковым моделям. Вместо того чтобы создавать инструмент вручную, вы подключаетесь к серверу MCP и адаптируете рекламируемые им инструменты в инструменты LangChain, готовые к передаче агенту, как и любой другой инструмент.
+<code class="language-plaintext highlighter-rouge">MCPAdapter</code> обнаруживает инструменты сервера и преобразует их в инструменты LangChain. Открывает адаптер, вызывает метод <code class="language-plaintext highlighter-rouge">list_tools()</code> и передает результат методу <code class="language-plaintext highlighter-rouge">create_agent</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.mcp</span> <span class="kn">import</span> <span class="n">MCPAdapter</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">MCPAdapter</span><span class="p">(</span><span class="s">"https://example.com/mcp"</span><span class="p">)</span> <span class="k">as</span> <span class="n">adapter</span><span class="p">:</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="k">await</span> <span class="n">adapter</span><span class="p">.</span><span class="n">list_tools</span><span class="p">()</span>
+    <span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span><span class="s">"claude-sonnet-4-6"</span><span class="p">,</span> <span class="n">tools</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="сравнение-langchain-и-notesdeepagents">Сравнение LangChain и [<a href="deepagents" title="DeepAgents">notes/deepagents</a>]</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Функция</th>
+      <th>LangChain Agents</th>
+      <th>Deep Agents</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Базовые агенты</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Инструменты</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Память</td>
+      <td>✓</td>
+      <td>✓</td>
+    </tr>
+    <tr>
+      <td>Планирование</td>
+      <td>Нужно реализовать</td>
+      <td>Встроено</td>
+    </tr>
+    <tr>
+      <td>Файловая система</td>
+      <td>Нужно реализовать</td>
+      <td>Встроено</td>
+    </tr>
+    <tr>
+      <td>Подагенты</td>
+      <td>Нужно реализовать</td>
+      <td>Встроено</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Используйте <strong>Deep Agents</strong> для максимальной функциональности с минимальной настройкой, и <strong>LangChain Agents</strong> для точного контроля.</p>
+
+<h2 id="трассировка-с-langsmith">Трассировка с LangSmith</h2>
+
+<p>LangSmith позволяет отслеживать вызовы агентов и отлаживать их работу.</p>
+
+<p>Зарегистрируйтесь на <a href="https://smith.langchain.com">LangSmith</a> и установите переменные окружения:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">LANGSMITH_TRACING</span><span class="o">=</span><span class="s2">"true"</span>
+<span class="nb">export </span><span class="nv">LANGSMITH_API_KEY</span><span class="o">=</span><span class="s2">"your-api-key"</span>
+</code></pre></div></div>
+
+<p>Теперь все вызовы вашего агента будут логироваться в LangSmith, и вы сможете видеть полный процесс выполнения.</p>
+
+<p>Рекомендуется также настроить <a href="https://docs.langchain.com/langsmith/engine.md">LangSmith Engine</a> для мониторинга следов, обнаружения проблем и предложения исправлений.</p>
+
+<h2 id="поддерживаемые-провайдеры">Поддерживаемые провайдеры</h2>
+
+<p>LangChain работает со множеством провайдеров:</p>
+
+<ul>
+  <li><strong>OpenAI</strong> - GPT-4, GPT-3.5</li>
+  <li><strong>Google</strong> - Gemini, PaLM</li>
+  <li><strong>Anthropic</strong> - Claude</li>
+  <li><strong>Open Source</strong> - Ollama, Hugging Face</li>
+  <li><strong>Облачные</strong> - Azure OpenAI, AWS Bedrock</li>
+  <li><strong>Другие</strong> - OpenRouter, Fireworks, Baseten</li>
+</ul>
+
+<h2 id="полезные-ресурсы">Полезные ресурсы</h2>
+
+<ul>
+  <li>[<a href="../lists/machine-learning" title="Алгоритмы машинного обучения">lists/machine-learning</a>]</li>
+  <li><a href="https://docs.langchain.com/">Официальная документация LangChain</a></li>
+  <li><a href="https://smith.langchain.com">LangSmith для отладки</a></li>
+  <li>[<a href="langgraph" title="langgraph">notes/langgraph</a>]</li>
+</ul>
+
+<h2 id="ai-warning">AI-warning</h2>
+
+<p>✨ Данная статья сгенерирована с помощью Claude Haiku 4.5. Текст проверен человеком.</p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

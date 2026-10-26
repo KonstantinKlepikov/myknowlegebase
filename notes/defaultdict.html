@@ -1,0 +1,34 @@
+---
+layout: markdown_source
+title: "Source: Defaultdict словарь с возвратом значения по умолчанию"
+parent_url: "/notes/defaultdict/"
+permalink: "/notes/defaultdict.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: collection.defaultdict в стандартной библиотеке python
+tags: python-standart-library python
+title: Defaultdict словарь с возвратом значения по умолчанию
+---
+Разница с методом `defaultdict()` обычного словаря - позволяет заполнить словарь при инициализации. Возвращает dict-like объект
+
+```python
+import collections
+
+def default_factory():
+    return 'default value'
+
+d = collections.defaultdict(default_factory, foo='bar')
+print('foo =>', d['foo'])
+>>> foo => bar
+print('bar =>', d['bar'])
+>>> bar => default value
+```
+
+[Документация](https://docs.python.org/3/library/collections.html#defaultdict-objects)
+
+[[python-standart-library]]
+
+
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"

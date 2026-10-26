@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Source: KV-cache | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Source: KV-cache" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/kv-cache.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/kv-cache.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/kv-cache.html","headline":"Source: KV-cache","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<meta name="robots" content="noindex">
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      <article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Source: KV-cache</h1>
+    <a class="h5 link-primary ml-2" href="/myknowlegebase/notes/kv-cache/">← Rendered</a>
+  </header>
+  <div class="prose mb-4 py-4">
+    <p class="h5">markdown source:</p>
+    <pre style="white-space: pre-wrap; word-break: break-word; overflow-x: auto;"><code>---
+description: Что такое KV-cache в больших языковых моделях и почему он ускоряет генерацию текста.
+tags: llm attention cache inference transformers
+title: KV-cache
+---
+
+KV-cache (key-value cache) — это техника, которая позволяет LLM переиспользовать уже вычисленные векторы ключей и значений для прошлых токенов вместо того, чтобы пересчитывать их заново на каждом шаге генерации.
+
+Это одна из ключевых оптимизаций для инференса: без нее генерация текста становится заметно медленнее, особенно при длинных контекстах и больших моделях.
+
+В этой заметке я собрал основные идеи из статьи Sebastian Raschka про KV-cache и перевел их в более практический, инженерный язык.
+
+## Почему без кэша генерация медленная
+
+Большинство LLM генерируют текст по одному токену за раз: модель принимает контекст, предсказывает следующий токен, добавляет его в последовательность и повторяет.
+
+Пример:
+
+- prompt: &quot;Time&quot;
+- следующий токен: &quot;flies&quot;
+- затем: &quot;fast&quot;
+
+Если модель не использует кэш, то на каждом шаге она заново обрабатывает весь уже сгенерированный контекст:
+
+- для &quot;Time&quot; вычисляет все необходимые промежуточные представления
+- для &quot;Time flies&quot; снова всё пересчитывает
+- для &quot;Time flies fast&quot; снова всё пересчитывает
+
+То есть при генерации третьего токена модель уже дважды пересчитывает то, что было вычислено на предыдущих шагах.
+
+С точки зрения attention это особенно заметно: каждую новую позицию модель сравнивает с предыдущими ключами и значениями. Но для уже увиденных токенов эти K/V-представления не меняются — они были рассчитаны раньше и не должны пересчитываться.
+
+## Что такое key и value в attention
+
+В self-attention каждый токен преобразуется в три вектора:
+
+- Query (Q): то, что модель ищет в контексте
+- Key (K): то, что модель &quot;помечает&quot; как доступный для поиска
+- Value (V): содержимое, которое будет использоваться для агрегации
+
+Для одного токена в каждом слое:
+
+- Q, K, V получаются линейными проекциями из эмбеддинга токена
+- далее модель вычисляет скоры attention между текущим query и всеми ключами
+- потом весирует значения по этим скорям
+
+Уже вычисленные K и V для прошлых токенов зависят только от самих токенов и параметров модели, а не от того, что генерируется дальше.
+
+Именно поэтому их можно сохранить и переиспользовать.
+
+## Идея KV-cache
+
+KV-cache хранит уже вычисленные:
+
+- ключи K для каждого токена
+- значения V для каждого токена
+
+на каждом слое и в каждом attention-head.
+
+При генерации следующего токена модель:
+
+1. вычисляет K и V только для нового токена
+2. добавляет их в кэш
+3. использует весь кэш вместе с новым токеном для attention
+
+Вместо пересчета всей последовательности целиком модель работает только с:
+
+- новым токеном
+- уже сохраненными K/V для прошлого контекста
+
+Именно это резко снижает вычислительную нагрузку.
+
+## Почему это важно в авторегрессионной генерации
+
+LLM обычно генерируют текст автререгрессионно:
+
+- исходный prompt обрабатывается один раз
+- далее на каждом шаге выбирается один следующий токен
+- новый токен добавляется в последовательность
+
+Если не использовать cache, то на каждом step мы пересчитываем историю заново. Это дает квадратичную зависимость по длине последовательности на уровне внимания.
+
+С KV-cache мы в сущности уменьшаем повторную работу: каждая пара K/V вычисляется один раз и дальше используется много раз.
+
+Упрощенно:
+
+- без кэша: O(n²) работы по накоплению
+- с кэшем: в каждом шаге мы добавляем только новые элементы, а старые переиспользуем
+
+Это не магия: в реальных моделях это превращается в значимый выигрыш в latency и throughput, особенно в продакшене и при длинных диалогах, код-интерфейсах, генерации длинного текста и RAG-пайплайнах.
+
+## Идея на примере
+
+Представим, что мы уже сгенерировали контекст:
+
+&quot;Time flies&quot;
+
+Теперь генерируем следующий токен &quot;fast&quot;.
+
+Без cache модель заново делает:
+
+- вычисление key/value для &quot;Time&quot;
+- вычисление key/value для &quot;flies&quot;
+- затем для &quot;fast&quot;
+
+С cache:
+
+- &quot;Time&quot; и &quot;flies&quot; уже лежат в кэше
+- вычисляется только key/value для &quot;fast&quot;
+- дальше attention смотрит сразу на кэш + новый токен
+
+Это тот же результат математики, но без лишних вычислений.
+
+## Как выглядит реализация на уровне кода
+
+Идея очень простая: хранить тензоры `cache_k` и `cache_v` и дополнять их новыми значениями.
+
+Пример в духе кода из статьи:
+
+```python
+import torch
+
+class MultiHeadAttention(torch.nn.Module):
+    def __init__(self, d_in, d_out, num_heads):
+        super().__init__()
+        self.W_key = torch.nn.Linear(d_in, d_out)
+        self.W_value = torch.nn.Linear(d_in, d_out)
+        self.W_query = torch.nn.Linear(d_in, d_out)
+
+        self.register_buffer(&quot;cache_k&quot;, None)
+        self.register_buffer(&quot;cache_v&quot;, None)
+
+    def reset_cache(self):
+        self.cache_k = None
+        self.cache_v = None
+
+    def forward(self, x, use_cache=False):
+        b, seq_len, d_in = x.shape
+
+        keys_new = self.W_key(x)
+        values_new = self.W_value(x)
+        queries = self.W_query(x)
+
+        if use_cache:
+            if self.cache_k is None:
+                self.cache_k = keys_new
+                self.cache_v = values_new
+            else:
+                self.cache_k = torch.cat([self.cache_k, keys_new], dim=1)
+                self.cache_v = torch.cat([self.cache_v, values_new], dim=1)
+
+            keys = self.cache_k
+            values = self.cache_v
+        else:
+            keys = keys_new
+            values = values_new
+
+        # далее обычный attention
+        # scores = queries @ keys.transpose(-2, -1)
+        # weights = softmax(scores, dim=-1)
+        # output = weights @ values
+        return keys, values
+```
+
+Главная мысль здесь в том, что мы не заменяем сам attention, а лишь изменяем способ, каким модель получает K и V.
+
+## Обязательный паттерн: очистка кэша
+
+Кэш нельзя просто держать между разными запросами или отдельными генерационными сессиями.
+
+Если этого не делать, то новый запрос может начать &quot;видеть&quot; старый контекст, что приведет к неправильному поведению и запутанным результатам.
+
+Поэтому обычно есть метод вроде:
+
+```python
+model.reset_kv_cache()
+```
+
+или на уровне блока attention:
+
+```python
+for block in model.trf_blocks:
+    block.att.reset_cache()
+```
+
+Это особенно важно в продакшене, где один и тот же объект модели может использоваться для разных разговоров или запросов.
+
+## Почему нужен offset / current_pos
+
+В простом коде при каждом новом вызове нужно помнить, на какой позиции в контексте мы находимся.
+
+Например, если кэш уже содержит 10 токенов, а новый токен должен пойти после них, то позиционный индекс новых токенов должен начинаться не с 0, а с 10.
+
+Иначе модель &quot;смешает&quot; старые и новые позиции и будет ошибочно учитывать их как перекрывающиеся.
+
+Типичный паттерн:
+
+```python
+self.current_pos = 0
+```
+
+и затем при генерации:
+
+```python
+pos_ids = torch.arange(self.current_pos, self.current_pos + seq_len)
+self.current_pos += seq_len
+```
+
+Это важно для корректного position embedding и для того, чтобы модель не путала временные шаги.
+
+## Почему кэш помогает в реальном инференсе
+
+Кэш особенно полезен в системах, где:
+
+- пользователь пишет длинный диалог
+- модель должна быстро продолжать ответ
+- используется streaming generation
+- есть большие модели и длинный контекст
+
+Если без кэша при каждом новом токене модель заново прогоняет весь контекст, то задержка быстро растет. С кэшем повторные вычисления исчезают, и скорость генерации становится заметно выше.
+
+Это одна из причин, почему современные LLM-инференс-системы в продакшене используют кэширование K/V как стандартную практику.
+
+## Трейд-оффы
+
+У KV-cache есть плюсы и недостатки
+
+### Плюсы
+
+- заметно ускоряет генерацию текста
+- уменьшает повторные вычисления
+- особенно полезен при длинных последовательностях
+
+### Минусы
+
+- увеличивает потребление памяти
+- с длинным контекстом кэш может значительно расти
+- добавляет сложность в реализации
+- кэш нужен только для inference, не для training
+
+Для больших моделей с очень длинным контекстом память становится критичным фактором. Поэтому в продакшене часто используются оптимизации:
+
+- предаллокейшн памяти
+- sliding window для ограничения контекста
+- отсечение старых токенов
+- более специальные наборы K/V буферов
+
+## Оптимизации в продакшене
+
+В учебном примере кэш часто делается через `torch.cat`. Это удобно и понятно, но на больших моделях это может быть неэффективно, потому что:
+
+- создаются новые тензоры на каждом шаге
+- возникает лишнее выделение памяти
+- возможна фрагментация памяти
+
+Более продвинутые варианты:
+
+1. Предаллоцировать буфер максимальной длины
+2. Записывать новые значения в нужный слот вместо конкатенации
+3. Использовать sliding window: держать только последние N токенов
+4. Для длинных контекстов применять более сложные стратегии управления memory
+
+То есть в реальных системах KV-cache — это не просто &quot;один словарь с K и V&quot;, а обычно продуманная структура памяти, обученная под модель и устройство.
+
+## Что важно запомнить
+
+- в autoregressive LLM прошлые токены не нужно пересчитывать заново
+- их K/V уже известны и стабильны
+- кэш позволяет переиспользовать их на каждом следующем шаге
+
+Это превращает генерацию текста из повторного пересчета всей истории в incremental inference, где каждый новый токен добавляет лишь небольшую дополнительную работу.
+
+Именно эта идея лежит в основе производительного инференса современных больших языковых моделей.
+
+## Итог
+
+KV-cache — это один из самых важных инженерных приемов в LLM-инференсе.
+
+Он решает одну и ту же проблему, с которой сталкивается любая генерация текста:
+
+- почему модель заново считает уже известный контекст?
+- почему скорость падает при длинных диалогах?
+
+Ответ в том, что без кэша она фактически заново вычисляет старый контекст каждый раз.
+
+KV-cache меняет ситуацию так, что:
+
+- прошлые ключи и значения сохраняются
+- новый токен обрабатывается отдельно
+- attention обращается к уже готовому контексту
+
+Именно поэтому кэш считается фундаментальной оптимизацией для эффективной работы LLM в production.
+
+## Ссылки и рекомендуемое чтение
+
+- статья: [Understanding and Coding the KV Cache in LLMs from Scratch](https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms)
+- про attention: [Understanding and Coding Self-Attention, Multi-Head Attention, Causal-Attention, and Cross-Attention in LLMs](https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention)
+- по книге: [Build a Large Language Model (From Scratch)](https://amzn.to/4fqvn0D)
+- [[lists/llm]]
+
+## AI-warning
+
+✨ Данная статья сгенерирована с помощью MAI-Code-1.1-Flash. Текст проверен человеком.
+
+[lists/llm]: ../lists/llm &quot;LLM&quot;
+</code></pre>
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

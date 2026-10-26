@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Poetry | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Poetry" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Управление зависимостями и изоляция среды разработки в python с poetry" />
+<meta property="og:description" content="Управление зависимостями и изоляция среды разработки в python с poetry" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/poetry/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/poetry/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Управление зависимостями и изоляция среды разработки в python с poetry","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/poetry/","headline":"Poetry","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Poetry</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/poetry.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/cli" title="cli" class="link-tags">cli&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/cicd" title="cicd" class="link-tags">cicd&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/pip" title="pip" class="link-tags">pip&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p><strong>Poetry is a tool for dependency management and packaging in python</strong>. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Замена [<a href="requirements" title="Requirements.txt">requirements</a>]</p>
+
+<p>Выставляется изолированно от остальной системы для осуществления версионирования зависимостей. В линуксе:</p>
+
+<p><img src="/myknowlegebase/attachments/2022-10-23-00-20-00.png" alt="poetry install" /></p>
+
+<p><a href="https://python-poetry.org/docs/#installation">about installation</a></p>
+
+<p>После установки можно проверить что записалось в PATH. Если ничего, то прописать путь к poetry <code class="language-plaintext highlighter-rouge">source $HOME/.poetry/env</code>. Проверит версию <code class="language-plaintext highlighter-rouge">poetry --version</code></p>
+
+<p><a href="https://python-poetry.org/docs/">Ссылка</a></p>
+
+<h2 id="basic-usage"><a href="https://python-poetry.org/docs/basic-usage/#basic-usage">Basic usage</a></h2>
+
+<h3 id="project-setup">Project setup</h3>
+
+<p>poetry использует [<a href="toml" title="Toml">toml</a>] для конфигнов</p>
+
+<p><code class="language-plaintext highlighter-rouge">poetry new poetry-demo</code> создает новый poetry project с названием poetry-demo. В нем:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>poetry-demo
+├── pyproject.toml
+├── README.rst
+├── poetry_demo
+│   └── __init__.py
+└── tests
+    ├── __init__.py
+    └── test_poetry_demo.py
+</code></pre></div></div>
+
+<p>Здесб <code class="language-plaintext highlighter-rouge">pyproject.toml</code> задает архитоектуру проекта и зависимости</p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[tool.poetry]</span>
+<span class="py">name</span> <span class="p">=</span> <span class="s">"poetry-demo"</span>
+<span class="py">version</span> <span class="p">=</span> <span class="s">"0.1.0"</span>
+<span class="py">description</span> <span class="p">=</span> <span class="s">""</span>
+<span class="py">authors</span> <span class="p">=</span> <span class="p">[</span><span class="s">"Sébastien Eustace &lt;sebastien@eustace.io&gt;"</span><span class="p">]</span>
+
+<span class="nn">[tool.poetry.dependencies]</span>
+<span class="py">python</span> <span class="p">=</span> <span class="s">"*"</span>
+
+<span class="nn">[tool.poetry.dev-dependencies]</span>
+<span class="py">pytest</span> <span class="p">=</span> <span class="s">"^3.4"</span>
+</code></pre></div></div>
+
+<h3 id="preinitialize-project-шаблон-проекта">Preinitialize project (шаблон проекта)</h3>
+
+<p>Размещаем файл <code class="language-plaintext highlighter-rouge">.toml</code> в нужной папке и делаем инит</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>pre-existing-project
+poetry init
+</code></pre></div></div>
+
+<h3 id="specifying-dependencies">Specifying dependencies</h3>
+
+<p>Специфические зависимости прописываются в томле</p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[tool.poetry.dependencies]</span>
+<span class="py">pendulum</span> <span class="p">=</span> <span class="s">"^1.4"</span>
+</code></pre></div></div>
+
+<p>В секции <code class="language-plaintext highlighter-rouge">tool.poetry.repositories</code> можно прописать репозитории, в которых <code class="language-plaintext highlighter-rouge">poetry</code> будет искать зависимости. Дефолтный - [<a href="pypy" title="Pypy">pypy</a>]</p>
+
+<p>Вместо ручной модификации, можно использовать <code class="language-plaintext highlighter-rouge">poetry add pendulum</code> - зависимость будет найдена, добавлена в томл со всеми сабзависимости и в правильной ограничивающей версии.</p>
+
+<h3 id="using-your-virtual-environment">Using your virtual environment</h3>
+
+<p>Окуржение poetry ставится в <code class="language-plaintext highlighter-rouge">{cache-dir}/virtualenvs</code>.</p>
+
+<p>Можно использовать <code class="language-plaintext highlighter-rouge">poetry run</code></p>
+
+<p>Примеры:</p>
+
+<p><code class="language-plaintext highlighter-rouge">poetry run python your_script.py</code>
+<code class="language-plaintext highlighter-rouge">poetry run pytest</code></p>
+
+<p>Другой вариант - создать <code class="language-plaintext highlighter-rouge">poetry shell</code>. Создание нового шела обязательно. Выйти можно через <code class="language-plaintext highlighter-rouge">exit</code> или <code class="language-plaintext highlighter-rouge">deactivate</code> не выходя из шела.</p>
+
+<p>Третий вариант - запустить вручную: <code class="language-plaintext highlighter-rouge">source {path_to_venv}/bin/activate</code>. Путь можно получить так: <code class="language-plaintext highlighter-rouge">poetry env info --path</code>, соответственно одной командой: source`poetry env info –path`/bin/activate`</p>
+
+<p><a href="https://python-poetry.org/docs/basic-usage/#activating-the-virtual-environment">Подробнее тут</a></p>
+
+<h3 id="installing-dependencies"><a href="https://python-poetry.org/docs/basic-usage/#installing-dependencies">Installing dependencies</a></h3>
+
+<p><code class="language-plaintext highlighter-rouge">poetry install</code> в проекте</p>
+
+<p>Если запускается впервые, то создается <code class="language-plaintext highlighter-rouge">poetry.lock</code> и все ставится с нуля. Дальше poetry будет сверяться с lock и ставить только отсутствующие или измененные зависимости. Необходимо постоянно комитить лок систему контроля версий, чтобы обновлять версии для установки.</p>
+
+<p>Если нужно установить только зависимости,то тогда <code class="language-plaintext highlighter-rouge">poetry install --no-root</code></p>
+
+<h2 id="публикация-библиотек-с-poetry"><a href="https://python-poetry.org/docs/libraries/">Публикация библиотек с poetry</a></h2>
+
+<h2 id="команды"><a href="https://python-poetry.org/docs/cli/">Команды</a></h2>
+
+<p>Основное - это <a href="https://python-poetry.org/docs/cli/#install">install</a>. Инсталит из <code class="language-plaintext highlighter-rouge">.toml</code> с учетом <code class="language-plaintext highlighter-rouge">.lock</code></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">poetry install</code></li>
+  <li><code class="language-plaintext highlighter-rouge">poetry install --no-dev</code> без дева</li>
+  <li><code class="language-plaintext highlighter-rouge">poetry install --remove-untracked</code> - не ставить то, что не трекается в lock</li>
+  <li><code class="language-plaintext highlighter-rouge">poetry install --extras "mysql pgsql"</code> включить экстра зависимости</li>
+  <li><code class="language-plaintext highlighter-rouge">poetry install -E mysql -E pgsql</code></li>
+  <li><code class="language-plaintext highlighter-rouge">poetry install --no-root</code> не инсталится рут-пкет (мой проект)</li>
+</ul>
+
+<p>Апдейт зависимостей в <code class="language-plaintext highlighter-rouge">.lock</code> через <code class="language-plaintext highlighter-rouge">poetry update</code>. Можно заапдейтить только часть <code class="language-plaintext highlighter-rouge">poetry update requests toml</code></p>
+
+<p>Добавление необходимых зависимостей в <code class="language-plaintext highlighter-rouge">.toml</code> через <code class="language-plaintext highlighter-rouge">poetry add requests pendulum</code> - зависимости добавляются, затем инсталлируются.</p>
+
+<p>Опции</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">--dev (-D)</code>: Add package as development dependency</li>
+  <li><code class="language-plaintext highlighter-rouge">--path</code>: The path to a dependency</li>
+  <li><code class="language-plaintext highlighter-rouge">--optional</code> : Add as an optional dependency</li>
+  <li><code class="language-plaintext highlighter-rouge">--dry-run</code> : Outputs the operations but will not execute anything (implicitly enables –verbose)</li>
+  <li><code class="language-plaintext highlighter-rouge">--lock</code> : Do not perform install (only update the lockfile)</li>
+</ul>
+
+<p>Удалчерез <code class="language-plaintext highlighter-rouge">poetry remove pendulum</code>. Посмотреть зависимости <code class="language-plaintext highlighter-rouge">poetry show</code></p>
+
+<p>Остальное смотри в доке.</p>
+
+<h2 id="configuration"><a href="https://python-poetry.org/docs/configuration/">Configuration</a></h2>
+
+<h2 id="repositories"><a href="https://python-poetry.org/docs/repositories/">Repositories</a></h2>
+
+<h2 id="managing-environments"><a href="https://python-poetry.org/docs/managing-environments/">Managing environments</a></h2>
+
+<p>Poetry работает всегда изолированно от глобального питона. При создании окружения poetry использует текущую активированную версию #python. Есть возможность переключаться между различными версиями python - <a href="https://python-poetry.org/docs/managing-environments/#switching-between-environments">подробнее</a></p>
+
+<p><a href="https://github.com/microsoft/vscode-python/issues/8372">Решение проблемы с путями к питону в vs-code</a></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">poetry env info</code> инфа об окружении</li>
+  <li><code class="language-plaintext highlighter-rouge">poetry env list</code> листинг окружений, ассоциированных с проектом</li>
+  <li><code class="language-plaintext highlighter-rouge">poetry env use python 3.8</code> использовать определенный питон</li>
+</ul>
+
+<p>Окружения можно снести через <code class="language-plaintext highlighter-rouge">delete</code></p>
+
+<h2 id="спецификация-зависимостей-и-их-версий-в-toml"><a href="https://python-poetry.org/docs/dependency-specification/">Спецификация зависимостей и их версий в .toml</a></h2>
+
+<h2 id="состав-toml"><a href="https://python-poetry.org/docs/pyproject/">Состав .toml</a></h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">name</code> имя пакета (проекта) required</li>
+  <li><code class="language-plaintext highlighter-rouge">version</code> версия required</li>
+  <li><code class="language-plaintext highlighter-rouge">description</code> required</li>
+  <li><code class="language-plaintext highlighter-rouge">license</code></li>
+  <li><code class="language-plaintext highlighter-rouge">authors</code> required</li>
+  <li><code class="language-plaintext highlighter-rouge">maintainers</code></li>
+  <li><code class="language-plaintext highlighter-rouge">readme</code></li>
+  <li><code class="language-plaintext highlighter-rouge">homepage</code></li>
+  <li><code class="language-plaintext highlighter-rouge">repository</code></li>
+  <li><code class="language-plaintext highlighter-rouge">documentation</code></li>
+  <li><code class="language-plaintext highlighter-rouge">keywords</code></li>
+  <li><code class="language-plaintext highlighter-rouge">classifiers</code></li>
+  <li><code class="language-plaintext highlighter-rouge">packages</code> - список пакетов и модулей, включаемых в финальную версию</li>
+  <li><code class="language-plaintext highlighter-rouge">include</code> and <code class="language-plaintext highlighter-rouge">exclude</code> - список паттернов, которые необходимо включить в финальный проект</li>
+  <li><code class="language-plaintext highlighter-rouge">dependencies</code> and <code class="language-plaintext highlighter-rouge">dev-dependencies</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scripts</code> скрипты, которые необходимо выполнить при инсталяции</li>
+  <li><code class="language-plaintext highlighter-rouge">extras</code> опциональные зависимости</li>
+  <li><code class="language-plaintext highlighter-rouge">plugins</code></li>
+  <li><code class="language-plaintext highlighter-rouge">urls</code></li>
+</ul>
+
+<p><a href="https://browniebroke.com/blog/migrating-project-to-poetry/">Пример реализации проекта на poetry</a>
+<a href="https://elements.heroku.com/buildpacks/moneymeets/python-poetry-buildpack">Как использовать poetry</a> на [<a href="../lists/heroku" title="Heroku">heroku</a>], [<a href="heroku-cli" title="Heroku-cl">heroku-cli</a>]</p>
+
+<h2 id="еще-материалы">Еще материалы</h2>
+
+<h3 id="how-to-update-poetrys-lock-file-without-upgrading-dependencies">How to update Poetry’s lock file without upgrading dependencies?</h3>
+
+<p><code class="language-plaintext highlighter-rouge">poetry lock --no-update</code></p>
+
+<h3 id="как-сделать-энтри-поинт-в-проекте-с-poetry">Как сделать энтри-поинт в проекте с poetry</h3>
+
+<p>Пример с [<a href="click" title="Click интерфейс командной строки">click</a>]:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">click</span>
+
+<span class="o">@</span><span class="n">click</span><span class="p">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="s">"""packagename cli"""</span>
+
+<span class="o">@</span><span class="n">main</span><span class="p">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">packagefunction</span><span class="p">():</span>
+    <span class="s">"""packagefunction subcommand"""</span>
+</code></pre></div></div>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">[</span><span class="nv">tool.poetry.scripts</span><span class="pi">]</span>
+<span class="c1"># command_name = module_for_handler : function_for_handler</span>
+<span class="s">&lt;packagename&gt; = '&lt;packagename&gt;:&lt;main&gt;'</span>
+</code></pre></div></div>
+
+<p><a href="https://stackoverflow.com/a/55065934/15966204">Источник на оверфло</a>. <a href="https://stackoverflow.com/questions/59286983/how-to-run-a-script-using-pyproject-toml-settings-and-poetry">Еще примеры</a> и <a href="https://stackoverflow.com/questions/67476156/pass-commandline-arguments-to-a-python-script-installed-with-poetry">еще</a>. Здесь можно <a href="https://stackoverflow.com/a/70656210/15966204">прочитать почему это может не работать.</a>.</p>
+
+<p>Альтернатива: [<a href="poetrypoet" title="Poetrypoet">poetrypoet</a>]</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://github.com/python-poetry/poetry/issues/7523">b’Head’ on ‘poetry update’ or ‘poetry lock’</a></li>
+  <li><a href="https://github.com/orgs/python-poetry/discussions/1879">Document docker poetry best practices</a></li>
+  <li>[<a href="setuptools" title="Setuptools">setuptools</a>]</li>
+  <li><a href="https://fpgmaas.github.io/cookiecutter-poetry/">cookiecutter-poetry</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

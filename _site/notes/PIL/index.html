@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pillow - обработка изображений | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pillow - обработка изображений" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Библиотека для обработки изображений в python" />
+<meta property="og:description" content="Библиотека для обработки изображений в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/PIL/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/PIL/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Библиотека для обработки изображений в python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/PIL/","headline":"Pillow - обработка изображений","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Pillow - обработка изображений</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/PIL.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="image-class">Image class</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"empire.jpg"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">im</span><span class="p">.</span><span class="nb">format</span><span class="p">,</span> <span class="n">im</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">im</span><span class="p">.</span><span class="n">mode</span><span class="p">)</span>
+<span class="n">PPM</span> <span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span> <span class="n">RGB</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">pl</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-00-55-29.png" alt="" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># copy and insert boxes
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'data/empire.jpg'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">box</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="c1"># order - left, top, right, bottom coordinates
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">region</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">crop</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># operations with box and insertion
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">region</span> <span class="o">=</span> <span class="n">region</span><span class="p">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="p">.</span><span class="n">ROTATE_180</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># sinse 10.0.0 is deprecated - use Image.Transpose.ROTATE_180
+</span><span class="o">&gt;&gt;&gt;</span> <span class="n">im</span><span class="p">.</span><span class="n">paste</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-00-55-58.png" alt="empire.jpg rotated" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-00-58-49.png" alt="empire.jpg resized" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-00-59-54.png" alt="empire.jpg rotated" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># merging
+</span><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">im2</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">im1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">im2</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">im1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">im2</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="s">"RGBA"</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+
+    <span class="n">im</span><span class="p">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im1</span><span class="p">)</span>
+    <span class="n">im</span><span class="p">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im2</span><span class="p">,</span> <span class="p">(</span><span class="n">im1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">im</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-01-33-00.png" alt="merging" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># spliting and merging bands
+</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="s">"RGB"</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-01-33-31.png" alt="spliting and merging" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># point transforms
+</span><span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">point</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-01-34-08.png" alt="points transform" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Processing individual bands (with paste() method)
+</span>
+<span class="c1"># split the image into individual bands
+</span><span class="n">source</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">R</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+
+<span class="c1"># select regions where red is less than 100
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="n">R</span><span class="p">].</span><span class="n">point</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="ow">and</span> <span class="mi">255</span><span class="p">)</span>
+
+<span class="c1"># process the green band
+</span><span class="n">out</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="n">G</span><span class="p">].</span><span class="n">point</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">)</span>
+
+<span class="c1"># paste the processed band back, but only where red was &lt; 100
+</span><span class="n">source</span><span class="p">[</span><span class="n">G</span><span class="p">].</span><span class="n">paste</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+<span class="c1"># build a new multiband image
+</span><span class="n">out</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span><span class="n">im</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+<span class="n">pl</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pl</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/myknowlegebase/attachments/2022-05-28-01-35-06.png" alt="Processing individual bands" /></p>
+
+<ul>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/tutorial.html#using-the-image-class">using Image class</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/reference/Image.html">more about Image module</a></li>
+</ul>
+
+<h2 id="concepts">Concepts</h2>
+
+<p>Изображение может состоять из одного или нескольких каналов данных. Библиотека pillow позволяет хранить несколько каналов в одном изображении при условии, что все они имеют одинаковые ширину и высоту. Например, изображение PNG может иметь каналы «R», «G», «B» и «A» для значений прозрачности красного, зеленого, синего и альфа-канала. Многие операции воздействуют на каждый канал отдельно, например, гистограммы. Часто полезно думать, что каждый пиксель имеет одно значение для каждго канала. Чтобы получить количество и названия каналов на изображении, используйте метод <code class="language-plaintext highlighter-rouge">getbands()</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">mode</code> — это строка, определяющая тип и глубину пикселя изображения. Каждый пиксель использует полный диапазон битовой глубины. Таким образом, 1-битный пиксель имеет диапазон от 0 до 1, 8-битный пиксель имеет диапазон от 0 до 255 и так далее. Текущая версия поддерживает следующие стандартные режимы:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1</code> (1-bit pixels, black and white, stored with one pixel per byte)</li>
+  <li><code class="language-plaintext highlighter-rouge">L</code> (8-bit pixels, black and white)</li>
+  <li><code class="language-plaintext highlighter-rouge">P</code> (8-bit pixels, mapped to any other mode using a color palette)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGB</code> (3x8-bit pixels, true color)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGBA</code> (4x8-bit pixels, true color with transparency mask)</li>
+  <li><code class="language-plaintext highlighter-rouge">CMYK</code> (4x8-bit pixels, color separation)</li>
+  <li><code class="language-plaintext highlighter-rouge">YCbCr</code> (3x8-bit pixels, color video format) Note that this refers to the JPEG, and not the ITU-R BT.2020, standard</li>
+  <li><code class="language-plaintext highlighter-rouge">LAB</code> (3x8-bit pixels, the L<em>a</em>b color space)</li>
+  <li><code class="language-plaintext highlighter-rouge">HSV</code> (3x8-bit pixels, Hue, Saturation, Value color space)</li>
+  <li><code class="language-plaintext highlighter-rouge">I</code> (32-bit signed integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">F</code> (32-bit floating point pixels)</li>
+</ul>
+
+<p>Pillow also provides limited support for a few additional modes, including:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">LA</code> (L with alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">PA</code> (P with alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGBX</code> (true color with padding)</li>
+  <li><code class="language-plaintext highlighter-rouge">RGBa</code> (true color with premultiplied alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">La</code> (L with premultiplied alpha)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16</code> (16-bit unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16L</code> (16-bit little endian unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16B</code> (16-bit big endian unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">I;16N</code> (16-bit native endian unsigned integer pixels)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;15</code> (15-bit reversed true colour)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;16</code> (16-bit reversed true colour)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;24</code> (24-bit reversed true colour)</li>
+  <li><code class="language-plaintext highlighter-rouge">BGR;32</code> (32-bit reversed true colour)</li>
+</ul>
+
+<p>pillow не поддерживает юзер-дефайнед модели</p>
+
+<p>Атрибут <code class="language-plaintext highlighter-rouge">size</code> позволяет указать размер изображения в виде кортежа из двух целых чисел. Координаты-  в виде кортежа из четырех чисел - левый, верхний, правый и нижний.</p>
+
+<p>Атрибут <code class="language-plaintext highlighter-rouge">info</code> позволяет добавить вспомогательную инфу <a href="https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.info">в виде словаря</a>. Наиболее частый вариант использования - передача информации об ориентации изображения.</p>
+
+<p>Для геометрических операций, которые могут отображать несколько входных пикселей в один выходной пиксель, PIL предоставляет различные <a href="https://pillow.readthedocs.io/en/stable/handbook/concepts.html#filters">фильтры передискретизации</a>.</p>
+
+<p><a href="https://pillow.readthedocs.io/en/stable/handbook/concepts.html#">Подробнее</a></p>
+
+<h2 id="more">More</h2>
+
+<ul>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html">Поддерживаемые форматы</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html">параметр привязки и выравнивания текста</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/writing-your-own-image-plugin.html">создание собственных плагинов</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/handbook/writing-your-own-image-plugin.html#decoders">декодеры</a></li>
+  <li><a href="https://pillow.readthedocs.io/en/stable/reference/index.html">список классов и функций</a></li>
+  <li><a href="https://ru.stackoverflow.com/questions/1078302/python-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B5%D1%82%D0%B0%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D1%83-%D1%84%D0%BE%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D0%B9">Python удаление метаданных у фотографий</a></li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://pillow.readthedocs.io/en/stable/index.html">docks</a></li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="../lists/computer-visions" title="Computer visions">computer-visions</a>]</li>
+  <li>[<a href="scikit-image" title="Scikit-image">scikit-image</a>]</li>
+  <li>[<a href="scipy" title="Scipy">scipy</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

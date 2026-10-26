@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Про варианты git workflow | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Про варианты git workflow" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Декоратор wait для behave" />
+<meta property="og:description" content="Декоратор wait для behave" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/workflow-types/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/workflow-types/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Декоратор wait для behave","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/workflow-types/","headline":"Про варианты git workflow","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Про варианты git workflow</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/workflow-types.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/cicd" title="cicd" class="link-tags">cicd&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>В сущности вариантов версионирования кода для [<a href="cl" title="ci/cd - непрервыная интеграция">cl</a>] огромное множество. Вкратце про те, котоыре основыаны на [<a href="../lists/git" title="Git">git</a>]</p>
+
+<h2 id="gitflow">Gitflow</h2>
+
+<p>Самый распространенный вариант, довольно часто применяемый в монолитных проектах. Включает в себя:</p>
+
+<ul>
+  <li>main ветвыь репозитория, которая используется для деплоя приложения на сервер</li>
+  <li>development ветвь, используемая для разработки фичей и релизов. С main никогда непосредственно не сливается</li>
+  <li>ветви фичей, образуемые от dev. Могут как завершаться. так и нет слиянием с dev. Никогда не сливаются с main</li>
+  <li>ветвь релиза. Созается из dev, после чего производятся тесты и необходимые доработки. Фичи в эту ветвь, пока она открыта, не добавляются. После подготовки релиза, релиз сливается с dev и main, после чего удаляется.</li>
+  <li>hotfix ответвляется от main чтобы исправить какие-то критичные ошибки, не останавливая процесс разработки</li>
+</ul>
+
+<p><a href="https://www.atlassian.com/ru/git/tutorials/comparing-workflows/gitflow-workflow">Подробнее об этом тут</a></p>
+
+<p><a href="https://danielkummer.github.io/git-flow-cheatsheet/index.ru_RU.html">Тут небольшая библиотечка</a>, позволяющая вести gitflow с одним набором команд</p>
+
+<h2 id="forking-workflow">Forking Workflow</h2>
+
+<p>В противоположность gitflow каждый разработчик ведет работу в форках основного репозитория, а не в клонах, корторые также базируются на стороне сервера. Это позволяет не комитить в основной репо, а заниматься полностью своими версиями, отправляя запрос на изменеение в основной репо, если это нужно. Вопрос объединения остается за овнером основного репо. Эта модель популярнак на опенсорсе. <a href="https://www.atlassian.com/ru/git/tutorials/comparing-workflows/forking-workflow">Подробнее тут</a>.</p>
+
+<h2 id="github-flow">Github Flow</h2>
+
+<p><a href="https://docs.github.com/en/get-started/quickstart/github-flow">Ссылка на гитхаб</a></p>
+
+<p>Остновное отличие от gitflow в том, что нет рабочей ветки и релизов:</p>
+
+<ul>
+  <li>каждая фича ведется в своей вектке</li>
+  <li>когда фича готова, запрашивается pull request в main</li>
+  <li>производится раззвертывание для тестов и обсуждение</li>
+  <li>после чего плу реквест принимается и ветка фичи мержится или плу реквест отклоняется</li>
+</ul>
+
+<p>Принципиальная разница в том, что процесс разработки в веках упрощавется и идет быстрее. Такая архитектура удобна для микросервисов. <a href="https://habr.com/ru/post/346066/">Тут подробная статья</a></p>
+
+<p><a href="https://mcs.mail.ru/help/ru_RU/manage-k8s/k8s-docker-reg">Подробнее на github</a></p>
+
+<h2 id="gitlab-flow">Gitlab Flow</h2>
+
+<p>Разница с предыдущим вариантом в том, что сначала идет мерж, а потом развертывание и тесты, что потенциально грозит сложным reverse merge в ситуации, когда измененеия необходимо откатить. <a href="https://docs.gitlab.com/ee/topics/gitlab_flow.html">ссылка на статью на gitlab</a></p>
+
+<h3 id="github-flow-as-a-simpler-alternative">GitHub flow as a simpler alternative</h3>
+
+<p><img src="/myknowlegebase/attachments/2021-09-20-22-41-46.png" alt="GitHub flow as a simpler alternative" /></p>
+
+<h3 id="production-branch-with-gitlab-flow">Production branch with GitLab flow</h3>
+
+<p><img src="/myknowlegebase/attachments/2021-09-20-22-42-16.png" alt="Production branch with GitLab flow" /></p>
+
+<h3 id="environment-branches-with-gitlab-flow">Environment branches with GitLab flow</h3>
+
+<p><img src="/myknowlegebase/attachments/2021-09-20-22-43-35.png" alt="Environment branches with GitLab flow" /></p>
+
+<h3 id="release-branches-with-gitlab-flow">Release branches with GitLab flow</h3>
+
+<p><img src="/myknowlegebase/attachments/2021-09-20-22-44-15.png" alt="Release branches with GitLab flow" /></p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

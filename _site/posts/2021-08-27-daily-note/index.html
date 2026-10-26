@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Как добавить контейнеры на Digital Ocean registry с помощью docker-compose | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Как добавить контейнеры на Digital Ocean registry с помощью docker-compose" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Немного про оркестрацию c docker и github" />
+<meta property="og:description" content="Немного про оркестрацию c docker и github" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-08-27-daily-note/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/posts/2021-08-27-daily-note/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Немного про оркестрацию c docker и github","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/posts/2021-08-27-daily-note/","headline":"Как добавить контейнеры на Digital Ocean registry с помощью docker-compose","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Как добавить контейнеры на Digital Ocean registry с помощью docker-compose</h1>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Нам понадобится создать [<a href="../notes/github-action" title="Githunb action">github-action</a>] и иметь доступ к [<a href="../notes/digital-ocean-container-registry" title="Digital ocean container registry">digital-ocean-container-registry</a>]. Тут есть ряд нюансов:</p>
+
+<ul>
+  <li>на бесплатном тарифе в закрытых репозиториях нет [<a href="../notes/github-environment-variables" title="Github environment variables">github-environment-variables</a>]. Только [<a href="../notes/github-secrets" title="Github secrets">github-secrets</a>]. Переменные окружения доступны только на тарифе enterprize</li>
+  <li>на [<a href="../notes/digital-ocean-container-registry" title="Digital ocean container registry">digital-ocean-container-registry</a>] на бесплатном тарифе помимо ограничений по объему, <a href="https://docs.digitalocean.com/products/container-registry/">ограничено число контейнеров</a> (только 1). На следующем тарифе только 5. В этом контексте пожалуй лучше использовать [<a href="../notes/github-packages" title="Github packages">github-packages</a>], котоыре при тех же ограничениях по объему никак не лимитированы по количеству контейнров… к тому же на публичных репозиториях нет и ограничений по объему</li>
+  <li>потребуется [<a href="../notes/digital-ocean-doctl" title="Digital ocean doctl">digital-ocean-doctl</a>] - <a href="https://cloud.digitalocean.com/account/api/tokens">вот тут</a> надо создать персональный acces tocken для doctl на github</li>
+</ul>
+
+<p>Нам понадобится workflow в репозитории на github, в котором мы сделаем следующее:</p>
+
+<ul>
+  <li>установим среду</li>
+  <li>соберем контейнеры</li>
+  <li>соединимся с [<a href="../notes/digital-ocean-container-registry" title="Digital ocean container registry">digital-ocean-container-registry</a>]</li>
+  <li>отправим туда контейнеры</li>
+</ul>
+
+<p>Руководствоваться можно <a href="https://docs.digitalocean.com/products/kubernetes/how-to/deploy-using-github-actions/">вот этой статьей</a></p>
+
+<p>Поставить <code class="language-plaintext highlighter-rouge">doctl</code> можно с помощью <a href="https://github.com/digitalocean/action-doctl">вот такого</a> экшена из маркетплейса github. В данном случае в зашифрованную переменную как раз и помещен ключ, созданный на DO для доступа через cli <code class="language-plaintext highlighter-rouge">doctl</code></p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install doctl</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">digitalocean/action-doctl@v2</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">token</span><span class="pi">:</span> <span class="s">$</span>
+</code></pre></div></div>
+
+<p>Собирать контейнеры мы будем внутри github action jobs, для этого нам потребуется сначала собрать из исходников. размещенных в репозитории. а затем отправить в registry результат сборки. Чтобы понять где окажется image после сбьорки, это нужно сообщить в <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>, <a href="https://stackoverflow.com/a/53418591/15966204">например так</a> (локально):</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">build-1</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">./build-1</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">user/project-1</span>
+  <span class="na">build-2</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">./build-2</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">user/project-2</span>
+</code></pre></div></div>
+
+<p>Естественно, если контейнеры будут нелокально, то необходимо указать адреса registry в сети, в нашем случае на [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]. Соответственно сборку мы туда отправим с помощтью <code class="language-plaintext highlighter-rouge">docker compose push</code>, который обратиться к <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> и увидит там эти адреса. <a href="https://docs.docker.com/engine/reference/commandline/compose_push/">Подробнее о docker compose push</a></p>
+
+<p>Сложностью может оказаться то, что мы можем захотеть размещать стек как локально, так и удаленно. Можно использовать переменные окружения для задания пути (<a href="https://medium.com/@stoyanov.veseline/pushing-docker-images-to-a-private-registry-with-docker-compose-d2797097751">смотри статью</a>)</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">myapp</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">${REGISTRY_HOST}/myproject/myapp:latest</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">./services/myapp</span>
+</code></pre></div></div>
+
+<p>В этом случаем ожно задать переменные и использовать [<a href="../notes/dot-env" title="Dot-env">dot-env</a>] - переменные из <code class="language-plaintext highlighter-rouge">.env</code> файлов. Для [<a href="../notes/fastapi-template-deployment" title="Fastapi template deployment">fastapi-template-deployment</a>] это будет выглядеть так (на примере фронта) в <code class="language-plaintext highlighter-rouge">docker-compose.yml</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">frontend</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s1">'</span><span class="s">${DOCKER_IMAGE_FRONTEND?Variable</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">set}:${TAG-latest}'</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">./frontend</span>
+      <span class="na">args</span><span class="pi">:</span>
+        <span class="na">FRONTEND_ENV</span><span class="pi">:</span> <span class="s">${FRONTEND_ENV-production}</span>
+</code></pre></div></div>
+
+<p>Тогда мы можем выполнить сначала билд, а затем пуш, с помощью скрипта, выполняющего рекурсивно другой скрипт (так реализовано у tiangolo):</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#! /usr/bin/env sh</span>
+
+<span class="c"># Exit in case of error</span>
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="nv">TAG</span><span class="o">=</span><span class="k">${</span><span class="nv">TAG</span><span class="p">?Variable not set</span><span class="k">}</span> <span class="se">\</span>
+<span class="nv">FRONTEND_ENV</span><span class="o">=</span><span class="k">${</span><span class="nv">FRONTEND_ENV</span><span class="p">-production</span><span class="k">}</span> <span class="se">\</span>
+sh ./scripts/build.sh
+
+docker-compose <span class="nt">-f</span> docker-compose.yml push
+</code></pre></div></div>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#! /usr/bin/env sh</span>
+
+<span class="c"># Exit in case of error</span>
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="nv">TAG</span><span class="o">=</span><span class="k">${</span><span class="nv">TAG</span><span class="p">?Variable not set</span><span class="k">}</span> <span class="se">\</span>
+<span class="nv">FRONTEND_ENV</span><span class="o">=</span><span class="k">${</span><span class="nv">FRONTEND_ENV</span><span class="p">-production</span><span class="k">}</span> <span class="se">\</span>
+docker-compose <span class="se">\</span>
+<span class="nt">-f</span> docker-compose.yml <span class="se">\</span>
+build
+</code></pre></div></div>
+
+<p>А остальные переменные мы пропишем через <code class="language-plaintext highlighter-rouge">.env</code> в <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> вот так:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">env_file</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">.env</span>
+</code></pre></div></div>
+
+<p>Тут две пробелмы - надо либо держать зоопарк <code class="language-plaintext highlighter-rouge">.env</code> для разных стадий проекта. К тому же, если мы хотим собирать контейнеры на github, то надо как-то передать эти <code class="language-plaintext highlighter-rouge">.env</code> в репозиторий (а там пароли/ключи, что нежелательно). Вариант решения - задать пароли/ключи с помощью секретов на github, а остальные переменные прописать в отдельном <code class="language-plaintext highlighter-rouge">env</code>, который передавать в репозиторий. Наконец, чтобы получить правильный файл переменных окружения перед сборкой и пушем, можно сам файл переменных собирать в workflow, к примеру с помощью <a href="https://github.com/KonstantinKlepikov/create-envfile">экшена из маркетплейса гитхаб</a></p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Create envfile</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+
+  <span class="na">create-envfile</span><span class="pi">:</span>
+ 
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-18.04</span>
+ 
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Make envfile</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">SpicyPizza/create-envfile@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">envkey_DEBUG</span><span class="pi">:</span> <span class="no">false</span>
+        <span class="na">envkey_SOME_API_KEY</span><span class="pi">:</span> <span class="s2">"</span><span class="s">123456abcdef"</span>
+        <span class="na">envkey_SECRET_KEY</span><span class="pi">:</span> <span class="s">$</span>
+        <span class="na">some_other_variable</span><span class="pi">:</span> <span class="s">foobar</span>
+        <span class="na">directory</span><span class="pi">:</span> <span class="s">&lt;directory_name&gt;</span>
+        <span class="na">file_name</span><span class="pi">:</span> <span class="s">.env</span>
+</code></pre></div></div>
+
+<p>Данная конкретная реализация пока работает неправильно - ключ <code class="language-plaintext highlighter-rouge">directory</code> не реализован. Если в проекте должно быть несколько энвов в разных папках, их можно создавать в руте и копироват ьв нужную папку с помощью <a href="https://github.com/canastro/copy-action">такого вот экшена</a> (ну или подобного).</p>
+
+<p><a href="https://github.com/falti/dotenv-action">Еще одна полезная штука</a> - прочитать <code class="language-plaintext highlighter-rouge">.env</code> и передать переменные в build шаг. В принципе это можно сделать обычным питоньим скриптом.</p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

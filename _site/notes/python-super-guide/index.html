@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Python super guide | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Python super guide" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Использование super() в python" />
+<meta property="og:description" content="Использование super() в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/python-super-guide/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/python-super-guide/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Использование super() в python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/python-super-guide/","headline":"Python super guide","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Python super guide</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/python-super-guide.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Базовый вариант использования</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoggingDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Setting %r to %r'</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Этот класс имеет все те же возможности, что и его родитель, dict , но он расширяет метод <code class="language-plaintext highlighter-rouge">__setitem__</code>, чтобы создавать записи в журнале при каждом обновлении ключа. После внесения записи в журнал метод использует <code class="language-plaintext highlighter-rouge">super()</code> для делегирования работы по фактическому обновлению словаря с помощью пары ключ/значение.</p>
+
+<p>Класс, которому делегируется работа указаывать по имени не нужно</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoggingDict</span><span class="p">(</span><span class="n">SomeOtherMapping</span><span class="p">):</span>            <span class="c1"># new base class
+</span>    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'Setting %r to %r'</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>         <span class="c1"># no change needed
+</span></code></pre></div></div>
+
+<p>Какой именно класс будет вызван зависит от того, как образовано дерево родительских классов. В примере ниже оно выглядит так: LoggingOD, LoggingDict, OrderedDict, dict, object - работа будет делегирована нужному нам методу в <code class="language-plaintext highlighter-rouge">OrderedDict</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoggingOD</span><span class="p">(</span><span class="n">LoggingDict</span><span class="p">,</span> <span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>Мы не изменяли исходный код LoggingDict. Вместо этого мы создали подкласс, единственная логика которого состоит в том, чтобы объединить два существующих класса и управлять порядком поиска в них. Порядок поиска реализован через модель MRO</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">pprint</span><span class="p">(</span><span class="n">LoggingOD</span><span class="p">.</span><span class="n">__mro__</span><span class="p">)</span>
+<span class="p">(</span><span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">LoggingOD</span><span class="s">'&gt;,
+ &lt;class '</span><span class="n">__main__</span><span class="p">.</span><span class="n">LoggingDict</span><span class="s">'&gt;,
+ &lt;class '</span><span class="n">collections</span><span class="p">.</span><span class="n">OrderedDict</span><span class="s">'&gt;,
+ &lt;class '</span><span class="nb">dict</span><span class="s">'&gt;,
+ &lt;class '</span><span class="nb">object</span><span class="s">'&gt;)
+</span></code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">super()</code> занимается делегированием вызовов методов некоторому классу в дереве предков экземпляра. Чтобы переупорядочиваемые вызовы методов работали, классы должны разрабатываться совместно. При этом возникают три легко решаемых правила:</p>
+
+<ul>
+  <li>метод, вызываемый <code class="language-plaintext highlighter-rouge">super()</code>, должен существовать</li>
+  <li>вызывающий и вызываемый методы должны иметь совпадающую сигнатуру аргумента</li>
+  <li>каждое вхождение метода должно использовать <code class="language-plaintext highlighter-rouge">super()</code></li>
+</ul>
+
+<p>Рассмотрим стратегии получения аргументов вызывающего объекта, чтобы они соответствовали сигнатуре вызываемого метода. Это немного сложнее, чем традиционные вызовы методов, когда вызываемый объект известен заранее. При использовании <code class="language-plaintext highlighter-rouge">super()</code> вызываемый объект неизвестен во время написания класса (поскольку подкласс, написанный позже, может ввести новые классы в MRO).</p>
+
+<p>Один из подходов состоит в том, чтобы придерживаться фиксированной подписи, используя позиционные аргументы. Это хорошо работает с такими методами, как <code class="language-plaintext highlighter-rouge">__setitem__</code>, которые имеют фиксированную сигнатуру из двух аргументов, ключа и значения.</p>
+
+<p>Более гибкий подход состоит в том, чтобы каждый метод в дереве родителей был разработан совместно, чтобы принимать ключевые аргументы словарь ключевых аргументов, удалять любые аргументы, и перенаправлять оставшиеся аргументы с помощью **kwds, в конечном итоге оставляя словарь пустым. для последнего вызова в цепочке.</p>
+
+<p>Каждый уровень убирает ключевые аргументы, которые ему нужны, чтобы окончательный пустой словарь мог быть отправлен методу, который вообще не ожидает аргументов (например, <code class="language-plaintext highlighter-rouge">object.__init__</code> в примере ниже не ожидает аргументов)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Shape</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">shapename</span> <span class="o">=</span> <span class="n">shapename</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ColoredShape</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ColoredShape</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">shapename</span><span class="o">=</span><span class="s">'circle'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Следующая проблема - как убедиться, что целевой метод существует. В примере выше мы знаем, что у <code class="language-plaintext highlighter-rouge">object</code> всегда есть <code class="language-plaintext highlighter-rouge">__init__()</code> и <code class="language-plaintext highlighter-rouge">object</code> - всегда последний в цепочке МРО, поэтому любая последовательность из <code class="language-plaintext highlighter-rouge">super().__init__(**kwds)</code> гарантированно завершается вызовом метода <code class="language-plaintext highlighter-rouge">object.__init__()</code>. Но так бывает далеко не всегда и <code class="language-plaintext highlighter-rouge">object</code> может не иметь необходимого нам метода. Для таких случаев требуется написать корневой класс, который гарантированно будет вызываться перед <code class="language-plaintext highlighter-rouge">object</code> и будет иметь нужный нам метод. Задача такого корневого класса - стать последним в цепочке вызовов, заменив собойс <code class="language-plaintext highlighter-rouge">object</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Root</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the delegation chain stops here
+</span>        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">super</span><span class="p">(),</span> <span class="s">'draw'</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Shape</span><span class="p">(</span><span class="n">Root</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">shapename</span> <span class="o">=</span> <span class="n">shapename</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Drawing.  Setting shape to:'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">shapename</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ColoredShape</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Drawing.  Setting color to:'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">color</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ColoredShape</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'blue'</span><span class="p">,</span> <span class="n">shapename</span><span class="o">=</span><span class="s">'square'</span><span class="p">)</span>
+<span class="n">cs</span><span class="p">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>В данном примере, если мы захотим внедрить дополнительные классы, нам придется так-же отнаследовать их от корневого, чтобы ни один из путей в дереве не мог достичь <code class="language-plaintext highlighter-rouge">object</code> минуя <code class="language-plaintext highlighter-rouge">Root.draw()</code>. Необходимо написать об этом в документации.</p>
+
+<p>Наконец, для гарантирантий выполнения всей цепочки, каждый делегирующий метод каждого класса должен реализовывать <code class="language-plaintext highlighter-rouge">super()</code>.</p>
+
+<p>Иногда подкласс может захотеть использовать совместные методы, доступные через множественне наследование со сторонним классом, который не был предназначен для этого (к примеру, в нем не реализован <code class="language-plaintext highlighter-rouge">super()</code> или не реализован корневой класс). Для этого реализуется класс-адаптер.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Moveable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Drawing at position:'</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Адаптером для этого класса будет:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MoveableAdapter</span><span class="p">(</span><span class="n">Root</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">movable</span> <span class="o">=</span> <span class="n">Moveable</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">movable</span><span class="p">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>И далее:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MovableColoredShape</span><span class="p">(</span><span class="n">ColoredShape</span><span class="p">,</span> <span class="n">MoveableAdapter</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="n">MovableColoredShape</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">'red'</span><span class="p">,</span> <span class="n">shapename</span><span class="o">=</span><span class="s">'triangle'</span><span class="p">,</span>
+                    <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">).</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="нюансы">Нюансы</h2>
+
+<ul>
+  <li>При создании подклассов встроенной функции, такой как <code class="language-plaintext highlighter-rouge">dict()</code>, часто необходимо переопределить или расширить несколько методов одновременно. В приведенных выше примерах расширение <code class="language-plaintext highlighter-rouge">__setitem__</code> не используется другими методами, такими как <code class="language-plaintext highlighter-rouge">dict.update</code>, поэтому может потребоваться их расширение. Это требование не уникально для <code class="language-plaintext highlighter-rouge">super()</code>; скорее, оно возникает всякий раз, когда встроенные функции являются подклассами.</li>
+  <li>
+    <p>Если класс опирается на один родительский класс, предшествующий другому (например, <code class="language-plaintext highlighter-rouge">LoggingOD</code> зависит от  <code class="language-plaintext highlighter-rouge">LoggingDict</code> , следующего перед <code class="language-plaintext highlighter-rouge">OrderedDict</code>, который стоит перед <code class="language-plaintext highlighter-rouge">dict</code>), легко добавить утверждения для проверки и документирования предполагаемого порядка разрешения методов:</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="n">position</span> <span class="o">=</span> <span class="n">LoggingOD</span><span class="p">.</span><span class="n">__mro__</span><span class="p">.</span><span class="n">index</span>
+      <span class="k">assert</span> <span class="n">position</span><span class="p">(</span><span class="n">LoggingDict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">position</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">)</span>
+      <span class="k">assert</span> <span class="n">position</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">position</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Полный пример кода <a href="https://code.activestate.com/recipes/577720-how-to-use-super-effectively/">тут</a></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://rhettinger.wordpress.com/2011/05/26/super-considered-super/">сорс</a></li>
+  <li>[<a href="../lists/python-datamodel" title="Python datamodel">python-datamodel</a>]</li>
+  <li>[<a href="python-buildin-functions" title="Python build-in functions">python-buildin-functions</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

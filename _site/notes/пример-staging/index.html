@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Пример промежуточного сервера | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Пример промежуточного сервера" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Пример staging-сервера на digital ocean" />
+<meta property="og:description" content="Пример staging-сервера на digital ocean" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Пример staging-сервера на digital ocean","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80-staging/","headline":"Пример промежуточного сервера","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Пример промежуточного сервера</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/пример-staging.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/digital-ocean" title="digital-ocean" class="link-tags">digital-ocean&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Пример для [<a href="../lists/digital-ocean" title="Digital ocean">digital-ocean</a>]. Запустить дроплет с чистой убунтой.</p>
+
+<p>Войти по shh: <code class="language-plaintext highlighter-rouge">ssh elspeth@@superlists-staging.ottg.eu</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-het <span class="nb">install </span>nginx
+<span class="nb">sudo </span>systemctl start nginx
+<span class="nb">sudo </span>add-apt-repository pps:fkrull/deadsnakes
+<span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt <span class="nb">install </span>python3 python3-venv
+<span class="nb">sudo </span>apt <span class="nb">install </span>git
+</code></pre></div></div>
+
+<h2 id="nginx">[<a href="nginx" title="Nginx веб-сервер (wsgi)">nginx</a>]</h2>
+
+<p>Минимальная конфигурация <code class="language-plaintext highlighter-rouge">/etc/nginx/sites-available/superlists-staging.ottg.eu</code>. В данном случае прописаны пути для статических файлов [<a href="gunicorn" title="Gunicorn">gunicorn</a>]. Кроме того реализован [<a href="%D1%81%D0%BE%D0%BA%D0%B5%D1%82%D1%8B-unix" title="Сокеты unix">сокеты-unix</a>]</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server <span class="o">{</span>
+    listen 80<span class="p">;</span>
+    server_name superlists-staging.ottg.eu<span class="p">;</span>
+
+    location /static <span class="o">{</span>
+        <span class="nb">alias</span> /home/elspeth/sites/superlists-staging.ottg.eu/static<span class="p">;</span>
+    <span class="o">}</span>
+
+    location / <span class="o">{</span>
+        proxy_pass http://unix:/tmp/superlists-staging.ottg.eu.socket<span class="p">;</span>
+        proxy_set_header Host <span class="nv">$host</span><span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Линковка сервера</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># reset our env var (if necessary)</span>
+elspeth@server:<span class="nv">$ </span><span class="nb">export </span><span class="nv">SITENAME</span><span class="o">=</span>superlists-staging.ottg.eu
+
+elspeth@server:<span class="nv">$ </span><span class="nb">cd</span> /etc/nginx/sites-enabled/
+elspeth@server:<span class="nv">$ </span><span class="nb">sudo ln</span> <span class="nt">-s</span> /etc/nginx/sites-available/<span class="nv">$SITENAME</span> <span class="nv">$SITENAME</span>
+
+<span class="c"># check our symlink has worked:</span>
+elspeth@server:<span class="nv">$ </span><span class="nb">readlink</span> <span class="nt">-f</span> <span class="nv">$SITENAME</span>
+/etc/nginx/sites-available/superlists-staging.ottg.eu
+
+<span class="c"># remove defoult link</span>
+elspeth@server:<span class="nv">$ </span><span class="nb">sudo rm</span> /etc/nginx/sites-enabled/default
+</code></pre></div></div>
+
+<h2 id="gunicorn">[<a href="gunicorn" title="Gunicorn">gunicorn</a>]</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> elspeth@server:<span class="nv">$ </span>./virtualenv/bin/pip <span class="nb">install </span>gunicorn
+
+ elspeth@server:<span class="nv">$ </span>./virtualenv/bin/gunicorn superlists.wsgi:application
+2013-05-27 16:22:01 <span class="o">[</span>10592] <span class="o">[</span>INFO] Starting gunicorn 0.19.7.1
+2013-05-27 16:22:01 <span class="o">[</span>10592] <span class="o">[</span>INFO] Listening at: http://127.0.0.1:8000 <span class="o">(</span>10592<span class="o">)</span>
+<span class="o">[</span>...]
+</code></pre></div></div>
+
+<p>Сервер можно запускать автоматически на начальной загрузке и перезагружать, если он не работает. В ubuntu это делается с помощью systemd в <code class="language-plaintext highlighter-rouge">/etc/systemd/system/gunicorn-superlists-staging.ottg.eu.service</code></p>
+
+<pre><code class="language-service">[Unit]
+Description=Gunicorn server for superlists-staging.ottg.eu
+
+[Service]
+Restart=on-failure
+User=elspeth
+WorkingDirectory=/home/elspeth/sites/superlists-staging.ottg.eu
+EnvironmentFile=/home/elspeth/sites/superlists-staging.ottg.eu/.env
+
+ExecStart=/home/elspeth/sites/superlists-staging.ottg.eu/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/superlists-staging.ottg.eu.socket \
+    superlists.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>Здесь мы рестартим, если сервер прадает. Задаем юзера, от которого выполняется процесс. Задаем текущий рабочий каталог и файл переменных окружения (это можно делать и по другому)</p>
+
+<p>ExecStart - это рабочий процесс. В конце прописано, что служба запускается на начальной загрузке.</p>
+
+<p><a href="https://www.obeythetestinggoat.com/book/chapter_making_deployment_production_ready.html">Как сделать .enc читай тут</a> в разделе “Using a .env File to Store Our Environment Variables”. .env не нужен на локальной машине, только на сервере.</p>
+
+<p>После всего этого надо загрузить новый файл конфигурации и запустить сервак</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># load new config file</span>
+elspeth@server:<span class="nv">$ </span><span class="nb">sudo </span>systemctl daemon-reload
+<span class="c"># always load service on boot</span>
+elspeth@server:<span class="nv">$ </span><span class="nb">sudo </span>systemctl <span class="nb">enable </span>gunicorn-superlists-staging.ottg.eu
+<span class="c"># tarts service</span>
+elspeth@server:<span class="nv">$ </span><span class="nb">sudo </span>systemctl start gunicorn-superlists-staging.ottg.eu
+</code></pre></div></div>
+
+<hr />
+
+<p>[<a href="staging-%D0%BF%D1%80%D0%BE%D0%BC%D0%B5%D0%B6%D1%83%D1%82%D0%BE%D1%87%D0%BD%D0%B0%D1%8F-%D1%81%D1%80%D0%B5%D0%B4%D0%B0" title="Промежуточная среда (staging)">staging-промежуточная-среда</a>]</p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

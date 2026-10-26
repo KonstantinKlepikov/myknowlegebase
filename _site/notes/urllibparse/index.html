@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Urllib.parse - парсинг урлов в компоненты | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Urllib.parse - парсинг урлов в компоненты" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="urlib.parse в стандартной библиотеке python" />
+<meta property="og:description" content="urlib.parse в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/urllibparse/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/urllibparse/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"urlib.parse в стандартной библиотеке python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/urllibparse/","headline":"Urllib.parse - парсинг урлов в компоненты","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Urllib.parse - парсинг урлов в компоненты</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/urllibparse.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Модуль определяет стандартный интерфейс для разбиения строк URL на компоненты, для объединения компонентов обратно в строку URL и для преобразования «относительного URL» в абсолютный URL-адрес, заданный «базовым URL-адресом». Поддерживаются: file, ftp, gopher, hdl, http, https, imap, mailto, mms, news, nntp, prospero, rsync, rtsp, rtspu, sftp, shttp, sip, sips, snews, svn, svn+ssh, telnet, wais.wswss</p>
+
+<h2 id="парсинг"><a href="https://docs.python.org/3/library/urllib.parse.html#url-parsing">Парсинг</a></h2>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urlparse(urlstring, scheme='', allow_fragments=True)</code> - преобразует урл в именованный кортеж из  шести компонентов <code class="language-plaintext highlighter-rouge">scheme://netloc/path;parameters?query#fragment</code>. Каждый эелемент - строка (возможно пустая). Разделители в результат не добавляются (за исключением начального слешка в пути, если он есть). Компоненты не разбиваются на более мелкие части (например по <code class="language-plaintext highlighter-rouge">%</code>).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">urlparse</span><span class="p">(</span><span class="s">"scheme://netloc/path;parameters?query#fragment"</span><span class="p">)</span>
+<span class="n">ParseResult</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s">'scheme'</span><span class="p">,</span> <span class="n">netloc</span><span class="o">=</span><span class="s">'netloc'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">'/path;parameters'</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s">''</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="s">'query'</span><span class="p">,</span> <span class="n">fragment</span><span class="o">=</span><span class="s">'fragment'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="s">"http://docs.python.org:80/3/library/urllib.parse.html?"</span>
+<span class="p">...</span>              <span class="s">"highlight=params#url-parsing"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span>
+<span class="n">ParseResult</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s">'http'</span><span class="p">,</span> <span class="n">netloc</span><span class="o">=</span><span class="s">'docs.python.org:80'</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s">'/3/library/urllib.parse.html'</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s">''</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="s">'highlight=params'</span><span class="p">,</span> <span class="n">fragment</span><span class="o">=</span><span class="s">'url-parsing'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">scheme</span>
+<span class="s">'http'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">netloc</span>
+<span class="s">'docs.python.org:80'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">hostname</span>
+<span class="s">'docs.python.org'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">port</span>
+<span class="mi">80</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">o</span><span class="p">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">fragment</span><span class="o">=</span><span class="s">""</span><span class="p">).</span><span class="n">geturl</span><span class="p">()</span>
+<span class="s">'http://docs.python.org:80/3/library/urllib.parse.html?highlight=params'</span>
+</code></pre></div></div>
+
+<p>Результат:</p>
+
+<p><img src="/myknowlegebase/attachments/2022-02-19-23-35-06.png" alt="urlib parse" /></p>
+
+<p>Строки query можно разобрать с помощью методов <code class="language-plaintext highlighter-rouge">urllib.parse.parse_qs</code> и <code class="language-plaintext highlighter-rouge">urllib.parse.parse_qsl</code>. <a href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs">Смотри тут</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urlunparse(parts)</code> возвращает строку, собранную из кортежа urlparse()</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urlsplit( urlstring , схема = '' , allow_fragments = True )</code> - аналогично urlparse(), но параметры не отделяются от строки path. <code class="language-plaintext highlighter-rouge">urllib.parse.urlunsplit(parts)</code> работает аналогично urlunparse()</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.urljoin(base, url, allow_fragments=True)</code> - создает новый абсолютный адрес, объединяя url с частью base, отсутствующей в url. При этом, если изменяемый адрес уже является абсолютным - изменения внесены не будут.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">urljoin</span><span class="p">(</span><span class="s">'http://www.cwi.nl/%7Eguido/Python.html'</span><span class="p">,</span> <span class="s">'FAQ.html'</span><span class="p">)</span>
+<span class="s">'http://www.cwi.nl/%7Eguido/FAQ.html'</span>
+</code></pre></div></div>
+
+<p>``rllib.parse.urldefrag(url)` - разделяет урл на основную строку и фрагмент.</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.unwrap(url)</code> извлекает урл из обернутого прдставления, например таких <code class="language-plaintext highlighter-rouge">&lt;URL:scheme://host/path&gt;', '&lt;scheme://host/path&gt;</code>, <code class="language-plaintext highlighter-rouge">URL:scheme://host/path</code>, <code class="language-plaintext highlighter-rouge">scheme://host/path</code></p>
+
+<h2 id="parsing-ascii-encoded-bytes"><a href="https://docs.python.org/3/library/urllib.parse.html#parsing-ascii-encoded-bytes">Parsing ASCII Encoded Bytes</a></h2>
+
+<h2 id="structured-parse-results"><a href="https://docs.python.org/3/library/urllib.parse.html#structured-parse-results">Structured Parse Results</a></h2>
+
+<p>urlparse предоставлет доп.методы для объектов именованных кортежей, полученных при парсинге.</p>
+
+<p><code class="language-plaintext highlighter-rouge">urllib.parse.SplitResult.geturl()</code> - возвращает строку урла, объединенную из кортежа. Он может отличаться от исходного (регистр и удаление пустых компонентов)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">url</span> <span class="o">=</span> <span class="s">'HTTP://www.Python.org/doc/#'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r1</span><span class="p">.</span><span class="n">geturl</span><span class="p">()</span>
+<span class="s">'http://www.Python.org/doc/'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">r1</span><span class="p">.</span><span class="n">geturl</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r2</span><span class="p">.</span><span class="n">geturl</span><span class="p">()</span>
+<span class="s">'http://www.Python.org/doc/'</span>
+</code></pre></div></div>
+
+<p><a href="https://docs.python.org/3/library/urllib.parse.html#structured-parse-results">смотри другие методы тут</a></p>
+
+<h2 id="url-quoting"><a href="https://docs.python.org/3/library/urllib.parse.html#url-quoting">URL Quoting</a></h2>
+
+<p>Предоставлет безопасное преобразование данных, которые планируется использовать в качестве компонентов урла, за счет размещения в кавычки специальнех символов или кодирования текста, отличного от ASCII. Кроме того предоставлены методы для реверса этоих операций</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/urllib.parse.html">документация</a></li>
+  <li><a href="https://docs.python.org/3/howto/urllib2.html#urllib-howto">как получать данные из интернет-ресурсов с помощью urlib</a></li>
+  <li><a href="https://docs.python.org/3/library/urllib.request.html#examples">примеры обработки адресов и запросов</a></li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="../lists/crawlers" title="Crawlers">crawlers</a>]</li>
+  <li>[<a href="scrapy" title="Scrapy">scrapy</a>]</li>
+  <li>[<a href="parsing-robots-txt-with-scrapy" title="Parsing robots txt with scrapy">parsing-robots-txt-with-scrapy</a>]</li>
+  <li>[<a href="parsing-sitemap-with-scrapy" title="Parsing sitemap with scrapy">parsing-sitemap-with-scrapy</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

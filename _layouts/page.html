@@ -5,6 +5,10 @@ layout: default
 <article class="container mx-auto px-2 mt2 mb4">
   <header>
     <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">{{ page.title }}</h1>
+    {% if page.path contains 'notes/' or page.path contains 'lists/' %}
+      {% assign source_path = page.path | remove: '.md' %}
+      <a class="h5 link-tags" href="{{ site.baseurl }}/{{ source_path }}.html">markdown source</a>
+    {% endif %}
   </header>
   <div class="col-4 sm-width-full border-top-thin">
     <p class="mb-3 h5">Теги:

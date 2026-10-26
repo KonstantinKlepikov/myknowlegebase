@@ -1,0 +1,38 @@
+---
+layout: markdown_source
+title: "Source: Вызов функции по ее строковому имени в python"
+parent_url: "/notes/calling-finction-by-name-python/"
+permalink: "/notes/calling-finction-by-name-python.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Calling a function of by using string name
+tags: python-standart-library python
+title: Вызов функции по ее строковому имени в python
+---
+```python
+import foo
+method_to_call = getattr(foo, 'bar')
+result = method_to_call()
+```
+
+или для класса
+
+```python
+class C:
+    def m(self):
+        return "result"
+
+an_object = C()
+
+class_method = getattr(C, "m")
+result = class_method(an_object)
+```
+
+[Больше идей](https://stackoverflow.com/questions/3061/calling-a-function-of-a-module-by-using-its-name-a-string)
+
+[[python-standart-library]]
+
+
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"

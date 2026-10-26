@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Aiohttp асинхронный клиент-свервер на python. | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Aiohttp асинхронный клиент-свервер на python." />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Asynchronous HTTP Client/Server for asyncio and Python" />
+<meta property="og:description" content="Asynchronous HTTP Client/Server for asyncio and Python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/aiohttp/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/aiohttp/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Asynchronous HTTP Client/Server for asyncio and Python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/aiohttp/","headline":"Aiohttp асинхронный клиент-свервер на python.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Aiohttp асинхронный клиент-свервер на python.</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/aiohttp.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/http" title="http" class="link-tags">http&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/asyncio" title="asyncio" class="link-tags">asyncio&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Asynchronous HTTP Client/Server for [<a href="asyncio" title="Asyncio">asyncio</a>] and Python.</p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install aiohttp</code></p>
+
+<p>Ключевые фичи:</p>
+
+<ul>
+  <li>Поддерживает как клиент, так и HTTP-сервер.</li>
+  <li>Поддерживает как серверные веб-сокеты, так и клиентские веб-сокеты «из коробки» без использования колбеков.</li>
+  <li>Веб-сервер имеет промежуточное программное обеспечение, сигналы и подключаемую маршрутизацию.</li>
+</ul>
+
+<p>Client example</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://python.org'</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+
+            <span class="k">print</span><span class="p">(</span><span class="s">"Status:"</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">status</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Content-type:"</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">headers</span><span class="p">[</span><span class="s">'content-type'</span><span class="p">])</span>
+
+            <span class="n">html</span> <span class="o">=</span> <span class="k">await</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Body:"</span><span class="p">,</span> <span class="n">html</span><span class="p">[:</span><span class="mi">15</span><span class="p">],</span> <span class="s">"..."</span><span class="p">)</span>
+
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="p">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>This prints:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Status: 200
+Content-type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+Body: &lt;<span class="o">!</span>doctype html&gt; ...
+Coming from requests ? Read why we need so many lines.
+</code></pre></div></div>
+
+<p>Server example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">match_info</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">"Anonymous"</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">"Hello, "</span> <span class="o">+</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">web</span><span class="p">.</span><span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">Application</span><span class="p">()</span>
+<span class="n">app</span><span class="p">.</span><span class="n">add_routes</span><span class="p">([</span><span class="n">web</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">handle</span><span class="p">),</span>
+                <span class="n">web</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'/{name}'</span><span class="p">,</span> <span class="n">handle</span><span class="p">)])</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">web</span><span class="p">.</span><span class="n">run_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Зависимости:</p>
+
+<ul>
+  <li>Python 3.6+</li>
+  <li><code class="language-plaintext highlighter-rouge">async_timeout</code></li>
+  <li><code class="language-plaintext highlighter-rouge">attrs</code></li>
+  <li><code class="language-plaintext highlighter-rouge">charset-normalizer</code></li>
+  <li><code class="language-plaintext highlighter-rouge">multidict</code></li>
+  <li><code class="language-plaintext highlighter-rouge">yarl</code></li>
+  <li>Optional <code class="language-plaintext highlighter-rouge">cchardet</code> as faster replacement for <code class="language-plaintext highlighter-rouge">charset-normalizer</code>.</li>
+  <li>Optional <code class="language-plaintext highlighter-rouge">aiodns</code> for fast DNS resolving. The library is highly recommended.</li>
+</ul>
+
+<h2 id="client"><a href="https://docs.aiohttp.org/en/stable/client.html">Client</a></h2>
+
+<p>Клиент написан поверх [<a href="asyncio" title="Asyncio">asyncio</a>]. Базовые функции сходны с асинхронным АПИ [<a href="httpx" title="httpx cинхронный и асинхронный http-клиент">httpx</a>], с тем лишь исключением, что сразу реализован собственный session класс и вся работа ведется с ним.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://httpbin.org/get'</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">status</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>Варианты запросов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'http://httpbin.org/post'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">b'data'</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">'http://httpbin.org/put'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">b'data'</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="s">'http://httpbin.org/delete'</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="s">'http://httpbin.org/get'</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">options</span><span class="p">(</span><span class="s">'http://httpbin.org/get'</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">patch</span><span class="p">(</span><span class="s">'http://httpbin.org/patch'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">b'data'</span><span class="p">)</span>
+
+<span class="c1"># can be used base urls
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="s">'http://httpbin.org'</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'/get'</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'/post'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">b'data'</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">'/put'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="s">b'data'</span><span class="p">):</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>Не создавайте сессию для каждого запроса. Сессия - объект реализующий логику запросов всег оприложения. В более сложных случаях может потребоваться сессия для каждого ресурса сети. В любом случае создание сессии для каждого запроса - очень плохая идея. Сессия содержит внутри пул соединений. Повторное использование соединения и поддержка активности (оба включены по умолчанию) могут повысить общую производительность.</p>
+
+<h3 id="передача-параметров-в-url">Передача параметров в url:</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'key1'</span><span class="p">:</span> <span class="s">'value1'</span><span class="p">,</span> <span class="s">'key2'</span><span class="p">:</span> <span class="s">'value2'</span><span class="p">}</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://httpbin.org/get'</span><span class="p">,</span>
+                       <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+    <span class="n">expect</span> <span class="o">=</span> <span class="s">'http://httpbin.org/get?key1=value1&amp;key2=value2'</span>
+    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="n">expect</span>
+
+<span class="c1"># or
+</span><span class="n">params</span> <span class="o">=</span> <span class="p">[(</span><span class="s">'key'</span><span class="p">,</span> <span class="s">'value1'</span><span class="p">),</span> <span class="p">(</span><span class="s">'key'</span><span class="p">,</span> <span class="s">'value2'</span><span class="p">)]</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://httpbin.org/get'</span><span class="p">,</span>
+                       <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+    <span class="n">expect</span> <span class="o">=</span> <span class="s">'http://httpbin.org/get?key=value2&amp;key=value1'</span>
+    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="n">expect</span>
+
+<span class="c1"># or
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://httpbin.org/get'</span><span class="p">,</span>
+                       <span class="n">params</span><span class="o">=</span><span class="s">'key=value+1'</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s">'http://httpbin.org/get?key=value+1'</span>
+</code></pre></div></div>
+
+<p>aiohttp внутренне выполняет канонизацию URL перед отправкой запроса.</p>
+
+<h3 id="responses-codes-and-others">Responses, codes and others</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># text and status codes
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://api.github.com/events'</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">status</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+
+<span class="c1"># binary
+</span><span class="k">print</span><span class="p">(</span><span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c1"># json request and response
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s">'test'</span><span class="p">:</span> <span class="s">'object'</span><span class="p">})</span>
+
+<span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://api.github.com/events'</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c1"># Streaming Response Content (for big bunch of data)
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://api.github.com/events'</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">content</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">.</span><span class="n">content</span><span class="p">.</span><span class="n">iter_chunked</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">):</span>
+        <span class="n">fd</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+<span class="c1"># streaming uploads is similar to core
+</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'massive-body'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+   <span class="k">await</span> <span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'http://httpbin.org/post'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># multipart upload
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">'http://httpbin.org/post'</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">FormData</span><span class="p">()</span>
+<span class="n">data</span><span class="p">.</span><span class="n">add_field</span><span class="p">(</span><span class="s">'file'</span><span class="p">,</span>
+               <span class="nb">open</span><span class="p">(</span><span class="s">'report.xls'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">),</span>
+               <span class="n">filename</span><span class="o">=</span><span class="s">'report.xls'</span><span class="p">,</span>
+               <span class="n">content_type</span><span class="o">=</span><span class="s">'application/vnd.ms-excel'</span><span class="p">)</span>
+
+<span class="k">await</span> <span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># websokets (ou must use the only websocket task for both reading
+# (e.g. await ws.receive() or async for msg in ws:) and writing but may
+# have multiple writer tasks which can only send data asynchronously
+# (by await ws.send_str('data') for example))
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">ws_connect</span><span class="p">(</span><span class="s">'http://example.org/ws'</span><span class="p">)</span> <span class="k">as</span> <span class="n">ws</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">ws</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">WSMsgType</span><span class="p">.</span><span class="n">TEXT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="s">'close cmd'</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">ws</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">ws</span><span class="p">.</span><span class="n">send_str</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">data</span> <span class="o">+</span> <span class="s">'/answer'</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">msg</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">WSMsgType</span><span class="p">.</span><span class="n">ERROR</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="c1"># timeouts
+</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientTimeout</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<h3 id="adwanced-client"><a href="https://docs.aiohttp.org/en/stable/client_advanced.html">Adwanced client</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># custom headers
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">'http://example.com/image'</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">b'GIF89a</span><span class="se">\x01\x00\x01\x00\x00\xff\x00</span><span class="s">,</span><span class="se">\x00\x00</span><span class="s">'</span>
+          <span class="s">b'</span><span class="se">\x00\x00\x01\x00\x01\x00\x00\x02\x00</span><span class="s">;'</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'content-type'</span><span class="p">:</span> <span class="s">'image/gif'</span><span class="p">}</span>
+
+<span class="k">await</span> <span class="n">session</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                   <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+                   <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="c1"># or set default headers
+</span><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">"Authorization"</span><span class="p">:</span> <span class="s">"Basic bG9naW46cGFzcw=="</span><span class="p">}</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"http://httpbin.org/headers"</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+        <span class="n">json_body</span> <span class="o">=</span> <span class="k">await</span> <span class="n">r</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">json_body</span><span class="p">[</span><span class="s">'headers'</span><span class="p">][</span><span class="s">'Authorization'</span><span class="p">]</span> <span class="o">==</span> \
+            <span class="s">'Basic bG9naW46cGFzcw=='</span>
+
+<span class="c1"># custom cookies
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">'http://httpbin.org/cookies'</span>
+<span class="n">cookies</span> <span class="o">=</span> <span class="p">{</span><span class="s">'cookies_are'</span><span class="p">:</span> <span class="s">'working'</span><span class="p">}</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">ClientSession</span><span class="p">(</span><span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="k">await</span> <span class="n">resp</span><span class="p">.</span><span class="n">json</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span>
+           <span class="s">"cookies"</span><span class="p">:</span> <span class="p">{</span><span class="s">"cookies_are"</span><span class="p">:</span> <span class="s">"working"</span><span class="p">}}</span>
+
+<span class="c1"># or share сookies between many requests
+</span><span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="p">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="k">await</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s">'http://httpbin.org/cookies/set?my_cookie=my_value'</span><span class="p">)</span>
+    <span class="n">filtered</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="n">cookie_jar</span><span class="p">.</span><span class="n">filter_cookies</span><span class="p">(</span>
+        <span class="s">'http://httpbin.org'</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">filtered</span><span class="p">[</span><span class="s">'my_cookie'</span><span class="p">].</span><span class="n">value</span> <span class="o">==</span> <span class="s">'my_value'</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://httpbin.org/cookies'</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span>
+        <span class="n">json_body</span> <span class="o">=</span> <span class="k">await</span> <span class="n">r</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">json_body</span><span class="p">[</span><span class="s">'cookies'</span><span class="p">][</span><span class="s">'my_cookie'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'my_value'</span>
+
+<span class="c1"># Response Headers and Cookies
+# By RFC-like standard dict
+</span><span class="k">assert</span> <span class="n">resp</span><span class="p">.</span><span class="n">headers</span> <span class="o">==</span> <span class="p">{</span>
+    <span class="s">'ACCESS-CONTROL-ALLOW-ORIGIN'</span><span class="p">:</span> <span class="s">'*'</span><span class="p">,</span>
+    <span class="s">'CONTENT-TYPE'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
+    <span class="s">'DATE'</span><span class="p">:</span> <span class="s">'Tue, 15 Jul 2014 16:49:51 GMT'</span><span class="p">,</span>
+    <span class="s">'SERVER'</span><span class="p">:</span> <span class="s">'gunicorn/18.0'</span><span class="p">,</span>
+    <span class="s">'CONTENT-LENGTH'</span><span class="p">:</span> <span class="s">'331'</span><span class="p">,</span>
+    <span class="s">'CONNECTION'</span><span class="p">:</span> <span class="s">'keep-alive'</span><span class="p">}</span>
+
+<span class="c1"># more frendly
+</span><span class="k">assert</span> <span class="n">resp</span><span class="p">.</span><span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">==</span> <span class="s">'application/json'</span>
+<span class="k">assert</span> <span class="n">resp</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'content-type'</span><span class="p">)</span> <span class="o">==</span> <span class="s">'application/json'</span>
+
+<span class="c1"># By raw
+</span><span class="k">assert</span> <span class="n">resp</span><span class="p">.</span><span class="n">raw_headers</span> <span class="o">==</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s">b'SERVER'</span><span class="p">,</span> <span class="s">b'nginx'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">b'DATE'</span><span class="p">,</span> <span class="s">b'Sat, 09 Jan 2016 20:28:40 GMT'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">b'CONTENT-TYPE'</span><span class="p">,</span> <span class="s">b'text/html; charset=utf-8'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">b'CONTENT-LENGTH'</span><span class="p">,</span> <span class="s">b'12150'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">b'CONNECTION'</span><span class="p">,</span> <span class="s">b'keep-alive'</span><span class="p">))</span>
+
+<span class="c1"># access to cookie
+</span><span class="n">url</span> <span class="o">=</span> <span class="s">'http://example.com/some/cookie/setting/url'</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">cookies</span><span class="p">[</span><span class="s">'example_cookie_name'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Больше опций:</p>
+
+<ul>
+  <li>Redirection History</li>
+  <li>Cookie Jar</li>
+  <li>Uploading pre-compressed data</li>
+  <li>Disabling content type validation for JSON s</li>
+  <li>Client Tracing</li>
+  <li>Custom transport</li>
+  <li>SSL control for TCP sockets</li>
+  <li>Proxy support</li>
+</ul>
+
+<h2 id="server"><a href="https://docs.aiohttp.org/en/stable/web.html">Server</a></h2>
+
+<p><a href="http://demos.aiohttp.org/en/latest/">Несколько примеров реализации</a></p>
+
+<h3 id="quikstart"><a href="https://docs.aiohttp.org/en/stable/web_quickstart.html">Quikstart</a></h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
+
+<span class="c1"># A request handler must be a coroutine that accepts
+# a Request instance as its only parameter and returns
+# a Response instance
+</span><span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">web</span><span class="p">.</span><span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"Hello, world"</span><span class="p">)</span>
+
+<span class="c1"># Next, create an Application instance and register
+# the request handler on a particular HTTP method and path
+</span><span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">Application</span><span class="p">()</span>
+<span class="n">app</span><span class="p">.</span><span class="n">add_routes</span><span class="p">([</span><span class="n">web</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">hello</span><span class="p">)])</span>
+
+<span class="c1"># After that, run the application by run_app()
+</span><span class="n">web</span><span class="p">.</span><span class="n">run_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="c1"># alternative - using route decorator
+</span><span class="n">routes</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">RouteTableDef</span><span class="p">()</span>
+
+<span class="o">@</span><span class="n">routes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">web</span><span class="p">.</span><span class="n">Response</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s">"Hello, world"</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">Application</span><span class="p">()</span>
+<span class="n">app</span><span class="p">.</span><span class="n">add_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">)</span>
+<span class="n">web</span><span class="p">.</span><span class="n">run_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>По сути реализуется логика, знакомая по разным http-фреймворкам, типа [<a href="fastapi" title="Fastapi">fastapi</a>]</p>
+
+<h3 id="handlers"><a href="https://docs.aiohttp.org/en/stable/web_quickstart.html#handler">Handlers</a></h3>
+
+<h2 id="advanced-usage-and-logging"><a href="https://docs.aiohttp.org/en/stable/web_advanced.html">Advanced usage</a> and <a href="https://docs.aiohttp.org/en/stable/logging.html">logging</a></h2>
+
+<h2 id="testing"><a href="https://docs.aiohttp.org/en/stable/testing.html">Testing</a></h2>
+
+<p>[<a href="pytest" title="Pytest">pytest</a>] <a href="https://github.com/aio-libs/pytest-aiohttp">pytest-aiohttp</a> <strong>The library provides useful fixtures for creation test aiohttp server and client</strong></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://docs.aiohttp.org/en/stable/">документация</a></li>
+  <li><a href="https://github.com/aio-libs/aiohttp">github</a></li>
+  <li><a href="https://github.com/pnuckowski/aioresponses">aioresponses</a> is a helper to mock/fake web requests in python aiohttp package</li>
+  <li><a href="https://github.com/aio-libs/pytest-aiohttp">pytest-aiohttp</a></li>
+  <li><a href="https://github.com/aio-libs/aiohttp-session">aiohttp-session</a></li>
+  <li>yarl <a href="https://yarl.aio-libs.org/en/stable/api.html#yarl.URL">Public API</a> The module provides handy URL class for URL parsing and changing - is used in aiohttp</li>
+  <li>[<a href="trio" title="Trio асинхронный фреймворк">trio</a>]</li>
+  <li>[<a href="requests" title="Requests">requests</a>]</li>
+  <li>[<a href="httpx" title="httpx cинхронный и асинхронный http-клиент">httpx</a>]</li>
+  <li>[<a href="anyio" title="AnyIO асинхронный бекенд на базе asyncio и trio">AnyIO</a>]</li>
+  <li>[<a href="../lists/http" title="Http">http</a>]</li>
+  <li>[<a href="telegram-bots" title="Telegram python bots">telegram-bots</a>]</li>
+</ul>
+
+<p>Статьи и ответы на вопросы:</p>
+
+<ul>
+  <li><a href="https://stackoverflow.com/questions/35196974/aiohttp-set-maximum-number-of-requests-per-second">aiohttp: set maximum number of requests per second</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

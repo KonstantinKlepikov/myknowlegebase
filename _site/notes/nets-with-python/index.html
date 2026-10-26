@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Nets and internet with python | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Nets and internet with python" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Работа с сетями и интернет в стандартной библиотеке python" />
+<meta property="og:description" content="Работа с сетями и интернет в стандартной библиотеке python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/nets-with-python/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/nets-with-python/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Работа с сетями и интернет в стандартной библиотеке python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/nets-with-python/","headline":"Nets and internet with python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Nets and internet with python</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/nets-with-python.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/servers" title="servers" class="link-tags">servers&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <h2 id="работа-с-сетями">Работа с сетями</h2>
+
+<h3 id="ipaddress"><a href="https://docs.python.org/3/library/ipaddress.html">ipaddress</a></h3>
+
+<p>Модуль реализует проверку, сравнение и другие операции с сетевыми адресами IPv4/IPv6. Позволяет работать с сетевыми адресами и диапазонами адресов. а так-же с сетевыми интерфейсами (сетевой адроес, предоставленный в виде адреса хоста и сетевого префикса или маски сети)</p>
+
+<h3 id="socket"><a href="https://docs.python.org/3/library/socket.html">socket</a></h3>
+
+<p>Низкоуровневый интерфейс к c-библиотеке socket, используется для взаимодействия с сетевыми службами с использованием сокетов BSD. Решает задачи преобразования именит сервера в адрес и формирование данных для передачи по сети.</p>
+
+<p>Сокет - это конечная точка соединения, используемая для локального обмена или обмена по сети интернет. Процессом передачи управляют два свойства сокета - семейство адресов, задающее сетевой протокол модели OSI и тип сокета, соответствующий протоколу транспортного уровня.</p>
+
+<p>Формат адреса, требуемый конкретным объектом сокета, выбирается автоматически на основе семейства адресов, указанного при создании объекта сокета. Адреса сокетов представлены следующим образом:</p>
+
+<ul>
+  <li>адрес сокета AF_UNIX, привязанный к узлу файловой системы, представлен в виде строки с использованием кодировки файловой системы и обработчика ошибок. Сокеты домена Unix (UDS) позволяют передавать данные непосредственно из процесса в процесс без прохождения сетевого стека, но применеение UDS ограничено процессами, выполняемыми в одной системе.</li>
+  <li>семейство адресов AF_INET спользуется для IPv4 адресации. Адреса IPv4 имеют длину 4 байта и представляются в виде последовательности 4-х чисел, разделенных точкой (например 10.2.2.15). Большинство адресов в интернет - IPv4. В socket используется пара (хост, порт), где host - это строка, представляющая либо имя хоста в нотации интернет-домена, например daring.cwi.nl, либо адрес IPv4, например, 100.50.200.5, а порт - целое число.</li>
+  <li>для семейства адресов AF_INET6 используется четыре кортежа (хост, порт, flowinfo, scope_id). IPv6 обеспечивает поддержку 128-битновых адресов</li>
+  <li>еще доступны AF_NETLINK, AF_TIPC, AF_CAN, SYSPROTO_CONTROL, AF_BLUETOOTH, AF_ALG, AF_VSOCK, AF_PACKET, AF_QIPCRTR, IPPROTO_UDPLITE. <a href="https://docs.python.org/3/library/socket.html#socket-families">Подробнее</a></li>
+</ul>
+
+<p>Обычно реализуются два типа сокетов - SOCK_DGRAM (UDP), не обеспечивающие высокую надежность передачи данных, т.к. они не гарантируют доставку и SOCK_STREAM (TCP), гарантирующих доставку. Большинство протоколов прикладного уровня (к примеру [<a href="../lists/http" title="Http">http</a>]) реализовано поверх TCP. UDP в основном используется, когда порядок получения сообщений не существенен и для многоадресном вещании.</p>
+
+<p>Модуль socket реализует:</p>
+
+<ul>
+  <li>поиск хостов в сети и преобрназование имени хоста в сетевой адрес</li>
+  <li>получение информации ор сетевых службах</li>
+  <li>получение информации об адресе сервера</li>
+  <li>реализацию программных конструкций сервер-клиент на базе TCP/IP, UDP, UDS и т.д.</li>
+  <li>многоадресное вещание</li>
+  <li>отправку текстовых и двоичных данных</li>
+  <li>неблокирующий ввод/вывод</li>
+</ul>
+
+<h3 id="selectors"><a href="https://docs.python.org/3/library/selectors.html">selectors</a></h3>
+
+<p>Предоставляет высокоуровневый интерфейс для одновременного наблюдения за несколькими сокетами и обеспечивает взаимодействие сетевых серверов с несколькими клиенатми. Реализован с помощью модуля <a href="https://docs.python.org/3/library/select.html">select</a>- это низкоуровневый интерфейс.</p>
+
+<p>Объект селектора имеет методы, позволяющие указывать какие события, связанные с сокетом, необходимо отслеживать и позволяет вызывающему оъъекту ожидать события платформенным способом и реализовывать отслеживание готовность сокетов к вводу/выводу и вызывать колбеки.</p>
+
+<h3 id="socketserver"><a href="https://docs.python.org/3/library/socketserver.html">socketserver</a></h3>
+
+<p>Реализует фреймворк для создания сетевого сервера, поддерживающие протоколы UDP, TCP и UDS. Фреймворк упрощает обработку синхронных сетевых запросов, кроме того он поставляет примесные классы, позволяющие выводить запросы в отдельный поток или процесс.</p>
+
+<p>Фреймворк реализует высокоуровневый объектный подход, что позволяет применять классы практически без измененеий. Достыпны классы сервера и обработчика запросов. Сервер отвечает за прослушивание сокетов, установку соединений и т.д., а обработчик за протокол обработки данных (интерпретация, парсинг, отправка).</p>
+
+<h3 id="ssl"><a href="https://docs.python.org/3/library/ssl.html">ssl</a></h3>
+
+<p>Этот модуль обеспечивает доступ к средствам шифрования Transport Layer Security и одноранговой аутентификации для сетевых сокетов, как на стороне клиента, так и на стороне сервера. Этот модуль использует библиотеку OpenSSL.</p>
+
+<h2 id="работа-с-интернет">Работа с интернет</h2>
+
+<h3 id="cgi-и-wsgiref"><a href="https://docs.python.org/3/library/cgi.html">cgi</a> и <a href="https://docs.python.org/3/library/wsgiref.html">wsgiref</a></h3>
+
+<p>cgi определяет ряд утилит для использования скриптами CGI, написанными на Python.</p>
+
+<p>wsgiref - это стандартный интерфейс WSGI между программным обеспечением веб-сервера и веб-приложениями, написанными на Python. Наличие стандартного интерфейса упрощает использование приложения, поддерживающего WSGI, с рядом различных веб-серверов.</p>
+
+<p>Вникать в модули нужно в основном для разработки/поддержания http-фреймворков.</p>
+
+<p>* Модуль <a href="https://docs.python.org/3/library/cgitb.html">cgitb</a> предоставляет специальный обработчик исключений для скриптов Python</p>
+
+<h3 id="urlib"><a href="https://docs.python.org/3/library/urllib.html">urlib</a></h3>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/urllib.parse.html#module-urllib.parse">urlib.parse</a> позволяет работать со строками url-ов</li>
+  <li><a href="https://docs.python.org/3/library/urllib.request.html#module-urllib.request">urlib.requests</a> открытие удаленных ресурсов, получение удаленного содержимого</li>
+  <li><a href="https://docs.python.org/3/library/urllib.robotparser.html#module-urllib.robotparser">urlib.robotparser</a> работа с <code class="language-plaintext highlighter-rouge">robots.txt</code></li>
+  <li><a href="https://docs.python.org/3/library/urllib.error.html#module-urllib.error">urlib.errors</a> эксепшены для urlib.requests</li>
+</ul>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li><a href="https://urllib3.readthedocs.io/en/stable/">urlib3</a></li>
+  <li><a href="https://docs.python-requests.org/en/latest/">Requests: HTTP for Human</a>s</li>
+</ul>
+
+<h2 id="http"><a href="https://docs.python.org/3/library/http.html">http</a></h2>
+
+<p>Реализует базовые инструменты для написания http-фреймворка (в т.ч. предоставляет обработчик коды статусов)</p>
+
+<ul>
+  <li>http.client низкоуровневый http-клиент</li>
+  <li>http.server HTTP сервер на базе socketserver</li>
+  <li>http.cookies управление куками</li>
+  <li>http.cookiejar автоматическая обработка кук</li>
+</ul>
+
+<h2 id="протоколы">Протоколы</h2>
+
+<p><a href="https://docs.python.org/3/library/ftplib.html">ftp</a>, <a href="https://docs.python.org/3/library/nntplib.html">nntp</a>, <a href="https://docs.python.org/3/library/telnetlib.html">telnet</a> а так же почтовые протоколы [<a href="email-tools-python" title="Email tools in python">email-tools-python</a>]</p>
+
+<h2 id="uuid"><a href="https://docs.python.org/3/library/uuid.html">uuid</a></h2>
+
+<p>Генерация уникальных значений идентификаторов ресурсов (uuid).</p>
+
+<h3 id="xmlrpc"><a href="https://docs.python.org/3/library/xmlrpc.html">xmlrpc</a></h3>
+
+<p>XML-RPC сервер, в настоящий момент стандарт можно считать устаревшим.</p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="asyncio" title="Asyncio">asyncio</a>]</li>
+  <li>[<a href="../lists/http" title="Http">http</a>]</li>
+  <li>[<a href="http-cors" title="Http cors">http-cors</a>]</li>
+  <li>[<a href="http-methods" title="Http methods">http-methods</a>]</li>
+  <li>[<a href="http-requests-errors" title="Http requests">http-requests-errors</a>]</li>
+  <li>[<a href="http-%D0%B7%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BA%D0%B8" title="Http заголовки">http-заголовки</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

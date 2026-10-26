@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>MPPR | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="MPPR" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Конечные марковские процессы принятия решения" />
+<meta property="og:description" content="Конечные марковские процессы принятия решения" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/mppr/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/mppr/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Конечные марковские процессы принятия решения","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/mppr/","headline":"MPPR","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">MPPR</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/mppr.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/r-learning" title="r-learning" class="link-tags">r-learning&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>В отличае от [<a href="multi-armed-bandit" title="Multy armed bandits">multi-armed-bandit</a>], в конечных марковских процессах принятия решений (МППР, или Markov decision process, MDP), от дейстий зависят не только текущие состояния, но и ценность будущих состояний. Таким образом вводится отложенное вознаграждение и необходимость искать компромисс между немедленным вознаграждением и совокупным. Оценивается ценность <script type="math/tex">q_*(s, a)</script> действия a в состоянии s или ценность <script type="math/tex">v_*(s)</script> каждого состояния при условии оптимального выбора действий.</p>
+
+<p>МППР - математически идеализированная форма задачи обучения с подкреплением и предназначены для прямолинейного формулирования задачи обучения в результате взаимодействия для достижения цели. Сторона, которая обучается и принимает решение, называется агентом. Сторона с которой агент взаимодействует и включающая в себя все, что находится вне агента - окружающей средой. Агент выбирает действия, среда реагирует на действия и передает агенту новые ситуации. Среда также генерирует вознаграждение, а агент их максимизирует. В дискретном случае агент и среда совместно порождают траекторию:</p>
+
+<script type="math/tex; mode=display">S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2,...</script>
+
+<p>гле <script type="math/tex">S_t</script> представление о состоянии окружающей среды на шаге t, исходля из действия <script type="math/tex">A_t</script>, а $$R_{t+1}$ - возникающее в итоге вознаграждение.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-01-23-22-28.png" alt="MDP example" /></p>
+
+<p>В задаче обучения мы стремимся максимизировать ожидаемый доход:</p>
+
+<script type="math/tex; mode=display">G_t \doteq R_{t+1} + R_{t+2} + R_{t+3} + ... + R_T</script>
+
+<p>здесь T - последний временной шаг. Этот подход имеет смысл, когда взаимодействие агента со средой распадается на эпизоды и существует понятие последнего эпизода. В эпизодических задачах множество всех эпиздов без последнего - <script type="math/tex">S</script>, а включая последний - <script type="math/tex">S^+</script>.</p>
+
+<p>Противоположн6ость этой задаче - непрерывная, когда невозможно разбить взаимодействие на эпизоды. В этом случае нам не известен момент T. Определить ожидаемый доход для таких задач проблематично. Для этого вводится понятие обесценивания. При таком подходе агент пытается выбрать действия, так чтобы сумма обесцененных вознаграждений, которые он получит в будущем, принимала бы максимальное значение.</p>
+
+<script type="math/tex; mode=display">G_t \doteq R_{t+1} + R_{t+2} + R_{t+3} + ... = \sum_{k=0}^\infty \gamma^k R_{t+k+1}</script>
+
+<p>здесь параметр <script type="math/tex">0 \leq \gamma \leq 1</script> - коэфициент обесценивания, который определяет ценность будущих вознаграждений с точки зрения настоящего. Вознаграждение, которое будет получено спустя k шагов будет стоить в <script type="math/tex">\gamma^{k-1}</script> меньше, чем если бы оно было получено прямо сейчас. Чем меньше гамма, тем более близорук агент и тем больше его заботит текущее состояние, а не будущие.</p>
+
+<p>Почти все алгоритмы [<a href="../lists/reinforcement-learning" title="Reinforcement learning">reinforcement-learning</a>] включают функции ценности - это функции состояний (или пар состояние-действие), которые оценивают насколько хорошо для агента оказаться в данном состоянии (или насколько хорошо предпринять данное действие в данном состоянии). Т.к. вознаграждения, котоыре может ожидать агент в будущем, зависят от предпринимаемых им действий, то и функции ценности определены по отношению к конкретным способам действия - стратегиям. Формально статегия - это отображение состояния на вероятность выбора каждого возможного действия.</p>
+
+<p>Функция ценности состояния s при стратегии <script type="math/tex">\pi</script> - это ожидаемый доход, когда агент начинает в состоянии S и далее следует стратегии <script type="math/tex">\pi</script>:</p>
+
+<script type="math/tex; mode=display">v_{\pi}(s) \doteq \mathbb{E}_{\pi} [G_t|S_t=s]</script>
+
+<p>для всех <script type="math/tex">s \in S</script>, где <script type="math/tex">\mathbb{E}[.]</script> мат.ожидание случайной величины, при условии, что агент следует стратегии <script type="math/tex">\pi</script>, а t - произвольный временной шаг. Ценность заключимтельного состяония, если оно есть, всегда равна 0.</p>
+
+<p>Ценность выполнения действия a в состоянии s при <script type="math/tex">\pi</script>:</p>
+
+<script type="math/tex; mode=display">q_{\pi}(s, a) \doteq \mathbb{E}[G_t|S_t=s, A_t=a]</script>
+
+<p>Фундаментальное свойство функций ценности здесь в том, что они удовлетворяют рекурентному отношению, согласующему текущую ценность и ценностями возможных следующих состояний.</p>
+
+<script type="math/tex; mode=display">v_{\pi}(s) \doteq \mathbb{E}_{\pi} [G_t|S_t=s] = \mathbb{E}_{\pi} [R_{t+1} + \gamma G_{t+1}|S_t=s]</script>
+
+<p>Откуда можно вывести <a href="https://en.wikipedia.org/wiki/Bellman_equation">уравнение Беллмана</a> для <script type="math/tex">V_{\pi}</script></p>
+
+<p>Для конечных МППР можно определить оптимальную стратегию. - статегия <script type="math/tex">\pi</script> лучше или равна стратегии <script type="math/tex">\pi`</script>, если ее ожидаемый доход больше чем ожидаемый доход штрих для любого состояния. Всегда существует хотя бы одна стратегия, которая лучше всех остальных. Это оптимальная стратегия. Оптимальная функция такой (таких) стратегии:</p>
+
+<script type="math/tex; mode=display">v_*(s) \doteq \max_{\pi} v_{\pi}(s)</script>
+
+<p>Оптимальная функция ценности дейсчтвия для оптимальной стратегии:</p>
+
+<script type="math/tex; mode=display">q_*(s, a) \doteq \max_{\pi} q_{\pi}(s, a)</script>
+
+<p>Имея <script type="math/tex">v_*</script> относительно легко определить оптимальную стратегию. Зная <script type="math/tex">Q_*</script> выбрать оптимальные действия еще проще. Однако на практике это малоприменимо, т.к. означает, что мы должны знать будущие возможности, вычислить их вероятности с точким зрения ожидаемого вознаграждения. Поэтому для подобных задач используются приближенные методы и аппроксимации.</p>
+
+<h2 id="частично-наблюдаемые-mppr">Частично наблюдаемые mppr</h2>
+
+<p>Частично наблюдаемый марковский процесс принятия решений (partially observable Markov decision process, POMDP), содержит дополнительные параметры - <script type="math/tex">\Omega</script> и функцию наблюдения <script type="math/tex">O</script>, котоаря отображает состояние и действие в распределении вероятностей по действиям. В POMDP агент не может наблюдать текущее состояние непосредственно, вместо этого он использует наблюдение и информацию о предыдущем действии и состоянии для прогноза текущего состояния. Такое прогнозирование называется доверительным состоянием b, которое описывается как состояние, в котором предположительно находится среда. На схеме ниже SE - оценщик состояний, который получает наблюдения (O, observations), а так-же состояния и действия внутри агента, в результате чего порождает предположительное текущее состояние.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-03-19-12-25.png" alt="POMDP" /></p>
+
+<p>Смотри еще:</p>
+
+<ul>
+  <li>[<a href="../lists/reinforcement-learning" title="Reinforcement learning">reinforcement-learning</a>]</li>
+  <li>[<a href="multi-armed-bandit" title="Multy armed bandits">multi-armed-bandit</a>]</li>
+  <li><a href="https://towardsdatascience.com/introduction-to-reinforcement-learning-rl-part-3-finite-markov-decision-processes-51e1f8d3ddb7">Finite Markov Decision Processes</a></li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

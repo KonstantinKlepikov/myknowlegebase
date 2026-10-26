@@ -8,17 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>llama.cpp | My knowledge base</title>
+<title>Source: llama.cpp | My knowledge base</title>
 <meta name="generator" content="Jekyll v3.8.7" />
-<meta property="og:title" content="llama.cpp" />
+<meta property="og:title" content="Source: llama.cpp" />
 <meta property="og:locale" content="ru_RU" />
-<meta name="description" content="llama.cpp — локальный runtime для LLM на C/C++ с ggml, quantization и оптимизацией под CPU/GPU" />
-<meta property="og:description" content="llama.cpp — локальный runtime для LLM на C/C++ с ggml, quantization и оптимизацией под CPU/GPU" />
-<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/llama-cpp.html" />
-<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/llama-cpp.html" />
+<meta name="description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<meta property="og:description" content="Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/llama-cpp.html" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/llama-cpp.html" />
 <meta property="og:site_name" content="My knowledge base" />
 <script type="application/ld+json">
-{"headline":"llama.cpp","description":"llama.cpp — локальный runtime для LLM на C/C++ с ggml, quantization и оптимизацией под CPU/GPU","@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/llama-cpp.html","@context":"https://schema.org"}</script>
+{"description":"Мои заметки о программировании, data science и алгоритмах, собранные в процессе обучения","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/llama-cpp.html","headline":"Source: llama.cpp","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="keywords" content="">
@@ -27,16 +27,42 @@
 
     
     
-    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
 
+<meta name="robots" content="noindex">
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
 
 
 <!-- Favicon -->
-<link rel="icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
 
 <!-- Math support -->
 <!-- Mathjax Support -->
@@ -77,225 +103,192 @@
 
     <main role="main">
 
-      
-<article class="container mx-auto px-2 mt2 mb4">
+      <article class="container mx-auto px-2 mt2 mb4">
   <header>
-    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">llama.cpp</h1>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Source: llama.cpp</h1>
+    <a class="h5 link-primary ml-2" href="/myknowlegebase/notes/llama-cpp/">← Rendered</a>
   </header>
-  <div class="col-4 sm-width-full border-top-thin">
-    <p class="mb-3 h5">Теги:
-      
-        
-        <a href="/myknowlegebase/tag/llm" title="llm" class="link-tags">llm&nbsp;</a>
-      
-        
-        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
-      
-        
-        <a href="/myknowlegebase/tag/cpp" title="cpp" class="link-tags">cpp&nbsp;</a>
-      
-        
-        <a href="/myknowlegebase/tag/inference" title="inference" class="link-tags">inference&nbsp;</a>
-      
-        
-        <a href="/myknowlegebase/tag/ggml" title="ggml" class="link-tags">ggml&nbsp;</a>
-      
-    </p>
-  </div>
   <div class="prose mb-4 py-4">
-    <h2 id="llamacpp">llama.cpp</h2>
+    <p class="h5">markdown source:</p>
+    <pre style="white-space: pre-wrap; word-break: break-word; overflow-x: auto;"><code>---
+description: llama.cpp — локальный runtime для LLM на C/C++ с ggml, quantization и оптимизацией под CPU/GPU
+tags: llm machine-learning cpp inference ggml
+title: llama.cpp
+---
+## llama.cpp
 
-<p><a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> — это проект для запуска больших языковых моделей локально, без зависимости от внешнего облачного API. По сути, это движок inference для LLM, написанный на C/C++, построенный поверх библиотеки <a href="https://github.com/ggml-org/ggml">ggml</a>. Основная идея проста: максимально уменьшить накладные расходы, сделать запуск на обычном ноутбуке/сервере возможным и поддержать широкий спектр железа — CPU, GPU, Apple Silicon, ARM, NVIDIA, AMD, Intel и т.д.</p>
+[llama.cpp](https://github.com/ggml-org/llama.cpp) — это проект для запуска больших языковых моделей локально, без зависимости от внешнего облачного API. По сути, это движок inference для LLM, написанный на C/C++, построенный поверх библиотеки [ggml](https://github.com/ggml-org/ggml). Основная идея проста: максимально уменьшить накладные расходы, сделать запуск на обычном ноутбуке/сервере возможным и поддержать широкий спектр железа — CPU, GPU, Apple Silicon, ARM, NVIDIA, AMD, Intel и т.д.
 
-<p>С точки зрения инженерной архитектуры, проект сочетает в себе:</p>
+С точки зрения инженерной архитектуры, проект сочетает в себе:
 
-<ul>
-  <li>загрузку и парсинг моделей GGUF;</li>
-  <li>токенизацию и генерацию текста;</li>
-  <li>матричные вычисления через ggml;</li>
-  <li>квантизацию моделей для уменьшения памяти и ускорения inference;</li>
-  <li>бекэнды под разные типы ускорителей и архитектуры.</li>
-</ul>
+- загрузку и парсинг моделей GGUF;
+- токенизацию и генерацию текста;
+- матричные вычисления через ggml;
+- квантизацию моделей для уменьшения памяти и ускорения inference;
+- бекэнды под разные типы ускорителей и архитектуры.
 
-<p>Это то, что делает llama.cpp удобным инструментом не только для экспериментов, но и для продакшн-сценариев вроде локального сервера, офлайн-чата, self-hosted API и интеграции с агентами.</p>
+Это то, что делает llama.cpp удобным инструментом не только для экспериментов, но и для продакшн-сценариев вроде локального сервера, офлайн-чата, self-hosted API и интеграции с агентами.
 
-<h2 id="почему-это-важно">Почему это важно</h2>
+## Почему это важно
 
-<p>Главная причина популярности llama.cpp — бюджетная доступность. Модель грузится в памяти и выполняется локально, а не через внешнее API. Это дает несколько плюсов:</p>
+Главная причина популярности llama.cpp — бюджетная доступность. Модель грузится в памяти и выполняется локально, а не через внешнее API. Это дает несколько плюсов:
 
-<ul>
-  <li>приватность и отсутствие зависимости от сторонних сервисов;</li>
-  <li>возможность запускать модели на слабом железе после квантизации;</li>
-  <li>быстрое локальное прототипирование и офлайн-разработка;</li>
-  <li>работа в условиях ограниченных сетевых подключений.</li>
-</ul>
+- приватность и отсутствие зависимости от сторонних сервисов;
+- возможность запускать модели на слабом железе после квантизации;
+- быстрое локальное прототипирование и офлайн-разработка;
+- работа в условиях ограниченных сетевых подключений.
 
-<p>Сам проект позиционируется как “LLM inference in C/C++” и заявляет поддержку широкого набора аппаратных платформ, включая ARM NEON, AVX/AVX2/AVX512, CUDA, HIP, Metal, Vulkan, SYCL, OpenCL, Hexagon и др. Для x86 и ARM это критично, потому что даже на CPU можно получить заметный прирост производительности за счёт специализированных SIMD-ядр.</p>
+Сам проект позиционируется как &quot;LLM inference in C/C++&quot; и заявляет поддержку широкого набора аппаратных платформ, включая ARM NEON, AVX/AVX2/AVX512, CUDA, HIP, Metal, Vulkan, SYCL, OpenCL, Hexagon и др. Для x86 и ARM это критично, потому что даже на CPU можно получить заметный прирост производительности за счёт специализированных SIMD-ядр.
 
-<h2 id="основные-компоненты">Основные компоненты</h2>
+## Основные компоненты
 
-<h3 id="1-ggml">1. ggml</h3>
+### 1. ggml
 
-<p>llama.cpp строится на ggml — низкоуровневой библиотеке вычислений для LLM. Она упаковывает в себе:</p>
+llama.cpp строится на ggml — низкоуровневой библиотеке вычислений для LLM. Она упаковывает в себе:
 
-<ul>
-  <li>операции над тензорами;</li>
-  <li>буферы памяти и аллокацию;</li>
-  <li>бэкенды для CPU/GPU;</li>
-  <li>оптимизированные матричные операции и kernel-ы.</li>
-</ul>
+- операции над тензорами;
+- буферы памяти и аллокацию;
+- бэкенды для CPU/GPU;
+- оптимизированные матричные операции и kernel-ы.
 
-<p>По сути, ggml является “ядром” вычисления модели, а llama.cpp добавляет слой для работы с архитектурами языковых моделей, токенизацией и генерацией.</p>
+По сути, ggml является &quot;ядром&quot; вычисления модели, а llama.cpp добавляет слой для работы с архитектурами языковых моделей, токенизацией и генерацией.
 
-<h3 id="2-gguf">2. GGUF</h3>
+### 2. GGUF
 
-<p>Модели в llama.cpp обычно представлены в формате GGUF. Это формат, специально заточенный под эффективную загрузку и инференс. Он хорош тем, что поддерживает квантизированные веса и легко работает с разными runtime и сериализациями. GGUF стал де-факто стандартом для локального запуска моделей через llama.cpp и совместимые инструменты.</p>
+Модели в llama.cpp обычно представлены в формате GGUF. Это формат, специально заточенный под эффективную загрузку и инференс. Он хорош тем, что поддерживает квантизированные веса и легко работает с разными runtime и сериализациями. GGUF стал де-факто стандартом для локального запуска моделей через llama.cpp и совместимые инструменты.
 
-<h3 id="3-k-варианты-квантизации">3. K-варианты квантизации</h3>
+### 3. K-варианты квантизации
 
-<p>llama.cpp поддерживает 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit и 8-bit integer quantization. Это не просто компромисс “меньше память”; это позволяет запускать модели гораздо большего размера на обычной RAM/VRAM, при этом сохраняя приемлемое качество генерации.</p>
+llama.cpp поддерживает 1.5-bit, 2-bit, 3-bit, 4-bit, 5-bit, 6-bit и 8-bit integer quantization. Это не просто компромисс &quot;меньше память&quot;; это позволяет запускать модели гораздо большего размера на обычной RAM/VRAM, при этом сохраняя приемлемое качество генерации.
 
-<p>В практическом смысле:</p>
+В практическом смысле:
 
-<ul>
-  <li>4-bit / 5-bit часто дают хороший баланс между качеством и скоростью;</li>
-  <li>8-bit лучше для точности, но требует больше памяти;</li>
-  <li>2-bit / 3-bit используется там, где важнее компактность и скорость на ограниченном железе.</li>
-</ul>
+- 4-bit / 5-bit часто дают хороший баланс между качеством и скоростью;
+- 8-bit лучше для точности, но требует больше памяти;
+- 2-bit / 3-bit используется там, где важнее компактность и скорость на ограниченном железе.
 
-<h2 id="установка-и-запуск">Установка и запуск</h2>
+## Установка и запуск
 
-<p>Обычно проект устанавливается либо через готовые бинарники, либо сборкой из исходников. В README проекта есть простой путь:</p>
+Обычно проект устанавливается либо через готовые бинарники, либо сборкой из исходников. В README проекта есть простой путь:
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-LsSf</span> https://llama.app/install.sh | sh
-</code></pre></div></div>
+```bash
+curl -LsSf https://llama.app/install.sh | sh
+```
 
-<p>После установки можно сразу запускать модель из Hugging Face:</p>
+После установки можно сразу запускать модель из Hugging Face:
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>llama-cli <span class="nt">-hf</span> ggml-org/Qwen3.5-0.8B-GGUF
-</code></pre></div></div>
+```bash
+llama-cli -hf ggml-org/Qwen3.5-0.8B-GGUF
+```
 
-<p>Для API-сервера:</p>
+Для API-сервера:
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>llama serve <span class="nt">-hf</span> ggml-org/Qwen3.5-0.8B-GGUF
-</code></pre></div></div>
+```bash
+llama serve -hf ggml-org/Qwen3.5-0.8B-GGUF
+```
 
-<p>Это очень удобно: можно быстро получить локальный OpenAI-compatible endpoint и подключать его в существующую инфраструктуру для приложений, агентов и UI.</p>
+Это очень удобно: можно быстро получить локальный OpenAI-compatible endpoint и подключать его в существующую инфраструктуру для приложений, агентов и UI.
 
-<h2 id="бэкенды-и-аппаратная-поддержка">Бэкенды и аппаратная поддержка</h2>
+## Бэкенды и аппаратная поддержка
 
-<p>llama.cpp поддерживает множество бекэндов:</p>
+llama.cpp поддерживает множество бекэндов:
 
-<ul>
-  <li>CPU: AVX, AVX2, AVX512, AMX, ARM NEON, RVV;</li>
-  <li>GPU: CUDA, Metal, Vulkan, OpenCL, SYCL, HIP;</li>
-  <li>специализированные решения: Hexagon, CANN, MUSA, OpenVINO.</li>
-</ul>
+- CPU: AVX, AVX2, AVX512, AMX, ARM NEON, RVV;
+- GPU: CUDA, Metal, Vulkan, OpenCL, SYCL, HIP;
+- специализированные решения: Hexagon, CANN, MUSA, OpenVINO.
 
-<p>То есть проект не привязан только к одной платформе. Для серверов это особенно важно: можно выбрать CPU-only, GPU-only или смешанный режим. В документации также есть упоминание CPU+GPU hybrid inference, когда модель частично ускоряется на GPU, а часть вычислений выполняется на CPU.</p>
+То есть проект не привязан только к одной платформе. Для серверов это особенно важно: можно выбрать CPU-only, GPU-only или смешанный режим. В документации также есть упоминание CPU+GPU hybrid inference, когда модель частично ускоряется на GPU, а часть вычислений выполняется на CPU.
 
-<p>На ARM-серверах это особенно интересно, потому что архитектура CPU и выравнивание памяти сильно влияют на производительность. Arm Learning Path по profiling llama.cpp показывает, насколько важно понимать распределение вычислений между потоками и ядрами, чтобы не терять эффективность на многоядерных системах.</p>
+На ARM-серверах это особенно интересно, потому что архитектура CPU и выравнивание памяти сильно влияют на производительность. Arm Learning Path по profiling llama.cpp показывает, насколько важно понимать распределение вычислений между потоками и ядрами, чтобы не терять эффективность на многоядерных системах.
 
-<h2 id="многопоточность-в-llamacpp">Многопоточность в llama.cpp</h2>
+## Многопоточность в llama.cpp
 
-<p>llama.cpp создаёт thread pool и управляет распараллеливанием на уровне операторов. Число потоков задаётся через опцию <code class="language-plaintext highlighter-rouge">-t</code>, а привязка к ядрам процессора — через <code class="language-plaintext highlighter-rouge">-C</code>.</p>
+llama.cpp создаёт thread pool и управляет распараллеливанием на уровне операторов. Число потоков задаётся через опцию `-t`, а привязка к ядрам процессора — через `-C`.
 
-<p>Например:</p>
+Например:
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./llama-cli <span class="nt">-m</span> model.gguf <span class="nt">-p</span> <span class="s2">"..."</span> <span class="nt">-t</span> 2 <span class="nt">-C</span> 0x3
-</code></pre></div></div>
+```bash
+./llama-cli -m model.gguf -p &quot;...&quot; -t 2 -C 0x3
+```
 
-<p>Здесь:</p>
+Здесь:
 
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">-t 2</code> — запускает 2 worker thread;</li>
-  <li><code class="language-plaintext highlighter-rouge">-C 0x3</code> — привязывает их к конкретным CPU-core (<code class="language-plaintext highlighter-rouge">core0</code> и <code class="language-plaintext highlighter-rouge">core1</code>);</li>
-  <li>это позволяет делать профилирование более предсказуемым и анализировать нагрузку по ядрам.</li>
-</ul>
+- `-t 2` — запускает 2 worker thread;
+- `-C 0x3` — привязывает их к конкретным CPU-core (`core0` и `core1`);
+- это позволяет делать профилирование более предсказуемым и анализировать нагрузку по ядрам.
 
-<p>Параллелизм в llama.cpp происходит не на “всей модели целиком”, а на уровне отдельных tensor ops. Например, для <code class="language-plaintext highlighter-rouge">MUL_MAT</code> матрица результата может быть разделена между несколькими потоками, каждый из которых вычисляет свою часть выходной матрицы. Это типичный пример работы с big matrix multiplications, где большую вычислительную задачу раскладывают на независимые подзадачи.</p>
+Параллелизм в llama.cpp происходит не на &quot;всей модели целиком&quot;, а на уровне отдельных tensor ops. Например, для `MUL_MAT` матрица результата может быть разделена между несколькими потоками, каждый из которых вычисляет свою часть выходной матрицы. Это типичный пример работы с big matrix multiplications, где большую вычислительную задачу раскладывают на независимые подзадачи.
 
-<p>Пример разделения операции <code class="language-plaintext highlighter-rouge">MUL_MAT</code> по потокам</p>
+Пример разделения операции `MUL_MAT` по потокам
 
-<p><img src="/myknowlegebase/attachments/2026-10-07-02-20-23.png" alt="2026-10-07-02-20-23.png" /></p>
+![2026-10-07-02-20-23.png](../attachments/2026-10-07-02-20-23.png)
 
-<p>На уровне профилирования это видно через:</p>
+На уровне профилирования это видно через:
 
-<ul>
-  <li>Core Map;</li>
-  <li>Cluster Map;</li>
-  <li>channel annotation views;</li>
-  <li>анализ, кто именно выполняет конкретный node/op и насколько равномерно распределена нагрузка между потоками.</li>
-</ul>
+- Core Map;
+- Cluster Map;
+- channel annotation views;
+- анализ, кто именно выполняет конкретный node/op и насколько равномерно распределена нагрузка между потоками.
 
-<p>Arm Learning Path подчеркивает важность такого анализа: если один поток перегружен, а другие простаивают, то это не только проблема балансировки, но и прямой источник потери throughput и latency.</p>
+Arm Learning Path подчеркивает важность такого анализа: если один поток перегружен, а другие простаивают, то это не только проблема балансировки, но и прямой источник потери throughput и latency.
 
-<h2 id="из-чего-складывается-производительность">Из чего складывается производительность</h2>
+## Из чего складывается производительность
 
-<p>Для оптимальной работы с llama.cpp важно помнить про несколько вещей:</p>
+Для оптимальной работы с llama.cpp важно помнить про несколько вещей:
 
-<ul>
-  <li>размер модели и тип квантизации;</li>
-  <li>число потоков (<code class="language-plaintext highlighter-rouge">-t</code>) и привязка потоков к ядрам (<code class="language-plaintext highlighter-rouge">-C</code>);</li>
-  <li>выбор бекэнда — CPU, CUDA, Metal, Vulkan и т.п.;</li>
-  <li>способность модели укладываться в доступную память;</li>
-  <li>тип задач: prefill vs decode.</li>
-</ul>
+- размер модели и тип квантизации;
+- число потоков (`-t`) и привязка потоков к ядрам (`-C`);
+- выбор бекэнда — CPU, CUDA, Metal, Vulkan и т.п.;
+- способность модели укладываться в доступную память;
+- тип задач: prefill vs decode.
 
-<p>Меньше всего конфигурируется через “магические” параметры. В реальности производительность получается сочетанием архитектуры CPU/GPU и тем, насколько равномерно модель разбивается на вычислительные части.</p>
+Меньше всего конфигурируется через &quot;магические&quot; параметры. В реальности производительность получается сочетанием архитектуры CPU/GPU и тем, насколько равномерно модель разбивается на вычислительные части.
 
-<h2 id="практические-рекомендации">Практические рекомендации</h2>
+## Практические рекомендации
 
-<ul>
-  <li>Сначала запускать модель в базовой конфигурации и понять, что работает.</li>
-  <li>Затем тестировать квантизацию: 4-bit или 5-bit часто лучший компромисс.</li>
-  <li>Если железо ARM/многоядерное, смотреть на <code class="language-plaintext highlighter-rouge">-t</code> и <code class="language-plaintext highlighter-rouge">-C</code> и профилировать thread affinity.</li>
-  <li>Для локальных сервисов использовать <code class="language-plaintext highlighter-rouge">llama-server</code> и OpenAI-compatible API.</li>
-  <li>Для офлайн-экспериментов удобно использовать CLI-режим <code class="language-plaintext highlighter-rouge">llama-cli</code>.</li>
-</ul>
+- Сначала запускать модель в базовой конфигурации и понять, что работает.
+- Затем тестировать квантизацию: 4-bit или 5-bit часто лучший компромисс.
+- Если железо ARM/многоядерное, смотреть на `-t` и `-C` и профилировать thread affinity.
+- Для локальных сервисов использовать `llama-server` и OpenAI-compatible API.
+- Для офлайн-экспериментов удобно использовать CLI-режим `llama-cli`.
 
-<h2 id="когда-стоит-использовать-llamacpp">Когда стоит использовать llama.cpp</h2>
+## Когда стоит использовать llama.cpp
 
-<p>llama.cpp особенно хорош, когда нужно:</p>
+llama.cpp особенно хорош, когда нужно:
 
-<ul>
-  <li>запускать LLM локально без стороннего API;</li>
-  <li>работать с офлайн/приватными моделями;</li>
-  <li>использовать разную аппаратную платформу и бекэнды;</li>
-  <li>проводить низкоуровневую оптимизацию под CPU/GPU;</li>
-  <li>собирать собственный LLM-сервис на базе локального inference.</li>
-</ul>
+- запускать LLM локально без стороннего API;
+- работать с офлайн/приватными моделями;
+- использовать разную аппаратную платформу и бекэнды;
+- проводить низкоуровневую оптимизацию под CPU/GPU;
+- собирать собственный LLM-сервис на базе локального inference.
 
-<p>Это один из ключевых инструментов современной локальной AI-экосистемы: он сочетает скорость, гибкость и практичность.</p>
+Это один из ключевых инструментов современной локальной AI-экосистемы: он сочетает скорость, гибкость и практичность.
 
-<h2 id="итого">Итого</h2>
+## Итого
 
-<p>llama.cpp — это не просто “обертка поверх модели”. Это полноценный runtime для локального запуска LLM, который объединяет в одном проекте:</p>
+llama.cpp — это не просто &quot;обертка поверх модели&quot;. Это полноценный runtime для локального запуска LLM, который объединяет в одном проекте:
 
-<ul>
-  <li>матричные вычисления через ggml;</li>
-  <li>поддержку нескольких архитектур и бекэндов;</li>
-  <li>квантизацию веса модели;</li>
-  <li>потоковую и многопоточную обработку;</li>
-  <li>простой локальный API и CLI.</li>
-</ul>
+- матричные вычисления через ggml;
+- поддержку нескольких архитектур и бекэндов;
+- квантизацию веса модели;
+- потоковую и многопоточную обработку;
+- простой локальный API и CLI.
 
-<p>Его важность особенно заметна на ARM и серверных системах: там, где нужно понять, как именно LLM вычислительная нагрузка распределяется между ядрами и ускорителями, т.е. там, где производительность определяется не только моделью, но и архитектурой вычислений.</p>
+Его важность особенно заметна на ARM и серверных системах: там, где нужно понять, как именно LLM вычислительная нагрузка распределяется между ядрами и ускорителями, т.е. там, где производительность определяется не только моделью, но и архитектурой вычислений.
 
-<p>Для дальнейшего чтения полезно смотреть:</p>
+Для дальнейшего чтения полезно смотреть:
 
-<ul>
-  <li><a href="https://github.com/ggml-org/llama.cpp">llama.cpp repository</a></li>
-  <li><a href="https://learn.arm.com/learning-paths/servers-and-cloud-computing/llama_cpp_streamline/6_multithread_analyze/">Arm Learning Path: multi-threaded performance analysis</a></li>
-  <li><a href="https://github.com/ggml-org/ggml">ggml</a></li>
-  <li>[<a href="../lists/llm" title="Ресурсы LLM">lists/llm</a>]</li>
-</ul>
+- [llama.cpp repository](https://github.com/ggml-org/llama.cpp)
+- [Arm Learning Path: multi-threaded performance analysis](https://learn.arm.com/learning-paths/servers-and-cloud-computing/llama_cpp_streamline/6_multithread_analyze/)
+- [ggml](https://github.com/ggml-org/ggml)
+- [[lists/llm]]
 
-<h2 id="ai-warning">AI-warning</h2>
+## AI-warning
 
-<p>✨ Данная статья сгенерирована с помощью ChatGPT 5.0 mini. Текст проверен человеком.</p>
+✨ Данная статья сгенерирована с помощью ChatGPT 5.0 mini. Текст проверен человеком.
 
-
+[lists/llm]: ../lists/llm &quot;Ресурсы LLM&quot;
+</code></pre>
   </div>
 </article>
 
@@ -329,5 +322,34 @@
     if (l.href.endsWith('.md')) {
       l.href = l.href.substring(0, l.href.length-3)
     }
-  })
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
 </script>

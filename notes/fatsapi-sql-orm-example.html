@@ -1,0 +1,99 @@
+---
+layout: markdown_source
+title: "Source: Fatsapi sql orm example"
+parent_url: "/notes/fatsapi-sql-orm-example/"
+permalink: "/notes/fatsapi-sql-orm-example.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Пример организации приложения fastapi с базой данных и orm
+tags: fastapi python
+title: Fatsapi sql orm example
+---
+## Пример построения приложения
+
+```bash
+.
+└── sql_app
+    ├── \__init__.py
+    ├── crud.py
+    ├── database.py
+    ├── main.py
+    ├── models.py
+    └── schemas.py
+```
+
+[SQL (Relational) Databases](https://fastapi.tiangolo.com/tutorial/sql-databases/) - собственно сам пример
+
+## Проблема: как создавать БД (если нет популяции)?
+
+[Пример создания бд из модели](https://stackoverflow.com/a/16285333) c помощью create_all:
+
+```python
+Yes,sqlalchemy does create a database for you.I confirmed it on windows using this code
+
+from sqlalchemy import create_engine, ForeignKey
+from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+engine = create_engine('sqlite:///C:\\sqlitedbs\\school.db', echo=True)
+Base = declarative_base()
+
+
+class School(Base):
+
+    __tablename__ = "woot"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+
+    def __init__(self, name):
+
+        self.name = name
+
+
+Base.metadata.create_all(engine)
+```
+
+[Другой вариант - через sqlalchemy_utils](https://stackoverflow.com/a/30971098)
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
+
+engine = create_engine("postgres://localhost/mydb")
+if not database_exists(engine.url):
+    create_database(engine.url)
+
+print(database_exists(engine.url))
+```
+
+## Работа с бд ассинхронно
+
+[Статья](https://fastapi.tiangolo.com/advanced/async-sql-databases/) для [[fastapi]]
+
+## Тулзы
+
+[fastapi-sqla](https://pypi.org/project/fastapi-sqla/) - A highly opinionated SQLAlchemy extension for FastAPI
+[fastapi-utils](https://github.com/dmontagu/fastapi-utils/)
+[FastAPI-SQLAlchemy](https://github.com/mfreeborn/fastapi-sqlalchemy) - FastAPI-SQLAlchemy provides a simple integration between FastAPI and SQLAlchemy in your application. It gives access to useful helpers to facilitate the completion of common tasks.
+[FastAPI-SQLAlchemy](https://github.com/zuarbase/fastapi-sqlalchemy) - Full-stack, asynchronous Python3 framework.
+
+- [[fastapi-тестирование-базы-данных]]
+- [[fastapi-зависимости-с-yield]]
+- [[sqlalchemy]]
+- [[alembic]]
+- [[sqlite]]
+- [[fastapi]]
+- [[starlette]]
+
+
+[fastapi]: fastapi "Fastapi"
+[fastapi-тестирование-базы-данных]: fastapi-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B1%D0%B0%D0%B7%D1%8B-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85 "Fastapi тестирование базы данных"
+[fastapi-зависимости-с-yield]: fastapi-%D0%B7%D0%B0%D0%B2%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D0%B8-%D1%81-yield "Fastapi зависимости с yield"
+[sqlalchemy]: ../lists/sqlalchemy "Sqlalchemy"
+[alembic]: alembic "Alembic"
+[sqlite]: sqlite "Sqlite bd"
+[starlette]: starlette "Starlette"

@@ -1,0 +1,130 @@
+---
+layout: markdown_source
+title: "Source: Linux"
+parent_url: "/notes/linux/"
+permalink: "/notes/linux.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Список заметок про работу с linux для devops
+category: list
+tags: linux
+title: Linux
+---
+## Документация утилит
+
+`man <util name>`
+
+## Как перезагрузить сервер
+
+`sudo reboot` или `sudo shutdown -r now`
+
+Последний вариант предпочтительнее, так как позволяет указать причину перезагрузки
+
+```shell
+sudo shutdown -r now 'System maintenance'
+```
+
+## Группы и юзеры
+
+`who` или так `whoami`  или так `echo $USER` юзер
+
+с подробностями: `w`
+
+`id -g` текущая группа
+
+`id -G` все группы, в которых состоит текущий юзер
+
+имена вмето айдишников `id -Gn` или так `groups`
+
+## Права
+
+`sudo chmod 777 name_of_partition` это выдает вообще все права
+
+Подробнее [как выдать более ограниченно](https://askubuntu.com/a/628898)
+
+## Диски и др.устройства
+
+`sudo fdisk -l1` доступные диски. `fdisc` позволяет управлять разделами (требует рут права). Другой вариант через утилиту `parted`
+
+`blkid /dev/discname` аналог. Флаг -p дает подробную инфу. Если надо без рут прав: `lsblk /dev/discname`
+
+Утилита `dd` позволяет замерить быстродействие (острожно, т.к. влечет запись перезапись). Запускать лучше через `iostat`. Более точно измеряет быстродействие `fio`
+
+[Как добавить диск на ubuntu](https://askubuntu.com/questions/125257/how-do-i-add-an-additional-hard-drive)
+
+## Сетевые утилиты
+
+ssh-туннелирование через утилиту `ssh`, позволяющую создавать соединение и перенаправлять порты
+
+Оценка быстродействия [[http]] с поможью `ab` - [[apache-banchmark]]
+
+Нагрузочное [[тестирование]] с помощью python приложения [[molotov]] - асинхронный тестировщик нагрузки приложения.
+
+## CPU
+
+Простейший способ через `ps`
+
+`ps -eo pcpu,pid,user,args | sort -r | head -10`
+
+Интерактивно - черехз `htop`. [Смотри тут](https://htop.dev/). [Статья на баше](https://habr.com/ru/post/316806/)
+
+## Процессы
+
+Все процессы `ps auxw`. Фильрация по конкретным запросам `ps auxw | grep root | -v grep` - в данном случае находятся все рут процессы, за исключением самого grep. Можно задать псевдоним:
+
+```shell
+alias pg='ps aux | grep -v grep | grep $1'
+
+pg something
+```
+
+## How To Assign Output of a Linux Command to a Variable
+
+```bash
+variable_name=$(command)
+variable_name=$(command [option ...] arg1 arg2 ...)
+# OR
+variable_name='command'
+variable_name='command [option ...] arg1 arg2 ...'
+```
+
+## Работа с путями, содержимым папок и т.д
+
+- `ls -l /usr | less` поэкранный вывод в длинном виде. Утилита знает куда выводит - когда в stdout, упорядочивает  вывод в несколько столбцов
+- `wc file.txt` колво строк, слов и символов в фале (`-l` только строки, `-w` только слова, `-c` только символы).
+- Есди не указать имя файла, то данне читаются из stdin. `ls -l | wc -l` - посчитает число файлов
+- `head n3 this.txt` первые 3 строки файла (по умолчанию 10)
+- `head -n3 this.txt | wc -w`
+- `ls /bin | head -n5` сокращение длинного списка файлов каталога
+- `cut` текст из файла по колонкам (`-f` разделение по tab, `-c` по позиции символа в строке, `d` флаг меняет разделитель на произвольный)
+- `grep` поиск соответствия, `grep -v` поиск несоответствия
+- `ls -l /usr | cut -c1 | grep d | wc -l` - число подкаталогов каталога (длинный вывод \| только первый символ строки \| все строки содержащие d \| посчитать строки)
+- `sort` сортировка по возрастанию, `sort -r` по убыванию, `sort -n` в числовом порядке (код симваол в начале строки), `sort -nr` убывание в числовом
+
+Другие ресурсы:
+
+- [[linux-scp]]
+- [[linux-snap]]
+- [[shell-comans-in-one-line]]
+- [[makefile]]
+- [[myknowlegebase/pop-os]]
+- [gnu make](https://www.gnu.org/software/make/manual/make.html#Flavors)
+- [Run multiple commands in one line with `;`, `&&` and `||` - Linux Tips](https://dev.to/0xbf/run-multiple-commands-in-one-line-with-and-linux-tips-5hgm)
+
+Статьи:
+
+- [How To Read and Set Environmental and Shell Variables on Linux](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux)
+- [How to find the processes that are consuming the most server resources](https://www.digitalocean.com/community/questions/how-to-find-the-processes-that-are-consuming-the-most-server-resources)
+- [How do I watch my webcams feed on Linux](https://unix.stackexchange.com/questions/3304/how-do-i-watch-my-webcams-feed-on-linux)
+
+
+[http]: ../lists/http "Http"
+[apache-banchmark]: apache-banchmark "Apache banchmark"
+[тестирование]: ../lists/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5 "Основные принципы тестровния"
+[molotov]: molotov "Molotov"
+[linux-scp]: linux-scp "Linux-scp"
+[linux-snap]: linux-snap "Linux-snap"
+[shell-comans-in-one-line]: shell-comans-in-one-line "Shell comand in one line"
+[makefile]: makefile "Makefile"

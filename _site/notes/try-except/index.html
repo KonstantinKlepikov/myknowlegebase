@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Try except raise | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Try except raise" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Про ошибки и исключения в python" />
+<meta property="og:description" content="Про ошибки и исключения в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/try-except/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/try-except/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Про ошибки и исключения в python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/try-except/","headline":"Try except raise","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Try except raise</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/try-except.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Сначала выполняется <code class="language-plaintext highlighter-rouge">try</code> (код между ключевыми словами <code class="language-plaintext highlighter-rouge">try</code> и <code class="language-plaintext highlighter-rouge">except</code>).</p>
+
+<p>Если не возникает исключение, <code class="language-plaintext highlighter-rouge">except</code> пропускается и выполнение оператора <code class="language-plaintext highlighter-rouge">try</code> завершается.</p>
+
+<p>Если во время выполнения <code class="language-plaintext highlighter-rouge">try</code> возникает исключение, остальная часть кода пропускается. Затем, если тип исключения соответствует исключению, названному в <code class="language-plaintext highlighter-rouge">except</code>, выполняется код в <code class="language-plaintext highlighter-rouge">except</code>, а затем выполнение продолжается после блока <code class="language-plaintext highlighter-rouge">try</code> / <code class="language-plaintext highlighter-rouge">except</code>.</p>
+
+<p>Если возникает исключение, которое не соответствует исключению, указанному в <code class="language-plaintext highlighter-rouge">except</code>, оно передается во внешние операторы <code class="language-plaintext highlighter-rouge">try</code>; если обработчик не найден, это состояние является необработанным исключением, и выполнение программы останавливается с сообщениемоб ошибки.</p>
+
+<p>У оператора <code class="language-plaintext highlighter-rouge">try</code> может быть более одного предложения <code class="language-plaintext highlighter-rouge">except</code>. Будет выполнено <strong>не более одного обработчика исключений</strong>. Обработчики обрабатывают только исключения, которые возникают в соответствующем <code class="language-plaintext highlighter-rouge">try</code>, а не в других обработчиках того же оператора <code class="language-plaintext highlighter-rouge">try</code>. <code class="language-plaintext highlighter-rouge">except</code> может содержать несколько исключений в виде кортежа.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span> <span class="k">except</span> <span class="p">(</span><span class="nb">RuntimeError</span><span class="p">,</span> <span class="nb">TypeError</span><span class="p">,</span> <span class="nb">NameError</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>Оператор <code class="language-plaintext highlighter-rouge">try</code> / <code class="language-plaintext highlighter-rouge">except</code> имеет необязательный <code class="language-plaintext highlighter-rouge">else</code>, который, если присутствует, должен быть определен после всех <code class="language-plaintext highlighter-rouge">except</code>. Это полезно для кода, который должен выполняться, если не возникло исключений и позволяет избежать случайного перехвата исключений, которые не были вызваны в теле <code class="language-plaintext highlighter-rouge">try</code> / <code class="language-plaintext highlighter-rouge">except</code></p>
+
+<p>Когда возникает исключение, с ним может быть связано значение, также известное как аргумент исключения. Наличие и тип аргумента зависят от типа исключения. В предложении <code class="language-plaintext highlighter-rouge">except</code> может быть указана переменная после имени исключения. Переменная привязана к экземпляру исключения с аргументами, хранящимися в <code class="language-plaintext highlighter-rouge">instance.args</code>. Для удобства в экземпляре исключения определяется <code class="language-plaintext highlighter-rouge">__str__()</code>, поэтому аргументы могут выводиться напрямую, без ссылки на <code class="language-plaintext highlighter-rouge">.args</code>. Можно также сначала создать экземпляр исключения перед его возбуждением и добавить к нему любые атрибуты по желанию.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'spam'</span><span class="p">,</span> <span class="s">'eggs'</span><span class="p">)</span>
+<span class="p">...</span> <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">inst</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">inst</span><span class="p">))</span>    <span class="c1"># the exception instance
+</span><span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">inst</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>     <span class="c1"># arguments stored in .args
+</span><span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>          <span class="c1"># __str__ allows args to be printed directly,
+</span><span class="p">...</span>                          <span class="c1"># but may be overridden in exception subclasses
+</span><span class="p">...</span>     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">inst</span><span class="p">.</span><span class="n">args</span>     <span class="c1"># unpack args
+</span><span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'x ='</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'y ='</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">Exception</span><span class="s">'&gt;
+('</span><span class="n">spam</span><span class="s">', '</span><span class="n">eggs</span><span class="s">')
+('</span><span class="n">spam</span><span class="s">', '</span><span class="n">eggs</span><span class="s">')
+x = spam
+y = eggs
+</span></code></pre></div></div>
+
+<p>Обработчики исключений обрабатывают исключения не только в том случае, если они возникают сразу в <code class="language-plaintext highlighter-rouge">try</code>, но также и в тех случаях, когда они возникают внутри функций, которые вызываются (даже косвенно) в <code class="language-plaintext highlighter-rouge">try</code>.</p>
+
+<p>Оператор <code class="language-plaintext highlighter-rouge">raise</code> позволяет вызвать указанное исключение. Единственный аргумент оператора указывает на возникшее исключение. Это должен быть либо экземпляр исключения, либо класс исключения (класс, производный от <code class="language-plaintext highlighter-rouge">Exception</code>). Если передан класс исключения, он будет неявно создан путем вызова его конструктора без аргументов.</p>
+
+<p>Поднятое исключение можно распространить</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">raise</span> <span class="nb">NameError</span><span class="p">(</span><span class="s">'HiThere'</span><span class="p">)</span>
+<span class="p">...</span> <span class="k">except</span> <span class="nb">NameError</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'An exception flew by!'</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">raise</span>
+<span class="p">...</span>
+<span class="n">An</span> <span class="n">exception</span> <span class="n">flew</span> <span class="n">by</span><span class="err">!</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">NameError</span><span class="p">:</span> <span class="n">HiThere</span>
+</code></pre></div></div>
+
+<p>Оператор <code class="language-plaintext highlighter-rouge">from</code> позволяет выстраивать цепочки исключений</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+<span class="p">...</span>     <span class="k">raise</span> <span class="nb">ConnectionError</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="n">func</span><span class="p">()</span>
+<span class="p">...</span> <span class="k">except</span> <span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'Failed to open database'</span><span class="p">)</span> <span class="k">from</span> <span class="n">exc</span>
+<span class="p">...</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">func</span>
+<span class="nb">ConnectionError</span>
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">RuntimeError</span><span class="p">:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="nb">open</span> <span class="n">database</span>
+</code></pre></div></div>
+
+<p>Цепь исключений можно отключить используя <code class="language-plaintext highlighter-rouge">from None</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="nb">open</span><span class="p">(</span><span class="s">'database.sqlite'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">except</span> <span class="nb">OSError</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">raise</span> <span class="nb">RuntimeError</span> <span class="k">from</span> <span class="bp">None</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">4</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">RuntimeError</span>
+</code></pre></div></div>
+
+<p>Наконец в <code class="language-plaintext highlighter-rouge">try</code> необязательные действия по очистке, которые должны выполняться при любых обстоятельствах.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">raise</span> <span class="nb">KeyboardInterrupt</span>
+<span class="p">...</span> <span class="k">finally</span><span class="p">:</span>
+<span class="p">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">'Goodbye, world!'</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="n">Goodbye</span><span class="p">,</span> <span class="n">world</span><span class="err">!</span>
+<span class="nb">KeyboardInterrupt</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Если присутствует <code class="language-plaintext highlighter-rouge">finally</code>, оно выполняться как последняя задача перед завершением оператора <code class="language-plaintext highlighter-rouge">try</code>. <code class="language-plaintext highlighter-rouge">finally</code> выполняется независимо от того, вызывает ли оператор <code class="language-plaintext highlighter-rouge">try</code> исключение.</p>
+
+<p>Нюансы:</p>
+
+<ul>
+  <li>Если исключение возникает во время выполнения <code class="language-plaintext highlighter-rouge">try</code>, исключение может быть обработано в <code class="language-plaintext highlighter-rouge">except</code>. Если исключение не обрабатывается <code class="language-plaintext highlighter-rouge">except</code>, исключение повторно возникает после выполнения <code class="language-plaintext highlighter-rouge">finally</code>.</li>
+  <li>Исключение может произойти во время выполнения <code class="language-plaintext highlighter-rouge">except</code> или <code class="language-plaintext highlighter-rouge">else</code>. Опять же, исключение повторно будет поднято после выполнения <code class="language-plaintext highlighter-rouge">finally</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">finally</code> выполняет оператор break, continue или <code class="language-plaintext highlighter-rouge">return</code>, исключения не возникают повторно.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">try</code> достигает оператора <code class="language-plaintext highlighter-rouge">break</code>, <code class="language-plaintext highlighter-rouge">continue</code> или <code class="language-plaintext highlighter-rouge">return</code>, то <code class="language-plaintext highlighter-rouge">finally</code> будет выполняться непосредственно перед выполнением оператора <code class="language-plaintext highlighter-rouge">break</code>, <code class="language-plaintext highlighter-rouge">continue</code> или <code class="language-plaintext highlighter-rouge">return</code>.</li>
+  <li>Если <code class="language-plaintext highlighter-rouge">finally</code> включает оператор <code class="language-plaintext highlighter-rouge">return</code>, возвращаемое значение будет значением из оператора <code class="language-plaintext highlighter-rouge">return finally</code>, а не значением из оператора <code class="language-plaintext highlighter-rouge">return try</code>.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="p">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="p">...</span>         <span class="n">result</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+<span class="p">...</span>     <span class="k">except</span> <span class="nb">ZeroDivisionError</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">"division by zero!"</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">else</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">"result is"</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+<span class="p">...</span>     <span class="k">finally</span><span class="p">:</span>
+<span class="p">...</span>         <span class="k">print</span><span class="p">(</span><span class="s">"executing finally clause"</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">result</span> <span class="ow">is</span> <span class="mf">2.0</span>
+<span class="n">executing</span> <span class="k">finally</span> <span class="n">clause</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">division</span> <span class="n">by</span> <span class="n">zero</span><span class="err">!</span>
+<span class="n">executing</span> <span class="k">finally</span> <span class="n">clause</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divide</span><span class="p">(</span><span class="s">"2"</span><span class="p">,</span> <span class="s">"1"</span><span class="p">)</span>
+<span class="n">executing</span> <span class="k">finally</span> <span class="n">clause</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">3</span><span class="p">,</span> <span class="ow">in</span> <span class="n">divide</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="n">unsupported</span> <span class="n">operand</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="o">/</span><span class="p">:</span> <span class="s">'str'</span> <span class="ow">and</span> <span class="s">'str'</span>
+</code></pre></div></div>
+
+<p>Основная задача <code class="language-plaintext highlighter-rouge">finally</code> - закрывать коннекшены и дескрипторы файлов, вне зависимости от эксепшенов.</p>
+
+<p>Кроме всего перечисленного, для исключения можно определять пользовательские классы, наследуясь от стандартных.</p>
+
+<ul>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+  <li>[<a href="trace" title="Trace">trace</a>]</li>
+  <li>[<a href="traceback" title="Traceback">traceback</a>]</li>
+  <li>[<a href="../posts/2022-09-14-daily-note" title="Some python tricks 1 - custom exceptions, dataclasses, dot accessing to dict and annotations">2022-09-14-daily-note</a>] custom exception question</li>
+</ul>
+
+<p><a href="https://docs.python.org/3/tutorial/errors.html">Оригинальная статья в документации</a></p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

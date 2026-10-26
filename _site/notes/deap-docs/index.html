@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Deap документация | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Deap документация" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Описание python фреймворка DEAP для эволюционной оптимизации" />
+<meta property="og:description" content="Описание python фреймворка DEAP для эволюционной оптимизации" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/deap-docs/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/deap-docs/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Описание python фреймворка DEAP для эволюционной оптимизации","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/deap-docs/","headline":"Deap документация","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Deap документация</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/deap-docs.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/genetic" title="genetic" class="link-tags">genetic&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/evol" title="evol" class="link-tags">evol&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Смотри вводную в [<a href="deap" title="Deap - генетические алгоритмы на python">deap</a>]</p>
+
+<h2 id="creating-types"><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html">Creating Types</a></h2>
+
+<h3 id="fitness">Fitness</h3>
+
+<p><a href="https://deap.readthedocs.io/en/master/api/base.html#deap.base.Fitness">Fitness</a> is an abstract class that needs a weights attribute in order to be functional.</p>
+
+<p>Можно использовать ready-tobuild <a href="https://deap.readthedocs.io/en/master/api/creator.html#module-deap.creator">creator</a> матефабрику</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create</span><span class="p">(</span><span class="s">"Foo"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">bar</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">spam</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>что эквивалентно:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+    <span class="n">spam</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">bar</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Пример создания</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMin"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMulti"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Во втором примере минимизируется первая функция и максимизируется вторая. Порядок определен слева направо. Знак определяет минимизацию или максимизацию, а значение числа - важность.</p>
+
+<h3 id="individual">Individual</h3>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#individual">Individual</a> - необходимо создать специальный класс, который определяет индивида. Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMax"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+
+<span class="n">IND_SIZE</span><span class="o">=</span><span class="mi">10</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"attr_float"</span><span class="p">,</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"individual"</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">initRepeat</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">,</span>
+                 <span class="n">toolbox</span><span class="p">.</span><span class="n">attr_float</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">IND_SIZE</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Варианты с наследованием типов естественно не ограничены списком</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="n">array</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">typecode</span><span class="o">=</span><span class="s">"d"</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="n">numpy</span><span class="p">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>В примерах выше инициализация выполняется с пмощью методов <a href="https://deap.readthedocs.io/en/master/api/tools.html#initialization">Initialization</a>:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">initRepeat</code></li>
+  <li><code class="language-plaintext highlighter-rouge">initIterate</code></li>
+  <li><code class="language-plaintext highlighter-rouge">initCycle</code></li>
+  <li><code class="language-plaintext highlighter-rouge">genFull</code></li>
+  <li><code class="language-plaintext highlighter-rouge">genGrow</code></li>
+  <li><code class="language-plaintext highlighter-rouge">genHalfAndHalf</code></li>
+</ul>
+
+<p>Пример</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">random</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">initRepeat</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS,
+</span><span class="p">...</span>                                    <span class="c1"># doctest: +NORMALIZE_WHITESPACE
+</span><span class="p">[</span><span class="mf">0.6394</span><span class="p">...,</span> <span class="mf">0.0250</span><span class="p">...]</span>
+</code></pre></div></div>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#permutation">Permutation</a> - пример инициализацйии индивидума с перестановкой. пример простейщего случая (список) - в данном случае создается кастомная функция для заполения, которой и инициализируется индивидуум с помощью<code class="language-plaintext highlighter-rouge">tools.initIterate</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMin"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMin</span><span class="p">)</span>
+
+<span class="n">IND_SIZE</span><span class="o">=</span><span class="mi">10</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"indices"</span><span class="p">,</span> <span class="n">random</span><span class="p">.</span><span class="n">sample</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">IND_SIZE</span><span class="p">),</span> <span class="n">IND_SIZE</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"individual"</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">initIterate</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">,</span>
+                 <span class="n">toolbox</span><span class="p">.</span><span class="n">indices</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#permutation">Arithmetic Expression</a> - использование математических выражений для инициализации</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">gp</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="n">pset</span> <span class="o">=</span> <span class="n">gp</span><span class="p">.</span><span class="n">PrimitiveSet</span><span class="p">(</span><span class="s">"MAIN"</span><span class="p">,</span> <span class="n">arity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pset</span><span class="p">.</span><span class="n">addPrimitive</span><span class="p">(</span><span class="n">operator</span><span class="p">.</span><span class="n">add</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pset</span><span class="p">.</span><span class="n">addPrimitive</span><span class="p">(</span><span class="n">operator</span><span class="p">.</span><span class="n">sub</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">pset</span><span class="p">.</span><span class="n">addPrimitive</span><span class="p">(</span><span class="n">operator</span><span class="p">.</span><span class="n">mul</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMin"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="n">gp</span><span class="p">.</span><span class="n">PrimitiveTree</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMin</span><span class="p">,</span>
+               <span class="n">pset</span><span class="o">=</span><span class="n">pset</span><span class="p">)</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"expr"</span><span class="p">,</span> <span class="n">gp</span><span class="p">.</span><span class="n">genHalfAndHalf</span><span class="p">,</span> <span class="n">pset</span><span class="o">=</span><span class="n">pset</span><span class="p">,</span> <span class="n">min_</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"individual"</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">initIterate</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">,</span>
+                 <span class="n">toolbox</span><span class="p">.</span><span class="n">expr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#evolution-strategy">Evolution Strategy</a> - индивидуальные стратегии эволюции содержат два списка: один для конкретного индивидума, а другой - для его параметров мутации.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">array</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMin"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="n">array</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">typecode</span><span class="o">=</span><span class="s">"d"</span><span class="p">,</span>
+               <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMin</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Strategy"</span><span class="p">,</span> <span class="n">array</span><span class="p">.</span><span class="n">array</span><span class="p">,</span> <span class="n">typecode</span><span class="o">=</span><span class="s">"d"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">initES</span><span class="p">(</span><span class="n">icls</span><span class="p">,</span> <span class="n">scls</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">imin</span><span class="p">,</span> <span class="n">imax</span><span class="p">,</span> <span class="n">smin</span><span class="p">,</span> <span class="n">smax</span><span class="p">):</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">icls</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">imin</span><span class="p">,</span> <span class="n">imax</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">ind</span><span class="p">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">scls</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">smin</span><span class="p">,</span> <span class="n">smax</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ind</span>
+
+<span class="n">IND_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">MIN_VALUE</span><span class="p">,</span> <span class="n">MAX_VALUE</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">5.</span>
+<span class="n">MIN_STRAT</span><span class="p">,</span> <span class="n">MAX_STRAT</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"individual"</span><span class="p">,</span> <span class="n">initES</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">,</span>
+                 <span class="n">creator</span><span class="p">.</span><span class="n">Str</span>
+</code></pre></div></div>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#particle">Particle</a> - имеет ряд дополнительных параметров, позволяющих задавать скорость и запоминать лучший результат</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMax"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Particle"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+               <span class="n">smin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">smax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">best</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">initParticle</span><span class="p">(</span><span class="n">pcls</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">pmin</span><span class="p">,</span> <span class="n">pmax</span><span class="p">,</span> <span class="n">smin</span><span class="p">,</span> <span class="n">smax</span><span class="p">):</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="n">pcls</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">pmin</span><span class="p">,</span> <span class="n">pmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">part</span><span class="p">.</span><span class="n">speed</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">smin</span><span class="p">,</span> <span class="n">smax</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+    <span class="n">part</span><span class="p">.</span><span class="n">smin</span> <span class="o">=</span> <span class="n">smin</span>
+    <span class="n">part</span><span class="p">.</span><span class="n">smax</span> <span class="o">=</span> <span class="n">smax</span>
+    <span class="k">return</span> <span class="n">part</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"particle"</span><span class="p">,</span> <span class="n">initParticle</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Particle</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">pmin</span><span class="o">=-</span><span class="mi">6</span><span class="p">,</span> <span class="n">pmax</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">smin</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span> <span class="n">smax</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#a-funky-one">A Funky One</a> - можно создавать любые собственные конструкции классов</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMax"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+
+<span class="n">INT_MIN</span><span class="p">,</span> <span class="n">INT_MAX</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">FLT_MIN</span><span class="p">,</span> <span class="n">FLT_MAX</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span>
+<span class="n">N_CYCLES</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"attr_int"</span><span class="p">,</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">,</span> <span class="n">INT_MIN</span><span class="p">,</span> <span class="n">INT_MAX</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"attr_flt"</span><span class="p">,</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">,</span> <span class="n">FLT_MIN</span><span class="p">,</span> <span class="n">FLT_MAX</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"individual"</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">initCycle</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">,</span>
+                 <span class="p">(</span><span class="n">toolbox</span><span class="p">.</span><span class="n">attr_int</span><span class="p">,</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">attr_flt</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="n">N_CYCLES</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="population">Population</h3>
+
+<p><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#population">Варианты создания популяций</a></p>
+
+<h4 id="bag">Bag</h4>
+
+<p>Индивидумы создаются в виде списка</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"population"</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">initRepeat</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">individual</span><span class="p">)</span>
+
+<span class="n">toolbox</span><span class="p">.</span><span class="n">population</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="grid">Grid</h4>
+
+<p>Сеточная популяция - это особый случай структурированной популяции, в которой соседние индивидумы оказывают прямое влияние друг на друга. Индивидумы распределены в матрице, где каждая ячейка содержит одного индивидума.</p>
+
+<h4 id="swarm">Swarm</h4>
+
+<p>Частично использована оптимизация роя</p>
+
+<h5 id="demes">Demes</h5>
+
+<p>Позволяет создать сабпопуляцию в популяции</p>
+
+<p><strong><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part1.html#seeding-a-population">Seeding a Population</a></strong> - тут описывается способ создания воспроизводимой популяции</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"FitnessMax"</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Individual"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">initIndividual</span><span class="p">(</span><span class="n">icls</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">icls</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">initPopulation</span><span class="p">(</span><span class="n">pcls</span><span class="p">,</span> <span class="n">ind_init</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">pop_file</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">pop_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pcls</span><span class="p">(</span><span class="n">ind_init</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">)</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"individual_guess"</span><span class="p">,</span> <span class="n">initIndividual</span><span class="p">,</span> <span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"population_guess"</span><span class="p">,</span> <span class="n">initPopulation</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">individual_guess</span><span class="p">,</span> <span class="s">"my_guess.json"</span><span class="p">)</span>
+
+<span class="n">population</span> <span class="o">=</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">population_guess</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="evolutionary-tools"><a href="https://deap.readthedocs.io/en/master/api/tools.html#module-deap.tools">Evolutionary Tools</a></h2>
+
+<p>Включает готовые тулзы:</p>
+
+<ul>
+  <li>Initialization</li>
+  <li>Crossover</li>
+  <li>Mutation</li>
+  <li>Selection</li>
+  <li>Migration</li>
+  <li>Initialization</li>
+  <li>Crossover</li>
+  <li>Mutation</li>
+  <li>Bloat control</li>
+</ul>
+
+<h2 id="alghoritms"><a href="https://deap.readthedocs.io/en/master/api/algo.html#module-deap.algorithms">Alghoritms</a></h2>
+
+<p>Включает несколько готовых алгоритмов эволюционной оптимизации.</p>
+
+<p><strong>Complete Algorithms</strong>:</p>
+
+<ul>
+  <li>eaSimple - simplest evolutionary algorithm</li>
+  <li>eaMuPlusLambda. This is the (μ+λ) evolutionary algorithm</li>
+  <li>eaMuCommaLambda. This is the (μ , λ) evolutionary algorithm</li>
+  <li>eaGenerateUpdate. Ask-tell model proposed in Colette2010 (Collette, Y., N. Hansen, G. Pujol, D. Salazar Aponte and R. Le Riche (2010). On Object-Oriented Programming of Optimizers - Examples in Scilab. In P. Breitkopf and R. F. Coelho, eds.: Multidisciplinary Design Optimization in Computational Mechanics, Wiley, pp. 527-565;), where ask is called generate and tell is called update</li>
+</ul>
+
+<p><strong>Variations</strong>:</p>
+
+<ul>
+  <li>varAnd. Part of an evolutionary algorithm applying only the variation part (crossover and mutation). The modified individuals have their fitness invalidated. The individuals are cloned so returned population is independent of the input population.</li>
+  <li>varOr. Part of an evolutionary algorithm applying only the variation part (crossover, mutation or reproduction). The modified individuals have their fitness invalidated. The individuals are cloned so returned population is independent of the input population.</li>
+</ul>
+
+<p><strong>Covariance Matrix Adaptation Evolution Strategy</strong>:</p>
+
+<ul>
+  <li>Strategy. A strategy that will keep track of the basic parameters of the CMA-ES algorithm</li>
+  <li>StrategyOnePlusLambda. A CMA-ES strategy that uses the 1+λ paradigm</li>
+  <li>StrategyMultiObjective. Multiobjective CMA-ES strategy based on the paper Voss2010 (). It is used similarly as the standard CMA-ES strategy with a generate-update scheme.</li>
+</ul>
+
+<h2 id="computing-statistics"><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part3.html#computing-statistics">Computing Statistics</a></h2>
+
+<h2 id="logging-data"><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part3.html#logging-data">Logging Data</a></h2>
+
+<h2 id="using-multiple-processors"><a href="https://deap.readthedocs.io/en/master/tutorials/basic/part4.html#using-multiple-processors">Using Multiple Processors</a></h2>
+
+<p>Еще по теме:</p>
+
+<ul>
+  <li><a href="https://deap.readthedocs.io/en/master/examples/ga_onemax_numpy.html">One Max Problem: Using Numpy</a></li>
+  <li><a href="https://github.com/DEAP/notebooks">DEEP examples in notebooks</a></li>
+  <li>[<a href="../lists/evolution-methods" title="Evolution methods">evolution-methods</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

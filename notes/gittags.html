@@ -1,0 +1,166 @@
+---
+layout: markdown_source
+title: "Source: Организация тегов на git"
+parent_url: "/notes/gittags/"
+permalink: "/notes/gittags.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Теги в git
+tags: git
+title: Организация тегов на git
+---
+[Статья документации](https://git-scm.com/book/ru/v2/%D0%9E%D1%81%D0%BD%D0%BE%D0%B2%D1%8B-Git-%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BC%D0%B5%D1%82%D0%BA%D0%B0%D0%BC%D0%B8)
+
+Создавать метку надо сразу после коммита.
+
+```sh
+$ git tag
+v1.0
+v2.0
+```
+
+```sh
+$ git tag -l "v1.8.5*"
+v1.8.5
+v1.8.5-rc0
+v1.8.5-rc1
+v1.8.5-rc2
+v1.8.5-rc3
+v1.8.5.1
+v1.8.5.2
+v1.8.5.3
+v1.8.5.4
+v1.8.5.5
+```
+
+Анотированные метки
+
+```sh
+$ git tag -a v1.4 -m "my version 1.4"
+$ git tag
+v0.1
+v1.3
+v1.4
+```
+
+Просмотр метки всместе с коммитом
+
+```sh
+$ git show v1.4
+tag v1.4
+Tagger: Ben Straub <ben@straub.cc>
+Date:   Sat May 3 20:19:12 2014 -0700
+
+my version 1.4
+
+commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    Change version number
+```
+
+Посмотреть все метки и все аннотации
+
+```sh
+git tag -n
+```
+
+Легковесные метки
+
+```sh
+$ git tag v1.4-lw
+$ git tag
+v0.1
+v1.3
+v1.4
+v1.4-lw
+v1.5
+```
+
+```sh
+$ git show v1.4-lw
+commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon <schacon@gee-mail.com>
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    Change version number
+```
+
+Отправка меток
+
+```sh
+$ git push origin v1.5
+Counting objects: 14, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (12/12), done.
+Writing objects: 100% (14/14), 2.05 KiB | 0 bytes/s, done.
+Total 14 (delta 3), reused 0 (delta 0)
+To git@github.com:schacon/simplegit.git
+ * [new tag]         v1.5 -> v1.5
+```
+
+```sh
+$ git push origin --tags
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 160 bytes | 0 bytes/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To git@github.com:schacon/simplegit.git
+ * [new tag]         v1.4 -> v1.4
+ * [new tag]         v1.4-lw -> v1.4-lw
+```
+
+Удаление меток
+
+```sh
+$ git tag -d v1.4-lw
+Deleted tag 'v1.4-lw' (was e7d5add)
+```
+
+С удаленного репозитория (метод №1)
+
+```sh
+$ git push origin :refs/tags/v1.4-lw
+To /git@github.com:schacon/simplegit.git
+ - [deleted]         v1.4-lw
+```
+
+С удаленного репозитория (метод №2)
+
+```sh
+$git push origin --delete <tagname>
+```
+
+Метки для конкретного коммита
+
+```sh
+git tag <tag_name> <commit_sha>
+git tag -a <tag_name> <commit_sha> -m "message"
+```
+
+Просмотр всех коммитов с метками
+
+```sh
+git log --oneline
+
+9127753 (HEAD -> master) Commit 3
+f2fcb99 (feature) Commit 2
+cab6e1b (origin/master) master : initial commit
+```
+
+Создание тегов для текущего или предыдущих коммитов
+
+```sh
+git tag <tag_name> HEAD   # for the last commit
+git tag -a <tag_name> HEAD -m "message"
+
+git tag <tag_name> HEAD~1  # for the commit before HEAD
+git tag <tag_name> HEAD~2  # for two commits before HEAD
+```
+
+Больше документации в списке [[git]]
+
+
+[git]: ../lists/git "Git"

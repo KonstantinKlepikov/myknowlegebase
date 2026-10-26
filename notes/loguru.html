@@ -1,0 +1,47 @@
+---
+layout: markdown_source
+title: "Source: Loguru"
+parent_url: "/notes/loguru/"
+permalink: "/notes/loguru.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Библиотека упрощающая логирование в python
+tags: logging pip python
+title: Loguru
+---
+Юиблиотечка написана поверх стандартного python [[logging]] с целью упростить и унифицировать логирование.
+
+- [Сссылка на доку](https://loguru.readthedocs.io/en/stable/index.html)
+- [Гитхаб](https://github.com/Delgan/loguru).
+
+## [API](https://loguru.readthedocs.io/en/stable/api.html)
+
+```python
+from loguru import logger
+```
+
+[add()](https://loguru.readthedocs.io/en/stable/api/logger.html#loguru._logger.Logger.add)
+
+К примеру, чтобы отправить лог в файл:
+
+```python
+logger.add("file_{time}.log")
+```
+
+логировать в файл с перезаписью можно используя объект `open("somefile.log", "w")`. [Подробнее](https://loguru.readthedocs.io/en/stable/api/logger.html#sink) про то, куда можно писать лог
+
+Пример управлением форматом даты/времени:
+
+```python
+logger.add("file.log", format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}")
+```
+
+- [[logging]]
+- [[python-logging]]
+- [How to log the class of a method with loguru](https://github.com/Delgan/loguru/issues/430)
+
+
+[logging]: logging "Logging - основные принципы"
+[python-logging]: ../lists/python-logging "Python logging"

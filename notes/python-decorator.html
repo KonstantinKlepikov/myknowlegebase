@@ -1,0 +1,155 @@
+---
+layout: markdown_source
+title: "Source: Python decorator"
+parent_url: "/notes/python-decorator/"
+permalink: "/notes/python-decorator.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Декораторы в python. Примеры
+tags: python-standart-library python
+title: Python decorator
+---
+Декораторм в python является функция, возвращающая другую функцию. Обычно применяется как преобразование функции с использованием синтаксиса `@wrapper`. Распространенными примерами декораторов являются `classmethod()` и `staticmethod()`.
+
+Декоратор - это именованный вызываемый объект (лямбда-функции не допускаются), который принимает один объект при вызове (декорируемый объект) и возвращает другой объект. Вызываемым объектом может быть любой объект, реализующий метод `__call__`
+
+Cледующие два определения декоратора семантически эквивалентны:
+
+```python
+def f(...):
+    ...
+f = staticmethod(f)
+
+@staticmethod
+def f(...):
+    ...
+```
+
+Примеры декораторов:
+
+Функция декоратор принимает другую функцию, передает ее аргументы обертке и возвращает результат вычислений
+
+```python
+>>> def deco(this):
+...     def wrapper(*args, **kwargs):
+...         print('wrap')
+...         return this(*args, **kwargs)
+...     return wrapper
+
+>>> @deco
+>>> def main(a, b=2):
+...     print(f'in main {a} != {b}')
+
+>>> main(1)
+wrap
+in main 1 != 2
+```
+
+Класс-декоратор реализует тот же механизм в методе `__call__`
+
+```python
+>>> class This:
+...     def __call__(self, this):
+...         def wrapper(*args, **kwargs):
+...             print('wrap')
+...             return this(*args, **kwargs)
+...         return wrapper
+
+>>> @This()
+>>> def main_cls(a, b=2):
+...     print(f'in main {a} != {b}')
+
+>>> main_cls(1)
+wrap
+in main 1 != 2
+```
+
+Декоратор класса принимает класс вмест офункцйии и реализует метод, декорирующий методы класса
+
+```python
+>>> def cls_deco(cls):
+...     def wrapper(*args, **kwargs):
+...         print('wrap')
+...         wrapper.instance = cls(*args, **kwargs)
+...         return wrapper.instance
+...     return wrapper
+
+>>> @cls_deco
+>>> class Main:
+...     def __init__(self, a, b=2):
+...         self.a = a
+...         self.b = b
+
+...     def what(self):
+...         return f'in Main {self.a} != {self.b}'
+
+>>> c = Main(1)
+>>> print(c.what())
+wrap
+in main 1 != 2
+```
+
+Еще один вопрос - это параметризация декоратора. Для этого необходим еще один уровень упаковке. Ниже пример декоратора, который можно использовать для теста функций. Обратите внимание насколько сложным может быть вызлов без использования синтаксиса `@`
+
+```python
+>>> def profile(column='time', how=3):
+...     def parametrized(function):
+...         def wrapper(*args, **kwargs):
+...             print('wraper')
+...             import tempfile
+...             from cProfile import Profile
+...             from pstats import Stats
+
+...             s = tempfile.mktemp()
+
+...             profiler = Profile()
+...             profiler.runcall(function, *args, **kwargs)
+...             profiler.dump_stats(s)
+...
+...             p = Stats(s)
+...             print('-'*5, f'{function.__name__}() profile', '-'*5)
+...             p.sort_stats(column).print_stats(how)
+...         return wrapper
+...     return parametrized
+
+>>> import time
+>>> def what():
+...     for _ in range(100):
+...         time.sleep(1)
+
+>>> profile()(what)()
+```
+
+Через сахар декоратора это было бы так:
+
+```python
+>>> import time
+
+>>> @profile()
+>>> def what():
+...     for _ in range(100):
+...         time.sleep(1)
+```
+
+Обратите внимание, что вызов `@profile` осуществляется с `()` - даже если мы не передаем аргументы это необходимо сделать, чтобы не получить исключение.
+
+Статьи и обсуждения:
+
+- [как сделать параметризированный декоратор](https://stackoverflow.com/a/25827070/15966204) с помощью [[functools]]
+- Подробнее о [декорировании функций](https://docs.python.org/3/reference/compound_stmts.html#function) и [декорирвоании классов](https://docs.python.org/3/reference/compound_stmts.html#class)
+- [Using a coroutine as decorator](https://stackoverflow.com/questions/42043226/using-a-coroutine-as-decorator)
+- [Decorators with parameters?](https://stackoverflow.com/questions/5929107/decorators-with-parameters)
+- [Python decorators in classes](https://stackoverflow.com/questions/1263451/python-decorators-in-classes)
+- [How to strip decorators from a function in Python](https://stackoverflow.com/questions/1166118/how-to-strip-decorators-from-a-function-in-python), [undecorated](https://pypi.org/project/undecorated/)
+
+Смотри еще:
+
+- [[python-standart-library]]
+- [[python-dataclasses]]
+
+
+[functools]: functools "Functools"
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"
+[python-dataclasses]: python-dataclasses "Python dataclasses"

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Machine learning in Neo4j | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Machine learning in Neo4j" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Машинное обучение в графовой БД Neo4j" />
+<meta property="og:description" content="Машинное обучение в графовой БД Neo4j" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-ml/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-ml/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Машинное обучение в графовой БД Neo4j","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/neo4j-ml/","headline":"Machine learning in Neo4j","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Machine learning in Neo4j</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/neo4j-ml.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/data-bases" title="data-bases" class="link-tags">data-bases&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/graphs" title="graphs" class="link-tags">graphs&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Для бесплатной версии:</p>
+
+<ul>
+  <li>Maximum of 4 CPU cores</li>
+  <li>максимум 4 проекции в каталоге GDS</li>
+  <li>Open source</li>
+</ul>
+
+<h2 id="установка">Установка</h2>
+
+<ul>
+  <li><a href="https://neo4j.com/docs/operations-manual/current/docker/">docker instalation algorythm plugins</a></li>
+  <li><a href="https://neo4j.com/labs/kafka/4.0/docker/">run with docker</a></li>
+</ul>
+
+<p>example:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">neo4j</span><span class="pi">:</span>
+
+    <span class="na">image</span><span class="pi">:</span> <span class="s">neo4j:4.4.9-community</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">neo4j</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">neo4j</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./volume/plugins:/plugins</span>
+      <span class="pi">-</span> <span class="s">./volume/data:/data</span>
+      <span class="pi">-</span> <span class="s">./volume/import:/import</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.env</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">7474:7474"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">7687:7687"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">NEO4J_AUTH</span><span class="pi">:</span> <span class="s">neo4j/${PASS?Variable not set}</span>
+      <span class="na">NEO4J_dbms_security_procedures_unrestricted</span><span class="pi">:</span> <span class="s">apoc.*, algo.*, gds.*</span>
+      <span class="na">NEO4J_dbms_security_procedures_whitelist</span><span class="pi">:</span> <span class="s">apoc.*, algo.*, gds.*</span>
+      <span class="na">NEO4J_apoc_import_file_enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">NEO4J_dbms_shell_enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">NEO4JLABS_PLUGINS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">["apoc",</span><span class="nv"> </span><span class="s">"graph-data-science"]'</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">neo4j-learn</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">neo4j-learn</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h2 id="использование">Использование</h2>
+
+<p>Схема использования библиотеки GDS обычно делится на две фазы: разработка и производство. На этапе разработки цель состоит в том, чтобы установить рабочий процесс полезных алгоритмов. Для этого необходимо настроить систему, определить проекции графа и выбрать алгоритмы. Обычно используются функции оценки памяти библиотеки. Это позволяет успешно настроить систему для обработки большого объема данных. Следует помнить о двух видах ресурсов: проекция графа и структуры данных алгоритма.</p>
+
+<p>На этапе производства система будет настроена соответствующим образом для успешного запуска нужных алгоритмов. Последовательность операций обычно заключается в создании проекции графа, выполнении на нем одного или нескольких алгоритмов и использовании результатов.</p>
+
+<p>На изображении ниже показан обзор стандартной работы GDS:</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-04-22-43-02.png" alt="gds" /></p>
+
+<p>GDS жадно выполняет свои процедуры с точки зрения системных ресурсов. Это означает, что каждая процедура будет пытаться использовать:</p>
+
+<ul>
+  <li>столько памяти, сколько нужно для выполнения</li>
+  <li>столько ядер ЦП, сколько ему нужно (не превышая пределов concurrency)</li>
+</ul>
+
+<p>Одновременно выполняемые процедуры совместно используют ресурсы системы, в которой размещена СУБД, и поэтому могут влиять на производительность друг друга. Чтобы получить обзор состояния системы, вы можете использовать <a href="https://neo4j.com/docs/graph-data-science/current/common-usage/monitoring-system/">процедуру мониторинга</a>.</p>
+
+<p>Выполнение ожно разбить на несколько этапов:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/common-usage/memory-estimation/">Оценка памяти</a></li>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/management-ops/graph-catalog-ops/">Построение проекций графов</a> (используется [<a href="neo4j-apoc" title="Neo4j APOC библиотека">neo4j-apoc</a>])</li>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/common-usage/running-algos/">Запуск алгоритмов</a></li>
+  <li>логирование и мониторинг</li>
+</ul>
+
+<p>Подробнее <a href="https://neo4j.com/docs/graph-data-science/current/common-usage/">читай в этом разделе</a></p>
+
+<p>GDS полностью построена на куче, а это значит, что сервер Neo4j необходимо настроить с гораздо большим размером кучи, чем для транзакционных рабочих нагрузок. На приведенной ниже диаграмме показано, как память используется моделью проекции графа:</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-04-22-49-04.png" alt="gds heap" /></p>
+
+<p>Модель содержит три типа данных:</p>
+
+<ul>
+  <li>Идентификаторы узлов - до 2^45 (“35 триллионов”)</li>
+  <li>Отношения - пары идентификаторов узлов. Отношения сохраняются дважды, если граф “UNDIRECTED”.</li>
+  <li>Веса - хранятся как двоичные данные (8 байтов на узел) в структуре данных, подобной массиву, рядом с отношениями.</li>
+</ul>
+
+<p>Конфигурация памяти зависит от используемой проекции графа.</p>
+
+<p>Во многих случаях будет полезно оценить требуемую память для построения проекции графика и запуска алгоритма перед его запуском, чтобы убедиться, что рабочая нагрузка может работать на доступной свободной памяти. Для этого можно использовать режим estimate, который возвращает оценку объема памяти, необходимого для запуска графовых алгоритмов. Обратите внимание, что режим гарантированно есть только у алгоритмов уровня, готового к производству. Дополнительные сведения см. в разделе <a href="https://neo4j.com/docs/graph-data-science/current/algorithms/syntax/">Обзор синтаксиса</a>.</p>
+
+<p>Синтаксис:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CALL</span> <span class="n">gds</span><span class="p">[.</span><span class="o">&lt;</span><span class="n">tier</span><span class="o">&gt;</span><span class="p">].</span><span class="o">&lt;</span><span class="n">algorithm</span><span class="o">&gt;</span><span class="p">.</span><span class="o">&lt;</span><span class="n">execution</span><span class="o">-</span><span class="k">mode</span><span class="o">&gt;</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span>
+  <span class="n">graphNameOrConfig</span><span class="p">:</span> <span class="n">String</span> <span class="k">or</span> <span class="k">Map</span><span class="p">,</span>
+  <span class="n">configuration</span><span class="p">:</span> <span class="k">Map</span>
+<span class="p">)</span> <span class="n">YIELD</span>
+  <span class="n">nodeCount</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">relationshipCount</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">requiredMemory</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+  <span class="n">treeView</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+  <span class="n">mapView</span><span class="p">:</span> <span class="k">Map</span><span class="p">,</span>
+  <span class="n">bytesMin</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">bytesMax</span><span class="p">:</span> <span class="nb">Integer</span><span class="p">,</span>
+  <span class="n">heapPercentageMin</span><span class="p">:</span> <span class="nb">Float</span><span class="p">,</span>
+  <span class="n">heapPercentageMax</span><span class="p">:</span> <span class="nb">Float</span>
+</code></pre></div></div>
+
+<p>Процедуры <code class="language-plaintext highlighter-rouge">gds.graph.project</code> также поддерживают estimate оценку использования памяти только для графика. Эти процедуры не принимают имя графа в качестве первого аргумента, поскольку фактически не строят проекцию.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CALL</span> <span class="n">gds</span><span class="p">.</span><span class="n">graph</span><span class="p">.</span><span class="n">project</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">nodeProjection</span><span class="p">:</span> <span class="n">String</span><span class="o">|</span><span class="n">List</span><span class="o">|</span><span class="k">Map</span><span class="p">,</span> <span class="n">relationshipProjection</span><span class="p">:</span> <span class="n">String</span><span class="o">|</span><span class="n">List</span><span class="o">|</span><span class="k">Map</span><span class="p">,</span> <span class="n">configuration</span><span class="p">:</span> <span class="k">Map</span><span class="p">)</span>
+<span class="n">YIELD</span> <span class="n">requiredMemory</span><span class="p">,</span> <span class="n">treeView</span><span class="p">,</span> <span class="n">mapView</span><span class="p">,</span> <span class="n">bytesMin</span><span class="p">,</span> <span class="n">bytesMax</span><span class="p">,</span> <span class="n">heapPercentageMin</span><span class="p">,</span> <span class="n">heapPercentageMax</span><span class="p">,</span> <span class="n">nodeCount</span><span class="p">,</span> <span class="n">relationshipCount</span>
+</code></pre></div></div>
+
+<p>Все процедуры в GDS, которые поддерживают оценку, включая создание графа, будут выполнять оценку в начале своего выполнения. Сюда входят все режимы выполнения, но не сама estimate процедура.</p>
+
+<p>Если проверка оценки может определить, что текущего объема свободной памяти недостаточно для выполнения операции, операция будет прервана и будет сообщено об ошибке. Ошибка будет содержать сведения об оценке и свободной памяти во время оценки.</p>
+
+<p>Эта логика управления кучей является ограничительной в том смысле, что она блокирует только выполнение, которое точно не помещается в память. Это не гарантирует, что выполнение, прошедшее проверку, будет успешным без истощения памяти. Таким образом, по-прежнему полезно сначала запустить режим оценки перед запуском алгоритма или создания графа для большого набора данных, чтобы просмотреть все детали оценки.</p>
+
+<p>Объем свободной памяти можно увеличить, либо удалив неиспользуемые графы из каталога, либо увеличив максимальный размер кучи перед запуском экземпляра Neo4j.</p>
+
+<p><a href="https://neo4j.com/docs/graph-data-science/current/common-usage/memory-estimation/">Подробнее</a></p>
+
+<p>Все алгоритмы представлены в виде процедур Neo4j. Их можно вызывать непосредственно из Cypher с помощью браузера Neo4j cypher-shell или из кода клиента с помощью драйвера Neo4j на выбранном языке. Алгоритмы запускаются с использованием одного из режимов выполнения stream, или stats. Выполнение любого алгоритма можно отменить, завершив транзакцию Cypher, выполняющую вызов процедуры.</p>
+
+<h3 id="stream">Stream</h3>
+
+<p>Режим stream вернет результаты вычисления алгоритма в виде строк результатов Cypher. Это похоже на то, как работают стандартные запросы чтения Cypher.</p>
+
+<p>Возвращаемые данные могут быть идентификатором узла и вычисленным значением для узла (например, page rank или WCC componentid) или двумя идентификаторами узла и вычисленным значением для пары узлов (например, показателем сходства узла).</p>
+
+<p>Если граф очень большой, результат stream вычисления моды также будет очень большим. Использование <code class="language-plaintext highlighter-rouge">ORDER BY</code> и <code class="language-plaintext highlighter-rouge">LIMIT</code> в запросе Cypher может быть полезно.</p>
+
+<h3 id="stats">Stats</h3>
+
+<p>stats режим возвращает статистические результаты вычисления алгоритма, такие как подсчеты или процентные распределения. Статистическая сводка вычислений возвращается в виде одной строки результата Cypher. Непосредственные результаты алгоритма недоступны при использовании stats режима. Этот режим формирует основу режимов выполнения mutate и write, но не пытается вносить какие-либо изменения или обновления где-либо.</p>
+
+<h3 id="mutate">Mutate</h3>
+
+<p>Режим mutate запишет результаты вычисления алгоритма обратно в проекцию графа. Обратите внимание, что указанное mutateProperty значение не должно существовать в проекции заранее. Это позволяет запускать несколько алгоритмов на одной проекции без записи результатов в Neo4j в промежутках между выполнением алгоритма.</p>
+
+<p>Этот режим выполнения особенно полезен в трех сценариях:</p>
+
+<ul>
+  <li>Алгоритмы могут зависеть от результатов предыдущих алгоритмов без необходимости записи в Neo4j.</li>
+  <li>Результаты алгоритма можно записать целиком.</li>
+  <li>Результаты алгоритма можно запросить через Cypher без необходимости вообще писать в Neo4j.</li>
+</ul>
+
+<p>Статистическая сводка вычислений возвращается аналогично stats режиму. Измененные данные могут быть свойствами узла (такими как page rank), новыми отношениями (такими как сходство узлов) или свойствами отношений.</p>
+
+<h3 id="write">Write</h3>
+
+<p>Режим writeза пишет результаты расчета алгоритма обратно в базу данных Neo4j. Это похоже на то, как работают стандартные запросы на запись Cypher. Статистическая сводка вычислений возвращается аналогично stats режиму. Это единственный режим выполнения, который попытается внести изменения в базу данных Neo4j.</p>
+
+<p>Записанные данные могут быть свойствами узла (такими как page rank), новыми отношениями (такими как сходство узлов) или свойствами отношений. write режим может быть очень полезен для случаев использования, когда результаты алгоритма будут проверяться несколько раз отдельными запросами, поскольку результаты вычислений полностью обрабатываются библиотекой.</p>
+
+<p>Для того чтобы результаты write режима могли быть использованы другим алгоритмом, необходимо создавать новую проекуцию из из базы данных Neo4j с обновленным графом.</p>
+
+<h2 id="graph-management">Graph management</h2>
+
+<p>Центральным элементом библиотеки GDS является управление проекциями графов. <a href="https://neo4j.com/docs/graph-data-science/current/management-ops/">Смотри как</a>.</p>
+
+<ul>
+  <li>Graph Catalog</li>
+  <li>Node Properties</li>
+  <li>Utility functions</li>
+  <li>Cypher on GDS graph</li>
+  <li>Administration</li>
+  <li>Backup and Restore</li>
+  <li>Defaults and Limits</li>
+</ul>
+
+<p>Каталог графов — это концепция в библиотеке GDS, которая позволяет управлять несколькими проекциями графов по имени. <a href="https://neo4j.com/docs/graph-data-science/current/management-ops/graph-catalog-ops/">Тпипичные операции</a>: <code class="language-plaintext highlighter-rouge">gds.graph.list</code>, <code class="language-plaintext highlighter-rouge">gds.graph.project.cypher</code>, <code class="language-plaintext highlighter-rouge">gds.graph.drop</code></p>
+
+<h2 id="graph-algorythms"><a href="https://neo4j.com/docs/graph-data-science/current/algorithms/">Graph algorythms</a></h2>
+
+<p><a href="https://neo4j.com/docs/graph-data-science/current/algorithms/syntax/">Обзор синтаксиса</a></p>
+
+<p>Алгоритмы разделены на категории, которые представляют разные классы задач:</p>
+
+<ul>
+  <li>Centrality</li>
+  <li>Community detection</li>
+  <li>Similarity</li>
+  <li>Path finding</li>
+  <li>Node embeddings</li>
+  <li>Topological link prediction</li>
+  <li>Auxiliary procedures</li>
+  <li>
+    <p>Pregel API</p>
+  </li>
+  <li>Path Finding - these algorithms help find the shortest path or evaluate the availability and quality of routes
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>Delta-Stepping Single-Source Shortest Path</li>
+          <li>Dijkstra Source-Target Shortest Path</li>
+          <li>Dijkstra Single-Source Shortest Path</li>
+          <li>A* Shortest Path</li>
+          <li>Yen’s Shortest Path</li>
+          <li>Breadth First Search</li>
+          <li>Depth First Search</li>
+          <li>Random Walk</li>
+        </ul>
+      </li>
+      <li>Alpha
+        <ul>
+          <li>Minimum Weight Spanning Tree</li>
+          <li>All Pairs Shortest Path</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Centrality - these algorithms determine the importance of distinct nodes in a network
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>Page Rank</li>
+          <li>Article Rank</li>
+          <li>Eigenvector Centrality</li>
+          <li>Betweenness Centrality</li>
+          <li>Degree Centrality</li>
+        </ul>
+      </li>
+      <li>Beta
+        <ul>
+          <li>Closeness Centrality</li>
+        </ul>
+      </li>
+      <li>Alpha
+        <ul>
+          <li>Harmonic Centrality</li>
+          <li>HITS</li>
+          <li>Influence Maximization</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Community Detection - these algorithms evaluate how a group is clustered or partitioned, as well as its tendency to strengthen or break apart
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>Louvain</li>
+          <li>Label Propagation</li>
+          <li>Weakly Connected Components</li>
+          <li>Triangle Count</li>
+          <li>Local Clustering Coefficient</li>
+        </ul>
+      </li>
+      <li>Beta
+        <ul>
+          <li>K-1 Coloring</li>
+          <li>Modularity Optimization</li>
+        </ul>
+      </li>
+      <li>Alpha
+        <ul>
+          <li>Strongly Connected Components</li>
+          <li>Speaker-Listener Label Propagation</li>
+          <li>Approximate Maximum k-cut</li>
+          <li>Conductance metric</li>
+          <li>Modularity metric</li>
+          <li>K-Means Clustering</li>
+          <li>Leiden</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Similarity - these algorithms help calculate the similarity of nodes
+    <ul>
+      <li>Filtered Node Similarity</li>
+      <li>Filtered K-Nearest Neighbors</li>
+    </ul>
+  </li>
+  <li>Topological link prediction - these algorithms determine the closeness of pairs of nodes
+    <ul>
+      <li>Alpha
+        <ul>
+          <li>Adamic Adar</li>
+          <li>Common Neighbors</li>
+          <li>Preferential Attachment</li>
+          <li>Resource Allocation</li>
+          <li>Same Community</li>
+          <li>Total Neighbors</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Node Embeddings - these algorithms compute vector representations of nodes in a graph.
+    <ul>
+      <li>Production-quality
+        <ul>
+          <li>FastRP</li>
+        </ul>
+      </li>
+      <li>Beta
+        <ul>
+          <li>GraphSAGE</li>
+          <li>Node2Vec</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Node Classification - this algorithm uses machine learning to predict the classification of nodes.</li>
+  <li>Link prediction - these algorithms use machine learning to predict new links between pairs of nodes</li>
+</ul>
+
+<h3 id="machine-learning"><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">Machine learning</a></h3>
+
+<p>В GDS конвейеры предлагают сквозной рабочий процесс, от извлечения признаков до обучения и применения моделей машинного обучения.</p>
+
+<p><img src="/myknowlegebase/attachments/2023-01-04-23-16-42.png" alt="neo4j ml" /></p>
+
+<p>GDS включает следующие конвейеры:</p>
+
+<ul>
+  <li>Бета
+    <ul>
+      <li>Node Classification Pipelines</li>
+      <li>Link Prediction Pipelines</li>
+    </ul>
+  </li>
+  <li>Альфа
+    <ul>
+      <li>Node Regression Pipelines</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Примеры:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/developer/graph-data-science/applied-graph-embeddings/">graph embeddings</a></li>
+  <li><a href="https://neo4j.com/developer/graph-data-science/build-knowledge-graph-nlp-ontologies/">Knowledge Graph using NLP and Ontologies</a></li>
+  <li><a href="https://neo4j.com/developer/graph-data-science/link-prediction/scikit-learn/">Link Prediction with GDSL and scikit-learn</a></li>
+</ul>
+
+<h2 id="python-client">Python client</h2>
+
+<p><a href="https://pypi.org/project/graphdatascience/">Neo4j Graph Data Science Client on pypi</a> работает с [<a href="python-api-neo4j" title="Python api for neo4j">python-api-neo4j</a>]. <a href="https://neo4j.com/docs/graph-data-science-client/current/">Мануал</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">pip install graphdatascience</code></p>
+
+<p>Примеры использования:</p>
+
+<ul>
+  <li><a href="https://github.com/neo4j/graph-data-science-client/blob/main/examples/fastrp-and-knn.ipynb">FastRP and kNN end-to-end example</a></li>
+  <li><a href="https://github.com/neo4j/graph-data-science-client/blob/main/examples/import-sample-export-gnn.ipynb">Export and integration with PyG example</a></li>
+  <li><a href="https://github.com/neo4j/graph-data-science-client/blob/main/examples/load-data-via-graph-construction.ipynb">Load data to a projected graph via graph construction</a></li>
+</ul>
+
+<p>Смотир еще:</p>
+
+<ul>
+  <li><a href="https://neo4j.com/developer/graph-data-science/graph-algorithms/">graph algorithms</a></li>
+  <li><a href="https://neo4j.com/docs/graph-data-science/current/machine-learning/machine-learning/">ml</a></li>
+  <li><a href="https://neo4j.com/developer/cypher/procedures-functions/">User Defined Procedures and Functions</a></li>
+  <li><a href="https://github.com/neo4j/graph-data-science-client">graph-data-science-client</a> A Python client for the Neo4j Graph Data Science (GDS) library.</li>
+  <li>[<a href="neo4j" title="Neo4j graph data base">neo4j</a>]</li>
+  <li>[<a href="neosematics" title="Neosematics">neosematics</a>]</li>
+  <li>[<a href="neo4j-apoc" title="Neo4j APOC библиотека">neo4j-apoc</a>]</li>
+  <li>[<a href="cypher" title="Cypher query language">cypher</a>]</li>
+  <li>[<a href="../lists/graphs" title="Machine learning with graphs">graphs</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,47 @@
+---
+layout: markdown_source
+title: "Source: Monte-Carlo methods"
+parent_url: "/notes/monte-carlo/"
+permalink: "/notes/monte-carlo.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Методы Монте-Карло
+tags: machine-learning r-learning
+title: Monte-Carlo methods
+---
+Меторы Монте-Карло в отличие от [[dynamic-programming]] учаются функциям ценности и оптимальным стратегиям на опыте в форме выборочных эпизодов. Это дает три преимущества:
+
+- не нужна модель среды, можно обучаться непосредственно взаимодействуя со средой
+- можно использовать выборочные модели или имитации
+- необходимо только небольшое подмножество состояний. Полное множество состояний оценивать не требуется
+- менее подвержены негативному эффекту нарушения марковского свойства, т.к. МК не обновляют оценки ценности на основании оценок ценности последующих состояний, как это делает ДП. Иными словами в МК отсутствует бустрепинг.
+
+Вместо использования модели для вычисления ценности каждого состояния, МК усредняют множество доходов, полученных при старте из данного состояния. Такое усреднение оказывается хорошей аппроксимацией ценности. В МК шаги оценивания и улучшения стратегии чередуются в соседних эпизодах, что допускает инкрементную реализацию.
+
+Этапы МК:
+
+- оценивание ценности действий
+- улучшение стратегии
+- управление (реализация с единой стратегией и с раздельной)
+
+Главная проблема МК - обеспечение достаточного исследования. Есть два метода: метод с единой стратегией агент пытается найти оптимальную стратегию, которая продолжает исследовать. В методе с раздельной стратегией агент также занимается исследованием, но обучается детерменированной оптимальной стратегии, которая может быть никак не связана со стратегией, которой он следует. В этом случае предсказанием будет обучение функции ценности целевой стратегии на данных, сгенерированных другой поведенческой стратегией
+
+Смотри еще:
+
+- [[reinforcement-learning]]
+- [[dynamic-programming]]
+- [[temporal-difference]]
+- [Monte Carlo Methods](https://towardsdatascience.com/introduction-to-reinforcement-learning-rl-part-5-monte-carlo-methods-25067003bb0f)
+
+
+[dynamic-programming]: dynamic-programming "Dynamic programming for reinforcement-learning"
+[reinforcement-learning]: ../lists/reinforcement-learning "Reinforcement learning"
+[temporal-difference]: temporal-difference "Temporal difference methods and n-steps methods"
+
+
+[dynamic-programming]: dynamic-programming "Dynamic programming for reinforcement-learning"
+[reinforcement-learning]: ../lists/reinforcement-learning "Reinforcement learning"
+[dynamic-programming]: dynamic-programming "Dynamic programming for reinforcement-learning"
+[temporal-difference]: temporal-difference "Temporal difference methods and n-steps methods"

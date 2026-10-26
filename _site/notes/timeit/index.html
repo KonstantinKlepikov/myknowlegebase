@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Timeit | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Timeit" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Профилировщик небольших объектов кода в python" />
+<meta property="og:description" content="Профилировщик небольших объектов кода в python" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/timeit/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/timeit/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Профилировщик небольших объектов кода в python","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/timeit/","headline":"Timeit","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Timeit</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/timeit.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/python-standart-library" title="python-standart-library" class="link-tags">python-standart-library&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>timeit предоставляет интерфейс, позволяющий замерить время выполнения небольших врагментов кода. Точность обьеспечивается за счет функции <code class="language-plaintext highlighter-rouge">time()</code>, а снижение накладных расходов запуска достигается путем многократного запуска. Модуль определяет <a href="https://docs.python.org/3/library/timeit.html#timeit.Timer">единственный класс</a> <code class="language-plaintext highlighter-rouge">Timer</code>, который инициализируется тестируемым выражением и и инструкцией настроек пролифировщика, задающим переменные выражения. Модуль выполняет инструкцию настройки один раз, после чего можно выполнить замер через метод <code class="language-plaintext highlighter-rouge">timeit()</code>, которому можно передать число ожидаемых повторений (дефолтное значение 1000000). Повторить весь цикл можно методом <code class="language-plaintext highlighter-rouge">repeat()</code> (дефолтное значение повторов - 5)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">timeit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">timeit</span><span class="p">.</span><span class="n">Timer</span><span class="p">(</span><span class="s">'char in text'</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="s">'text = "sample string"; char = "g"'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">timeit</span><span class="p">()</span>
+<span class="mf">0.3955516149999312</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">repeat</span><span class="p">()</span>
+<span class="p">[</span><span class="mf">0.40183617287970225</span><span class="p">,</span> <span class="mf">0.37027556854118704</span><span class="p">,</span> <span class="mf">0.38344867356679524</span><span class="p">,</span> <span class="mf">0.3712595970846668</span><span class="p">,</span> <span class="mf">0.37866875250654886</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Для простых случаев проверку можно запустить не устанавливыая переменные используя <code class="language-plaintext highlighter-rouge">timeit()</code> уровня модуля:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">timeit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'"-".join(str(n) for n in range(100))'</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="mf">0.3018611848820001</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'"-".join([str(n) for n in range(100)])'</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="mf">0.2727368790656328</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'"-".join(map(str, range(100)))'</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="mf">0.23702679807320237</span>
+</code></pre></div></div>
+
+<p>Также профилировщик можно вызвать через командную строку: <code class="language-plaintext highlighter-rouge">python -m timeit '"-".join(str(n) for n in range(100))'</code>. Интерфейс командной строки <a href="https://docs.python.org/3/library/timeit.html#command-line-interface">тут</a></p>
+
+<p>Модуль выполняет инструкцию настройки один раз, после чего выполняет переданное выражение</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">timeit</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'char in text'</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="s">'text = "sample string"; char = "g"'</span><span class="p">)</span>
+<span class="mf">0.41440500499993504</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">timeit</span><span class="p">.</span><span class="n">timeit</span><span class="p">(</span><span class="s">'text.find(char)'</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="s">'text = "sample string"; char = "g"'</span><span class="p">)</span>
+<span class="mf">1.7246671520006203</span>
+</code></pre></div></div>
+
+<p>Смотри сеще:</p>
+
+<ul>
+  <li><a href="https://docs.python.org/3/library/timeit.html#module-timeit">документация</a></li>
+  <li>[<a href="profile" title="Profile">profile</a>]</li>
+  <li>[<a href="date-and-time-in-python" title="Date and time in python">date-and-time-in-python</a>]</li>
+  <li>[<a href="../lists/python-standart-library" title="Стандартная библиотека python и полезные ресурсы">python-standart-library</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

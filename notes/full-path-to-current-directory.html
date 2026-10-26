@@ -1,0 +1,52 @@
+---
+layout: markdown_source
+title: "Source: Full path to current directory"
+parent_url: "/notes/full-path-to-current-directory/"
+permalink: "/notes/full-path-to-current-directory.html"
+render_with_liquid: false
+robots: noindex
+---
+---
+description: Как получить полный путь к текущей директории в python
+tags: python-standart-library python
+title: Full path to current directory
+---
+## Python3
+
+Фолдер, в котором запущен скрипт:
+
+```python
+import pathlib
+pathlib.Path(__file__).parent.resolve()
+```
+
+Текуший рабочий фолдер:
+
+```python
+import pathlib
+pathlib.Path().resolve()
+```
+
+## Python3 или python2
+
+Фолдер, в котором запущен скрипт:
+
+```python
+import os
+os.path.dirname(os.path.abspath(__file__))
+```
+
+Текуший рабочий фолдер:
+
+```python
+import os
+os.path.abspath(os.getcwd())
+```
+
+[Источник](https://stackoverflow.com/a/3430395/15966204)
+
+[[python-standart-library]]
+
+
+
+[python-standart-library]: ../lists/python-standart-library "Стандартная библиотека python и полезные ресурсы"

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Deap - генетические алгоритмы на python | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Deap - генетические алгоритмы на python" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Использование фреймворка DEAP для эволюционной оптимизации" />
+<meta property="og:description" content="Использование фреймворка DEAP для эволюционной оптимизации" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/deap/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/deap/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Использование фреймворка DEAP для эволюционной оптимизации","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/deap/","headline":"Deap - генетические алгоритмы на python","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Deap - генетические алгоритмы на python</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/deap.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/machine-learning" title="machine-learning" class="link-tags">machine-learning&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/genetic" title="genetic" class="link-tags">genetic&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/pip" title="pip" class="link-tags">pip&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/evol" title="evol" class="link-tags">evol&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <ul>
+  <li><a href="https://github.com/DEAP/deap">deap на гитхаб</a></li>
+  <li><a href="https://deap.readthedocs.io/en/master/">документация</a></li>
+  <li>[<a href="deap-docs" title="Deap документация">deap-docs</a>]</li>
+</ul>
+
+<h2 id="основные-термины">Основные термины</h2>
+
+<p><strong>Ген</strong> - вектор значений индивидуума, обучаемый алгоритмом</p>
+
+<p><strong>Популяция</strong> - коллекция генов</p>
+
+<p><strong>Функция приспособленности</strong> - или целевая функция. Функция, которую мы оптимизируем. Индивидуумы, для которых ф-ия дает наилучшую оценку будут отобраны генетическим алгоритмом.</p>
+
+<h2 id="класс-creator">Класс creator</h2>
+
+<p>Метафабрика. позволяющая расширять существующие классы. Используется обычно для создания классов <code class="language-plaintext highlighter-rouge">Fitness</code> и <code class="language-plaintext highlighter-rouge">Individual</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">deap</span> <span class="kn">import</span> <span class="n">creator</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">algorithms</span>
+
+<span class="k">class</span> <span class="nc">Employee</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">"Developer"</span><span class="p">,</span> <span class="n">Employee</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s">"Developer"</span><span class="p">,</span> <span class="n">programmingLanguages</span><span class="o">=</span><span class="nb">set</span><span class="p">)</span>
+
+<span class="n">help</span><span class="p">(</span><span class="n">creator</span><span class="p">.</span><span class="n">Developer</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Help on class Developer <span class="k">in </span>module deap.creator:
+
+    class Developer<span class="o">(</span>__main__.Employee<span class="o">)</span>
+     |  Developer<span class="o">(</span><span class="k">*</span>args, <span class="k">**</span>kargs<span class="o">)</span>
+     |
+     |  Method resolution order:
+     |      Developer
+     |      __main__.Employee
+     |      builtins.object
+     |
+     |  Methods defined here:
+     |
+     |  __init__ <span class="o">=</span> initType<span class="o">(</span>self, <span class="k">*</span>args, <span class="k">**</span>kargs<span class="o">)</span>
+     |      Replace the __init__ <span class="k">function </span>of the new <span class="nb">type</span>, <span class="k">in </span>order to
+     |      add attributes that were defined with <span class="k">**</span>kargs to the instance.
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Data and other attributes defined here:
+     |
+     |  position <span class="o">=</span> <span class="s1">'Developer'</span>
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Data descriptors inherited from __main__.Employee:
+     |
+     |  __dict__
+     |      dictionary <span class="k">for </span>instance variables <span class="o">(</span><span class="k">if </span>defined<span class="o">)</span>
+     |
+     |  __weakref__
+     |      list of weak references to the object <span class="o">(</span><span class="k">if </span>defined<span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="fitness">Fitness</h2>
+
+<p>В этом классе инкапсулированы значения приспособленности. Приспособленность в deap можно определять по нескольким компонентам (целями). у каждой из которых есть вес. Комбинация весов определяет поведение или стратегию приспособления в конкретной задаче</p>
+
+<p>base.Fitness - абстрактный класс. содержащий кортеж <code class="language-plaintext highlighter-rouge">weights</code>. Чтобы определить стратегию, кортежу наджо присвоить значения.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">'FitnessMax'</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,))</span>
+
+<span class="n">help</span><span class="p">(</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Help on class FitnessMax <span class="k">in </span>module deap.creator:
+
+    class FitnessMax<span class="o">(</span>deap.base.Fitness<span class="o">)</span>
+     |  FitnessMax<span class="o">(</span><span class="k">*</span>args, <span class="k">**</span>kargs<span class="o">)</span>
+     |
+     |  The fitness is a measure of quality of a solution. If <span class="k">*</span>values<span class="k">*</span> are
+     |  provided as a tuple, the fitness is initialized using those values,
+     |  otherwise it is empty <span class="o">(</span>or invalid<span class="o">)</span><span class="nb">.</span>
+     |
+     |  :param values: The initial values of the fitness as a tuple, optional.
+     |
+     |  Fitnesses may be compared using the <span class="sb">``</span><span class="o">&gt;</span><span class="sb">``</span>, <span class="sb">``</span>&lt;<span class="sb">``</span>, <span class="sb">``</span><span class="o">&gt;=</span><span class="sb">``</span>, <span class="sb">``</span>&lt;<span class="o">=</span><span class="sb">``</span>, <span class="sb">``</span><span class="o">==</span><span class="sb">``</span>,
+     |  <span class="sb">``</span><span class="o">!=</span><span class="sb">``</span><span class="nb">.</span> The comparison of those operators is made lexicographically.
+     |  Maximization and minimization are taken care off by a multiplication
+     |  between the :attr:<span class="sb">`</span>weights<span class="sb">`</span> and the fitness :attr:<span class="sb">`</span>values<span class="sb">`</span><span class="nb">.</span> The comparison
+     |  can be made between fitnesses of different size, <span class="k">if </span>the fitnesses are
+     |  equal <span class="k">until </span>the extra elements, the longer fitness will be superior to the
+     |  shorter.
+     |
+     |  Different types of fitnesses are created <span class="k">in </span>the :ref:<span class="sb">`</span>creating-types<span class="sb">`</span>
+     |  tutorial.
+     |
+     |  .. note::
+     |     When comparing fitness values that are <span class="k">**</span>minimized<span class="k">**</span>, <span class="sb">``</span>a <span class="o">&gt;</span> b<span class="sb">``</span> will
+     |     <span class="k">return</span> :data:<span class="sb">`</span>True<span class="sb">`</span> <span class="k">if</span> <span class="k">*</span>a<span class="k">*</span> is <span class="k">**</span>smaller<span class="k">**</span> than <span class="k">*</span>b<span class="k">*</span><span class="nb">.</span>
+     |
+     |  Method resolution order:
+     |      FitnessMax
+     |      deap.base.Fitness
+     |      builtins.object
+     |
+     |  Methods defined here:
+     |
+     |  __init__ <span class="o">=</span> initType<span class="o">(</span>self, <span class="k">*</span>args, <span class="k">**</span>kargs<span class="o">)</span>
+     |      Replace the __init__ <span class="k">function </span>of the new <span class="nb">type</span>, <span class="k">in </span>order to
+     |      add attributes that were defined with <span class="k">**</span>kargs to the instance.
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Data and other attributes defined here:
+     |
+     |  weights <span class="o">=</span> <span class="o">(</span>1.0,<span class="o">)</span>
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Methods inherited from deap.base.Fitness:
+     |
+     |  __deepcopy__<span class="o">(</span>self, memo<span class="o">)</span>
+     |      Replace the basic deepcopy <span class="k">function </span>with a faster one.
+     |
+     |      It assumes that the elements <span class="k">in </span>the :attr:<span class="sb">`</span>values<span class="sb">`</span> tuple are
+     |      immutable and the fitness does not contain any other object
+     |      than :attr:<span class="sb">`</span>values<span class="sb">`</span> and :attr:<span class="sb">`</span>weights<span class="sb">`</span><span class="nb">.</span>
+     |
+     |  __eq__<span class="o">(</span>self, other<span class="o">)</span>
+     |      Return <span class="nv">self</span><span class="o">==</span>value.
+     |
+     |  __ge__<span class="o">(</span>self, other<span class="o">)</span>
+     |      Return self&gt;<span class="o">=</span>value.
+     |
+     |  __gt__<span class="o">(</span>self, other<span class="o">)</span>
+     |      Return self&gt;value.
+     |
+     |  __hash__<span class="o">(</span>self<span class="o">)</span>
+     |      Return <span class="nb">hash</span><span class="o">(</span>self<span class="o">)</span><span class="nb">.</span>
+     |
+     |  __le__<span class="o">(</span>self, other<span class="o">)</span>
+     |      Return self&lt;<span class="o">=</span>value.
+     |
+     |  __lt__<span class="o">(</span>self, other<span class="o">)</span>
+     |      Return self&lt;value.
+     |
+     |  __ne__<span class="o">(</span>self, other<span class="o">)</span>
+     |      Return self!<span class="o">=</span>value.
+     |
+     |  __repr__<span class="o">(</span>self<span class="o">)</span>
+     |      Return the Python code to build a copy of the object.
+     |
+     |  __str__<span class="o">(</span>self<span class="o">)</span>
+     |      Return the values of the Fitness object.
+     |
+     |  delValues<span class="o">(</span>self<span class="o">)</span>
+     |
+     |  dominates<span class="o">(</span>self, other, <span class="nv">obj</span><span class="o">=</span>slice<span class="o">(</span>None, None, None<span class="o">))</span>
+     |      Return <span class="nb">true </span><span class="k">if </span>each objective of <span class="k">*</span>self<span class="k">*</span> is not strictly worse than
+     |      the corresponding objective of <span class="k">*</span>other<span class="k">*</span> and at least one objective is
+     |      strictly better.
+     |
+     |      :param obj: Slice indicating on which objectives the domination is
+     |                  tested. The default value is <span class="sb">`</span>slice<span class="o">(</span>None<span class="o">)</span><span class="sb">`</span>, representing
+     |                  every objectives.
+     |
+     |  getValues<span class="o">(</span>self<span class="o">)</span>
+     |
+     |  setValues<span class="o">(</span>self, values<span class="o">)</span>
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Readonly properties inherited from deap.base.Fitness:
+     |
+     |  valid
+     |      Assess <span class="k">if </span>a fitness is valid or not.
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Data descriptors inherited from deap.base.Fitness:
+     |
+     |  __dict__
+     |      dictionary <span class="k">for </span>instance variables <span class="o">(</span><span class="k">if </span>defined<span class="o">)</span>
+     |
+     |  __weakref__
+     |      list of weak references to the object <span class="o">(</span><span class="k">if </span>defined<span class="o">)</span>
+     |
+     |  values
+     |      Fitness values. Use directly <span class="sb">``</span>individual.fitness.values <span class="o">=</span> values<span class="sb">``</span> <span class="k">in </span>order to <span class="nb">set </span>the fitness and <span class="sb">``</span>del individual.fitness.values<span class="sb">``</span> <span class="k">in </span>order to clear <span class="o">(</span>invalidate<span class="o">)</span> the fitness. The <span class="o">(</span>unweighted<span class="o">)</span> fitness can be directly accessed via <span class="sb">``</span>individual.fitness.values<span class="sb">``</span><span class="nb">.</span>
+     |
+     |  <span class="nt">----------------------------------------------------------------------</span>
+     |  Data and other attributes inherited from deap.base.Fitness:
+     |
+     |  wvalues <span class="o">=</span> <span class="o">()</span>
+</code></pre></div></div>
+
+<p>В данном случае стратегия <code class="language-plaintext highlighter-rouge">FitnessMax</code> - максимизировать приспособленность индивидумов с единственной целью. Минимизация будет выглядеть так:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">'FitnessMin'</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,))</span>
+</code></pre></div></div>
+
+<p>Множество целей. Первые две компоненты максимизируются, третья минимизируется. Важность компонент следует слева направо</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">'FitnessCompound'</span><span class="p">,</span> <span class="n">base</span><span class="p">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>Кортеж values</strong> хранит сами значения приспособленности. Эти значения дает отдельно определяемая функция, которую обычно называют <code class="language-plaintext highlighter-rouge">evaluate()</code>. Кортеж содержит по одному значению для каждой функуции (цели).</p>
+
+<p><strong>Третий кортеж wvalues</strong> содержит взвешенные значени, полученные перемножением <code class="language-plaintext highlighter-rouge">values</code> и <code class="language-plaintext highlighter-rouge">weights</code>. Это используется для сравнения индивидуумов.</p>
+
+<p>wvalues можно сравнивать лексикографически с помощью операторов <code class="language-plaintext highlighter-rouge">&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;</code>, <code class="language-plaintext highlighter-rouge">&gt;=</code>, <code class="language-plaintext highlighter-rouge">&lt;=</code>, <code class="language-plaintext highlighter-rouge">==</code>, <code class="language-plaintext highlighter-rouge">!=</code></p>
+
+<h2 id="individual">Individual</h2>
+
+<p>С помощью этого класса определяются индивидуумы, образующие популяцию. В данном случае все гены индивидумов будут иметь тип лист, а класс каждого индивидума будет содержать экземляр <code class="language-plaintext highlighter-rouge">FitnessMax</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">creator</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="s">'Individual'</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="p">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+
+<span class="n">help</span><span class="p">(</span><span class="n">creator</span><span class="p">.</span><span class="n">Individual</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Help on class Individual in module deap.creator:
+
+    class Individual(builtins.list)
+     |  Individual(*args, **kargs)
+     |
+     |  Built-in mutable sequence.
+     |
+     |  If no argument is given, the constructor creates a new empty list.
+     |  The argument must be an iterable if specified.
+     |
+     |  Method resolution order:
+     |      Individual
+     |      builtins.list
+     |      builtins.object
+     |
+     |  Methods defined here:
+     |
+     |  __init__ = initType(self, *args, **kargs)
+     |      Replace the __init__ function of the new type, in order to
+     |      add attributes that were defined with **kargs to the instance.
+     |
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from builtins.list:
+     |
+     |  __add__(self, value, /)
+     |      Return self+value.
+     |
+     |  __contains__(self, key, /)
+     |      Return key in self.
+     |
+     |  __delitem__(self, key, /)
+     |      Delete self[key].
+     |
+     |  __eq__(self, value, /)
+     |      Return self==value.
+     |
+     |  __ge__(self, value, /)
+     |      Return self&gt;=value.
+     |
+     |  __getattribute__(self, name, /)
+     |      Return getattr(self, name).
+     |
+     |  __getitem__(...)
+     |      x.__getitem__(y) &lt;==&gt; x[y]
+     |
+     |  __gt__(self, value, /)
+     |      Return self&gt;value.
+     |
+     |  __iadd__(self, value, /)
+     |      Implement self+=value.
+     |
+     |  __imul__(self, value, /)
+     |      Implement self*=value.
+     |
+     |  __iter__(self, /)
+     |      Implement iter(self).
+     |
+     |  __le__(self, value, /)
+     |      Return self&lt;=value.
+     |
+     |  __len__(self, /)
+     |      Return len(self).
+     |
+     |  __lt__(self, value, /)
+     |      Return self&lt;value.
+     |
+     |  __mul__(self, value, /)
+     |      Return self*value.
+     |
+     |  __ne__(self, value, /)
+     |      Return self!=value.
+     |
+     |  __repr__(self, /)
+     |      Return repr(self).
+     |
+     |  __reversed__(self, /)
+     |      Return a reverse iterator over the list.
+     |
+     |  __rmul__(self, value, /)
+     |      Return value*self.
+     |
+     |  __setitem__(self, key, value, /)
+     |      Set self[key] to value.
+     |
+     |  __sizeof__(self, /)
+     |      Return the size of the list in memory, in bytes.
+     |
+     |  append(self, object, /)
+     |      Append object to the end of the list.
+     |
+     |  clear(self, /)
+     |      Remove all items from list.
+     |
+     |  copy(self, /)
+     |      Return a shallow copy of the list.
+     |
+     |  count(self, value, /)
+     |      Return number of occurrences of value.
+     |
+     |  extend(self, iterable, /)
+     |      Extend list by appending elements from the iterable.
+     |
+     |  index(self, value, start=0, stop=9223372036854775807, /)
+     |      Return first index of value.
+     |
+     |      Raises ValueError if the value is not present.
+     |
+     |  insert(self, index, object, /)
+     |      Insert object before index.
+     |
+     |  pop(self, index=-1, /)
+     |      Remove and return item at index (default last).
+     |
+     |      Raises IndexError if list is empty or index is out of range.
+     |
+     |  remove(self, value, /)
+     |      Remove first occurrence of value.
+     |
+     |      Raises ValueError if the value is not present.
+     |
+     |  reverse(self, /)
+     |      Reverse *IN PLACE*.
+     |
+     |  sort(self, /, *, key=None, reverse=False)
+     |      Sort the list in ascending order and return None.
+     |
+     |      The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
+     |      order of two equal elements is maintained).
+     |
+     |      If a key function is given, apply it once to each list item and sort them,
+     |      ascending or descending, according to their function values.
+     |
+     |      The reverse flag can be set to sort in descending order.
+     |
+     |  ----------------------------------------------------------------------
+     |  Static methods inherited from builtins.list:
+     |
+     |  __new__(*args, **kwargs) from builtins.type
+     |      Create and return a new object.  See help(type) for accurate signature.
+     |
+     |  ----------------------------------------------------------------------
+     |  Data and other attributes inherited from builtins.list:
+     |
+     |  __hash__ = None
+</code></pre></div></div>
+
+<h2 id="toolbox">Toolbox</h2>
+
+<p>Это контейнер для функций и операторов и позволяет создавать новые операторы путем назначения псевдонимов</p>
+
+<p>Первым аргументом реигстрируем имя ф-ии. Вторым передаем ей выполняемую функцию. Остальные рагументы - необязательны (аргументы выполняемой ф-ии)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">sum_of_two</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">Toolbox</span><span class="p">()</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">'increment_by_five'</span><span class="p">,</span> <span class="n">sum_of_two</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">increment_by_five</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span><span class="mi">15</span>
+</code></pre></div></div>
+
+<h2 id="создание-генетических-операторов">Создание генетических операторов</h2>
+
+<p>модуль <code class="language-plaintext highlighter-rouge">tools</code> содержит полезные функции для осуществления операций отбора, включая скрещивание и мутации, а так-же утилиты для инициализации. Поэтому <code class="language-plaintext highlighter-rouge">Toolbox</code> используется в основном для этого</p>
+
+<p>В данном случае:</p>
+
+<ul>
+  <li>создан оператор <code class="language-plaintext highlighter-rouge">tools.select</code> использующий турнирный отбор с аргументом 3 (размер тиурнира)</li>
+  <li>создан оператор <code class="language-plaintext highlighter-rouge">mate</code> как псевдоним ф-ии <code class="language-plaintext highlighter-rouge">cxTwoPoint()</code>, выполняющей двухточечное скрещивание</li>
+  <li>создан оператор <code class="language-plaintext highlighter-rouge">mutate</code> c операцией инвертирования бита и вероятностью 0.02</li>
+</ul>
+
+<p>Функции отбора хранятся в <code class="language-plaintext highlighter-rouge">selection.py</code>. Функции скрещивания в <code class="language-plaintext highlighter-rouge">crossower.py</code>. Функции мутации в <code class="language-plaintext highlighter-rouge">mutation.py</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">'select'</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">selTournament</span><span class="p">,</span> <span class="n">tournize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">'mate'</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">cxESTwoPoint</span><span class="p">)</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">'mutate'</span><span class="p">,</span> <span class="n">tools</span><span class="p">.</span><span class="n">mutFlipBit</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="создание-популяции">Создание популяции</h2>
+
+<p><code class="language-plaintext highlighter-rouge">init.py</code> содержит несколько ф-ий полезных для создания и иницализации популяции.</p>
+
+<p>Функцияя <code class="language-plaintext highlighter-rouge">initRepeat()</code> принимает три аргумента:</p>
+
+<ul>
+  <li>тип контейнера результирующих объектов</li>
+  <li>ф-ия. генерирующая объекты, которые помещаются в контейнер</li>
+  <li>сколько объектов генерировать</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">'zero_or_one'</span><span class="p">,</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">rnd</span> <span class="o">=</span> <span class="n">tools</span><span class="p">.</span><span class="n">initRepeat</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="p">.</span><span class="n">zero_or_one</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">rnd</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">...,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="вычисление-приспособленности">Вычисление приспособленности</h2>
+
+<p>значение приспособленности обычно возвращаются отдельно определенной ф-ией, которая регистрируется в <code class="language-plaintext highlighter-rouge">toolbox</code> как <code class="language-plaintext highlighter-rouge">evaluate</code> (соглашение)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">some_calc</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">nums</span>
+
+<span class="n">toolbox</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">'evaluate'</span><span class="p">,</span> <span class="n">some_calc</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="statistics">Statistics</h2>
+
+<p>Класс <code class="language-plaintext highlighter-rouge">tools.Statistics</code> позволяет собират ьстатистику. задавая ф-ию, применяемую к данным, для которых вычисляется статистика. Например для случая, когда популяция является данными, функция извлекающая приспособленность каждого индивидуума и зарегистрированные методы</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">tools</span><span class="p">.</span><span class="n">Statistics</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ind</span><span class="p">:</span> <span class="n">inf</span><span class="p">.</span><span class="n">fitness</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">stats</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"max"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">)</span>
+<span class="n">stats</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="s">"avg"</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="встроенные-алгоритмы">Встроенные алгоритмы</h2>
+
+<p>В DEAP несколько встроенных эволюционных алгоритмов, реализующих пайплайн обучения. Пример примененеия:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">population</span><span class="p">,</span> <span class="n">logbook</span> <span class="o">=</span> <span class="n">algorithms</span><span class="p">.</span><span class="n">eaSimple</span><span class="p">(</span>
+    <span class="n">population</span><span class="p">,</span>
+    <span class="n">toolbox</span><span class="p">,</span>
+    <span class="n">cxpb</span><span class="o">=</span><span class="n">CONST1</span><span class="p">,</span>
+    <span class="n">mutpb</span><span class="o">=</span><span class="n">CONST2</span><span class="p">,</span>
+    <span class="n">ngen</span><span class="o">=</span><span class="n">CONST3</span><span class="p">,</span>
+    <span class="n">stats</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="logbook">logbook</h2>
+
+<p>логбук - собранная статистика, которую возвращает алгоритм. Ее можно извлечь методом <code class="language-plaintext highlighter-rouge">select()</code> (в данном случае как раз и используются зарегистрирвоанные нами методы сбора статы)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">max_</span><span class="p">,</span> <span class="n">mean_</span> <span class="o">=</span> <span class="n">logbook</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'max'</span><span class="p">,</span> <span class="s">'avg`)
+</span></code></pre></div></div>
+
+<h2 id="зал-славы">Зал славы</h2>
+
+<p>Класс HallOfFame модуля tools возвращает отранжированный список лучших индивидумов, даже если в процессе эволюции или отбора они были утрачены.</p>
+
+<h2 id="еще-информация">Еще информация</h2>
+
+<ul>
+  <li>как использовать несколько процессоров тут: [<a href="deap" title="Deap - генетические алгоритмы на python">deap</a>]</li>
+  <li>документация тут [<a href="deap-docs" title="Deap документация">deap-docs</a>]</li>
+  <li><a href="https://github.com/rsteca/sklearn-deap">sklearn-deap</a> - имплементит эволюционный алгоритм вместо гридсерча</li>
+  <li><a href="https://github.com/DEAP/deap/issues/331">How to write loss function with extra parameters</a></li>
+  <li>[<a href="deap-checkpoints" title="Deap чекпоинты">deap-checkpoints</a>] чекпоинты в обучении</li>
+  <li>[<a href="deap-history" title="Deap history">deap-history</a>] истоиря обучения для построения генеалогического дерева индивидуумов</li>
+  <li>[<a href="../lists/evolution-methods" title="Evolution methods">evolution-methods</a>]</li>
+</ul>
+
+<p>[<a href="evolution-for-neural-networks" title="Evolution for neural networks">evolution-for-neural-networks</a>]</p>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

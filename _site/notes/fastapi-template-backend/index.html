@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Fastapi template backend | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Fastapi template backend" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Шаблон приложения на fastapi. Backend" />
+<meta property="og:description" content="Шаблон приложения на fastapi. Backend" />
+<link rel="canonical" href="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-backend/" />
+<meta property="og:url" content="https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-backend/" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"description":"Шаблон приложения на fastapi. Backend","@type":"WebPage","url":"https://konstantinklepikov.github.io/myknowlegebase/notes/fastapi-template-backend/","headline":"Fastapi template backend","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="https://konstantinklepikov.github.io/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+
+      <!-- Yandex.Metrika counter -->
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53548570, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/53548570" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139620627-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139620627-1');
+  </script>
+
+
+<!-- Favicon -->
+<link rel="icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://konstantinklepikov.github.io/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">Fastapi template backend</h1>
+    
+      
+      <a class="h5 link-tags" href="/myknowlegebase/notes/fastapi-template-backend.html">markdown source</a>
+    
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/fastapi" title="fastapi" class="link-tags">fastapi&nbsp;</a>
+      
+        
+        <a href="/myknowlegebase/tag/python" title="python" class="link-tags">python&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>Актуальный фулстек-шаблон находжится <a href="https://github.com/tiangolo/full-stack-fastapi-template">тут</a></p>
+
+<p>Backend Requirements</p>
+
+<ul>
+  <li>[<a href="../lists/docker" title="Docker">docker</a>]</li>
+  <li>[<a href="docker-compose-with-gcloud-authentication" title="Docker compose with gcloud authentication">docker-compose-with-gcloud-authentication</a>]</li>
+  <li>[<a href="poetry" title="Poetry">poetry</a>]</li>
+</ul>
+
+<p>Frontend Requirements: Node.js (with npm).</p>
+
+<p><strong>Backend local development</strong>
+Start the stack with Docker Compose:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose up -d</code> - это запускается из корня проекта (в backend и глубже ходить не надо)</p>
+
+<p>Frontend, built with Docker, with routes handled based on the path: http://localhost</p>
+
+<p>Backend, JSON based web API based on OpenAPI: http://localhost/api/</p>
+
+<p>Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost/docs</p>
+
+<p>Alternative automatic documentation with ReDoc (from the OpenAPI backend): http://localhost/redoc</p>
+
+<p>PGAdmin, PostgreSQL web administration: http://localhost:5050</p>
+
+<p>Flower, administration of Celery tasks: http://localhost:5555</p>
+
+<p>[<a href="traefik" title="Traefik">traefik</a>] UI, to see how the routes are being handled by the proxy: http://localhost:8080</p>
+
+<p>To check the logs, run:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose logs</code></p>
+
+<p>To check the logs of a specific service, add the name of the service, e.g.:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose logs backend</code></p>
+
+<p>If your Docker is not running in localhost (the URLs above wouldn’t work) check the sections below on Development with Docker Toolbox and Development with a custom IP.</p>
+
+<p><strong>Backend local development, additional details</strong>
+General workflow</p>
+
+<p>From ./backend/app/ you can install all the dependencies with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ poetry install</code></p>
+
+<p>Then you can start a shell session with the new environment with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ poetry shell</code></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">./backend/app/app/models/</code> SQLAlchemy models</li>
+  <li><code class="language-plaintext highlighter-rouge">./backend/app/app/schemas/</code> Pydantic schemas</li>
+  <li><code class="language-plaintext highlighter-rouge">./backend/app/app/api/</code> API endpoints</li>
+  <li><code class="language-plaintext highlighter-rouge">./backend/app/app/crud/</code> CRUD (Create, Read, Update, Delete).</li>
+</ul>
+
+<p>The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.</p>
+
+<p>Add and modify tasks to the Celery worker in <code class="language-plaintext highlighter-rouge">./backend/app/app/worker.py</code>.</p>
+
+<p>If you need to install any additional package to the worker, add it to the file <code class="language-plaintext highlighter-rouge">./backend/app/celeryworker.dockerfile</code>.</p>
+
+<p><strong>Docker Compose Override</strong>
+During development, you can change Docker Compose settings that will only affect the local development environment, in the file <code class="language-plaintext highlighter-rouge">docker-compose.override.yml</code>.</p>
+
+<p>The changes to that file only affect the local development environment, not the production environment. So, you can add “temporary” changes that help the development workflow.</p>
+
+<p>To get inside the container with a bash session you can start the stack with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ docker-compose up -d</code>
+and then exec inside the running container:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ docker-compose exec backend bash</code> запускается так-же из корня
+You should see an output like:</p>
+
+<p><code class="language-plaintext highlighter-rouge">root@7f2607af31c3:/app#</code>
+that means that you are in a bash session inside your container, as a root user, under the /app directory.</p>
+
+<p>There you can use the script /start-reload.sh to run the debug live reloading server. You can run that script from inside the container with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ bash /start-reload.sh</code>
+…it will look like:</p>
+
+<p><code class="language-plaintext highlighter-rouge">root@7f2607af31c3:/app# bash /start-reload.sh</code>
+and then hit enter. That runs the live reloading server that auto reloads when it detects code changes.</p>
+
+<p>Nevertheless, if it doesn’t detect a change but a syntax error, it will just stop with an error. But as the container is still alive and you are in a Bash session, you can quickly restart it after fixing the error, running the same command (“up arrow” and “Enter”).</p>
+
+<p>…this previous detail is what makes it useful to have the container alive doing nothing and then, in a Bash session, make it run the live reload server.</p>
+
+<p><strong>Backend tests</strong>
+To test the backend run:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ DOMAIN=backend sh ./scripts/test.sh</code>
+The file <code class="language-plaintext highlighter-rouge">./scripts/test.sh</code> has the commands to generate a testing <code class="language-plaintext highlighter-rouge">docker-stack.yml</code> file, start the stack and test it.</p>
+
+<p>The tests run with Pytest, modify and add tests to <code class="language-plaintext highlighter-rouge">./backend/app/app/tests/</code>.</p>
+
+<p>If you use GitLab CI the tests will run automatically.</p>
+
+<p><strong>Local tests</strong>
+Start the stack with this command:</p>
+
+<p><code class="language-plaintext highlighter-rouge">DOMAIN=backend sh ./scripts/test-local.sh</code>
+The ./backend/app directory is mounted as a “host volume” inside the docker container (set in the file docker-compose.dev.volumes.yml). You can rerun the test on live code:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose exec backend /app/tests-start.sh</code></p>
+
+<p><strong>Test running stack</strong>
+If your stack is already up and you just want to run the tests, you can use:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose exec backend /app/tests-start.sh</code>
+That <code class="language-plaintext highlighter-rouge">/app/tests-start.sh</code> script just calls pytest after making sure that the rest of the stack is running. If you need to pass extra arguments to pytest, you can pass them to that command and they will be forwarded.</p>
+
+<p>For example, to stop on first error:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose exec backend bash /app/tests-start.sh -x</code></p>
+
+<p><strong>Test Coverage</strong>
+Because the test scripts forward arguments to pytest, you can enable test coverage HTML report generation by passing <code class="language-plaintext highlighter-rouge">--cov-report=html</code></p>
+
+<p>To run the local tests with coverage HTML reports:</p>
+
+<p>DOMAIN=backend sh ./scripts/test-local.sh –cov-report=html
+To run the tests in a running stack with coverage HTML reports:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose exec backend bash /app/tests-start.sh --cov-report=html</code></p>
+
+<p><strong>Live development with Python Jupyter Notebooks</strong>
+If you know about Python Jupyter Notebooks, you can take advantage of them during local development.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">docker-compose.override.yml</code> file sends a variable env with a value dev to the build process of the Docker image (during local development) and the Dockerfile has steps to then install and configure Jupyter inside your Docker container.</p>
+
+<p>So, you can enter into the running Docker container:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose exec backend bash</code>
+And use the environment variable <code class="language-plaintext highlighter-rouge">$JUPYTER</code> to run a Jupyter Notebook with everything configured to listen on the public port (so that you can use it from your browser).</p>
+
+<p>It will output something like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@73e0ec1f1ae6:/app# <span class="nv">$JUPYTER</span>
+<span class="o">[</span>I 12:02:09.975 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
+<span class="o">[</span>I 12:02:10.317 NotebookApp] Serving notebooks from <span class="nb">local </span>directory: /app
+<span class="o">[</span>I 12:02:10.317 NotebookApp] The Jupyter Notebook is running at:
+<span class="o">[</span>I 12:02:10.317 NotebookApp] http://<span class="o">(</span>73e0ec1f1ae6 or 127.0.0.1<span class="o">)</span>:8888/?token<span class="o">=</span>f20939a41524d021fbfc62b31be8ea4dd9232913476f4397
+<span class="o">[</span>I 12:02:10.317 NotebookApp] Use Control-C to stop this server and shut down all kernels <span class="o">(</span>twice to skip confirmation<span class="o">)</span><span class="nb">.</span>
+<span class="o">[</span>W 12:02:10.317 NotebookApp] No web browser found: could not locate runnable browser.
+<span class="o">[</span>C 12:02:10.317 NotebookApp]
+
+    Copy/paste this URL into your browser when you connect <span class="k">for </span>the first <span class="nb">time</span>,
+    to login with a token:
+        http://<span class="o">(</span>73e0ec1f1ae6 or 127.0.0.1<span class="o">)</span>:8888/?token<span class="o">=</span>f20939a41524d021fbfc62b31be8ea4dd9232913476f4397
+</code></pre></div></div>
+
+<p>you can copy that URL and modify the “host” to be localhost or the domain you are using for development (e.g. local.dockertoolbox.tiangolo.com), in the case above, it would be, e.g.:</p>
+
+<p>http://localhost:8888/token=f20939a41524d021fbfc62b31be8ea4dd9232913476f4397
+and then open it in your browser.</p>
+
+<p>You will have a full Jupyter Notebook running inside your container that has direct access to your database by the container name (db), etc. So, you can just run sections of your backend code directly, for example with VS Code Python Jupyter Interactive Window or Hydrogen.</p>
+
+<p><strong>Migrations</strong>
+<strong>As during local development your app directory is mounted as a volume inside the container, you can also run the migrations with alembic commands inside the container and the migration code will be in your app directory (instead of being only inside the container). So you can add it to your git repository</strong>.</p>
+
+<p>Make sure you create a “revision” of your models and that you “upgrade” your database with that revision every time you change them. As this is what will update the tables in your database. Otherwise, your application will have errors.</p>
+
+<p>Start an interactive session in the backend container:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ docker-compose exec backend bash</code>
+If you created a new model in <code class="language-plaintext highlighter-rouge">./backend/app/app/models/</code>, make sure to import it in <code class="language-plaintext highlighter-rouge">./backend/app/app/db/base.py</code>, that Python module (base.py) that imports all the models will be used by Alembic.</p>
+
+<p>After changing a model (for example, adding a column), inside the container, create a revision, e.g.:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ alembic revision --autogenerate -m "Add column last_name to User model"</code>
+<strong>Commit to the git repository the files generated in the alembic directory.</strong></p>
+
+<p>After creating the revision, run the migration in the database (this is what will actually change the database):</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ alembic upgrade head</code>
+If you don’t want to use migrations at all, uncomment the line in the file at <code class="language-plaintext highlighter-rouge">./backend/app/app/db/init_db.py</code> with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Base.metadata.create_all(bind=engine)</code>
+and comment the line in the file <code class="language-plaintext highlighter-rouge">prestart.sh</code> that contains:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$ alembic upgrade head</code>
+If you don’t want to start with the default models and want to remove them / modify them, from the beginning, without having any previous revision, you can remove the revision files (.py Python files) under <code class="language-plaintext highlighter-rouge">./backend/app/alembic/versions/</code>. And then create a first migration as described above.</p>
+
+<p><strong>Development in localhost with a custom domain</strong>
+You might want to use something different than localhost as the domain. For example, if you are having problems with cookies that need a subdomain, and Chrome is not allowing you to use localhost.</p>
+
+<p>In that case, you have two options: you could use the instructions to modify your system hosts file with the instructions below in Development with a custom IP or you can just use localhost.tiangolo.com, it is set up to point to localhost (to the IP 127.0.0.1) and all its subdomains too. And as it is an actual domain, the browsers will store the cookies you set during development, etc.</p>
+
+<p>If you used the default CORS enabled domains while generating the project, localhost.tiangolo.com was configured to be allowed. If you didn’t, you will need to add it to the list in the variable BACKEND_CORS_ORIGINS in the .env file.</p>
+
+<p>To configure it in your stack, follow the section Change the development “domain” below, using the domain localhost.tiangolo.com.</p>
+
+<p>After performing those steps you should be able to open: http://localhost.tiangolo.com and it will be server by your stack in localhost.</p>
+
+<p>Check all the corresponding available URLs in the section at the end.</p>
+
+<p><strong>Development with a custom IP</strong>
+If you are running Docker in an IP address different than 127.0.0.1 (localhost) and 192.168.99.100 (the default of Docker Toolbox), you will need to perform some additional steps. That will be the case if you are running a custom Virtual Machine, a secondary Docker Toolbox or your Docker is located in a different machine in your network. See template documentation.</p>
+
+<p><strong>Change the development “domain”</strong>
+If you need to use your local stack with a different domain than localhost, you need to make sure the domain you use points to the IP where your stack is set up. See the different ways to achieve that in the sections above (i.e. using Docker Toolbox with <code class="language-plaintext highlighter-rouge">local.dockertoolbox.tiangolo.com</code>, using <code class="language-plaintext highlighter-rouge">localhost.tiangolo.com</code> or using <code class="language-plaintext highlighter-rouge">dev.fastapi-template.herokuapp.com</code>).</p>
+
+<p>To simplify your Docker Compose setup, for example, so that the API docs (Swagger UI) knows where is your API, you should let it know you are using that domain for development. You will need to edit 1 line in 2 files.</p>
+
+<p>Open the file located at <code class="language-plaintext highlighter-rouge">./.env</code>. It would have a line like:</p>
+
+<p><code class="language-plaintext highlighter-rouge">DOMAIN=localhost</code>
+Change it to the domain you are going to use, e.g.:</p>
+
+<p><code class="language-plaintext highlighter-rouge">DOMAIN=localhost.tiangolo.com</code>
+That variable will be used by the Docker Compose files.</p>
+
+<p>Now open the file located at <code class="language-plaintext highlighter-rouge">./frontend/.env</code>. It would have a line like:</p>
+
+<p><code class="language-plaintext highlighter-rouge">VUE_APP_DOMAIN_DEV=localhost</code>
+Change that line to the domain you are going to use, e.g.:</p>
+
+<p><code class="language-plaintext highlighter-rouge">VUE_APP_DOMAIN_DEV=localhost.tiangolo.com</code>
+That variable will make your frontend communicate with that domain when interacting with your backend API, when the other variable VUE_APP_ENV is set to development.</p>
+
+<p>After changing the two lines, you can re-start your stack with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">docker-compose up -d</code>
+and check all the corresponding available URLs in the section at the end.</p>
+
+<p>Состав бекенда темплейта [<a href="fastapi" title="Fastapi">fastapi</a>]</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>📦backend
+ ┣ 📂app
+ ┃ ┣ 📂alembic
+ ┃ ┃ ┣ 📂versions
+ ┃ ┃ ┃ ┣ 📜.keep
+ ┃ ┃ ┃ ┗ 📜d4867f3a4c0a_first_revision.py
+ ┃ ┃ ┣ 📜README
+ ┃ ┃ ┣ 📜env.py
+ ┃ ┃ ┗ 📜script.py.mako
+ ┃ ┣ 📂app
+ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┣ 📂api_v1
+ ┃ ┃ ┃ ┃ ┣ 📂endpoints
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜items.py
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜login.py
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜users.py
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜utils.py
+ ┃ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┃ ┗ 📜api.py
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┗ 📜deps.py
+ ┃ ┃ ┣ 📂core
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┣ 📜celery_app.py
+ ┃ ┃ ┃ ┣ 📜config.py
+ ┃ ┃ ┃ ┗ 📜security.py
+ ┃ ┃ ┣ 📂crud
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┣ 📜base.py
+ ┃ ┃ ┃ ┣ 📜crud_item.py
+ ┃ ┃ ┃ ┗ 📜crud_user.py
+ ┃ ┃ ┣ 📂db
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┣ 📜base.py
+ ┃ ┃ ┃ ┣ 📜base_class.py
+ ┃ ┃ ┃ ┣ 📜init_db.py
+ ┃ ┃ ┃ ┗ 📜session.py
+ ┃ ┃ ┣ 📂email-templates
+ ┃ ┃ ┃ ┣ 📂build
+ ┃ ┃ ┃ ┃ ┣ 📜new_account.html
+ ┃ ┃ ┃ ┃ ┣ 📜reset_password.html
+ ┃ ┃ ┃ ┃ ┗ 📜test_email.html
+ ┃ ┃ ┃ ┗ 📂src
+ ┃ ┃ ┃ ┃ ┣ 📜new_account.mjml
+ ┃ ┃ ┃ ┃ ┣ 📜reset_password.mjml
+ ┃ ┃ ┃ ┃ ┗ 📜test_email.mjml
+ ┃ ┃ ┣ 📂models
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┣ 📜item.py
+ ┃ ┃ ┃ ┗ 📜user.py
+ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┣ 📜item.py
+ ┃ ┃ ┃ ┣ 📜msg.py
+ ┃ ┃ ┃ ┣ 📜token.py
+ ┃ ┃ ┃ ┗ 📜user.py
+ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┃ ┣ 📂api_v1
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜test_celery.py
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜test_items.py
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜test_login.py
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜test_users.py
+ ┃ ┃ ┃ ┃ ┗ 📜__init__.py
+ ┃ ┃ ┃ ┣ 📂crud
+ ┃ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┃ ┣ 📜test_item.py
+ ┃ ┃ ┃ ┃ ┗ 📜test_user.py
+ ┃ ┃ ┃ ┣ 📂utils
+ ┃ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┃ ┣ 📜item.py
+ ┃ ┃ ┃ ┃ ┣ 📜user.py
+ ┃ ┃ ┃ ┃ ┗ 📜utils.py
+ ┃ ┃ ┃ ┣ 📜.gitignore
+ ┃ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┃ ┗ 📜conftest.py
+ ┃ ┃ ┣ 📜__init__.py
+ ┃ ┃ ┣ 📜backend_pre_start.py
+ ┃ ┃ ┣ 📜celeryworker_pre_start.py
+ ┃ ┃ ┣ 📜initial_data.py
+ ┃ ┃ ┣ 📜main.py
+ ┃ ┃ ┣ 📜tests_pre_start.py
+ ┃ ┃ ┣ 📜utils.py
+ ┃ ┃ ┗ 📜worker.py
+ ┃ ┣ 📂scripts
+ ┃ ┃ ┣ 📜format-imports.sh
+ ┃ ┃ ┣ 📜format.sh
+ ┃ ┃ ┣ 📜lint.sh
+ ┃ ┃ ┣ 📜test-cov-html.sh
+ ┃ ┃ ┗ 📜test.sh
+ ┃ ┣ 📜.coverage
+ ┃ ┣ 📜.flake8
+ ┃ ┣ 📜.gitignore
+ ┃ ┣ 📜alembic.ini
+ ┃ ┣ 📜mypy.ini
+ ┃ ┣ 📜poetry.lock
+ ┃ ┣ 📜prestart.sh
+ ┃ ┣ 📜pyproject.toml
+ ┃ ┣ 📜tests-start.sh
+ ┃ ┗ 📜worker-start.sh
+ ┣ 📜.gitignore
+ ┣ 📜backend.dockerfile
+ ┗ 📜celeryworker.dockerfile
+</code></pre></div></div>
+
+<ul>
+  <li>[<a href="../posts/2021-10-18-daily-note" title="Проблемы с fastapi postgresql template">2021-10-18-daily-note</a>] - problems with postgresql template</li>
+  <li>[<a href="fastapi-template-vue-frontend" title="Fastapi frontend development">fastapi-template-vue-frontend</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  });
+  // Fix Foam relative wiki links broken by permalink:pretty.
+  // With pretty permalinks notes/abc.md is served at /notes/abc/ (one URL
+  // level deeper than the filesystem). Foam generates relative paths based
+  // on the filesystem, so ../notes/slug and bare slug hrefs resolve one
+  // level too deep in the browser. We correct them to absolute URLs here.
+  (function() {
+    var baseurl = '/myknowlegebase';
+    var path = window.location.pathname;
+    // Only run on pages one level deeper than expected:
+    // /baseurl/notes/<slug>/ or /baseurl/lists/<slug>/
+    var re = new RegExp('^' + baseurl.replace(/\//g, '\\/') + '\\/(notes|lists)\\/[^\\/]+\\/$');
+    var m = path.match(re);
+    if (!m) return;
+    var dir = m[1]; // 'notes' or 'lists'
+
+    document.querySelectorAll('a').forEach(function(l) {
+      var attr = l.getAttribute('href');
+      if (!attr || /^(https?:|\/|#|mailto:)/.test(attr)) return;
+
+      if (attr.startsWith('../')) {
+        // Cross-directory Foam link: ../notes/slug or ../lists/slug
+        // Strip ../ and make absolute from site root
+        l.href = baseurl + '/' + attr.slice(3);
+      } else if (attr.indexOf('/') === -1) {
+        // Same-directory Foam link: bare slug (no path separator)
+        l.href = baseurl + '/' + dir + '/' + attr;
+      }
+    });
+  })();
+</script>

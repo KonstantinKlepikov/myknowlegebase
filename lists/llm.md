@@ -23,6 +23,7 @@ title: LLM
 ## Models hosts
 
 - [ollama](https://ollama.com/) Access the latest open models with complete privacy locally or in the cloud. Your prompts are never stored or trained on.
+ [vLLM](https://docs.vllm.ai/en/latest/) vLLM is a fast and easy-to-use library for LLM inference and serving.
 
 ## Apps and libs
 
