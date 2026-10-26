@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>DeepAgents | My knowledge base</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="DeepAgents" />
+<meta property="og:locale" content="ru_RU" />
+<meta name="description" content="Краткий обзор Deep Agents — harness для создания надежных агентных приложений на базе LangChain." />
+<meta property="og:description" content="Краткий обзор Deep Agents — harness для создания надежных агентных приложений на базе LangChain." />
+<link rel="canonical" href="http://localhost:4000/myknowlegebase/notes/deepagents.html" />
+<meta property="og:url" content="http://localhost:4000/myknowlegebase/notes/deepagents.html" />
+<meta property="og:site_name" content="My knowledge base" />
+<script type="application/ld+json">
+{"headline":"DeepAgents","description":"Краткий обзор Deep Agents — harness для создания надежных агентных приложений на базе LangChain.","@type":"WebPage","url":"http://localhost:4000/myknowlegebase/notes/deepagents.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+    
+    <link rel="stylesheet" href="http://localhost:4000/myknowlegebase/assets/style.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+
+
+<!-- Favicon -->
+<link rel="icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://localhost:4000/myknowlegebase/assets/img/favicon.ico" type="image/x-icon">
+
+<!-- Math support -->
+<!-- Mathjax Support -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!-- tags collection-->
+
+    
+
+
+
+
+
+
+
+<!-- end custom head snippets -->
+
+</head>
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+    <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+      <a class="align-middle link-primary text-accent" href="https://konstantinklepikov.github.io/">
+        My deep learning
+      </a>
+    </div>
+    <div class="right sm-width-full">
+      <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/myknowlegebase/">
+            My knowledge base
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+    <main role="main">
+
+      
+<article class="container mx-auto px-2 mt2 mb4">
+  <header>
+    <h1 class="h1 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">DeepAgents</h1>
+  </header>
+  <div class="col-4 sm-width-full border-top-thin">
+    <p class="mb-3 h5">Теги:
+      
+        
+        <a href="/myknowlegebase/tag/llm" title="llm" class="link-tags">llm&nbsp;</a>
+      
+    </p>
+  </div>
+  <div class="prose mb-4 py-4">
+    <p>DeepAgents — это “agent harness” от LangChain: высокоуровневый каркас для создания агентов, способных планировать, делегировать подзадачи, работать с файловой системой и сохранять долгосрочную память. DeepAgents упрощает построение сложных многошаговых приложений, предоставляя готовые компоненты для исполнения, управления контекстом, делегирования и управления вмешательством человека.</p>
+
+<ul>
+  <li><strong>Назначение:</strong> надёжное выполнение многозадачных, долгих и контекстно насыщенных задач с LLM.</li>
+  <li><strong>Библиотека:</strong> <code class="language-plaintext highlighter-rouge">deepagents</code> (пакет на PyPI), построена поверх [<a href="langchain" title="notes/langchain">notes/langchain</a>] и использует [<a href="langcgraph" title="notes/langcgraph">notes/langcgraph</a>] для выполнения и наблюдаемости.</li>
+</ul>
+
+<p><strong>Быстрый пример (Python):</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">deepagents</span> <span class="kn">import</span> <span class="n">create_deep_agent</span>
+
+<span class="k">def</span> <span class="nf">get_weather</span><span class="p">(</span><span class="n">city</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">f"It's always sunny in </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s">!"</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_deep_agent</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">get_weather</span><span class="p">],</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="s">"You are a helpful assistant"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">({</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"what is the weather in sf"</span><span class="p">}]})</span>
+</code></pre></div></div>
+
+<h2 id="ключевые-возможности-deepagents">Ключевые возможности DeepAgents</h2>
+
+<ul>
+  <li>Взаимодействие с окружением: вызов <code class="language-plaintext highlighter-rouge">tools</code>, чтение/запись файлов, выполнение кода.</li>
+  <li>Подключение к данным: <code class="language-plaintext highlighter-rouge">memory</code>, <code class="language-plaintext highlighter-rouge">skills</code>, и внешние источники через MCP (Model Context Protocol).</li>
+  <li>Управление контекстом: суммаризация, оффлоадинг больших результатов и кэширование подсказок (<code class="language-plaintext highlighter-rouge">prompt caching</code>).</li>
+  <li>Делегирование и параллелизм: создание подагентов (<code class="language-plaintext highlighter-rouge">subagents</code>) для изоляции и параллельной обработки задач.</li>
+  <li>Human-in-the-loop: точечные прерывания и подтверждения перед опасными операциями.</li>
+  <li>Улучшение со временем: обновляемая память и навыки на основе использования.</li>
+</ul>
+
+<h2 id="компоненты-исполнения-execution-environment">Компоненты исполнения (Execution environment)</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Tools</code> и MCP: любые функции, LangChain tools или MCP-серверы можно передать в <code class="language-plaintext highlighter-rouge">tools=</code> при создании агента.</li>
+  <li>Виртуальная файловая система: pluggable backends (in-memory, disk, LangGraph store и т.д.) с инструментами <code class="language-plaintext highlighter-rouge">ls</code>, <code class="language-plaintext highlighter-rouge">read_file</code>, <code class="language-plaintext highlighter-rouge">write_file</code>, <code class="language-plaintext highlighter-rouge">edit_file</code>, <code class="language-plaintext highlighter-rouge">delete</code>, <code class="language-plaintext highlighter-rouge">glob</code>, <code class="language-plaintext highlighter-rouge">grep</code>, <code class="language-plaintext highlighter-rouge">execute</code> (для sandbox).</li>
+  <li>Разрешения на файловую систему: декларативные правила (<code class="language-plaintext highlighter-rouge">permissions=</code>) с операциями <code class="language-plaintext highlighter-rouge">read</code>/<code class="language-plaintext highlighter-rouge">write</code>, путями (glob) и режимами <code class="language-plaintext highlighter-rouge">allow</code>/<code class="language-plaintext highlighter-rouge">deny</code>.</li>
+  <li>Выполнение кода: sandbox backends дают <code class="language-plaintext highlighter-rouge">execute</code>, а интерпретаторы (например, QuickJS) дают <code class="language-plaintext highlighter-rouge">eval</code> для безопасных сценариев.</li>
+  <li>Streaming: событийные потоки для трассировки сообщений, вызовов инструментов и подагентов.</li>
+</ul>
+
+<h2 id="управление-контекстом-context-management">Управление контекстом (Context management)</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Skills</code>: модульные, прогрессивно загружаемые знания и workflow-файлы со стандартом <code class="language-plaintext highlighter-rouge">SKILL.md</code> (агент читает frontmatter сначала, остальное при надобности).</li>
+  <li><code class="language-plaintext highlighter-rouge">Memory</code>: устойчивые файлы (<code class="language-plaintext highlighter-rouge">AGENTS.md</code>) загружаются при старте и сохраняются в backend; агент может обновлять память в ходе работы.</li>
+  <li>Суммаризация и оффлоадинг: автоматические механизмы для сжатия истории и больших промежуточных результатов.</li>
+  <li><code class="language-plaintext highlighter-rouge">Prompt caching</code>: кэширование статических частей системных подсказок для поддерживаемых провайдеров (например, Anthropic, Bedrock).</li>
+</ul>
+
+<h2 id="делегирование-delegation">Делегирование (Delegation)</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Task planning</code>: опциональный middleware (<code class="language-plaintext highlighter-rouge">TodoListMiddleware</code>) для ведения списка задач и состояния (<code class="language-plaintext highlighter-rouge">pending</code>, <code class="language-plaintext highlighter-rouge">in_progress</code>, <code class="language-plaintext highlighter-rouge">completed</code>).</li>
+  <li><code class="language-plaintext highlighter-rouge">Subagents</code>: встроенный инструмент <code class="language-plaintext highlighter-rouge">task</code> создаёт эпизодические подагенты с отдельным контекстом и автономным выполнением; возвращают один финальный отчёт.</li>
+</ul>
+
+<h2 id="параметры-безопасности-и-контроль-steering">Параметры безопасности и контроль (Steering)</h2>
+
+<ul>
+  <li>Человеческое подтверждение: <code class="language-plaintext highlighter-rouge">interrupt_on</code> позволяет приостанавливать выполнение при указанных вызовах инструментов (например, <code class="language-plaintext highlighter-rouge">edit_file</code>) для одобрения.</li>
+  <li>Права доступа: декларативные правила файловой системы для ограничения областей чтения/записи.</li>
+</ul>
+
+<h2 id="кастомизация-и-расширение">Кастомизация и расширение</h2>
+
+<ul>
+  <li>Профили harness (<code class="language-plaintext highlighter-rouge">HarnessProfile</code>) позволяют скрывать определённые инструменты (например, файловые операции) от модели.</li>
+  <li>Middleware: добавление <code class="language-plaintext highlighter-rouge">TodoListMiddleware</code>, <code class="language-plaintext highlighter-rouge">FilesystemMiddleware</code> и других для контроля поведения агента.</li>
+  <li>Подключение внешних MCP-серверов для доступа к базам данных, API и хранилищам.</li>
+</ul>
+
+<h2 id="когда-использовать-deepagents">Когда использовать DeepAgents</h2>
+
+<ul>
+  <li>Многошаговые рабочие процессы, требующие управления состоянием и длительной памяти.</li>
+  <li>Задачи, где полезна делегирование подзадач и параллельная обработка.</li>
+  <li>Сценарии, где нужно безопасно управлять файловой системой и иметь человека в петле подтверждения.</li>
+</ul>
+
+<h2 id="ссылки-и-ресурсы">Ссылки и ресурсы</h2>
+
+<ul>
+  <li><a href="https://docs.langchain.com/oss/python/deepagents/overview">Документация</a></li>
+  <li><a href="https://reference.langchain.com/python/deepagents/">API reference</a></li>
+  <li>[<a href="../lists/llm" title="LLM">lists/llm</a>]</li>
+  <li>[<a href="langchain" title="notes/langchain">notes/langchain</a>]</li>
+  <li>[<a href="langcgraph" title="notes/langcgraph">notes/langcgraph</a>]</li>
+</ul>
+
+
+  </div>
+</article>
+
+
+    </main>
+
+    <footer role="banner">
+<div class="border-top-thin clearfix mt-2 mt-lg-4">
+    <div class="container mx-auto px-2">
+      <p class="col-8 sm-width-full left py-2 mb-0"><a href="/myknowlegebase/">My knowledge base</a> проект поддерживается <a class="text-accent" href="https://github.com/KonstantinKlepikov">KonstantinKlepikov</a></p>
+      <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+        <li class="inline-block mr-1">
+          <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="My knowledge base">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+
+</html>
+
+<script type="text/javascript">
+  // Hack: Replace page-link with "Page Title"
+  document.querySelectorAll(".markdown-body a[title]").forEach((a) => {
+    a.innerText = a.title;
+  });
+  // Hack: Remove .md extension from wikilinks to get the html in jekyll
+  document.querySelectorAll("a").forEach(l => {
+    if (l.href.endsWith('.md')) {
+      l.href = l.href.substring(0, l.href.length-3)
+    }
+  })
+</script>

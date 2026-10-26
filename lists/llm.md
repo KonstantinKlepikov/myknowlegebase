@@ -43,6 +43,14 @@ title: LLM
 - [OpenCode](https://opencode.ai/v2/docs). OpenCode is an open source AI coding agent. It’s available as a terminal-based interface, desktop app, or web app.
 - [little-coder](https://github.com/itayinbarr/little-coder#little-coder), A coding agent tuned for small local models, built on top of `pi`.
 - [hermes-agent](https://github.com/nousresearch/hermes-agent). The self-improving AI agent built by Nous Research. It's the only agent with a built-in learning loop — it creates skills from experience, improves them during use, nudges itself to persist knowledge, searches its own past conversations, and builds a deepening model of who you are across sessions. Run it on a $5 VPS, a GPU cluster, or serverless infrastructure that costs nearly nothing when idle.
+- [[notes/deepagents]]
+- [[notes/langchain]]
+- [[notes/langgraph]]
+- [[notes/kv-cache]]
 
 [notes/llama-cpp]: ../notes/llama-cpp "llama.cpp"
 [lists/vscode]: vscode "Vscode"
+[notes/deepagents]: ../notes/deepagents "DeepAgents"
+[notes/langchain]: ../notes/langchain "langchain"
+[notes/kv-cache]: ../notes/kv-cache "KV-cache"
+[notes/langgraph]: ../notes/langgraph "langgraph"
