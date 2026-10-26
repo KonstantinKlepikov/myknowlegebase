@@ -531,25 +531,32 @@ agent = create_agent(
 
 #### Структурированный вывод (Structured Output)
 
-Возвращайте валидированную схему из агента:
+Модели могут возвращать ответ в формате, соответствующем заданной схеме. Это полезно для обеспечения возможности легкого анализа и использования выходных данных в последующей обработке. LangChain поддерживает несколько типов схем и методов для обеспечения структурированного вывода.
 
 ```python
-from pydantic import BaseModel
-from langchain.agents import create_agent
+from pydantic import BaseModel, Field
 
-class Answer(BaseModel):
-    summary: str
-    confidence: float
+class Movie(BaseModel):
+    &quot;&quot;&quot;A movie with details.&quot;&quot;&quot;
+    title: str = Field(description=&quot;The title of the movie&quot;)
+    year: int = Field(description=&quot;The year the movie was released&quot;)
+    director: str = Field(description=&quot;The director of the movie&quot;)
+    rating: float = Field(description=&quot;The movie's rating out of 10&quot;)
 
-agent = create_agent(
-    model=&quot;openai:gpt-5.5&quot;,
-    tools=tools,
-    response_format=Answer
-)
-
-result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Вопрос...&quot;}]})
-print(result[&quot;structured_response&quot;])  # Answer(summary=..., confidence=...)
+model_with_structure = model.with_structured_output(Movie)
+response = model_with_structure.invoke(&quot;Provide details about the movie Inception&quot;)
+print(response)  # Movie(title=&quot;Inception&quot;, year=2010, director=&quot;Christopher Nolan&quot;, rating=8.8)
 ```
+
+Ключевые аспекты структурированного вывода:
+
+- `json_schema` Использует специальные функции структурированного вывода, предоставляемые поставщиком.
+- `function_calling`: Формирует структурированный вывод, принудительно вызывая инструмент, соответствующий заданной схеме.
+- `json_mode`: Предшественник функции, предлагаемой некоторыми поставщиками. Генерирует корректный JSON, но схема должна быть описана в подсказке.
+
+Включить необработанные данные можно установив параметр `include_raw=True`, чтобы получить как обработанный результат, так и необработанное сообщение ИИ.
+
+Модели `Pydantic` обеспечивают автоматическую проверку, `TypedDict` модели JSON Schema требуют ручной проверки.
 
 #### Состояние агента (Agent State)
 

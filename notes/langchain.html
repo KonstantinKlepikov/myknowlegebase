@@ -427,25 +427,32 @@ agent = create_agent(
 
 #### Структурированный вывод (Structured Output)
 
-Возвращайте валидированную схему из агента:
+Модели могут возвращать ответ в формате, соответствующем заданной схеме. Это полезно для обеспечения возможности легкого анализа и использования выходных данных в последующей обработке. LangChain поддерживает несколько типов схем и методов для обеспечения структурированного вывода.
 
 ```python
-from pydantic import BaseModel
-from langchain.agents import create_agent
+from pydantic import BaseModel, Field
 
-class Answer(BaseModel):
-    summary: str
-    confidence: float
+class Movie(BaseModel):
+    """A movie with details."""
+    title: str = Field(description="The title of the movie")
+    year: int = Field(description="The year the movie was released")
+    director: str = Field(description="The director of the movie")
+    rating: float = Field(description="The movie's rating out of 10")
 
-agent = create_agent(
-    model="openai:gpt-5.5",
-    tools=tools,
-    response_format=Answer
-)
-
-result = agent.invoke({"messages": [{"role": "user", "content": "Вопрос..."}]})
-print(result["structured_response"])  # Answer(summary=..., confidence=...)
+model_with_structure = model.with_structured_output(Movie)
+response = model_with_structure.invoke("Provide details about the movie Inception")
+print(response)  # Movie(title="Inception", year=2010, director="Christopher Nolan", rating=8.8)
 ```
+
+Ключевые аспекты структурированного вывода:
+
+- `json_schema` Использует специальные функции структурированного вывода, предоставляемые поставщиком.
+- `function_calling`: Формирует структурированный вывод, принудительно вызывая инструмент, соответствующий заданной схеме.
+- `json_mode`: Предшественник функции, предлагаемой некоторыми поставщиками. Генерирует корректный JSON, но схема должна быть описана в подсказке.
+
+Включить необработанные данные можно установив параметр `include_raw=True`, чтобы получить как обработанный результат, так и необработанное сообщение ИИ.
+
+Модели `Pydantic` обеспечивают автоматическую проверку, `TypedDict` модели JSON Schema требуют ручной проверки.
 
 #### Состояние агента (Agent State)
 

@@ -562,24 +562,33 @@
 
 <h4 id="структурированный-вывод-structured-output">Структурированный вывод (Structured Output)</h4>
 
-<p>Возвращайте валидированную схему из агента:</p>
+<p>Модели могут возвращать ответ в формате, соответствующем заданной схеме. Это полезно для обеспечения возможности легкого анализа и использования выходных данных в последующей обработке. LangChain поддерживает несколько типов схем и методов для обеспечения структурированного вывода.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
-<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">create_agent</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 
-<span class="k">class</span> <span class="nc">Answer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
+<span class="k">class</span> <span class="nc">Movie</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="s">"""A movie with details."""</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">"The title of the movie"</span><span class="p">)</span>
+    <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">"The year the movie was released"</span><span class="p">)</span>
+    <span class="n">director</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">"The director of the movie"</span><span class="p">)</span>
+    <span class="n">rating</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">"The movie's rating out of 10"</span><span class="p">)</span>
 
-<span class="n">agent</span> <span class="o">=</span> <span class="n">create_agent</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s">"openai:gpt-5.5"</span><span class="p">,</span>
-    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
-    <span class="n">response_format</span><span class="o">=</span><span class="n">Answer</span>
-<span class="p">)</span>
-
-<span class="n">result</span> <span class="o">=</span> <span class="n">agent</span><span class="p">.</span><span class="n">invoke</span><span class="p">({</span><span class="s">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s">"role"</span><span class="p">:</span> <span class="s">"user"</span><span class="p">,</span> <span class="s">"content"</span><span class="p">:</span> <span class="s">"Вопрос..."</span><span class="p">}]})</span>
-<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">"structured_response"</span><span class="p">])</span>  <span class="c1"># Answer(summary=..., confidence=...)
+<span class="n">model_with_structure</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Movie</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">model_with_structure</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="s">"Provide details about the movie Inception"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># Movie(title="Inception", year=2010, director="Christopher Nolan", rating=8.8)
 </span></code></pre></div></div>
+
+<p>Ключевые аспекты структурированного вывода:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">json_schema</code> Использует специальные функции структурированного вывода, предоставляемые поставщиком.</li>
+  <li><code class="language-plaintext highlighter-rouge">function_calling</code>: Формирует структурированный вывод, принудительно вызывая инструмент, соответствующий заданной схеме.</li>
+  <li><code class="language-plaintext highlighter-rouge">json_mode</code>: Предшественник функции, предлагаемой некоторыми поставщиками. Генерирует корректный JSON, но схема должна быть описана в подсказке.</li>
+</ul>
+
+<p>Включить необработанные данные можно установив параметр <code class="language-plaintext highlighter-rouge">include_raw=True</code>, чтобы получить как обработанный результат, так и необработанное сообщение ИИ.</p>
+
+<p>Модели <code class="language-plaintext highlighter-rouge">Pydantic</code> обеспечивают автоматическую проверку, <code class="language-plaintext highlighter-rouge">TypedDict</code> модели JSON Schema требуют ручной проверки.</p>
 
 <h4 id="состояние-агента-agent-state">Состояние агента (Agent State)</h4>
 
